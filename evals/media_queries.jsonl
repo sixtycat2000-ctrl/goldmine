@@ -1,0 +1,50 @@
+{"id": "media-001", "q": "Fresnel lens rotates twice per minute", "expect": [{"path": "txt/field-notes-lighthouse.txt", "grade": 3}, {"path": "books/coastal-almanac.epub", "grade": 2}], "tag": "text"}
+{"id": "media-002", "q": "starter feeding ratio hydration 78 percent", "expect": [{"path": "txt/brewlog-sourdough.txt", "grade": 3}], "tag": "text"}
+{"id": "media-003", "q": "reef tank calcium dosing alkalinity", "expect": [{"path": "md/obsidian/reef-tank.md", "grade": 3}], "tag": "text"}
+{"id": "media-004", "q": "Perseid observing notes meteor train", "expect": [{"path": "html/meteor-shower.html", "grade": 3}], "tag": "text"}
+{"id": "media-005", "q": "widget throughput 412 units", "expect": [{"path": "docx/quarterly-report.docx", "grade": 3}], "tag": "text"}
+{"id": "media-006", "q": "canister filter replacement sponges FX-8841", "expect": [{"path": "mail/filter-maintenance.eml", "grade": 3}, {"path": "md/obsidian/reef-tank.md", "grade": 1}], "tag": "text"}
+{"id": "media-007", "q": "leviathan pump bench trial", "expect": [{"path": "docx/quarterly-report.docx", "grade": 3}, {"path": "mail/invoice-q3.eml", "grade": 2}], "tag": "text"}
+{"id": "media-008", "q": "fog forms on 14 nights per October", "expect": [{"path": "books/coastal-almanac.epub", "grade": 3}], "tag": "text"}
+{"id": "media-009", "q": "fetch_tide_gauge station reading", "expect": [{"path": "code/proj/main.py", "lines": [1, 3], "grade": 3}], "tag": "text"}
+{"id": "media-010", "q": "dredge disposal spoil ground turbidity", "expect": [{"path": "pdf/atlas-text-layer.pdf", "grade": 3}], "tag": "text"}
+{"id": "media-011", "q": "tone diagnostic recording", "expect": [{"path": "audio/tone-diagnostic-35s.wav", "grade": 3}], "tag": "audio"}
+{"id": "media-012", "q": "35s diagnostic tone", "expect": [{"path": "audio/tone-diagnostic-35s.wav", "grade": 3}], "tag": "audio"}
+{"id": "media-013", "q": "logbook speech recording", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio"}
+{"id": "media-014", "q": "5min logbook audio", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio"}
+{"id": "media-015", "q": "speech wav october", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio"}
+{"id": "media-016", "q": "tide gauge recorded 4.2 meters at dawn", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}, {"path": "books/coastal-almanac.epub", "grade": 2}], "tag": "audio", "needs": ["asr"]}
+{"id": "media-017", "q": "beacon FL-33 flashed three times", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio", "needs": ["asr"]}
+{"id": "media-018", "q": "fog signal every 90 seconds", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio", "needs": ["asr"]}
+{"id": "media-019", "q": "lantern wick trimmed twice", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}, {"path": "txt/field-notes-lighthouse.txt", "grade": 1}], "tag": "audio", "needs": ["asr"]}
+{"id": "media-020", "q": "barometer fell slowly after supper", "expect": [{"path": "audio/logbook-speech-5min.wav", "grade": 3}], "tag": "audio", "needs": ["asr"]}
+{"id": "media-021", "q": "screenshot 2026-10-11", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-022", "q": "screenshot 2026-10-12", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-023", "q": "screenshot at 09.15.42", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-024", "q": "screenshot images", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}, {"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-025", "q": "09 15 42 png", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-026", "q": "14 02 11 png", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot"}
+{"id": "media-027", "q": "error code 4471", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
+{"id": "media-028", "q": "externally managed environment", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
+{"id": "media-029", "q": "upload failed", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
+{"id": "media-030", "q": "retry token RT-9042", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
+{"id": "media-031", "q": "photo harbor bridge", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
+{"id": "media-032", "q": "photo lighthouse", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
+{"id": "media-033", "q": "harbor bridge photo images", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
+{"id": "media-034", "q": "lighthouse photo images photos", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
+{"id": "media-035", "q": "bridge photo png", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
+{"id": "media-036", "q": "lighthouse png images", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
+{"id": "media-037", "q": "lighthouse photo taken October 2026", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-038", "q": "harbor bridge photo camera", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-039", "q": "photos taken on 2026-10-14", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}, {"path": "images/photos/photo-harbor-bridge.png", "grade": 2}], "tag": "image", "needs": ["exif"]}
+{"id": "media-040", "q": "lighthouse photo GPS coordinates", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-041", "q": "breakwater repair estimate 48000 EUR", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}
+{"id": "media-042", "q": "ferry wake limits tightened May", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}
+{"id": "media-043", "q": "harbor chart hybrid pdf", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}
+{"id": "media-044", "q": "atlas scanned pdf", "expect": [{"path": "pdf/atlas-scanned.pdf", "grade": 3}], "tag": "pdf-scanned"}
+{"id": "media-045", "q": "harbor chart depth 42 meters", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned", "needs": ["ocr"]}
+{"id": "media-046", "q": "sandbar marker KB-77", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned", "needs": ["ocr"]}
+{"id": "media-047", "q": "receipt 9001 total 4820 EUR", "expect": [{"path": "pdf/atlas-scanned.pdf", "grade": 3}, {"path": "mail/invoice-q3.eml", "grade": 2}], "tag": "pdf-scanned", "needs": ["ocr"]}
+{"id": "media-048", "q": "receipt VAT 12 percent", "expect": [{"path": "pdf/atlas-scanned.pdf", "grade": 3}], "tag": "pdf-scanned", "needs": ["ocr"]}
+{"id": "media-049", "q": "leviathan pump order receipt", "expect": [{"path": "pdf/atlas-scanned.pdf", "grade": 3}, {"path": "mail/invoice-q3.eml", "grade": 2}, {"path": "docx/quarterly-report.docx", "grade": 1}], "tag": "pdf-scanned", "needs": ["ocr"]}
+{"id": "media-050", "q": "harbor office stamp received", "expect": [{"path": "pdf/atlas-scanned.pdf", "grade": 3}], "tag": "pdf-scanned", "needs": ["ocr"]}

@@ -1,0 +1,746 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="goldmine —— 跑在你 Mac 上的语义搜索引擎。从用户旅程到向量、算法与架构的全景导览。">
+<title>goldmine · 认意思的本地搜索 —— 全景导览</title>
+<style>
+/* ================= tokens ================= */
+:root{
+  --bg:#0F0E0C; --bg2:#14120E; --card:#171510; --ink:#EDE7DC; --sub:#96907F;
+  --line:rgba(237,231,220,.13); --line2:rgba(237,231,220,.28);
+  --gold:#E3A94C; --gold2:#F0C578; --teal:#6FB3AA; --red:#C97A62;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Segoe UI",sans-serif;
+  --serif:"Songti SC","STSong","Noto Serif SC","Source Han Serif SC",serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.75 var(--sans);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+::selection{background:var(--gold);color:#141109}
+a{color:var(--gold2);text-decoration:none;border-bottom:1px solid rgba(227,169,76,.35)}
+a:hover{border-bottom-color:var(--gold)}
+code{font:0.92em var(--mono);background:rgba(237,231,220,.07);padding:.1em .4em;border-radius:5px}
+hr{border:0;border-top:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+/* progress + nav */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));z-index:60}
+#toc{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:50;display:flex;flex-direction:column;gap:14px}
+#toc a{display:flex;align-items:center;gap:9px;border:0;justify-content:flex-end}
+#toc .dot{width:7px;height:7px;border-radius:50%;background:rgba(237,231,220,.25);transition:.3s}
+#toc .lb{font:11px/1 var(--mono);color:var(--sub);opacity:0;transform:translateX(6px);transition:.25s;letter-spacing:.08em}
+#toc a:hover .lb{opacity:1;transform:none}
+#toc a.on .dot{background:var(--gold);box-shadow:0 0 0 4px rgba(227,169,76,.18)}
+#toc a.on .lb{opacity:1;transform:none;color:var(--gold2)}
+@media(max-width:900px){#toc{display:none}}
+/* ================= scaffolding ================= */
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+section.ch{padding:110px 0 30px;position:relative}
+.chno{position:absolute;top:34px;right:-10px;font:700 clamp(120px,22vw,230px)/1 var(--mono);
+  color:transparent;-webkit-text-stroke:1px rgba(237,231,220,.09);pointer-events:none;user-select:none}
+.kick{font:12px var(--mono);letter-spacing:.34em;color:var(--gold);margin:0 0 12px}
+.kick::before{content:"";display:inline-block;width:34px;height:1px;background:var(--gold);vertical-align:middle;margin-right:12px;opacity:.8}
+h2.t{font:500 clamp(30px,4.6vw,50px)/1.28 var(--serif);margin:0 0 18px;letter-spacing:.01em}
+.lede{color:var(--sub);max-width:680px;font-size:17px;margin:0 0 34px}
+.lede b,.p b,.term b,.jcard p b,.st p b,.mcard p b{color:var(--ink);font-weight:500}
+.fig{font:11px var(--mono);letter-spacing:.22em;color:var(--sub);margin:44px 0 10px}
+.fig::after{content:"";display:block;width:100%;height:1px;background:var(--line);margin-top:9px}
+.p{max-width:700px;color:#CFC8B9;margin:0 0 18px}
+.term{border:1px solid var(--line);border-left:2px solid var(--gold);background:var(--bg2);
+  padding:13px 16px;border-radius:0 10px 10px 0;margin:16px 0;font-size:14.5px;color:var(--sub);line-height:1.85;max-width:780px}
+.term .lv{display:block;margin-top:7px}
+.term .lv:first-child{margin-top:0}
+.term .tag{display:inline-block;font:11px var(--mono);letter-spacing:.18em;color:var(--gold);margin-right:9px}
+.note{font-size:13px;color:var(--sub);line-height:1.8}
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  *{animation:none!important;transition:none!important}
+  .cue::after,.cue::before{animation:none!important}
+}
+/* ================= hero ================= */
+#hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+#field{position:absolute;inset:0;width:100%;height:100%}
+#hero .in{position:relative;z-index:2;padding:40px 0 28px}
+h1{font:500 clamp(38px,6.8vw,72px)/1.1 var(--serif);margin:0 0 14px;letter-spacing:.015em}
+h1 em{font-style:normal;color:var(--gold)}
+.dek{max-width:600px;color:var(--sub);font-size:15.5px;line-height:1.75;margin:0 0 16px}
+.dek b{color:var(--ink);font-weight:500}
+.stats{display:flex;flex-wrap:wrap;gap:22px;margin:18px 0 0;padding:14px 0 0;border-top:1px solid var(--line)}
+.stats .s{min-width:120px}
+.stats .v{font:500 22px/1.2 var(--mono);color:var(--gold2)}
+.stats .k{font-size:12px;color:var(--sub);line-height:1.5;margin-top:3px}
+.cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);color:var(--sub);
+  font:11px var(--mono);letter-spacing:.3em;display:flex;flex-direction:column;align-items:center;gap:8px;z-index:2}
+.cue::after{content:"";width:1px;height:34px;background:linear-gradient(var(--gold),transparent);animation:cue 1.8s ease infinite}
+@keyframes cue{0%{transform:scaleY(.2);transform-origin:top}55%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+/* ================= terminal ================= */
+.term-win{background:#0B0A08;border:1px solid var(--line2);border-radius:14px;overflow:hidden;
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.7);margin:8px 0 6px}
+.term-bar{display:flex;align-items:center;gap:7px;padding:11px 14px;border-bottom:1px solid var(--line)}
+.term-bar i{width:11px;height:11px;border-radius:50%;background:#3A362D}
+.term-bar span{margin-left:8px;font:11px var(--mono);color:var(--sub);letter-spacing:.12em}
+.term-body{padding:18px 20px;font:13.5px/1.95 var(--mono);color:#C9C2B2;min-height:196px;white-space:pre-wrap}
+.term-body .pr{color:var(--gold)}
+.term-body .dim{color:#6E6858}
+.term-body .hl{color:var(--gold2)}
+/* ================= journey ================= */
+.jr{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px}
+@media(max-width:760px){.jr{grid-template-columns:1fr}}
+.jcard{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:20px 22px}
+.jcard .no{font:12px var(--mono);color:var(--gold);letter-spacing:.2em}
+.jcard h4{font:500 19px var(--serif);margin:8px 0}
+.jcard p{margin:0;color:var(--sub);font-size:14.5px;line-height:1.8}
+/* ================= pipeline ================= */
+.pipe{position:relative;margin-top:10px;padding-left:46px}
+.spine{position:absolute;left:13px;top:8px;bottom:8px;width:2px;background:var(--line)}
+#packet{position:absolute;left:7px;top:0;width:14px;height:14px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 18px 4px rgba(227,169,76,.35);z-index:2}
+.st{position:relative;padding:0 0 44px}
+.st:last-child{padding-bottom:6px}
+.st::before{content:"";position:absolute;left:-39px;top:8px;width:12px;height:12px;border-radius:50%;
+  background:var(--bg);border:2px solid rgba(237,231,220,.3);transition:.4s}
+.st.on::before{border-color:var(--gold);background:var(--gold);box-shadow:0 0 0 5px rgba(227,169,76,.15)}
+.st .no{font:11px var(--mono);letter-spacing:.26em;color:var(--sub)}
+.st h4{font:500 21px var(--serif);margin:6px 0 8px;transition:color .4s}
+.st.on h4{color:var(--gold2)}
+.st p{margin:0;color:var(--sub);font-size:15px;line-height:1.85;max-width:660px}
+/* ================= formula ================= */
+.fcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin:14px 0;max-width:820px}
+.fcard h4{margin:0 0 10px;font:500 17px var(--serif);color:var(--gold2)}
+.fx{font:17px/2 var(--mono);color:var(--ink);margin:4px 0}
+.fx sup{font-size:11px}
+.fx .cm{color:var(--sub);font-size:13px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+/* ================= space interactive ================= */
+.space{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(240px,1fr);gap:18px;align-items:stretch}
+@media(max-width:860px){.space{grid-template-columns:1fr}}
+#spaceSvg{width:100%;height:auto;display:block;background:var(--bg2);border:1px solid var(--line);border-radius:14px;touch-action:none}
+#spaceSvg text{font:10.5px var(--mono);fill:var(--sub)}
+@media(max-width:860px){#spaceSvg text{font-size:19px}}
+.space-side{display:flex;flex-direction:column;gap:10px}
+.rankbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;flex:1}
+.rankbox h5{margin:0 0 8px;font:11px var(--mono);letter-spacing:.22em;color:var(--sub)}
+.rk{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13px}
+.rk:last-of-type{border:0}
+.rk .n{color:var(--ink)}
+.rk .c{color:var(--gold2);font-family:var(--mono);white-space:nowrap}
+.gate{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.gate label{font:11px var(--mono);letter-spacing:.22em;color:var(--sub);display:block;margin-bottom:8px}
+.gate .row{display:flex;align-items:center;gap:12px}
+.gate output{font:15px var(--mono);color:var(--gold2);min-width:44px;text-align:right}
+input[type=range]{flex:1;appearance:none;-webkit-appearance:none;height:24px;background:transparent;border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:var(--line2);border-radius:2px}
+input[type=range]::-moz-range-track{height:2px;background:var(--line2);border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;margin-top:-7px;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 0 0 4px rgba(227,169,76,.18)}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--gold);cursor:pointer}
+.gate .cnt{font-size:12.5px;color:var(--sub);margin-top:8px;line-height:1.7}
+/* ================= models ================= */
+.mrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.mcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;position:relative;overflow:hidden}
+.mcard::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent 70%)}
+.mcard svg.pic{width:100%;height:76px;display:block;margin:6px 0 14px}
+.mcard h4{margin:0;font:500 20px var(--serif)}
+.mcard .meta{font:11.5px var(--mono);color:var(--sub);margin:6px 0 12px;line-height:1.8}
+.mcard p{margin:0 0 10px;font-size:14.5px;color:#CFC8B9;line-height:1.8}
+.mcard .foot{font-size:12.5px;color:var(--sub);border-top:1px dashed var(--line);padding-top:10px;line-height:1.8}
+/* ================= architecture ================= */
+.arch{display:flex;flex-direction:column;margin-top:8px}
+.al{border:1px solid var(--line);border-radius:14px;background:var(--bg2);padding:18px 20px}
+.al .alh{display:flex;align-items:baseline;gap:12px;margin-bottom:12px}
+.al .alh b{font:500 16px var(--serif);color:var(--gold2)}
+.al .alh span{font:11px var(--mono);color:var(--sub);letter-spacing:.2em}
+.al .boxes{display:flex;flex-wrap:wrap;gap:9px}
+.bx{flex:1 1 180px;background:rgba(237,231,220,.045);border-radius:9px;padding:10px 13px;min-width:150px}
+.bx b{display:block;font-weight:500;font-size:14.5px}
+.bx span{display:block;color:var(--sub);font-size:12.5px;line-height:1.65;margin-top:3px}
+.conn{display:flex;justify-content:center;padding:4px 0}
+.conn svg{display:block}
+.flow{stroke:var(--gold);stroke-width:1.6;fill:none;stroke-dasharray:5 7;animation:dash 2.4s linear infinite;opacity:.85}
+@keyframes dash{to{stroke-dashoffset:-48}}
+.inv{border-left:2px solid var(--gold);padding:4px 0 4px 16px;margin:22px 0;color:var(--sub);line-height:2;max-width:780px}
+.inv b{color:var(--ink);font-weight:500}
+/* ================= quality ================= */
+.drow{display:grid;grid-template-columns:minmax(130px,200px) 1fr auto;gap:14px;align-items:center;padding:11px 0;border-bottom:1px dashed var(--line)}
+.drow:last-of-type{border:0}
+.drow .lb{font-size:12.5px;color:var(--sub);text-align:right;line-height:1.5}
+.drow .lb b{color:var(--ink);font-weight:500;display:block;font-size:14px}
+.dtrack{position:relative;height:26px}
+.daxis{position:absolute;left:0;right:0;top:12px;height:1px;background:var(--line)}
+.dseg{position:absolute;top:11px;height:4px;border-radius:2px;background:linear-gradient(90deg,rgba(111,179,170,.55),var(--gold))}
+.dpre{position:absolute;top:8px;width:10px;height:10px;border-radius:50%;background:var(--teal);transform:translateX(-50%)}
+.dpost{position:absolute;top:7px;width:12px;height:12px;border-radius:50%;background:var(--gold);transform:translateX(-50%);box-shadow:0 0 0 4px rgba(227,169,76,.15)}
+.dval{font:12px var(--mono);color:var(--ink);white-space:nowrap}
+@media(max-width:640px){.drow{grid-template-columns:1fr;row-gap:6px}.drow .lb{text-align:left}}
+.dval .was{color:var(--sub)}
+.legend{display:flex;flex-wrap:wrap;gap:22px;margin:12px 0 0;font-size:12.5px;color:var(--sub)}
+.legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(13px,1fr));gap:4px;max-width:680px}
+.qq{aspect-ratio:1;border-radius:3px}
+.qq.g3{background:var(--gold)} .qq.g2{background:rgba(227,169,76,.55)} .qq.g1{background:rgba(111,179,170,.6)}
+.qq.nz{background:rgba(201,122,98,.6)} .qq.mt{background:rgba(237,231,220,.14)}
+.qlegend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:12.5px;color:var(--sub)}
+.qlegend i{display:inline-block;width:9px;height:9px;border-radius:2.5px;margin-right:7px}
+/* ================= glossary ================= */
+.glo{columns:2;column-gap:26px}
+@media(max-width:760px){.glo{columns:1}}
+.gitem{break-inside:avoid;border-top:1px solid var(--line);padding:15px 0 17px}
+.gitem h4{margin:0 0 9px;font:500 17.5px var(--serif);color:var(--gold2)}
+.gitem h4 code{font:0.82em var(--mono);color:var(--sub);background:none;padding:0;margin-left:8px}
+.gitem .lv{font-size:13.5px;color:var(--sub);line-height:1.85;margin:6px 0}
+.gitem .lv b{color:var(--gold);font:11px var(--mono);letter-spacing:.2em;margin-right:9px;font-weight:400}
+/* ================= epilogue ================= */
+#epi{padding:120px 0 90px;text-align:center}
+#epi h2{font:500 clamp(30px,5vw,52px)/1.35 var(--serif);margin:0 0 26px}
+.cmd{display:inline-flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:10px 0 30px}
+.cmd code{font:15px var(--mono);background:var(--card);border:1px solid var(--line2);padding:12px 20px;border-radius:10px;color:var(--gold2)}
+@media(max-width:600px){.chno{top:8px;font-size:92px;opacity:.75}}
+footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sub);font:12px var(--mono);letter-spacing:.06em;line-height:2}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<nav id="toc" aria-label="章节">
+  <a href="#c1" data-ch="c1"><span class="lb">旅程</span><span class="dot"></span></a>
+  <a href="#c2" data-ch="c2"><span class="lb">流水线</span><span class="dot"></span></a>
+  <a href="#c3" data-ch="c3"><span class="lb">搜索</span><span class="dot"></span></a>
+  <a href="#c4" data-ch="c4"><span class="lb">模型</span><span class="dot"></span></a>
+  <a href="#c5" data-ch="c5"><span class="lb">架构</span><span class="dot"></span></a>
+  <a href="#c6" data-ch="c6"><span class="lb">质量</span><span class="dot"></span></a>
+  <a href="#c7" data-ch="c7"><span class="lb">术语</span><span class="dot"></span></a>
+</nav>
+
+<!-- ═══════════ HERO ═══════════ -->
+<header id="hero">
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="in wrap">
+    <p class="kick rv">GOLDMINE · 本地语义搜索 · 全景导览</p>
+    <h1 class="rv">Spotlight 认字，<br>不认<em>意思</em>。</h1>
+    <p class="dek rv">goldmine 认意思。它把你的文件、代码、网页、录音、截图读成<b>向量</b>——意思相近的内容，在数学上靠在一起。于是你用一句话提问，它交还最像的那一段，<b>精确到秒、精确到行</b>。全程跑在你的 Mac 上。</p>
+    <div class="stats rv">
+      <div class="s"><div class="v">≈8/10</div><div class="k">正确文件进前 5<br>（145 题评测集实测）</div></div>
+      <div class="s"><div class="v">744+13</div><div class="k">离线 + 真机测试<br>全绿</div></div>
+      <div class="s"><div class="v">7.2×</div><div class="k">语音转写快于实时<br>1 小时 ≈ 8.4 分钟</div></div>
+      <div class="s"><div class="v">0</div><div class="k">出网流量<br>（模型装好后）</div></div>
+    </div>
+  </div>
+  <div class="cue">SCROLL</div>
+</header>
+
+<main class="wrap">
+
+<!-- ═══════════ 01 旅程 ═══════════ -->
+<section class="ch" id="c1">
+  <div class="chno">01</div>
+  <p class="kick rv">CHAPTER 01 · 用户旅程</p>
+  <h2 class="t rv">两条命令，从零到一个结果</h2>
+  <p class="lede rv">安装之后没有"配置系统"这回事。你选文件夹，它干活，然后你提问。<b>只有你亲手选的文件夹会被索引</b>——绝不扫整台 Mac，这条写死在代码里。</p>
+
+  <div class="fig rv">FIG. 01 — 第一次运行的完整输出（节选）</div>
+  <div class="term-win rv">
+    <div class="term-bar"><i></i><i></i><i></i><span>goldmine — zsh</span></div>
+    <div class="term-body" id="termBody"></div>
+  </div>
+
+  <div class="jr">
+    <div class="jcard rv"><div class="no">STEP 2 · INGEST</div><h4>它先报账，再干活</h4>
+      <p>开跑前先告诉你成本：<b>「root ~/notes: 412 files（18 段音频 ≈ 3.2h，26 张图）」</b>。跑起来是一行进度：文件数、已算出的向量数、耗时、预计剩余。SSH 里跑也一样老实。</p></div>
+    <div class="jcard rv"><div class="no">STEP 3 · SEARCH</div><h4>两条腿的答案</h4>
+      <p><b>关键词腿</b>字对字地查（订单号、报错码的钉子户），<b>语义腿</b>按意思找。摘要里 «高亮» 你的词，每条结果可以 <code>--why</code> 摊开打分过程。</p></div>
+    <div class="jcard rv"><div class="no">STEP 4 · OPEN</div><h4>找到的意义是立刻看到</h4>
+      <p><code>goldmine open</code> 不给你一条路径完事：视频<b>直接跳到那一秒</b>（驱动 QuickTime），代码<b>在编辑器里落到那一行</b>，PDF 翻到那一页附近。</p></div>
+    <div class="jcard rv"><div class="no">STEP 5 · 诚实</div><h4>找不到就说找不到</h4>
+      <p>垃圾查询得到 "nothing found"，不是十个硬凑的结果。每个文件的处理结果落在四格账本之一（可搜 / 仅名字 / 有因拒收 / 失败记因），<code>status</code> 随时可对账。</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 02 流水线 ═══════════ -->
+<section class="ch" id="c2">
+  <div class="chno">02</div>
+  <p class="kick rv">CHAPTER 02 · 索引背后</p>
+  <h2 class="t rv">一个文件的六站旅程</h2>
+  <p class="lede rv">按下回车，每个文件走过同一条流水线。跟着金色的信标走——哪一站处理不动，就<b>带着原因记进账里</b>，文件从不悄悄消失。</p>
+  <div class="pipe" id="pipe">
+    <div class="spine"></div><div id="packet"></div>
+    <div class="st"><div class="no">STATION 01</div><h4>walk · 扫描与门禁</h4>
+      <p>走目录树（不跟随目录软链，防成环）。<b>密钥和密码文件</b>（.pem / id_rsa / .env）直接拒读；源代码默认不收（<code>--code</code> 显式打开）；300+ 个机器命名的图片/音频/视频混成的"数据集文件夹"整夹跳过；连"叫 .txt 的命名管道"这种会卡死读取的怪文件也拦在门外。</p></div>
+    <div class="st"><div class="no">STATION 02</div><h4>extract · 抽取成文字</h4>
+      <p>按类型分派：PDF 一页页取文字，docx/epub/eml 拆包，<b>录音交给 whisper 转写</b>，<b>截图和扫描页交给 OCR</b>（0.2–0.3 秒/张）。缺哪个工具就诚实地降级为"仅名字可搜"，不装懂。</p></div>
+    <div class="st"><div class="no">STATION 03</div><h4>chunk · 切块</h4>
+      <p>模型一口只吃得下约 512 个 <b>token</b>（词元 ≈ 0.75 个英文单词，中文一字 ≈ 1 词元），喂多了直接撑死——拒收报错。所以切多大，按<b>真实 token 计数</b>来定：≤450 词元一块，优先在段落边界下刀，块间留 48 词元的"接头肉"，防止答案骑在刀口上被切成两半。</p></div>
+    <div class="st"><div class="no">STATION 04</div><h4>embed · 变成向量</h4>
+      <p>每块套上 <code>title: 文件名 | text: 内容</code>，交给本机的 <b>EmbeddingGemma 2</b>，吐出 <b>768 个小数</b>。意思近的文字，这串数的方向就近——"狗在海滩"和"海边遛狗"一个字不重合，向量却几乎同向。</p></div>
+    <div class="st"><div class="no">STATION 05</div><h4>store · 入库</h4>
+      <p>一个 SQLite 文件装下一切：文件表（SHA256 指纹、四态状态）、段表（每块位置 + <b>fp16 向量</b>，每块仅 1.5KB）、关键词倒排索引。<b>一个文件一个事务</b>：中途断电，账本要么是旧状态要么是新状态，绝不留半笔。</p></div>
+    <div class="st"><div class="no">STATION 06</div><h4>capability · 记账</h4>
+      <p>每个文件落到四格之一：<b>content_indexed</b> 可语义搜索 · <b>metadata_only</b> 仅名字可搜 · <b>unsupported</b> 有因拒收 · <b>failed</b> 失败记因。<code>status --json</code> 随时导出这本账。</p></div>
+  </div>
+  <p class="note rv">量级感受：纯文字索引基本卡在第 4 站（向量是 GPU 活，实测 16–18 块/秒）；1 小时录音 ≈ 8.4 分钟转完；重跑自动跳过没变的文件。</p>
+</section>
+
+<!-- ═══════════ 03 搜索 ═══════════ -->
+<section class="ch" id="c3">
+  <div class="chno">03</div>
+  <p class="kick rv">CHAPTER 03 · 搜索的数学</p>
+  <h2 class="t rv">两条腿，一道你能验算的算术题</h2>
+  <p class="lede rv">关键词像查书后索引：字对字，毫秒级。语义像问一个读过你全部文件的图书管理员：意对意。goldmine 两腿同时迈，最后把两路分数<b>合成一张榜单</b>。</p>
+
+  <div class="fig rv">FIG. 02 — 语义空间 · 点击或拖动金色查询星，看排名如何随位置变化</div>
+  <div class="space rv">
+    <svg id="spaceSvg" viewBox="0 0 640 560" role="application" aria-label="语义空间交互图：点击或拖动金色查询星，查看与各文件块的余弦相似度和排名；滑杆调节上榜门槛"></svg>
+    <div class="space-side">
+      <div class="rankbox"><h5>TOP 5 · 按余弦排序</h5><div id="rkList"></div></div>
+      <div class="gate">
+        <label for="gateRange">上榜门槛 · z ≥</label>
+        <div class="row"><input type="range" id="gateRange" min="1.5" max="4" step="0.1" value="2.5"><output id="gateOut">2.5σ</output></div>
+        <div class="cnt" id="gateCnt" aria-live="polite"></div>
+      </div>
+      <div class="gate" style="padding:12px 16px"><div class="cnt" style="margin:0">谜题：<b style="color:var(--ink)">把金星拖到四个族群的死角</b>，看门槛怎么把"矮子里的将军"全部拦下——那就是垃圾查询该有的样子。</div></div>
+    </div>
+  </div>
+  <p class="note rv" style="margin-top:12px">这块空间是真实机制的等比玩具：每个点是一个"文件块"，金星是<b>你的查询</b>。金色实线 = 余弦最高且过门槛的 5 块；虚线 = 余弦高但没过 z 门槛；变暗的点 = 被拦下。真实空间有 768 维，这里压成平面给你看。</p>
+
+  <div class="fig rv">FIG. 03 — 三张公式卡 · 每张都能验算</div>
+  <div class="fcard rv">
+    <h4>卡一 · 余弦相似度 —— "方向像不像"</h4>
+    <div class="fx">cos(a,b) = (a·b) / (|a|·|b|)<span class="cm">　a·b = Σ aᵢbᵢ，逐位相乘再求和</span></div>
+    <p class="note" style="margin:6px 0 0">把每块文字想成 768 维空间里的一支箭。余弦只比<b>方向</b>不比长短——长文档占不到便宜。经验分档（因模型而异）：≳0.85 很像 · 0.6–0.85 沾边 · ≲0.4 基本无关（无关对也常在 0.3 上下，所以排序看 z 分，不看绝对值）。</p>
+  </div>
+  <div class="grid2">
+    <div class="fcard rv" style="margin:0">
+      <h4>卡二 · z 标准分 —— "高出平均几个身位"</h4>
+      <div class="fx">z = (x − μ) / σ</div>
+      <p class="note" style="margin:6px 0 0">本次查询的所有候选先算平均 μ 和标准差 σ，再逐个换算。z 分只在<b>当次候选之间排座次</b>——一句胡话去搜，也总有"矮子里拔将军"的家伙相对冒出 2σ。均值按模态分组（文字/图/声），σ 下限 0.02 防除零。</p>
+    </div>
+    <div class="fcard rv" style="margin:0">
+      <h4>卡三 · 关键词腿 —— 覆盖率</h4>
+      <div class="fx">coverage = 命中的查询词 / 全部查询词</div>
+      <p class="note" style="margin:6px 0 0">FTS5 倒排索引（书后索引页的电子版）配合 BM25 打分：出现越多越值钱但会饱和、长文档打折、全库罕见的词才最值钱。BM25 只定名次，<b>不进总分</b>——两种分数量纲不同，混了就是耍赖。</p>
+    </div>
+  </div>
+  <div class="fcard rv">
+    <h4>合成 · 一道你能背下来的算术题</h4>
+    <div class="fx">score = <span class="g">1.0 × max(z, 0)</span> + <span class="t">2.0 × coverage<sup>1.5</sup></span> + 类型提示 ≤ +1</div>
+    <div class="fx" style="font-size:14px;color:var(--sub)">coverage 取 1.5 次幂是故意的：半中只拿 0.35，全中才给满分——惩罚"碰巧沾一个词"。查询里出现"截图 / pdf / 视频"这类类型词时，对应类型 +1（封顶不叠加）。</div>
+    <div class="fx" style="margin-top:12px">查编号类（"TRX50"、"LH-2209"）权重翻转：<span class="g">0.5 × z</span> + <span class="t">4.0 × coverage<sup>1.5</sup></span><span class="cm">　——这类查询叫 lookup 模式：数字对向量无感，对关键词是钉死的事。</span></div>
+  </div>
+  <div class="fcard rv" style="border-color:rgba(227,169,76,.45)">
+    <h4>真题 · --why 摊开一道 2.98 分</h4>
+    <div class="fx">1·<b class="num g" data-cnt="1.27">0</b>（z=1.27，语义腿）＋ 2·<b class="num t" data-cnt="0.50">0</b><sup>1.5</sup>＝<b class="num" data-cnt="0.71">0</b>（coverage=0.50，关键词腿）＋ kind audio 1.0（类型提示）</div>
+    <div class="fx">＝ <b class="num g" data-cnt="2.98" style="font-size:20px">0</b>　<span class="cm">· bm25 排名 #1 · hints audio</span></div>
+    <p class="note" style="margin:8px 0 0">这是 <code>--why</code> 的真实输出结构。注意 z=1.27 其实在门槛 3.0 之下——这一条是<b>靠关键词覆盖过半</b>才拿到入场券的：两条腿互为 backup，正是融合的意义。</p>
+  </div>
+</section>
+
+<!-- ═══════════ 04 模型 ═══════════ -->
+<section class="ch" id="c4">
+  <div class="chno">04</div>
+  <p class="kick rv">CHAPTER 04 · 三个打工的模型</p>
+  <h2 class="t rv">全部住在你机器上</h2>
+  <p class="lede rv">下载一次，之后断网照常工作。每个模型一张规格表——像买镜头那样挑。</p>
+  <div class="mrow">
+    <div class="mcard rv">
+      <svg class="pic" viewBox="0 0 260 76" aria-hidden="true"><g font-family="ui-monospace,monospace" font-size="9" fill="#96907F"><text x="2" y="12">[ 0.21 -0.07 0.44 … ]</text><text x="2" y="30">[ 0.18 0.02 0.39 … ]</text><text x="2" y="48">[ -0.05 0.31 0.12 … ]</text></g><line x1="150" y1="38" x2="196" y2="38" stroke="#E3A94C" stroke-width="1.6" stroke-dasharray="4 4"/><path d="M196 32 L206 38 L196 44" fill="none" stroke="#E3A94C" stroke-width="1.6"/><circle cx="222" cy="38" r="7" fill="none" stroke="#E3A94C" stroke-width="1.6"/><circle cx="222" cy="38" r="2.5" fill="#E3A94C"/></svg>
+      <h4>EmbeddingGemma 2</h4>
+      <div class="meta">语义引擎 · 约 3 亿参数 · Google DeepMind<br>310MB（Q8_0 量化）· Apache 2.0</div>
+      <p><b>干什么：</b>把文字变成 768 个小数，意思近 ⇒ 方向近。它是语义腿，也是唯一必需的模型。图和录音的原生向量是它的家族能力，但默认后端只走文字——图片靠 OCR 变成文字再进索引。</p>
+      <div class="foot">跑在自编译的 llama.cpp（b11461）上——Homebrew 版本还不认识这个新架构。模型指纹变了？门禁拒绝混用，宁可罢工，不出脏结果。</div>
+    </div>
+    <div class="mcard rv">
+      <svg class="pic" viewBox="0 0 260 76" aria-hidden="true"><path d="M2 38 q10 -26 20 0 q10 26 20 0 q10 -26 20 0 q10 26 20 0" fill="none" stroke="#6FB3AA" stroke-width="1.6"/><line x1="100" y1="38" x2="140" y2="38" stroke="#E3A94C" stroke-width="1.6" stroke-dasharray="4 4"/><path d="M140 32 L150 38 L140 44" fill="none" stroke="#E3A94C" stroke-width="1.6"/><g font-family="ui-monospace,monospace" font-size="11" fill="#EDE7DC"><text x="156" y="28">"浪潮计</text><text x="156" y="46">录 4.2 米…"</text></g><text x="156" y="62" font-family="ui-monospace,monospace" font-size="8.5" fill="#96907F">t = 12:47.3</text></svg>
+      <h4>whisper · large-v3-turbo</h4>
+      <div class="meta">语音转文字（ASR）· 574MB · 实测 7.2× 实时<br>前置 VAD 人声检测 · 885KB</div>
+      <p><b>干什么：</b>录音 → 带时间戳的文字。1 小时播客约 8.4 分钟转完，转写既进关键词索引也算语义向量——"他们哪段聊了睡眠"成了一句合法搜索。</p>
+      <div class="foot">先过 VAD 找出有人声的段落，不对静音白算；置信度低的碎段丢弃并记账。</div>
+    </div>
+    <div class="mcard rv">
+      <svg class="pic" viewBox="0 0 260 76" aria-hidden="true"><rect x="2" y="6" width="64" height="46" rx="5" fill="none" stroke="#96907F" stroke-width="1.4"/><g stroke="#96907F" stroke-width="1.2"><line x1="10" y1="18" x2="58" y2="18"/><line x1="10" y1="28" x2="50" y2="28"/><line x1="10" y1="38" x2="58" y2="38"/></g><line x1="80" y1="29" x2="120" y2="29" stroke="#E3A94C" stroke-width="1.6" stroke-dasharray="4 4"/><path d="M120 23 L130 29 L120 35" fill="none" stroke="#E3A94C" stroke-width="1.6"/><text x="138" y="25" font-family="ui-monospace,monospace" font-size="11" fill="#EDE7DC">"ERROR 4471"</text><text x="138" y="43" font-family="ui-monospace,monospace" font-size="8.5" fill="#96907F">conf 0.93 · 0.28s</text></svg>
+      <h4>Apple Vision · OCR</h4>
+      <div class="meta">读图里的字 · macOS 自带 · 0.2–0.3 秒/张<br>中英文 · 零下载</div>
+      <p><b>干什么：</b>截图、扫描 PDF 页里的文字被"念"出来。报错弹窗的截图，也能直接拿报错原文当关键词搜到。</p>
+      <div class="foot">以 116 行 Swift 小助手进程调用系统 OCR；置信度 &lt;0.5 的碎字丢弃。A/B 实测：截图搜索命中 0% → 67%。</div>
+    </div>
+  </div>
+  <p class="note rv" style="margin-top:16px">另有编外员工：机器上恰好跑着的 Google Foresight 助手进程。goldmine 会打声招呼，请它代算图片/音频的原生向量（实验性后端）；算完就挂断，不替它重启、也不关它。三个后端实现同一接口——第三个是确定性假模型 mock，让 744 条测试离线全绿。</p>
+</section>
+
+<!-- ═══════════ 05 架构 ═══════════ -->
+<section class="ch" id="c5">
+  <div class="chno">05</div>
+  <p class="kick rv">CHAPTER 05 · 全局架构</p>
+  <h2 class="t rv">五个薄层，一条数据流</h2>
+  <p class="lede rv">没有常驻服务、没有数据库服务器、没有云端。每条命令是一个一次性进程：打开同一个 SQLite 文件，干活，退出。数据自上而下流过五层。</p>
+  <div class="arch rv">
+    <div class="al"><div class="alh"><b>你</b><span>COMMAND LAYER · 每命令一进程</span></div>
+      <div class="boxes">
+        <div class="bx"><b>init / ingest</b><span>向导 · 六站流水线 · 进度与 ETA</span></div>
+        <div class="bx"><b>search / open</b><span>两腿检索 · --why · 跳转到秒/行</span></div>
+        <div class="bx"><b>status / doctor</b><span>能力对账 · 体检 · 带处方的报错</span></div>
+        <div class="bx"><b>model / backup</b><span>模型下载校验 · 索引快照</span></div>
+      </div></div>
+    <div class="conn"><svg width="24" height="30" aria-hidden="true"><line class="flow" x1="12" y1="0" x2="12" y2="26"/><path d="M7 20 L12 28 L17 20" fill="none" stroke="#E3A94C" stroke-width="1.6"/></svg></div>
+    <div class="al"><div class="alh"><b>编排</b><span>ORCHESTRATION</span></div>
+      <div class="boxes">
+        <div class="bx"><b>六站流水线</b><span>walk → extract → chunk → embed → store → 记账</span></div>
+        <div class="bx"><b>融合打分</b><span>z 标准分 × 关键词覆盖，门槛 3.0σ</span></div>
+        <div class="bx"><b>身份与迁移</b><span>模型指纹门禁 · v1→v2→v3 迁移梯子</span></div>
+      </div></div>
+    <div class="conn"><svg width="24" height="30" aria-hidden="true"><line class="flow" x1="12" y1="0" x2="12" y2="26"/><path d="M7 20 L12 28 L17 20" fill="none" stroke="#E3A94C" stroke-width="1.6"/></svg></div>
+    <div class="al"><div class="alh"><b>能力</b><span>PLUGGABLE BACKENDS · 同一接口</span></div>
+      <div class="boxes">
+        <div class="bx"><b>llama（默认）</b><span>自管理的 llama-server 子进程，绑 127.0.0.1</span></div>
+        <div class="bx"><b>foresight（实验）</b><span>Unix socket 借调，图/声原生向量</span></div>
+        <div class="bx"><b>mock（测试）</b><span>确定性假向量，离线全绿</span></div>
+      </div></div>
+    <div class="conn"><svg width="24" height="30" aria-hidden="true"><line class="flow" x1="12" y1="0" x2="12" y2="26"/><path d="M7 20 L12 28 L17 20" fill="none" stroke="#E3A94C" stroke-width="1.6"/></svg></div>
+    <div class="al"><div class="alh"><b>数据</b><span>ONE SQLITE FILE</span></div>
+      <div class="boxes">
+        <div class="bx"><b>files</b><span>SHA256 · 四态记账 · 时间戳</span></div>
+        <div class="bx"><b>segments</b><span>每块位置 + fp16 向量（1.5KB/块）</span></div>
+        <div class="bx"><b>fts5</b><span>关键词倒排索引（BM25）</span></div>
+        <div class="bx"><b>cards</b><span>自动聚类的知识卡（v2.1）</span></div>
+      </div></div>
+    <div class="conn"><svg width="24" height="30" aria-hidden="true"><line class="flow" x1="12" y1="0" x2="12" y2="26"/><path d="M7 20 L12 28 L17 20" fill="none" stroke="#E3A94C" stroke-width="1.6"/></svg></div>
+    <div class="al"><div class="alh"><b>护栏</b><span>GUARD RAILS</span></div>
+      <div class="boxes">
+        <div class="bx"><b>指纹门禁</b><span>模型/提示词变了 ⇒ 拒绝混用向量</span></div>
+        <div class="bx"><b>回归门禁</b><span>169 题金标集 + 统计检验</span></div>
+        <div class="bx"><b>doctor</b><span>13+ 项体检，失败自带修复命令</span></div>
+      </div></div>
+  </div>
+  <div class="inv rv"><b>三条全局不变量：</b>① 只动你明确选的文件夹；② 单文件单事务 + 预写日志（WAL）——断电后要么旧状态要么新状态；③ 每个文件四态记账，从不静默丢弃。</div>
+</section>
+
+<!-- ═══════════ 06 质量 ═══════════ -->
+<section class="ch" id="c6">
+  <div class="chno">06</div>
+  <p class="kick rv">CHAPTER 06 · 质量与诚实</p>
+  <h2 class="t rv">"变好了"必须能证伪</h2>
+  <p class="lede rv">一切质量结论压在一份<b>金标数据集</b>上：105 个真实文件、169 道人工出题，每题标注哪个文件、哪一页哪一行算答对、给几分。七三开冻结切分——调参只能看 70%，剩下 30% 封存到大考。</p>
+
+  <div class="fig rv">FIG. 04 — 题库地图 · 169 题逐题落格（每格 = 一道人工标注的题）</div>
+  <div class="qgrid rv" id="qgrid" role="img" aria-label="169 道评测题按类型着色的点阵图"></div>
+  <div class="qlegend rv">
+    <span><i style="background:var(--gold)"></i>语义理解 45</span>
+    <span><i style="background:rgba(227,169,76,.55)"></i>编号 16 · 代码符号 16 · 中文 6</span>
+    <span><i style="background:rgba(111,179,170,.6)"></i>相关级 52 · PDF 页定位 15 · 网页 5</span>
+    <span><i style="background:rgba(201,122,98,.6)"></i>噪声防幻觉 5</span>
+    <span><i style="background:rgba(237,231,220,.14)"></i>媒体题 50（语音/截图/图像/扫描）</span>
+  </div>
+
+  <div class="fig rv">FIG. 05 — 专家评审轮战报 · 改进前 → 后（全部实测）</div>
+  <div class="rv" id="dumb"></div>
+  <div class="legend rv"><span><i style="background:var(--teal)"></i>改进前</span><span><i style="background:var(--gold)"></i>改进后</span><span style="color:var(--sub)">每条改动单独过统计检验，没有任何题类退步才合入</span></div>
+
+  <div class="term rv"><span class="lv"><span class="tag">怎么判退步</span><b>McNemar 检验</b>：只看"由对变错"和"由错变对"两群题，精确算出"纯属运气"的概率。</span>
+    <span class="lv"><span class="tag">简单数学</span>7 题翻错、0 题翻对 ⇒ P = 2×(1/2)⁷ ≈ 1.6% &lt; 5%，判真退步（方向反了就是真进步）；对错各翻 3 题 ⇒ 纯噪音，绿灯。</span>
+    <span class="lv"><span class="tag">大白话</span>先比翻牌再比总分。总分涨一题可能是掷硬币；只有翻错的方向压倒性地多，才认账。这防止我们拿噪音当信号来回瞎调。</span></div>
+
+  <h2 class="t rv" style="font-size:26px;margin-top:50px">诚实是功能，不是口号</h2>
+  <div class="grid2">
+    <div class="jcard rv"><div class="no">PROOF 01</div><h4>拒绝表演</h4><p>垃圾查询说 "nothing found"；每个结果可 <code>--why</code> 溯源；出处缺失就标 <b>metadata_only</b>，绝不把"仅名字可搜"装成"内容已搜"。</p></div>
+    <div class="jcard rv"><div class="no">PROOF 02</div><h4>错误自带处方</h4><p>任何失败四行：出了什么事 / 为什么 / <b>照抄即用的修复命令</b> / 去哪查更多。<code>--json</code> 永远有结构化错误对象，脚本不会面对空输出。</p></div>
+    <div class="jcard rv"><div class="no">PROOF 03</div><h4>数据可备份可回滚</h4><p><code>goldmine backup</code> 生成校验过的单文件快照；schema 升级走"一版一函数"梯子，进程中途被杀（等效断电）回滚验证 12/12 次。</p></div>
+    <div class="jcard rv"><div class="no">PROOF 04</div><h4>短板写在明处</h4><p>中文的关键词腿还不会分词（语义腿撑着：中文题 6/6 全中）；常驻热服务与知识卡蒸馏排进 v2.1，前置条件没凑齐不动工。</p></div>
+  </div>
+</section>
+
+<!-- ═══════════ 07 术语 ═══════════ -->
+<section class="ch" id="c7">
+  <div class="chno">07</div>
+  <p class="kick rv">CHAPTER 07 · 术语速查</p>
+  <h2 class="t rv">每个词，三层拆开</h2>
+  <p class="lede rv">一句话 → 简单数学 → 大白话。按需取用。</p>
+  <div class="glo rv" id="glo"></div>
+</section>
+
+<!-- ═══════════ EPILOGUE ═══════════ -->
+<section id="epi">
+  <p class="kick rv" style="display:flex;justify-content:center">EPILOGUE</p>
+  <h2 class="rv">纸上到此为止。<br>两条命令开始。</h2>
+  <div class="cmd rv"><code>goldmine init</code><code>goldmine search "任何一句话"</code></div>
+  <p class="note rv" style="color:var(--sub)">— <code>--why</code> 等着你来验算 —</p>
+</section>
+</main>
+
+<footer><div class="wrap">GOLDMINE · LOCAL-FIRST SEMANTIC SEARCH · 全部数字来自本机实测（M4 / 16GB）· 引擎：EmbeddingGemma 2 + llama.cpp b11461 + SQLite FTS5</div></footer>
+
+<script>
+"use strict";
+(function(){
+var RM = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function $(s,c){return (c||document).querySelector(s)}
+function $$(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))}
+
+/* ---------- reveal ---------- */
+var io = new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target);} });
+},{threshold:.12,rootMargin:"0px 0px -6% 0px"});
+$$(".rv").forEach(function(el){ RM ? el.classList.add("in") : io.observe(el); });
+
+/* ---------- progress + toc ---------- */
+var prog=$("#prog"), tocLinks=$$("#toc a");
+function onScroll(){
+  var h=document.documentElement, sc=h.scrollTop||document.body.scrollTop;
+  var max=h.scrollHeight-h.clientHeight;
+  prog.style.width=(max>0?(sc/max*100):0)+"%";
+  var cur=null;
+  $$("section.ch").forEach(function(s){ if(s.getBoundingClientRect().top<innerHeight*.4) cur=s.id; });
+  tocLinks.forEach(function(a){ a.classList.toggle("on", a.dataset.ch===cur); });
+}
+addEventListener("scroll", onScroll, {passive:true}); onScroll();
+
+/* ---------- hero vector field ---------- */
+(function(){
+  var cv=$("#field"); if(!cv) return;
+  var ctx=cv.getContext("2d"), W=0,H=0,DPR=Math.min(devicePixelRatio||1,2), pts=[], mx=-9e3,my=-9e3;
+  var CL=[[.22,.36],[.72,.30],[.30,.74],[.74,.72]];
+  function resize(){
+    W=cv.clientWidth; H=cv.clientHeight; cv.width=W*DPR; cv.height=H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
+    pts=[];
+    for(var c=0;c<CL.length;c++) for(var i=0;i<170;i++){
+      var a=Math.random()*6.283, r=Math.pow(Math.random(),.5)*(.09+Math.random()*.05);
+      pts.push({x:(CL[c][0]+Math.cos(a)*r*1.5)*W, y:(CL[c][1]+Math.sin(a)*r)*H,
+        hx:(CL[c][0]+Math.cos(a)*r*1.5)*W, hy:(CL[c][1]+Math.sin(a)*r)*H, c:c, ph:Math.random()*6.283});
+    }
+    for(var i=0;i<120;i++) pts.push({x:Math.random()*W,y:Math.random()*H,hx:0,hy:0,c:4,ph:Math.random()*6.283});
+  }
+  function frame(t){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i], dx=p.x-mx, dy=p.y-my, d2=dx*dx+dy*dy;
+      if(d2<26000){ var f=(26000-d2)/26000*1.4; p.x+=dx/Math.sqrt(d2)*f*2; p.y+=dy/Math.sqrt(d2)*f*2; }
+      p.x+=(p.hx-p.x)*.012 + Math.sin(t/1400+p.ph)*.14;
+      p.y+=(p.hy-p.y)*.012 + Math.cos(t/1700+p.ph)*.11;
+      var near=d2<42000;
+      ctx.fillStyle = near ? "rgba(240,197,120,.9)" : (p.c===4?"rgba(237,231,220,.22)":"rgba(237,231,220,.44)");
+      var s = near?2.1:1.6;
+      ctx.fillRect(p.x-s/2,p.y-s/2,s,s);
+    }
+    if(!RM) requestAnimationFrame(frame);
+  }
+  resize(); addEventListener("resize", function(){resize(); if(RM) frame(0);});
+  $("#hero").addEventListener("pointermove",function(e){var r=cv.getBoundingClientRect();mx=e.clientX-r.left;my=e.clientY-r.top;},{passive:true});
+  $("#hero").addEventListener("pointerleave",function(){mx=my=-9e3;});
+  if(RM) frame(0); else requestAnimationFrame(frame);
+})();
+
+/* ---------- terminal typewriter ---------- */
+(function(){
+  var el=$("#termBody"); if(!el) return;
+  var LINES=[
+    ['<span class="pr">$</span> goldmine init --yes',0],
+    ['<span class="dim">step 2/8 · model</span>   embeddinggemma-2-Q8_0 <span class="hl">sha256 ok</span> · 310MB',420],
+    ['<span class="dim">step 3/8 · probe</span>    live embed ok — dim 768',840],
+    ['<span class="dim">step 4/8 · folders</span>  goldmine 只搜你选的文件夹 — 已记入 ~/Documents/goldmine',1260],
+    ['<span class="dim">step 6/8 · ingest</span>   root docs: <span class="hl">4 files</span>（0 音频 · 1 图）',1680],
+    ['                  vectors: 4 · fingerprint llama/…/768 · <span class="hl">done 1.2s</span>',2100],
+    ['<span class="pr">$</span> goldmine search "pod toleration"',2620],
+    ['  1. <span class="hl">k8s.md L1-5</span>  "…Best-effort pods go «first»…"  <span class="dim">score 2.02</span>',3040]
+  ];
+  function paint(n){ var h=""; for(var k=0;k<=n&&k<LINES.length;k++) h+=LINES[k][0]+"\n"; el.innerHTML=h; }
+  if(RM){ paint(LINES.length-1); return; }
+  el.innerHTML="";
+  LINES.forEach(function(L){ setTimeout(function(){ paint(LINES.indexOf(L)); }, L[1]); });
+})();
+
+/* ---------- pipeline packet ---------- */
+(function(){
+  var pipe=$("#pipe"), pk=$("#packet"), sts=$$(".st");
+  if(!pipe) return;
+  function update(){
+    var r=pipe.getBoundingClientRect();
+    var total=r.height-22, k2=Math.max(0,Math.min(1,(innerHeight*.55-r.top)/total));
+    pk.style.top=(k2*total)+"px";
+    var thr=k2*total;
+    sts.forEach(function(s){ s.classList.toggle("on", s.offsetTop<=thr+20); });
+  }
+  addEventListener("scroll",update,{passive:true}); addEventListener("resize",update);
+  if(RM){ sts.forEach(function(s){s.classList.add("on")}); pk.style.display="none"; return; }
+  update();
+})();
+
+/* ---------- semantic space ---------- */
+(function(){
+  var svg=$("#spaceSvg"); if(!svg) return;
+  var NS="http://www.w3.org/2000/svg";
+  var GOLD="#E3A94C", GOLDD="#F0C578", SUB="#96907F", LINE="rgba(237,231,220,.13)";
+  function E(t,a){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);return e}
+  var families=[
+    {name:"笔记 · 文档", cx:170, cy:150, n:26, col:"rgba(237,231,220,.42)"},
+    {name:"代码", cx:452, cy:120, n:26, col:"rgba(111,179,170,.55)"},
+    {name:"录音转写", cx:150, cy:420, n:24, col:"rgba(237,231,220,.42)"},
+    {name:"截图 · 扫描", cx:462, cy:400, n:24, col:"rgba(237,231,220,.42)"}
+  ];
+  var pts=[];
+  families.forEach(function(f,fi){
+    for(var i=0;i<f.n;i++){
+      var a=Math.random()*6.283, r=Math.pow(Math.random(),.6)*58;
+      pts.push({x:f.cx+Math.cos(a)*r, y:f.cy+Math.sin(a)*r*.82, f:fi, nm:null});
+    }
+  });
+  var seeds={ "k8s.md":0, "bench.py":1, "meeting.wav":2, "error-shot.png":3 };
+  Object.keys(seeds).forEach(function(nm){
+    var f=families[seeds[nm]];
+    pts.push({x:f.cx+(Math.random()*30-15), y:f.cy+(Math.random()*30-15), f:seeds[nm], nm:nm});
+  });
+  var qx=320, qy=280, gate=2.5;
+  var gLines=E("g",{}), gPts=E("g",{}), gQuery=E("g",{});
+  svg.appendChild(E("line",{x1:20,y1:280,x2:620,y2:280,stroke:LINE,"stroke-width":1}));
+  svg.appendChild(E("line",{x1:320,y1:20,x2:320,y2:540,stroke:LINE,"stroke-width":1}));
+  var cap=E("text",{x:24,y:44}); cap.textContent="语义空间 · 768 维压成平面（示意）"; svg.appendChild(cap);
+  svg.appendChild(gLines); svg.appendChild(gPts); svg.appendChild(gQuery);
+  var qHalo=E("circle",{r:17,fill:"rgba(227,169,76,.14)"});
+  var qStar=E("path",{fill:GOLD,style:"cursor:pointer"});
+  gQuery.appendChild(qHalo); gQuery.appendChild(qStar);
+  pts.forEach(function(p){
+    var c=E("circle",{cx:p.x.toFixed(1),cy:p.y.toFixed(1),r:3.4,fill:p.col});
+    p.el=c; gPts.appendChild(c);
+    if(p.nm){ var t=E("text",{x:p.x+7,y:p.y+3,"font-size":10}); t.textContent=p.nm; gPts.appendChild(t); }
+  });
+  function starPath(x,y,R){
+    var p=""; for(var i=0;i<10;i++){var rr=i%2?R*.45:R, a=-Math.PI/2+i*Math.PI/5; p+=(i?"L":"M")+(x+Math.cos(a)*rr).toFixed(1)+" "+(y+Math.sin(a)*rr).toFixed(1);} return p+"Z";
+  }
+  function band(c){return c>=.85?"很像":(c>=.6?"沾边":(c>=.4?"一般":"无关"))}
+  function render(){
+    var mu=0;
+    pts.forEach(function(p){ p.cos=Math.cos(Math.atan2(qy-280,qx-320)-Math.atan2(p.y-280,p.x-320)); mu+=p.cos; });
+    mu/=pts.length;
+    var vr=0; pts.forEach(function(p){ vr+=(p.cos-mu)*(p.cos-mu); });
+    var sd=Math.sqrt(vr/pts.length)||.02;
+    pts.forEach(function(p){ p.z=(p.cos-mu)/sd*2; }); /* 玩具标定：平面高斯族群把 z 压缩到 ~1.5，×2 后与真实语料的 3σ 叙事同谱 */
+    pts.sort(function(a,b){return b.cos-a.cos});
+    while(gLines.firstChild) gLines.removeChild(gLines.firstChild);
+    var top=pts.slice(0,5), passed=0;
+    top.forEach(function(p){
+      var onZ=p.z>=gate; if(onZ) passed++;
+      gLines.appendChild(E("line",{x1:qx,y1:qy,x2:p.x,y2:p.y,stroke:GOLD,"stroke-width":onZ?1.5:1,opacity:onZ?.9:.22,"stroke-dasharray":onZ?"none":"3 4"}));
+    });
+    pts.forEach(function(p){
+      var on=p.z>=gate, isTop=top.indexOf(p)>=0&&on;
+      p.el.setAttribute("fill", isTop?GOLDD:(on?"rgba(240,197,120,.5)":"rgba(237,231,220,.14)"));
+      p.el.setAttribute("r", isTop?4.6:(on?3.8:3));
+    });
+    qStar.setAttribute("d", starPath(qx,qy,10));
+    qHalo.setAttribute("cx",qx); qHalo.setAttribute("cy",qy);
+    var list=$("#rkList");
+    if(list){
+      var h="";
+      top.forEach(function(p,i){
+        var on=p.z>=gate;
+        h+='<div class="rk"><span class="n">'+(i+1)+". "+(p.nm||(families[p.f].name+" 块"))+(on?"":" · z未过门")+'</span><span class="c">'+p.cos.toFixed(3)+" · z"+p.z.toFixed(1)+"</span></div>";
+      });
+      h+='<div class="rk" style="border:0;color:var(--sub)">其余 '+(pts.length-5)+" 块低于前五</div>";
+      list.innerHTML=h;
+    }
+    var cnt=$("#gateCnt"); if(cnt) cnt.textContent=pts.length+" 块中 "+passed+" 块过门，其余拦下（示意语料）";
+    var out=$("#gateOut"); if(out) out.textContent=gate.toFixed(1)+"σ";
+  }
+  var rng=$("#gateRange");
+  if(rng) rng.addEventListener("input",function(){ gate=parseFloat(rng.value); render(); });
+  var drag=false;
+  function setQ(e){
+    var r=svg.getBoundingClientRect();
+    var x=(e.clientX-r.left)*(640/r.width), y=(e.clientY-r.top)*(560/r.height);
+    if(x<14||x>626||y<14||y>546) return;
+    qx=x; qy=y; render();
+  }
+  svg.addEventListener("pointerdown",function(e){drag=true;setQ(e);});
+  svg.addEventListener("pointermove",function(e){if(drag)setQ(e);});
+  addEventListener("pointerup",function(){drag=false;});
+  render();
+})();
+
+/* ---------- dumbbell chart ---------- */
+(function(){
+  var box=$("#dumb"); if(!box) return;
+  var rows=[
+    {lb:"前 5 命中率",sub:"145 题评测集",a:74.7,b:78.6,was:"0.747",now:"0.786"},
+    {lb:"倒数排名 MRR",sub:"越靠前分越高",a:64.6,b:67.7,was:"0.646",now:"0.677"},
+    {lb:"截图搜索命中率",sub:"OCR 进语义索引",a:0,b:66.7,was:"0.00",now:"0.67"},
+    {lb:"PDF 页内定位",sub:"精确到页",a:0,b:13.3,was:"0.00",now:"0.13"},
+    {lb:"5MB 文件切块",sub:"平方级 bug 修复",a:100,b:.26,was:"391s",now:"~1s"},
+    {lb:"50 万向量打分聚合",sub:"Python 循环 → numpy",a:100,b:1.9,was:"106ms",now:"2ms"}
+  ];
+  var h="";
+  rows.forEach(function(r){
+    var lo=Math.min(r.a,r.b), hi=Math.max(r.a,r.b);
+    h+='<div class="drow"><div class="lb"><b>'+r.lb+"</b>"+r.sub+'</div><div class="dtrack"><div class="daxis"></div>'
+      +'<div class="dseg" style="left:'+lo+"%;width:"+Math.max(hi-lo,1.2)+'%"></div>'
+      +'<div class="dpre" style="left:'+r.a+'%"></div>'
+      +'<div class="dpost" style="left:'+r.b+'%"></div></div>'
+      +'<div class="dval"><span class="was">'+r.was+"</span> → "+r.now+"</div></div>";
+  });
+  box.innerHTML=h;
+})();
+
+/* ---------- question matrix ---------- */
+(function(){
+  var g=$("#qgrid"); if(!g) return;
+  var spec=[["语义理解",45,"g3"],["编号查找",16,"g2"],["代码符号",16,"g2"],["PDF 页定位",15,"g1"],["过滤查询",11,"g1"],["中文",6,"g2"],["网页",5,"g1"],["噪声防幻觉",5,"nz"]];
+  var media=[["媒体 · 纯文本",10,"g3"],["媒体 · 录音",10,"g3"],["媒体 · 截图",10,"g3"],["媒体 · 图像",10,"g3"],["媒体 · 扫描页",10,"g1"]];
+  var html="";
+  function push(cls,n,meta){ for(var i=0;i<n;i++){ html+='<div class="qq '+cls+'" title="'+meta+'"></div>'; } }
+  spec.forEach(function(s){ push(s[2],s[1],s[0]); });
+  media.forEach(function(s){ push(s[2],s[1],s[0]); });
+  g.innerHTML=html;
+})();
+
+/* ---------- counters ---------- */
+$$("[data-cnt]").forEach(function(el){
+  var target=parseFloat(el.dataset.cnt);
+  if(RM){ el.textContent=target.toFixed(2); return; }
+  var done=false;
+  var io2=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting && !done){ done=true; io2.unobserve(el);
+        var t0=null;
+        (function fr(ts){ if(!t0)t0=ts; var k=Math.min(1,(ts-t0)/900), ee=1-Math.pow(1-k,3);
+          el.textContent=(target*ee).toFixed(2); if(k<1) requestAnimationFrame(fr); })(performance.now());
+      }
+    });
+  },{threshold:.4});
+  io2.observe(el);
+});
+
+/* ---------- glossary ---------- */
+(function(){
+  var box=$("#glo"); if(!box) return;
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+  var items=[
+    {en:"Embedding",zh:"嵌入向量",one:"把文字（或图、声）映射成一串定长小数，意思越近数字方向越近。",math:"f(文本) ∈ ℝ⁷⁶⁸；训练目标：cos(f(a),f(b)) ≈ 语义相似度。768 个数本身无含义，相对方向才有。",plain:"给每段话发一张 768 格的语义指纹卡；两张卡纹路朝向一致就是近义，哪怕原文一字不重合。"},
+    {en:"Token",zh:"词元",one:"模型眼里文本的最小切分单位，比\"词\"更碎。",math:"英文 ≈0.75 词/token（unbelievable 拆成 un·believ·able）；中文 ≈1 字/token；单次输入上限 ≈512 个。",plain:"模型的\"一口饭\"：喂多了撑死（直接拒收），所以按真实饭量切块，不按字符瞎估。"},
+    {en:"Chunking",zh:"分块",one:"把长文档切成模型吃得下的小段，每段独立算向量。",math:"块 ≤450 token、相邻重叠 48；切点偏好：段落 > 句子 > 空格 > 硬切。",plain:"香肠切段，每段带一点上段的\"接头肉\"——答案骑在刀口上也不会被切成两半。"},
+    {en:"Cosine",zh:"余弦相似度","one":"两向量夹角的余弦，只比方向不比长短，1 同向、0 无关。",math:"a·b/(|a||b|)。经验分档（因模型而异）：≳0.85 很像 · 0.6–0.85 沾边 · ≲0.4 无关。",plain:"两支箭指着同一个方向就是意思相近；第③章那个可拖的箭头玩具就是它本人。"},
+    {en:"Z-score",zh:"标准分",one:"把分数换算成\"比平均高几个标准差\"，跨量纲可比。",math:"z=(x−μ)/σ；μ 按模态分组、小组退全局，σ 下限 0.02。",plain:"判卷先看全班平均再报\"高出 2.5 个身位\"——每次考卷难度不同，原始分没法横比。"},
+    {en:"FTS5",zh:"倒排索引",one:"SQLite 自带的关键词全文索引，从词反查文本位置。",math:"词 → 文档列表的映射；BM25 排序：词多会饱和、长文打折、罕见词最值钱。",plain:"书末索引页的电子版，查字面毫秒级——但它不认识同义词。"},
+    {en:"fp16",zh:"半精度浮点",one:"用 2 字节存一个小数（常规 4 字节），向量体积减半。",math:"1+5+10 位；768 维 = 1536 字节，误差 ~10⁻⁴ 量级，排序不受影响。",plain:"存 3.1415926 变成存 3.1416——体积省一半，排名用不着后四位。"},
+    {en:"Q8_0",zh:"8bit 量化",one:"模型权重从 16bit 压到 8bit，体积约减半。",math:"每 32 个权重共享一个缩放因子；约 2.9 亿参数 ⇒ 310MB（fp16 约 600MB）。",plain:"320kbps 压成 128kbps：小一半多、播放快，听感差异用仪器对拍过（余弦 ≥0.999）。"},
+    {en:"ASR / VAD",zh:"转写 / 人声检测",one:"ASR 把语音变带时间戳的文字；VAD 先找哪里有人声。",math:"whisper 30 秒窗；VAD 885KB 预筛后 7.2× 实时（1h ≈ 8.4min）。",plain:"先找\"有人声的段落\"再请速记员——关键三分钟不用听完一小时去找。"},
+    {en:"OCR",zh:"图文识别",one:"把图片里的像素认成文字。",math:"Apple Vision 每图 0.2–0.3s，输出 {文本, 置信度}；置信度低于 0.5 的丢弃。",plain:"给截图和扫描件\"念\"出上面的字，念出来的内容立刻可搜。"},
+    {en:"success@5 / MRR / nDCG",zh:"检索三件套",one:"三种给搜索打分的方式，从粗到细。",math:"@5 = 答案进前 5 的比例；MRR = 名次倒数的平均（第 4 名得 0.25）；nDCG = 分档给分、位置折扣 1/log₂(i+1)。",plain:"@5 管找到没有，MRR 管排多前，nDCG 管好的是否排在烂的前面——一起看才公道。"},
+    {en:"McNemar",zh:"配对检验",one:"配对实验里判\"改动是不是真有效\"的精确检验。",math:"只统计翻牌数（对→错 b，错→对 c）；7 错 0 对 ⇒ P=2×(1/2)⁷≈1.6%，判显著。",plain:"先比翻牌再比总分，防止把掷硬币当进步。"},
+    {en:"Fingerprint",zh:"模型身份门禁",one:"索引记着自己被哪套模型配置算出来，对不上就拒绝工作。",math:"对 {模型 SHA256, 维度, 提示词, 池化, 归一化} 取规范 JSON 的 SHA256 前 16 位；不匹配 ⇒ exit 3。",plain:"不同模型的向量是两种方言，混着比就是鸡同鸭讲。想换模型？重建索引，一句话的事。"},
+    {en:"WAL",zh:"预写日志",one:"SQLite 的写盘顺序：先追加日志，再合并进主库。",math:"写 → WAL 顺序追加 → 检查点合并；崩溃后重放/回滚，任意时刻状态一致。",plain:"先在小票上记一笔再誊总账——誊到一半停电，凭小票恢复到整数，不记半笔。"},
+    {en:"UDS",zh:"Unix 域套接字",one:"同机进程间的电话线，走文件系统不走网卡。",math:"文件权限即访问控制（0600 = 只有你能连）；比 TCP 少整套协议栈。",plain:"后门传话筒：快、私密、外人拨不进来——本机进程通信的安全默认。"}
+  ];
+  box.innerHTML=items.map(function(it){
+    return '<div class="gitem"><h4>'+it.en+"<code>"+it.zh+"</code></h4>"
+      +'<div class="lv"><b>一句话</b>'+esc(it.one)+"</div>"
+      +'<div class="lv"><b>简单数学</b>'+esc(it.math)+"</div>"
+      +'<div class="lv"><b>大白话</b>'+it.plain+"</div></div>";
+  });
+})();
+})();
+</script>
+</body>
+</html>

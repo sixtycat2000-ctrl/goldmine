@@ -1,0 +1,4 @@
+# the eval index and its home are BUILT artifacts, never committed
+eval.sqlite*
+.evalhome/
+fixture/

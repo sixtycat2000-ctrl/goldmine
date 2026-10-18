@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+
+# downloaded assets — see `goldmine model install`
+models/
+
+# built llama.cpp (vendor checkout + its build products)
+vendor/
+
+# local indexes (default names, WAL/SHM sidecars, scratch files)
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+x
+x-shm
+x-wal
+
+# release-build staging + eval scratch
+dist/
+.evalhome/
+eval.sqlite*
+*.bak

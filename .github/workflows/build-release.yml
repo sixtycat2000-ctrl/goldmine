@@ -1,0 +1,48 @@
+# Release-asset build (v2 item 4 / A10, 05 §4.7): on a v* tag push, build the
+# pinned llama.cpp (tag b11461 + the in-repo no-logits patch) on a macOS arm64
+# runner and attach the release tar to the GitHub release. The tar carries
+# llama-server AND goldmine-ocr (the prebuilt Vision OCR helper, v2 item B4 /
+# review F8 — a stock Mac without Command Line Tools has no other fix path).
+# The build steps live in scripts/build_llama_tar.sh so CI and local dev
+# share one recipe.
+#
+# NOTE: untested until pushed (no GHA runner available from this repo yet);
+# reviewed actionlint-style by eye — keep every step shellcheck-clean.
+
+name: build-release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write # gh release create/upload on the tag
+
+jobs:
+  llama-server:
+    name: llama-server (macOS arm64)
+    runs-on: macos-14 # arm64 runner
+    timeout-minutes: 45
+    env:
+      LLAMA_TAG: b11461 # pinned lineage (05 §4.3) — keep in sync with llama.py
+    steps:
+      - name: Checkout (the patch must come from the repo, self-contained)
+        uses: actions/checkout@v4
+
+      - name: Build llama-server tar (pinned tag + no-logits patch)
+        run: |
+          bash scripts/build_llama_tar.sh "$RUNNER_TEMP/llama.cpp"
+          ls -lh dist/
+
+      - name: Attach the tar to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          echo "attaching dist/*.tar.xz to release ${tag} of ${GITHUB_REPOSITORY}"
+          # create the release when this is its first asset; otherwise upload
+          gh release create "$tag" --repo "$GITHUB_REPOSITORY" \
+            --title "$tag" --generate-notes || true
+          gh release upload "$tag" dist/*.tar.xz \
+            --repo "$GITHUB_REPOSITORY" --clobber

@@ -1,0 +1,211 @@
+# goldmine — User Guide
+
+The plain-language guide: what goldmine is, how to set it up in three commands, what daily
+use looks like, and what to do when something goes wrong. Every example below is real
+output from a scratch run on this machine (paths trimmed). Jargon is explained where it
+first appears.
+
+---
+
+## What goldmine is
+
+goldmine is a Mac command-line tool that indexes the folders you point it at — documents,
+PDFs, notes, code, web pages, screenshots, audio — so you can search them by *meaning*, not
+just by filename. Everything runs on your Mac: the files never leave it, and the only
+network use is downloading the embedding model once (310 MB). It also keeps its promises
+auditable: for every file it tells you exactly what happened (fully searchable, name-only,
+skipped on purpose, or failed — with the reason).
+
+## The one rule
+
+**goldmine only searches folders you add — never your whole Mac.** There is no default sweep
+of `~/Documents`, `~/Downloads`, or `~/Desktop`. Setup asks you to pick folders explicitly
+(or offers to create an empty `~/Documents/goldmine/` for you). The folders you chose are
+echoed before the first index run, recorded in config (`[init] roots`), and shown by
+`goldmine status` — so "what does it actually look at?" is always one command away.
+
+## Setup in 3 commands
+
+```bash
+python3 -m pip install -e .        # numpy is the only dependency
+goldmine init                      # guided setup, resumable
+goldmine search "pod eviction memory pressure"
+```
+
+`goldmine init` walks through eight steps: environment check, embedding model (downloads
+once, resumable, checksum-verified), a live model test, **folder choice**, optional speech
+transcription + screenshot reading (574 MB, off unless you ask), the first index run, a demo
+search, and a summary. It is safe to interrupt: Ctrl-C any time, re-run `goldmine init`, and
+it continues where it stopped. Real run:
+
+```
+step 2/8 · embedding model
+  found embeddinggemma-2-Q8_0 (repo: …/models/embeddinggemma-2-Q8_0.gguf)
+step 3/8 · live model probe
+  live embed ok — ok (embedded 'ping' -> dim 768)
+step 4/8 · folders
+  goldmine only searches folders you add — never your whole Mac.
+  searching:
+    /tmp/gm_guide/docs
+    /tmp/gm_guide/notes
+  (recorded in …/config.toml — only these folders are ever indexed)
+step 6/8 · first ingest
+  root /tmp/gm_guide/docs: 2 files…
+  root /tmp/gm_guide/notes: 2 files…
+  ingest: 2 roots, 4 files
+    content-indexed  4   (doc 4)
+  vectors: 4 · segments: 8 · fingerprint llama/embeddinggemma-2-Q8_0/768/ff3dfbc47659dccb
+step 7/8 · demo
+  search "first" →
+    1. score 2.02  z 0.02  cov 1.00   doc    …/docs/projects/k8s.md  L1-5
+       "…The scheduler evicts a pod when a node is under memory pressure and the pod has
+        no toleration for the taint. Best-effort pods go «first»; pods with a…"
+init complete — 3 commands from zero to a result.
+```
+
+No time for questions? `goldmine init --yes` does the whole thing non-interactively — it
+creates the empty `~/Documents/goldmine/` folder and uses that; it never sweeps existing
+folders silently. To index your own folders unattended: `goldmine init --yes --root
+~/notes --root ~/projects`. Add `--media` to include speech transcription + screenshot OCR.
+
+## Daily use
+
+**Add more folders later:** `goldmine ingest <folder>` — unchanged files are skipped by
+content hash, so re-running is cheap. URLs work too: `goldmine ingest https://example.dev/blog`.
+
+**Search** — type words; you get the files where those ideas live, best match first:
+
+```
+$ goldmine search "pod eviction memory pressure"
+1. score 3.68  z 1.68  cov 1.00   doc    /tmp/gm_guide/docs/projects/k8s.md  L1-5
+   "# Cluster notes — «eviction» The scheduler evicts a «pod» when a node is under
+    «memory» «pressure» and the «pod»…"
+```
+
+`«guillemets»` mark where your words matched. A rare token (an error code, a project name)
+automatically flips to an exact-match lookup — `goldmine search "restic"` finds the file
+that names it. Useful extras:
+
+- Inline filters: `kind:pdf kind:doc`, `under:~/notes`, `after:2026-01-01`, `before:2w`,
+  `site:example.com`, and `"exact phrases"` in quotes. Unknown words are never mistaken for
+  filters.
+- `--why` shows the score arithmetic per hit (`why: 1·z 1.71 + 2·cov^1.5 1.00 = 3.71 · bm25 #1`).
+- Zero hits is an honest answer, not an error:
+  `nothing found for 'quantum entanglement'` (exit 0 — try fewer words, or drop a filter).
+
+**Open what you found** at the moment that matters:
+
+```
+$ goldmine open --hit 1 --query "restic backup"
+opened /tmp/gm_guide/docs/projects/backup.md (doc)
+```
+
+Audio and video open at the matched second (QuickTime/IINA jump), code opens at the line in
+`$EDITOR`, everything else opens with its default app. If a jump isn't possible it says so
+and opens plainly — it never pretends.
+
+**Check state:** `goldmine status` — what's indexed, from which roots, and what isn't:
+
+```
+index: /tmp/gm_guide/gmhome/default.sqlite (76.0 KB)
+schema v2 · fingerprint ff3dfbc47659dccb (llama/embeddinggemma-2-Q8_0/768)
+roots: /private/tmp/gm_guide/docs, /private/tmp/gm_guide/notes
+backend llama: available (dim 768)
+files: 4 · segments: 8 · vectors: 4 · bytes: 907 B
+stale: 0 of 4 files (embed 0 · chunker 0 · extractor 0)
+capability grid (kind × capability):
+  doc      content_indexed 4
+```
+
+**When something fails**, every failure prints the same four-line shape — what happened, the
+root cause, a command you can copy-paste, and where to look deeper:
+
+```
+no index at /tmp/gm_guide/none.sqlite — ingest something first
+why: no index file at /tmp/gm_guide/none.sqlite
+fix: goldmine init
+or: goldmine ingest <roots>
+more: goldmine doctor
+```
+
+Do the `fix:` line. If it recurs, run the `more:` line.
+
+## What it can read
+
+Plain text, Markdown, HTML, and web pages; Word (docx), RTF/DOC/ODT (via macOS `textutil`);
+PDFs — text pages directly, **scanned pages via OCR**; source code (with `--code`);
+`.eml` and `.epub`; images (metadata + thumbnails, HEIC included); **screenshots and scans
+via Vision OCR**; audio and video **via whisper transcription** (searchable with
+`0:06s`-style positions). Deliberately *not* read: secrets (`.env`, keys), minified bundles,
+archives — each gets an explicit `unsupported` row with the reason, so silence never hides a
+file. Missing optional tools (poppler, ffmpeg) downgrade capability for the affected kinds
+and are reported by `goldmine doctor` — they never break a run.
+
+## What v2.0 added vs v1
+
+Measured on a hand-labeled real corpus (146 queries, `evals/`, 2026-10-17):
+
+- **Search accuracy measured and gated**: success@5 **0.747**, MRR **0.646** (v1 was never
+  measured on real data). A regression gate freezes this baseline — any tracked metric
+  dropping > 0.02 fails the eval.
+- **Speech transcription**: whisper runs at **7.2× realtime** — a 1-hour podcast is
+  searchable in ~8.4 minutes, with clickable timestamps.
+- **Screenshot/scanned-text OCR**: Apple Vision reads screenshots and thin PDF pages (v1
+  scored zero on such queries — they are now solvable; the coverage fixture tracks it).
+- **Zero token-overflow embed failures**: v1's measured 2670-token overflow (an HTTP 400
+  that failed whole files) is now structurally impossible — chunks are cut by the model's
+  real token count.
+- **Filters** (`kind:` / `under:` / `after:` / `before:` / `site:`), quoted phrases,
+  `--why`, «highlighted» snippets, `--format fzf`.
+- **`goldmine init`** (this guide's Setup), **`goldmine open`**, **`goldmine backup`**
+  (one-command snapshot — transcripts are worth protecting), and **`goldmine help`** topics.
+
+## How it stays honest
+
+- **Per-file capability rows.** Every scanned file ends as `content-indexed`, `metadata-only`
+  (name-searchable only, with the reason), `unsupported` (never read, with the reason), or
+  `failed` (with the reason). `status` shows the grid; nothing degrades silently.
+- **`goldmine doctor`** checks the environment and prints a copy-pasteable fix for anything
+  missing; `--deep` also verifies index integrity.
+- **Staleness is visible, never a refusal.** After an upgrade changes how text is cut,
+  `status` reports "N files stale — re-run `goldmine ingest <roots>`"; plain ingest re-does
+  them. The one hard gate: vectors from a *different embedding model* are never mixed
+  (search refuses with the exact rebuild command, exit 3).
+- **The scope invariant itself**: indexed roots in `status`, the choice recorded in config,
+  and every root echoed with its file/audio estimate before the first ingest.
+
+## Where things live
+
+| What | Where |
+|---|---|
+| The index (one SQLite file) | `~/Library/Application Support/goldmine/default.sqlite` |
+| Config — incl. your chosen roots | `~/.config/goldmine/config.toml` |
+| Downloaded models | `~/Library/Application Support/goldmine/models/` |
+| Backups (`goldmine backup`) | `~/Library/Application Support/goldmine/backups/` |
+| Interrupted setup state | `~/Library/Application Support/goldmine/init_state.json` |
+
+Backup = `goldmine backup` (verified single-file copy, keeps 5). Restore = copy the file
+back. The folder above is covered by Time Machine; backups are the fast second copy.
+
+## Troubleshooting — the top 5
+
+1. **"no index at … — ingest something first"** → run `goldmine init`, or
+   `goldmine ingest <folder>`.
+2. **"no embedding backend available"** → run `goldmine model check` first (a broken model
+   server masquerades as this). Keyword-only meanwhile: `goldmine search <words> --lexical`.
+3. **"refused: … different embedding fingerprint" (exit 3)** — you switched models and old
+   vectors remain. Rebuild: `goldmine reset --reindex`; search meanwhile with `--lexical`.
+4. **"protected by macOS (TCC)"** — a folder the system won't let your terminal read.
+   Grant Full Disk Access to your terminal (System Settings → Privacy & Security), or index
+   a copy of the folder from somewhere else.
+5. **"N file(s) failed to extract" (exit 5)** — those specific files failed; everything
+   else was indexed. The first failure's path + reason are printed; re-run the same
+   `goldmine ingest` command to retry just those.
+
+More: `goldmine help troubleshoot` (each with its fix), `goldmine help` for all topics.
+
+## What's next
+
+v2.1 (see `docs/v2/REDESIGN.md` §5): a resident search daemon (warm ~40 ms queries), a
+reindex planner with per-file estimates, distill card redesign, `goldmine watch`
+(auto-refreshing index). Killed by design: any whole-Mac default sweep, telemetry, a GUI.
