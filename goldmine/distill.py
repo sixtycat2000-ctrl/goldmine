@@ -746,6 +746,76 @@ def _check_corpus_bound(items: list[CItem], max_chunks: int) -> None:
 # --------------------------------------------------------------- card build
 
 
+def mean_intra_cosine(members: list[CItem]) -> float:
+    """s̄ = (‖S_c‖² − n)/(n(n−1)) (D5, §2.4) — exactly 06 §4.2, computed from
+    the running sum: one norm, no second pass. n < 2 → 1.0 (trivially tight)."""
+    n = len(members)
+    if n < 2:
+        return 1.0
+    s = np.sum([m.vec for m in members], axis=0)
+    return float((float(s @ s) - n) / (n * (n - 1)))
+
+
+def _split_node(members: list[CItem], tau: float, depth: int) -> dict:
+    """One D5 split decision, recursive. Returns a node
+    ``{"members": members, "children": [nodes]}`` — a LEAF has no children.
+
+    Split when n >= 12 and s̄ < τ − 0.12; recursive leader at τ_sub = τ+0.08;
+    accept only when the children's size-weighted mean s̄ improves by ≥ 0.05
+    (over-splitting a genuinely uniform topic is the failure being guarded).
+    depth ≤ 2: top clusters = 0, children = 1, grandchildren = 2, no depth-3."""
+    if len(members) < SPLIT_MIN_N or depth >= SPLIT_MAX_DEPTH:
+        return {"members": members, "children": []}
+    s_bar = mean_intra_cosine(members)
+    if s_bar >= tau - SPLIT_MARGIN:
+        return {"members": members, "children": []}
+    sub_clusters, _hist = cluster_v2(members, tau + SPLIT_TAU_SUB, min_members=1)
+    if len(sub_clusters) < 2:
+        return {"members": members, "children": []}
+    weighted = sum(
+        len(c) * mean_intra_cosine(c) for c in sub_clusters
+    ) / len(members)
+    # "children's mean s-bar improves by >= 0.05" (06 SS4.2): improves =
+    # TIGHTER, i.e. weighted_children - s_bar_parent >= 0.05. (The R6 spec's
+    # formula printed the subtraction backwards; the 06 wording is the intent
+    # and is what guards against over-splitting.)
+    if weighted - s_bar < SPLIT_ACCEPT_GAIN:
+        return {"members": members, "children": []}
+    return {
+        "members": members,
+        "children": [_split_node(c, tau, depth + 1) for c in sub_clusters],
+    }
+
+
+def split_two_level(clusters: list[list[CItem]], tau: float) -> tuple[list, list]:
+    """D5 (§2.4): per cluster with n ≥ 12, split the internally loose ones at
+    τ_sub = τ + 0.08 (accepted splits only). Leaves become cards; every
+    accepted internal node becomes a header card row (status='header', size =
+    Σ child sizes, content over the union of descendant members). Returns
+    (leaf_shells, header_shells) — Card shells with .members and .parent set
+    (headers carry .children for rendering); content is filled by the caller
+    via _build_card(into=shell)."""
+    leaves: list[Card] = []
+    headers: list[Card] = []
+
+    def _emit(node: dict, parent: Card | None) -> Card:
+        shell = Card(title="", title_kind="terms", terms=[], excerpts=[],
+                     members=list(node["members"]), n_files=0)
+        shell.parent = parent
+        if not node["children"]:
+            shell.status = "active"
+            leaves.append(shell)
+            return shell
+        shell.status = "header"
+        headers.append(shell)
+        shell.children = [_emit(child, shell) for child in node["children"]]
+        return shell
+
+    for cluster in clusters:
+        _emit(_split_node(cluster, tau, depth=0), None)
+    return leaves, headers
+
+
 def _build_card(
     members: list[CItem],
     all_groups: list[list[CItem]],
@@ -753,9 +823,12 @@ def _build_card(
     fingerprint_id: str,
     algo: str,
     status: str = "active",
+    into: Card | None = None,
 ) -> Card:
     """One card's content (§2.5/§2.6): medoid + coverage excerpts, filtered
-    terms, extractive title, member weights = cos-to-final-centroid."""
+    terms, extractive title, member weights = cos-to-final-centroid. With
+    `into`, fills the pre-made shell (split_two_level leaves/headers) and
+    returns it — parent/children links survive content filling."""
     mat = np.stack([m.vec for m in members])
     centroid = mat.sum(axis=0)
     norm = float(np.linalg.norm(centroid)) or 1.0
@@ -775,22 +848,25 @@ def _build_card(
         })
     terms = cluster_terms(members, all_groups)
     title, title_kind = _title_for(members[picks[0]].text, terms)
-    return Card(
-        title=title,
-        title_kind=title_kind,
-        terms=terms,
-        excerpts=excerpts,
-        members=list(members),
-        n_files=len({m.fid for m in members}),
-        centroid=centroid,
-        status=status,
-        fingerprint_id=fingerprint_id,
-        distill_algo=algo,
-        created_at=time.time(),
-        chunk_weights=[
-            (members[i].sid, round(weights[i], 6)) for i in range(len(members))
-        ],
+    card = into if into is not None else Card(
+        title="", title_kind="terms", terms=[], excerpts=[], members=[],
+        n_files=0,
     )
+    card.title = title
+    card.title_kind = title_kind
+    card.terms = terms
+    card.excerpts = excerpts
+    card.members = list(members)
+    card.n_files = len({m.fid for m in members})
+    card.centroid = centroid
+    card.status = status
+    card.fingerprint_id = fingerprint_id
+    card.distill_algo = algo
+    card.created_at = time.time()
+    card.chunk_weights = [
+        (members[i].sid, round(weights[i], 6)) for i in range(len(members))
+    ]
+    return card
 
 
 def build_cards_v2(
@@ -800,19 +876,32 @@ def build_cards_v2(
     min_members: int,
     fingerprint_id: str,
 ) -> tuple[list[Card], list[list[CItem]], dict[str, int]]:
-    """Clusters → card objects (§2). Returns (active_cards, kept_clusters,
-    histogram). M3 adds split_two_level between the leader pass and this."""
+    """Clusters → card objects (§2): leader pass, then the D5 two-level
+    split — leaves become active cards, accepted internal nodes become
+    header rows. Returns (ordered_cards, kept_clusters, histogram) where
+    ordered_cards = active cards by (-size, first member) + header rows
+    after (§2.6)."""
     clusters, hist = cluster_v2(kept, tau, min_members)
     algo = f"{ALGO} t={tau:.2f} min={min_members}"
-    cards = [
-        _build_card(
-            members, clusters,
-            fingerprint_id=fingerprint_id, algo=algo,
-        )
-        for members in clusters
+    leaf_shells, header_shells = split_two_level(clusters, tau)
+    all_groups = [s.members for s in leaf_shells] + [
+        s.members for s in header_shells
     ]
-    cards.sort(key=lambda c: (-c.size, c.first_member_key))
-    return cards, clusters, hist
+    for shell in leaf_shells:
+        _build_card(shell.members, all_groups, fingerprint_id=fingerprint_id,
+                    algo=algo, into=shell)
+    for shell in header_shells:
+        _build_card(shell.members, all_groups, fingerprint_id=fingerprint_id,
+                    algo=algo, status="header", into=shell)
+    cards = leaf_shells + header_shells
+    active = [c for c in cards if c.status == "active"]
+    active.sort(key=lambda c: (-c.size, c.first_member_key))
+    headers = [c for c in cards if c.status == "header"]
+    headers.sort(key=lambda c: (-c.size, c.first_member_key))
+    ordered = active + headers  # §2.6: topic ids over kept cards, headers after
+    for i, card in enumerate(ordered, start=1):
+        card.topic_id = i
+    return ordered, clusters, hist
 
 
 # --------------------------------------------------------------- run helpers
@@ -936,7 +1025,23 @@ def render_markdown(
             anchor = _anchor(f"{card.topic_id}. {card.title}")
             lines.append(f"{card.topic_id}. [{card.title}](#{anchor})")
         lines.append("")
+    printed_headers: set[int] = set()
+    header_by_child: dict[int, Card] = {}
+    for h in headers:
+        for child in getattr(h, "children", []) or []:
+            header_by_child[id(child)] = h
+
+    def _emit_header(h: Card) -> None:
+        if id(h) in printed_headers:
+            return
+        printed_headers.add(id(h))
+        lines.append(f"## {h.title or '(no section title)'}")
+        lines.append("")
+
     for card in shown:
+        h = header_by_child.get(id(card))
+        if h is not None:
+            _emit_header(h)
         lines.append(
             f"### {card.topic_id}. {card.title or '(no title)'}   "
             f"[{card.size} chunks · {card.n_files} files]"
@@ -957,9 +1062,6 @@ def render_markdown(
             lines.append(
                 f"  … +{len(card.member_citations) - max_citations} more chunks"
             )
-        lines.append("")
-    for header_card in headers:
-        lines.append(f"## {header_card.title}")
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
@@ -1160,12 +1262,24 @@ def _incremental_run(
         ))
 
     algo_str = f"{ALGO} t={tau:.2f} min={min_members}"
-    for members in new_clusters:
-        cards.append(_build_card(
-            members, new_clusters,
-            fingerprint_id=fingerprint_id, algo=algo_str,
-        ))
-    cards.sort(key=lambda c: (-c.size, c.first_member_key))
+    leaf_shells, header_shells = split_two_level(new_clusters, tau)
+    remainder_groups = [s.members for s in leaf_shells + header_shells]
+    for shell in leaf_shells:
+        _build_card(shell.members, remainder_groups,
+                    fingerprint_id=fingerprint_id, algo=algo_str, into=shell)
+    for shell in header_shells:
+        _build_card(shell.members, remainder_groups,
+                    fingerprint_id=fingerprint_id, algo=algo_str,
+                    status="header", into=shell)
+    cards.extend(leaf_shells)
+    cards.extend(header_shells)
+    ordered = [c for c in cards if c.status == "active"]
+    ordered.sort(key=lambda c: (-c.size, c.first_member_key))
+    ordered += sorted(
+        (c for c in cards if c.status == "header"),
+        key=lambda c: (-c.size, c.first_member_key),
+    )
+    cards = ordered
 
     rid = run_id_for(algo, tau, scope, corpus_hash, mode)
     stats = {
@@ -1189,7 +1303,7 @@ def _incremental_run(
         "reclustered_chunks": dissolve.reentered,
         "chunks_reassigned_into_existing_cards": sum(len(v) for v in joins.values()),
         "dissolved_cards": dissolve.dissolved,
-        "new_cards": len(new_clusters),
+        "new_cards": len(leaf_shells),
         "budget": None,
         "fingerprint_id": fingerprint_id,
         "view_id": view_id,
@@ -1280,11 +1394,12 @@ def run_distill(
         kept, tau=tau, min_members=min_members, fingerprint_id=fingerprint_id,
     )
     rid = run_id_for(algo, tau, scope, corpus_hash, mode)
+    active_count = sum(1 for c in cards if c.status == "active")
     stats = {
         "corpus_chunks": len(items),
         "after_dedupe": len(kept),
         "duplicates_removed": removed,
-        "clusters_kept": len(cards),
+        "clusters_kept": active_count,
         "clusters_dropped_small": sum(hist.values()) - len(clusters),
         "histogram": hist,
         "tau": round(tau, 4),
@@ -1298,7 +1413,7 @@ def run_distill(
         "reclustered_chunks": 0,
         "chunks_reassigned_into_existing_cards": 0,
         "dissolved_cards": 0,
-        "new_cards": len(cards),
+        "new_cards": active_count,
         "budget": None,
         "fingerprint_id": fingerprint_id,
         # identity inputs the run rows carry for §4.3 eligibility (not JSON):

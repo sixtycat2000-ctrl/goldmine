@@ -90,8 +90,9 @@ error shape, `goldmine open`, `goldmine backup` + `doctor --deep`, per-file iden
 staleness visibility, real-corpus eval harness + regression gate, token-true chunking.
 
 **Deferred** (see `docs/v2/REDESIGN.md` §5 v2.1/v2.2): `serve` daemon (warm search),
-`find` TUI (killed — revisit with a named user), `reindex plan|run`, distill v2 cards,
-`watch` mode, video frames, fusion tuning (G1).
+`find` TUI (killed — revisit with a named user), `reindex plan|run`, distill `--pack`/`--llm`
+(cards v2 themselves SHIPPED in R6 — calibrated τ, admission guard, incremental distill;
+see `docs/v2.1-r6-distill.md`), `watch` mode, video frames, fusion tuning (G1).
 
 Troubleshooting: `goldmine help troubleshoot` — the failures people actually hit, each with
 a copy-pasteable fix. Every failure prints the same 4-line shape (`what / why: / fix: /

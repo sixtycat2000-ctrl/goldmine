@@ -204,8 +204,26 @@ back. The folder above is covered by Time Machine; backups are the fast second c
 
 More: `goldmine help troubleshoot` (each with its fix), `goldmine help` for all topics.
 
+## Topic cards (`goldmine distill`)
+
+`goldmine distill` condenses the index into topic cards: short extractive titles, keyword
+lines, and up to three verbatim excerpts per card, each with a citation back to the file.
+v2.1 calibrates the similarity threshold from your corpus every run (the preview tells you
+what it measured and why — real corpora normally run the percentile fallback; that is
+expected, not a bug), and an admission guard keeps one broad topic from absorbing
+everything (the v1 mega-cluster bug). Typical loop:
+
+    goldmine distill --preview                      # look before writing
+    goldmine distill --as notes --under ~/notes     # save a named view + build cards
+    goldmine distill --rerun notes                  # later: only NEW chunks get worked
+
+Re-runs of a saved view are incremental: existing card memberships are frozen, deleted
+content is swept (cards that fall below the minimum dissolve), and the threshold is
+inherited so labels stay stable. `--refresh` forces a full rebuild; `status` tells you when
+cards are empty after the v4 upgrade. Design of record: `docs/v2.1-r6-distill.md`.
+
 ## What's next
 
 v2.1 (see `docs/v2/REDESIGN.md` §5): a resident search daemon (warm ~40 ms queries), a
-reindex planner with per-file estimates, distill card redesign, `goldmine watch`
+reindex planner with per-file estimates, distill `--pack`/`--llm` polish, `goldmine watch`
 (auto-refreshing index). Killed by design: any whole-Mac default sweep, telemetry, a GUI.

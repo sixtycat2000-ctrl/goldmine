@@ -124,9 +124,28 @@ table in the test log. **Asserted** (guardrails, not quality claims): hybrid R@1
 R@1 on lookup subset − 0 (lexical may win lookups); hybrid overall R@5 ≥ 0.9 with mock;
 no scorer crashes on the zero-hit query ("zzzq" → empty results, exit-0 path). Quality
 judgments between scorers are **reported, not asserted** — the harness exists to make the
-τ=0.70 / near-dup 0.97 defaults falsifiable (DESIGN_DECISIONS §11): the distill clustering
-sensitivity run (τ ∈ {0.60, 0.70, 0.80}) is a `@pytest.mark.eval` test that prints cluster
-count/purity and always passes unless the pipeline errors.
+near-dup 0.97 default falsifiable (DESIGN_DECISIONS §11): the distill clustering
+sensitivity run (manual τ ∈ {0.60, 0.70, 0.80} + the calibrated baseline) is a
+`@pytest.mark.eval` test that prints cluster count/purity and always passes unless the
+pipeline errors. τ itself is no longer a default to falsify — v2.1 R6 CALIBRATES it per
+run (docs/v2.1-r6-distill.md); the distill canary (`scripts/eval_distill.py`, wrapped by
+`tests/test_eval_distill.py`) enforces purity ≥ 0.70 / ARI ≥ 0.50 / recovery ≥ 6-of-8 /
+excerpt fidelity 100% offline on mock, with the F1 `hard` differential (v1 rules FAIL,
+v2 PASS) as the real offline algorithm gate; the `--backend llama` run is the
+calibration-quality report recorded in the release checklist.
+
+**Distill canary — llama record (release checklist, R6 M3 2026-10-19).** The live
+`eval_distill.py --variant main --backend llama` run over the 100-doc fixture
+(real EmbeddingGemma vectors, schema v4): tau 0.8500 (raw 0.8903, `tau_source=percentile`,
+fallback "no real valley"; pairwise quartiles 0.717/0.757/0.783 — the real high band) →
+purity 0.934, ARI 0.734, excerpt fidelity 1.0, determinism PASS; recovery 5/8 FAIL —
+six topics render as exactly one card holding 100% of their docs; locksmith + typewriters
+(the most lexically adjacent pair) over-merge at the τ ceiling (one 16-doc card at
+dominant-share 0.62, typewriters' remainder split off at 5/11 docs). This is the B10/F2
+mechanism the design predicted: pairwise-calibrated τ applied to cos-to-centroid (which
+reads ~1.1-1.6x higher) over-merges real embeddings. The pre-approved contingency
+(D3/F2c) — recalibrate on the centroid scale, `tau_source='centroid'`, one-function
+change — is documented and NOT implemented in R6; this record is its trigger evidence.
 
 **Live variant** (`GOLDMINE_LIVE=1`): same corpus re-indexed with the llama backend; the same
 table is printed with real EmbeddingGemma vectors; additionally asserts dim=768, vectors

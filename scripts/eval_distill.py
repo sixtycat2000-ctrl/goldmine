@@ -780,7 +780,7 @@ VARIANTS = {
 def report_real(db_path: Path) -> tuple[dict, bool]:
     """F2b: card-size report over a COPY of a real index (no writes to the
     original). F2c: prints the contingency line when top-card share > 0.8."""
-    import migrations as _migrations
+    from goldmine import migrations as _migrations
 
     tmp = Path(tempfile.mkdtemp(prefix="gm-eval-real-"))
     copy_path = tmp / Path(db_path).name

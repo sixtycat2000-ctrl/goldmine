@@ -357,7 +357,10 @@ def _v3_to_v4(db: sqlite3.Connection, from_version: int) -> int:
     db.execute(
         """CREATE TABLE IF NOT EXISTS card_chunks(
                card   INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-               chunk  INTEGER NOT NULL REFERENCES segments(id),
+               chunk  INTEGER NOT NULL,  -- NO segments FK: tombstones must be
+                                         -- storable for the §4.4 dissolve sweep
+                                         -- (foreign_keys=ON would fail every
+                                         -- segment deletion otherwise)
                weight REAL NOT NULL,
                UNIQUE(card, chunk)
            )"""

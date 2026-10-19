@@ -155,24 +155,40 @@ class Searcher:
 ```
 Satisfies: V3 all six fixes; SPEC §3 (prompts verbatim, lookup inversion, file-level collapse).
 
-### `goldmine/distill.py` **[v1]**
-Owns: dedupe, deterministic clustering, cards. Pure functions over store data.
+### `goldmine/distill.py` **[v2 — R6, design of record docs/v2.1-r6-distill.md]**
+Owns: dedupe, τ calibration, guarded clustering, two-level split, cards, incremental runs.
+Pure functions over store data; constants are module-level names (not config).
 ```python
-@dataclass class Card: terms: list[str]; members: list[tuple[str, str, float | None,
-                       float | None]]; rep_text: str; rep_cite: tuple[str, str, float | None,
-                       float | None]; n_chunks: int; n_files: int
-def dedupe(items: list[CItem]) -> tuple[list[CItem], int]     # sha256 exact, then greedy
-                                                              # cosine ≥ 0.97; (fid,sid) order
-def cluster(items: list[CItem], threshold: float = 0.70, min_members: int = 3
-            ) -> tuple[list[list[CItem]], int]                # greedy leader; running-sum
-                                                              # centroid, renormalized;
-                                                              # ties → lowest cluster idx
-def tfidf_terms(member_texts: list[str], all_cluster_texts: list[list[str]],
-                top: int = 8) -> list[str]
-def build_cards(store: Store, *, threshold: float, min_members: int,
-                max_chunks: int, kinds: set[str] | None) -> list[Card]
-def render_markdown(cards: list[Card], header: str) -> str
-def render_json(cards: list[Card]) -> dict
+@dataclass class Scope: kinds | under | after          # canonical_json() feeds view/run ids
+@dataclass class TauResult: tau, tau_source, tau_raw, histogram, quartiles, fallback_reason
+@dataclass class Card: title, title_kind, terms, excerpts, members, n_files, parent,
+                      status (active|header|dissolved), centroid, chunk_weights, topic_id
+def measure_tau(matrix, *, manual=None) -> TauResult   # D1/D2: stride-sampled pairwise
+                                                       # gram, 256-bin histogram (F6
+                                                       # clamp), Otsu + valley/mode-
+                                                       # proximity fallback → P90, clamp
+                                                       # [0.55, 0.85]; REAL corpora run
+                                                       # 'percentile' (F2a, expected)
+def cluster_v2(items, tau, min_members) -> (kept, hist)# leader + average-link admission
+                                                       # guard (D4): first cluster where
+                                                       # cos-to-centroid >= tau AND
+                                                       # (S_c·x̂)/n_c >= max(tau-0.10, 0.35);
+                                                       # guard reads member sums, never a
+                                                       # centroid shortcut (F7)
+def split_two_level(clusters, tau) -> (leaves, headers)# D5: n >= 12, s̄ < τ−0.12, recursive
+                                                       # leader at τ+0.08, accept when
+                                                       # weighted children s̄ tightens ≥0.05;
+                                                       # internal nodes = header rows
+def run_distill(store, *, scope, threshold=None, min_members,
+                max_chunks, refresh, preview) -> dict  # full OR incremental (§4.3/F8:
+                                                       # dissolve → snapshot → assign first
+                                                       # qualifying card → leader remainder);
+                                                       # caller persists via store.save_run
+def eligibility(prev_run, ...) -> (ok, reason)         # D8/F4: view+algo+τ+embed_id+
+                                                       # ≤20% vanished files, never corpus_hash
+def corpus_hash_for(store, scope) -> str               # D9: embed_id INSIDE; audit-only
+def render_markdown / render_json / render_preview     # §6.3 json = goldmine.cards/v2
+def view_id_for(scope) / run_id_for(...)               # D7: sha256(algo+scope)[:16]; τ NOT in view
 ```
 Satisfies: V4 (algorithm pinned in docstrings; refuses beyond max_chunks).
 

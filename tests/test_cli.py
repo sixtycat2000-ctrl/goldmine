@@ -1484,6 +1484,15 @@ def test_distill_rebuild_note_cleared_by_first_run(tmp_home, db_path, tmp_path, 
     assert "cards_rebuild" in codes
     notice = next(n for n in payload["notices"] if n["code"] == "cards_rebuild")
     assert notice["message"] == "cards v1 tables were replaced"
+    # doctor --deep surfaces the same warn (F11: same condition, same text)
+    rc = main(["--backend", "mock", "--db", str(db_path), "doctor", "--deep",
+               "--json"])
+    assert rc in (0, 4)
+    payload = json.loads(capsys.readouterr().out)
+    cards_check = next(c for c in payload["checks"]
+                       if c["name"] == "cards fingerprint")
+    assert cards_check["status"] == "warn"
+    assert cards_check["detail"] == "cards v1 tables were replaced"
     # the first successful distill run clears it
     rc = main(["--backend", "mock", "--db", str(db_path), "distill",
                "--min-members", "2"])

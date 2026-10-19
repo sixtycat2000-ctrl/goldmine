@@ -28,8 +28,13 @@
 
 ## 方向三：知识沉淀
 
-### R6 · 蒸馏卡片 2.0 — **SAVED**（设计已在 docs/v2/06-distill-knowledge.md）
-- 100 篇混主题文档（8 个预埋主题）：卡片纯度 ≥ 70%、主题找回 ≥ 6/8；增量更新不全量重算。
+### R6 · 蒸馏卡片 2.0 — **DONE**（2026-10-19，设计 docs/v2/06 + docs/v2.1-r6-distill.md）
+- 100 篇混主题文档（8 个预埋主题）：卡片纯度 ≥ 70%、主题找回 ≥ 6/8；增量更新不全量重算
+  （compute-liveness gate；F5 口径：reclustered/after_dedupe ≤ 10%）。
+- 交付：`scripts/eval_distill.py`（mock 离线全门 + hard 变体差分门：v1 规则 purity 0.120 FAIL
+  vs v2 purity 0.880/ari 0.812/recovery 8-of-8 PASS；`--report-real` 真库报告模式）；
+  schema v4（distill_runs/distill_views，cards 携带 fp16 质心）；增量 distill（dissolve/
+  冻结成员/τ 继承）；两级主题（D5）；`--preview/--under/--after/--as/--rerun/--refresh`。
 
 ### R7 · 实体关系图谱 — **SAVED**（最靠后，看 R4 数据说话）
 - 蓝图：Foresight 反编译出的 nodes/edges/node_embeddings 表结构（edges 回指证据 chunk）；抽取方式待定（生成式 vs 小模型——Foresight 那个 171MB 模型身份未实锤）。

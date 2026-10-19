@@ -1467,8 +1467,13 @@ def cmd_reset(args: argparse.Namespace) -> int:
                 store.db.execute("DELETE FROM card_chunks")
                 store.db.execute("DELETE FROM cards")
                 store.db.execute("DELETE FROM segments")
+                # v4 (R6): cards' run history + named views describe the wiped
+                # vectors — reset clears them with everything else
+                store.db.execute("DELETE FROM distill_runs")
+                store.db.execute("DELETE FROM distill_views")
             store.set_meta("fingerprint_id", None)
             store.set_meta("fingerprint_json", None)
+            store.set_meta("cards_v2_rebuild_note", None)
         finally:
             store.close()
         logger.info("reset: cleared vectors + cards; re-ingesting %d root(s)", len(roots))

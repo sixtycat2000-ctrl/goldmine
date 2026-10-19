@@ -107,17 +107,22 @@ All five verdicts: **adopted**. Disposition details below; deferrals listed in �
 ## 5. Distill — D4 (verdict 4) — ADOPTED, algorithm pinned
 
 - Extractive-first; no chat model bundled. `--llm polish` deferred (§10).
-- Exact algorithm (normative in ARCHITECTURE §2.3 / SPEC §4): deterministic ordering by
-  `(file_id, segment_id)`; exact dedupe by sha256 of normalized text, then greedy near-dup
-  removal at cosine ≥ 0.97; greedy leader clustering, τ default **0.70** (EmbeddingGemma
-  same-topic text cosines measure 0.75–0.86 per DigUp Model.swift; 0.70 sits just under
-  same-topic, above adjacent-topic — tunable by flag and revisitable via the eval harness);
-  centroid = running member-vector sum, renormalized after each assignment; assignment to the
-  first centroid ≥ τ with ties to the lowest cluster index; clusters < `min_members` (3)
-  dropped; corpus bound 50k chunks **refuses** rather than truncates.
-- Cards: verbatim representative excerpt (max cosine to final centroid, ties → lowest segment
-  id), TF-IDF top 8 terms, citations `(path, kind, loc/loc_end)`, never synthesized prose.
-  Cards store their `fingerprint_id` + `distill_algo` string; stale cards are refused.
+- Algorithm (v2.1 R6 SUPERSEDED the v1 fixed τ=0.70 — design of record:
+  `docs/v2.1-r6-distill.md`): deterministic ordering by `(file_id, segment_id)`; exact
+  dedupe by sha256 of normalized text, then greedy near-dup removal at cosine ≥ 0.97; τ
+  CALIBRATED per run (sampled pairwise Otsu with a percentile fallback — real corpora are
+  unimodal and expected to run `tau_source='percentile'`; `--threshold` is now a manual
+  override); leader clustering WITH an average-link admission guard (`mean-cos-to-members ≥
+  max(τ−0.10, 0.35)`) — the v1 centroid-only rule was the mega-cluster bug (measured: one
+  card absorbing 99.84% of a real corpus). Clusters < `min_members` (3) dropped, never
+  silently (size histogram reported); corpus bound 50k chunks **refuses** rather than
+  truncates.
+- Cards (v2): medoid primary excerpt + up to 2 coverage picks (greedy max-min-distance),
+  filtered TF-IDF top-8 terms (member-df ≥ 2 gate, bigram competition), extractive titles,
+  per-card fp16 centroids under named views (`distill_runs`/`distill_views`, schema v4);
+  incremental reruns with frozen memberships (dissolve + tombstone sweep); citations
+  `(path, kind, loc/loc_end)`, never synthesized prose. Cards store their `fingerprint_id` +
+  `distill_algo` string; the v1→v4 migration recreated cards empty (announced, snapshotted).
 
 ## 6. Robustness — D5 (verdict 5) — ADOPTED, all six items
 

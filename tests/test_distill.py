@@ -469,6 +469,174 @@ def test_render_markdown_v2_shape(indexed):
     assert "file://" in md  # citation links
 
 
+# ------------------------------------------------------- two-level (D5, M3)
+
+
+def _subgroup(base_dir: int, n: int, noise_dirs, sid_offset: int) -> list[CItem]:
+    base = _vec(base_dir)
+    return [
+        _item(sid_offset + i, 1, _mix(base, _vec(noise_dirs(i)) * 0.05))
+        for i in range(n)
+    ]
+
+
+def test_mean_intra_cosine_hand_case():
+    """s-bar = (||S||^2 - n)/(n(n-1)) on an ortho pair = 0 and a tight pair ~1."""
+    a, b = _vec(0), _vec(1)
+    assert distill.mean_intra_cosine(
+        [_item(1, 1, a), _item(2, 1, b)]
+    ) == pytest.approx(0.0, abs=1e-6)
+    tight = [_item(1, 1, a), _item(2, 1, _mix(a, _vec(3) * 0.02))]
+    assert distill.mean_intra_cosine(tight) > 0.99
+    assert distill.mean_intra_cosine([_item(1, 1, a)]) == 1.0
+
+
+def test_split_triggers_on_loose_cluster_and_accepts():
+    """16 members in two tight sub-groups: s-bar ~0.47 < tau-0.12, children
+    ~0.99 -> improvement >> 0.05 -> split accepted, header + 2 leaves."""
+    tau = 0.72
+    members = _subgroup(0, 8, lambda i: 10 + i, 1) + \
+        _subgroup(1, 8, lambda i: 30 + i, 100)
+    s_bar = distill.mean_intra_cosine(members)
+    assert s_bar < tau - distill.SPLIT_MARGIN          # split candidate
+    leaves, headers = distill.split_two_level([members], tau)
+    assert len(leaves) == 2 and len(headers) == 1
+    header = headers[0]
+    assert header.status == "header"
+    assert header.size == 16
+    for leaf in leaves:
+        assert leaf.parent is header
+    # the header union = all members; its own content gets filled by
+    # _build_card (checked via build_cards_v2 e2e below)
+
+
+def test_split_rejects_tight_cluster():
+    """One tight group of 16: s-bar above the trigger -> no split, one card."""
+    members = _subgroup(0, 16, lambda i: 10 + i, 1)
+    leaves, headers = distill.split_two_level([members], 0.72)
+    assert len(leaves) == 1 and headers == []
+    assert leaves[0].members[0] is members[0]
+
+
+def test_split_needs_min_twelve():
+    """n < 12 never splits, however loose."""
+    members = _subgroup(0, 5, lambda i: 10 + i, 1) + \
+        _subgroup(1, 5, lambda i: 30 + i, 100)
+    leaves, headers = distill.split_two_level([members], 0.72)
+    assert len(leaves) == 1 and headers == []
+
+
+def test_split_depth_cap():
+    """depth <= 2: an accepted grandchild split stops at depth 2 (no depth-3)."""
+    # three-level construction: A(4)+B(4) vs C(4)+D(4) inside one loose 16
+    members = (
+        _subgroup(0, 4, lambda i: 10 + i, 1)
+        + _subgroup(1, 4, lambda i: 30 + i, 100)
+        + _subgroup(2, 4, lambda i: 50 + i, 200)
+        + _subgroup(3, 4, lambda i: 70 + i, 300)
+    )
+    leaves, headers = distill.split_two_level([members], 0.72)
+    # the top split is accepted; children may split once more (depth 1 -> 2)
+    # but never a third time
+    assert len(headers) >= 1
+    max_depth = 0
+
+    def depth_of(card, d=0):
+        nonlocal max_depth
+        max_depth = max(max_depth, d)
+        for child in getattr(card, "children", []) or []:
+            depth_of(child, d + 1)
+
+    for h in headers:
+        depth_of(h)
+    assert max_depth <= 2
+
+
+def test_build_cards_v2_with_headers_parent_id_and_ordering(monkeypatch):
+    """e2e wiring (with the split forced — under v2's guard a loose cluster
+    can hardly form at all, which is the design working; the split path fires
+    on incremental remainders and borderline geometry): headers excluded from
+    the ordered active list, topic ids over active cards then headers (§2.6),
+    parent links intact, json parent_id points at a header."""
+    kept = _subgroup(0, 6, lambda i: 10 + i, 1) + \
+        _subgroup(1, 6, lambda i: 30 + i, 100)
+
+    def fake_split(clusters, tau):
+        first = clusters[0]
+        half = len(first) // 2
+        leaves, headers = distill.split_two_level(
+            [first[:half], first[half:]], tau,
+        ) if False else ([], [])
+        # build the tree manually: one header, two leaves
+        h = distill.Card(title="", title_kind="terms", terms=[], excerpts=[],
+                         members=list(first), n_files=0)
+        h.status = "header"
+        h.parent = None
+        l1 = distill.Card(title="", title_kind="terms", terms=[], excerpts=[],
+                          members=first[:half], n_files=0)
+        l2 = distill.Card(title="", title_kind="terms", terms=[], excerpts=[],
+                          members=first[half:], n_files=0)
+        l1.parent = l2.parent = h
+        h.children = [l1, l2]
+        l1.status = l2.status = "active"
+        return [l1, l2], [h]
+
+    monkeypatch.setattr(distill, "split_two_level", fake_split)
+    cards, clusters, hist = distill.build_cards_v2(
+        kept, tau=0.72, min_members=3, fingerprint_id="fp",
+    )
+    active = [c for c in cards if c.status == "active"]
+    headers = [c for c in cards if c.status == "header"]
+    assert len(active) == 2 and len(headers) == 1
+    assert [c.topic_id for c in active] == [1, 2]
+    assert headers[0].topic_id == 3            # headers numbered after cards
+    for leaf in active:
+        assert leaf.parent is headers[0]
+    payload = distill.render_json(cards, {})
+    by_id = {c["id"]: c for c in payload["cards"]}
+    for card in payload["cards"]:
+        if card["parent_id"] is not None:
+            assert by_id[card["parent_id"]]["status"] == "header"
+
+
+def test_header_rendering_groups_children(monkeypatch):
+    """Markdown: a header renders as a ## section before its children."""
+    kept = _subgroup(0, 6, lambda i: 10 + i, 1) + \
+        _subgroup(1, 6, lambda i: 30 + i, 100)
+
+    def fake_split(clusters, tau):
+        first = clusters[0]
+        half = len(first) // 2
+        h = distill.Card(title="Section", title_kind="terms", terms=[],
+                         excerpts=[], members=list(first), n_files=0)
+        h.status = "header"
+        h.parent = None
+        l1 = distill.Card(title="Leaf one", title_kind="terms", terms=[],
+                          excerpts=[], members=first[:half], n_files=0)
+        l2 = distill.Card(title="Leaf two", title_kind="terms", terms=[],
+                          excerpts=[], members=first[half:], n_files=0)
+        l1.parent = l2.parent = h
+        h.children = [l1, l2]
+        l1.status = l2.status = "active"
+        return [l1, l2], [h]
+
+    monkeypatch.setattr(distill, "split_two_level", fake_split)
+    cards, _clusters, _hist = distill.build_cards_v2(
+        kept, tau=0.72, min_members=3, fingerprint_id="fp",
+    )
+    md = distill.render_markdown(cards, "header")
+    lines = md.splitlines()
+    # the header's content-filled title replaces the shell's; find ANY
+    # section line (## but not ## Contents / # goldmine) before a child
+    header_idx = next(
+        i for i, ln in enumerate(lines)
+        if ln.startswith("## ") and not ln.startswith("## Contents")
+    )
+    child_idx = next(i for i, ln in enumerate(lines)
+                     if ln.startswith("### ") and i > header_idx)
+    assert header_idx < child_idx
+
+
 def test_max_chunks_refuses(indexed):
     with pytest.raises(DistillRefused) as excinfo:
         run_distill(indexed, scope=Scope(), threshold=None,
@@ -658,60 +826,111 @@ def test_incremental_eligibility_triggers_full(indexed):
     assert fifth["stats"]["view_id"] == view_id
 
 
-def test_f7_incremental_guard_consumes_member_vectors(indexed):
-    """F7 behavioral half: the assigner's guard reads the ORIGINAL member
-    vectors (loaded once), so a chunk passing the stored-centroid gate while
-    failing mean-cos-to-members founds a NEW card instead of joining."""
-    store = indexed
-    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
-    loaded = store.load_view_cards(first["stats"]["view_id"])
-    card = max(loaded, key=lambda c: c.size)
-    tau = float(first["stats"]["tau"])
-    tau_lo = max(tau - 0.10, 0.35)
-    # find a synthetic vector passing the centroid gate but failing the mean
-    # gate for this card; feed it as a new chunk through a fresh run
-    mat = np.stack([  # reconstruct member vectors from the corpus
-        it.vec for it in distill._corpus(store, Scope())
-        if it.sid in set(card.members)
-    ])
-    sums = mat.sum(axis=0)
-    cent = sums / float(np.linalg.norm(sums))
-    # probe: mix of the centroid direction with an orthogonal one until the
-    # centroid gate holds and the mean gate fails
-    probe = None
-    for beta in (0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5):
-        ortho = np.zeros(768, np.float32)
-        basis = int(np.argmax(np.abs(mat @ np.eye(768, dtype=np.float32)[0]) * 0 + 1))
-        ortho[(np.abs(mat).sum(axis=0).argmax() + 200) % 768] = 1.0
-        cand = beta * cent + np.sqrt(1 - beta * beta) * (ortho / np.linalg.norm(ortho))
-        cand = cand / np.linalg.norm(cand)
-        if float(cand @ cent) >= tau and float((mat @ cand).mean()) < tau_lo:
-            probe = cand
-            break
-    if probe is None:
-        pytest.skip("no boundary vector for this card geometry")
+def test_f7_incremental_guard_consumes_member_vectors(tmp_path):
+    """F7 behavioral half, deterministic: a fabricated prior-run card whose
+    members a/b are ORTHOGONAL (the heterogeneous old-card scenario the guard
+    exists for), inherited tau 0.55 (tau_lo 0.45). A new b-copy passes BOTH
+    gates (centroid 0.707 >= 0.55; mean-to-originals 0.5 >= 0.45) and joins;
+    an off-direction probe passes the CENTROID gate (0.601 >= 0.55) while
+    FAILING the mean gate (0.425 < 0.45) and must found a NEW card — a
+    centroid-only shortcut flips this decision. The guard consumes the
+    ORIGINAL member vectors, never the stored centroid."""
     from goldmine.store import FileRec
-    from goldmine.backends.base import DOCUMENT_PROMPT_TEMPLATE
+    from goldmine import distill as d
 
-    backend = MockBackend(dim=768)
-    fid = store.upsert_file(FileRec(path="/p/probe.txt", kind="doc", size=9,
-                                    state="pending"))
-    framed = DOCUMENT_PROMPT_TEMPLATE.format("probe", "probe corpus note")
-    # embed the PROBE vector directly: store it under the framed-text chunk
-    store.fts_text(fid, "chunk", 1, "probe corpus note", vec_ok=True, vec=probe)
-    store.mark_file(fid, state="done", capability="content_indexed",
-                    detail=None, info=None, extractor_version="txt-stdlib.v1",
-                    chunker_version="chunk.v2-tok", embed_id="testembed")
-    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
-    assert second["stats"]["mode"] == "incremental"
-    joined = [c for c in second["cards"]
-              if any(m.path.endswith("probe.txt") for m in c.members)]
-    assert len(joined) == 1
-    # it did NOT land in the card whose centroid it approximates
-    assert joined[0].first_member_key != card.members and True
-    big = max(second["cards"], key=lambda c: c.size)
-    assert not any(m.path.endswith("probe.txt") for m in big.members) or \
-        big is joined[0]
+    store = Store(tmp_path / "f7.sqlite")
+    try:
+        e0 = _vec(0)
+        e1 = _vec(1)
+        e2 = _vec(2)
+
+        def add_vec_file(path, text, vec):
+            fid = store.upsert_file(FileRec(path=path, kind="doc", size=9,
+                                            state="pending"))
+            store.fts_text(fid, "chunk", 1, text, vec_ok=True, vec=vec)
+            store.mark_file(fid, state="done", capability="content_indexed",
+                            detail=None, info=None,
+                            extractor_version="txt-stdlib.v1",
+                            chunker_version="chunk.v2-tok", embed_id="e")
+            return fid
+
+        fid_a = add_vec_file("/f7/a.txt", "a body", e0)
+        fid_b = add_vec_file("/f7/b.txt", "b body", e1)
+        seg_of = lambda fid: store.db.execute(
+            "SELECT id FROM segments WHERE file = ? AND kind = 'chunk'",
+            (fid,)).fetchone()[0]
+        s_a, s_b = seg_of(fid_a), seg_of(fid_b)
+
+        # fabricated prior run: one card [a, b] whose centroid is (a+b)/|a+b|
+        view_id = "f7view0000000001"
+        cent = (e0 + e1) / float(np.linalg.norm(e0 + e1))
+        prev_members = [CItem(sid=s_a, fid=fid_a, vec=e0, text="a body",
+                              path="/f7/a.txt", kind="doc", loc=1, loc_end=2),
+                        CItem(sid=s_b, fid=fid_b, vec=e1, text="b body",
+                              path="/f7/b.txt", kind="doc", loc=1, loc_end=2)]
+        card = distill.Card(
+            title="old card", title_kind="terms", terms=["a", "b"],
+            excerpts=[], members=prev_members, n_files=2, status="active",
+            centroid=cent, fingerprint_id="fp", distill_algo=f"{distill.ALGO} t=0.55 min=2",
+            created_at=0.0, chunk_weights=[(s_a, 0.71), (s_b, 0.71)],
+        )
+        card.run_id = "prev0000"
+        card.view_id = view_id
+        prev_run = {
+            "id": "prev0000", "algo": f"{distill.ALGO} t=0.55 min=2",
+            "tau": 0.55, "tau_source": "manual",
+            "scope_json": Scope().canonical_json(), "corpus_hash": "h" * 64,
+            "mode": "full",
+            "stats": {"view_id": view_id, "embed_id": "e",
+                      "member_files": ["/f7/a.txt", "/f7/b.txt"]},
+        }
+        store.save_run({
+            "id": "prev0000", "algo": prev_run["algo"], "tau": 0.55,
+            "tau_source": "manual", "scope_json": prev_run["scope_json"],
+            "corpus_hash": prev_run["corpus_hash"], "mode": "full",
+            "stats": prev_run["stats"], "view_id": view_id,
+        }, [card])
+
+        # two NEW chunks: a near-b vector (joins — must stay under the 0.97
+        # near-dup fold) and the boundary probe (refused)
+        b_copy = 0.91 * e1 + 0.4146 * _vec(3)
+        b_copy = b_copy / float(np.linalg.norm(b_copy))
+        probe = 0.85 * e1 + 0.527 * e2
+        probe = probe / float(np.linalg.norm(probe))
+        # verify the disagreement the test is about, on the ORIGINAL members
+        mat = np.stack([e0, e1])
+        assert float(probe @ cent) >= 0.55                      # centroid passes
+        assert float((mat @ probe).mean()) < 0.45               # guard refuses
+        assert float((mat @ b_copy).mean()) >= 0.45             # b-copy guard-ok
+        add_vec_file("/f7/bcopy.txt", "b copy body", b_copy)
+        add_vec_file("/f7/probe.txt", "probe body", probe)
+
+        items = distill._corpus(store, Scope())
+        kept, _removed = distill.dedupe(items)
+        result = d._incremental_run(
+            store, scope=Scope(), view_id=view_id, prev_run=prev_run,
+            kept=kept, items=items, min_members=2,
+            fingerprint_id="fp", embed_id="e", corpus_hash="h" * 64,
+            current_member_files={"/f7/a.txt", "/f7/b.txt",
+                                  "/f7/bcopy.txt", "/f7/probe.txt"},
+        )
+        stats = result["stats"]
+        assert stats["mode"] == "incremental"
+        assert stats["tau_inherited"] is True
+        homes: dict[str, int] = {}
+        for c in result["cards"]:
+            for m in c.members:
+                homes[m.path] = id(c)
+        # the b-copy joined the old card; the probe was REFUSED by the guard
+        # and ended up without a card (dropped as a below-min singleton) — a
+        # centroid-only shortcut would have absorbed it into the old card,
+        # flipping this exact decision (F7)
+        assert homes["/f7/bcopy.txt"] == homes["/f7/a.txt"]
+        assert "/f7/probe.txt" not in homes
+        assert stats["chunks_reassigned_into_existing_cards"] == 1
+        assert stats["new_cards"] == 0
+    finally:
+        store.close()
 
 
 def test_incremental_idempotent_no_changes(indexed):

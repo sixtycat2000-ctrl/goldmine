@@ -508,6 +508,12 @@ def check_cards_fingerprint(db: Path) -> CheckResult:
     vectors (v1 already kept one generation — this makes the drift visible)."""
     con = _open_ro(db)
     try:
+        note_row = con.execute(
+            "SELECT value FROM meta WHERE key = 'cards_v2_rebuild_note'"
+        ).fetchone()
+        active_cards = con.execute(
+            "SELECT COUNT(*) FROM cards WHERE status = 'active'"
+        ).fetchone()[0]
         n_cards, card_fp = con.execute(
             "SELECT COUNT(*), MIN(fingerprint_id) FROM cards"
         ).fetchone()
@@ -523,6 +529,14 @@ def check_cards_fingerprint(db: Path) -> CheckResult:
         ]
     finally:
         con.close()
+    # F11 (R6 §3.3): the rebuild announcement's warn line while the note
+    # exists AND no active cards are present
+    if note_row and note_row[0] and active_cards == 0:
+        return CheckResult(
+            "cards fingerprint", STATUS_WARN,
+            note_row[0],
+            "run `goldmine distill` to build v2 cards",
+        )
     if not n_cards:
         return CheckResult(
             "cards fingerprint", STATUS_OK,

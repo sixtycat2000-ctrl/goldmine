@@ -207,10 +207,22 @@ requested and no backend is available.
 ```
 goldmine distill [flags]
 
-  --threshold X        cluster cosine threshold τ [default 0.70]
+  --preview            dry run: corpus size, calibrated τ (+ raw + source +
+                       fallback reason), pairwise quartiles, size histogram,
+                       largest dropped clusters — writes NOTHING
+  --threshold X        manual τ override (tau_source='manual'); UNSET means
+                       CALIBRATED from the corpus (v2.1 R6 — the v1 fixed
+                       0.70 default was the mega-cluster bug; design of
+                       record: docs/v2.1-r6-distill.md)
   --min-members N      drop clusters smaller than N [default 3]
   --max-chunks N       corpus bound; refuse (not truncate) beyond it [default 50000]
   --kinds KINDS        restrict corpus by kind (default: all vectorized kinds)
+  --under PATH         restrict the corpus to files under PATH (repeatable)
+  --after DATE         only files with mtime >= DATE (YYYY-MM-DD; file mtime,
+                       NOT content date)
+  --as NAME            save scope + params as a named view, then run it
+  --rerun NAME         run a saved view (incremental when eligible)
+  --refresh            forget incremental state, force a full recompute
   --limit-cards N      cards in output, by member count [default 20]
   --out FILE           write markdown to FILE (default: stdout)
   --json               JSON cards to stdout instead of markdown
@@ -387,7 +399,8 @@ z_gate = 2.0
 scorer = "hybrid"
 
 [distill]
-threshold   = 0.70
+# threshold unset/absent = CALIBRATED (v2.1 R6). A value here is a manual
+# override (tau_source='manual').
 min_members = 3
 max_chunks  = 50000
 ```
