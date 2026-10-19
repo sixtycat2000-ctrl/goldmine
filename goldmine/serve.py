@@ -636,19 +636,12 @@ class ServeDaemon:
                 try:
                     request = json.loads(line.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError):
-                    # malformed JSON -> bad_request, connection STAYS open (D2)
-                    self._respond(conn, False, None, None, error={
-                        "kind": "bad_request",
-                        "message": "malformed JSON line",
-                        "tail": "",
-                    })
+                    # malformed JSON -> bad_request, connection STAYS open (D2);
+                    # a peer that already vanished just gets the quiet close
+                    self._safe_error(conn, "malformed JSON line")
                     continue
                 if not isinstance(request, dict):
-                    self._respond(conn, False, None, None, error={
-                        "kind": "bad_request",
-                        "message": "request is not a JSON object",
-                        "tail": "",
-                    })
+                    self._safe_error(conn, "request is not a JSON object")
                     continue
                 with self._inflight_lock:
                     self._inflight += 1
@@ -682,6 +675,16 @@ class ServeDaemon:
         from .backends.serve import send_line
 
         send_line(conn, response)  # OSError (peer gone) -> conn thread exits
+
+    def _safe_error(self, conn: socket.socket, message: str) -> None:
+        """The pre-dispatch bad_request: never let a vanished peer turn the
+        protocol error path into a thread exception."""
+        try:
+            self._respond(conn, False, None, None, error={
+                "kind": "bad_request", "message": message, "tail": "",
+            })
+        except OSError:
+            pass
 
     def _handle_line(self, conn: socket.socket, request: dict) -> None:
         op = request.get("op")
