@@ -400,6 +400,15 @@ def test_qrels_parsing_grade_range_and_header(tmp_path):
     tsv = tree / "qrels" / "test.tsv"
     tsv.write_text("query-id\t0\tcorpus-id\tscore\n" + tsv.read_text())
     assert ep.load_qrels(tree) == qrels
+    # LIVE-RUN CAUGHT: the real BEIR header is the 3-column shape, and
+    # 3-column data rows (qid, docid, grade) parse with the docid in slot 1
+    tree3 = mf.write_tree(tmp_path / "three", graded=True)
+    body3 = "\n".join("\t".join([qid, docid, str(g)])
+                      for qid, grades in sorted(qrels.items())
+                      for docid, g in sorted(grades.items()))
+    (tree3 / "qrels" / "test.tsv").write_text(
+        "query-id\tcorpus-id\tscore\n" + body3 + "\n")
+    assert ep.load_qrels(tree3) == qrels
     # binary variant flattens to grade 1
     tree_b = mf.write_tree(tmp_path / "bin", graded=False)
     grades_b = [g for gr in ep.load_qrels(tree_b).values() for g in gr.values()]
@@ -568,6 +577,35 @@ def test_ndcg_ideal_is_cut_at_ten():
     assert m["ndcg"] == pytest.approx(1.0 / idcg)
 
 
+def test_binom_ci_safe_variant_matches_house_reference():
+    """LIVE-RUN CAUGHT (arguana n=1406): er._binom_tail_le underflows at
+    large n and binom_ci(854, 1406) degenerates to [0.411, 0.411]. The public
+    suite's log-space variant must (a) reproduce the house n=146 reference
+    and (b) stay non-degenerate where the golden one breaks."""
+    lo, hi = ep.binom_ci_lp(109, 146)
+    assert abs(lo - 0.668) < 0.001 and abs(hi - 0.815) < 0.001
+    assert (lo, hi) == pytest.approx(er.binom_ci(109, 146), abs=1e-9)
+    # the degenerate case: k/n = 0.6074 -> CI ≈ ±1.96*sqrt(pq/n) = ±0.0256
+    lo2, hi2 = ep.binom_ci_lp(854, 1406)
+    assert lo2 < hi2
+    assert abs(lo2 - 0.5818) < 0.003 and abs(hi2 - 0.6326) < 0.003
+    # ...while the golden harness's own value IS degenerate (documented here
+    # so the divergence is loud, not silent)
+    assert er.binom_ci(854, 1406)[0] == er.binom_ci(854, 1406)[1]
+
+
+def test_headline_cis_public_arguana_scale():
+    rows = [{"query": {"id": f"q{i}", "tag": "public/x"},
+             "metrics": {"success1": 1.0 if i < 366 else 0.0,
+                         "success5": 1.0 if i < 854 else 0.0,
+                         "rr": 0.5, "ndcg": 0.5, "n_hits": 10,
+                         "noise": False}} for i in range(1406)]
+    cis = ep.headline_cis_public(rows)
+    assert cis["success@5"] == "[0.581, 0.633]"
+    assert cis["success@1"].startswith("[0.23")
+    assert cis["MRR"] == "[0.500, 0.500]"  # constant series: degenerate bootstrap CI
+
+
 def test_empty_hits_stay_honest():
     m = ep.score_query_public([], {"a": 1}, 1)
     assert m == {"success1": 0.0, "success5": 0.0, "rr": 0.0, "ndcg": 0.0,
@@ -588,7 +626,7 @@ def test_rows_flow_through_eval_real_machinery(monkeypatch, tmp_path, mini_zip):
     assert current["zero-hit honesty"]["n"] == 0
     pq = er.per_query_maps(rows)
     assert set(pq["nDCG@10"]) == {r["query"]["id"] for r in rows}
-    cis = er.headline_cis(rows)
+    cis = ep.headline_cis_public(rows)
     assert all(cis[k].startswith("[") for k in
                ("success@5", "success@1", "MRR", "nDCG@10"))
     # identical baseline stays green; a fully-flipped rerun trips (n=20
@@ -644,16 +682,16 @@ def _fake_results() -> dict:
     return {"scifact": {"n_queries": 20, "n_corpus": 100,
                         "wall_search_s": 0.1,
                         "arms": {"hybrid": {"metrics": metrics,
-                                            "cis": er.headline_cis(rows),
+                                            "cis": ep.headline_cis_public(rows),
                                             "rows": rows}}},
             "nfcorpus": {"n_queries": 5, "n_corpus": 50, "wall_search_s": 0.1,
                          "arms": {"lexical": {
                              "metrics": metrics,
-                             "cis": er.headline_cis(rows), "rows": rows}}},
+                             "cis": ep.headline_cis_public(rows), "rows": rows}}},
             "arguana": {"n_queries": 5, "n_corpus": 50, "wall_search_s": 0.1,
                         "arms": {"hybrid": {
                             "metrics": metrics,
-                            "cis": er.headline_cis(rows), "rows": rows}}}}
+                            "cis": ep.headline_cis_public(rows), "rows": rows}}}}
 
 
 def test_render_table_rows_refs_and_footnotes():
@@ -668,7 +706,7 @@ def test_render_table_rows_refs_and_footnotes():
     # divergence footnotes (F1/F2/F6 + z-gate sparsity + context-not-gate)
     assert "fetch-deep-then-cut" in out and "69%" in out
     assert "one-hit-per-doc" in out
-    assert "18.7%" in out and "22.1%" in out and "7.3%" in out
+    assert "13.0%" in out and "17.4%" in out and "21.9%" in out
     assert "title-in-header" in out
     assert "name-segment" in out
     assert "z-gate" in out
@@ -810,7 +848,7 @@ def test_e2e_mock_twice_identical(tmp_path, mini_zip):
         {NAME: {"n_queries": out1["n_queries"],
                 "n_corpus": entry["n_docs"], "wall_search_s": 0.0,
                 "arms": {arm: {"metrics": er.summarize(rows),
-                               "cis": er.headline_cis(rows)}
+                               "cis": ep.headline_cis_public(rows)}
                          for arm, rows in out1["rows_by_arm"].items()}}},
         {"datasets": {NAME: entry}}, backend="mock")
     assert "minicorp" in table and "BM25 (ours, lexical)" in table

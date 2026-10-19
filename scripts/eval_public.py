@@ -177,24 +177,33 @@ def load_queries(unzipped: Path) -> dict[str, str]:
 
 
 def load_qrels(unzipped: Path) -> dict[str, dict[str, int]]:
-    """qrels/test.tsv → {qid: {docid: grade}}. Header-tolerant (a first row
-    whose grade is not an int is skipped); dangling docids STAY (D9c)."""
+    """qrels/test.tsv → {qid: {docid: grade}}. Header-tolerant (BEIR ships a
+    `query-id\\tcorpus-id\\tscore` 3-column header — LIVE-RUN CAUGHT: the raise
+    used to precede the header check); dangling docids STAY (D9c). Both data
+    shapes are accepted: 4-col (qid, 0, docid, grade) and 3-col."""
     path = _find_one(unzipped, "test.tsv", sub="qrels")
     qrels: dict[str, dict[str, int]] = {}
+    first = True
     for n, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
         line = line.strip()
         if not line:
             continue
         parts = line.split("\t")
-        if len(parts) < 4:
-            raise PublicError(f"{path}:{n}: expected 4 TSV fields, got {len(parts)}")
-        qid, _zero, docid, grade = parts[0], parts[1], parts[2], parts[3]
+        if len(parts) not in (3, 4):
+            raise PublicError(f"{path}:{n}: expected 3-4 TSV fields, got {len(parts)}")
         try:
-            g = int(grade)
+            g = int(parts[-1])
         except ValueError:
-            if n == 1:  # header row (query-id/corpus-id/score)
+            if first:  # header row (query-id/corpus-id/score)
                 continue
-            raise PublicError(f"{path}:{n}: non-integer qrel grade {grade!r}") from None
+            raise PublicError(f"{path}:{n}: non-integer qrel grade "
+                              f"{parts[-1]!r}") from None
+        finally:
+            first = False
+        if len(parts) == 4:
+            qid, docid = parts[0], parts[2]  # qid \t 0 \t docid \t grade
+        else:
+            qid, docid = parts[0], parts[1]
         qrels.setdefault(qid, {})[docid] = g
     return qrels
 
@@ -450,7 +459,7 @@ def prepare_dataset(name: str, entry: dict, root: Path, *, backend_name: str,
              and db.is_file() and not rebuild)
     if fresh:
         return {"db": db, "n_docs": marker.get("n_docs"), "rebuilt": False,
-                "ingest_s": None}
+                "ingest_s": None, "report": marker}
     if (marker.get("backend") and marker["backend"] != backend_name
             and not rebuild and db.is_file()):
         raise PublicError(
@@ -594,6 +603,71 @@ def run_dataset_arms(store: Store, backend, name: str, entry: dict,
             "n_corpus": entry["n_docs"]}
 
 
+# --------------------------------------------------- statistics (safe CI)
+
+def _binom_tail_le_lp(k: int, n: int, p: float) -> float:
+    """P(X <= k), X ~ Binomial(n, p) — the eval_real recurrence run in LOG
+    space. LIVE-RUN CAUGHT: eval_real._binom_tail_le underflows at large n
+    (q**n -> 0.0; arguana n=1406 k=854 produced the degenerate CI
+    [0.411, 0.411]); the n=146 house reference is unaffected. eval_real.py is
+    outside R5 scope, so the public suite owns this safe variant and its test
+    pins the n=146 reference point to it."""
+    if k < 0:
+        return 0.0
+    if k >= n:
+        return 1.0
+    if p <= 0.0:
+        return 1.0
+    if p >= 1.0:
+        return 0.0
+    q = 1.0 - p
+    log_ratio = math.log(p / q)
+    log_pmf = n * math.log(q)
+    total = 0.0
+    for i in range(k + 1):
+        total += math.exp(log_pmf)
+        next_log = math.log((n - i) / (i + 1)) + log_ratio
+        if log_pmf < -80.0 and next_log < 0.0:
+            break  # past the mode AND below float noise: tail negligible
+        log_pmf += next_log
+    return min(total, 1.0)
+
+
+def binom_ci_lp(k: int, n: int, conf: float = 0.95) -> tuple[float, float]:
+    """Exact Clopper-Pearson CI, underflow-safe at any n (see above)."""
+    alpha = 1.0 - conf
+    if n <= 0:
+        return (0.0, 1.0)
+    lo = 0.0 if k <= 0 else er._solve_decreasing(
+        lambda p: _binom_tail_le_lp(k - 1, n, p), 1 - alpha / 2)
+    hi = 1.0 if k >= n else er._solve_decreasing(
+        lambda p: _binom_tail_le_lp(k, n, p), alpha / 2)
+    return (lo, hi)
+
+
+def headline_cis_public(rows: list[dict]) -> dict[str, str]:
+    """er.headline_cis with the underflow-safe count CI (same shapes)."""
+    ranked = [r for r in rows if not r["metrics"]["noise"]]
+
+    def _ci(name: str, values: list[float], k: int | None) -> str:
+        if not values:
+            return "-"
+        if k is not None:
+            lo, hi = binom_ci_lp(k, len(values))
+        else:
+            lo, hi = er.bootstrap_ci(values)
+        return f"[{lo:.3f}, {hi:.3f}]"
+
+    out = {}
+    for name, key in (("success@5", "success5"), ("success@1", "success1")):
+        vals = [r["metrics"][key] for r in ranked]
+        out[name] = _ci(name, vals, round(sum(vals)) if vals else None)
+    out["MRR"] = _ci("MRR", [r["metrics"]["rr"] for r in ranked], None)
+    ndcg = [r["metrics"]["ndcg"] for r in ranked if r["metrics"]["ndcg"] is not None]
+    out["nDCG@10"] = _ci("nDCG@10", ndcg, None)
+    return out
+
+
 # ------------------------------------------------------------------- table
 
 def _fmt_metric(m: dict, cis: dict, name: str) -> str:
@@ -655,10 +729,11 @@ def render_table(results: dict[str, dict], manifest: dict, *,
     lines.append("      identical to its query (near-certain rank-1 on both legs); a")
     lines.append("      cut-then-drop would bias 69% of that suite.")
     lines.append("  [2] one-hit-per-doc invariant (F2): fusion is file-keyed, hit.path→docid")
-    lines.append("      is 1:1. Chunk-fragmented BM25 — docs exceeding one chunk: scifact")
-    lines.append("      18.7% / nfcorpus 22.1% / arguana 7.3% — published BM25 ranks whole")
-    lines.append("      docs; and our title-in-header framing differs from published")
-    lines.append("      baselines' title+text concatenation.")
+    lines.append("      is 1:1. Chunk-fragmented BM25 — docs exceeding one chunk")
+    lines.append("      (index-measured, chunk.v2-tok): scifact 13.0% / nfcorpus 17.4% /")
+    lines.append("      arguana 21.9% — published BM25 ranks whole docs; and our")
+    lines.append("      title-in-header framing differs from published baselines'")
+    lines.append("      title+text concatenation.")
     lines.append("  [3] name-segment slugs (F6): our index carries name segments over")
     lines.append("      docid slugs (arguana slugs carry topical words); published BM25")
     lines.append("      has no such field — mild apples-oranges on the lexical arm only.")
@@ -894,7 +969,7 @@ def _run(args: argparse.Namespace) -> int:
             for arm, rows in out["rows_by_arm"].items():
                 arms_out[arm] = {
                     "metrics": er.summarize(rows),
-                    "cis": er.headline_cis(rows),
+                    "cis": headline_cis_public(rows),
                     "rows": rows,
                 }
             results[name] = {

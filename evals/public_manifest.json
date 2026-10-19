@@ -19,7 +19,7 @@
       "quirks": [
         "test qrels binary (rel=1 only; the graded 0-2 mapping belongs to the original SciFact dataset, not BEIR's release)",
         "queries.jsonl is a superset of the test split - filter to qrel qids (300 of 1109)",
-        "chunk-fragmented BM25: 18.7% of docs exceed one chunk (measured 2026-10-19, review F2)"
+        "chunk-fragmented BM25: 13.0% of docs exceed one chunk (index-measured 2026-10-20, chunk.v2-tok; supersedes the review's 18.7% estimator figure)"
       ]
     },
     "nfcorpus": {
@@ -37,7 +37,7 @@
       "quirks": [
         "the only genuinely graded set in the trio (max qrel grade 2 - the house grade>=2 success rule maps verbatim)",
         "queries.jsonl is a superset of the test split - filter to qrel qids (323 of 3237)",
-        "chunk-fragmented BM25: 22.1% of docs exceed one chunk (measured 2026-10-19, review F2)"
+        "chunk-fragmented BM25: 17.4% of docs exceed one chunk (index-measured 2026-10-20, chunk.v2-tok; supersedes the review's 22.1% estimator figure)"
       ]
     },
     "arguana": {
@@ -59,7 +59,7 @@
         "queries are long (mean 194 words, max 868)",
         "BM25 reproduction spread 0.3168 (Anserini-class) - 0.414 (2CR MF); id-removal sensitivity",
         "name-segment slugs carry topical words (review F6) - mild apples-oranges on the lexical arm only",
-        "chunk-fragmented BM25: 7.3% of docs exceed one chunk (measured 2026-10-19, review F2)"
+        "chunk-fragmented BM25: 21.9% of docs exceed one chunk (index-measured 2026-10-20, chunk.v2-tok; supersedes the review's 7.3% estimator figure)"
       ]
     }
   },

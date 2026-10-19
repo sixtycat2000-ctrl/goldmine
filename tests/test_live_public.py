@@ -66,10 +66,11 @@ def _network_up() -> bool:
         return False
 
 
-#: lazy network probe — only runs when the LIVE gate is already open, so the
-#: offline suite never touches the network by importing this module.
+#: network probe runs ONLY when the LIVE gate is already open (offline pytest
+#: imports never touch the network). skipif takes a bool, not a callable — a
+#: lambda would be truthy and always skip (caught on the first live run).
 _skip_network = pytest.mark.skipif(
-    lambda: bool(os.environ.get("GOLDMINE_LIVE")) and not _network_up(),
+    bool(os.environ.get("GOLDMINE_LIVE")) and not _network_up(),
     reason="BEIR mirror unreachable",
 )
 
@@ -107,6 +108,16 @@ def _run_arms(root: Path, name: str, entry: dict, backend) -> dict:
         store.close()
 
 
+def _live_root(tmp_path: Path) -> Path:
+    """The cache root: GOLDMINE_PUBLIC_DATA when set (so repeated live runs
+    reuse the downloaded zip + llama index — the prepare marker is keyed by
+    zip sha + backend), else an isolated tmp root."""
+    env = os.environ.get("GOLDMINE_PUBLIC_DATA")
+    root = Path(env).expanduser() if env else tmp_path / "data"
+    root.mkdir(parents=True, exist_ok=True)
+    return root
+
+
 @_skip_network
 @_skip_binary
 @_skip_model
@@ -115,8 +126,7 @@ def test_live_scifact_end_to_end(tmp_path):
     over the 300 test queries → first row of the comparison table, real."""
     manifest = ep.load_manifest()
     name = "scifact"
-    root = tmp_path / "data"
-    root.mkdir(parents=True)
+    root = _live_root(tmp_path)
     backend = _live_backend(tmp_path)
     try:
         t0 = time.monotonic()
@@ -142,7 +152,7 @@ def test_live_scifact_end_to_end(tmp_path):
     results = {name: {"n_queries": out["n_queries"], "n_corpus": 5183,
                       "wall_search_s": search_s,
                       "arms": {arm: {"metrics": m,
-                                     "cis": er.headline_cis(out["rows_by_arm"][arm])}
+                                     "cis": ep.headline_cis_public(out["rows_by_arm"][arm])}
                                for arm, m in arms.items()}}}
     table = ep.render_table(results, manifest, backend="llama")
     print(f"\n[live] ingest 5,183 docs: {ingest_s:.0f}s; "
@@ -159,8 +169,7 @@ def test_live_scifact_double_run_determinism(tmp_path):
     exam (same index, fresh search) must produce identical 4-dp metrics."""
     manifest = ep.load_manifest()
     name = "scifact"
-    root = tmp_path / "data"
-    root.mkdir(parents=True)
+    root = _live_root(tmp_path)
     backend = _live_backend(tmp_path)
     runs = []
     try:
