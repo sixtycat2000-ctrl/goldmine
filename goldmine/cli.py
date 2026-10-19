@@ -510,10 +510,23 @@ def cmd_search(args: argparse.Namespace) -> int:
         kinds = _parse_kinds(_g(args, "kinds"))
 
         backend: EmbeddingBackend | None = None
+        via = "cold"
         semantic_requested = scorer in ("hybrid", "semantic", "rrf") and not lexical_flag
+        backend_t0 = time.monotonic()  # the via-footer clock starts at acquisition (D6)
         if semantic_requested:
+            # R8 seam (D1/§6): the ONE deliberate cmd_search change — the serve
+            # daemon is tried first (handshake + drift check inside), and ANY
+            # failure degrades to the exact cold construction below (F5: retry-
+            # once then cold lives inside RemoteBackend; a serve problem can
+            # never lose the query). --no-serve / a non-llama backend skip the
+            # daemon entirely and take today's path untouched.
             try:
-                backend = _make_backend(cfg, _g(args, "backend"))
+                from .backends.serve import connect_or_cold
+
+                backend, via = connect_or_cold(
+                    cfg, _g(args, "backend"),
+                    no_serve=bool(_g(args, "no_serve", False)),
+                )
             except BackendUnavailable as exc:
                 logger.error("search: %s", exc)
                 _emit_error(_err_backend(
@@ -561,6 +574,14 @@ def cmd_search(args: argparse.Namespace) -> int:
                 snippet_width=excerpt_chars or None,
                 why=why,
             )
+            # R8 D6: the honest via footer — stderr only, so stdout stays
+            # data-only in both human and --json modes (§10.4). Semantic
+            # searches print it once, after the hits exist; lexical searches
+            # print nothing (no embedding happened).
+            if semantic_requested:
+                via = getattr(backend, "via", "cold")
+                print(f"via: {via} ({time.monotonic() - backend_t0:.2f}s)",
+                      file=sys.stderr)
             # v2.1 R1 (§2.1 wiring note): the pack build needs the backend
             # alive (count_tokens) — it runs BEFORE backend.close().
             if pack:
@@ -1751,6 +1772,19 @@ def cmd_help(args: argparse.Namespace) -> int:
 # --------------------------------------------------------------------- main
 
 
+def cmd_serve_dispatch(args: argparse.Namespace) -> int:
+    """Route the `serve` group (start / status / stop) — imported lazily so a
+    serve-module problem can never break the other 13 commands."""
+    from . import serve as serve_mod
+
+    verb = _g(args, "serve_verb")
+    if verb == "status":
+        return serve_mod.cmd_serve_status(args)
+    if verb == "stop":
+        return serve_mod.cmd_serve_stop(args)
+    return serve_mod.cmd_serve(args)
+
+
 _DISPATCH = {
     "ingest": cmd_ingest,
     "search": cmd_search,
@@ -1765,6 +1799,7 @@ _DISPATCH = {
     "open": cmd_open,
     "init": cmd_init,
     "help": cmd_help,
+    "serve": cmd_serve_dispatch,
 }
 
 

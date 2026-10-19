@@ -173,6 +173,41 @@ def build_parser() -> argparse.ArgumentParser:
     p_search.add_argument("--budget", type=int, metavar="N",
                           help="pack token budget (default 4000, clamped to "
                                "512-32768; needs --pack)")
+    # v2.1 R8 (D1/§6): bypass the serve daemon for THIS search (cold spawn)
+    p_search.add_argument("--no-serve", dest="no_serve", action="store_true",
+                          help="skip the serve daemon for this search (cold "
+                               "llama-server spawn, exactly the pre-serve path)")
+
+    # --- v2.1 R8 (D6): the warm-search daemon — `serve` (start, foreground),
+    # `serve status`, `serve stop` ---
+    p_serve = sub.add_parser(
+        "serve", parents=[common],
+        help="warm-search daemon (opt-in): resident embedding model, sub-300ms "
+             "searches; yields under memory pressure",
+        description=(
+            "Start the serve daemon: it keeps ONE llama-server resident (spawned "
+            "lazily on the first search) so semantic searches skip the ~1s model "
+            "load. Under memory pressure the model steps aside and stays aside "
+            "until the system recovers; searches never fail because of serve — "
+            "worst case they are cold. Single instance (flock); Ctrl-C or "
+            "`goldmine serve stop` exits cleanly. Searches use it automatically "
+            "when it runs; --no-serve opts a single search out."
+        ),
+    )
+    p_serve.add_argument("--linger", type=float, metavar="S", default=None,
+                         help="idle seconds before exit (default from config: "
+                              "300; only searches refresh the timer, status/"
+                              "stop do not)")
+    serve_verbs = p_serve.add_subparsers(dest="serve_verb", metavar="<verb>")
+    serve_verb_common = _global_options()
+    serve_verbs.add_parser(
+        "status", parents=[serve_verb_common],
+        help="daemon status (human, or --json envelope)",
+    )
+    serve_verbs.add_parser(
+        "stop", parents=[serve_verb_common],
+        help="stop the daemon (shutdown op; verified SIGTERM fallback)",
+    )
 
     p_status = sub.add_parser("status", parents=[common], help="index health")
     p_status.add_argument("--failures", type=int, metavar="N", default=10,

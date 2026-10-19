@@ -656,6 +656,7 @@ def run_checks(
         check_ocr(cfg),
         check_clt(),
         check_index(cfg, db),
+        check_serve_daemon(cfg),
         check_config(cfg),
         check_disk(cfg),
     ]
@@ -754,6 +755,15 @@ def check_clt() -> CheckResult:
             "xcode-select --install",
         )
     return CheckResult("clt (swiftc)", STATUS_OK, swiftc)
+
+
+def check_serve_daemon(cfg: Config) -> CheckResult:
+    """R8 serve row (D6 + review F4) — lives in goldmine.serve so the daemon's
+    rendering and the doctor row can never drift apart. Doctor never fixes:
+    the orphan receipt-sweep runs in `serve start`, not here."""
+    from .serve import check_serve_daemon as _check
+
+    return _check(cfg)
 
 
 def summary(results: list[CheckResult]) -> dict:

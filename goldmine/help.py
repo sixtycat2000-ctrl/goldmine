@@ -174,6 +174,52 @@ many files are stale and plain `goldmine ingest <roots>` re-does them. Only a
 model/fingerprint change gates (exit 3) — vectors from different embedding
 models must never mix.
 """,
+    "serve": """\
+serve — the warm-search daemon (opt-in)
+
+  goldmine serve            start it (foreground; Ctrl-C stops cleanly)
+  goldmine serve status     what it is doing (human, or --json)
+  goldmine serve stop       stop it
+  goldmine search "…" --no-serve   one search without the daemon
+
+`goldmine serve` keeps ONE llama-server resident so semantic searches skip the
+~1s model load: warm searches typically land well under 300ms end-to-end (a
+cold search is ~2s). The model spawns lazily on the first search — an idle
+daemon holds ~0 MB. The daemon holds NO index state: it only embeds; your
+index, vectors and search math stay where they were. Clients find it via
+<home>/serve.json (or a GOLDMINE_SERVE=socket-path override); config:
+[serve] linger = 300 (idle seconds before exit — only searches refresh the
+timer, not status/stop), timeout_s = 10.
+
+Memory honesty: the resident model server costs ~484 MB; index pages live in
+reclaimable file cache. Under memory pressure the model steps aside and stays
+aside until the system recovers (the daemon watches the kernel's pressure
+level: sustained warn unloads the model, sustained critical exits the daemon
+cleanly). On a 16 GB Mac hitting level 2 during a heavy build is ordinary —
+the daemon yields, searches fall back to cold (~2s), and residency resumes
+once the level returns to normal. `serve status` and `goldmine doctor` always
+say where you stand (unloads, last unload time, current level).
+
+The cold-fallback promise: serve problems can never break search — worst case
+a search is slow once. A dead daemon, a stale discovery file, a model switch,
+or a mid-search failure all degrade to the exact pre-serve cold path (the
+`via: serve/cold` line on stderr tells you which ran; search output itself is
+unchanged). `serve stop` and searches never kill processes they did not
+spawn: the daemon records a verified receipt for its llama-server child, and
+the next `serve start` sweeps an orphaned child only after checking that
+receipt (SIGKILL a daemon and the child is still cleaned up).
+
+Security: the socket is a 0600 Unix-domain socket under a 0700 per-user
+directory ($TMPDIR/goldmine-serve-<uid>), so filesystem permissions are the
+whole boundary — same user only. The llama-server itself binds 127.0.0.1 on
+an ephemeral port exactly as a cold search does; a UDS has no network
+exposure at all (Tailscale/VPN irrelevant). `serve stop` is callable by any
+process of your user — accepted (worst case the next search pays a ~0.7s
+respawn). Request caps: 64 texts and 256 KiB per text per request (when both
+are exceeded the count error wins).
+
+See also: goldmine help maintenance (doctor row), models (the model it serves)
+""",
     "troubleshoot": """\
 troubleshoot — the failures people actually hit
 
