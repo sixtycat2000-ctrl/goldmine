@@ -657,6 +657,7 @@ def run_checks(
         check_clt(),
         check_index(cfg, db),
         check_serve_daemon(cfg),
+        check_watch_daemon(cfg),
         check_config(cfg),
         check_disk(cfg),
     ]
@@ -762,6 +763,15 @@ def check_serve_daemon(cfg: Config) -> CheckResult:
     rendering and the doctor row can never drift apart. Doctor never fixes:
     the orphan receipt-sweep runs in `serve start`, not here."""
     from .serve import check_serve_daemon as _check
+
+    return _check(cfg)
+
+
+def check_watch_daemon(cfg: Config) -> CheckResult:
+    """R9 watch row (D4 + review R-F5) — lives in goldmine.watch next to the
+    heartbeat writer so the field contract cannot drift. NEVER fails: watch
+    is optional by construction."""
+    from .watch import check_watch as _check
 
     return _check(cfg)
 

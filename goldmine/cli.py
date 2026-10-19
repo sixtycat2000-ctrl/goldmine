@@ -759,8 +759,13 @@ def cmd_status(args: argparse.Namespace) -> int:
         stale_hint = _staleness_hint(staleness, store)
         roots = _index_roots(store)
         json_mode = bool(_g(args, "json", False))
+        # R9 H8 (D4): the watch surfaces — rendering lives in goldmine.watch
+        # next to the heartbeat writer so the field contract cannot drift.
+        from .watch import render_status_line, watch_status_payload
+
+        watch_line = render_status_line(cfg)
         if json_mode:
-            _emit_json({
+            payload = {
                 "index": str(db),
                 "index_bytes": db.stat().st_size,
                 "schema_version": store.meta("schema_version"),
@@ -793,7 +798,9 @@ def cmd_status(args: argparse.Namespace) -> int:
                     {"reason": r, "count": n} for r, n in store.reasons("metadata_only")
                 ],
                 "notices": notices,
-            })
+                "watch": watch_status_payload(cfg),
+            }
+            _emit_json(payload)
             return EXIT_OK
 
         lines = [
@@ -856,6 +863,8 @@ def cmd_status(args: argparse.Namespace) -> int:
             lines.append(f"metadata-only: {reason} × {n}")
         for notice in notices:
             lines.append(f"notice: [{notice['code']}] {notice['message']}")
+        if watch_line:  # H8: silent when the user never used watch
+            lines.append(watch_line)
         print("\n".join(lines))
         return EXIT_OK
     finally:
@@ -1785,6 +1794,14 @@ def cmd_serve_dispatch(args: argparse.Namespace) -> int:
     return serve_mod.cmd_serve(args)
 
 
+def cmd_watch_dispatch(args: argparse.Namespace) -> int:
+    """Route the `watch` group (start / stop) — lazy import, same shape as
+    serve (R9 D4)."""
+    from . import watch as watch_mod
+
+    return watch_mod.cmd_watch_dispatch(args)
+
+
 _DISPATCH = {
     "ingest": cmd_ingest,
     "search": cmd_search,
@@ -1800,6 +1817,7 @@ _DISPATCH = {
     "init": cmd_init,
     "help": cmd_help,
     "serve": cmd_serve_dispatch,
+    "watch": cmd_watch_dispatch,
 }
 
 

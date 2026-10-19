@@ -127,6 +127,22 @@ class ServeCfg:
 
 
 @dataclass
+class WatchCfg:
+    """[watch] — the folder auto-follow daemon (R9, docs/v2.1-r9-watch.md §6.2
+    as amended by review R-F1). Interval overrides only — the daemon's holds,
+    scope and lifecycle are flags/runtime, never config."""
+
+    interval_fast: int = 5        # detection floor after a change or at start
+    interval_slow: int = 120      # quiet-corpus cadence (decay x2, capped here)
+    settle_s: float = 2.0         # debounce before an ingest pass
+    linger: int = 300             # quiet seconds before exit 0 (--forever disables)
+    battery_max_batch: int = 50   # max changed files per delta pass on battery
+    full_period_s: int = 21600    # idle self-heal sweep (deletions + same-mtime)
+    min_pass_gap_s: float = 25.0  # R-F1a: floor between embed-bearing passes
+    battery_pass_gap_s: float = 120.0  # R-F1c: minimum embed-pass gap on battery
+
+
+@dataclass
 class Config:
     home: Path = Path("~/Library/Application Support/goldmine")
     backend: str = "llama"
@@ -138,6 +154,7 @@ class Config:
     search: SearchCfg = field(default_factory=SearchCfg)
     distill: DistillCfg = field(default_factory=DistillCfg)
     serve: ServeCfg = field(default_factory=ServeCfg)
+    watch: WatchCfg = field(default_factory=WatchCfg)
     init: InitCfg = field(default_factory=InitCfg)
 
 
@@ -273,6 +290,18 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
         if "socket" in data:
             cfg.serve.socket = str(data["socket"])
         unknown(section, data, set(ServeCfg.__dataclass_fields__))
+    elif section == "watch":
+        # R9 [watch] (§6.2 as amended by review R-F1): interval overrides only.
+        for key in ("interval_fast", "interval_slow", "battery_max_batch",
+                    "full_period_s"):
+            if key in data and (v := _coerce_int(data[key])) is not None:
+                setattr(cfg.watch, key, v)
+        if "linger" in data and (v := _coerce_int(data["linger"])) is not None:
+            cfg.watch.linger = v
+        for key in ("settle_s", "min_pass_gap_s", "battery_pass_gap_s"):
+            if key in data and (v := _coerce_float(data[key])) is not None:
+                setattr(cfg.watch, key, v)
+        unknown(section, data, set(WatchCfg.__dataclass_fields__))
     elif section == "init":
         if "roots" in data:
             vals = data["roots"]

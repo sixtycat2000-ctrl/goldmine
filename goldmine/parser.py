@@ -209,6 +209,57 @@ def build_parser() -> argparse.ArgumentParser:
         help="stop the daemon (shutdown op; verified SIGTERM fallback)",
     )
 
+    # --- v2.1 R9 (D4): the folder auto-follow daemon — `watch` (start,
+    # foreground), `watch stop` (serve-block shape) ---
+    p_watch = sub.add_parser(
+        "watch", parents=[common],
+        help="folder auto-follow: dropped files become searchable within "
+             "minutes; yields to battery/thermal/memory pressure",
+        description=(
+            "Watch folders and keep the index fresh: each change is detected "
+            "by a cheap scan and ingested by the ordinary pipeline (cold "
+            "backend per pass, per-file atomic commits — a crash never "
+            "re-does finished work). Scope is explicit ONLY: [init] roots by "
+            "default, --roots to override for this session (never written to "
+            "config). Holds: pauses under thermal load, batches <= 50 files "
+            "on battery, defers under memory pressure. Single instance "
+            "(flock); Ctrl-C or `goldmine watch stop` exits cleanly; "
+            "`--forever` disables the idle exit for a launchd deployment."
+        ),
+    )
+    p_watch.add_argument("--roots", nargs="+", metavar="PATH",
+                         help="folders to watch for THIS session (replaces "
+                              "[init] roots; never written to config)")
+    p_watch.add_argument("--code", action="store_true",
+                         help="include code/data files (same default as ingest)")
+    p_watch.add_argument("--exclude", action="append", default=[], metavar="GLOB",
+                         help="repeatable glob, as in ingest")
+    p_watch.add_argument("--include-datasets", action="store_true",
+                         help="do not apply dataset-folder detection")
+    p_watch.add_argument("--lexical-only", action="store_true",
+                         help="index text without embeddings (no model spawn; "
+                              "also immune to the memory-pressure defer)")
+    p_watch.add_argument("--interval-fast", type=float, metavar="S", default=None,
+                         help="detection floor after a change/at start "
+                              "(default from config: 5)")
+    p_watch.add_argument("--interval-slow", type=float, metavar="S", default=None,
+                         help="quiet-corpus cadence cap (default from config: "
+                              "120; decay x2 per quiet scan)")
+    p_watch.add_argument("--settle", type=float, metavar="S", default=None,
+                         help="debounce before an ingest pass (default from "
+                              "config: 2)")
+    p_watch.add_argument("--linger", type=float, metavar="S", default=None,
+                         help="quiet seconds before exit 0 (default from "
+                              "config: 300)")
+    p_watch.add_argument("--forever", action="store_true",
+                         help="disable the idle exit (launchd deployment)")
+    watch_verbs = p_watch.add_subparsers(dest="watch_verb", metavar="<verb>")
+    watch_verb_common = _global_options()
+    watch_verbs.add_parser(
+        "stop", parents=[watch_verb_common],
+        help="stop the daemon (verified SIGTERM from the heartbeat receipt)",
+    )
+
     p_status = sub.add_parser("status", parents=[common], help="index health")
     p_status.add_argument("--failures", type=int, metavar="N", default=10,
                           help="how many failure/metadata rows to list "

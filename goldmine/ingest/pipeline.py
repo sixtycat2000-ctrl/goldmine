@@ -129,6 +129,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         crawl_bounds: object | None = None,
         encoding_override: str | None = None,
         include_datasets: bool = False,
+        update_roots: bool = True,
         progress=None,
     ) -> IngestReport:
         exclude = list(exclude or [])
@@ -315,7 +316,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 self.backend.close()
             self._close_media_tmp()
 
-        self._finalize(report, live_fp)
+        self._finalize(report, live_fp, update_roots=update_roots)
         return report
 
     # ------------------------------------------------------------- dry run
@@ -546,7 +547,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         self.store.set_meta("fingerprint_id", None)
         self.store.set_meta("fingerprint_json", None)
 
-    def _finalize(self, report: IngestReport, live_fp: dict | None) -> None:
+    def _finalize(self, report: IngestReport, live_fp: dict | None, *,
+                  update_roots: bool = True) -> None:
         store = self.store
         if store is None:
             return
@@ -591,13 +593,18 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 "interrupted — resume with the same command (ingest is idempotent)",
             )
         # roots bookkeeping: first ingest records, later runs merge (SPEC §2).
-        stored = store.meta("roots_json")
-        try:
-            previous = json.loads(stored) if stored else []
-        except json.JSONDecodeError:
-            previous = []
-        merged = list(dict.fromkeys([*previous, *report.roots]))
-        store.set_meta("roots_json", json.dumps(merged))
+        # R9/D3: update_roots=False skips the merge — a watch delta pass's roots
+        # are ephemeral changed-file paths that must never become index scope
+        # (the F10 principle). Default True keeps every existing caller
+        # byte-identical.
+        if update_roots:
+            stored = store.meta("roots_json")
+            try:
+                previous = json.loads(stored) if stored else []
+            except json.JSONDecodeError:
+                previous = []
+            merged = list(dict.fromkeys([*previous, *report.roots]))
+            store.set_meta("roots_json", json.dumps(merged))
         if store.meta("schema_version") is None:
             store.set_meta("schema_version", str(Store.SCHEMA_VERSION))
         if store.meta("app_version") is None:

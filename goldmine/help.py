@@ -220,6 +220,51 @@ are exceeded the count error wins).
 
 See also: goldmine help maintenance (doctor row), models (the model it serves)
 """,
+    "watch": """\
+watch — folder auto-follow (dropped files become searchable within minutes)
+
+  goldmine watch             watch [init] roots (foreground; Ctrl-C stops)
+  goldmine watch --roots A B watch those folders for THIS session instead
+  goldmine watch stop        stop the daemon (verified SIGTERM)
+  goldmine watch --forever   no idle exit — the launchd deployment form
+
+The scope invariant, mechanically: watch only ever follows folders you
+explicitly added — [init] roots (chosen at `goldmine init`) by default, or
+`--roots PATH…` on the command line (the same explicit act as `goldmine
+ingest <path>`). Nothing is swept, ever. An ephemeral `--roots` session is
+NEVER written to config; the paths are recorded once in the index's roots
+(scope record, like any manual ingest) and may linger in `goldmine status`
+afterwards — that is pre-existing roots_json behavior, removable with
+`goldmine reset`.
+
+How it works: a cheap scan detects changes (new/edited/deleted), a 2s
+debounce collapses editor bursts, and the ordinary ingest pipeline does the
+work (content-hash skip — a crash or reboot never re-does finished work).
+Cadence adapts: 5s right after activity, doubling to 120s when quiet; a
+backoff floor also keeps passes at least ~25s apart and the scan cost under
+half the duty, so a churning folder cannot spawn a model storm.
+
+Power honesty: under thermal throttling passes pause (scans continue); on
+battery only batches of <= 50 changed files run and passes are paced >= 2min
+apart (sweeps wait for AC); at kernel memory-pressure level >= 2 a pass
+defers one tick (the serve daemon yields to the same signal). Every hold is
+named in `goldmine status`, `goldmine doctor` and the heartbeat — never a
+silent skip. Low Power Mode is reported but does not gate (v2.2).
+
+Latency: a dropped file becomes searchable within `current interval + 60s`
+(at the slow cadence <= ~3 min; right after you touch things, seconds).
+Deletions are pruned by a throttled sweep (<= ~15 min). Known limit: an edit
+with identical size AND mtime is invisible to the quick check (rsync-class
+limitation) — caught by the periodic sweep, at the next watch start, or by
+plain `goldmine ingest <roots>`.
+
+`goldmine watch` and `goldmine serve` run together by design (separate
+locks; the watcher spawns its own cold model per pass and defers under the
+memory pressure that would make them fight).
+
+See also: goldmine help ingest (what a pass does) · serve (coexistence) ·
+maintenance (doctor row)
+""",
     "troubleshoot": """\
 troubleshoot — the failures people actually hit
 
