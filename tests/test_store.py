@@ -506,3 +506,20 @@ def test_store_v3_ddl_carries_the_partial_indexes(store):
         "EXPLAIN QUERY PLAN SELECT DISTINCT file FROM segments WHERE vec IS NOT NULL"
     ).fetchall()
     assert any("segments_vec_file" in r[3] for r in plan)
+
+def test_upsert_file_updates_sha256_on_conflict(tmp_home):
+    """Debt fix: ON CONFLICT previously dropped sha256, so changed files
+    re-committed on EVERY plain ingest (stale-sha loop)."""
+    store = Store(tmp_home / "i.sqlite")
+    f1 = tmp_home / "doc.txt"
+    f1.write_text("v1", encoding="utf-8")
+    rec = FileRec(path=str(f1), source="file", kind="doc", size=2,
+                  mtime=1.0, sha256="aaa", state="pending")
+    fid = store.upsert_file(rec)
+    rec2 = FileRec(path=str(f1), source="file", kind="doc", size=6,
+                   mtime=2.0, sha256="bbb", state="done",
+                   capability="content_indexed")
+    fid2 = store.upsert_file(rec2)
+    assert fid2 == fid
+    row = store.db.execute("SELECT sha256 FROM files WHERE id=?", (fid,)).fetchone()
+    assert row[0] == "bbb"

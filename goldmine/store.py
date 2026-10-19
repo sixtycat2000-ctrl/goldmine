@@ -329,6 +329,7 @@ class Store:
                      kind = excluded.kind,
                      size = excluded.size,
                      mtime = excluded.mtime,
+                     sha256 = excluded.sha256,
                      state = excluded.state,
                      capability = excluded.capability,
                      detail = excluded.detail,
