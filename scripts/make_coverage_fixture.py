@@ -13,9 +13,11 @@ Optional external tools degrade honestly and are recorded in the manifest:
   say    -> the 5 min WAV carries spoken content (tone fallback otherwise)
 
 Outputs <out>/manifest.json: every file the fixture defines, with kind,
-optional `requires` tool, and whether it was created. The media-eval
-self-check (tests/test_media_queries.py) and coverage_report.py --fixture
-consume that manifest.
+optional `requires` tool, and whether it was created. The say-TTS wav (whose
+raw bytes are environment-dependent, F1) additionally carries a
+content-stable `speech_surrogate_sha256` (tool + transcript + duration
+bucket). The media-eval self-check (tests/test_media_queries.py) and
+coverage_report.py --fixture consume that manifest.
 
 Usage: python3 scripts/make_coverage_fixture.py [--out DIR] [--seed N] [--force]
 """
@@ -23,11 +25,15 @@ Usage: python3 scripts/make_coverage_fixture.py [--out DIR] [--seed N] [--force]
 from __future__ import annotations
 
 import argparse
+import gzip
+import hashlib
 import json
 import shutil
 import struct
 import subprocess
 import sys
+import tarfile
+import time
 import wave
 import zipfile
 import zlib
@@ -40,7 +46,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "tests"))
 
-from conftest import make_docx, make_pdf  # the committed test builders (reuse)
+from conftest import make_docx, make_pdf, pinned_zipinfo  # committed test builders
 
 SEED = 20261016
 
@@ -55,12 +61,13 @@ _GENERATOR_PATH = Path(__file__).resolve()
 
 def fixture_version_record(manifest: dict, generator: Path | None = None) -> dict:
     """The staleness fingerprint stored beside the fixture: the version
-    constant, the GENERATOR's mtime (the script that defines the tree), and
-    the created-file count."""
+    constant, the GENERATOR's CONTENT hash (F1: machine-independent — the old
+    mtime fingerprint made every fresh clone's rebuild look stale and tripped
+    the retrieval gate's pre-flight), and the created-file count."""
     generator = Path(generator) if generator else _GENERATOR_PATH
     return {
         "version": FIXTURE_VERSION,
-        "generator_mtime": generator.stat().st_mtime,
+        "generator_sha256": hashlib.sha256(generator.read_bytes()).hexdigest(),
         "files": len([f for f in manifest.get("files", []) if f.get("created")]),
     }
 
@@ -285,12 +292,13 @@ def make_epub(path: Path, title: str, chapters: list[tuple[str, str]]) -> None:
         f"<manifest>{manifest}</manifest><spine>{spine}</spine></package>"
     )
     with zipfile.ZipFile(path, "w") as zf:
-        zf.writestr("mimetype", "application/epub+zip")
-        zf.writestr("META-INF/container.xml", container)
-        zf.writestr("OEBPS/content.opf", opf)
+        # F1: pinned ZipInfo entries — no wall-clock timestamps in the bytes
+        zf.writestr(pinned_zipinfo("mimetype"), "application/epub+zip")
+        zf.writestr(pinned_zipinfo("META-INF/container.xml"), container)
+        zf.writestr(pinned_zipinfo("OEBPS/content.opf"), opf)
         for i, (heading, body) in enumerate(chapters):
             zf.writestr(
-                f"OEBPS/ch{i}.xhtml",
+                pinned_zipinfo(f"OEBPS/ch{i}.xhtml"),
                 f"<html><body><h1>{escape(heading)}</h1>"
                 f"<p>{escape(body)}</p></body></html>",
             )
@@ -382,6 +390,47 @@ def speech_wav(path: Path) -> bool:
     return False
 
 
+#: F1 (say-wav surrogate): `say` output bytes vary between builds (voice
+#: pacing moves the RIFF size), so the TTS wav cannot be pinned by raw sha.
+#: The manifest pins it as requires:say PLUS this CONTENT-STABLE surrogate:
+#: sha256 over tool + transcript hash + a coarse duration bucket. The bucket
+#: edges (90 s / 4 min / 7 min) sit far from any sane pacing of this fixed
+#: ~5 min script, so the surrogate cannot flip between two builds — while a
+#: truncated file, a voiceless fallback, or a wrong transcript still moves it.
+SPEECH_BUCKETS: tuple[tuple[float, str], ...] = (
+    (90.0, "under-90s"), (240.0, "90s-to-4min"), (420.0, "4-to-7min"),
+)
+
+
+def speech_surrogate(tool: str, duration_s: float) -> str:
+    """Content-stable surrogate hash for the environment-dependent TTS wav."""
+    bucket = next(
+        (label for limit, label in SPEECH_BUCKETS if duration_s < limit),
+        "over-7min",
+    )
+    payload = json.dumps(
+        {
+            "tool": tool,
+            "transcript_sha256": hashlib.sha256(
+                SPEECH_SCRIPT.encode("utf-8")
+            ).hexdigest(),
+            "duration_bucket": bucket,
+        },
+        sort_keys=True,
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def wav_duration_s(path: Path) -> float:
+    """Seconds of audio in a RIFF wav (frames/rate); a size estimate fallback
+    for a header the wave module refuses (LEI16@16000 mono = 32000 B/s)."""
+    try:
+        with wave.open(str(path), "rb") as w:
+            return w.getnframes() / float(w.getframerate() or 16000)
+    except Exception:
+        return path.stat().st_size / 32000.0
+
+
 def ffmpeg_mp4(path: Path, seconds: int) -> bool:
     """40 s MP4: ffmpeg testsrc2 color bars + 440 Hz tone (offline lavfi)."""
     ffmpeg = shutil.which("ffmpeg")
@@ -407,9 +456,6 @@ def ffmpeg_mp4(path: Path, seconds: int) -> bool:
 # ------------------------------------------------------------------- fixture
 
 def build(out: Path, seed: int = SEED, force: bool = False) -> dict:
-    import time as _time
-
-    started = _time.perf_counter()
     rng = np.random.default_rng(seed)
     if out.exists() and not force:
         print(f"fixture exists at {out} (use --force to rebuild)")
@@ -618,6 +664,12 @@ eight seconds near Cassiopeia.</p>
     speech_ok = speech_wav(audio / "logbook-speech-5min.wav")
     record("audio/logbook-speech-5min.wav", "audio",
            requires="say" if speech_ok else None)
+    if speech_ok:
+        # F1: say bytes are environment-dependent — pin the content-stable
+        # surrogate (tool + transcript + coarse duration bucket) instead.
+        files[-1]["speech_surrogate_sha256"] = speech_surrogate(
+            "say", wav_duration_s(audio / "logbook-speech-5min.wav")
+        )
     video = out / "video"
     video.mkdir(parents=True)
     mp4_ok = ffmpeg_mp4(video / "bars-tone-40s.mp4", 40)
@@ -682,17 +734,22 @@ eight seconds near Cassiopeia.</p>
     )
     record("noise/app.min.js", "noise")
     with zipfile.ZipFile(noise / "data.zip", "w") as zf:
-        zf.writestr("inner.txt", "zipped fixture content")
+        # F1: pinned entry metadata — the zip must be byte-identical per build
+        zf.writestr(pinned_zipinfo("inner.txt"), "zipped fixture content")
     record("noise/data.zip", "archive")
-    import tarfile
+    # F1: a plain "w:gz" tarfile stamps time.time() into the gzip header; wrap
+    # the gzip stream ourselves with mtime=0 (and no stored filename), and pin
+    # the TarInfo mtime explicitly — the archive is byte-identical per build.
+    blob = b"fixture tar content\n"
+    info = tarfile.TarInfo("inner.log")
+    info.size = len(blob)
+    info.mtime = 0
+    with open(noise / "backup.tar.gz", "wb") as raw:
+        with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as gz:
+            with tarfile.open(fileobj=gz, mode="w") as tf:
+                import io
 
-    with tarfile.open(noise / "backup.tar.gz", "w:gz") as tf:
-        import io
-
-        info = tarfile.TarInfo("inner.log")
-        blob = b"fixture tar content\n"
-        info.size = len(blob)
-        tf.addfile(info, io.BytesIO(blob))
+                tf.addfile(info, io.BytesIO(blob))
     record("noise/backup.tar.gz", "archive")
     nm = noise / "node_modules" / "left-pad"
     nm.mkdir(parents=True)
@@ -702,7 +759,8 @@ eight seconds near Cassiopeia.</p>
     manifest = {
         "seed": seed,
         "root": str(out),
-        "elapsed_s": round(_time.perf_counter() - started, 2),
+        # F1: no elapsed_s here — a wall-clock field made manifest.json itself
+        # non-deterministic; build time belongs to the CLI's stdout only.
         "files": files,
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=1))
@@ -721,6 +779,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--force", action="store_true", help="rebuild if present")
     args = parser.parse_args(argv)
 
+    t0 = time.perf_counter()
     manifest = build(Path(args.out).expanduser(), seed=args.seed, force=args.force)
     total = sum(
         (Path(manifest["root"]) / f["path"]).stat().st_size
@@ -728,7 +787,7 @@ def main(argv: list[str] | None = None) -> int:
     )
     print(
         f"fixture: {manifest['root']} — {len(manifest['files'])} files, "
-        f"{total / 1e6:.1f} MB, built in {manifest['elapsed_s']}s "
+        f"{total / 1e6:.1f} MB, built in {time.perf_counter() - t0:.1f}s "
         f"(seed {manifest['seed']})"
     )
     missing = [

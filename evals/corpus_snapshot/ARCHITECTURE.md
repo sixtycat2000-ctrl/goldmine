@@ -128,6 +128,11 @@ harness compares them; see [docs/TEST_PLAN.md](docs/TEST_PLAN.md)).
 
 ### 2.3 Distill
 
+> v2.1 (R6): τ is CALIBRATED from the corpus (Otsu over sampled pairwise cosines,
+> percentile fallback, `tau_source`), clustering adds the average-link admission guard, and
+> cards are medoid + coverage excerpts — normative algorithm: docs/v2.1-r6-distill.md
+> (the v1 diagram below is kept for the data flow, not the algorithm).
+
 ```
 segments (vectors + text, fingerprint-matched, extractor-matched)
    ▼

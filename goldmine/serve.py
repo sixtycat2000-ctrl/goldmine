@@ -37,6 +37,7 @@ import subprocess
 import sys
 import threading
 import time
+from collections.abc import Callable
 from pathlib import Path
 
 from . import __version__
@@ -196,12 +197,18 @@ class PressureGuard:
 
     def __init__(self, *, sampler=default_pressure_sampler,
                  sample_cache_s: float = 30.0, confirm_s: float = 30.0,
-                 cooldown_s: float = 120.0, stream=None):
+                 cooldown_s: float = 120.0, stream=None,
+                 resident: Callable[[], bool] | None = None):
         self.sampler = sampler
         self.sample_cache_s = float(sample_cache_s)
         self.confirm_s = float(confirm_s)
         self.cooldown_s = float(cooldown_s)
         self.stream = stream if stream is not None else sys.stderr
+        # F3: injectable residency — None reads as "resident" (standalone use);
+        # the daemon wires `lambda: self.backend is not None` so a sustained
+        # pressure episode with NOTHING resident starts the cooldown episode
+        # but does not count (or print) a model unload that never happened.
+        self.resident = resident
         self.level = 1
         self.sampled_at: float | None = None
         self.first_warn: float | None = None
@@ -237,8 +244,10 @@ class PressureGuard:
 
     def check(self, now: float | None = None) -> int:
         """One hysteresis tick. Single warn reading -> NO action (no flapping);
-        two warn-or-worse >= confirm_s apart -> ONE unload + cooldown (never
-        re-fired while cooling — one unload per sustained-pressure episode);
+        two warn-or-worse >= confirm_s apart -> ONE pressure episode: cooldown
+        starts, and when a model IS resident it is unloaded (never re-fired
+        while cooling — one unload per sustained-pressure episode, F3: with
+        nothing resident the episode still starts but no unload is counted);
         two critical >= confirm_s apart -> on_critical_exit (graceful exit 0)."""
         now = time.monotonic() if now is None else now
         level = self.sample(now)
@@ -254,16 +263,27 @@ class PressureGuard:
                 self.first_warn = now
             elif now - self.first_warn >= self.confirm_s and not self.cooling:
                 self.first_warn = None
-                self.unloads += 1
-                self.last_unload = time.time()
                 self.cooldown_until = now + self.cooldown_s
-                print(
-                    f"goldmine serve: memory pressure level {level} sustained "
-                    f"— unloading the model (cooldown {self.cooldown_s:g}s)",
-                    file=self.stream, flush=True,
-                )
-                if self.on_unload is not None:
-                    self.on_unload(level)
+                is_resident = self.resident() if self.resident is not None else True
+                if is_resident:
+                    self.unloads += 1
+                    self.last_unload = time.time()
+                    print(
+                        f"goldmine serve: memory pressure level {level} sustained "
+                        f"— unloading the model (cooldown {self.cooldown_s:g}s)",
+                        file=self.stream, flush=True,
+                    )
+                    if self.on_unload is not None:
+                        self.on_unload(level)
+                else:
+                    # F3: the episode is real, the unload is not — nothing is
+                    # resident to step aside; keep the hold, count nothing
+                    print(
+                        f"goldmine serve: memory pressure level {level} sustained "
+                        f"— nothing resident to unload, holding aside "
+                        f"(cooldown {self.cooldown_s:g}s)",
+                        file=self.stream, flush=True,
+                    )
         if level >= 3:
             if self.first_crit is None:
                 self.first_crit = now
@@ -303,6 +323,10 @@ class ServeDaemon:
             stream=self.stream,
         )
         self.guard.on_unload = self._guard_unload
+        # F3: the guard must know whether there is a model to unload, so a
+        # sustained-pressure episode with nothing resident keeps the cooldown
+        # hold without counting (or printing) a phantom unload
+        self.guard.resident = lambda: self.backend is not None
         self.guard.on_critical_exit = (
             lambda: self.request_stop("memory pressure (critical level sustained)")
         )
@@ -790,9 +814,23 @@ class ServeDaemon:
             # (don't wait for the next 1 s tick to reach the same conclusion)
             self.guard.cooldown_until = None
         if self.guard.cooling:
+            # F4: name the hold that is ACTIVELY refusing. "Cooling down after
+            # an unload" is only true inside the window AND when a real unload
+            # happened (F3: a nothing-resident episode opens the window but
+            # unloads nothing); every other cooling shape is the pressure
+            # level itself holding the model aside.
+            in_unload_cooldown = (
+                self.guard.cooldown_until is not None
+                and now < self.guard.cooldown_until
+                and self.guard.last_unload is not None
+            )
+            why = (
+                "cooling down after a memory-pressure unload" if in_unload_cooldown
+                else "held aside by sustained memory pressure"
+            )
             raise ServeOpError(
                 "model_not_resident",
-                self._not_resident_message(level, "cooling down after a memory-pressure unload"),
+                self._not_resident_message(level, why),
             )
         if level >= 2:
             raise ServeOpError(
@@ -1001,11 +1039,15 @@ def _render_status_human(st: dict) -> str:
             f"~{MODEL_RSS_CLASS_MB} MB class"
         )
     else:
-        note = (
-            "lazy — spawns on the first search"
-            if not (guard.get("unloads") or 0)
-            else f"stepped aside (unload #{guard.get('unloads')})"
-        )
+        # F3 wording: unloads counts REAL unloads only — a pressure hold with
+        # nothing resident is still a stepped-aside state, and the status says
+        # which one it is instead of reading as plain laziness
+        if (guard.get("unloads") or 0) >= 1:
+            note = f"stepped aside (unload #{guard.get('unloads')})"
+        elif guard.get("state") == "cooldown":
+            note = "stepped aside under memory pressure (nothing was resident to unload)"
+        else:
+            note = "lazy — spawns on the first search"
         lines.append(f"  model: {model_id} (sha {sha_show}) · not resident · {note}")
     sampled_age = guard.get("sampled_age_s")
     age_note = (

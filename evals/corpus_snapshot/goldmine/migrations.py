@@ -51,7 +51,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-TARGET = 3  # == Store.SCHEMA_VERSION; single source, imported by store.py
+TARGET = 4  # == Store.SCHEMA_VERSION; single source, imported by store.py
 
 #: The chunker id a v1 index really ran with (REDESIGN §6 / 05:152,264). The
 #: backfill stamps THIS, never the current CHUNKER_VERSION: staleness then
@@ -157,12 +157,17 @@ def migrate(
                 )
             started = time.monotonic()
             reached = step(db, version)  # each step stamps its own user_version
+            step_notes = list(notes)
+            if reached == 4 and version < 4:
+                # the destructive step announces itself in the history too
+                # (R6 §3.3): "cards rebuilt (derived data); snapshot <name>"
+                step_notes.insert(0, "cards rebuilt (derived data)")
             _append_history(db, {
                 "to": reached,
                 "at": time.time(),
                 "app_version": _app_version(),
                 "ms": round((time.monotonic() - started) * 1000.0, 1),
-                "notes": "; ".join(notes) or None,
+                "notes": "; ".join(step_notes) or None,
             })
             notes = []  # the snapshot note belongs to the first step only
             applied.append(reached)
@@ -294,7 +299,97 @@ def _v2_to_v3(db: sqlite3.Connection, from_version: int) -> int:
     return 3
 
 
-MIGRATIONS: dict[int, callable] = {2: _v1_to_v2, 3: _v2_to_v3}
+# ------------------------------------------------- v3 -> v4 (cards v2, announced)
+
+
+def _v3_to_v4(db: sqlite3.Connection, from_version: int) -> int:
+    """v3 -> v4 — the announced DESTRUCTIVE step (v2.1-r6 §3, D6): cards v1
+    tables are replaced by the v2 shapes so incremental distill gets run rows,
+    view identity, and per-card centroids.
+
+    Why dropping cards is safe (the announcement's substance, §3.2): cards are
+    (a) derived — rebuilt from segments+vecs by one command; (b)
+    fingerprint-bound — v1 kept exactly one generation and wiped it per run, so
+    no user data can span generations; (c) snapshotted — migrate() took
+    <index>.pre-v4.sqlite (VACUUM INTO, integrity-verified) before this step
+    when the file was over 1 MB. The step announces itself through the
+    `cards_v2_rebuild_note` meta key, which status/doctor surface (F11) and the
+    first successful distill run of any view clears.
+    """
+    db.execute("DROP TABLE IF EXISTS card_chunks")
+    db.execute("DROP TABLE IF EXISTS cards")
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS distill_runs(
+               id          TEXT PRIMARY KEY,
+               algo        TEXT NOT NULL,
+               tau         REAL NOT NULL,
+               tau_source  TEXT NOT NULL,
+               scope_json  TEXT NOT NULL,
+               corpus_hash TEXT NOT NULL,
+               mode        TEXT NOT NULL,
+               stats_json  TEXT NOT NULL,
+               created_at  REAL NOT NULL
+           )"""
+    )
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS cards(
+               id             INTEGER PRIMARY KEY,
+               run_id         TEXT NOT NULL REFERENCES distill_runs(id),
+               view_id        TEXT NOT NULL,
+               title          TEXT NOT NULL,
+               title_kind     TEXT NOT NULL DEFAULT 'terms',
+               terms          TEXT NOT NULL,
+               excerpts       TEXT NOT NULL,
+               size           INTEGER NOT NULL,
+               n_files        INTEGER NOT NULL,
+               parent_id      INTEGER REFERENCES cards(id),
+               centroid       BLOB,
+               status         TEXT NOT NULL DEFAULT 'active',
+               llm_title      TEXT,
+               llm_summary    TEXT,
+               llm_model      TEXT,
+               fingerprint_id TEXT NOT NULL,
+               distill_algo   TEXT NOT NULL,
+               created_at     REAL NOT NULL,
+               updated_at     REAL NOT NULL
+           )"""
+    )
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS card_chunks(
+               card   INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+               chunk  INTEGER NOT NULL,  -- NO segments FK: tombstones must be
+                                         -- storable for the §4.4 dissolve sweep
+                                         -- (foreign_keys=ON would fail every
+                                         -- segment deletion otherwise)
+               weight REAL NOT NULL,
+               UNIQUE(card, chunk)
+           )"""
+    )
+    db.execute("CREATE INDEX IF NOT EXISTS card_chunks_card ON card_chunks(card)")
+    db.execute("CREATE INDEX IF NOT EXISTS cards_view ON cards(view_id, status)")
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS distill_views(
+               name        TEXT PRIMARY KEY,
+               scope_json  TEXT NOT NULL,
+               params_json TEXT NOT NULL,
+               created_at  REAL NOT NULL
+           )"""
+    )
+    db_path = _db_path(db)
+    snapshot_name = f"{Path(db_path).name}.pre-v4.sqlite" if db_path else \
+        "<index>.pre-v4.sqlite"
+    _set_meta(db, "cards_v2_rebuild_note", (
+        "cards v1 tables were replaced by the v4 schema (2026-10-19 R6): cards "
+        "are derived data and were recreated EMPTY — run `goldmine distill` to "
+        "build v2 cards. A pre-migration copy of the old cards is in "
+        f"{snapshot_name} (if the index was over 1 MB)."
+    ))
+    _set_meta(db, "schema_version", str(4))
+    db.execute("PRAGMA user_version = 4")
+    return 4
+
+
+MIGRATIONS: dict[int, callable] = {2: _v1_to_v2, 3: _v2_to_v3, 4: _v3_to_v4}
 
 
 # ----------------------------------------------------------------- backups

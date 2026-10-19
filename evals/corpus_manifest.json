@@ -16,7 +16,7 @@
   "seed": 20261016,
   "version": {
    "version": 1,
-   "generator_mtime": 1792172951.7909153,
+   "generator_sha256": "c2408e2ca71e6ed0b38e3bed2e517144d926506c1fc11d0d8ab20bd61f948c7d",
    "files": 31
   },
   "files": [
@@ -54,7 +54,7 @@
     "path": "docx/quarterly-report.docx",
     "kind": "doc",
     "bytes": 1344,
-    "sha256": "f0dbbbb2b05f60171ec438e1cfabd5ab1996c923e798a98afff1f91c34da9eaa"
+    "sha256": "f1231d1d781db5a2f9692ce1fb86be1bb958b25d21b0d44668aefbd94aa78004"
    },
    {
     "path": "pdf/atlas-text-layer.pdf",
@@ -144,7 +144,8 @@
     "path": "audio/logbook-speech-5min.wav",
     "kind": "audio",
     "bytes": 7121036,
-    "requires": "say"
+    "requires": "say",
+    "speech_surrogate_sha256": "f2f6d70767436d6c3e1fc7c8162e5fff1ea9acd8df76a56533338b5fb531facd"
    },
    {
     "path": "video/bars-tone-40s.mp4",
@@ -174,7 +175,7 @@
     "path": "books/coastal-almanac.epub",
     "kind": "doc",
     "bytes": 1787,
-    "sha256": "7794c7fe6e40241188a09ca0e4d772959894f1b86bd544c674dc89895b382a3b"
+    "sha256": "07aadb487ec11b29ecd4fef71ef17cc03635ff0107b3e659552159fcffb53973"
    },
    {
     "path": "noise/server.pem",
@@ -192,13 +193,13 @@
     "path": "noise/data.zip",
     "kind": "archive",
     "bytes": 138,
-    "sha256": "2914a56e2496bbe0560bc51e687d041432c917e4e0bdf198fcfd14510c8a3f61"
+    "sha256": "edf247dde0db98202ecd68cfd68b63265b6df11833a2cca9245a7ab41c4b1a00"
    },
    {
     "path": "noise/backup.tar.gz",
     "kind": "archive",
-    "bytes": 131,
-    "sha256": "fcde339f24a490e2f5d5ff0481372f25bf1b69e67436967e6af5e8ff62262b6e"
+    "bytes": 120,
+    "sha256": "5fac31dff3cf025edc59fa4235f32a7e1a16d04b6429599603a16176862bcfda"
    },
    {
     "path": "noise/node_modules/left-pad/index.js",
@@ -724,22 +725,22 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/README.md",
    "source": "goldmine",
-   "bytes": 5781,
-   "sha256": "d967b22a669947867f22648318c543a44a9c0475c69b098b9a743f7cffc7a949",
+   "bytes": 5912,
+   "sha256": "e2bfa9cebbcd37197e49b2090cb0e2a74c51b7e2f50a41028d738532a4fb8620",
    "origin": "/Users/yul/git/goldmine/README.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/ARCHITECTURE.md",
    "source": "goldmine",
-   "bytes": 25781,
-   "sha256": "6ed17046b54a016d085708416fd2a5d08a3d7535963c17ea44caf31984a25028",
+   "bytes": 26116,
+   "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf",
    "origin": "/Users/yul/git/goldmine/ARCHITECTURE.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/SPEC.md",
    "source": "goldmine",
-   "bytes": 18867,
-   "sha256": "f6185b503d6890808209b9497ff14a1acb171053986fae358977ec7241431b33",
+   "bytes": 42391,
+   "sha256": "99e4ed0a1dc130e799ce4f723047d7a29e7adefd40d5067ab52f04b1b6d45306",
    "origin": "/Users/yul/git/goldmine/SPEC.md"
   },
   {
@@ -752,8 +753,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/store.py",
    "source": "goldmine",
-   "bytes": 33005,
-   "sha256": "ad8f1633a9df90370f09f1256ffed5a13a316276f0b1e76d3f68a73f681a5944",
+   "bytes": 47316,
+   "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31",
    "origin": "/Users/yul/git/goldmine/goldmine/store.py"
   },
   {
@@ -766,8 +767,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/config.py",
    "source": "goldmine",
-   "bytes": 16238,
-   "sha256": "5903f71a9e27c945b9a42a7385feb564d9c46f697eaf1f15a73fc7b767c632c4",
+   "bytes": 18049,
+   "sha256": "2d9126fd644d79d40c86783b9edaed3711c6ce5061c8f696d29af15cc130f25e",
    "origin": "/Users/yul/git/goldmine/goldmine/config.py"
   },
   {
@@ -780,8 +781,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/distill.py",
    "source": "goldmine",
-   "bytes": 14073,
-   "sha256": "58ad7e340fe67ffb9662d356b71123cc7bdcddaf3db01c3de676f0ef888d7ada",
+   "bytes": 57514,
+   "sha256": "244a07d0b0d6a348ea9f3ac16845da3d7b2b3ceabfb1d24a1bdbc4409111057c",
    "origin": "/Users/yul/git/goldmine/goldmine/distill.py"
   },
   {
@@ -794,8 +795,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/migrations.py",
    "source": "goldmine",
-   "bytes": 17103,
-   "sha256": "1f678e507df67c1902e81b6a2a83ba7d632c13975890b41e7a02dad426e3a4e6",
+   "bytes": 21482,
+   "sha256": "45ee28fc1e1d2cde1e4d96376eb5cf25b58c1b0a5bfa900f1050a629ca759d22",
    "origin": "/Users/yul/git/goldmine/goldmine/migrations.py"
   },
   {
@@ -822,8 +823,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/pipeline.py",
    "source": "goldmine",
-   "bytes": 81418,
-   "sha256": "efac1ba21289f17f4c6e86bb38a34c3f5448a781736d73a8e430abea5b77274c",
+   "bytes": 28536,
+   "sha256": "d3dc68666ced3f97fb95fd3895ddbfcf30e54e66ca03fdd838e925d73faff2b8",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/pipeline.py"
   },
   {
@@ -893,8 +894,8 @@
  "notes": [
   "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
   "foresight-rea is decompiled third-party code \u2014 local-only, its bytes are never copied into the repo (docs/v2/01 risk 9)",
-  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only",
-  "fixture 'version' record (version + generator mtime + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
+  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
+  "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
   "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)"
  ]
 }

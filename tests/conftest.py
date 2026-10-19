@@ -55,8 +55,22 @@ def mock_backend():
 # ------------------------------------------------------------------ builders
 
 
+def pinned_zipinfo(name: str) -> zipfile.ZipInfo:
+    """A byte-deterministic ZipInfo: fixed epoch timestamp + fixed posix mode.
+
+    F1 (fixture determinism): ZipFile.writestr with a bare name stamps the
+    wall clock into every local/central header, so a rebuilt fixture was
+    never byte-identical and the tracked corpus manifest's sha pins broke on
+    a fresh machine. Every fixture zip entry goes through this."""
+    zi = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+    zi.external_attr = 0o644 << 16
+    return zi
+
+
 def make_docx(path: Path, paragraphs: list[str], title: str | None = None) -> None:
-    """Minimal docx: [Content_Types].xml + word/document.xml (+ optional core.xml)."""
+    """Minimal docx: [Content_Types].xml + word/document.xml (+ optional core.xml).
+
+    Entries use pinned_zipinfo — byte-deterministic across builds (F1)."""
     w_ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
     body = "".join(
         f"<w:p><w:r><w:t>{escape(p)}</w:t></w:r></w:p>" for p in paragraphs
@@ -74,8 +88,8 @@ def make_docx(path: Path, paragraphs: list[str], title: str | None = None) -> No
         "</Types>"
     )
     with zipfile.ZipFile(path, "w") as zf:
-        zf.writestr("[Content_Types].xml", content_types)
-        zf.writestr("word/document.xml", document)
+        zf.writestr(pinned_zipinfo("[Content_Types].xml"), content_types)
+        zf.writestr(pinned_zipinfo("word/document.xml"), document)
         if title is not None:
             core = (
                 '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
@@ -83,7 +97,7 @@ def make_docx(path: Path, paragraphs: list[str], title: str | None = None) -> No
                 'xmlns:dc="http://purl.org/dc/elements/1.1/">'
                 f"<dc:title>{escape(title)}</dc:title></cp:coreProperties>"
             )
-            zf.writestr("docProps/core.xml", core)
+            zf.writestr(pinned_zipinfo("docProps/core.xml"), core)
 
 
 HTML_PAGE = """<!DOCTYPE html>

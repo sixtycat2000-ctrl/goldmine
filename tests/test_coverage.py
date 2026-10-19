@@ -101,7 +101,77 @@ def test_fixture_path_list_is_seed_deterministic(monkeypatch, tmp_path):
     assert [f["path"] for f in a["files"]] == [f["path"] for f in b["files"]]
     # budget contract
     assert len(a["files"]) >= 25
-    assert a["elapsed_s"] < 60
+    # F1 BYTE-DETERMINISM: every file (incl. the zip/tar.gz/docx/epub
+    # containers and manifest.json itself) hashes identically across two
+    # builds — no wall clock anywhere in the tree, or the tracked corpus
+    # manifest's sha pins break on a fresh machine.
+    import hashlib
+
+    def _digest(root):
+        out = {}
+        for f in a["files"]:
+            if not f["created"]:
+                continue
+            out[f["path"]] = hashlib.sha256(
+                (root / f["path"]).read_bytes()
+            ).hexdigest()
+        # manifest.json is deterministic modulo the root path it describes
+        body = json.loads((root / "manifest.json").read_text())
+        body.pop("root")
+        out["manifest.json"] = hashlib.sha256(
+            json.dumps(body, indent=1).encode()
+        ).hexdigest()
+        return out
+
+    assert _digest(tmp_path / "a") == _digest(tmp_path / "b")
+
+
+def test_fixture_containers_and_surrogate_are_deterministic(tmp_path):
+    """F1 unit view: the zip containers carry pinned epoch metadata, the
+    gzip/tar archive is byte-stable, and the say-wav surrogate hashes the
+    transcript+tool+duration bucket — never the volatile raw bytes."""
+    import gzip
+    import hashlib
+    import io
+    import tarfile
+    import zipfile
+
+    sys.path.insert(0, str(REPO_ROOT / "tests"))
+    from conftest import make_docx, pinned_zipinfo
+
+    for out in (tmp_path / "x", tmp_path / "y"):
+        out.mkdir()
+        make_docx(out / "r.docx", ["body"], title="T")
+        with zipfile.ZipFile(out / "d.zip", "w") as zf:
+            zf.writestr(pinned_zipinfo("inner.txt"), "payload")
+        with open(out / "b.tar.gz", "wb") as raw:
+            with gzip.GzipFile(filename="", mode="wb", fileobj=raw, mtime=0) as gz:
+                with tarfile.open(fileobj=gz, mode="w") as tf:
+                    info = tarfile.TarInfo("i.log")
+                    info.size = 4
+                    info.mtime = 0
+                    tf.addfile(info, io.BytesIO(b"body"))
+    for name in ("r.docx", "d.zip", "b.tar.gz"):
+        a = (tmp_path / "x" / name).read_bytes()
+        b = (tmp_path / "y" / name).read_bytes()
+        assert a == b, f"{name} is not byte-deterministic"
+    # the zip entries really carry the pinned timestamp + mode
+    with zipfile.ZipFile(tmp_path / "x" / "d.zip") as zf:
+        zi = zf.getinfo("inner.txt")
+        assert zi.date_time == (1980, 1, 1, 0, 0, 0)
+    # surrogate: stable for identical inputs, sensitive to real drift causes
+    import make_coverage_fixture as mcf
+
+    base = mcf.speech_surrogate("say", 300.0)
+    assert base == mcf.speech_surrogate("say", 299.0)  # pacing jitter stays in-bucket
+    assert base != mcf.speech_surrogate("say", 100.0)  # truncated audio moves it
+    assert base != mcf.speech_surrogate("other", 300.0)  # tool change moves it
+    assert mcf.speech_surrogate("say", 300.0) == hashlib.sha256(
+        json.dumps({"tool": "say",
+                    "transcript_sha256": hashlib.sha256(
+                        mcf.SPEECH_SCRIPT.encode()).hexdigest(),
+                    "duration_bucket": "4-to-7min"}, sort_keys=True).encode()
+    ).hexdigest()
 
 
 def test_scanned_pdf_pages_have_no_text_layer(fast_fixture):
@@ -229,7 +299,13 @@ def test_fixture_version_file_written_and_matches_generator(fast_fixture):
     assert stored["files"] == len(
         [f for f in manifest["files"] if f.get("created")]
     )
-    assert isinstance(stored["generator_mtime"], float)
+    # F1: the generator is fingerprinted by CONTENT, not mtime — an mtime
+    # record made every fresh clone's rebuild look stale (gate exit 2)
+    import hashlib
+
+    assert stored["generator_sha256"] == hashlib.sha256(
+        (REPO_ROOT / "scripts" / "make_coverage_fixture.py").read_bytes()
+    ).hexdigest()
 
 
 def test_ensure_fresh_fixture_rebuilds_on_mismatch(monkeypatch, tmp_path):

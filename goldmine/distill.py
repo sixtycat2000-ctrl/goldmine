@@ -931,15 +931,29 @@ SCALE_NOTE = (
 )
 
 
+#: F2 (preview τ honesty): shown when the preview's fresh calibration is NOT
+#: what an actual run would use — an incremental-eligible run inherits the
+#: previous run's τ (D8) and skips calibration entirely.
+PREVIEW_TAU_INHERIT_NOTE = (
+    "τ shown is a fresh full-run calibration; an actual run would inherit "
+    "τ={tau:.4f} (tau_source=inherited)"
+)
+
+
 def render_preview(
     stats: dict,
     tau_result: TauResult,
     dropped_preview: list[tuple[int, list[str]]],
     intent: str,
+    *,
+    inherited_tau: float | None = None,
 ) -> str:
     """--preview report (§6.1): corpus size, τ (+raw/source/reason), pairwise
     quartiles, size histogram, top terms of the 10 largest dropped clusters,
-    the B10 scale note, and the full-vs-incremental intent. Writes NOTHING."""
+    the B10 scale note, and the full-vs-incremental intent. Writes NOTHING.
+    F2: when the intent is incremental, `inherited_tau` is the τ an actual run
+    would inherit — the printed calibration is preview-only, and the report
+    says so."""
     lines = [
         "distill preview (dry run — nothing written)",
         (
@@ -956,12 +970,18 @@ def render_preview(
                 else ""
             ) + ")"
         ),
+    ]
+    if inherited_tau is not None:
+        lines.append(
+            "note: " + PREVIEW_TAU_INHERIT_NOTE.format(tau=inherited_tau)
+        )
+    lines.extend([
         (
             f"pairwise quartiles: p25 {tau_result.quartiles[0]:.3f} / "
             f"p50 {tau_result.quartiles[1]:.3f} / p75 {tau_result.quartiles[2]:.3f}"
         ),
         f"size histogram (kept + dropped): {json.dumps(stats['histogram'])}",
-    ]
+    ])
     if dropped_preview:
         lines.append("largest dropped clusters (top terms):")
         for size, terms in dropped_preview:
@@ -1432,13 +1452,20 @@ def run_distill(
     if preview:
         if ok:
             intent = f"incremental ({reason})"
+            # F2 τ honesty: the fresh calibration above is NOT what an actual
+            # run would use — incremental inherits the previous run's τ (D8)
+            # and skips calibration entirely. Say so, loudly.
+            inherited_tau = float(prev_run["tau"])
         elif refresh:
             intent = "full recompute (--refresh)"
+            inherited_tau = None
         else:
             intent = f"full recompute ({reason})"
+            inherited_tau = None
         return {
             "preview": render_preview(
                 stats, tau_result, _dropped_preview(kept, min_members, tau), intent,
+                inherited_tau=inherited_tau,
             ),
             "stats": stats,
             "tau": tau_result,

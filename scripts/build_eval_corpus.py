@@ -274,9 +274,14 @@ def _fixture_entries(root: Path, fix_manifest: dict) -> list[dict]:
                  "bytes": p.stat().st_size}
         # say-TTS / ffmpeg output is machine-dependent: existence-only checks
         # (marked requires) — everything else is seeded-deterministic, so its
-        # hash pins the corpus.
+        # hash pins the corpus. The say wav additionally carries the fixture
+        # generator's CONTENT-STABLE surrogate (tool + transcript + coarse
+        # duration bucket, F1): it rides into corpus_sha without anyone ever
+        # hashing the volatile raw bytes.
         if f.get("requires"):
             entry["requires"] = f["requires"]
+            if f.get("speech_surrogate_sha256"):
+                entry["speech_surrogate_sha256"] = f["speech_surrogate_sha256"]
         else:
             entry["sha256"] = _sha256(p)
         out.append(entry)
@@ -365,9 +370,12 @@ def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
             "them — refresh the manifest deliberately to move the snapshot",
             "foresight-rea is decompiled third-party code — local-only, its "
             "bytes are never copied into the repo (docs/v2/01 risk 9)",
-            "fixture files marked 'requires' (say/ffmpeg) are existence-checked only",
-            "fixture 'version' record (version + generator mtime + file count) "
-            "is a corpus_sha input: a regenerated fixture invalidates loudly",
+            "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; "
+            "the say wav additionally pins a content-stable surrogate "
+            "(tool + transcript + duration bucket — its raw bytes are "
+            "environment-dependent)",
+            "fixture 'version' record (version + generator content hash + file "
+            "count) is a corpus_sha input: a regenerated fixture invalidates loudly",
             "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from "
             "the index — they quote the noise-query strings (self-leak, F6)",
         ],
@@ -427,7 +435,11 @@ def corpus_sha(manifest: dict) -> str:
     h.update(json.dumps(fixture.get("version"), sort_keys=True).encode())
     for entry in sorted(fixture.get("files", []), key=lambda e: e["path"]):
         h.update(entry["path"].encode())
-        h.update(entry.get("sha256", "requires-only").encode())
+        # requires files are never raw-hashed (machine-dependent bytes); the
+        # say wav's content-stable surrogate stands in (F1)
+        h.update((entry.get("sha256")
+                  or entry.get("speech_surrogate_sha256")
+                  or "requires-only").encode())
     return h.hexdigest()[:16]
 
 

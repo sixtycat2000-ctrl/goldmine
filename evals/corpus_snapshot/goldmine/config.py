@@ -104,9 +104,26 @@ class InitCfg:
 
 @dataclass
 class DistillCfg:
-    threshold: float = 0.70
+    # v2.1 R6 (D13): None = CALIBRATED — every run measures τ from the corpus
+    # (distill.measure_tau). A value here (or --threshold X) acts as a manual
+    # override (tau_source='manual'); the v1 default 0.70 was the bug.
+    threshold: float | None = None
     min_members: int = 3
     max_chunks: int = 50000
+
+
+@dataclass
+class ServeCfg:
+    """[serve] — the warm-search daemon (R8, D7 as amended by review F9).
+
+    There is deliberately NO `auto` key: auto-start was CUT from this build
+    (an untested dead path must not ship); running the daemon is the explicit
+    opt-in `goldmine serve`. `socket` doubles as the GOLDMINE_SERVE env target
+    (env wins over the file per the standard precedence)."""
+
+    linger: int = 300       # idle seconds before the daemon exits (F7: only model-touching ops refresh)
+    timeout_s: float = 10.0  # client per-request deadline (D2)
+    socket: str = ""        # explicit socket path (env GOLDMINE_SERVE / [serve] socket)
 
 
 @dataclass
@@ -120,6 +137,7 @@ class Config:
     ocr: OcrCfg = field(default_factory=OcrCfg)
     search: SearchCfg = field(default_factory=SearchCfg)
     distill: DistillCfg = field(default_factory=DistillCfg)
+    serve: ServeCfg = field(default_factory=ServeCfg)
     init: InitCfg = field(default_factory=InitCfg)
 
 
@@ -245,6 +263,16 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
             if key in data and (v := _coerce_int(data[key])) is not None:
                 setattr(cfg.distill, key, v)
         unknown(section, data, set(DistillCfg.__dataclass_fields__))
+    elif section == "serve":
+        # R8 [serve] (D7): linger/timeout_s/socket. An `auto` key is UNKNOWN
+        # here on purpose (F9 cut) and warns like any other unknown key.
+        if "linger" in data and (v := _coerce_int(data["linger"])) is not None:
+            cfg.serve.linger = v
+        if "timeout_s" in data and (v := _coerce_float(data["timeout_s"])) is not None:
+            cfg.serve.timeout_s = v
+        if "socket" in data:
+            cfg.serve.socket = str(data["socket"])
+        unknown(section, data, set(ServeCfg.__dataclass_fields__))
     elif section == "init":
         if "roots" in data:
             vals = data["roots"]
@@ -388,6 +416,11 @@ def load(config_path: Path | None = None, env: Mapping[str, str] = os.environ) -
         cfg.models.dir = Path(v)
     if v := env.get("GOLDMINE_FORESIGHT_SOCKET"):
         cfg.foresight.socket = v
+    # R8 serve (D7): the explicit-daemon-socket override; read ONLY here (the
+    # cli.py:198-208-era rule that env reads belong to config.load — the env
+    # block now lives at these lines, which is the F10 citation refresh)
+    if v := env.get("GOLDMINE_SERVE"):
+        cfg.serve.socket = v
     # v2 ASR (02 §5.1): whisper-cli override + mode knob
     if v := env.get("GOLDMINE_WHISPER"):
         cfg.ingest.asr_whisper = v

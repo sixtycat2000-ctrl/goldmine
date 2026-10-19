@@ -46,6 +46,7 @@ from goldmine.config import Config, LlamaCfg, ServeCfg, load
 from goldmine.serve import (
     ServeDaemon,
     ServeOpError,
+    _render_status_human,
     read_discovery_file,
     verify_and_kill,
 )
@@ -955,6 +956,86 @@ def test_guard_critical_sustained_clean_exit(tmp_path, capsys):
     assert not (box.daemon.discovery_path).exists()
     assert not Path(box.daemon.sock_path).exists()
     assert "goldmine serve: stopped" in capsys.readouterr().err
+
+
+def test_guard_pressure_nothing_resident_counts_no_unload(tmp_path, capsys):
+    """F3: sustained warn with NO model ever spawned — the episode still opens
+    the cooldown hold (the model must stay aside), but no phantom unload is
+    counted or announced, and the status explains the stepped-aside state."""
+    cfg = make_cfg(tmp_path)
+    box = start_daemon(
+        cfg, sampler=lambda: 2,  # pinned warn the whole test
+        idle_tick_s=0.05, guard_sample_cache_s=0.05,
+        guard_confirm_s=0.2, guard_cooldown_s=30.0,
+    )
+    try:
+        # never warm the model: nothing resident while pressure is sustained
+        deadline = time.monotonic() + 5
+        while time.monotonic() < deadline and box.daemon.guard.cooldown_until is None:
+            time.sleep(0.05)
+        guard = box.daemon.guard
+        assert guard.cooldown_until is not None  # the hold opened
+        assert guard.cooling
+        assert guard.unloads == 0, "a phantom unload was counted"
+        assert guard.last_unload is None  # last REAL unload: none happened
+        err = capsys.readouterr().err
+        assert "unloading the model" not in err
+        assert "nothing resident to unload" in err
+        # the wire refusal explains itself: nothing was ever unloaded, so the
+        # hold reads as the pressure hold — not "cooling down after an unload"
+        resp = raw_roundtrip(box.daemon.sock_path,
+                             {"op": "embed", "texts": ["x"], "id": "f3"})
+        assert resp["ok"] is False
+        assert resp["error"]["kind"] == "model_not_resident"
+        assert "held aside by sustained memory pressure" in resp["error"]["message"]
+        assert "cooling down after a memory-pressure unload" \
+            not in resp["error"]["message"]
+        # status: unloads stays 0 and the note names the pressure hold
+        status = box.daemon._op_status()
+        assert status["guard"]["unloads"] == 0
+        assert status["guard"]["state"] == "cooldown"
+        rendered = _render_status_human(status)
+        assert "stepped aside under memory pressure" in rendered
+        assert "lazy — spawns on the first search" not in rendered
+    finally:
+        box.stop()
+
+
+def test_refusal_reason_names_the_active_hold(tmp_path):
+    """F4: inside a post-UNLOAD cooldown window the refusal says cooling down;
+    past the window with pressure still elevated the hold is the PRESSURE hold
+    — the refusal must name it, not the expired cooldown (and a nothing-
+    resident episode, F3, never claims an unload happened)."""
+    cfg = make_cfg(tmp_path)
+    daemon = ServeDaemon(cfg, sampler=lambda: 1)  # constructed only: no sockets
+
+    def refuse():
+        raised = None
+        try:
+            daemon._ensure_resident()
+        except ServeOpError as exc:
+            raised = exc
+        assert raised is not None, "expected model_not_resident"
+        return raised.message
+
+    # inside a REAL post-unload cooldown window: that window is the active hold
+    daemon.guard.cooldown_until = time.monotonic() + 60
+    daemon.guard.last_unload = time.time()
+    daemon.guard.sampler = lambda: 1
+    daemon.guard.sampled_at = None
+    cool_msg = refuse()
+    assert "cooling down after a memory-pressure unload" in cool_msg
+
+    # past the window at level 2: the pressure hold is what refuses
+    daemon.guard.cooldown_until = time.monotonic() - 1
+    daemon.guard.last_unload = None
+    daemon.guard.sampler = lambda: 2
+    daemon.guard.sampled_at = None
+    held_msg = refuse()
+    assert "held aside by sustained memory pressure" in held_msg
+    assert "cooling down" not in held_msg
+    # and the two states are visibly distinct
+    assert cool_msg != held_msg
 
 
 def test_guard_unload_during_delayed_embed_results_intact(tmp_path, capsys):

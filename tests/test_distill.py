@@ -458,6 +458,30 @@ def test_preview_writes_nothing(indexed):
     assert before_cards == after_cards and before_runs == after_runs
 
 
+def test_preview_incremental_eligible_carries_inherited_tau_note(indexed):
+    """F2: on an incremental-eligible corpus the preview prints a fresh
+    full-run calibration τ, but an ACTUAL run would inherit the previous run's
+    τ (D8) — the preview must say so instead of letting the number mislead."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    prev_tau = float(first["stats"]["tau"])
+    result = run_distill(store, scope=Scope(), threshold=None, min_members=2,
+                         preview=True)
+    assert result["intent"].startswith("incremental")
+    assert "τ shown is a fresh full-run calibration" in result["preview"]
+    assert f"an actual run would inherit τ={prev_tau:.4f}" in result["preview"]
+    assert "(tau_source=inherited)" in result["preview"]
+
+
+def test_preview_first_run_has_no_inherited_tau_note(indexed):
+    """F2: with no previous run the calibration IS what a run would use —
+    no inheritance note (it would be a lie in the other direction)."""
+    result = run_distill(indexed, scope=Scope(), threshold=None, min_members=2,
+                         preview=True)
+    assert result["intent"].startswith("full")
+    assert "an actual run would inherit" not in result["preview"]
+
+
 def test_render_markdown_v2_shape(indexed):
     result = run_distill(indexed, scope=Scope(), threshold=None, min_members=2)
     cards, stats = result["cards"], result["stats"]

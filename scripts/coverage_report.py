@@ -266,8 +266,8 @@ def _read_version_file(fixture_dir: Path) -> dict | None:
 
 def ensure_fresh_fixture(fixture_dir: Path, *, stale: str = "rebuild") -> dict:
     """F9: build the fixture if absent; when present, verify its stored
-    fixture_version.json (version constant + generator mtime + file count)
-    against THIS generator. A stale tree auto-rebuilds — or, with
+    fixture_version.json (version constant + generator content hash + file
+    count) against THIS generator. A stale tree auto-rebuilds — or, with
     stale='fail' (--no-rebuild), refuses loudly, so a coverage report is
     never computed over files the current generator no longer writes.
     Returns the fresh manifest."""
@@ -285,7 +285,7 @@ def ensure_fresh_fixture(fixture_dir: Path, *, stale: str = "rebuild") -> dict:
         detail = (
             f"version {stored.get('version')!r} != {expected['version']!r}, "
             f"generator drifted: "
-            f"{stored.get('generator_mtime') != expected['generator_mtime']}, "
+            f"{stored.get('generator_sha256') != expected['generator_sha256']}, "
             f"file count {stored.get('files')!r} != {expected['files']!r}"
         )
     if stale == "fail":
