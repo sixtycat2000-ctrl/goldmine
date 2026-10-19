@@ -927,8 +927,8 @@ def test_screenshots_share_one_helper_spawn(tmp_path, cfg, monkeypatch):
     # deterministic gather: quiescence window long enough that any realistic
     # worker jitter (< 1 s between arrivals) still lands in one batch, with a
     # cap far above anything the test can hit
-    monkeypatch.setattr("goldmine.ingest.pipeline._OCR_BATCH_GATHER_S", 1.0)
-    monkeypatch.setattr("goldmine.ingest.pipeline._OCR_BATCH_GATHER_MAX_S", 30.0)
+    monkeypatch.setattr("goldmine.ingest.extraction._OCR_BATCH_GATHER_S", 1.0)
+    monkeypatch.setattr("goldmine.ingest.extraction._OCR_BATCH_GATHER_MAX_S", 30.0)
     cfg.ingest.workers = 4
 
     root = tmp_path / "shots"
@@ -964,8 +964,8 @@ def test_ocr_batch_failure_marks_each_row_off(cfg, tmp_path, monkeypatch):
     bad.write_text("#!/bin/sh\necho boom >&2\nexit 3\n")
     bad.chmod(0o755)
     monkeypatch.setenv("GOLDMINE_OCR_HELPER", str(bad))
-    monkeypatch.setattr("goldmine.ingest.pipeline._OCR_BATCH_GATHER_S", 1.0)
-    monkeypatch.setattr("goldmine.ingest.pipeline._OCR_BATCH_GATHER_MAX_S", 30.0)
+    monkeypatch.setattr("goldmine.ingest.extraction._OCR_BATCH_GATHER_S", 1.0)
+    monkeypatch.setattr("goldmine.ingest.extraction._OCR_BATCH_GATHER_MAX_S", 30.0)
     cfg.ingest.workers = 4
 
     root = tmp_path / "shots"
