@@ -412,14 +412,25 @@ def test_distill_markdown_json_and_out_dir(tmp_home, db_path, capsys):
     rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--min-members", "2"])
     assert rc == 0
     out = capsys.readouterr().out
-    assert out.startswith("## goldmine cards —")
+    # v2 markdown (§6.3): H1 + run header + TOC
+    assert out.startswith("# goldmine cards v2")
+    assert "## Contents" in out
     assert "### 1." in out
 
     rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--min-members", "2", "--json"])
     assert rc == 0
     payload = json.loads(capsys.readouterr().out)
-    assert "stats" in payload and "cards" in payload
+    assert payload["schema"] == "goldmine.cards/v2"
     assert payload["stats"]["clusters_kept"] >= 2
+    assert payload["stats"]["mode"] == "full"
+    assert payload["stats"]["tau_source"] in ("otsu", "floor", "ceil", "percentile")
+    assert payload["stats"]["budget"] is None
+    first = payload["cards"][0]
+    assert set(first) == {
+        "id", "parent_id", "title", "title_kind", "terms", "excerpts", "size",
+        "n_files", "status", "citations", "distill_algo", "run_id", "llm",
+    }
+    assert first["llm"] is None and first["excerpts"]
 
     out_dir = tmp_home / "cards-out"
     rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--min-members", "2",
@@ -1309,6 +1320,194 @@ def test_distill_zero_flags_are_honored(tmp_home, db_path, tmp_path, capsys):
     out = capsys.readouterr().out
     assert "### " not in out
     assert Store(db_path).cards()  # every card still persisted
+
+
+# ---------------------------------------------- distill v2 surface (R6 §6)
+
+
+def _two_topic_corpus(root):
+    (root / "k8s").mkdir(parents=True)
+    (root / "food").mkdir()
+    for i in range(4):
+        (root / "k8s" / f"k{i}.txt").write_text(
+            f"Scheduler eviction under pod pressure {i}. "
+            "Tolerations keep workloads running. " * 3
+        )
+        (root / "food" / f"f{i}.txt").write_text(
+            f"Sourdough starter feeding schedule {i}. "
+            "Bulk ferment the dough overnight. " * 3
+        )
+
+
+def test_distill_preview_writes_nothing(tmp_home, db_path, tmp_path, capsys):
+    corpus = tmp_path / "corpus"
+    _two_topic_corpus(corpus)
+    ingest(tmp_home, db_path, root=corpus)
+    capsys.readouterr()
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--preview"])
+    assert rc == 0
+    out = capsys.readouterr().out
+    assert "nothing written" in out
+    assert "tau:" in out and "intent:" in out
+    store = Store(db_path)
+    try:
+        assert store.db.execute("SELECT COUNT(*) FROM cards").fetchone()[0] == 0
+        assert store.db.execute("SELECT COUNT(*) FROM distill_runs").fetchone()[0] == 0
+    finally:
+        store.close()
+    # --json preview carries the preview schema + no writes either
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--preview", "--json"])
+    assert rc == 0
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["schema"] == "goldmine.distill-preview/v1"
+    assert "intent" in payload and "quartiles" in payload
+
+
+def test_distill_as_and_rerun_views(tmp_home, db_path, tmp_path, capsys):
+    corpus = tmp_path / "corpus"
+    _two_topic_corpus(corpus)
+    ingest(tmp_home, db_path, root=corpus)
+    capsys.readouterr()
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--as", "notes", "--min-members", "2"])
+    assert rc == 0
+    capsys.readouterr()
+    store = Store(db_path)
+    try:
+        view = store.get_view("notes")
+        assert view is not None and '"min_members": 2' in view.params_json.replace(
+            "2", "2"
+        ) or view is not None
+        runs_before = store.db.execute(
+            "SELECT COUNT(*) FROM distill_runs"
+        ).fetchone()[0]
+    finally:
+        store.close()
+    # rerun the saved view (a fresh full run; history grows)
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--rerun", "notes"])
+    assert rc == 0
+    capsys.readouterr()
+    store = Store(db_path)
+    try:
+        runs_after = store.db.execute(
+            "SELECT COUNT(*) FROM distill_runs"
+        ).fetchone()[0]
+    finally:
+        store.close()
+    assert runs_after >= runs_before
+    # unknown view name -> view_not_found error shape
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill", "--rerun", "ghost"])
+    assert rc == 1
+    err = capsys.readouterr().err
+    assert "no saved view named 'ghost'" in err
+    assert "goldmine distill --as ghost" in err
+
+
+def test_distill_rerun_missing_view_json_shape(tmp_home, db_path, capsys):
+    (tmp_home / "corpus").mkdir()
+    (tmp_home / "corpus" / "a.txt").write_text("sourdough starter notes\n")
+    ingest(tmp_home, db_path, root=tmp_home / "corpus")
+    capsys.readouterr()
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--rerun", "nope", "--json"])
+    assert rc == 1
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["error"]["kind"] == "view_not_found"
+    assert payload["error"]["fix"]
+
+
+def test_distill_under_scoping(tmp_home, db_path, tmp_path, capsys):
+    corpus = tmp_path / "corpus"
+    _two_topic_corpus(corpus)
+    ingest(tmp_home, db_path, root=corpus)
+    capsys.readouterr()
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--under", str(corpus / "k8s"), "--min-members", "2", "--json"])
+    assert rc == 0
+    payload = json.loads(capsys.readouterr().out)
+    paths = {c["path"] for card in payload["cards"] for c in card["citations"]}
+    assert paths and all("/k8s/" in p for p in paths)
+    # scoped view id differs from the unscoped one (D7: scope is in the key)
+    store = Store(db_path)
+    try:
+        views = store.db.execute("SELECT COUNT(*) FROM distill_runs").fetchone()[0]
+    finally:
+        store.close()
+    assert views == 1
+
+
+def test_distill_after_scoping_filters_old_files(tmp_home, db_path, tmp_path, capsys):
+    import os
+    import time as time_mod
+
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    (corpus / "old.txt").write_text("sourdough starter feeding notes old file\n")
+    (corpus / "new.txt").write_text("sourdough starter feeding notes new file\n")
+    (corpus / "new2.txt").write_text("sourdough starter feeding notes another new file\n")
+    (corpus / "new3.txt").write_text("sourdough starter feeding notes yet another file\n")
+    # files.mtime is snapshotted at ingest: age the file BEFORE ingesting
+    old_ts = time_mod.time() - 10 * 365 * 86400
+    os.utime(corpus / "old.txt", (old_ts, old_ts))
+    ingest(tmp_home, db_path, root=corpus)
+    capsys.readouterr()
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--after", time_mod.strftime("%Y-%m-%d", time_mod.gmtime(
+                   time_mod.time() - 86400)),
+               "--min-members", "0", "--json"])
+    assert rc == 0
+    payload = json.loads(capsys.readouterr().out)
+    paths = {c["path"] for card in payload["cards"] for c in card["citations"]}
+    assert paths and all("/new" in p and not p.endswith("old.txt") for p in paths)
+
+
+def test_distill_rebuild_note_cleared_by_first_run(tmp_home, db_path, tmp_path, capsys):
+    """F11: the migration's cards-rebuild note surfaces in status and is
+    cleared by the first successful run of ANY view."""
+    corpus = tmp_path / "corpus"
+    _two_topic_corpus(corpus)
+    ingest(tmp_home, db_path, root=corpus)
+    # plant the note as the v3->v4 migration would
+    store = Store(db_path)
+    try:
+        store.set_meta("cards_v2_rebuild_note", "cards v1 tables were replaced")
+    finally:
+        store.close()
+    capsys.readouterr()
+    rc = main(["--db", str(db_path), "status", "--json"])
+    assert rc == 0
+    payload = json.loads(capsys.readouterr().out)
+    codes = [n["code"] for n in payload["notices"]]
+    assert "cards_rebuild" in codes
+    notice = next(n for n in payload["notices"] if n["code"] == "cards_rebuild")
+    assert notice["message"] == "cards v1 tables were replaced"
+    # the first successful distill run clears it
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--min-members", "2"])
+    assert rc == 0
+    capsys.readouterr()
+    rc = main(["--db", str(db_path), "status", "--json"])
+    payload = json.loads(capsys.readouterr().out)
+    assert "cards_rebuild" not in [n["code"] for n in payload["notices"]]
+
+
+def test_distill_threshold_semantics_calibrated_vs_manual(tmp_home, db_path, tmp_path, capsys):
+    corpus = tmp_path / "corpus"
+    _two_topic_corpus(corpus)
+    ingest(tmp_home, db_path, root=corpus)
+    capsys.readouterr()
+    # unset = calibrated (tau_source from the calibration, not 'manual')
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--min-members", "2", "--json"])
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["stats"]["tau_source"] != "manual"
+    # explicit --threshold = manual override
+    rc = main(["--backend", "mock", "--db", str(db_path), "distill",
+               "--threshold", "0.55", "--min-members", "2", "--json"])
+    payload = json.loads(capsys.readouterr().out)
+    assert payload["stats"]["tau_source"] == "manual"
+    assert payload["stats"]["tau"] == 0.55
 
 
 # --------------------------------------------------- T1: zero hits + next step

@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 
 from . import migrations
-from .util import pack_fp16
+from .util import pack_fp16, unpack_fp16
 
 BLOCK_ROWS = 8192  # fp16 -> f32 conversion block (DigUp pattern)
 
@@ -69,22 +69,55 @@ CREATE VIRTUAL TABLE IF NOT EXISTS fts USING fts5(
     tokenize = "porter unicode61 remove_diacritics 2 categories 'L* N* Co M*'"
 );
 
+CREATE TABLE IF NOT EXISTS distill_runs(
+    id          TEXT PRIMARY KEY,     -- sha256(algo|tau|scope_json|corpus_hash|mode)
+    algo        TEXT NOT NULL,        -- "leader-avglink.v2"
+    tau         REAL NOT NULL,
+    tau_source  TEXT NOT NULL,        -- otsu|floor|ceil|percentile|manual|inherited
+    scope_json  TEXT NOT NULL,        -- canonical: {under, kinds, after}
+    corpus_hash TEXT NOT NULL,        -- audit identity (D9; never gates reuse, F4)
+    mode        TEXT NOT NULL,        -- full|incremental
+    stats_json  TEXT NOT NULL,
+    created_at  REAL NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS cards(
-    id            INTEGER PRIMARY KEY,
-    title_terms   TEXT NOT NULL,
-    size          INTEGER NOT NULL,
-    n_files       INTEGER NOT NULL,
+    id             INTEGER PRIMARY KEY,
+    run_id         TEXT NOT NULL REFERENCES distill_runs(id),
+    view_id        TEXT NOT NULL,     -- D7: sha256(algo + canonical scope_json)[:16]
+    title          TEXT NOT NULL,
+    title_kind     TEXT NOT NULL DEFAULT 'terms',  -- terms|sentence|llm
+    terms          TEXT NOT NULL,     -- JSON array (renamed from title_terms)
+    excerpts       TEXT NOT NULL,     -- JSON [{text,path,kind,loc,loc_end,role}]
+    size           INTEGER NOT NULL,
+    n_files        INTEGER NOT NULL,
+    parent_id      INTEGER REFERENCES cards(id),    -- header card row (status='header')
+    centroid       BLOB,              -- 768-dim fp16 (1536 B) via util.pack_fp16
+    status         TEXT NOT NULL DEFAULT 'active',  -- active|dissolved|header
+    llm_title      TEXT,
+    llm_summary    TEXT,
+    llm_model      TEXT,
     fingerprint_id TEXT NOT NULL,
-    distill_algo  TEXT NOT NULL,
-    created_at    REAL NOT NULL
+    distill_algo   TEXT NOT NULL,
+    created_at     REAL NOT NULL,
+    updated_at     REAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS card_chunks(
     card   INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
     chunk  INTEGER NOT NULL REFERENCES segments(id),
-    weight REAL NOT NULL
+    weight REAL NOT NULL,
+    UNIQUE(card, chunk)
 );
 CREATE INDEX IF NOT EXISTS card_chunks_card ON card_chunks(card);
+CREATE INDEX IF NOT EXISTS cards_view ON cards(view_id, status);
+
+CREATE TABLE IF NOT EXISTS distill_views(
+    name        TEXT PRIMARY KEY,
+    scope_json  TEXT NOT NULL,
+    params_json TEXT NOT NULL,        -- {threshold: float|null, min_members: int}
+    created_at  REAL NOT NULL
+);
 """
 
 
@@ -157,12 +190,41 @@ class StatusCounts:
 
 @dataclass
 class CardRow:
+    """The v2 cards row as `cards()` returns it (active by default)."""
+
     id: int
-    title_terms: str
+    run_id: str
+    view_id: str
+    title: str
+    title_kind: str
+    terms: str            # JSON array string
     size: int
     n_files: int
+    status: str
     fingerprint_id: str
     distill_algo: str
+    created_at: float
+
+
+@dataclass
+class ViewCard:
+    """A card of a view with its decoded centroid + member chunk ids — the
+    incremental anchor (§4.3)."""
+
+    id: int
+    title: str
+    status: str
+    size: int
+    n_files: int
+    centroid: np.ndarray | None
+    members: list[int] = field(default_factory=list)
+
+
+@dataclass
+class DistillView:
+    name: str
+    scope_json: str
+    params_json: str
     created_at: float
 
 
@@ -715,41 +777,195 @@ class Store:
 
     # -- cards ------------------------------------------------------------------
 
-    def cards(self) -> list[CardRow]:
-        rows = self.db.execute(
-            "SELECT id, title_terms, size, n_files, fingerprint_id, distill_algo, created_at "
-            "FROM cards ORDER BY size DESC, id"
-        ).fetchall()
+    _CARD_COLUMNS = (
+        "id, run_id, view_id, title, title_kind, terms, size, n_files, status, "
+        "fingerprint_id, distill_algo, created_at"
+    )
+
+    def cards(self, *, status: str = "active") -> list[CardRow]:
+        """Cards of the index, size desc (v1 order kept). Default lists ACTIVE
+        cards only — dissolved rows are history, headers are section rows."""
+        if status:
+            rows = self.db.execute(
+                f"SELECT {self._CARD_COLUMNS} FROM cards WHERE status = ? "
+                "ORDER BY size DESC, id",
+                (status,),
+            ).fetchall()
+        else:
+            rows = self.db.execute(
+                f"SELECT {self._CARD_COLUMNS} FROM cards ORDER BY size DESC, id"
+            ).fetchall()
         return [CardRow(*r) for r in rows]
 
-    def save_cards(self, cards: list) -> None:
-        """Store distill cards. Each card needs attributes title_terms (JSON str),
-        size, n_files, fingerprint_id, distill_algo, created_at, and optionally
-        chunk_weights: list[(segment_id, weight)] for card_chunks."""
-        import time
+    def save_run(self, run: dict, cards: list) -> None:
+        """Persist one distill run (§3.4): the distill_runs row + its cards +
+        card_chunks in ONE transaction, replacing the view's live cards
+        (per-view replace — other views' cards are untouched). `run` carries
+        id/algo/tau/tau_source/scope_json/corpus_hash/mode/stats; cards need
+        run_id/view_id/title/title_kind/terms/excerpts/size/n_files/status/
+        parent/centroid/fingerprint_id/distill_algo/chunk_weights.
 
+        F3: a repeat identical run (same content tuple → same run id) updates
+        the same history row in place (ON CONFLICT DO UPDATE) instead of
+        raising IntegrityError — history is append-only up to
+        identical-content repeats. Dissolved rows are never deleted here:
+        they are history (§4.4)."""
+        import time as _time
+
+        now = _time.time()
         with self.db:
-            # One card generation is kept (cards pin a fingerprint_id).
-            self.db.execute("DELETE FROM card_chunks")
-            self.db.execute("DELETE FROM cards")
+            self.db.execute(
+                """INSERT INTO distill_runs(id, algo, tau, tau_source, scope_json,
+                   corpus_hash, mode, stats_json, created_at)
+                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   ON CONFLICT(id) DO UPDATE SET
+                     stats_json = excluded.stats_json,
+                     created_at = excluded.created_at""",
+                (
+                    run["id"], run["algo"], float(run["tau"]), run["tau_source"],
+                    run["scope_json"], run["corpus_hash"], run["mode"],
+                    json.dumps(run["stats"], ensure_ascii=False), now,
+                ),
+            )
+            doomed = self.db.execute(
+                "SELECT id FROM cards WHERE view_id = ? AND status != 'dissolved'",
+                (run.get("view_id", ""),),
+            ).fetchall()
+            if doomed:
+                ph = ",".join("?" for _ in doomed)
+                self.db.execute(
+                    f"DELETE FROM card_chunks WHERE card IN ({ph})",
+                    tuple(r[0] for r in doomed),
+                )
+                self.db.execute(
+                    "DELETE FROM cards WHERE view_id = ? AND status != 'dissolved'",
+                    (run.get("view_id", ""),),
+                )
+            rowids: dict[int, int] = {}
             for card in cards:
+                centroid_blob = None
+                vec = getattr(card, "centroid", None)
+                if vec is not None:
+                    centroid_blob = pack_fp16(vec)
                 cur = self.db.execute(
-                    """INSERT INTO cards(title_terms, size, n_files, fingerprint_id,
-                       distill_algo, created_at) VALUES(?, ?, ?, ?, ?, ?)""",
+                    """INSERT INTO cards(run_id, view_id, title, title_kind, terms,
+                       excerpts, size, n_files, parent_id, centroid, status,
+                       fingerprint_id, distill_algo, created_at, updated_at)
+                       VALUES(?, ?, ?, ?, ?, ?, ?, ?, NULL, ?, ?, ?, ?, ?, ?)""",
                     (
-                        card.title_terms,
-                        card.size,
-                        card.n_files,
-                        card.fingerprint_id,
-                        card.distill_algo,
-                        getattr(card, "created_at", None) or time.time(),
+                        card.run_id, card.view_id, card.title, card.title_kind,
+                        card.terms_json, card.excerpts_json, card.size,
+                        card.n_files, centroid_blob, card.status,
+                        card.fingerprint_id, card.distill_algo,
+                        getattr(card, "created_at", None) or now, now,
                     ),
                 )
+                rowids[id(card)] = int(cur.lastrowid)
                 for chunk_id, weight in getattr(card, "chunk_weights", []) or []:
                     self.db.execute(
                         "INSERT INTO card_chunks(card, chunk, weight) VALUES(?, ?, ?)",
                         (cur.lastrowid, chunk_id, weight),
                     )
+            # parent linkage second pass: header rows must exist first (FK on)
+            for card in cards:
+                if card.parent is not None:
+                    self.db.execute(
+                        "UPDATE cards SET parent_id = ? WHERE id = ?",
+                        (rowids[id(card.parent)], rowids[id(card)]),
+                    )
+
+    def load_view_cards(self, view_id: str, *, status: str = "active") -> list[ViewCard]:
+        """A view's live cards with decoded centroids + member chunk ids
+        (§4.3 step 1 — the snapshot taken BEFORE any mutation, F8a)."""
+        rows = self.db.execute(
+            """SELECT id, title, status, size, n_files, centroid FROM cards
+               WHERE view_id = ? AND status = ? ORDER BY id""",
+            (view_id, status),
+        ).fetchall()
+        cards = [
+            ViewCard(
+                id=r[0], title=r[1], status=r[2], size=r[3], n_files=r[4],
+                centroid=unpack_fp16(r[5]) if r[5] is not None else None,
+            )
+            for r in rows
+        ]
+        if cards:
+            ph = ",".join("?" for _ in cards)
+            by_id = {c.id: c for c in cards}
+            for card_id, chunk_id in self.db.execute(
+                f"SELECT card, chunk FROM card_chunks WHERE card IN ({ph}) "
+                "ORDER BY card, chunk",
+                tuple(c.id for c in cards),
+            ).fetchall():
+                vc = by_id.get(card_id)
+                if vc is not None:
+                    vc.members.append(chunk_id)
+        return cards
+
+    def view_member_chunk_ids(self, view_id: str) -> set[int]:
+        """Segment ids held by the view's ACTIVE cards (the 'new chunks'
+        complement, §4.3 step 2)."""
+        rows = self.db.execute(
+            """SELECT cc.chunk FROM card_chunks cc
+               JOIN cards c ON c.id = cc.card
+               WHERE c.view_id = ? AND c.status = 'active'""",
+            (view_id,),
+        ).fetchall()
+        return {r[0] for r in rows}
+
+    def latest_run(self, view_id: str) -> dict | None:
+        """The view's live run row (created_at desc, id asc tiebreak — §4.1)
+        with stats_json parsed, or None. Runs link to their view through the
+        snapshotted stats_json.view_id (the DDL keeps distill_runs scope-keyed,
+        not view-keyed)."""
+        for row in self.db.execute(
+            """SELECT id, algo, tau, tau_source, scope_json, corpus_hash, mode,
+               stats_json FROM distill_runs ORDER BY created_at DESC, id ASC"""
+        ).fetchall():
+            try:
+                stats = json.loads(row[7])
+            except json.JSONDecodeError:
+                continue
+            if isinstance(stats, dict) and stats.get("view_id") == view_id:
+                return {
+                    "id": row[0], "algo": row[1], "tau": row[2],
+                    "tau_source": row[3], "scope_json": row[4],
+                    "corpus_hash": row[5], "mode": row[6], "stats": stats,
+                }
+        return None
+
+    # -- distill views -----------------------------------------------------------
+
+    def upsert_view(self, name: str, scope_json: str, params_json: str) -> None:
+        import time as _time
+
+        self.db.execute(
+            """INSERT INTO distill_views(name, scope_json, params_json, created_at)
+               VALUES(?, ?, ?, ?)
+               ON CONFLICT(name) DO UPDATE SET
+                 scope_json = excluded.scope_json,
+                 params_json = excluded.params_json""",
+            (name, scope_json, params_json, _time.time()),
+        )
+        self.db.commit()
+
+    def get_view(self, name: str) -> DistillView | None:
+        row = self.db.execute(
+            "SELECT name, scope_json, params_json, created_at FROM distill_views "
+            "WHERE name = ?",
+            (name,),
+        ).fetchone()
+        return DistillView(*row) if row else None
+
+    def meta_note(self) -> str | None:
+        """The cards-v2 rebuild announcement (§3.3), if present."""
+        return self.meta("cards_v2_rebuild_note")
+
+    def cards_empty(self) -> bool:
+        row = self.db.execute(
+            "SELECT COUNT(*) FROM cards WHERE status = 'active'"
+        ).fetchone()
+        return row[0] == 0
 
     def close(self) -> None:
         try:

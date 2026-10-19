@@ -324,27 +324,125 @@ def test_pending_and_failures(store):
     assert len(fails) == 1 and fails[0].detail == "timeout after 60s"
 
 
-def test_cards_roundtrip(store):
+def _v2_card(run_id: str, view_id: str, sids: list[int], *, title="alpha"):
+    """A minimal v2 Card-shaped object for save_run (duck-typed)."""
+    import numpy as np
+
+    from goldmine.util import pack_fp16
+
+    class Card:
+        pass
+
+    card = Card()
+    card.run_id = run_id
+    card.view_id = view_id
+    card.title = title
+    card.title_kind = "terms"
+    card.terms_json = '["alpha","beta"]'
+    card.excerpts_json = "[]"
+    card.size = len(sids)
+    card.n_files = 2
+    card.status = "active"
+    card.parent = None
+    card.centroid = np.zeros(768, np.float32)
+    card.fingerprint_id = "abc123"
+    card.distill_algo = "leader-avglink.v2 t=0.72 min=3"
+    card.created_at = 0.0
+    card.chunk_weights = [(sid, 1.0) for sid in sids]
+    return card
+
+
+def _v2_run(run_id: str, view_id: str, mode: str = "full") -> dict:
+    return {
+        "id": run_id,
+        "algo": "leader-avglink.v2 t=0.72 min=3",
+        "tau": 0.72,
+        "tau_source": "percentile",
+        "scope_json": "{}",
+        "corpus_hash": "cafe" * 16,
+        "mode": mode,
+        "stats": {"view_id": view_id, "run_id": run_id},
+        "view_id": view_id,
+    }
+
+
+def test_cards_roundtrip_v2_save_run(store):
+    """v2 (R6 §3.4): save_run persists runs + cards + chunks in ONE
+    transaction; per-view replace; F3 repeat-identical runs collapse."""
     fid = store.upsert_file(FileRec(path="/c/doc.md", kind="doc", size=1, state="pending"))
     sid1 = store.fts_text(fid, "chunk", 1, "one", vec_ok=False)
     sid2 = store.fts_text(fid, "chunk", 2, "two", vec_ok=False)
 
-    class Card:
-        title_terms = '["alpha","beta"]'
-        size = 3
-        n_files = 2
-        fingerprint_id = "abc123"
-        distill_algo = "greedy-leader.v1 t=0.70 min=3"
-        chunk_weights = [(sid1, 1.0), (sid2, 0.9)]
-
-    store.save_cards([Card()])
+    view_a = "viewaaaa"
+    store.save_run(_v2_run("run-1", view_a), [_v2_card("run-1", view_a, [sid1, sid2])])
     rows = store.cards()
     assert len(rows) == 1
-    assert rows[0].size == 3 and rows[0].fingerprint_id == "abc123"
+    assert rows[0].size == 2 and rows[0].fingerprint_id == "abc123"
+    assert rows[0].view_id == view_a and rows[0].run_id == "run-1"
+    assert rows[0].title == "alpha" and rows[0].status == "active"
     weights = store.db.execute("SELECT chunk, weight FROM card_chunks").fetchall()
     assert len(weights) == 2
-    store.save_cards([])  # replacing with nothing clears the single generation
-    assert store.cards() == []
+    runs = store.db.execute("SELECT COUNT(*) FROM distill_runs").fetchone()[0]
+    assert runs == 1
+
+    # F3: repeat identical run (same id) updates in place — no IntegrityError
+    store.save_run(_v2_run("run-1", view_a), [_v2_card("run-1", view_a, [sid1])])
+    assert store.db.execute("SELECT COUNT(*) FROM distill_runs").fetchone()[0] == 1
+    assert store.cards()[0].size == 1
+
+    # per-view replace: another view's cards survive untouched
+    view_b = "viewbbbb"
+    store.save_run(_v2_run("run-2", view_b), [_v2_card("run-2", view_b, [sid2])])
+    active_views = {
+        r[0] for r in store.db.execute(
+            "SELECT view_id FROM cards WHERE status = 'active'"
+        ).fetchall()
+    }
+    assert active_views == {view_a, view_b}   # two live views coexist
+    assert len(store.cards()) == 2
+    assert {r.run_id for r in store.cards()} == {"run-1", "run-2"}
+
+    # replacing view a with nothing clears just view a
+    store.save_run(_v2_run("run-3", view_a), [])
+    assert store.db.execute(
+        "SELECT COUNT(*) FROM cards WHERE view_id = ?", (view_a,)
+    ).fetchone()[0] == 0
+    assert store.cards()[0].view_id == view_b
+
+
+def test_load_view_cards_and_latest_run(store):
+    import numpy as np
+
+    fid = store.upsert_file(FileRec(path="/c/doc.md", kind="doc", size=1, state="pending"))
+    sid1 = store.fts_text(fid, "chunk", 1, "one", vec_ok=False)
+    view = "viewcccc"
+    card = _v2_card("run-9", view, [sid1])
+    card.centroid = np.full(768, 0.25, np.float32)
+    from goldmine.util import pack_fp16
+
+    card.centroid = card.centroid / np.linalg.norm(card.centroid)
+    store.save_run(_v2_run("run-9", view), [card])
+    loaded = store.load_view_cards(view)
+    assert len(loaded) == 1
+    assert loaded[0].members == [sid1]
+    assert loaded[0].centroid is not None
+    assert np.allclose(loaded[0].centroid, card.centroid, atol=1e-2)  # fp16 roundtrip
+    run = store.latest_run(view)
+    assert run is not None and run["id"] == "run-9"
+    assert run["stats"]["view_id"] == view
+    assert store.latest_run("no-such-view") is None
+    assert store.view_member_chunk_ids(view) == {sid1}
+
+
+def test_distill_views_upsert_get(store):
+    assert store.get_view("notes") is None
+    store.upsert_view("notes", '{"under":["/n"]}', '{"threshold":null,"min_members":3}')
+    view = store.get_view("notes")
+    assert view.scope_json == '{"under":["/n"]}'
+    store.upsert_view("notes", '{"under":[]}', '{"threshold":0.8,"min_members":5}')
+    again = store.get_view("notes")
+    assert again.params_json == '{"threshold":0.8,"min_members":5}'
+    assert again.created_at >= view.created_at
 
 
 # ----------------------------------------- VectorTable cache + factory (03 F2/F6)

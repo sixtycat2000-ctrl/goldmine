@@ -64,15 +64,16 @@ def test_render_table_mentions_all_scorers(results):
 @pytest.mark.eval
 def test_clustering_sensitivity_reported(tmp_path):
     """τ sensitivity (DESIGN_DECISIONS §11): prints cluster counts; passes
-    unless the pipeline errors. Quality judgments stay reported, not asserted."""
+    unless the pipeline errors. Quality judgments stay reported, not asserted.
+    v2 (R6): the manual thresholds run through run_distill as
+    tau_source='manual'; the calibrated run is the new baseline row."""
     from goldmine.backends.mock import MockBackend
     from goldmine.config import Config
-    from goldmine.distill import build_cards
+    from goldmine.distill import Scope, run_distill
     from goldmine.ingest import IngestPipeline
     from goldmine.store import Store
 
     home = tmp_path / "sens"
-    store, backend, cfg = None, None, None
     corpus_dir = home / "corpus"
     corpus_dir.mkdir(parents=True)
     for doc in eval_relevance.build_corpus():
@@ -83,12 +84,15 @@ def test_clustering_sensitivity_reported(tmp_path):
     IngestPipeline(cfg, store, backend).run([str(corpus_dir)])
     counts = {}
     for tau in (0.60, 0.70, 0.80):
-        _cards, stats = build_cards(
-            store, threshold=tau, min_members=3, max_chunks=50_000, kinds=None
-        )
-        counts[tau] = stats["clusters_kept"]
-        print(f"tau={tau}: {stats['clusters_kept']} clusters "
-              f"(dropped {stats['clusters_dropped_small']})")
+        result = run_distill(store, scope=Scope(), threshold=tau, min_members=3)
+        counts[tau] = result["stats"]["clusters_kept"]
+        assert result["stats"]["tau_source"] == "manual"
+        print(f"tau={tau}: {result['stats']['clusters_kept']} clusters "
+              f"(dropped {result['stats']['clusters_dropped_small']})")
+    calibrated = run_distill(store, scope=Scope(), threshold=None, min_members=3)
+    print(f"calibrated: tau={calibrated['stats']['tau']} "
+          f"({calibrated['stats']['tau_source']}) -> "
+          f"{calibrated['stats']['clusters_kept']} clusters")
     assert set(counts) == {0.60, 0.70, 0.80}
     store.close()
     backend.close()

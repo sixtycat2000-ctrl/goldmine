@@ -22,7 +22,7 @@ def test_defaults(tmp_home):
     assert cfg.ingest.max_chunks == 5000
     assert cfg.search.z_gate == 3.0  # v2.1 single qualification rule
     assert cfg.search.scorer == "hybrid"
-    assert cfg.distill.threshold == 0.70
+    assert cfg.distill.threshold is None  # v2 R6: unset means CALIBRATED
     assert cfg.llama.batch == 16
     assert cfg.llama.ctx == 2048
 

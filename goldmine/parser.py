@@ -196,10 +196,26 @@ def build_parser() -> argparse.ArgumentParser:
     _add_model_commands(sub, "model")
 
     # --- agent B's commands: subparsers exist, handlers are honest stubs ---
-    p_distill = sub.add_parser("distill", parents=[common], help="distill golden cards")
+    p_distill = sub.add_parser(
+        "distill", parents=[common],
+        help="distill golden cards (v2: calibrated tau, admission guard)",
+        description=(
+            "Cluster the index's vectors into topic cards. v2 calibrates the "
+            "tau threshold from the corpus itself (Otsu over sampled pairwise "
+            "cosines, percentile fallback — real corpora are expected to run "
+            "the percentile path); a leader pass with an average-link "
+            "admission guard replaces the v1 mega-cluster behavior."
+        ),
+    )
+    p_distill.add_argument("--preview", action="store_true",
+                           help="dry run: corpus size, calibrated tau (+ raw + "
+                                "source + fallback reason), pairwise quartiles, "
+                                "size histogram, largest dropped clusters — "
+                                "writes NOTHING")
     p_distill.add_argument("--threshold", type=float, metavar="X",
-                           help="similarity threshold for clustering "
-                                "(default from config: 0.70)")
+                           help="manual tau override (tau_source='manual'); "
+                                "unset = CALIBRATED from the corpus (v2 "
+                                "change: no more fixed 0.70 default)")
     p_distill.add_argument("--min-members", type=int, metavar="N",
                            help="smallest cluster kept (default 3; 0 keeps "
                                 "singletons)")
@@ -208,6 +224,20 @@ def build_parser() -> argparse.ArgumentParser:
                                 "exceeds N vectorized chunks (default 50000)")
     p_distill.add_argument("--kinds", metavar="KINDS",
                            help="comma list: doc,pdf,code,image,audio,video,webpage")
+    p_distill.add_argument("--under", action="append", metavar="PATH",
+                           help="restrict the corpus to files under PATH "
+                                "(repeatable; file mtime/mtime floor compose)")
+    p_distill.add_argument("--after", metavar="DATE",
+                           help="only files with mtime >= DATE (YYYY-MM-DD, "
+                                "file mtime, NOT content date)")
+    p_distill.add_argument("--as", metavar="NAME", dest="as_name",
+                           help="save scope + params as a named view, then run it")
+    p_distill.add_argument("--rerun", metavar="NAME", dest="rerun",
+                           help="run a saved view (scope + params reapplied; "
+                                "incremental when eligible)")
+    p_distill.add_argument("--refresh", action="store_true",
+                           help="forget incremental state for this view and "
+                                "force a full recompute (history kept)")
     p_distill.add_argument("--limit-cards", type=int, metavar="N",
                            help="how many cards to show/write (default 20; "
                                 "0 shows none — every card still saves)")

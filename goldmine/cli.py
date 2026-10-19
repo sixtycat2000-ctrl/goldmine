@@ -716,6 +716,12 @@ def cmd_status(args: argparse.Namespace) -> int:
                 "message": f"{drift} content-indexed files were extracted by a "
                            "different extractor version — `goldmine ingest --reindex` refreshes",
             })
+        # F11 (R6 §3.3): the cards-v2 rebuild announcement surfaces here while
+        # the note exists AND cards are empty; the first successful distill
+        # run of ANY view clears it. Same condition in doctor --deep.
+        rebuild_note = store.meta("cards_v2_rebuild_note")
+        if rebuild_note and store.cards_empty():
+            notices.append({"code": "cards_rebuild", "message": rebuild_note})
         # v2 staleness (05 §4.2, journey spec C10): per-file identity drift as a
         # visible fact, never a refusal. The live embed id is derived from the
         # index's recorded fingerprint (the gate keeps stored == live at ingest
@@ -1022,6 +1028,24 @@ def cmd_model(args: argparse.Namespace) -> int:
 # ----------------------------------------------- agent-B commands (passes 5-6)
 
 
+def _after_ts(date_str: str) -> float:
+    """YYYY-MM-DD (local midnight) -> epoch seconds for the --after mtime
+    floor (§6.2). argparse restricts nothing; a bad date is a usage error."""
+    try:
+        import calendar
+
+        return float(calendar.timegm(time.strptime(date_str, "%Y-%m-%d")))
+    except ValueError as exc:
+        raise UserFacingError(
+            kind="usage_error",
+            message=f"distill: bad --after date {date_str!r} (want YYYY-MM-DD)",
+            why=str(exc),
+            fixes=["goldmine distill --after 2024-10-01"],
+            doctor=False,
+            exit_code=EXIT_USAGE,
+        )
+
+
 def cmd_distill(args: argparse.Namespace) -> int:
     cfg = _load_config(args)
     db = _db_path(args, cfg)
@@ -1032,7 +1056,7 @@ def cmd_distill(args: argparse.Namespace) -> int:
     store = Store(db)
     try:
         from . import distill
-        from .distill import DistillRefused, build_cards
+        from .distill import DistillRefused, Scope, run_distill
 
         # Fingerprint gate (SPEC §4: exit 3), same identity check as search:
         # cards cluster stored vectors, so distilling across embedding spaces
@@ -1059,6 +1083,60 @@ def cmd_distill(args: argparse.Namespace) -> int:
             if refused is not None:
                 return refused
 
+        # -- scope + params resolution (§4.5/§6.1): --rerun reaps a saved
+        # view's scope + params; explicit flags win over stored params; config
+        # fills what nobody set. threshold unset now means CALIBRATED (D13).
+        # Resolved BEFORE the corpus gate so a typo'd view name reports
+        # view_not_found, not insufficient_content.
+        threshold = _g(args, "threshold")
+        min_members = _g(args, "min_members")
+        if min_members is None:
+            min_members = cfg.distill.min_members
+        max_chunks = _g(args, "max_chunks")
+        if max_chunks is None:
+            max_chunks = cfg.distill.max_chunks
+        limit_cards = _g(args, "limit_cards")
+        if limit_cards is None:
+            limit_cards = 20
+
+        if _g(args, "rerun"):
+            view = store.get_view(_g(args, "rerun"))
+            if view is None:
+                _emit_error(UserFacingError(
+                    kind="view_not_found",
+                    message=f"distill: no saved view named {_g(args, 'rerun')!r}",
+                    why=f"distill_views has no row {str(_g(args, 'rerun'))!r} in {db}",
+                    fixes=[
+                        f"goldmine distill --as {args.rerun} --under <path>",
+                        "goldmine distill --preview",
+                    ],
+                    doctor=False,
+                    exit_code=EXIT_RUNTIME,
+                ), json_mode=json_mode)
+                return EXIT_RUNTIME
+            scope_data = json.loads(view.scope_json)
+            params = json.loads(view.params_json)
+            scope = Scope(
+                kinds=set(scope_data["kinds"]) if scope_data.get("kinds") else None,
+                under=scope_data.get("under"),
+                after=scope_data.get("after"),
+            )
+            if threshold is None:
+                threshold = params.get("threshold")
+            if _g(args, "min_members") is None:
+                min_members = params.get("min_members", min_members)
+        else:
+            kinds = _parse_kinds(_g(args, "kinds"))
+            under = [str(Path(p).expanduser()) for p in (_g(args, "under") or [])]
+            after = _g(args, "after")
+            scope = Scope(
+                kinds=kinds,
+                under=under or None,
+                after=_after_ts(after) if after else None,
+            )
+        if threshold is None:
+            threshold = cfg.distill.threshold  # None = calibrated (D13)
+
         vectors = store.counts().vectors
         if vectors < 2:
             _emit_error(UserFacingError(
@@ -1071,27 +1149,26 @@ def cmd_distill(args: argparse.Namespace) -> int:
             ), json_mode=json_mode)
             return EXIT_RUNTIME
 
-        threshold = _g(args, "threshold")
-        if threshold is None:
-            threshold = cfg.distill.threshold
-        # P3-13 convention (F7): an explicit 0 is a real answer for every knob
-        # (`--min-members 0` keeps singleton clusters, `--max-chunks 0` refuses
-        # any corpus, `--limit-cards 0` shows none) — `or` fell back to the
-        # default and silently broke all three
-        min_members = _g(args, "min_members")
-        if min_members is None:
-            min_members = cfg.distill.min_members
-        max_chunks = _g(args, "max_chunks")
-        if max_chunks is None:
-            max_chunks = cfg.distill.max_chunks
-        limit_cards = _g(args, "limit_cards")
-        if limit_cards is None:
-            limit_cards = 20
-        kinds = _parse_kinds(_g(args, "kinds"))
+        view_id = distill.view_id_for(scope)
+        if _g(args, "as_name"):
+            store.upsert_view(
+                _g(args, "as_name"),
+                scope.canonical_json(),
+                json.dumps({
+                    "threshold": float(threshold) if threshold is not None else None,
+                    "min_members": int(min_members),
+                }),
+            )
+
         try:
-            cards, stats = build_cards(
-                store, threshold=float(threshold), min_members=int(min_members),
-                max_chunks=int(max_chunks), kinds=kinds,
+            result = run_distill(
+                store,
+                scope=scope,
+                threshold=float(threshold) if threshold is not None else None,
+                min_members=int(min_members),
+                max_chunks=int(max_chunks),
+                refresh=bool(_g(args, "refresh", False)),
+                preview=bool(_g(args, "preview", False)),
             )
         except DistillRefused as exc:
             _emit_error(UserFacingError(
@@ -1103,7 +1180,46 @@ def cmd_distill(args: argparse.Namespace) -> int:
                 exit_code=EXIT_RUNTIME,
             ), json_mode=json_mode)
             return EXIT_RUNTIME
-        store.save_cards(cards)
+
+        if _g(args, "preview", False):
+            # --preview writes NOTHING (no save_run, no cards mutation) — §6.1
+            if json_mode:
+                tau = result["tau"]
+                print(json.dumps({
+                    "schema": "goldmine.distill-preview/v1",
+                    "stats": {
+                        k: result["stats"][k]
+                        for k in distill.PUBLIC_STATS_KEYS
+                        if k in result["stats"]
+                    },
+                    "tau_raw": tau.tau_raw,
+                    "tau_source": tau.tau_source,
+                    "fallback_reason": tau.fallback_reason,
+                    "quartiles": list(tau.quartiles),
+                    "view_id": result["stats"]["view_id"],
+                    "intent": result["intent"],
+                }, indent=2, ensure_ascii=False))
+            else:
+                print(result["preview"])
+            return EXIT_OK
+
+        cards = result["cards"]
+        stats = result["stats"]
+        run_row = {
+            "id": stats["run_id"],
+            "algo": stats["algo"],
+            "tau": result["tau"].tau,
+            "tau_source": stats["tau_source"],
+            "scope_json": scope.canonical_json(),
+            "corpus_hash": stats["corpus_hash"],
+            "mode": stats["mode"],
+            "stats": stats,
+            "view_id": view_id,
+        }
+        store.save_run(run_row, cards)
+        # F11: the cards-v2 rebuild note is cleared by the first successful
+        # run of ANY view.
+        store.set_meta("cards_v2_rebuild_note", None)
 
         out_arg = _g(args, "out")
         if json_mode:
@@ -1114,7 +1230,9 @@ def cmd_distill(args: argparse.Namespace) -> int:
             return EXIT_OK
 
         header = distill.header_line(stats)
-        markdown = distill.render_markdown(cards[:limit_cards], header)
+        markdown = distill.render_markdown(
+            cards, header, limit_cards=limit_cards,
+        )
         if out_arg:
             out = Path(out_arg).expanduser()
             # dir mode (write cards.md + cards.json): existing dir, trailing
