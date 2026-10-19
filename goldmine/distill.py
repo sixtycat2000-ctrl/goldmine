@@ -1024,11 +1024,13 @@ def eligibility(
         return False, "--refresh forces a full recompute"
     if prev_run is None:
         return False, "no previous run for this view"
-    if prev_run.get("algo") != ALGO:
+    # the run row's algo string is parameterized ("… t=0.72 min=3"); the
+    # eligibility comparison is on the algo FAMILY (tau is checked apart)
+    if str(prev_run.get("algo", "")).split()[0] != ALGO:
         return False, f"algo changed ({prev_run.get('algo')} -> {ALGO})"
     if tau_manual is not None and repr(float(tau_manual)) != repr(float(prev_run["tau"])):
         return False, "explicit --threshold differs from the previous run's tau"
-    if prev_run.get("embed_id") != embed_id:
+    if str(prev_run.get("stats", {}).get("embed_id")) != str(embed_id):
         return False, "embed identity changed since the previous run"
     if prev_member_files:
         deleted = prev_member_files - current_member_files
@@ -1053,6 +1055,159 @@ def _dropped_preview(
         terms = cluster_terms(cluster, all_clusters)
         out.append((len(cluster), terms))
     return out
+
+
+def _incremental_run(
+    store: Store,
+    *,
+    scope: Scope,
+    view_id: str,
+    prev_run: dict,
+    kept: list[CItem],
+    items: list[CItem],
+    min_members: int,
+    fingerprint_id: str,
+    embed_id: str,
+    corpus_hash: str,
+    current_member_files: set[str],
+    refresh: bool = False,
+) -> dict:
+    """The incremental path (§4.3, D8): dissolve → snapshot → assign new
+    chunks → leader remainder → one save_run. Decision points pinned by F8:
+    (a) the membership snapshot happens BEFORE this run's mutations; (b) only
+    vanished paths counted toward the deletion budget (checked in
+    eligibility()); (c) a joining chunk takes the FIRST qualifying card,
+    lowest index — never "nearest"; (d) the guard's member set is the
+    ORIGINAL members loaded once — chunks joining this run never raise the
+    bar mid-run. τ is inherited (tau_source='inherited', D8) and calibration
+    is SKIPPED — no new sampled gram."""
+    tau = float(prev_run["tau"])
+    algo = f"{ALGO} t={tau:.2f} min={min_members}"
+    mode = "incremental"
+
+    # (the dissolve sweep settles PRIOR state: tombstones + below-min cards)
+    dissolve = store.dissolve_pass(view_id, min_members)
+
+    # F8a: snapshot BEFORE assignment
+    view_cards = store.load_view_cards(view_id)
+    member_sids = store.view_member_chunk_ids(view_id)
+    new_items = [it for it in kept if it.sid not in member_sids]
+
+    # F8d: ORIGINAL member vectors loaded once per card
+    table = store.load_vectors()
+    vec_by_sid = dict(zip(table.ids, table.matrix))
+    member_mats: dict[int, np.ndarray] = {}
+    for card in view_cards:
+        vecs = [vec_by_sid[sid] for sid in card.members if sid in vec_by_sid]
+        member_mats[card.id] = (
+            np.stack(vecs) if vecs else np.zeros((0, table.matrix.shape[1]), np.float32)
+        )
+
+    # F8c: FIRST qualifying card wins (both gates), not the nearest
+    tau_lo = max(tau - GUARD_MARGIN, GUARD_FLOOR)
+    joins: dict[int, list[CItem]] = {}
+    remainder: list[CItem] = []
+    for item in new_items:
+        placed = False
+        for card in view_cards:  # ascending id == creation order
+            if card.centroid is None:
+                continue
+            if float(card.centroid @ item.vec) < tau:
+                continue
+            mat = member_mats[card.id]
+            if mat.shape[0] == 0 or float((mat @ item.vec).mean()) < tau_lo:
+                continue
+            joins.setdefault(card.id, []).append(item)
+            placed = True
+            break
+        if not placed:
+            remainder.append(item)
+
+    # the remainder founds new cards (same leader as a full run)
+    new_clusters, hist = cluster_v2(remainder, tau, min_members)
+    dropped_small = sum(hist.values()) - len(new_clusters)
+
+    citem_by_sid = {it.sid: it for it in items}
+    cards: list[Card] = []
+
+    # updated existing cards: frozen memberships + this run's joins; the
+    # centroid is the renormalized mean over the FULL member set (never an
+    # online fp16 update) and weights are cos-to-FINAL-centroid (§2.6)
+    for card in view_cards:
+        joined = joins.get(card.id, [])
+        members = [citem_by_sid[sid] for sid in card.members if sid in citem_by_sid]
+        members.extend(joined)
+        mat = np.stack([m.vec for m in members])
+        centroid = mat.sum(axis=0)
+        norm = float(np.linalg.norm(centroid)) or 1.0
+        centroid = centroid / norm
+        weights = [float(v @ centroid) for v in mat]
+        cards.append(Card(
+            title=card.title,
+            title_kind=card.title_kind,
+            terms=json.loads(card.terms) if card.terms else [],
+            excerpts=json.loads(card.excerpts) if card.excerpts else [],
+            members=members,
+            n_files=len({m.fid for m in members}),
+            status="active",
+            centroid=centroid,
+            fingerprint_id=card.fingerprint_id,
+            distill_algo=card.distill_algo,   # provenance of ORIGINAL build
+            created_at=card.created_at,
+            chunk_weights=[
+                (members[i].sid, round(weights[i], 6)) for i in range(len(members))
+            ],
+        ))
+
+    algo_str = f"{ALGO} t={tau:.2f} min={min_members}"
+    for members in new_clusters:
+        cards.append(_build_card(
+            members, new_clusters,
+            fingerprint_id=fingerprint_id, algo=algo_str,
+        ))
+    cards.sort(key=lambda c: (-c.size, c.first_member_key))
+
+    rid = run_id_for(algo, tau, scope, corpus_hash, mode)
+    stats = {
+        "corpus_chunks": len(items),
+        "after_dedupe": len(kept),
+        "duplicates_removed": len(items) - len(kept),
+        "clusters_kept": len(cards),
+        "clusters_dropped_small": dropped_small,
+        # final-state size distribution over active cards (existing + new)
+        "histogram": size_histogram([c.members for c in cards]),
+        "tau": round(tau, 4),
+        "tau_raw": round(tau, 4),
+        "tau_source": "inherited",
+        "tau_inherited": True,
+        "algo": algo,
+        "mode": mode,
+        "run_id": rid,
+        "corpus_hash": corpus_hash,
+        # F5 honest accounting: existing chunks sent back through the leader
+        # (dissolve survivors) vs new chunks absorbed by existing cards
+        "reclustered_chunks": dissolve.reentered,
+        "chunks_reassigned_into_existing_cards": sum(len(v) for v in joins.values()),
+        "dissolved_cards": dissolve.dissolved,
+        "new_cards": len(new_clusters),
+        "budget": None,
+        "fingerprint_id": fingerprint_id,
+        "view_id": view_id,
+        "scope_under": sorted(scope.under) if scope.under else None,
+        "scope_kinds": sorted(scope.kinds) if scope.kinds else None,
+        "scope_after": scope.after,
+        "member_files": sorted(current_member_files),
+        "embed_id": embed_id,
+        "fallback_reason": None,
+    }
+    for i, card in enumerate(cards, start=1):
+        card.topic_id = i
+        card.run_id = rid
+        card.view_id = view_id
+    return {"cards": cards, "stats": stats, "tau": TauResult(
+        tau=tau, tau_source="inherited", tau_raw=tau,
+        histogram=[], quartiles=(0.0, 0.0, 0.0),
+    ), "view_id": view_id}
 
 
 def run_distill(
@@ -1083,7 +1238,9 @@ def run_distill(
     prev_run = store.latest_run(view_id)
 
     # F8a: the member-file snapshot BEFORE any mutation
-    prev_member_files = set(prev_run.get("member_files") or []) if prev_run else set()
+    prev_member_files = set(
+        (prev_run.get("stats") or {}).get("member_files") or []
+    ) if prev_run else set()
     current_member_files = {path for path, _sha in _scoped_files(store, scope)}
     ok, reason = eligibility(
         prev_run,
@@ -1094,11 +1251,22 @@ def run_distill(
         embed_id=embed_id,
     )
 
-    if ok:
-        # M2: the incremental path (dissolve -> assign -> leader remainder).
-        # Until it lands every run is a deliberate full recompute.
-        ok = False
-        reason = "incremental path not built yet (M2)"
+    if ok and not preview:
+        inc = _incremental_run(
+            store,
+            scope=scope,
+            view_id=view_id,
+            prev_run=prev_run,
+            kept=kept,
+            items=items,
+            min_members=min_members,
+            fingerprint_id=fingerprint_id,
+            embed_id=embed_id,
+            corpus_hash=corpus_hash,
+            current_member_files=current_member_files,
+            refresh=refresh,
+        )
+        return inc
 
     # ---- full run (§2) ----
     tau_result = measure_tau(
@@ -1147,9 +1315,12 @@ def run_distill(
         card.run_id = rid
         card.view_id = view_id
     if preview:
-        intent = f"full recompute ({reason})"
-        if refresh:
+        if ok:
+            intent = f"incremental ({reason})"
+        elif refresh:
             intent = "full recompute (--refresh)"
+        else:
+            intent = f"full recompute ({reason})"
         return {
             "preview": render_preview(
                 stats, tau_result, _dropped_preview(kept, min_members, tau), intent,

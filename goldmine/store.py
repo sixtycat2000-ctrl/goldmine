@@ -105,7 +105,13 @@ CREATE TABLE IF NOT EXISTS cards(
 
 CREATE TABLE IF NOT EXISTS card_chunks(
     card   INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-    chunk  INTEGER NOT NULL REFERENCES segments(id),
+    chunk  INTEGER NOT NULL,      -- NO segments FK (DEVIATION from R6 §3.1):
+                                  -- PRAGMA foreign_keys=ON + this FK would make
+                                  -- ANY segment deletion fail once cards exist;
+                                  -- §4.4 assigns tombstone cleanup to the
+                                  -- dissolve sweep, which requires tombstones
+                                  -- to be storable. Pinned shape contradiction
+                                  -- resolved in favor of §4.4's sweep design.
     weight REAL NOT NULL,
     UNIQUE(card, chunk)
 );
@@ -208,16 +214,25 @@ class CardRow:
 
 @dataclass
 class ViewCard:
-    """A card of a view with its decoded centroid + member chunk ids — the
-    incremental anchor (§4.3)."""
+    """A card of a view with its decoded centroid + member chunk ids and the
+    serialized content — the incremental anchor (§4.3). Members and weights
+    are the ORIGINAL state loaded ONCE before any mutation (F8a/F8d)."""
 
     id: int
+    run_id: str
     title: str
+    title_kind: str
+    terms: str                 # JSON array string (carried over verbatim)
+    excerpts: str              # JSON string (carried over verbatim)
     status: str
     size: int
     n_files: int
     centroid: np.ndarray | None
+    fingerprint_id: str
+    distill_algo: str
+    created_at: float
     members: list[int] = field(default_factory=list)
+    weights: list[tuple[int, float]] = field(default_factory=list)
 
 
 @dataclass
@@ -226,6 +241,17 @@ class DistillView:
     scope_json: str
     params_json: str
     created_at: float
+
+
+@dataclass
+class DissolveResult:
+    """dissolve_pass outcome (§4.4): `dissolved` cards fell below min_members
+    (rows kept as history); `reentered` chunks are the dissolved cards'
+    surviving members — they re-enter the run's remainder and count toward
+    the F5 reclustered stat."""
+
+    dissolved: int = 0
+    reentered: int = 0
 
 
 def _file_row(row) -> FileRec:
@@ -875,31 +901,36 @@ class Store:
                     )
 
     def load_view_cards(self, view_id: str, *, status: str = "active") -> list[ViewCard]:
-        """A view's live cards with decoded centroids + member chunk ids
-        (§4.3 step 1 — the snapshot taken BEFORE any mutation, F8a)."""
+        """A view's live cards with decoded centroids + member chunk ids and
+        the full serialized content (§4.3 step 1 — the snapshot taken BEFORE
+        any mutation, F8a)."""
         rows = self.db.execute(
-            """SELECT id, title, status, size, n_files, centroid FROM cards
-               WHERE view_id = ? AND status = ? ORDER BY id""",
+            """SELECT id, run_id, title, title_kind, terms, excerpts, status,
+               size, n_files, centroid, fingerprint_id, distill_algo, created_at
+               FROM cards WHERE view_id = ? AND status = ? ORDER BY id""",
             (view_id, status),
         ).fetchall()
         cards = [
             ViewCard(
-                id=r[0], title=r[1], status=r[2], size=r[3], n_files=r[4],
-                centroid=unpack_fp16(r[5]) if r[5] is not None else None,
+                id=r[0], run_id=r[1], title=r[2], title_kind=r[3], terms=r[4],
+                excerpts=r[5], status=r[6], size=r[7], n_files=r[8],
+                centroid=unpack_fp16(r[9]) if r[9] is not None else None,
+                fingerprint_id=r[10], distill_algo=r[11], created_at=r[12],
             )
             for r in rows
         ]
         if cards:
             ph = ",".join("?" for _ in cards)
             by_id = {c.id: c for c in cards}
-            for card_id, chunk_id in self.db.execute(
-                f"SELECT card, chunk FROM card_chunks WHERE card IN ({ph}) "
-                "ORDER BY card, chunk",
+            for card_id, chunk_id, weight in self.db.execute(
+                f"""SELECT card, chunk, weight FROM card_chunks
+                    WHERE card IN ({ph}) ORDER BY card, chunk""",
                 tuple(c.id for c in cards),
             ).fetchall():
                 vc = by_id.get(card_id)
                 if vc is not None:
                     vc.members.append(chunk_id)
+                    vc.weights.append((chunk_id, weight))
         return cards
 
     def view_member_chunk_ids(self, view_id: str) -> set[int]:
@@ -912,6 +943,77 @@ class Store:
             (view_id,),
         ).fetchall()
         return {r[0] for r in rows}
+
+    def dissolve_pass(self, view_id: str, min_members: int) -> DissolveResult:
+        """§4.4: the tombstone sweep + below-min dissolve for one view, in
+        ONE transaction. (1) card_chunks rows pointing at deleted segments go
+        (the v2 DDL keeps the chunk FK CASCADE-free on purpose — this sweep
+        owns removals); (2) every affected card's size/n_files/centroid is
+        recomputed from its surviving members; (3) a card below min_members
+        becomes status='dissolved' — its ROW survives as history/diffing
+        (§4.4) while its surviving members' card_chunks rows are released so
+        they re-enter the run's remainder. Returns the DissolveResult counts.
+
+        Recompute reads the Store's decoded fp16 vectors — the same decode
+        path clustering used, so decisions stay self-consistent (06 §6)."""
+        import time
+
+        with self.db:
+            self.db.execute(
+                """DELETE FROM card_chunks WHERE card IN
+                   (SELECT id FROM cards WHERE view_id = ? AND status = 'active')
+                   AND chunk NOT IN (SELECT id FROM segments)""",
+                (view_id,),
+            )
+            rows = self.db.execute(
+                """SELECT c.id, cc.chunk FROM cards c
+                   JOIN card_chunks cc ON cc.card = c.id
+                   WHERE c.view_id = ? AND c.status = 'active'""",
+                (view_id,),
+            ).fetchall()
+            members_by_card: dict[int, list[int]] = {}
+            for card_id, chunk_id in rows:
+                members_by_card.setdefault(card_id, []).append(chunk_id)
+            result = DissolveResult()
+            if not members_by_card:
+                return result
+            table = self.load_vectors()
+            vec_by_sid = dict(zip(table.ids, table.matrix))
+            for card_id, members in members_by_card.items():
+                n = len(members)
+                if n < min_members:
+                    self.db.execute(
+                        "DELETE FROM card_chunks WHERE card = ?", (card_id,)
+                    )
+                    self.db.execute(
+                        "UPDATE cards SET status = 'dissolved', size = ?, "
+                        "updated_at = ? WHERE id = ?",
+                        (n, time.time(), card_id),
+                    )
+                    result.dissolved += 1
+                    result.reentered += n
+                    continue
+                file_ids = {
+                    r[0] for r in self.db.execute(
+                        f"""SELECT DISTINCT file FROM segments
+                            WHERE id IN ({",".join("?" for _ in members)})""",
+                        tuple(members),
+                    ).fetchall()
+                }
+                vecs = [vec_by_sid[sid] for sid in members if sid in vec_by_sid]
+                centroid_blob = None
+                if vecs:
+                    mean = np.mean(np.stack(vecs), axis=0)
+                    norm = float(np.linalg.norm(mean))
+                    if norm > 0.0:
+                        mean = mean / norm
+                    centroid_blob = pack_fp16(mean)
+                self.db.execute(
+                    """UPDATE cards SET size = ?, n_files = ?, centroid = ?,
+                       updated_at = ? WHERE id = ?""",
+                    (n, len(file_ids), centroid_blob, time.time(), card_id),
+                )
+            return result
 
     def latest_run(self, view_id: str) -> dict | None:
         """The view's live run row (created_at desc, id asc tiebreak — §4.1)

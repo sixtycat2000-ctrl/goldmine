@@ -164,3 +164,21 @@ def test_render_report_mentions_verdicts():
     assert "v1 rules (must FAIL)" in text
     assert "v2 rules (must PASS)" in text
     assert "[PASS]" in text
+
+
+@pytest.fixture(scope="module")
+def incremental_home(tmp_path_factory):
+    home = tmp_path_factory.mktemp("gm-eval-distill-inc")
+    report, ok = eval_distill.variant_incremental("mock", home)
+    return report, ok
+
+
+def test_incremental_variant_gate(incremental_home):
+    """§7.4 incremental + §4.6: mode='incremental', tau inherited, the F5
+    ratio (reclustered / after_dedupe) <= 0.10, original 8 topics recover."""
+    report, ok = incremental_home
+    assert ok is True
+    assert report["gates"]["mode=incremental"]
+    assert report["gates"]["tau_inherited"]
+    assert report["reclustered_ratio"] <= 0.10
+    assert report["metrics"]["recovery_total"] == 9

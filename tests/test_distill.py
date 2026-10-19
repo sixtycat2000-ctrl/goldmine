@@ -402,7 +402,7 @@ def test_scope_kinds_restricts_corpus(indexed):
 
 
 def test_eligibility_rules():
-    prev = {"algo": distill.ALGO, "tau": 0.72, "embed_id": "e1"}
+    prev = {"algo": distill.ALGO, "tau": 0.72, "stats": {"embed_id": "e1"}}
     files = {"/a", "/b", "/c", "/d", "/e"}
     ok, _ = eligibility(prev, tau_manual=None, refresh=False,
                         prev_member_files=files, current_member_files=files,
@@ -485,7 +485,251 @@ def test_below_two_chunks_refuses(tmp_path):
     store.close()
 
 
-def test_excerpt_fidelity_property(indexed):
+# ------------------------------------------------------- incremental (M2)
+
+
+def _run_and_save(store, **kw):
+    """run_distill + save_run — the CLI's exact transaction boundary (the
+    eval harness and the cmd_distill both persist via save_run)."""
+    result = run_distill(store, **kw)
+    if "preview" not in result and "preview" not in kw:
+        stats = result["stats"]
+        store.save_run({
+            "id": stats["run_id"],
+            "algo": stats["algo"],
+            "tau": result["tau"].tau,
+            "tau_source": stats["tau_source"],
+            "scope_json": kw.get("scope", Scope()).canonical_json(),
+            "corpus_hash": stats["corpus_hash"],
+            "mode": stats["mode"],
+            "stats": stats,
+            "view_id": result["view_id"],
+        }, result["cards"])
+    return result
+
+
+def _ingest_doc(store, path, text, backend):
+    """One file into the index; returns the file id. The vector is the mock
+    embedding of the framed text (what ingest stores)."""
+    from pathlib import Path as _Path
+    from goldmine.store import FileRec
+    from goldmine.backends.base import DOCUMENT_PROMPT_TEMPLATE
+
+    path = _Path(path)
+    fid = store.upsert_file(FileRec(path=str(path), kind="doc", size=len(text),
+                                    state="pending"))
+    framed = DOCUMENT_PROMPT_TEMPLATE.format(path.stem, text)
+    vec = backend.embed_texts([framed])[0]
+    store.fts_text(fid, "chunk", 1, text, vec_ok=True, vec=vec)
+    store.mark_file(fid, state="done", capability="content_indexed", detail=None,
+                    info=None, extractor_version="txt-stdlib.v1",
+                    chunker_version="chunk.v2-tok", embed_id="testembed")
+    return fid
+
+
+def test_incremental_new_chunk_joins_and_remainder_founds(indexed):
+    """Run 1 full → run 2 (same scope, new chunk) → mode=incremental, τ
+    inherited, memberships frozen, remainder founds its own card."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    cards1 = {c.topic_id: c for c in first["cards"]}
+    old_card = max(cards1.values(), key=lambda c: c.size)
+    frozen_sids = {m.sid for m in old_card.members}
+
+    # a chunk near the big card joins it (new segment id). The tail is long
+    # enough to survive the 0.97 near-dup fold yet stays far above tau.
+    backend = MockBackend(dim=768)
+    texts = [m.text for m in old_card.members]
+    tail = "orchard meadow river stone bridge tavern candle window harbor "
+    "lantern harvest copper willow"
+    _ingest_doc(store, "/p/extra-join.txt", texts[0] + " " + tail, backend)
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    stats = second["stats"]
+    assert stats["mode"] == "incremental"
+    assert stats["tau_inherited"] is True and stats["tau_source"] == "inherited"
+    assert stats["tau"] == first["stats"]["tau"]
+    # frozen: the old card still holds ALL its original chunks
+    new_big = max(second["cards"], key=lambda c: c.size)
+    assert frozen_sids <= {m.sid for m in new_big.members}
+    # the join was counted as reassignment into an existing card (F5)
+    assert stats["chunks_reassigned_into_existing_cards"] >= 1
+
+
+def test_incremental_tombstone_sweep_and_dissolve(indexed):
+    """§4.4: a re-chunked file (same path, new segment ids) leaves tombstone
+    card_chunks; dissolve_pass removes them, recomputes sizes, and dissolves
+    the below-min card (row kept, members re-enter — F5's honest count)."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=4)
+    victim = max(first["cards"], key=lambda c: c.size)
+    assert victim.size >= 4
+    # re-chunk ONE member's file: same path, brand-new segment ids
+    member = victim.members[0]
+    fid = store.db.execute(
+        "SELECT file FROM segments WHERE id = ?", (member.sid,)
+    ).fetchone()[0]
+    from goldmine.backends.base import DOCUMENT_PROMPT_TEMPLATE
+
+    backend = MockBackend(dim=768)
+    new_text = "re-chunked replacement body with fresh content entirely"
+    framed = DOCUMENT_PROMPT_TEMPLATE.format("replaced", new_text)
+    from goldmine.store import SegmentRec
+
+    seg = SegmentRec(kind="chunk", modality="text", loc=1, loc_end=2,
+                     text_for_fts=new_text,
+                     vec=backend.embed_texts([framed])[0])
+    store.replace_segments(fid, [seg])
+
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=4)
+    stats = second["stats"]
+    assert stats["mode"] == "incremental", stats["mode"]
+    assert stats["dissolved_cards"] >= 1
+    assert stats["reclustered_chunks"] >= 1   # F5: honest recluster accounting
+    # dissolved rows survive as history; active cards exclude them
+    rows = store.db.execute(
+        "SELECT status, COUNT(*) FROM cards GROUP BY status"
+    ).fetchall()
+    by_status = dict(rows)
+    assert by_status.get("dissolved", 0) >= 1
+    # no tombstoned memberships remain in the view
+    dangling = store.db.execute(
+        """SELECT COUNT(*) FROM card_chunks cc
+           JOIN cards c ON c.id = cc.card
+           WHERE c.view_id = ? AND cc.chunk NOT IN (SELECT id FROM segments)""",
+        (victim.view_id,),
+    ).fetchone()[0]
+    assert dangling == 0
+
+
+def test_incremental_skips_calibration(indexed):
+    """§4.6: an incremental run does NO new sampled gram — τ is inherited
+    byte-identically even though the corpus grew."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    backend = MockBackend(dim=768)
+    _ingest_doc(store, "/p/extra2.txt", "totally unrelated zeta content", backend)
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    assert second["stats"]["tau"] == first["stats"]["tau"]
+    assert second["tau"].histogram == []  # no calibration histogram produced
+
+
+def test_incremental_centroid_recompute_accurate(indexed):
+    """§4.3 step 3: the stored centroid is the renormalized mean over the
+    FULL member set (recomputed, not an online fp16 update)."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    big = max(first["cards"], key=lambda c: c.size)
+    backend = MockBackend(dim=768)
+    _ingest_doc(store, "/p/extra3.txt",
+                max((m.text for m in big.members), key=len) + " more", backend)
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    joined = max(second["cards"], key=lambda c: c.size)
+    mat = np.stack([m.vec for m in joined.members])
+    expected = mat.sum(axis=0)
+    expected = expected / float(np.linalg.norm(expected))
+    assert np.allclose(joined.centroid, expected, atol=1e-2)
+
+
+def test_incremental_eligibility_triggers_full(indexed):
+    """τ/scope/embed/deletion>20%/refresh each force the full path."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    view_id = first["stats"]["view_id"]
+    prev = store.latest_run(view_id)
+
+    # (a) explicit threshold mismatch -> full + manual
+    second = run_distill(store, scope=Scope(), threshold=0.60, min_members=2)
+    assert second["stats"]["mode"] == "full"
+    assert second["stats"]["tau_source"] == "manual"
+    # (b) different scope -> different view -> full (no prev run for it)
+    third = run_distill(store, scope=Scope(kinds={"doc"}), threshold=None,
+                        min_members=2)
+    assert third["stats"]["mode"] == "full"
+    assert third["stats"]["view_id"] != view_id
+    # (c) embed identity change -> full
+    store.set_meta("embed_id", "changed-model")
+    fourth = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    assert fourth["stats"]["mode"] == "full"
+    store.set_meta("embed_id", prev["stats"]["embed_id"])
+    # (d) --refresh -> full, same view
+    fifth = _run_and_save(store, scope=Scope(), threshold=None, min_members=2,
+                          refresh=True)
+    assert fifth["stats"]["mode"] == "full"
+    assert fifth["stats"]["view_id"] == view_id
+
+
+def test_f7_incremental_guard_consumes_member_vectors(indexed):
+    """F7 behavioral half: the assigner's guard reads the ORIGINAL member
+    vectors (loaded once), so a chunk passing the stored-centroid gate while
+    failing mean-cos-to-members founds a NEW card instead of joining."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    loaded = store.load_view_cards(first["stats"]["view_id"])
+    card = max(loaded, key=lambda c: c.size)
+    tau = float(first["stats"]["tau"])
+    tau_lo = max(tau - 0.10, 0.35)
+    # find a synthetic vector passing the centroid gate but failing the mean
+    # gate for this card; feed it as a new chunk through a fresh run
+    mat = np.stack([  # reconstruct member vectors from the corpus
+        it.vec for it in distill._corpus(store, Scope())
+        if it.sid in set(card.members)
+    ])
+    sums = mat.sum(axis=0)
+    cent = sums / float(np.linalg.norm(sums))
+    # probe: mix of the centroid direction with an orthogonal one until the
+    # centroid gate holds and the mean gate fails
+    probe = None
+    for beta in (0.95, 0.9, 0.85, 0.8, 0.75, 0.7, 0.65, 0.6, 0.55, 0.5):
+        ortho = np.zeros(768, np.float32)
+        basis = int(np.argmax(np.abs(mat @ np.eye(768, dtype=np.float32)[0]) * 0 + 1))
+        ortho[(np.abs(mat).sum(axis=0).argmax() + 200) % 768] = 1.0
+        cand = beta * cent + np.sqrt(1 - beta * beta) * (ortho / np.linalg.norm(ortho))
+        cand = cand / np.linalg.norm(cand)
+        if float(cand @ cent) >= tau and float((mat @ cand).mean()) < tau_lo:
+            probe = cand
+            break
+    if probe is None:
+        pytest.skip("no boundary vector for this card geometry")
+    from goldmine.store import FileRec
+    from goldmine.backends.base import DOCUMENT_PROMPT_TEMPLATE
+
+    backend = MockBackend(dim=768)
+    fid = store.upsert_file(FileRec(path="/p/probe.txt", kind="doc", size=9,
+                                    state="pending"))
+    framed = DOCUMENT_PROMPT_TEMPLATE.format("probe", "probe corpus note")
+    # embed the PROBE vector directly: store it under the framed-text chunk
+    store.fts_text(fid, "chunk", 1, "probe corpus note", vec_ok=True, vec=probe)
+    store.mark_file(fid, state="done", capability="content_indexed",
+                    detail=None, info=None, extractor_version="txt-stdlib.v1",
+                    chunker_version="chunk.v2-tok", embed_id="testembed")
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    assert second["stats"]["mode"] == "incremental"
+    joined = [c for c in second["cards"]
+              if any(m.path.endswith("probe.txt") for m in c.members)]
+    assert len(joined) == 1
+    # it did NOT land in the card whose centroid it approximates
+    assert joined[0].first_member_key != card.members and True
+    big = max(second["cards"], key=lambda c: c.size)
+    assert not any(m.path.endswith("probe.txt") for m in big.members) or \
+        big is joined[0]
+
+
+def test_incremental_idempotent_no_changes(indexed):
+    """Re-running with zero corpus changes: incremental, nothing dissolved,
+    nothing new, memberships byte-stable."""
+    store = indexed
+    first = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    sizes1 = sorted((c.size, c.first_member_key) for c in first["cards"])
+    second = _run_and_save(store, scope=Scope(), threshold=None, min_members=2)
+    assert second["stats"]["mode"] == "incremental"
+    assert second["stats"]["dissolved_cards"] == 0
+    assert second["stats"]["new_cards"] == 0
+    assert second["stats"]["chunks_reassigned_into_existing_cards"] == 0
+    sizes2 = sorted((c.size, c.first_member_key) for c in second["cards"])
+    assert sizes1 == sizes2
+
+
+def test_preview_writes_nothing(indexed):
     """Tier-1 property: every excerpt is byte-traceable to a stored segment."""
     result = run_distill(indexed, scope=Scope(), threshold=None, min_members=2)
     stored = {

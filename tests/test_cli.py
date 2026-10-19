@@ -422,8 +422,10 @@ def test_distill_markdown_json_and_out_dir(tmp_home, db_path, capsys):
     payload = json.loads(capsys.readouterr().out)
     assert payload["schema"] == "goldmine.cards/v2"
     assert payload["stats"]["clusters_kept"] >= 2
-    assert payload["stats"]["mode"] == "full"
-    assert payload["stats"]["tau_source"] in ("otsu", "floor", "ceil", "percentile")
+    # second run on the same view: the incremental path took over (D8)
+    assert payload["stats"]["mode"] == "incremental"
+    assert payload["stats"]["tau_inherited"] is True
+    assert payload["stats"]["tau_source"] == "inherited"
     assert payload["stats"]["budget"] is None
     first = payload["cards"][0]
     assert set(first) == {

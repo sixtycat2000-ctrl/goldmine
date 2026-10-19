@@ -64,6 +64,13 @@ from goldmine.util import excerpt as make_excerpt  # noqa: E402
 
 # ------------------------------------------------------------------ fixture
 
+#: The 9th topic — used ONLY by the incremental variant's top-up docs.
+EXTRA_TOPIC = "stargazing"
+EXTRA_TERMS = (
+    "telescope eyepiece tripod equatorial mount collimation seeing planets "
+    "moon craters nebula cluster meteor binoculars chart"
+)
+
 #: 8 planted topics, disjoint from eval_relevance's six (no shared-sha
 #: collisions in one tmp home). Each line is a topic vocabulary.
 TOPIC_TERMS = {
@@ -232,6 +239,36 @@ def build_corpus(variant: str = "main") -> list[PlantedDoc]:
 
 def doc_topics(docs: list[PlantedDoc]) -> dict[str, str | None]:
     return {d.doc_id: d.topic for d in docs}
+
+
+def top_up_docs() -> list[PlantedDoc]:
+    """10 docs of the 9th topic (the incremental variant's new work)."""
+    terms = EXTRA_TERMS.split()
+    docs = []
+    for n in range(1, 11):
+        rot = terms[n % len(terms):] + terms[: n % len(terms)]
+        docs.append(PlantedDoc(
+            doc_id=f"{EXTRA_TOPIC}-{n:02d}", topic=EXTRA_TOPIC,
+            text=(
+                f"{EXTRA_TOPIC} log entry {n:02d}: {' '.join(terms)}. "
+                f"rotated for the session: {' '.join(rot)}. "
+                f"{FILLER_MAIN[n % len(FILLER_MAIN)]} note {n:02d} filed."
+            ),
+        ))
+    return docs
+
+
+def top_up_corpus(corpus_dir: Path) -> list[PlantedDoc]:
+    """Write the 9th-topic docs into an existing corpus dir (same naming
+    scheme so ingest picks them up as new files)."""
+    corpus_dir.mkdir(parents=True, exist_ok=True)
+    docs = top_up_docs()
+    offset = 100  # after the 100 fixture docs
+    for i, doc in enumerate(docs):
+        (corpus_dir / f"{offset + i:04d}-{doc.doc_id}.txt").write_text(
+            doc.text, encoding="utf-8",
+        )
+    return docs
 
 
 def single_topic_corpus() -> list[PlantedDoc]:
@@ -672,12 +709,71 @@ def variant_shuffle(backend_name: str, home: Path) -> tuple[dict, bool]:
         backend.close()
 
 
+def variant_incremental(backend_name: str, home: Path) -> tuple[dict, bool]:
+    """§7.4 incremental variant + §4.6 gate: distill 100 docs → ingest 10
+    new-topic docs → rerun the view → mode='incremental', tau inherited,
+    reclustered ratio <= 0.10 (F5 denominator), original 8 topics recover."""
+    from goldmine.ingest import IngestPipeline
+
+    docs = build_corpus("main")
+    planted = doc_topics(docs)
+    store, backend, cfg = index_corpus(home / "inc", docs, backend_name)
+    try:
+        run1 = run_v2_pipeline(store)
+        corpus_dir = home / "inc" / "corpus"
+        extra = top_up_corpus(corpus_dir)
+        planted = doc_topics(docs + extra)
+        pipeline = IngestPipeline(cfg, store, backend)
+        report = pipeline.run([str(corpus_dir)])
+        assert report.failed == 0, report.failures
+
+        result = distill.run_distill(
+            store, scope=Scope(), threshold=None, min_members=3,
+        )
+        stats = result["stats"]
+        ratio = stats["reclustered_chunks"] / max(1, stats["after_dedupe"])
+        metrics = compute_metrics(result["cards"], _items_of(store), planted)
+        original_ok = all(
+            v["ok"] for k, v in metrics["recovery_per_topic"].items()
+            if k != EXTRA_TOPIC
+        )
+        gates = {
+            "mode=incremental": stats["mode"] == "incremental",
+            "tau_inherited": bool(stats["tau_inherited"])
+            and stats["tau_source"] == "inherited",
+            f"reclustered {ratio:.3f} <= 0.10": ratio <= 0.10,
+            "original 8 topics recover": original_ok
+            and metrics["recovery_total"] == 9,
+        }
+        return {
+            "variant": "incremental",
+            "backend": backend_name,
+            "run1": {"mode": run1["stats"]["mode"],
+                     "cards": run1["stats"]["clusters_kept"]},
+            "calibration": (
+                f"tau {stats['tau']} (inherited from run 1 — calibration "
+                "skipped, no new sampled gram)"
+            ),
+            "metrics": metrics,
+            "reclustered_ratio": round(ratio, 4),
+            "reassigned_into_existing": stats[
+                "chunks_reassigned_into_existing_cards"],
+            "dissolved": stats["dissolved_cards"],
+            "new_cards": stats["new_cards"],
+            "gates": gates,
+        }, all(gates.values())
+    finally:
+        store.close()
+        backend.close()
+
+
 VARIANTS = {
     "main": variant_main,
     "hard": variant_hard,
     "single-topic": variant_single_topic,
     "micro": variant_micro,
     "shuffle": variant_shuffle,
+    "incremental": variant_incremental,
 }
 
 
