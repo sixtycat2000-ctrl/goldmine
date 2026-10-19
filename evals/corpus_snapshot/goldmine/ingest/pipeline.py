@@ -148,6 +148,28 @@ class _Outcome:
     content_date: float | None = None  # EXIF taken epoch (05 §4.1c/C10)
 
 
+@dataclass
+class _OcrRequest:
+    """One screenshot queued for the shared OCR batch (02 F7)."""
+
+    path: Path
+    done: threading.Event = field(default_factory=threading.Event)
+    page: "ocr_mod.OcrPage | None" = None   # helper answer (may carry .error)
+    failed: str | None = None               # batch-level unavailability/timeout
+
+
+#: Screenshot batch gather (02 F7): the drain window closes after this much
+#: QUIESCENCE (no new arrivals), capped absolutely. Fixed-width windows race
+#: stragglers (a worker scheduled ~1 wave-length late lands in a second
+#: spawn); quiescence folds them in as long as arrivals keep coming. The
+#: helper spawn itself is one subprocess per drain — ~0.15 s overhead and a
+#: ~1.1 s Vision cold start each (was: per screenshot), so collapsing a wave
+#: into one spawn also caps concurrent ~100 MB Vision hosts at one.
+_OCR_BATCH_GATHER_S = 0.10
+_OCR_BATCH_GATHER_MAX_S = 2.0
+_OCR_BATCH_POLL_S = 0.01
+
+
 def _has_words(text: str) -> bool:
     """Digits-only text loses its vector (DigUp SearchText.hasWords port):
     it competes lexically only, or a number dump would sink unrelated matches."""
@@ -221,6 +243,11 @@ class IngestPipeline:
         self._ocr_ready: bool | None = None
         self._ocr_unavailable_reason: str | None = None
         self._ocr_lock = threading.Lock()
+        # 02 F7: screenshots batch into ONE helper spawn per drain (the
+        # helper's stdin batch contract; per-image error isolation kept).
+        self._ocr_batch: list[_OcrRequest] = []
+        self._ocr_batch_leader = False
+        self._ocr_batch_lock = threading.Lock()
         # v2 image prep (B5): thumbnails must outlive extraction (they embed
         # in _commit, one wave later), so the run owns one scratch dir.
         self._media_tmp: tempfile.TemporaryDirectory | None = None
@@ -354,20 +381,29 @@ class IngestPipeline:
                     if self.cancelled:
                         break
                     wave_items = candidates[wave_start:wave_start + wave]
-                    futures = [
-                        pool.submit(
-                            self._extract, cand,
-                            encoding_override=encoding_override, max_chunks=max_chunks,
-                        )
-                        for cand in wave_items
-                    ]
                     hashes = [sha256_file(c.path) for c in wave_items]
-                    for cand, future, sha in zip(wave_items, futures, hashes):
+                    jobs = []
+                    for cand, sha in zip(wave_items, hashes):
                         if self._skip_unchanged(cand, sha, reindex,
                                                  refresh_thin=refresh_thin):
                             report.unchanged += 1
                             done += 1
                             continue
+                        # extract ONLY what will be committed: submitting the
+                        # future BEFORE the skip check ran a full extraction
+                        # for every unchanged file as a discarded orphan —
+                        # pool.shutdown(wait=False) cannot revoke a running
+                        # future, so the work (and a stray OCR spawn) leaked
+                        # past run() on every plain ingest.
+                        jobs.append((
+                            cand, sha,
+                            pool.submit(
+                                self._extract, cand,
+                                encoding_override=encoding_override,
+                                max_chunks=max_chunks,
+                            ),
+                        ))
+                    for cand, sha, future in jobs:
                         try:
                             outcome = future.result()
                         except Exception as exc:  # extraction crash => failed row
@@ -862,14 +898,44 @@ class IngestPipeline:
         """OCR one screenshot -> (text, ms, status). status: "ok" (text may
         still be None), "no-text" (ran, nothing readable), "off" (helper
         unavailable/disabled), "error" (per-image failure — never a failed
-        row, the image path stands on its own)."""
+        row, the image path stands on its own).
+
+        02 F7: requests JOIN a shared batch drained by one leader thread into
+        ONE helper spawn, instead of one spawn per screenshot (~0.15 s spawn
+        overhead and a Vision cold start each, up to `workers` concurrent
+        ~100 MB Vision hosts). Per-image errors stay isolated: the helper
+        answers per image even in a batch, and a batch-level failure marks
+        every member "off" (which the redo marker machinery can recover)."""
         if not self._ocr_probe():
             return None, None, "off"
-        try:
-            page = ocr_mod.recognize_one(path, self.cfg)
-        except (ocr_mod.OcrUnavailable, ocr_mod.OcrTimeout) as exc:
-            logger.warning("ocr: %s on %s", exc, path.name)
+        req = _OcrRequest(path)
+        with self._ocr_batch_lock:
+            self._ocr_batch.append(req)
+            leader = not self._ocr_batch_leader
+            self._ocr_batch_leader = True
+        logger.debug("ocr: queued %s (leader=%s)", path.name, leader)
+        if leader:
+            self._drain_ocr_batch()
+        # Wait while SOME leader is alive — a batch that keeps growing runs
+        # longer than any per-request bound the waiter could guess (each drain
+        # is bounded by recognize()'s own subprocess timeout). Bail "off" only
+        # when the request is ORPHANED (no leader, no answer — possible only
+        # if a leader died between pulls); the honest off-marker stays
+        # re-doable via _needs_ocr_redo.
+        while not req.done.wait(_OCR_BATCH_POLL_S * 20):
+            with self._ocr_batch_lock:
+                orphaned = not self._ocr_batch_leader
+            if orphaned:
+                break
+        if not req.done.is_set():
+            logger.warning("ocr: batch leader lost before %s was answered",
+                           path.name)
             return None, None, "off"
+        if req.failed is not None:
+            return None, None, "off"
+        page = req.page
+        if page is None:
+            return None, None, "error"  # helper produced no answer for this id
         if page.error is not None:
             logger.debug("ocr: %s on %s", page.error, path.name)
             return None, page.ms, "error"
@@ -877,6 +943,58 @@ class IngestPipeline:
         if text.strip():
             return text, page.ms, "ok"
         return None, page.ms, "no-text"
+
+    def _drain_ocr_batch(self) -> None:
+        """Leader loop: gather same-wave arrivals, then one `recognize` spawn
+        per drain until the queue is empty. Runs on the leader's own
+        extraction thread. Leadership is released under the queue lock exactly
+        when an empty queue is observed, so an entry appended concurrently
+        either joins this drain (appended before the check) or becomes the
+        next leader (after)."""
+        try:
+            self._gather_ocr_batch()
+            while True:
+                with self._ocr_batch_lock:
+                    batch, self._ocr_batch = self._ocr_batch, []
+                    if not batch:
+                        self._ocr_batch_leader = False
+                        return
+                logger.debug("ocr: draining batch of %d", len(batch))
+                try:
+                    results = ocr_mod.recognize(
+                        [r.path for r in batch], self.cfg,
+                    )
+                except (ocr_mod.OcrUnavailable, ocr_mod.OcrTimeout) as exc:
+                    logger.warning("ocr: batch of %d unavailable: %s",
+                                   len(batch), exc)
+                    for r in batch:
+                        r.failed = str(exc)
+                        r.done.set()
+                    continue  # later arrivals still deserve their own try
+                for i, r in enumerate(batch):
+                    r.page = results.get(str(i))
+                    r.done.set()
+        finally:
+            # exception safety only (the empty-queue exit clears it above)
+            with self._ocr_batch_lock:
+                self._ocr_batch_leader = False
+
+    def _gather_ocr_batch(self) -> None:
+        """Wait for same-wave screenshots to join the queue: the window closes
+        after `_OCR_BATCH_GATHER_S` of NO GROWTH (quiescence), or at the
+        absolute cap — a fixed-width window races stragglers."""
+        deadline = time.monotonic() + _OCR_BATCH_GATHER_MAX_S
+        seen = len(self._ocr_batch)
+        quiet_since = time.monotonic()
+        while time.monotonic() < deadline:
+            time.sleep(_OCR_BATCH_POLL_S)
+            with self._ocr_batch_lock:
+                n = len(self._ocr_batch)
+            if n != seen:
+                seen = n
+                quiet_since = time.monotonic()
+            elif time.monotonic() - quiet_since >= _OCR_BATCH_GATHER_S:
+                return
 
     def _ocr_pages(self, path: Path, pages: list[int], tmp: Path) -> dict[int, tuple[str, float | None]]:
         """Thin-page OCR batch (02 §5.2 Scope B): render each page via

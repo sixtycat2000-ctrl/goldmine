@@ -433,6 +433,57 @@ def _parse_kinds(arg: str | None) -> set[str] | None:
 # ------------------------------------------------------------------- search
 
 
+def _search_pack_flags(args: argparse.Namespace) -> tuple[bool, int, int]:
+    """Validate the v2.1 pack/context flags (docs/v2.1-pack-eval.md §1.2/§2.1).
+    Returns (pack, context, budget). Rules: one --context knob, clamp <= 3
+    (stderr notice), negative -> usage error; pack defaults to context 1,
+    list/--json to 0; --budget needs --pack; --pack and --format fzf
+    conflict (both exit 2)."""
+    pack = bool(_g(args, "pack", False))
+    fmt = _g(args, "format")
+    budget_arg = _g(args, "budget")
+    if budget_arg is not None and not pack:
+        raise UserFacingError(
+            kind="usage_error",
+            message="--budget needs --pack",
+            why="--budget sizes the answer-material pack; the hit list has "
+                "no budget",
+            fixes=["goldmine search <query> --pack --budget 4000",
+                   "goldmine search --help"],
+            doctor=False,
+            exit_code=EXIT_USAGE,
+        )
+    if pack and fmt == "fzf":
+        raise UserFacingError(
+            kind="usage_error",
+            message="--pack and --format fzf conflict",
+            why="the pack is one pasted document; fzf needs one line per hit",
+            fixes=["goldmine search <query> --pack",
+                   "goldmine search <query> --format fzf"],
+            doctor=False,
+            exit_code=EXIT_USAGE,
+        )
+    from .pack import clamp_budget, clamp_context
+
+    context_arg = _g(args, "context")
+    if context_arg is not None and context_arg < 0:
+        raise UserFacingError(
+            kind="usage_error",
+            message=f"--context must be >= 0, got {context_arg}",
+            why="negative neighbor radius is meaningless",
+            fixes=["goldmine search <query> --context 2", "goldmine search --help"],
+            doctor=False,
+            exit_code=EXIT_USAGE,
+        )
+    context = (1 if pack else 0) if context_arg is None else clamp_context(context_arg)
+    if context_arg is not None and context_arg > 3:
+        print(f"--context {context_arg} clamped to {context}", file=sys.stderr)
+    budget = clamp_budget(budget_arg) if budget_arg is not None else 4000
+    if pack and budget_arg is not None and budget != budget_arg:
+        print(f"--budget {budget_arg} clamped to {budget}", file=sys.stderr)
+    return pack, context, budget
+
+
 def cmd_search(args: argparse.Namespace) -> int:
     cfg = _load_config(args)
     db = _db_path(args, cfg)
@@ -440,6 +491,11 @@ def cmd_search(args: argparse.Namespace) -> int:
     refused = _gate_no_index(db, json_mode=json_mode)
     if refused is not None:
         return refused
+    try:
+        pack, context, budget = _search_pack_flags(args)
+    except UserFacingError as exc:
+        _emit_error(exc, json_mode=json_mode)
+        return exc.exit_code
     store = Store(db)
     try:
         query = " ".join(args.query)
@@ -493,6 +549,7 @@ def cmd_search(args: argparse.Namespace) -> int:
         # It caps the «» snippet width too; 0 disables the decoration.
         excerpt_arg = _g(args, "excerpt_chars", 240)
         excerpt_chars = 240 if excerpt_arg is None else excerpt_arg
+        why = bool(_g(args, "why", False))
         try:
             hits = Searcher(store, None if lexical_flag else backend).search(
                 clean_query,
@@ -502,8 +559,23 @@ def cmd_search(args: argparse.Namespace) -> int:
                 kinds=kinds,
                 filters=filters,
                 snippet_width=excerpt_chars or None,
-                why=bool(_g(args, "why", False)),
+                why=why,
             )
+            # v2.1 R1 (§2.1 wiring note): the pack build needs the backend
+            # alive (count_tokens) — it runs BEFORE backend.close().
+            if pack:
+                from .pack import PackSettings, build_pack_from_hits
+
+                pack_text, pack_meta = build_pack_from_hits(
+                    store, None if lexical_flag else backend,
+                    PackSettings(
+                        query=clean_query,
+                        scorer="lexical" if lexical_flag else scorer,
+                        z_gate=z_gate, limit=limit, context=context,
+                        budget=budget, kinds=kinds, filters=filters, why=why,
+                    ),
+                    hits,
+                )
         finally:
             # a spawned llama-server MUST NOT outlive the command (V2: kill
             # only our children — but always kill them)
@@ -512,6 +584,32 @@ def cmd_search(args: argparse.Namespace) -> int:
         if stale:
             for hit in hits:
                 hit.scorer = STALE_SCORER_LABEL
+        if pack:
+            # the pack IS the stdout answer (spec §2.2); the honest zero-hit
+            # pack renders as header + empty footer, exit 0 (§2.6)
+            if json_mode:
+                _emit_json(pack_meta)
+            else:
+                print(pack_text, end="")
+            if not hits and not json_mode:
+                print(f"nothing found for {query!r} — the pack footer says so",
+                      file=sys.stderr)
+            return EXIT_OK
+        # v2.1 R2 (§1.3): --context N attaches neighbor data. Human list gets
+        # one note line per hit; --json gets full-span payloads. context 0
+        # passes nothing at all — plain search output stays byte-stable.
+        context_of = None
+        if context > 0 and hits:
+            from .pack import NeighborIndex
+
+            neighbor = NeighborIndex(store)
+            context_of = {}
+            for h in hits:
+                if json_mode:
+                    spans, note = neighbor.parts_for(h, context)
+                else:
+                    spans, note = neighbor.spans_for(h, context)
+                context_of[h.rank] = (spans, note)
         # v2 item 19 (F3): the fzf interactive layer — one TSV line per hit;
         # the serializer lives in output.py (this region stays thin)
         if _g(args, "format") == "fzf":
@@ -523,9 +621,10 @@ def cmd_search(args: argparse.Namespace) -> int:
             return EXIT_OK
         rendered = render_hits(hits, json_mode=json_mode,
                                excerpt_chars=excerpt_chars,
-                               why=bool(_g(args, "why", False)),
+                               why=why,
                                raw=bool(_g(args, "raw", False)),
-                               filters=filters)
+                               filters=filters,
+                               context_of=context_of)
         if rendered:  # zero hits render as "" — don't print a blank line
             print(rendered)
         if not hits and not json_mode:

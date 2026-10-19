@@ -2,3 +2,13 @@
 eval.sqlite*
 .evalhome/
 fixture/
+
+# answer-eval run artifacts (v2.1 R4): deterministic Phase A output + the
+# human-run Phase B/C drops. questions.jsonl, the two prompt files and
+# evals/answer_baseline.json stay tracked; everything here is re-derivable or
+# run-local (docs/v2.1-pack-eval.md §3.1).
+answer/packs/
+answer/lists/
+answer/answers*/
+answer/grades*/
+answer/grade_jobs/

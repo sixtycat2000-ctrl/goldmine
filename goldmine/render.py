@@ -84,13 +84,23 @@ def render_hits(
     why: bool = False,
     raw: bool = False,
     filters: QueryFilters | None = None,
+    context_of: dict | None = None,
 ) -> str:
     """Render search hits. Human mode folds: near-duplicates under their
     primary («+N duplicates»), hits below 0.5× the top score under a trailing
     «weaker matches» line (DigUp strongCount, Searcher.swift:278-281).
     --json keeps every hit; additive keys appear only when they carry data:
     `why` (--why), `excerpt_marked` (--raw), `duplicate_of` (when folded),
-    `filters_applied` (when filters were parsed from the query)."""
+    `filters_applied` (when filters were parsed from the query),
+    `context`/`context_note` (--context N, v2.1 R2: neighbor spans with texts,
+    or the honest no-expansion note).
+
+    `context_of` maps rank -> (spans_with_text, note): spans are
+    [{role: before|after, loc, loc_end, segment_id, text}] in position order,
+    note is the no-expansion reason ("name hit" / "vector-only hit (no text)")
+    or None. Human mode renders one note line under the hit; --json attaches
+    the payload keys. Absent (None) = --context 0: zero new keys, byte-stable
+    output."""
     if json_mode:
         out = []
         for h in hits:
@@ -117,11 +127,22 @@ def render_hits(
                 d["duplicate_of"] = h.duplicate_of
             if filters is not None and bool(filters):
                 d["filters_applied"] = dict(filters.echo)
+            if context_of is not None and h.rank in context_of:
+                spans, note = context_of[h.rank]
+                d["context"] = [
+                    {"role": s["role"], "loc": s["loc"], "loc_end": s["loc_end"],
+                     "text": s["text"]}
+                    for s in spans if s["role"] != "hit"
+                ]
+                if note is not None:
+                    d["context_note"] = note
             out.append(d)
         return json.dumps(out, indent=2, ensure_ascii=False)
     if not hits:
         return ""
     from .util import excerpt as make_excerpt
+    # lazy: pack.py imports this module's _render_loc (cycle break)
+    from .pack import format_context_note
 
     # weaker-matches fold (item 15.2b): the strong prefix is every hit scoring
     # >= 0.5× the top (DigUp strongCount: cut at the FIRST hit below; top == 0
@@ -164,6 +185,11 @@ def render_hits(
             lines.append(f'   "{body}"')
         if why and h.why is not None:
             lines.append(f"   {_render_why(h)}")
+        if context_of is not None and h.rank in context_of:
+            spans, note = context_of[h.rank]
+            note_line = format_context_note(h.kind, spans, note)
+            if note_line:
+                lines.append(note_line)
         n_dups = dup_under.get(h.rank, 0)
         if n_dups:
             lines.append(f"   +{n_dups} duplicate{'' if n_dups == 1 else 's'}")

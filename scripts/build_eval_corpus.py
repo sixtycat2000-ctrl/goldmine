@@ -63,7 +63,12 @@ DEFAULT_DB = EVALS_DIR / "eval.sqlite"
 DEFAULT_FIXTURE = Path("/tmp/gm_covfix")
 SNAPSHOT_DIR = EVALS_DIR / "corpus_snapshot"
 
-CORPUS_VERSION = "v2-2026-10-17"
+# v3 (2026-10-18, answer-eval R4 build): the v2 snapshot had drifted from the
+# live tree it pins (store.py lost connect_index/WAL rationale, migrations.py,
+# pipeline.py, README.md) and lacked docs/v2/05+06 entirely — five answer-eval
+# questions carried facts no snapshot pack could support (docs/v2.1-pack-eval.md
+# review amendment F1). Conscious corpus bump: refresh + re-ingest + re-baseline.
+CORPUS_VERSION = "v3-2026-10-18"
 
 # ------------------------------------------------------------- curated sources
 # Curated subsets of the three real repos. Ingestion takes the whole source
@@ -185,6 +190,11 @@ GOLDMINE_FILES = [  # relative to REPO_ROOT; snapshot-copied at refresh
     "goldmine/ingest/media.py",
     "docs/v2/REDESIGN.md",
     "docs/v2/01-search-relevance.md",
+    # v3 (answer-eval F1 re-cut): the storage/distill chapters the answer
+    # questions cite — previously only reachable at their live paths, which
+    # drifts; pinned bytes keep the answer packs reproducible.
+    "docs/v2/05-architecture-data.md",
+    "docs/v2/06-distill-knowledge.md",
 ]
 # scripts/eval_relevance.py was REMOVED from the corpus (v2): it quotes the
 # noise-query strings verbatim (see the ZERO_HIT_QUERY constant and the
@@ -323,10 +333,15 @@ def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
     manifest = {
         "schema": 1,
         "corpus_version": CORPUS_VERSION,
-        "created": "2026-10-17",
+        "created": CORPUS_VERSION.split("-", 1)[1],
+        # v3: the root-level README/ARCHITECTURE/SPEC file-roots are GONE —
+        # walk's file-root branch cannot apply the exclude list, so the live
+        # copies kept being re-indexed beside their (identical, pinned)
+        # snapshot duplicates; the snapshot dir root is the single indexed
+        # instance of every pinned goldmine file now.
         "ingest_dir_roots": [str(p) for p in INGEST_DIR_ROOTS] + [
-            str(REPO_ROOT / name) for name in ("README.md", "ARCHITECTURE.md", "SPEC.md")
-        ] + [str(SNAPSHOT_DIR)],
+            str(SNAPSHOT_DIR)
+        ],
         "fixture": {
             "root": str(fixture_root),
             "generator": "scripts/make_coverage_fixture.py",
@@ -487,14 +502,19 @@ def build_index(db: Path, backend_name: str, manifest: dict, *,
         # rank the metadata above the fixture files. Same disease for the
         # noise labels (04-eval F6): eval_relevance.py and TEST_PLAN.md quote
         # the noise-query strings verbatim, so indexing them makes real-110
-        # structurally unpassable. Finally, the live copies of the
-        # snapshot-pinned goldmine files are excluded so the snapshot copy is
-        # the single indexed instance (no duplicate-content ranking races).
+        # structurally unpassable. docs/v2.1-pack-eval.md is the same disease
+        # for the ANSWER-eval traps (v3 finding): it quotes all four trap
+        # topics verbatim (§3.2 table), so an indexed spec gifts the trap
+        # answers — excluded like any noise-quoting file. Finally, the live
+        # copies of the snapshot-pinned goldmine files are excluded so the
+        # snapshot copy is the single indexed instance (no duplicate-content
+        # ranking races).
         report = pipeline.run(roots, code=True,
                               exclude=["make_coverage_fixture.py",
                                        "manifest.json",
                                        "eval_relevance.py",
-                                       "TEST_PLAN.md"]
+                                       "TEST_PLAN.md",
+                                       "v2.1-pack-eval.md"]
                               + [str(REPO_ROOT / rel) for rel in GOLDMINE_FILES])
     finally:
         store.close()

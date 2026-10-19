@@ -160,6 +160,19 @@ def build_parser() -> argparse.ArgumentParser:
     p_search.add_argument("--format", choices=["plain", "fzf"], metavar="FMT",
                           help="plain (default) | fzf: one line per hit "
                                "path<TAB>kind<TAB>loc<TAB>excerpt<TAB>score")
+    # v2.1 R2/R1 (docs/v2.1-pack-eval.md §1.2/§2.1): neighbor expansion and
+    # the answer-material pack. One context knob, clamped at 3; the pack
+    # defaults to 1 neighbor layer.
+    p_search.add_argument("--context", type=int, metavar="N",
+                          help="neighbor segments each side (0-3, clamped at "
+                               "3; default 0 — 1 in --pack mode)")
+    p_search.add_argument("--pack", action="store_true",
+                          help="emit an answer-material pack instead of the "
+                               "hit list: verbatim records + sources footer, "
+                               "budgeted for pasting straight to an LLM")
+    p_search.add_argument("--budget", type=int, metavar="N",
+                          help="pack token budget (default 4000, clamped to "
+                               "512-32768; needs --pack)")
 
     p_status = sub.add_parser("status", parents=[common], help="index health")
     p_status.add_argument("--failures", type=int, metavar="N", default=10,

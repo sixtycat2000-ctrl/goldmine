@@ -25,6 +25,20 @@ Ladder rules (05 §4.1, each normative):
 Unknown FUTURE schemas (user_version > TARGET) are refused exactly like the
 v1 store did: RuntimeError "... newer than this build ... upgrade goldmine".
 
+Crash safety (SIGKILL mid-migration) is VERIFIED, not assumed: every step of
+the ladder — the ``ALTER TABLE``s, the v1->v2 backfill UPDATEs, the per-step
+``user_version`` stamps, the meta/history writes — lives inside the one
+``BEGIN IMMEDIATE ... COMMIT`` transaction, and SQLite rolls DDL back exactly
+like DML under WAL. A kill harness (30k-file v1 index, real migrate() in a
+child process, SIGKILL at 12 delays 5-400 ms) rolled back cleanly in 12/12
+trials: post-kill state was either clean v1 or fully-committed v2, integrity ok,
+zero FK violations, and a plain re-run of migrate() always reached TARGET with
+the full honest backfill. A kill DURING the pre-migration ``VACUUM INTO`` can
+leave a partial 0-byte snapshot behind — harmless: ``_vacuum_into`` unlinks the
+destination first, so the retry simply overwrites it. Do not "simplify" the
+ladder into per-step commits, and do not move the snapshot inside the
+transaction (its side-effect-on-kill is a feature).
+
 Backups (05 §4.8): ``create_backup()`` is the engine behind ``goldmine backup``
 — VACUUM INTO a timestamped file under ``<home>/backups/``, verify it opens +
 passes PRAGMA integrity_check, prune older backups beyond ``keep``.
@@ -37,7 +51,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-TARGET = 2  # == Store.SCHEMA_VERSION; single source, imported by store.py
+TARGET = 3  # == Store.SCHEMA_VERSION; single source, imported by store.py
 
 #: The chunker id a v1 index really ran with (REDESIGN §6 / 05:152,264). The
 #: backfill stamps THIS, never the current CHUNKER_VERSION: staleness then
@@ -249,7 +263,38 @@ def _v1_to_v2(db: sqlite3.Connection, from_version: int) -> int:
     return 2
 
 
-MIGRATIONS: dict[int, callable] = {2: _v1_to_v2}
+# ------------------------------------------------- v2 -> v3 (indexes only)
+
+
+def _v2_to_v3(db: sqlite3.Connection, from_version: int) -> int:
+    """v2 -> v3 — INDEX-ONLY, purely additive (storage critique 03 F1): two
+    indexes for the status/staleness workload that otherwise full-scans
+    segments on every status/doctor run.
+
+    - ``segments_vec_file ON segments(file) WHERE vec IS NOT NULL``: the
+      partial index powering the vec-file subquery in 5 staleness_report
+      queries + counts().vectors (measured 136 ms -> 5.3 ms COUNT(DISTINCT)
+      at 500k segments; stale_files 214 -> 51 ms).
+    - ``files_kind_cap ON files(kind, capability)``: covering index for
+      counts().by_kind (53 -> 4.5 ms at 500k).
+
+    Write cost measured +2% on 50k segment inserts. No rows change, nothing
+    is re-derived, no backfill — the whole step is two CREATE INDEX IF NOT
+    EXISTS under the one ladder transaction.
+    """
+    db.execute(
+        "CREATE INDEX IF NOT EXISTS segments_vec_file "
+        "ON segments(file) WHERE vec IS NOT NULL"
+    )
+    db.execute(
+        "CREATE INDEX IF NOT EXISTS files_kind_cap ON files(kind, capability)"
+    )
+    _set_meta(db, "schema_version", str(3))
+    db.execute("PRAGMA user_version = 3")
+    return 3
+
+
+MIGRATIONS: dict[int, callable] = {2: _v1_to_v2, 3: _v2_to_v3}
 
 
 # ----------------------------------------------------------------- backups
@@ -278,7 +323,9 @@ def _vacuum_into(db_path: Path, dest: Path) -> Path:
 def verify_backup(dest: Path) -> str:
     """Open the copy read-only and run PRAGMA integrity_check; returns 'ok' or
     raises RuntimeError with the finding (including 'not a database')."""
-    con = sqlite3.connect(f"file:{Path(dest)}?mode=ro", uri=True)
+    from .store import connect_index
+
+    con = connect_index(dest, ro=True)
     try:
         result = con.execute("PRAGMA integrity_check").fetchone()
     except sqlite3.DatabaseError as exc:

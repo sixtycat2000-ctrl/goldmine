@@ -79,7 +79,8 @@ Measured on the hash-pinned real corpus (`evals/`, n=146 queries, llama backend,
 published targets (0.85 / 0.65) not yet met; the regression gate (`evals/baseline.json`,
 −0.02 rule) keeps future changes honest. Token-true chunking made the measured 2670-token
 embed-failure class structurally impossible; ASR runs at 7.2× realtime (a 1 h podcast in
-~8.4 min); scanned-PDF and screenshot text is searchable; 648 offline tests + live suites.
+~8.4 min); scanned-PDF and screenshot text is searchable; ~700 offline tests +
+live suites.
 
 **Shipped in v2.0** (21 items in `docs/v2/REDESIGN.md` §5): `init` onboarding (resumable,
 `--yes`, scope invariant, TCC pre-warnings), `model` manager (manifest-pinned, resumable,

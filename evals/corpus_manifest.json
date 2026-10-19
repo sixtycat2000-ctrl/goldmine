@@ -1,16 +1,13 @@
 {
  "schema": 1,
- "corpus_version": "v2-2026-10-17",
- "created": "2026-10-17",
+ "corpus_version": "v3-2026-10-18",
+ "created": "2026-10-18",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
   "/Users/yul/git/mac/work/foresight-rea/app-src",
   "/Users/yul/git/goldmine/goldmine",
   "/Users/yul/git/goldmine/docs",
   "/Users/yul/git/goldmine/scripts",
-  "/Users/yul/git/goldmine/README.md",
-  "/Users/yul/git/goldmine/ARCHITECTURE.md",
-  "/Users/yul/git/goldmine/SPEC.md",
   "/Users/yul/git/goldmine/evals/corpus_snapshot"
  ],
  "fixture": {
@@ -57,7 +54,7 @@
     "path": "docx/quarterly-report.docx",
     "kind": "doc",
     "bytes": 1344,
-    "sha256": "ee392e8799bdc2ef08934ae279a79d56a91e5b3e56dab9366abbbecd28f96aac"
+    "sha256": "f0dbbbb2b05f60171ec438e1cfabd5ab1996c923e798a98afff1f91c34da9eaa"
    },
    {
     "path": "pdf/atlas-text-layer.pdf",
@@ -177,7 +174,7 @@
     "path": "books/coastal-almanac.epub",
     "kind": "doc",
     "bytes": 1787,
-    "sha256": "75fed8014338cb4a3d242e67b68dde97e5106549112a6f865ccae0e64905ce45"
+    "sha256": "7794c7fe6e40241188a09ca0e4d772959894f1b86bd544c674dc89895b382a3b"
    },
    {
     "path": "noise/server.pem",
@@ -195,13 +192,13 @@
     "path": "noise/data.zip",
     "kind": "archive",
     "bytes": 138,
-    "sha256": "265113ff555c2e865522b2d6829957cfb9eaca520312a22ffcd280ece00c0c58"
+    "sha256": "2914a56e2496bbe0560bc51e687d041432c917e4e0bdf198fcfd14510c8a3f61"
    },
    {
     "path": "noise/backup.tar.gz",
     "kind": "archive",
     "bytes": 131,
-    "sha256": "50bc76340cf1e7bdbe83b80782cce29c84f7070ffe2bb4b6e1b267ae38341808"
+    "sha256": "fcde339f24a490e2f5d5ff0481372f25bf1b69e67436967e6af5e8ff62262b6e"
    },
    {
     "path": "noise/node_modules/left-pad/index.js",
@@ -727,8 +724,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/README.md",
    "source": "goldmine",
-   "bytes": 5780,
-   "sha256": "e3bab1d7328623e362254889f2be254e995fb73526226607581959da535a488d",
+   "bytes": 5781,
+   "sha256": "d967b22a669947867f22648318c543a44a9c0475c69b098b9a743f7cffc7a949",
    "origin": "/Users/yul/git/goldmine/README.md"
   },
   {
@@ -755,8 +752,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/store.py",
    "source": "goldmine",
-   "bytes": 27583,
-   "sha256": "3c734cf473ab8c9aafa10d5cfeb8c30ee10560757cd4d56444d296433fd0b83a",
+   "bytes": 33005,
+   "sha256": "ad8f1633a9df90370f09f1256ffed5a13a316276f0b1e76d3f68a73f681a5944",
    "origin": "/Users/yul/git/goldmine/goldmine/store.py"
   },
   {
@@ -797,8 +794,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/migrations.py",
    "source": "goldmine",
-   "bytes": 14837,
-   "sha256": "b946e3ccb16232c8e8e573fcc46b29e3c0e916092fe5064e6b9aeb341d49beb5",
+   "bytes": 17103,
+   "sha256": "1f678e507df67c1902e81b6a2a83ba7d632c13975890b41e7a02dad426e3a4e6",
    "origin": "/Users/yul/git/goldmine/goldmine/migrations.py"
   },
   {
@@ -825,8 +822,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/pipeline.py",
    "source": "goldmine",
-   "bytes": 75655,
-   "sha256": "33bd3e28ad5d1a34e94047b7772694b8fc5156f781af7d3c7dda3b60129e1258",
+   "bytes": 81418,
+   "sha256": "efac1ba21289f17f4c6e86bb38a34c3f5448a781736d73a8e430abea5b77274c",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/pipeline.py"
   },
   {
@@ -877,6 +874,20 @@
    "bytes": 41288,
    "sha256": "e53b4d6047440736af234a8d7ebdfad3838facdef117f9d022ec246404688068",
    "origin": "/Users/yul/git/goldmine/docs/v2/01-search-relevance.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/05-architecture-data.md",
+   "source": "goldmine",
+   "bytes": 57593,
+   "sha256": "32401b3478eb8c85100eeaca0c655938fc05566f8df35ae9c2ce2c43ec88b5a0",
+   "origin": "/Users/yul/git/goldmine/docs/v2/05-architecture-data.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/06-distill-knowledge.md",
+   "source": "goldmine",
+   "bytes": 29548,
+   "sha256": "06c70c36a063957878badf500b1cc0bbadc248988b9aafe81a7dc03f615921d1",
+   "origin": "/Users/yul/git/goldmine/docs/v2/06-distill-knowledge.md"
   }
  ],
  "notes": [

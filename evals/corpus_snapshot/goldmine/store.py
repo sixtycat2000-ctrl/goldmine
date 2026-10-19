@@ -19,7 +19,7 @@ from pathlib import Path
 import numpy as np
 
 from . import migrations
-from .util import pack_fp16, unpack_fp16
+from .util import pack_fp16
 
 BLOCK_ROWS = 8192  # fp16 -> f32 conversion block (DigUp pattern)
 
@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS files(
 );
 CREATE INDEX IF NOT EXISTS files_state ON files(state, kind);
 CREATE INDEX IF NOT EXISTS files_capability ON files(capability);
+CREATE INDEX IF NOT EXISTS files_kind_cap ON files(kind, capability);
 
 CREATE TABLE IF NOT EXISTS segments(
     id       INTEGER PRIMARY KEY,
@@ -61,6 +62,7 @@ CREATE TABLE IF NOT EXISTS segments(
     vec      BLOB
 );
 CREATE INDEX IF NOT EXISTS segments_file ON segments(file);
+CREATE INDEX IF NOT EXISTS segments_vec_file ON segments(file) WHERE vec IS NOT NULL;
 
 CREATE VIRTUAL TABLE IF NOT EXISTS fts USING fts5(
     name, body, original UNINDEXED,
@@ -192,39 +194,103 @@ detail, info, extractor_version, chunker_version, embed_id, content_date, indexe
 FROM files"""
 
 
+def connect_index(path: Path | str, *, ro: bool = False) -> sqlite3.Connection:
+    """The ONE sqlite3.connect for the package (storage critique 03 F6): every
+    caller — Store, doctor's deep checks, migrations' backup verification —
+    goes through here so the pragmas are set exactly once and identically.
+
+    Read-write: WAL (persistent), busy_timeout 60 s, foreign_keys ON,
+    synchronous=NORMAL. The index is derived, rebuildable data — WAL+NORMAL is
+    SQLite's recommended pairing for that case (commits ~4.4x cheaper than the
+    FULL default, measured 23.9 -> 5.4 ms per small commit; an app crash still
+    preserves every committed transaction, only a power loss may drop the last
+    one).
+
+    Read-only (``ro=True``): a mode=ro URI — never creates the file, never
+    writes, no journal/WAL pragmas. For short-lived inspection connections
+    (doctor --deep, backup verification).
+
+    DELIBERATE EXCEPTION — migrations._vacuum_into keeps a plain connect: its
+    connection must stay OUT of WAL mode so the VACUUM INTO copy is written as
+    a plain single-file (rollback-journal) database — a WAL-flagged copy is
+    exactly what read-only verification chokes on (03 F4).
+    """
+    path = Path(path)
+    if ro:
+        con = sqlite3.connect(f"file:{path}?mode=ro", uri=True, timeout=60.0)
+        con.execute("PRAGMA busy_timeout = 60000")
+        return con
+    con = sqlite3.connect(str(path), timeout=60.0)
+    # busy_timeout 60000 per the ARCHITECTURE §6 DDL. (Build note said 5000;
+    # the binding DDL wins — see DEVIATION notes in the build report.)
+    con.execute("PRAGMA journal_mode = WAL")
+    con.execute("PRAGMA busy_timeout = 60000")
+    con.execute("PRAGMA foreign_keys = ON")
+    con.execute("PRAGMA synchronous = NORMAL")
+    return con
+
+
 class Store:
     SCHEMA_VERSION = migrations.TARGET  # single source: migrations.py owns the ladder
 
     def __init__(self, path: Path):
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        # busy_timeout 60000 per the ARCHITECTURE §6 DDL. (Build note said 5000;
-        # the binding DDL wins — see DEVIATION notes in the build report.)
-        self.db = sqlite3.connect(str(self.path), timeout=60.0)
-        self.db.row_factory = None
-        self.db.execute("PRAGMA journal_mode = WAL")
-        self.db.execute("PRAGMA foreign_keys = ON")
-        self.db.execute("PRAGMA busy_timeout = 60000")
-        self.db.executescript(_DDL)
-        version = self.db.execute("PRAGMA user_version").fetchone()[0]
+        self.db = connect_index(self.path)
+        # ORDERING (storage critique 03 F5): user_version is read BEFORE any
+        # DDL. The old order — executescript(_DDL) then version check — meant
+        # (a) a FAILED migration left a v1 file with pre-created v2-shaped
+        # tables (the DDL ran in autocommit before the ladder rolled back),
+        # and (b) an old build opening a future schema re-created any table
+        # that future schema had dropped, before refusing. Now: refuse future
+        # schemas first, hand pre-TARGET files straight to the ladder (the
+        # ladder owns EVERY schema write for them), and only fresh (0) /
+        # already-current files see the idempotent _DDL.
+        version = int(self.db.execute("PRAGMA user_version").fetchone()[0])
         if version > self.SCHEMA_VERSION:
             self.db.close()
             raise RuntimeError(
                 f"index {self.path} has schema v{version}, newer than this build "
                 f"(v{self.SCHEMA_VERSION}) — upgrade goldmine"
             )
-        if version < self.SCHEMA_VERSION:
+        if 0 < version < self.SCHEMA_VERSION:
             # The tested one-per-version ladder (migrations.py): existing
-            # pre-v2 files are upgraded in ONE additive transaction, with a
-            # pre-migration snapshot when the file is large. Fresh databases
-            # were just created at TARGET by _DDL — the ladder stamps and
-            # returns without touching rows (migrations rule 3).
+            # pre-TARGET files are upgraded in ONE additive transaction per
+            # open, with a pre-migration snapshot when the file is large.
+            # NO _DDL before this — a failed migration must leave the file
+            # exactly at its old version, with no current-shaped tables or
+            # indexes pre-created around it.
             try:
                 migrations.migrate(self.db, path=self.path)
             except Exception:
                 self.db.close()
                 raise
+        else:
+            # Fresh database (version 0, no tables) or already-current file:
+            # create/ensure the full current shape, idempotently. Fresh dbs are
+            # then stamped at TARGET by the ladder's fresh-db rule (migrations
+            # rule 3) — no ladder rows touched, no history entry.
+            self.db.executescript(_DDL)
+            if version == 0:
+                try:
+                    migrations.migrate(self.db, path=self.path)
+                except Exception:
+                    self.db.close()
+                    raise
         self.db.commit()
+        # -- VectorTable cache (storage critique 03 F2): load_vectors() reloaded
+        # ALL vector blobs + rebuilt the Python lists on every search (measured
+        # 102-118 ms per query at 49k vectors / 100k segments). The cache is
+        # keyed on the write-generation counter bumped by EVERY Store path that
+        # touches segments (single-writer discipline: there are no others) plus
+        # PRAGMA data_version, which changes when a DIFFERENT connection
+        # commits (same-connection writes are covered by the generation).
+        # Keyed invalidation via (count, max id) was rejected: deleting the
+        # highest-id vector segment and inserting a fresh one can leave both
+        # unchanged while the data differs.
+        self._vec_cache: VectorTable | None = None
+        self._vec_cache_key: tuple[int, int] | None = None
+        self._vec_generation = 0
 
     # -- meta ---------------------------------------------------------------
 
@@ -364,6 +430,7 @@ class Store:
             (fid,),
         )
         self.db.execute("DELETE FROM segments WHERE file = ?", (fid,))
+        self._vec_generation += 1
 
     def delete_content_segments(self, fid: int) -> None:
         """Delete a file's non-name segments + their FTS rows, KEEPING the name
@@ -375,6 +442,7 @@ class Store:
             (fid,),
         )
         self.db.execute("DELETE FROM segments WHERE file = ? AND kind != 'name'", (fid,))
+        self._vec_generation += 1
 
     def delete_file(self, fid: int) -> None:
         with self.db:
@@ -447,6 +515,7 @@ class Store:
                VALUES(?, ?, ?, ?, ?, ?, ?)""",
             (fid, seg.kind, seg.modality, seg.loc, seg.loc_end, seg.excerpt, vec_blob),
         )
+        self._vec_generation += 1
         return int(cur.lastrowid)
 
     def _insert_fts(self, segment_id: int, fid: int, seg: SegmentRec, is_name: bool = False) -> None:
@@ -528,36 +597,65 @@ class Store:
                 self._insert_fts(sid, fid, seg, is_name=(seg.kind == "name"))
 
     def load_vectors(self) -> VectorTable:
-        """All vectors as an (N, 768) float32 matrix, fp16->f32 in blocks."""
-        n = self.db.execute(
-            "SELECT COUNT(*) FROM segments WHERE vec IS NOT NULL"
-        ).fetchone()[0]
+        """All vectors as an (N, 768) float32 matrix, fp16->f32 in blocks.
+
+        Cached per Store instance (storage critique 03 F2): a fresh load reads
+        every blob + rebuilds the Python lists — 102 ms measured at 49k vectors
+        — which search used to pay on EVERY query. Invalidated by the segment
+        write-generation counter (bumped by _insert_segment /
+        _delete_segments_and_fts / delete_content_segments — every Store path
+        that touches segments) combined with PRAGMA data_version (changes when
+        a DIFFERENT connection commits). The returned table is shared between
+        callers: treat it as immutable — never mutate ids/matrix in place.
+        """
+        data_version = int(self.db.execute("PRAGMA data_version").fetchone()[0])
+        key = (self._vec_generation, data_version)
+        if self._vec_cache is not None and key == self._vec_cache_key:
+            return self._vec_cache
         ids: list[int] = []
         file_ids: list[int] = []
         modalities: list[str] = []
-        matrix = np.empty((n, 768), dtype=np.float32)
-        row = 0
+        matrix_blocks: list[np.ndarray] = []
         cur = self.db.execute(
             "SELECT id, file, modality, vec FROM segments WHERE vec IS NOT NULL ORDER BY id"
         )
+        blob_bytes = 768 * 2  # fp16 LE BLOB contract (D7)
         while True:
             batch = cur.fetchmany(BLOCK_ROWS)
             if not batch:
                 break
-            for seg_id, file_id, modality, blob in batch:
-                if blob is None or len(blob) != 768 * 2 or row >= n:
-                    continue
-                matrix[row] = unpack_fp16(blob)
-                ids.append(seg_id)
-                file_ids.append(file_id)
-                modalities.append(modality)
-                row += 1
-        return VectorTable(
+            # batch unpack (2.4x the per-row loop, 03 F7): join the block's
+            # blobs into one buffer, one frombuffer + one astype for all of
+            # them; a corrupt-size blob is skipped exactly as before, with
+            # ids/files/modalities kept aligned to the kept rows.
+            rows = [
+                (seg_id, file_id, modality, blob)
+                for seg_id, file_id, modality, blob in batch
+                if blob is not None and len(blob) == blob_bytes
+            ]
+            if not rows:
+                continue
+            raw = np.frombuffer(b"".join(r[3] for r in rows), dtype="<f2")
+            matrix_blocks.append(
+                raw.astype(np.float32).reshape(len(rows), 768)
+            )
+            ids.extend(r[0] for r in rows)
+            file_ids.extend(r[1] for r in rows)
+            modalities.extend(r[2] for r in rows)
+        if matrix_blocks:
+            matrix = np.concatenate(matrix_blocks) if len(matrix_blocks) > 1 \
+                else matrix_blocks[0]
+        else:
+            matrix = np.empty((0, 768), dtype=np.float32)
+        table = VectorTable(
             ids=ids,
             file_ids=file_ids,
             modalities=modalities,
-            matrix=matrix[:row],
+            matrix=matrix,
         )
+        self._vec_cache = table
+        self._vec_cache_key = key
+        return table
 
     def segment_row(self, segment_id: int) -> tuple[str, float | None, float | None, str | None]:
         row = self.db.execute(
