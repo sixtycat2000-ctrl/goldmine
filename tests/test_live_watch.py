@@ -169,6 +169,20 @@ def _llama_children() -> set[int]:
     return {int(line) for line in out.stdout.split() if line.strip().isdigit()}
 
 
+def _lexical_hit(box: "LiveWatch", term: str) -> bool:
+    """A REAL hit check: --json renders `[]` for the honest zero, so a term
+    appearing in the `nothing found for '…'` line can never false-positive."""
+    rc = box.run_cli(["search", term, "--lexical", "--json",
+                      "--db", str(box.db)])
+    if rc.returncode != 0:
+        return False
+    try:
+        hits = json.loads(rc.stdout)
+    except ValueError:
+        return False
+    return isinstance(hits, list) and len(hits) > 0
+
+
 def _vector_count(db: Path) -> int:
     from goldmine.store import Store
 
@@ -201,8 +215,7 @@ def test_live_watch_drop_becomes_searchable_within_90s(workroot: Path, capsys):
         first_hit = None
         breakdown = {}
         while time.monotonic() - dropped < 90.0:
-            rc = box.run_cli(["search", term, "--lexical", "--db", str(box.db)])
-            if rc.returncode == 0 and term.encode() in rc.stdout:
+            if _lexical_hit(box, term):
                 first_hit = time.monotonic()
                 hb = json.loads(box.heartbeat.read_text()) if box.heartbeat.exists() else {}
                 lp = hb.get("last_pass") or {}
@@ -224,9 +237,10 @@ def test_live_watch_drop_becomes_searchable_within_90s(workroot: Path, capsys):
         assert first_hit is not None, "the dropped file never became searchable"
         assert wall <= 90.0, f"lexical hit took {wall:.1f}s > 90 s gate"
         # the semantic path answers too (same pass committed the vector)
-        rc = box.run_cli(["search", term, "--db", str(box.db), "--limit", "3"])
-        assert rc.returncode == 0
-        assert term.encode() in rc.stdout
+        rc = box.run_cli(["search", term, "--json", "--db", str(box.db),
+                          "--limit", "3"])
+        hits = json.loads(rc.stdout)
+        assert rc.returncode == 0 and len(hits) >= 1
         captured = capsys.readouterr()  # keep the printed measurement
     finally:
         box.stop()
@@ -363,8 +377,7 @@ def test_live_watch_serve_coexistence(workroot: Path):
         deadline = time.monotonic() + 90
         hit = False
         while time.monotonic() < deadline:
-            rc = watch.run_cli(["search", term, "--db", str(watch.db)])
-            if rc.returncode == 0 and term.encode() in rc.stdout:
+            if _lexical_hit(watch, term):
                 hit = True
                 break
             time.sleep(1.0)
