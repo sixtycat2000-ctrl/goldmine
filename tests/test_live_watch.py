@@ -315,7 +315,7 @@ def test_live_watch_sigkill_restart_never_duplicates(workroot: Path):
             store = Store(box.db)
             segments = store.counts().segments
             store.close()
-            cstore = Store(control.db)
+            cstore = Store(control_db)
             assert cstore.counts().segments == segments
             cstore.close()
 
@@ -405,11 +405,18 @@ def test_live_watch_duty_and_pmset(workroot: Path, capsys):
     assert mode in ("ac", "no_battery"), f"this dev mini is on battery? {mode!r}"
     assert throttled is False
 
-    # --- the duty measurement: wrapper counts honest spawns ---
+    # --- the duty measurement: wrapper counts honest SERVE spawns ---
+    # (llama.py's startup also runs `<server> --version`; the wrapper logs a
+    # spawn only when it is actually asked to serve, never for --version.)
     spawn_log = workroot / "spawns.log"
     wrapper = workroot / "llama-wrap.sh"
     wrapper.write_text(
         "#!/bin/sh\n"
+        'for a in "$@"; do\n'
+        '  if [ "$a" = "--version" ]; then\n'
+        f'    exec "{VENDOR_SERVER}" "$@"\n'
+        "  fi\n"
+        "done\n"
         f'echo "$(date +%s) $$" >> {spawn_log}\n'
         f'exec "{VENDOR_SERVER}" "$@"\n'
     )
