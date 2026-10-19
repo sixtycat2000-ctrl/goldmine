@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "suite": "beir-mini",
+  "provenance": "BEIR (Thakur et al., NeurIPS 2021 D&B) canonical zips; URLs unversioned - bytes+sha256 are the pin (measured 2026-10-19). Mirror recovery (review F7): upstream drift trips the sha pin loudly; recovery is a deliberate re-measured manifest edit, never a silent URL swap.",
+  "licenses_note": "review F4: nfcorpus and arguana carry NC terms - dataset bytes, derived corpora and indexes are cache-only and NEVER committed (D4 is non-negotiable).",
+  "datasets": {
+    "scifact": {
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+      "bytes": 2816079,
+      "sha256": "536e14446a0ba56ed1398ab1055f39fe852686ecad24a6306c80c490fa8e0165",
+      "license": "CC BY 4.0 (claims/corpus) / ODC-By (as applicable per BEIR wiki field breakdown)",
+      "n_docs": 5183,
+      "n_queries_test": 300,
+      "n_queries_jsonl": 1109,
+      "qrels_test": {"rows": 339, "grades": {"1": 339}},
+      "grade_range": [1, 1],
+      "graded": false,
+      "published_bm25": {"beir_paper": 0.665, "pyserini_2cr_flat": null, "pyserini_2cr_mf": null, "anserini_repro": null},
+      "quirks": [
+        "test qrels binary (rel=1 only; the graded 0-2 mapping belongs to the original SciFact dataset, not BEIR's release)",
+        "queries.jsonl is a superset of the test split - filter to qrel qids (300 of 1109)",
+        "chunk-fragmented BM25: 18.7% of docs exceed one chunk (measured 2026-10-19, review F2)"
+      ]
+    },
+    "nfcorpus": {
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/nfcorpus.zip",
+      "bytes": 2448432,
+      "sha256": "efe5be03f8c5b86a5870102d0599d227c8c6e2484328e68c6522560385671b0b",
+      "license": "CC BY-NC 4.0 (per BEIR wiki) - NC terms: cache-only, never commit",
+      "n_docs": 3633,
+      "n_queries_test": 323,
+      "n_queries_jsonl": 3237,
+      "qrels_test": {"rows": 12334, "grades": {"1": 11758, "2": 576}},
+      "grade_range": [1, 2],
+      "graded": true,
+      "published_bm25": {"beir_paper": 0.318, "pyserini_2cr_flat": 0.322, "pyserini_2cr_mf": 0.325, "anserini_repro": null},
+      "quirks": [
+        "the only genuinely graded set in the trio (max qrel grade 2 - the house grade>=2 success rule maps verbatim)",
+        "queries.jsonl is a superset of the test split - filter to qrel qids (323 of 3237)",
+        "chunk-fragmented BM25: 22.1% of docs exceed one chunk (measured 2026-10-19, review F2)"
+      ]
+    },
+    "arguana": {
+      "url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/arguana.zip",
+      "bytes": 3773617,
+      "sha256": "cfdf79adce27a401b3cd3ea267903134dbfab2c6afeb95d7fe5724a00bf7557b",
+      "license": "CC BY-NC 4.0 (per BEIR wiki) - NC terms: cache-only, never commit",
+      "n_docs": 8674,
+      "n_queries_test": 1406,
+      "n_queries_jsonl": 1406,
+      "qrels_test": {"rows": 1406, "grades": {"1": 1406}},
+      "grade_range": [1, 1],
+      "graded": false,
+      "published_bm25": {"beir_paper": 0.397, "pyserini_2cr_flat": 0.397, "pyserini_2cr_mf": 0.414, "anserini_repro": 0.3168},
+      "quirks": [
+        "counter-argument task: 1298 of 1406 query ids are corpus ids with byte-identical text - the self-doc is a near-certain rank-1 on both legs, hence fetch-deep-then-cut (review F1), never cut-then-drop",
+        "5 qrel positives are missing from corpus.jsonl entirely (dangling qrels stay in IDCG, D9c)",
+        "69% of docs have empty titles - the .md route skips the '# ' header line (review F5)",
+        "queries are long (mean 194 words, max 868)",
+        "BM25 reproduction spread 0.3168 (Anserini-class) - 0.414 (2CR MF); id-removal sensitivity",
+        "name-segment slugs carry topical words (review F6) - mild apples-oranges on the lexical arm only",
+        "chunk-fragmented BM25: 7.3% of docs exceed one chunk (measured 2026-10-19, review F2)"
+      ]
+    }
+  },
+  "excluded": {
+    "climate-fever": "BEIR corpus 5,416,593 docs (zip 1.22GB measured) - embed budget",
+    "fiqa": "57,638 docs ≈ 50+ min embed",
+    "trec-covid": "171k docs",
+    "touche2020": "38k docs",
+    "MIRACL": "CJK/multilingual reference - deferred to R10b"
+  },
+  "notes": [
+    "B7 discipline: bytes AND sha256 asserted against the file whenever it exists on disk (test_public_manifest_vs_file)",
+    "comparison-table divergence footnotes (review F2/F6): chunk-fragmented BM25, title-in-header framing vs published title+text concatenation, one-hit-per-doc invariant (file-keyed fusion), name-segment slugs (lexical arm only)",
+    "a manifest edit is a deliberate act (model_manifest.py review discipline); a wrong pin fails offline via the bundled fixture stats assertions"
+  ]
+}
