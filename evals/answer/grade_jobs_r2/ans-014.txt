@@ -1,0 +1,38 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: RetrieveContext RPC request parameters and returned chunk fields
+
+(no extra note for this question)
+
+CHECKS:
+1. RetrieveContext takes query.text_query or query.audio_query (mutually exclusive) plus max_results and min_similarity_score (and user_id/allowed_document_ids)
+2. Each returned chunk carries text, relevance_score, document_id and mime_type, ordered by similarity descending
+
+ANSWER:
+The RetrieveContext request (RetrieveRequest) carries: a `Query` message with fields `text_query` (string), `audio_query` (bytes), and `query` (string), plus `max_results` (int32), `min_similarity_score` (double), `user_id` (string), and repeated `allowed_document_ids` [3]. The text query and audio query are mutually exclusive; if neither is provided the call fails with INVALID "Neither text query nor audio query was provided", and if the model pipeline is not loaded it fails with UNAVAILABLE "Pipeline not initialized" [2]. When `allowed_document_ids` is empty the request goes through the unfiltered retrieval pipeline, otherwise it is invoked with the document-ID filters applied [1]. The response (RetrieveResponse) returns a `chunks` list of RetrievedChunk messages [3]. Each chunk has four fields: `text` (string), `relevance_score` (double), `document_id` (string), and `mime_type` (string) [3]. Results are ordered by similarity descending, and an empty pipeline result yields a normal empty list [2].
+
+
+Grade now.

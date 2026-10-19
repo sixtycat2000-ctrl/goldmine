@@ -1,0 +1,37 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: how many tokens of overlap do consecutive text chunks share when the chunker cuts mid-paragraph
+
+(no extra note for this question)
+
+CHECKS:
+1. Mid-paragraph cuts back up about 48 tokens, so consecutive text chunks share a ~48-token overlap
+
+ANSWER:
+When the chunker cannot break at a paragraph boundary and cuts mid-paragraph, consecutive chunks share approximately 48 tokens of overlap, about 11% of the ~450-token chunk budget [1]. This is set as `DEFAULT_TOKEN_OVERLAP = 48` alongside `DEFAULT_TOKEN_BUDGET = 450` in the v2 token-budget chunking design, with the overlap applied on "non-paragraph cuts ... where cheap" [1]. The design document confirms the same target: chunks of ~450 tokens with "overlap ≈ 48 tokens" when measuring window width in tokens via the backend's `/tokenize` [2]. (By contrast, the v1 character-based chunker used a `DEFAULT_OVERLAP` of 200 characters [1].)
+
+
+Grade now.

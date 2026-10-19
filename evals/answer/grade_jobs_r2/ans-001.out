@@ -1,0 +1,1 @@
+{"checks": [{"id": 1, "pass": true, "quote": "consecutive chunks share approximately 48 tokens of overlap"}], "score": 2, "reason": "The answer explicitly states the ~48-token overlap for mid-paragraph cuts and cites [1] and [2]."}}

@@ -1,0 +1,39 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: where is the 0.97 near-duplicate cosine threshold used
+
+(no extra note for this question)
+
+CHECKS:
+1. Search folds a hit under a higher-ranked hit when their segment vectors sit within cosine 0.97 (or identical text) - display bookkeeping only, order unchanged
+2. Distill uses the same 0.97 threshold to drop near-duplicate chunks before clustering
+3. The search constant is documented as 'SPEC distill near-dup parity': the rule originates in the distill dedupe
+
+ANSWER:
+The 0.97 threshold is the near-duplicate fold threshold `_NEAR_DUP_COSINE` defined in `goldmine/search.py` (L76), where segment vectors this close count as the same text for display purposes [1]. It is used in the post-fusion rerank/diversity stage: after MMR reordering of the top-50, segments with pairwise cosine ≥ 0.97 (the distill near-dup threshold from SPEC.md:225) are hard-collapsed, keeping the higher-scored one's file [2]. The collapse works on the already-materialized candidate segment vectors and compares only unit-normalized vectors, folding vectorless segments on text identity alone [1][2]. Its purpose is near-duplicate parity with the SPEC distill behavior, and acceptance is gated on a `duplicate-pollution` probe query set [2].
+
+
+Grade now.

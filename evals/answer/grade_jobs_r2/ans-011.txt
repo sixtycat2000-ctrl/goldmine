@@ -1,0 +1,40 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: what happens when a single chunk is too long for the embedding server's token ceiling
+
+(no extra note for this question)
+
+CHECKS:
+1. An 1800-char code stretch once measured 2670 tokens against the 2048 ceiling and 400-failed its file (the incident that drove the fix)
+2. The chunk budget shrinks to min(450, max_input_tokens - prompt framing (~40 tokens) - 24 slack)
+3. A single over-budget stretch is hard-cut at a token boundary (split-not-fail) instead of failing the file
+4. Before embedding, the ctx guard counts tokens and splits any still-oversized chunk
+
+ANSWER:
+When a chunk would exceed the server's token ceiling, the pipeline asserts `count_tokens(prompt) ≤ ceiling − 1` per chunk before embedding, and on violation it splits that chunk at a token boundary and continues — making the old failure mode structurally impossible instead of a per-file `failed` [1]. This replaces the v1 behavior, where a `len // 4` estimate let a code stretch reach 2670 tokens against the 2048 `-ub` ceiling and 400-fail the whole file [1]. As a backstop, `split_text_by_tokens` hard-splits anything that still exceeds the ceiling into pieces of at most `max_tokens` tokens each, cut at token boundaries when a tokenizer is available (proportional char cuts otherwise) — a "SPLIT-not-fail" guard [2]. The per-input budget itself is computed as `min(450, ceiling − framing(~40) − slack(24))`, flooring at 64 tokens [2].
+
+
+Grade now.

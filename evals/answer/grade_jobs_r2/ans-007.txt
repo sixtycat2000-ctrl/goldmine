@@ -1,0 +1,40 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: how does the chunker decide where to cut a text chunk
+
+(no extra note for this question)
+
+CHECKS:
+1. Cut preference is tiered: deepest paragraph boundary first, then sentence end (CJK-aware), then whitespace
+2. A candidate boundary only counts when it sits at least half the token budget into the window
+3. If no preferred boundary exists the chunk is hard-cut at the budget's token boundary
+4. Non-paragraph cuts back up about 48 tokens so the next chunk overlaps
+
+ANSWER:
+The chunker works in token space: for each window of ~budget tokens it scans backward from the window's end down to at least half the budget for the best cut point, preferring boundaries in tier order — deepest paragraph boundary, then sentence end (CJK-aware), then whitespace [2]. If no candidate qualifies, it hard-cuts exactly at the budget's token boundary [2]. Paragraph cuts carry no overlap, while other cuts back up ~overlap_tokens tokens when starting the next chunk [2]. Cut preference is measured in real tokens via the tokenizer when available; if tokenization is unavailable it falls back to the v1 char-window walk, converting the budget to characters with a kind-aware density (default 4.0 chars/token) [2]. For code, whole lines are accumulated to the same token budget, and a single over-budget line is hard-cut at a token boundary [1].
+
+
+Grade now.

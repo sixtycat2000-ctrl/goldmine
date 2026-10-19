@@ -1,0 +1,37 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: what is the target token size for one text chunk in the goldmine chunker
+
+(no extra note for this question)
+
+CHECKS:
+1. The token-budget chunker targets about 450 tokens per text chunk
+
+ANSWER:
+The target size for one text chunk is ~450 tokens, with an overlap of about 48 tokens [1]. This is implemented as an effective token budget of `min(450, max_input_tokens − prompt framing (~40) − slack (24))`, floored at 64 so even a tiny model context still yields usable chunks [1][2]. The budget is measured with real token counts via the backend's tokenizer when available, rather than the v1 character estimate [1][2].
+
+
+Grade now.

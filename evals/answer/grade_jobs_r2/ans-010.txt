@@ -1,0 +1,39 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: what do lookup queries change in the fusion weights and what kind of query counts as a lookup
+
+(no extra note for this question)
+
+CHECKS:
+1. Normal fusion weights are meaning 1.0 and words 2.0; lookup queries invert them to meaning 0.5 and words 4.0
+2. A query counts as a lookup when ANY term contains a digit and is alphanumeric-mixed or at least 4 digits long (codes/IDs)
+3. The weights act on one fused score: w_m*max(z, 0) + w_c*coverage^1.5 + kind_hint*1.0 (flat, never stacks)
+
+ANSWER:
+Lookup queries invert the fusion weights `(w_m, w_c)` from the default `(1.0, 2.0)` to `(0.5, 4.0)`, halving the semantic (z-score) weight and doubling the coverage weight to favor lexical matching [2][3]. A query counts as a lookup when ANY of its terms is digit-bearing and alphanumeric-mixed, or has at least 4 digits [2][3]. This v2.1 "any term" rule replaced an earlier every-term rule, which never fired on mixed code+word queries like `LH-2209` tokenized to `lh 2209` [3].
+
+
+Grade now.

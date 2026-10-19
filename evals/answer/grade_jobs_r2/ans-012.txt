@@ -1,0 +1,40 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: how are code chunks cut differently from prose chunks
+
+(no extra note for this question)
+
+CHECKS:
+1. Code chunks align to whole lines, accumulating lines up to the token budget
+2. A single line longer than the budget becomes its own chunk, hard-cut at token boundaries
+3. The estimator converts the token budget with the measured code density (CODE_CHARS_PER_TOKEN) so code stretches are sized correctly
+4. Prose cuts prefer paragraph/sentence/whitespace boundaries; code has no such preference
+
+ANSWER:
+Prose chunks are cut by tiered candidate boundaries — paragraph first, then sentence, then whitespace — each searched within the window at least half the budget deep, falling back to a hard cut at the budget's token boundary; paragraph cuts carry no overlap while other cuts back up ~`overlap_tokens` tokens [1]. Code chunks instead accumulate whole lines up to the same token budget, so cuts land on line boundaries rather than sentence or paragraph boundaries [2]. A single over-budget line in code is hard-cut at token boundaries, a rule adopted after v1's whole-line-own-chunk behavior shipped an 82929-token single-line JSON blob as one chunk against the 2048 ceiling [1][2]. Paragraph-style overlap therefore does not apply to code — over-budget lines are simply split at token edges [1]. When no real tokenizer is available, the fallback also differs: prose converts the budget with a generic chars-per-token estimate, while code uses a measured code density (`CODE_CHARS_PER_TOKEN`) [1][2].
+
+
+Grade now.

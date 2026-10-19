@@ -1,0 +1,38 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: in the sqlite keyword search, how are matching rows ranked with bm25
+
+(no extra note for this question)
+
+CHECKS:
+1. Keyword matching is an FTS5 OR-match and matching rows are ordered by bm25(fts, 3.0, 1.0) AS rank
+2. bm25 is lower-is-better: the search orders by it ascending (best first)
+
+ANSWER:
+In the keyword search (`search_fts`), matching rows are scored with SQLite FTS5's bm25 function, computed as `bm25(fts, 3.0, 1.0)` and aliased as `rank` [1]. Rows are then ordered by `ORDER BY rank` ascending, because bm25 is lower-is-better, so the best matches come first, with results capped by `LIMIT ?` (default 1000) [1]. The query is an FTS5 OR-match over the `fts` table joined to `segments`, and the returned `FtsRow` carries the segment id, file id, name, body, original text, and the bm25 rank [1].
+
+
+Grade now.

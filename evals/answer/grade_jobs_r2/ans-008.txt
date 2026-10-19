@@ -1,0 +1,38 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: what happens when a modality group has fewer than twenty vectors during z-score scoring
+
+(no extra note for this question)
+
+CHECKS:
+1. Groups smaller than 20 vectors use the global mean instead of a per-modality mean for centering
+2. The standard deviation has a 0.02 floor so a tiny spread cannot blow up the z-scores
+
+ANSWER:
+During z-score scoring, a modality group with fewer than 20 vectors does not use its own group mean for centering; instead, its scores are centered using the global mean of all scores [1][2]. In the code, the per-group mean is only applied when the group size is at least the tiny-group threshold, otherwise `global_mean` is subtracted [1]. This is the "tiny-group fix" (V3 / verdict 3, measured on DigUp) and is paired with a standard-deviation floor of 0.02 to keep the division stable [1][2].
+
+
+Grade now.

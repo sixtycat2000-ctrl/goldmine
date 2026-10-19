@@ -1,0 +1,39 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: how do the query prompt and the document prompt differ before text is embedded
+
+(no extra note for this question)
+
+CHECKS:
+1. Queries are wrapped as 'task: search result | query: {text}'
+2. Documents are wrapped as 'title: {title} | text: {text}'
+3. Both prompt strings are EmbeddingGemma 2 model-card prompts, verbatim and versioned in the index fingerprint - changing either forces a reindex
+
+ANSWER:
+Before embedding, the query is wrapped in the prompt `task: search result | query: {text}`, while documents are wrapped in `title: {title} | text: {text}` — both verbatim per the EmbeddingGemma 2 model card [1]. The query prompt adds only a search-result task instruction around the raw text, whereas the document prompt prepends a separate title slot (the file stem or page-number label) alongside the text [1][2]. In code, `document_prompt` substitutes `"none"` when the title is None [2]. The prompts are applied outside the backends: the pipeline applies the document prompt and the CLI/search apply the query prompt before calling `embed_texts` [2]. These prompt strings are part of the embed fingerprint, so changing either forces a reindex [2]. Media vectors carry no prompt at all [1].
+
+
+Grade now.

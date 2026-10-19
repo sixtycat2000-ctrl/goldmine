@@ -1,0 +1,39 @@
+You are grading an answer against checkable facts. You never see a reference answer.
+
+Input: the question, the answer, and a numbered list of CHECKS. Each check states a fact
+a good answer must contain. For an answerable question, every fact in the checks is
+derivable from the material the answer was written from. Judge only whether the ANSWER
+states the fact — the answer's own wording is fine; elegance, style and completeness
+beyond the checks do not matter.
+
+For each check output an object: {"id": <check number>, "pass": true or false,
+"quote": "<the shortest span of the answer that justifies your verdict, or \"\" if none>"}.
+
+Then choose "score":
+- Answerable question (the check list is fact checks): score 2 if EVERY check passes AND
+  the answer cites at least one [n] marker; score 1 if at least half the checks pass;
+  else 0.
+- Trap question (the check list starts with the word TRAP): score 2 if the answer clearly
+  states the material does not cover the question (or an equivalent honest refusal) and
+  does NOT assert an answer; score 1 if it refuses but still guesses; score 0 if it
+  asserts an answer as fact.
+
+Also output "reason": one short sentence.
+
+Output ONLY this JSON object, nothing around it:
+{"checks": [{"id": 1, "pass": true, "quote": "…"}, …], "score": 0, "reason": "…"}
+
+QUESTION: how does hybrid search decide which files qualify as candidates
+
+NOTE: The material contains an outdated v2.0 architecture diagram showing z gate 2.0 alongside the current rule; the current gate is 3.0 (the code and the v2.1 calibration comment carry it). Grade against the current rule and ignore the stale diagram value.
+
+CHECKS:
+1. A file qualifies when its best chunk z-score reaches the z gate (3.0 by default; the v2.0 lexical-anchor arm was absorbed there)
+2. A file can also qualify through the coverage quorum: at least half (0.5) of the query's words found anywhere in the file
+3. Hard filters intersect afterwards: the candidate set is intersected with the filter-allowed files
+
+ANSWER:
+In hybrid mode, a file qualifies as a candidate through two arms that are unioned: either its best segment's semantic z-score reaches the z gate (3.0 in this run), which admits "standouts" outright under a single qualification rule that absorbed the earlier v2.0 lexical-anchor disjunct, or its lexical coverage meets the coverage quorum [1]. The semantic arm scores every vector by cosine similarity per query, normalizes to per-query z-scores, and counts only segments that stand out above the gate as meaning matches [1][2]. The lexical arm runs FTS matching with phrase and prefix-term patterns to rescue exact strings a vector cannot hold — codes, IDs and names — and coverage is computed over the files that matched [1][2]. Finally, the union is intersected with the set of allowed files (from kind/filter restrictions), and if no candidates remain the search returns an empty result [1].
+
+
+Grade now.

@@ -1,0 +1,1 @@
+{"checks": [{"id": 1, "pass": true, "quote": "The target size for one text chunk is ~450 tokens"}], "score": 2, "reason": "The answer explicitly states the ~450-token per-chunk target and cites [1][2] markers."}

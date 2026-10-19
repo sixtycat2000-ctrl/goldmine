@@ -1,0 +1,1 @@
+{"checks": [{"id": 1, "pass": true, "quote": "instead, its scores are centered using the global mean of all scores"}, {"id": 2, "pass": true, "quote": "paired with a standard-deviation floor of 0.02 to keep the division stable"}], "score": 2, "reason": "The answer states both facts — sub-20 groups center on the global mean and the SD has a 0.02 floor — with [n] citations."}
