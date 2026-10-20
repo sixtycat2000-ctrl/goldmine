@@ -1,0 +1,2 @@
+# Preserve verbatim tool stdout used as parser/provenance fixtures.
+tests/fixtures_data/comparison/*.stdout whitespace=-blank-at-eol

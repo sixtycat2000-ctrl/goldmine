@@ -1,0 +1,901 @@
+{
+ "schema": 1,
+ "corpus_version": "v3-2026-10-18",
+ "created": "2026-10-18",
+ "ingest_dir_roots": [
+  "/Users/yul/git/DigUp",
+  "/Users/yul/git/mac/work/foresight-rea/app-src",
+  "/Users/yul/git/goldmine/goldmine",
+  "/Users/yul/git/goldmine/docs",
+  "/Users/yul/git/goldmine/scripts",
+  "/Users/yul/git/goldmine/evals/corpus_snapshot"
+ ],
+ "fixture": {
+  "root": "/tmp/gm_covfix",
+  "generator": "scripts/make_coverage_fixture.py",
+  "seed": 20261016,
+  "version": {
+   "version": 1,
+   "generator_sha256": "c2408e2ca71e6ed0b38e3bed2e517144d926506c1fc11d0d8ab20bd61f948c7d",
+   "files": 31
+  },
+  "files": [
+   {
+    "path": "txt/field-notes-lighthouse.txt",
+    "kind": "doc",
+    "bytes": 215,
+    "sha256": "9fb8c1d72f6fc45a9253bc933b19743f870bbb9f1fd187134ac2d0e3315c92b2"
+   },
+   {
+    "path": "txt/brewlog-sourdough.txt",
+    "kind": "doc",
+    "bytes": 185,
+    "sha256": "78264516ac283599c49f5968e61724af870595a7408bd1b1b6c5787e766a1859"
+   },
+   {
+    "path": "md/obsidian/reef-tank.md",
+    "kind": "doc",
+    "bytes": 189,
+    "sha256": "587c9a4e5491cf75d699e303e59c6a1b04fbcc5418b157ee05ebd5a9429995ff"
+   },
+   {
+    "path": "md/obsidian/zh-notes.md",
+    "kind": "doc",
+    "bytes": 212,
+    "sha256": "bc80a3cf9627970448e3e957c0d2bd0f76395d20cbeed153f156437a9b75d5fc"
+   },
+   {
+    "path": "html/meteor-shower.html",
+    "kind": "doc",
+    "bytes": 337,
+    "sha256": "544b473f6a88ac02d6b6f226a62da6a01e27c6cc0829e4c4d15ba02d0c811a1c"
+   },
+   {
+    "path": "docx/quarterly-report.docx",
+    "kind": "doc",
+    "bytes": 1344,
+    "sha256": "f1231d1d781db5a2f9692ce1fb86be1bb958b25d21b0d44668aefbd94aa78004"
+   },
+   {
+    "path": "pdf/atlas-text-layer.pdf",
+    "kind": "pdf",
+    "bytes": 1768,
+    "sha256": "fa88841ac324e198e2f3fe8bd7de84cdb50ded259f8d0b17a60c44cfc43d3d64"
+   },
+   {
+    "path": "pdf/atlas-hybrid.pdf",
+    "kind": "pdf",
+    "bytes": 9638,
+    "sha256": "8cc31bfc6ded37e3df8ceb3676ec698c9f06ea2f82f0a00d94d40c9869dfa4a9"
+   },
+   {
+    "path": "pdf/atlas-scanned.pdf",
+    "kind": "pdf",
+    "bytes": 11333,
+    "sha256": "18c62aa59d8e2b0a71568800ce3beb460383f9c3e280cd98e32511605f3e55cc"
+   },
+   {
+    "path": "code/proj/main.py",
+    "kind": "code",
+    "bytes": 111,
+    "sha256": "b704a533595e3453cd1778a8002b715e5b616f324dc177df988feb9153344530"
+   },
+   {
+    "path": "code/proj/tool.go",
+    "kind": "code",
+    "bytes": 116,
+    "sha256": "78e4bee4c4e023e55a54851b7631a24cefb8fcb8705b55d9165f5576af3e904a"
+   },
+   {
+    "path": "code/proj/lib.rs",
+    "kind": "code",
+    "bytes": 116,
+    "sha256": "18e36589ef3fe15231130ad17ba0da667433bf76ecaea5af69532b87cbdc840a"
+   },
+   {
+    "path": "code/proj/app.js",
+    "kind": "code",
+    "bytes": 103,
+    "sha256": "7ca6aac31979d102363f2be93cc9bbaa1aa72dfda1e3a2d73eafce6ceafa4cb6"
+   },
+   {
+    "path": "code/proj/util.c",
+    "kind": "code",
+    "bytes": 111,
+    "sha256": "65e30d19d0f4ff66a66b76eed7770b9d8525adf7a9bb1fb18a8dc4953f85896d"
+   },
+   {
+    "path": "code/proj/.git/HEAD",
+    "kind": "noise",
+    "bytes": 21,
+    "sha256": "28d25bf82af4c0e2b72f50959b2beb859e3e60b9630a5e8c603dad4ddb2b6e80"
+   },
+   {
+    "path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png",
+    "kind": "screenshot",
+    "bytes": 5781,
+    "sha256": "34c9fa261809cebee34556f350179ea5c1ad0b002648e0074c103a07d0589a5e"
+   },
+   {
+    "path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png",
+    "kind": "screenshot",
+    "bytes": 4775,
+    "sha256": "404e2a20efb34d9f7e5aafea25055b693d0d07c49c98de318c1f1c9e4e3e24ef"
+   },
+   {
+    "path": "images/photos/photo-harbor-bridge.png",
+    "kind": "image",
+    "bytes": 246159,
+    "sha256": "547ff86d49d48cf7f617bbbda3cb53240cb9890b336e7f447b7feb4c91a80613"
+   },
+   {
+    "path": "images/photos/photo-lighthouse.png",
+    "kind": "image",
+    "bytes": 246159,
+    "sha256": "30b6c93f91e6e2613a644e1b2a51479416a287ef3679641d5feb82c11c0b7827"
+   },
+   {
+    "path": "audio/tone-diagnostic-35s.wav",
+    "kind": "audio",
+    "bytes": 1120044,
+    "sha256": "1a68d7a223bf468801e5431c38037dd555640389740af18199b2ab0f3e1ae951"
+   },
+   {
+    "path": "audio/logbook-speech-5min.wav",
+    "kind": "audio",
+    "bytes": 7121036,
+    "requires": "say",
+    "speech_surrogate_sha256": "f2f6d70767436d6c3e1fc7c8162e5fff1ea9acd8df76a56533338b5fb531facd"
+   },
+   {
+    "path": "video/bars-tone-40s.mp4",
+    "kind": "video",
+    "bytes": 1701218,
+    "requires": "ffmpeg"
+   },
+   {
+    "path": "mail/filter-maintenance.eml",
+    "kind": "doc",
+    "bytes": 301,
+    "sha256": "005f666eb541ca658adc76dbfd4b465d416da5cbfee8c5f6d37fb826c1e6cf19"
+   },
+   {
+    "path": "mail/invoice-q3.eml",
+    "kind": "doc",
+    "bytes": 518,
+    "sha256": "736a8ebd5335573d3e9c4d09d354093ae396431f3ff4229b4fca67ddd474a34a"
+   },
+   {
+    "path": "mail/build-notification.eml",
+    "kind": "doc",
+    "bytes": 218,
+    "sha256": "4564f96fbc4d0261c65c73ad92ef8a34160b330c2671602541607118b6e63caa"
+   },
+   {
+    "path": "books/coastal-almanac.epub",
+    "kind": "doc",
+    "bytes": 1787,
+    "sha256": "07aadb487ec11b29ecd4fef71ef17cc03635ff0107b3e659552159fcffb53973"
+   },
+   {
+    "path": "noise/server.pem",
+    "kind": "noise",
+    "bytes": 66,
+    "sha256": "638caaf263a239af37ff5ab11a652c2fe9a703b2574fff86b1a07c77116a1d95"
+   },
+   {
+    "path": "noise/app.min.js",
+    "kind": "noise",
+    "bytes": 800,
+    "sha256": "8deb53c1a05e2d414d1ca92004f036396d637c13f80ee931b60ecc638313887d"
+   },
+   {
+    "path": "noise/data.zip",
+    "kind": "archive",
+    "bytes": 138,
+    "sha256": "edf247dde0db98202ecd68cfd68b63265b6df11833a2cca9245a7ab41c4b1a00"
+   },
+   {
+    "path": "noise/backup.tar.gz",
+    "kind": "archive",
+    "bytes": 120,
+    "sha256": "5fac31dff3cf025edc59fa4235f32a7e1a16d04b6429599603a16176862bcfda"
+   },
+   {
+    "path": "noise/node_modules/left-pad/index.js",
+    "kind": "noise",
+    "bytes": 20,
+    "sha256": "6e66e366f0aefb84ad8110afcd9b2245702c643c831edf8316ff048fec739d2e"
+   }
+  ]
+ },
+ "sources": {
+  "digup": {
+   "root": "/Users/yul/git/DigUp",
+   "note": "DigUp Swift app \u2014 the fusion/z-score/setsScale provenance goldmine re-implements"
+  },
+  "foresight": {
+   "root": "/Users/yul/git/mac/work/foresight-rea/app-src",
+   "note": "foresight-rea app-src \u2014 reverse-engineered Google AI Edge Foresight (CJK docs, C++/Dart/Python/proto); LOCAL-ONLY, never commit bytes"
+  },
+  "goldmine": {
+   "root": "/Users/yul/git/goldmine/evals/corpus_snapshot",
+   "note": "goldmine itself (package + docs) \u2014 snapshot-pinned bytes (evals/corpus_snapshot/)"
+  }
+ },
+ "files": [
+  {
+   "path": "/Users/yul/git/DigUp/README.md",
+   "source": "digup",
+   "bytes": 10416,
+   "sha256": "e82ebf6c104d8db657e5c69d0e1e5d37515d9845f2b4c5056ab93cb11c8549df"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/CONTRIBUTING.md",
+   "source": "digup",
+   "bytes": 1916,
+   "sha256": "1a7cc0e3fc2cdaa05635e161dc8e1925cfe7f35e4e889048b95677d0b0caa8e0"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Package.swift",
+   "source": "digup",
+   "bytes": 2048,
+   "sha256": "23ef967e422558ab1161cd009bb19dc5cb4b48f087f3d588c0e253fedf19490f"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Searcher.swift",
+   "source": "digup",
+   "bytes": 25519,
+   "sha256": "3a3da1b1ecaf0d09caf57cbcfbf783cd18d6f41c35439d2ff8d0da5f012b8f32"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Indexer.swift",
+   "source": "digup",
+   "bytes": 36503,
+   "sha256": "cc0efb9d8a53e04fd8bed533d68464536ee3766298ed16dca36e19e301b0b1e4"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/CodeExtractor.swift",
+   "source": "digup",
+   "bytes": 21910,
+   "sha256": "76087dec3e069d5c226c1491cd7f059ce954b24585418719250432a59c008800"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/SearchText.swift",
+   "source": "digup",
+   "bytes": 11453,
+   "sha256": "fb1fd4ab8b8e7fdb3a2b0c201a02ffc65f95756ae91bee4a839bc3ddd7019b7f"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Vectors.swift",
+   "source": "digup",
+   "bytes": 2434,
+   "sha256": "85ba4c5a219f9fc63f1da3b4105734b3a2def883c45657e805fdb8b0d14f5e6d"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Rules.swift",
+   "source": "digup",
+   "bytes": 11620,
+   "sha256": "aef826d0550944123c97e867470979a34c8289a460e9da55b9aa8006b3f151e4"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Database.swift",
+   "source": "digup",
+   "bytes": 4929,
+   "sha256": "30cecd34999f494ce002b34e2958568be01663f6b638d4dc6c7cbfe1d3964826"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/IndexStore.swift",
+   "source": "digup",
+   "bytes": 23056,
+   "sha256": "fa98910522c762b32b8417e120c13a02b3e22781f233593d32f63892ce984077"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Model.swift",
+   "source": "digup",
+   "bytes": 6338,
+   "sha256": "adec817e990cfe455de9a425c9df8afd29e7afee067bfb1b233a5516043f1100"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/ModelFiles.swift",
+   "source": "digup",
+   "bytes": 4024,
+   "sha256": "f68c2559973ecb9717edb7624eca922a0838e96bf06b739fe22b6bb7c1e8833a"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Extractors.swift",
+   "source": "digup",
+   "bytes": 13721,
+   "sha256": "0ae1787cc2812aa2effb84d7c02d5d4edcc848c14a870996a59c607db3ca93ca"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/MediaExtractors.swift",
+   "source": "digup",
+   "bytes": 8943,
+   "sha256": "fa2d3dcaf5826c8906ba7db149f6f4496fe76c94bc26d7035636b94896d0f4f5"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Estimator.swift",
+   "source": "digup",
+   "bytes": 7509,
+   "sha256": "13bb508a9cb53afbdf7113021cbf3860d64766f328fbd74a271e49c18b63f38f"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Crawler.swift",
+   "source": "digup",
+   "bytes": 12605,
+   "sha256": "27d68caaa5fd27e0b7a4323f032ca90ef7269bb433e8535362f62a7b3be9b050"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/FolderSelection.swift",
+   "source": "digup",
+   "bytes": 4889,
+   "sha256": "8798d1785139b27a9139c363f41a10fe6d8990594999d0d1ce50ec2ed960a79c"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpKit/Worker.swift",
+   "source": "digup",
+   "bytes": 10205,
+   "sha256": "8fe3dc52cba84ef7d61a803fe87baa7dff35b20af96fd5e89ac740c7c57c8d62"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/LlamaRuntime/LlamaEmbedder.swift",
+   "source": "digup",
+   "bytes": 16983,
+   "sha256": "15b16db3f2367c734173ba88f9b12b8e36c195e7c6221cb39f890b15580ee315"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/LlamaRuntime/LlamaModels.swift",
+   "source": "digup",
+   "bytes": 2110,
+   "sha256": "378745626b85104a0061c976cc78df6b062ff3c2a7ab123772bbac4f74cb8c33"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/LlamaRuntime/ImageSizing.swift",
+   "source": "digup",
+   "bytes": 6447,
+   "sha256": "8dd04046fa6810bb0df1110110f57e96f325bb663e7606d69b03669ed655613a"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/digup/main.swift",
+   "source": "digup",
+   "bytes": 29965,
+   "sha256": "d9ebeff1670b9cb62229752a1423e0305619d5dc9b440c5f0c4ab09ed2a08340"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/digup/IndexService.swift",
+   "source": "digup",
+   "bytes": 16292,
+   "sha256": "4c582f1f8335630ab0cccd6d3fe11c7f7d7673ddfceed68fabd9e8316b83f6e1"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/digup/WorkerService.swift",
+   "source": "digup",
+   "bytes": 2689,
+   "sha256": "6f0ee678562a9c51663db8f369795d720c1acac26bc354f978124c3900c946b2"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/AppModel.swift",
+   "source": "digup",
+   "bytes": 6540,
+   "sha256": "03ff6e251ec8dffaa33028717521d9909736dc30e986cd96091d56eb1ab6c090"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/Engine.swift",
+   "source": "digup",
+   "bytes": 44808,
+   "sha256": "91797ef235c4b6eab09c7f593d3bf0d157a6f71a22951af2d2ee5e0077cadd5e"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/SearchPanel.swift",
+   "source": "digup",
+   "bytes": 22703,
+   "sha256": "087b44ee412707fa7c341a5608b6965565dcef13dec7f8de7b6caea91615ab8f"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/ModelDownload.swift",
+   "source": "digup",
+   "bytes": 18003,
+   "sha256": "d97a8b71f96e3dcd906d16c2354435e711321fa5022d7793d47a08c95892cb22"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/FolderWatcher.swift",
+   "source": "digup",
+   "bytes": 2573,
+   "sha256": "6aa45807175af746f7e6afb1646457ad2e23edef56ae4dcf085d745505bef99e"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/PowerPolicy.swift",
+   "source": "digup",
+   "bytes": 3412,
+   "sha256": "607b66a5a6e4f88536a575b215b80def7510616e046c2d1305af3ad514861ffb"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/Onboarding.swift",
+   "source": "digup",
+   "bytes": 28281,
+   "sha256": "25ed54a83323516b69de7b564cbd19ba735fa0e00c1fa40e4b69a6c8d53910c5"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/Thumbnails.swift",
+   "source": "digup",
+   "bytes": 3028,
+   "sha256": "249ebd72fc08ed85072f75ff0dadfeca4ac5a8b42f6cf7dd05eb5d8a86f997b8"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/CodeEditors.swift",
+   "source": "digup",
+   "bytes": 7361,
+   "sha256": "6233da7998566cb9223c5128721214378a34daeebf2788a0ab473f8f94111a8e"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Sources/DigUpApp/Estimates.swift",
+   "source": "digup",
+   "bytes": 7058,
+   "sha256": "d06d2e3f5df000d908124870193a4c45ae359b37948f9108374f90bf52c8f481"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Tests/DigUpKitTests/SearchTextTests.swift",
+   "source": "digup",
+   "bytes": 11659,
+   "sha256": "c022bd9b152d830db8663a194a00da920193d2b3ce2b1df2b72a9ef843e82db4"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Tests/DigUpKitTests/CodeTests.swift",
+   "source": "digup",
+   "bytes": 19434,
+   "sha256": "4a8da3e5b270b7f11dbf5fbe4edc0f6a3bdaa42f6d037b4af3608866c78942a2"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/Tests/DigUpKitTests/LongFilesTests.swift",
+   "source": "digup",
+   "bytes": 17108,
+   "sha256": "28529deb63c044c2c157b5646bc5fcea29eee29a2eb5b757a10ade3bc1cf6470"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/scripts/testbed/make_docs.swift",
+   "source": "digup",
+   "bytes": 4793,
+   "sha256": "c6f4dbbc772ab3af7f3972e7d6a80cce619f62fd9c16daa3993c483d1a4b178b"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/evals/multilingual.json",
+   "source": "digup",
+   "bytes": 6783,
+   "sha256": "29840023fe6bb1dbd9d086ac2c52e1dba3fd4e5fdf33d1c0c75bb19281e5313a"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/evals/code.json",
+   "source": "digup",
+   "bytes": 6474,
+   "sha256": "90e11b8e0b54f97b92b6ece9b87482eadf3c8b803b4e3a5fe79f413b67839b7b"
+  },
+  {
+   "path": "/Users/yul/git/DigUp/worker/digup_worker.py",
+   "source": "digup",
+   "bytes": 7686,
+   "sha256": "e5836047d6c73fec89fb650983a93c8fd1384a3a6f2770e97ededa06342d6911"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/README.md",
+   "source": "foresight",
+   "bytes": 8333,
+   "sha256": "07e1594c02be7d4742f615aa49328aed7465cdf8108687ec7977a29fb2331164"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/Makefile",
+   "source": "foresight",
+   "bytes": 1109,
+   "sha256": "ed4d04bd194e8a14f012d8cb1c75648f0aae6bc6590e52c0a675e94fc2190f8b"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/architecture.md",
+   "source": "foresight",
+   "bytes": 10038,
+   "sha256": "20cc2704218293c8871dcfea1bab90e2785cff61b25238ff8d751a9c3633b1b9"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/rpc-contracts.md",
+   "source": "foresight",
+   "bytes": 4377,
+   "sha256": "ff0409918170ef8d60a57456d411a8a42399ac14c4d458876c8c8f1b24d9c0ce"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/live-findings.md",
+   "source": "foresight",
+   "bytes": 5441,
+   "sha256": "bd997b29a3878cfe2ba8266edc6fc4a427fd7e0e47bf80ba2873554086ace919"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/evidence-map.md",
+   "source": "foresight",
+   "bytes": 4673,
+   "sha256": "fb450c2669813b0db8ba93f9abfb0f87ffd73bedbe1f62836e43333dbc0da795"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/CORRECTIONS.md",
+   "source": "foresight",
+   "bytes": 4253,
+   "sha256": "50835f7bafbe9b97cd86dad97e070f024e38eff14aeabf851134b65eee8078f1"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/DEPENDENCIES.md",
+   "source": "foresight",
+   "bytes": 4999,
+   "sha256": "fdfa6188f0e02090c0bfd8dcdf2b9a170972f1dde85753dda94580551eda6bd2"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/proto/rag_service.proto",
+   "source": "foresight",
+   "bytes": 2893,
+   "sha256": "4686b4efd39097dc0e4cea3818a9d807d4d6f4a539ddba77bfc99f59d2ce0699"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/main.cc",
+   "source": "foresight",
+   "bytes": 3552,
+   "sha256": "50b1338d527e1fbdc55b2470a9c5e3f365d69cc5c3ca3f88120db33a13236edc"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_service_impl.h",
+   "source": "foresight",
+   "bytes": 6746,
+   "sha256": "2ca4286a2e71e11d1f4ab5bc7460fc7ba984cbed6efd3eeb60f102f185cc7edd"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_service_impl.cc",
+   "source": "foresight",
+   "bytes": 9548,
+   "sha256": "ed0baedc4848f1083737a87ffb8ade5e1dfa20b5bd74b0e630f0ed46ce098850"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/retrieval_pipeline.cc",
+   "source": "foresight",
+   "bytes": 5398,
+   "sha256": "0fb11d34911aa0b658b8b21cb2b9da6482a63c394c58b9caf6a1d708a244a66e"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_sqlite_memory_store.cc",
+   "source": "foresight",
+   "bytes": 5514,
+   "sha256": "a0afcda682577744708d4eedc76e3bd74e957fca81d021bd5ac7966eb687a213"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/sqlite_vector_udf.cc",
+   "source": "foresight",
+   "bytes": 2230,
+   "sha256": "64a46b8fb91dc1bbf1fa9e23eec32b494c2795bf8afaabb43f394fb33308a2c9"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/chunking.cc",
+   "source": "foresight",
+   "bytes": 4001,
+   "sha256": "fb543f9799a0c414016692f232286ae7dc19c93bea8064522aa98b7ca29063bc"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/model_loader.cc",
+   "source": "foresight",
+   "bytes": 3334,
+   "sha256": "ac35a70b247fbaf30ee607dc513c2491083ff324a6bbb252ec8abcf4e21b2618"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/embedding_gemma_api.cc",
+   "source": "foresight",
+   "bytes": 4606,
+   "sha256": "11eac3307aad88d43ed8fa7d1addf54391e3e242879031941c5ff6b8ae7e5dd6"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/model_paths.cpp",
+   "source": "foresight",
+   "bytes": 1878,
+   "sha256": "d8a2ea945f78ba1bdba465b62062cd4e95a470a3b6b8f837a602d25c48f14780"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/server/foresight_server.py",
+   "source": "foresight",
+   "bytes": 16294,
+   "sha256": "8bf9e7ffdddcf0e02cc6a0bf3e0bd1476ea0ee5891adb07a34a62a2507fff3ff"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/app/demo_cli.py",
+   "source": "foresight",
+   "bytes": 6416,
+   "sha256": "f4c05776d6dd84d1d1ad46f02984570b87d944f31c1edc3ba8c6d01d558f367c"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/tests/test_server.py",
+   "source": "foresight",
+   "bytes": 6045,
+   "sha256": "45424186921968bbcc9ce7a964cc15fa07dd5eda48b8582cb855212bc2007106"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/tests/live_test.py",
+   "source": "foresight",
+   "bytes": 2767,
+   "sha256": "9142f78b34f01e85b659d958d47f555dffa51ca99558c120abf059a89e35f46d"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/MODULES.md",
+   "source": "foresight",
+   "bytes": 3082,
+   "sha256": "969b466f799447cdb7479143e42dc376d0bde417dcf23b4d1012a437bbe74ef1"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/STATE-MACHINES.md",
+   "source": "foresight",
+   "bytes": 2544,
+   "sha256": "122217b6c45b5171c3f239db1dc30504d1f039843280e8f662f88b33e40dcd76"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/prompts.md",
+   "source": "foresight",
+   "bytes": 49974,
+   "sha256": "0346670b0e4ca5cd443aefff87427dcb879571520476e0851bd36c9fe24e5d4e"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/model-catalog.json",
+   "source": "foresight",
+   "bytes": 1643,
+   "sha256": "c487e534262f81fedd0f55a4846dce201b023917d6ecefb31c116b8f7adf3679"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/rag_orchestrator.dart",
+   "source": "foresight",
+   "bytes": 2574,
+   "sha256": "5225cf3417b48f9dd35219127041f3ffbeec9f670441ebc5d213775a4fc9dc34"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/audio_pipeline.dart",
+   "source": "foresight",
+   "bytes": 3316,
+   "sha256": "23e82be63e7e4cbd1173dc56d96bce38a79d5bdce59840f77de89cffee2e8114"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/graph_and_mapreduce.dart",
+   "source": "foresight",
+   "bytes": 3252,
+   "sha256": "b3ca9cb1eff8a50de376127e79812404969de0010271922199fbcccc3a067a4f"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/chat_insight_service.dart",
+   "source": "foresight",
+   "bytes": 2512,
+   "sha256": "aff81858d9ed121a4512784decb053dabd08aa2c836c20533a6d55cbe6043a67"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/inference_pipeline.dart",
+   "source": "foresight",
+   "bytes": 2964,
+   "sha256": "dff7a6da101c66b56e3206331d8217175777fce93ce9bbec44d9d62fd2dc5001"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/notes_enhancer.dart",
+   "source": "foresight",
+   "bytes": 3036,
+   "sha256": "66fa82ed123e66438ce71653125d8a011aea826828870f8c122b5ba3451407ea"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/model_catalog.dart",
+   "source": "foresight",
+   "bytes": 2765,
+   "sha256": "1b11e1d92c17002ca52843a9e489cc1161620bcbdc13b6f9f4e8dbcf95bcbdc5"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/model_download_controller.dart",
+   "source": "foresight",
+   "bytes": 2309,
+   "sha256": "6ae8a049055d92f49efb5bfc9190ba2de3fb2bcf2cc7f3ecaa91f1a66cea7167"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/contact.dart",
+   "source": "foresight",
+   "bytes": 416,
+   "sha256": "5596a4161a1d31acaf239dec90e2e9cdb2d39eb43f7afb50c80baa766950772a"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/document.dart",
+   "source": "foresight",
+   "bytes": 530,
+   "sha256": "f784c386726103730093f19a82715fb8d6290eaabc9b1d4c0d604e05965e0705"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/insight.dart",
+   "source": "foresight",
+   "bytes": 460,
+   "sha256": "9934134f84f783b4464ec49f597187104ef12d3e760c56b70d1c735c0b2cc765"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/structured_transcript.dart",
+   "source": "foresight",
+   "bytes": 493,
+   "sha256": "96b9d40450af8e48032dc0c5c45590be3d54dc38b3b5ab23584c03726686537b"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/meeting_transcript_link.dart",
+   "source": "foresight",
+   "bytes": 468,
+   "sha256": "7e5dbbf7b456fea16512939da4fa0ac80595ca50577f4aeb00c0fdaab5a9c5e2"
+  },
+  {
+   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/on_device_model.dart",
+   "source": "foresight",
+   "bytes": 562,
+   "sha256": "2d1b6081058c4bbc4210f2bcb3491e04b0ca8db3bca7244b2a73b72a5e7955e7"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/README.md",
+   "source": "goldmine",
+   "bytes": 5912,
+   "sha256": "e2bfa9cebbcd37197e49b2090cb0e2a74c51b7e2f50a41028d738532a4fb8620",
+   "origin": "/Users/yul/git/goldmine/README.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/ARCHITECTURE.md",
+   "source": "goldmine",
+   "bytes": 26116,
+   "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf",
+   "origin": "/Users/yul/git/goldmine/ARCHITECTURE.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/SPEC.md",
+   "source": "goldmine",
+   "bytes": 42391,
+   "sha256": "99e4ed0a1dc130e799ce4f723047d7a29e7adefd40d5067ab52f04b1b6d45306",
+   "origin": "/Users/yul/git/goldmine/SPEC.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/search.py",
+   "source": "goldmine",
+   "bytes": 34631,
+   "sha256": "ed8432b2b90f847cd567ca112e6dfff61db3adb8412157fb0fe0556aab6ca0b0",
+   "origin": "/Users/yul/git/goldmine/goldmine/search.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/store.py",
+   "source": "goldmine",
+   "bytes": 47316,
+   "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31",
+   "origin": "/Users/yul/git/goldmine/goldmine/store.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/chunker.py",
+   "source": "goldmine",
+   "bytes": 23086,
+   "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5",
+   "origin": "/Users/yul/git/goldmine/goldmine/chunker.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/config.py",
+   "source": "goldmine",
+   "bytes": 18049,
+   "sha256": "2d9126fd644d79d40c86783b9edaed3711c6ce5061c8f696d29af15cc130f25e",
+   "origin": "/Users/yul/git/goldmine/goldmine/config.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/fingerprints.py",
+   "source": "goldmine",
+   "bytes": 21508,
+   "sha256": "d8a1b78b81d7a690c95b38b2f4e8d5c56fc129c8f45d94e2abdd61fc3b6176ec",
+   "origin": "/Users/yul/git/goldmine/goldmine/fingerprints.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/distill.py",
+   "source": "goldmine",
+   "bytes": 57514,
+   "sha256": "244a07d0b0d6a348ea9f3ac16845da3d7b2b3ceabfb1d24a1bdbc4409111057c",
+   "origin": "/Users/yul/git/goldmine/goldmine/distill.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/util.py",
+   "source": "goldmine",
+   "bytes": 13543,
+   "sha256": "0282029eda4787bc062b5d3e5845ca438bc41711408f4ea215690e85655962b1",
+   "origin": "/Users/yul/git/goldmine/goldmine/util.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/migrations.py",
+   "source": "goldmine",
+   "bytes": 21482,
+   "sha256": "45ee28fc1e1d2cde1e4d96376eb5cf25b58c1b0a5bfa900f1050a629ca759d22",
+   "origin": "/Users/yul/git/goldmine/goldmine/migrations.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/base.py",
+   "source": "goldmine",
+   "bytes": 6328,
+   "sha256": "cb24f132793313f2e8e468c2cdb620dedccb6d19b5ec42c828c3eb57e31483a2",
+   "origin": "/Users/yul/git/goldmine/goldmine/backends/base.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/llama.py",
+   "source": "goldmine",
+   "bytes": 31014,
+   "sha256": "2fbbccebc622b004ebfc7451493dd107d3127e799d2bd7ae58a4304deff893b5",
+   "origin": "/Users/yul/git/goldmine/goldmine/backends/llama.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/mock.py",
+   "source": "goldmine",
+   "bytes": 6191,
+   "sha256": "4ccfcc6744e7c580b3b6f51fc205ed608c6d6fdbff7f6675cca044d0fbf7cd8e",
+   "origin": "/Users/yul/git/goldmine/goldmine/backends/mock.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/pipeline.py",
+   "source": "goldmine",
+   "bytes": 28536,
+   "sha256": "d3dc68666ced3f97fb95fd3895ddbfcf30e54e66ca03fdd838e925d73faff2b8",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/pipeline.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/walk.py",
+   "source": "goldmine",
+   "bytes": 10387,
+   "sha256": "cef17079b82c249820ff6675eecc5d5d02d4c97f40f7124604bca89cf427ebc8",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/walk.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/rules.py",
+   "source": "goldmine",
+   "bytes": 14410,
+   "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/rules.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/extract_pdf.py",
+   "source": "goldmine",
+   "bytes": 8370,
+   "sha256": "bfa848c32961ff8eaa46aff625e17add04f265efa30f6a4abb2da7aa4824dcbb",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/extract_pdf.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/extract_text.py",
+   "source": "goldmine",
+   "bytes": 11355,
+   "sha256": "5dcd4cc7add76ac95deb00bfd359a24a042fc2f9913f075d070220746a5ba437",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/extract_text.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/media.py",
+   "source": "goldmine",
+   "bytes": 15243,
+   "sha256": "4abf5a83f19324b3f61163c7e7ab68bfcfee484c07576043ae5fafd2b478df10",
+   "origin": "/Users/yul/git/goldmine/goldmine/ingest/media.py"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/REDESIGN.md",
+   "source": "goldmine",
+   "bytes": 50890,
+   "sha256": "be16eaa481dcad9ce5345a726eb8122d11d5e7decf95e936cb59ada0ae3ccde6",
+   "origin": "/Users/yul/git/goldmine/docs/v2/REDESIGN.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/01-search-relevance.md",
+   "source": "goldmine",
+   "bytes": 41288,
+   "sha256": "e53b4d6047440736af234a8d7ebdfad3838facdef117f9d022ec246404688068",
+   "origin": "/Users/yul/git/goldmine/docs/v2/01-search-relevance.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/05-architecture-data.md",
+   "source": "goldmine",
+   "bytes": 57593,
+   "sha256": "32401b3478eb8c85100eeaca0c655938fc05566f8df35ae9c2ce2c43ec88b5a0",
+   "origin": "/Users/yul/git/goldmine/docs/v2/05-architecture-data.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/06-distill-knowledge.md",
+   "source": "goldmine",
+   "bytes": 29548,
+   "sha256": "06c70c36a063957878badf500b1cc0bbadc248988b9aafe81a7dc03f615921d1",
+   "origin": "/Users/yul/git/goldmine/docs/v2/06-distill-knowledge.md"
+  }
+ ],
+ "notes": [
+  "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
+  "foresight-rea is decompiled third-party code \u2014 local-only, its bytes are never copied into the repo (docs/v2/01 risk 9)",
+  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
+  "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
+  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)"
+ ]
+}

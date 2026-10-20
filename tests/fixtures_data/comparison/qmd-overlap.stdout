@@ -1,0 +1,26 @@
+[
+  {
+    "docid": "#372861",
+    "score": 0.67,
+    "file": "qmd://common/goldmine/chunker.py.md?index=comparison",
+    "line": 26,
+    "title": "--------------------------------------------------------------- token pieces",
+    "snippet": "@@ -25,4 @@ (24 before, 547 after)\n    \"effective_chunk_size\", \"CODE_CHARS_PER_TOKEN\",\n    \"DEFAULT_TOKEN_BUDGET\", \"DEFAULT_TOKEN_OVERLAP\",\n    \"effective_token_budget\", \"chunk_text_tokens\", \"chunk_code_tokens\",\n    \"split_text_by_tokens\", \"piece_char_offsets\", \"Tokenize\","
+  },
+  {
+    "docid": "#fa8e2a",
+    "score": 0.63,
+    "file": "qmd://common/docs/DESIGN_DECISIONS.md.md?index=comparison",
+    "line": 26,
+    "title": "goldmine — Design Decisions",
+    "snippet": "@@ -25,4 @@ (24 before, 171 after)\n> back to global z), explicit bm25 direction inversion, defined missing-vector behavior, cap\n> kind-hint boost, collapse overlapping chunk hits to file-level results, keep\n> lexical-only/semantic-only/RRF baselines available for a small eval harness. Chunking must\n> respect paragraph boundaries a..."
+  },
+  {
+    "docid": "#1fbb08",
+    "score": 0.63,
+    "file": "qmd://common/goldmine/pack.py.md?index=comparison",
+    "line": 46,
+    "title": "----------------------------------------------------------------- settings",
+    "snippet": "@@ -45,4 @@ (44 before, 517 after)\nSEAM_MIN_CHARS = 24       # below this a suffix==prefix match is coincidence\nSEAM_MAX_CHARS = 640      # a 48-token overlap never exceeds this (URL-heavy)\nMAX_RECORDS = 24          # hard cap; budget is the real constraint\nMAX_CONTEXT = 3           # --context clamp (D6): <= 7 chunks ~= 3150 tokens"
+  }
+]

@@ -1,0 +1,520 @@
+{
+  "schema": 1,
+  "suite_id": "product.v4",
+  "state": "DRAFT",
+  "evidence_mode": "real",
+  "reference_source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "reference_environment": {
+    "path": "reference-environment.json",
+    "sha256": "f378d7a7ae30a12a26d443de4b7d8254487900b6ace6c724311298be7874e3ac"
+  },
+  "sources": [
+    {
+      "path": "ARCHITECTURE.md",
+      "asset": {
+        "path": "assets/ARCHITECTURE.md",
+        "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf"
+      },
+      "kind": "doc",
+      "source_group": "source:ARCHITECTURE.md",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "ARCHITECTURE.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/ARCHITECTURE.md.txt",
+          "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 426
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "docs/DESIGN_DECISIONS.md",
+      "asset": {
+        "path": "assets/docs/DESIGN_DECISIONS.md",
+        "sha256": "fa8e2a9a28251f14e4e7189a8e3f090d015c88742a5889561a38fde55d5f6681"
+      },
+      "kind": "doc",
+      "source_group": "source:docs/DESIGN_DECISIONS.md",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "docs/DESIGN_DECISIONS.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/docs/DESIGN_DECISIONS.md.txt",
+          "sha256": "fa8e2a9a28251f14e4e7189a8e3f090d015c88742a5889561a38fde55d5f6681",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 198
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "docs/USER_GUIDE.md",
+      "asset": {
+        "path": "assets/docs/USER_GUIDE.md",
+        "sha256": "8f97b29f43653649f29494518e5826d6e29993b20c4355c942da3d7780e92e62"
+      },
+      "kind": "doc",
+      "source_group": "source:docs/USER_GUIDE.md",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "docs/USER_GUIDE.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/docs/USER_GUIDE.md.txt",
+          "sha256": "8f97b29f43653649f29494518e5826d6e29993b20c4355c942da3d7780e92e62",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 229
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/chunker.py",
+      "asset": {
+        "path": "assets/goldmine/chunker.py",
+        "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/chunker.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/chunker.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/chunker.py.txt",
+          "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 574
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "basename",
+          "path": "views/names/chunker.py.txt",
+          "sha256": "b11bfa6c28a4218ed9931478e8e091398a9be4d4ff5f66afcd5ad98494b9b8b1",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/config.py",
+      "asset": {
+        "path": "assets/goldmine/config.py",
+        "sha256": "921a088f050ecde7c5a2b60d3c03399f61bdb4c912605aa3f294bf1b03ed0f88"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/config.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/config.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/config.py.txt",
+          "sha256": "921a088f050ecde7c5a2b60d3c03399f61bdb4c912605aa3f294bf1b03ed0f88",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 469
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/fingerprints.py",
+      "asset": {
+        "path": "assets/goldmine/fingerprints.py",
+        "sha256": "d8a1b78b81d7a690c95b38b2f4e8d5c56fc129c8f45d94e2abdd61fc3b6176ec"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/fingerprints.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/fingerprints.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/fingerprints.py.txt",
+          "sha256": "d8a1b78b81d7a690c95b38b2f4e8d5c56fc129c8f45d94e2abdd61fc3b6176ec",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 537
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/ingest/asr.py",
+      "asset": {
+        "path": "assets/goldmine/ingest/asr.py",
+        "sha256": "ed084ad49f3e6c486814ce81ea64d481878c8b61fc586c06567f72a4cf3ca6ef"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/ingest/asr.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/ingest/asr.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/ingest/asr.py.txt",
+          "sha256": "ed084ad49f3e6c486814ce81ea64d481878c8b61fc586c06567f72a4cf3ca6ef",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 373
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/ingest/rules.py",
+      "asset": {
+        "path": "assets/goldmine/ingest/rules.py",
+        "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/ingest/rules.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/ingest/rules.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/ingest/rules.py.txt",
+          "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 343
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/model_manifest.py",
+      "asset": {
+        "path": "assets/goldmine/model_manifest.py",
+        "sha256": "d1bfa4e70f2835ac7ddcd152bb9136317838afc6c5d9adc4bb6d1df82f9bf979"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/model_manifest.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/model_manifest.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/model_manifest.py.txt",
+          "sha256": "d1bfa4e70f2835ac7ddcd152bb9136317838afc6c5d9adc4bb6d1df82f9bf979",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 97
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/pack.py",
+      "asset": {
+        "path": "assets/goldmine/pack.py",
+        "sha256": "1fbb08248762aa198ded696d8e05645a199e2fd727bcf14c5f624120a21e0827"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/pack.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/pack.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/pack.py.txt",
+          "sha256": "1fbb08248762aa198ded696d8e05645a199e2fd727bcf14c5f624120a21e0827",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 564
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "basename",
+          "path": "views/names/pack.py.txt",
+          "sha256": "a35d1bcacb168124dbac163ae2291a72690b24f45593d34f9e71bc784a54f7f1",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/serve.py",
+      "asset": {
+        "path": "assets/goldmine/serve.py",
+        "sha256": "a3cde74890fb015962edacfd35fa4a738bdb8d04e426a5497296d7ae510c04a0"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/serve.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/serve.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/serve.py.txt",
+          "sha256": "a3cde74890fb015962edacfd35fa4a738bdb8d04e426a5497296d7ae510c04a0",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1245
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "goldmine/store.py",
+      "asset": {
+        "path": "assets/goldmine/store.py",
+        "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31"
+      },
+      "kind": "code",
+      "source_group": "source:goldmine/store.py",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "local:goldmine",
+          "revision": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+          "path": "goldmine/store.py"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/goldmine-MIT.txt",
+          "sha256": "c0505377c7b0c0d39e51efac817beba09129da044f39021e01f0ee1b3eb8316e"
+        },
+        "generation": "verbatim Git blob; oracle view only normalizes NFC and line endings"
+      },
+      "views": [
+        {
+          "id": "body",
+          "path": "views/goldmine/store.py.txt",
+          "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1125
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    }
+  ],
+  "queries": {
+    "path": "queries.jsonl",
+    "sha256": "6940dba6ae7a1aa48fa6d37b4cf87853f84090f465d2fe24347106add406e57d"
+  },
+  "splits": null,
+  "label_audit": {
+    "path": "label-audit.json",
+    "sha256": "e540dffde8fcd8a610f47f5d0c4ce1bf9c80d5ec6971af232da042a6f567dea9"
+  }
+}

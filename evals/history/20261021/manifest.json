@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "captured_date": "2026-10-21",
+  "files": [
+    {
+      "source": "evals/baseline.json",
+      "path": "baseline.json",
+      "sha256": "dd30867707e3c74a2f1b2b594d36e6ec07e665c4dd4c25d0fe329fbf41a024ba"
+    },
+    {
+      "source": "evals/answer_baseline.json",
+      "path": "answer_baseline.json",
+      "sha256": "b01623f21ba501f31ec8a09b8cc338046937e4d6d2f504494485033095fc828a"
+    },
+    {
+      "source": "evals/public_baseline.json",
+      "path": "public_baseline.json",
+      "sha256": "7a2a265b20ff305ed6fd2e2827a5111739467335d03170f46ccf27ffc6d51b4a"
+    },
+    {
+      "source": "evals/corpus_manifest.json",
+      "path": "corpus_manifest.json",
+      "sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534"
+    },
+    {
+      "source": "evals/real.jsonl",
+      "path": "real.jsonl",
+      "sha256": "850c430f10e270e20c74b85ce919807f664b854ed4b84bc8e8bc7f3cbd24448a"
+    },
+    {
+      "source": "evals/media_queries.jsonl",
+      "path": "media_queries.jsonl",
+      "sha256": "b88f4fce6ca4a4f37c8d140c52908748b145724dbc311c6926cf3933c95df03e"
+    }
+  ]
+}
