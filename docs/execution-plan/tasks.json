@@ -1,0 +1,456 @@
+{
+  "schema": 1,
+  "plan_version": "2026-10-21.2",
+  "state": "EXECUTING",
+  "source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "contract": "CONTRACTS.md",
+  "acceptance": "ACCEPTANCE.md",
+  "status_enum": [
+    "TODO",
+    "RUNNING",
+    "IMPLEMENTED",
+    "VERIFIED",
+    "BLOCKED",
+    "EXPERIMENT_REJECTED"
+  ],
+  "execution_policy": "User authorized all P0-P2 implementation on 2026-10-21. Task checks use dev; one final sealed holdout audit. Evidence-derived status only. Local RC and hosted release are separate.",
+  "tasks": [
+    {
+      "id": "P0-01",
+      "priority": "P0",
+      "title": "冻结历史基线并修复评测入口",
+      "depends_on": [],
+      "spec": "P0.md#p0-01",
+      "status": "RUNNING",
+      "verification": [
+        "offline",
+        "legacy_if_available"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P0-02",
+      "priority": "P0",
+      "title": "修复答题波动与校准门禁",
+      "depends_on": [
+        "P0-01"
+      ],
+      "spec": "P0.md#p0-02",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "answer_calibration"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P0-03",
+      "priority": "P0",
+      "title": "支持基准与候选答案的有效比较",
+      "depends_on": [
+        "P0-02"
+      ],
+      "spec": "P0.md#p0-03",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "answer_compare"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P0-04",
+      "priority": "P0",
+      "title": "纳入 ASR OCR EXIF 评测",
+      "depends_on": [
+        "P0-01"
+      ],
+      "spec": "P0.md#p0-04",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "full_media"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P0-05",
+      "priority": "P0",
+      "title": "建立可搬运且不泄漏的产品评测集",
+      "depends_on": [
+        "P0-04"
+      ],
+      "spec": "P0.md#p0-05",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "corpus_audit",
+        "real_embedding"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P0-06",
+      "priority": "P0",
+      "title": "统一验收执行器和证据格式",
+      "depends_on": [
+        "P0-01"
+      ],
+      "spec": "P0.md#p0-06",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "negative_checks"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-01",
+      "priority": "P1",
+      "title": "抽出 CLI 与 MCP 共用应用服务",
+      "depends_on": [
+        "P0-01"
+      ],
+      "spec": "P1.md#p1-01",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "legacy"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-02",
+      "priority": "P1",
+      "title": "中文关键词检索和词法索引升级",
+      "depends_on": [
+        "P1-01"
+      ],
+      "spec": "P1.md#p1-02",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "migration",
+        "retrieval"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-03",
+      "priority": "P1",
+      "title": "文件名 路径 编号精确检索",
+      "depends_on": [
+        "P1-02"
+      ],
+      "spec": "P1.md#p1-03",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "migration",
+        "retrieval"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-04",
+      "priority": "P1",
+      "title": "修复 PDF 页与证据片段选择",
+      "depends_on": [
+        "P1-03"
+      ],
+      "spec": "P1.md#p1-04",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "retrieval",
+        "public"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-05",
+      "priority": "P1",
+      "title": "修复媒体检索与能力呈现",
+      "depends_on": [
+        "P1-04"
+      ],
+      "spec": "P1.md#p1-05",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "full_media",
+        "native_tools"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-06",
+      "priority": "P1",
+      "title": "校准无答案拒收与融合规则",
+      "depends_on": [
+        "P1-05"
+      ],
+      "spec": "P1.md#p1-06",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "retrieval",
+        "public"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-07",
+      "priority": "P1",
+      "title": "可选本地重排与收益验证",
+      "depends_on": [
+        "P1-06"
+      ],
+      "spec": "P1.md#p1-07",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "rerank_ab",
+        "performance"
+      ],
+      "allows_experiment_rejected": true,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-08",
+      "priority": "P1",
+      "title": "确定性多查询和证据合并",
+      "depends_on": [
+        "P1-06"
+      ],
+      "spec": "P1.md#p1-08",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "compound_ab",
+        "budget"
+      ],
+      "allows_experiment_rejected": true,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-09",
+      "priority": "P1",
+      "title": "只读 stdio MCP 服务",
+      "depends_on": [
+        "P1-01",
+        "P1-02"
+      ],
+      "spec": "P1.md#p1-09",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "sdk_protocol",
+        "real_embedding",
+        "performance"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P1-10",
+      "priority": "P1",
+      "title": "统一材料包契约和端到端验收",
+      "depends_on": [
+        "P1-09",
+        "P0-03"
+      ],
+      "spec": "P1.md#p1-10",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "agent",
+        "answer_compare"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-01",
+      "priority": "P2",
+      "title": "拆分 CLI 并收敛模块依赖",
+      "depends_on": [
+        "P1-01"
+      ],
+      "spec": "P2.md#p2-01",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "distribution",
+        "behavior_parity",
+        "performance"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-02",
+      "priority": "P2",
+      "title": "规模性能与内存基准",
+      "depends_on": [
+        "P1-01"
+      ],
+      "spec": "P2.md#p2-02",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "scale",
+        "performance",
+        "conditional_cache"
+      ],
+      "allows_experiment_rejected": true,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-03",
+      "priority": "P2",
+      "title": "增量导入与 watch 资源优化",
+      "depends_on": [
+        "P2-02"
+      ],
+      "spec": "P2.md#p2-03",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "watch_live",
+        "serve_live",
+        "resource_cleanup"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-04",
+      "priority": "P2",
+      "title": "真实语料知识卡片验收",
+      "depends_on": [
+        "P0-05",
+        "P1-01"
+      ],
+      "spec": "P2.md#p2-04",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "distill_real",
+        "citation"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-05",
+      "priority": "P2",
+      "title": "普通 PR CI 和严格 live 入口",
+      "depends_on": [
+        "P0-06"
+      ],
+      "spec": "P2.md#p2-05",
+      "status": "TODO",
+      "verification": [
+        "offline",
+        "local_ci",
+        "failure_injection"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null,
+      "hosted_verification": "hosted_ci"
+    },
+    {
+      "id": "P2-06",
+      "priority": "P2",
+      "title": "wheel 和无源码安装验证",
+      "depends_on": [
+        "P2-05"
+      ],
+      "spec": "P2.md#p2-06",
+      "status": "TODO",
+      "verification": [
+        "distribution",
+        "native_assets",
+        "migration"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-07",
+      "priority": "P2",
+      "title": "文档对齐与本地发布候选",
+      "depends_on": [
+        "P2-03",
+        "P2-04",
+        "P2-06",
+        "P1-10"
+      ],
+      "spec": "P2.md#p2-07",
+      "status": "TODO",
+      "verification": [
+        "release",
+        "docs",
+        "rollback"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    },
+    {
+      "id": "P2-08",
+      "priority": "P2",
+      "title": "QMD 与 Recoll 公平对照",
+      "depends_on": [
+        "P2-02",
+        "P2-06"
+      ],
+      "spec": "P2.md#p2-08",
+      "status": "TODO",
+      "verification": [
+        "comparison",
+        "performance",
+        "recompute_metrics"
+      ],
+      "allows_experiment_rejected": false,
+      "evidence_dir": null,
+      "result": null
+    }
+  ],
+  "review": "REVIEW.md"
+}

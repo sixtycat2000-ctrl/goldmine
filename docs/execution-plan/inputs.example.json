@@ -1,0 +1,261 @@
+{
+  "schema": 2,
+  "kind": "template_only_fill_nulls_before_running",
+  "path_base": null,
+  "models": {
+    "embedding": {
+      "path": "models/embeddinggemma-2-Q8_0.gguf",
+      "sha256": "2188ac1deca4b77dffefd603c2776a9d76d9d74ec01841392982ebb840b09135"
+    },
+    "reranker": {
+      "path": null,
+      "sha256": null
+    }
+  },
+  "legacy": {
+    "source_manifest": {
+      "path": "evals/corpus_manifest.json",
+      "sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534"
+    },
+    "reference_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "candidate_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "reference_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "full_media": {
+    "source_manifest": {
+      "path": null,
+      "sha256": null
+    },
+    "reference_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "candidate_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "reference_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "product": {
+    "source_manifest": {
+      "path": "evals/product_v4/manifest.json",
+      "sha256": null
+    },
+    "queries": {
+      "path": "evals/product_v4/queries.jsonl",
+      "sha256": null
+    },
+    "splits": {
+      "path": "evals/product_v4/splits.json",
+      "sha256": null
+    },
+    "reference_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "candidate_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
+    },
+    "reference_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "parameters": {
+      "path": null,
+      "sha256": null
+    },
+    "sealed_holdout_audit": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "exposure_ledger": {
+      "path": null,
+      "sha256": null
+    }
+  },
+  "public": {
+    "cache_manifest": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "reference_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "answer": {
+    "preregistration": {
+      "path": null,
+      "sha256": null
+    },
+    "stability_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "reference_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "list_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "null_audit": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "assets": {
+    "wheel": {
+      "path": null,
+      "sha256": null
+    },
+    "sdist": {
+      "path": null,
+      "sha256": null
+    },
+    "native_tar": {
+      "path": null,
+      "sha256": null
+    },
+    "native_manifest": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "evidence": {
+    "offline": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "assets": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "native": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "optional_mcp": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "optional_foresight": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "latency": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "mcp_latency": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "scale": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "watch": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "serve": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "distill": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "distribution": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "migration": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "docs": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "ci_local": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "ci_hosted": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "comparison": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  },
+  "hosted": {
+    "run_url": null,
+    "commit": null,
+    "artifact_manifest": {
+      "manifest_path": null,
+      "sha256": null
+    }
+  }
+}

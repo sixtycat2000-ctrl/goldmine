@@ -1,0 +1,55 @@
+{
+  "schema": 1,
+  "kind": "historical_evidence_not_new_targets",
+  "source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "package_version": "0.2.0",
+  "measured_date": "2026-10-21",
+  "provenance": "本次对话上一轮的真实运行；本计划编写时未重新运行或重建索引",
+  "environment": {"os": "macOS 26.6.2", "arch": "arm64", "python": "3.12.0"},
+  "offline_tests": {"passed": 995, "deselected": 25, "elapsed_s": 245.27},
+  "eval_index": {"files": 340, "segments": 2758, "vectors": 2247},
+  "legacy": {
+    "answerable": 145,
+    "noise": 5,
+    "success_at_5": 0.7862068965517242,
+    "success_at_1": 0.593103448275862,
+    "mrr": 0.6834619594964422,
+    "ndcg_at_10": 0.6884711067454795,
+    "gate": "PASS"
+  },
+  "full_media": {
+    "answerable": 164,
+    "noise": 5,
+    "success_at_5": 0.774390243902439,
+    "success_at_1": 0.5792682926829268,
+    "mrr": 0.6673562717770035,
+    "ndcg_at_10": 0.67522120701466,
+    "baseline_committed": false
+  },
+  "latency": {
+    "samples_per_arm": 22,
+    "warm_p50_ms": 121.3,
+    "warm_p95_ms": 124.7,
+    "cold_p50_ms": 1021.3,
+    "cold_p95_ms": 1080.1,
+    "real_memory_pressure_level": 2,
+    "test_pinned_pressure_level": 1,
+    "test": "tests/test_live_serve.py::test_live_latency_bench_f1"
+  },
+  "answer_history": {
+    "answerable": 16,
+    "traps": 4,
+    "mean_score_out_of_2": 1.875,
+    "calibration_valid": false,
+    "reason": "text SHA differences used as quality variance; estimated no-change trip probability is 1.0"
+  },
+  "capability_llama": {"text_embedding": true, "image_embedding": false, "audio_embedding": false},
+  "sha256": {
+    "evals/baseline.json": "dd30867707e3c74a2f1b2b594d36e6ec07e665c4dd4c25d0fe329fbf41a024ba",
+    "evals/answer_baseline.json": "b01623f21ba501f31ec8a09b8cc338046937e4d6d2f504494485033095fc828a",
+    "evals/public_baseline.json": "7a2a265b20ff305ed6fd2e2827a5111739467335d03170f46ccf27ffc6d51b4a",
+    "evals/corpus_manifest.json": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534",
+    "evals/real.jsonl": "850c430f10e270e20c74b85ce919807f664b854ed4b84bc8e8bc7f3cbd24448a",
+    "evals/media_queries.jsonl": "b88f4fce6ca4a4f37c8d140c52908748b145724dbc311c6926cf3933c95df03e"
+  }
+}
