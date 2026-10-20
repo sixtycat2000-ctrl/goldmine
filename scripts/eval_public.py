@@ -885,7 +885,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
                         metavar="NAME",
                         help="limit scope (repeatable; default: all three)")
     parser.add_argument("--arm", action="append", default=None,
-                        choices=["hybrid", "lexical"],
+                        choices=["hybrid", "lexical", "semantic", "rrf"],
                         help="arms to run (repeatable; default: both)")
     parser.add_argument("--backend", default="mock", choices=["mock", "llama"])
     parser.add_argument("--download", action="store_true",
