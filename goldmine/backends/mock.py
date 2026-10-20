@@ -36,6 +36,9 @@ MEDIA_FINGERPRINT = "bytes.v1"
 
 class MockBackend(EmbeddingBackend):
     backend_id = "mock"
+    fingerprint_without_startup = True
+    model_spawn_count = 0
+    embedding_http_requests = 0
 
     #: same split doc-prompt constant as llama (the mock hashes whatever framed
     #: text it receives, so the prompt strings are fingerprint identity only)

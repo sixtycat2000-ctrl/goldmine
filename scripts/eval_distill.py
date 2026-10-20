@@ -484,7 +484,7 @@ def excerpt_fidelity(store: Store, cards: list) -> tuple[float, int]:
     """Every excerpt string ∈ set of util.excerpt over stored texts (§7.2)."""
     stored = {
         make_excerpt(row[0] or "")
-        for row in store.db.execute("SELECT body FROM fts").fetchall()
+        for row in store.db.execute("SELECT coalesce(original,body) FROM fts").fetchall()
     }
     total = bad = 0
     for card in cards:
@@ -801,6 +801,10 @@ def report_real(db_path: Path) -> tuple[dict, bool]:
         contingency = share > 0.8
         report = {
             "mode": "report-real",
+            "status": "MISSING",
+            "reason": "diagnostic only; frozen real labels and +10 incremental evidence are not supplied",
+            "evidence_mode": "real-index diagnostic; backend identity below is not a real quality verdict",
+            "fingerprint": json.loads(store.meta("fingerprint_json") or "{}"),
             "index": str(db_path),
             "vectors": store.counts().vectors,
             "calibration": calibration_report(result["tau"]),
@@ -877,15 +881,39 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--report-real", default=None, metavar="DB",
                         help="real-index report mode over an existing index")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--labels", type=Path, help="frozen distill.real.v1 topic labels; enables strict real quality gates")
+    parser.add_argument("--corpus-root", type=Path, help="explicit indexed root corresponding to label-relative source paths")
+    parser.add_argument("--incremental-db", type=Path, help="same index after adding exactly10 predeclared documents")
+    parser.add_argument("--out", type=Path, help="save the complete real-evidence JSON report")
     args = parser.parse_args(argv)
 
     if args.report_real:
+        if args.labels:
+            from acceptance_lib.evidence import InvalidEvidence, write_json
+            from distill_eval.runner import evaluate
+
+            try:
+                if args.corpus_root is None:
+                    raise InvalidEvidence("--labels requires an explicit --corpus-root")
+                report = evaluate(Path(args.report_real).expanduser(), args.labels,
+                                  args.corpus_root, args.incremental_db)
+            except (InvalidEvidence, ValueError, OSError, KeyError, TypeError) as exc:
+                report = {"schema": 2, "kind": "goldmine.distill-real", "status": "MISSING", "reason": str(exc)}
+            if args.out:
+                if args.out.exists():
+                    parser.error("--out must not overwrite an earlier report")
+                write_json(args.out, report)
+            print(json.dumps(report, indent=2, ensure_ascii=False) if args.json else
+                  f"real distill: {report['status']} — {report.get('reason', report.get('metrics'))}")
+            return {"PASS": 0, "FAIL": 1, "MISSING": 2}[report["status"]]
         report, _ok = report_real(Path(args.report_real).expanduser())
         if args.json:
             print(json.dumps(report, indent=2, ensure_ascii=False))
         else:
             print(render_report(report))
         return 0
+    if args.labels or args.corpus_root or args.incremental_db or args.out:
+        parser.error("real labels/output options require --report-real")
 
     import tempfile
 

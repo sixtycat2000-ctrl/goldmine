@@ -88,7 +88,8 @@ def test_find_and_unchanged(store):
     assert rec is not None and rec.state == "done"
     assert rec.extractor_version == "txt-stdlib.v1"
     assert not store.unchanged("/a/b.txt", 5, "wrong-hash")
-    store.db.execute("UPDATE files SET sha256 = 'abc' WHERE id = ?", (fid,))
+    with store.write_transaction():
+        store.db.execute("UPDATE files SET sha256 = 'abc' WHERE id = ?", (fid,))
     store.db.commit()
     assert store.unchanged("/a/b.txt", 5, "abc")
     assert not store.unchanged("/a/b.txt", 6, "abc")

@@ -1,5 +1,7 @@
 # goldmine — Test Plan
 
+> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 Principle: **offline-first**. The default `pytest` run needs no network, no llama-server, no
 model files, no ForesightHelper — everything goes through the deterministic `mock` backend.
 Live tests exist as a separate, explicitly-gated tier. `GOLDMINE_HOME`/`GOLDMINE_CONFIG` are

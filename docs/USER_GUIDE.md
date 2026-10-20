@@ -1,5 +1,7 @@
 # goldmine — User Guide
 
+> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 The plain-language guide: what goldmine is, how to set it up in three commands, what daily
 use looks like, and what to do when something goes wrong. Every example below is real
 output from a scratch run on this machine (paths trimmed). Jargon is explained where it

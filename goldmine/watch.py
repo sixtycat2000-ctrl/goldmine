@@ -1126,7 +1126,7 @@ def _usage(message: str) -> UserFacingError:
 def cmd_watch(args) -> int:
     """`goldmine watch` — resolve scope, preflight the backend, run the
     daemon. Renders its own start-time refusals (R-F2)."""
-    from .cli import EXIT_FINGERPRINT, EXIT_PREREQ, _db_path, _g
+    from .command_support import EXIT_FINGERPRINT, EXIT_PREREQ, _db_path, _g
 
     cfg = _load_cfg(args)
     json_mode = bool(_g(args, "json", False))
@@ -1256,7 +1256,7 @@ def cmd_watch_stop(args) -> int:
 def cmd_watch_dispatch(args) -> int:
     """Route the `watch` group (start / stop) — imported lazily so a watch
     problem can never break the other commands."""
-    from .cli import _g
+    from .command_support import _g
 
     verb = _g(args, "watch_verb")
     if verb == "stop":

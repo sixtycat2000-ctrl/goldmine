@@ -52,13 +52,17 @@ class ToolResult:
 
 
 def sha256_file(path: Path, chunk: int = 1 << 20) -> str:
+    from .deadline import check_deadline
+
     h = hashlib.sha256()
     with open(path, "rb") as f:
         while True:
+            check_deadline()
             block = f.read(chunk)
             if not block:
                 break
             h.update(block)
+    check_deadline()
     return h.hexdigest()
 
 
@@ -79,14 +83,18 @@ def run_tool(
     subprocess pipe itself is drained by communicate(), so the child never blocks
     on a full pipe.
     """
+    from .deadline import check_deadline, remaining_timeout
+
+    check_deadline()
     try:
         proc = subprocess.run(
             argv,
             capture_output=True,
-            timeout=timeout_s,
+            timeout=remaining_timeout(timeout_s),
             cwd=None if cwd is None else str(cwd),
         )
     except subprocess.TimeoutExpired as exc:
+        check_deadline()
         # communicate() after the kill returns whatever was produced in time.
         out = exc.stdout or b""
         err = exc.stderr or b""
@@ -100,6 +108,7 @@ def run_tool(
         raise ToolError(f"{argv[0]}: not found") from exc
     except PermissionError as exc:
         raise ToolError(f"{argv[0]}: not executable") from exc
+    check_deadline()
     return ToolResult(
         rc=proc.returncode,
         stdout=proc.stdout[:max_output].decode("utf-8", "replace"),

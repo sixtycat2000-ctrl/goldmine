@@ -215,22 +215,14 @@ def test_public_manifest_pins_are_the_verified_constants():
     assert manifest["datasets"]["arguana"]["n_queries_test"] == 1406
 
 
-def test_public_manifest_vs_file_b7():
-    """B7 (normative): bytes AND sha256 asserted against any cached zip on
-    disk — skipped wholesale when no dataset has been downloaded yet."""
-    manifest = ep.load_manifest()
-    env = os.environ.get("GOLDMINE_PUBLIC_DATA")
-    beir = (Path(env) if env else Path.home() / "Library/Application Support/"
-            "goldmine/datasets") / "beir"
-    present = [(n, beir / f"{n}.zip") for n in manifest["datasets"]
-               if (beir / f"{n}.zip").is_file()]
-    if not present:
-        pytest.skip("no BEIR zips in the cache yet (run --download first)")
-    for name, path in present:
-        sha, size = ep.sha256_and_size(path)
-        entry = manifest["datasets"][name]
-        assert size == entry["bytes"], f"{name}: bytes drifted"
-        assert sha == entry["sha256"], f"{name}: sha256 drifted"
+def test_public_manifest_vs_file_b7(mini_zip):
+    """Hash mechanics use a portable fixture; acceptance assets owns real BEIR pins."""
+    entry = entry_for(mini_zip)
+    actual_sha, actual_size = ep.sha256_and_size(mini_zip)
+    assert actual_sha == entry["sha256"]
+    assert actual_size == entry["bytes"]
+    mini_zip.write_bytes(mini_zip.read_bytes() + b"corruption")
+    assert ep.sha256_and_size(mini_zip) != (entry["sha256"], entry["bytes"])
 
 
 # --------------------------------------------------------------- downloader

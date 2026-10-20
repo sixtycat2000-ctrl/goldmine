@@ -9,11 +9,7 @@ build-backend = "setuptools.build_meta"
 #   python3 -m build && python3 -m twine check dist/goldmine-0.2.0*
 #   python3 -m twine upload dist/goldmine-0.2.0*
 # (equivalent uv form: `uv build && uv publish`).
-# TODO before the first real publish: replace the placeholder URLs below with
-# the actual GitHub repo — this checkout has no git remote yet, so no
-# canonical URL is inferable and none was invented. (The LICENSE file the
-# older revision of this note asked for now exists: root LICENSE, MIT,
-# "goldmine contributors".)
+# Canonical project URLs remain unset until an actual remote is configured.
 
 [project]
 name = "goldmine"
@@ -36,25 +32,24 @@ classifiers = [
     "Topic :: Utilities",
 ]
 
-[project.urls]
-# placeholder until the repo gets its public remote (see TODO above)
-Homepage = "https://github.com/goldmine-search/goldmine"
-Repository = "https://github.com/goldmine-search/goldmine"
-Issues = "https://github.com/goldmine-search/goldmine/issues"
-
 [project.optional-dependencies]
+mcp = ["mcp==2.0.0"]
 foresight = ["grpcio>=1.60", "protobuf>=4.25"]
 dev = ["pytest>=8"]
 
 [project.scripts]
 goldmine = "goldmine.cli:main"
 
-[tool.setuptools]
-packages = ["goldmine", "goldmine.backends", "goldmine.ingest"]
+[tool.setuptools.packages.find]
+include = ["goldmine*"]
 
 [tool.pytest.ini_options]
 markers = [
     "live: tier-3 live tests; need GOLDMINE_LIVE=1 and real binaries/models",
     "eval: relevance / clustering-sensitivity harness (reports, rarely asserts)",
     "slow: long-running but fully offline (5 MB synthetic corpora; still runs in the default suite, ceiling kept well under 30 s)",
+    "assets: verifies explicitly prepared real assets; separate from hermetic tests",
+    "native: exercises real platform tools; separate from hermetic tests",
+    "optional_mcp: official MCP SDK tests in the optional dependency environment",
+    "optional_foresight: Foresight SDK tests in the optional dependency environment",
 ]

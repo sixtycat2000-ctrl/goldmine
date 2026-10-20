@@ -71,7 +71,7 @@ def _is_noise(capability: str, detail: str) -> bool:
 
 def collect(db_path: Path) -> dict:
     """Read one index -> per-kind/fine tables + backend facts."""
-    store = Store(db_path)
+    store = Store(db_path, ro=True)
     try:
         rows = store.db.execute(
             "SELECT path, kind, capability, coalesce(detail,''), info, state "

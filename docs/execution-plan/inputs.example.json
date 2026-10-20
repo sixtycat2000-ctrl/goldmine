@@ -248,6 +248,26 @@
     "comparison": {
       "manifest_path": null,
       "sha256": null
+    },
+    "latency_real": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "latency_reference": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "watch_real": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "serve_real": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "ingest": {
+      "manifest_path": null,
+      "sha256": null
     }
   },
   "hosted": {

@@ -1191,10 +1191,11 @@ def test_g10_stale_extractor_version_redone_by_plain_ingest(
     rec = store.find_by_path(str(doc))
     assert rec.extractor_version == "txt-stdlib.v1"
 
-    store.db.execute(
-        "UPDATE files SET extractor_version = 'txt-stdlib.v0-ancient' "
-        "WHERE path = ?", (str(doc),)
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET extractor_version = 'txt-stdlib.v0-ancient' "
+            "WHERE path = ?", (str(doc),)
+        )
     store.db.commit()
     report = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(fixture_tree)])
     # every OTHER done file skipped; the stale one re-extracted
@@ -1203,10 +1204,11 @@ def test_g10_stale_extractor_version_redone_by_plain_ingest(
     assert rec.extractor_version == "txt-stdlib.v1"   # re-extracted & current
 
     # and the stale chunker dimension rides the same check
-    store.db.execute(
-        "UPDATE files SET chunker_version = 'chunk.v0-ancient' WHERE path = ?",
-        (str(doc),)
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET chunker_version = 'chunk.v0-ancient' WHERE path = ?",
+            (str(doc),)
+        )
     store.db.commit()
     IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(fixture_tree)])
     rec = store.find_by_path(str(doc))
@@ -1223,10 +1225,11 @@ def test_g10_old_image_version_redone(cfg, tmp_path):
     root, shot = _screenshot(tmp_path)
     store = Store(cfg.home / "g10-image.sqlite")
     IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
-    store.db.execute(
-        "UPDATE files SET extractor_version = 'image-bytes.v1' WHERE path = ?",
-        (str(shot),),
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET extractor_version = 'image-bytes.v1' WHERE path = ?",
+            (str(shot),),
+        )
     store.db.commit()
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     assert report.unchanged == 0

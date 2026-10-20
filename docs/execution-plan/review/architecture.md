@@ -35,7 +35,7 @@
 - 严重度：P1；处置：ACCEPTED，落在 P1-02/P1-03。
 - 证据位置：`goldmine/store.py:337–367` 仅构造时检查 schema；`402–458`、`524–539`、`671–686` 后续写入不重新核验当前 writer 协议。
 - 破坏场景：旧 watch 持有 v4 连接，另一进程升级 v5/v6。旧连接随后只维护旧 fts，新的 fts_cjk/lookup_terms 静默失配；meta.lexical_version 仍声称完整。SQLite user_version 不会自动撤销旧连接写权限。
-- 最小修订：数据库级 writer 版本栅栏，并在新连接注册明确版本函数；升级后已经打开的旧连接也被拒绝。允许等价可靠方案，不增加通用锁/daemon 框架。单靠新 Python 入口检查或文档提醒停写不能通过反例。
+- 最小修订：数据库级 writer 版本栅栏，并在新连接注册明确版本函数；升级后已经打开的旧连接也被拒绝。进一步反例验证发现 SQLite 禁止在 FTS shadow table 上建触发器，普通触发器调用旧连接不存在的函数又只会中止当前语句。最终采用持久 files/segments/meta 无条件 RAISE(ROLLBACK) 栅栏；新 writer_scope 在 BEGIN IMMEDIATE 的写锁内核验版本，暂移栅栏、写入、恢复后才提交，未提交 DDL 不对其他连接可见。嵌套 Store 调用不 commit。该实现位于 storage_writes.py，Store.write_transaction() 提供唯一原始写入口。没有增加通用锁/daemon 框架。
 - 验收：保留升级前 v4/v5 writer 活连接，升级后分别执行 upsert、replace、delete、failed cleanup；要么维护全部新派生数据，要么事务完整拒写。重点检查旧路径先删 FTS 后被拒绝时不会留下半状态；向量 BLOB 不变，FK与完整性检查通过。
 
 ## ARCH-05 metadata 与正文 citation 混淆
@@ -66,3 +66,9 @@
 ## 结构处置
 
 MCP 基础协议只依赖共享服务和 index_uuid，不等待可选重排/多查询实验；planner 的基础实现也不依赖 reranker 成功。最终组合能力仍在 jointrelease 一起验收。搜索 adapter 在 P1-01 的服务边界移出大 CLI，其他命令由 P2-01完成；不增加通用框架或无意义传递包装。所有日常产品质量检查只使用 train/dev，最终 holdout 在组合候选冻结后一次开启。
+
+## 实现验证记录
+
+P1-01 的共享服务/连接/引用/deadline 边界已有离线实现；focused 81项通过。P1-02/P1-03 的 Unicode检索、raw/alias排序、迁移与旧writer拒写实现后，连同受影响既有测试运行375项全部通过（98.33秒）。补充“文件名编号不能伪装正文位置”反例后，相关65项通过（1.06秒）。这些测试集合有重叠，不相加为总测试数量；它们均不替代真实模型、产品 dev/reference 或最终 holdout 的任务验收。相应任务在真实质量证据补齐前仍为 IMPLEMENTED。
+
+新增 test_lexical_migration.py 实跑了：v4→v5→v6向量字节/原文/UUID保持；升级前已打开v4连接先删FTS、再被触发器拒写后整个事务回滚，旧commit也不能发布半状态；v5连接在v6升级后被拒绝；嵌套写异常恢复所有栅栏；SIGKILL中断回填后仍是完整v4，再运行可升级至v6。没有修改历史检索/答题基线或用户索引。

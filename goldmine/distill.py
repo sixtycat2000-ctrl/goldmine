@@ -688,7 +688,7 @@ def _corpus(store: Store, scope: Scope) -> list[CItem]:
     }
     texts = {
         row[0]: row[1] or ""
-        for row in store.db.execute("SELECT rowid, body FROM fts").fetchall()
+        for row in store.db.execute("SELECT rowid, coalesce(original, body) FROM fts").fetchall()
     }
     seg_meta = {
         r[0]: (r[1], r[2], r[3], r[4])

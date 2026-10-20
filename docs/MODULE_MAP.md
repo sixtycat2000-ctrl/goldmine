@@ -1,8 +1,36 @@
-# goldmine — Module Map (v1 implementation plan)
+# goldmine — Module Map
 
-Single flat package `goldmine/` plus two subpackages. 20 implementation modules (10 top-level,
-5 backends, 5+ingest init… see table), all standard-library + numpy; the only lazy import is
-`grpcio` inside `backends/foresight.py`. Every module lists its public surface and the
+> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
+## Current boundaries (2026-10-21)
+
+| Owner | Modules and responsibility |
+|---|---|
+| Entry and adapters | `cli.py` dispatch and exit mapping; `commands/{search,ingest,distill,inspection,lifecycle,maintenance,models,opener}.py`; `command_support.py` adapter runtime |
+| Read application | `application.py`, `contracts.py`, `citations.py`, `evidence.py`; one request snapshot for rank/details/pack and stored-evidence reads |
+| Retrieval | `search.py`, `lexical.py`, `lexical_store.py`, `retrieval_{lexical,evidence}.py`, `admission.py`; derived normalization, exact tiers and evidence admission |
+| Optional quality | `query_plan.py`, `quality.py`, `rerank.py`; conservative clauses, bounded fusion and explicitly owned local model |
+| Packs | `pack.py`; stored original text, page-aware context, complete-envelope budget and exact-material deduplication |
+| Storage | `store.py`, `storage_connections.py`, `storage_writes.py`, `migrations.py`; read-only URI/snapshots, writer protocol and transactional schema work |
+| Derived vector cache | `vector_cache.py`, `_vector_cache_files.py`; explicit immutable generation build, epoch validation and SQLite fallback |
+| Backend lifecycle | `backends/`, `deadline.py`, `http_transport.py`; shared embedding interface, monotonic budget and bounded local HTTP |
+| Ingest evidence | `ingest/{pipeline,extraction,commit,pdf_evidence,metrics}.py` plus format extractors; units, retries, atomic publication and actual-call instrumentation |
+| MCP | `mcp_server.py`, `mcp_contracts.py`; lazy optional SDK and strict transport schemas, sharing Application behavior |
+| Diagnostics | `doctor.py`, `evidence_status.py`; stored capability/staleness and honest tool/evidence states |
+| Validation | `scripts/acceptance_lib/`, `answer_eval/`, `product_eval/`, `search_bench/`, `search_comparison/`, `distill_eval/`; strict raw evidence, separated data and optional/live scopes |
+
+Base runtime remains standard library plus numpy. MCP and Foresight dependencies
+are optional and locked separately; ordinary help/fast/lexical paths do not import
+their SDKs or load the experimental reranker. Setuptools discovers `goldmine*`,
+including the command and ingest subpackages. Current behavior and evidence are
+tracked in [FEATURE_STATUS](FEATURE_STATUS.md) and [PROGRESS](execution-plan/PROGRESS.md).
+
+## Historical v1 design map
+
+The remaining sections preserve the original v1 module proposal and API sketches;
+they are historical design inputs, not the present module count or dependency pin.
+The proposal used a flat package plus two subpackages and twenty implementation
+modules. Every proposed module lists its public surface and the
 requirement it satisfies (R# = DESIGN_DECISIONS §#, V#.# = consultation verdict item).
 
 Packaging (not a module): `pyproject.toml` — setuptools backend,

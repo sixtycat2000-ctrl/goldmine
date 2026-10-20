@@ -651,7 +651,8 @@ def test_doctor_reports_fts_orphan_rows(tmp_home, db_path, fixture_tree, capsys)
     capsys.readouterr()  # flush the ingest summary
     store = Store(db_path)
     seg_id = store.db.execute("SELECT id FROM segments LIMIT 1").fetchone()[0]
-    store.db.execute("DELETE FROM segments WHERE id = ?", (seg_id,))
+    with store.write_transaction():
+        store.db.execute("DELETE FROM segments WHERE id = ?", (seg_id,))
     store.db.commit()
     store.close()
 

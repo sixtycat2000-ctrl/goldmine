@@ -502,10 +502,11 @@ def test_chunker_stale_files_redone_by_plain_ingest(tmp_path):
         ).fetchall()
         assert first
         # age the file: v1-char rows from an older binary
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v1-char' "
-            "WHERE path = ?", (str(f.resolve()),),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v1-char' "
+                "WHERE path = ?", (str(f.resolve()),),
+            )
         store.db.commit()
         store.close()
 
@@ -673,17 +674,18 @@ def test_tokenize_failure_falls_back_to_estimator(fake_cfg, monkeypatch, tmp_pat
             )
             # no tokenize-fail control plane: monkeypatch the HTTP layer for
             # /tokenize only — every tokenize POST raises
-            real_urlopen = urllib.request.urlopen
+            from goldmine.backends import llama as llama_client
+            real_request = llama_client.http_request
 
-            def refusing_urlopen(req, *a, **kw):
-                if getattr(req, "full_url", "").endswith("/tokenize"):
+            def refusing_request(url, *a, **kw):
+                if url.endswith("/tokenize"):
                     raise urllib.error.HTTPError(
-                        req.full_url, 500, "boom", {}, None  # type: ignore[arg-type]
+                        url, 500, "boom", {}, None  # type: ignore[arg-type]
                     )
-                return real_urlopen(req, *a, **kw)
+                return real_request(url, *a, **kw)
 
             monkeypatch.setattr(
-                "goldmine.backends.llama.urllib.request.urlopen", refusing_urlopen
+                "goldmine.backends.llama.http_request", refusing_request
             )
             assert backend.token_pieces("anything") is None
             assert backend.count_tokens(["x"]) is None

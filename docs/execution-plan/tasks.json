@@ -21,14 +21,14 @@
       "title": "冻结历史基线并修复评测入口",
       "depends_on": [],
       "spec": "P0.md#p0-01",
-      "status": "RUNNING",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "legacy_if_available"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-01",
+      "result": "Six historical files byte-archived; original real legacy baseline exactly reproduced. Final frozen four profiles PASS. Final candidate real legacy gate PASS: S@5 .8000, S@1 .6069, MRR .6930, nDCG .7013; no significant quality-gain claim."
     },
     {
       "id": "P0-02",
@@ -38,14 +38,14 @@
         "P0-01"
       ],
       "spec": "P0.md#p0-02",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "answer_calibration"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-02",
+      "result": "Strict v3 job provenance, four grades, preregistered practical drop and grouped bootstrap implemented. Mechanical tests PASS. New real 80-question calibration jobs remain MISSING."
     },
     {
       "id": "P0-03",
@@ -55,14 +55,14 @@
         "P0-02"
       ],
       "spec": "P0.md#p0-03",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "answer_compare"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Independent source-bound v3 comparison implemented and counterexample-tested. New independent real reference/candidate answer and grading jobs remain MISSING."
     },
     {
       "id": "P0-04",
@@ -72,14 +72,14 @@
         "P0-01"
       ],
       "spec": "P0.md#p0-04",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "full_media"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Fixed 169-row full-media preflight implemented without denominator shrink. Existing index lacks actual EXIF and some OCR provenance; full-media quality remains MISSING."
     },
     {
       "id": "P0-05",
@@ -89,15 +89,15 @@
         "P0-04"
       ],
       "spec": "P0.md#p0-05",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "corpus_audit",
         "real_embedding"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-05",
+      "result": "Audited portable corpus/reference harness implemented and tested against actual original commit. Draft has 28 manually reviewed questions from 12 sources. Required 420 corpus is MISSING: 392 questions, real PDF/media, grouped split and frozen reference."
     },
     {
       "id": "P0-06",
@@ -107,14 +107,14 @@
         "P0-01"
       ],
       "spec": "P0.md#p0-06",
-      "status": "TODO",
+      "status": "RUNNING",
       "verification": [
         "offline",
         "negative_checks"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Fixed raw-receipt/JUnit/collection/source-bound acceptance runner and strict IR/distribution/lifecycle/CI adapters implemented. Final frozen offline 1233, native 188, MCP 6 and Foresight 8 tests PASS with no required skips. Missing inputs/adapters stay nonzero MISSING. Public ranked-ID export, final holdout/docs/hosted adapters still need implementation; they explicitly refuse green status. Eleven IR anti-forgery cases are now durable tests/test_ir_acceptance.py and included in the task check; all four final scoped CI runs are frozen-*-006."
     },
     {
       "id": "P1-01",
@@ -124,14 +124,14 @@
         "P0-01"
       ],
       "spec": "P1.md#p1-01",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "legacy"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Shared read-only snapshot service, canonical citations and absolute deadlines implemented. Frozen four-profile regression PASS; actual SDK/CLI equivalent pack and concurrent replacement checks included."
     },
     {
       "id": "P1-02",
@@ -141,15 +141,15 @@
         "P1-01"
       ],
       "spec": "P1.md#p1-02",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "migration",
         "retrieval"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "NFKC CJK grams, strict phrase verification, explicit stored-row lexical reindex and whole-transaction old-writer fencing implemented. Frozen regression PASS; complete product quality gate MISSING."
     },
     {
       "id": "P1-03",
@@ -159,15 +159,15 @@
         "P1-02"
       ],
       "spec": "P1.md#p1-03",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "migration",
         "retrieval"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Schema v6 raw/alias lookup, filename-only metadata provenance and remaining-word admission implemented. Frozen regression PASS; product Top-1 target remains unmeasured."
     },
     {
       "id": "P1-04",
@@ -177,15 +177,15 @@
         "P1-03"
       ],
       "spec": "P1.md#p1-04",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "retrieval",
         "public"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-04",
+      "result": "True PDF page units, same-page chunk grouping and up to three stored supporting segments implemented with citations. Adversarial page/neighbor tests PASS; real product PDF quality remains MISSING."
     },
     {
       "id": "P1-05",
@@ -195,15 +195,15 @@
         "P1-04"
       ],
       "spec": "P1.md#p1-05",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "full_media",
         "native_tools"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-05",
+      "result": "Stored OCR/ASR evidence states, stale extractor retry rules and honest visual capabilities implemented. Frozen native/mechanical checks PASS; complete full-media provenance/quality remains MISSING."
     },
     {
       "id": "P1-06",
@@ -213,15 +213,15 @@
         "P1-05"
       ],
       "spec": "P1.md#p1-06",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "retrieval",
         "public"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-06",
+      "result": "Explicit admission reasons and three preregistered arms implemented/tested. selected=null and default original control preserved; train/holdout calibration remains MISSING."
     },
     {
       "id": "P1-07",
@@ -231,15 +231,15 @@
         "P1-06"
       ],
       "spec": "P1.md#p1-07",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "rerank_ab",
         "performance"
       ],
       "allows_experiment_rejected": true,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-07",
+      "result": "Optional pinned Qwen3 rank-head backend implemented; six real endpoint probes and bounded real-token/cleanup test PASS. Total HTTP deadline and real SIGTERM cleanup regressions PASS. Dev A/B and full resource gates remain MISSING; disabled by default."
     },
     {
       "id": "P1-08",
@@ -249,15 +249,15 @@
         "P1-06"
       ],
       "spec": "P1.md#p1-08",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "compound_ab",
         "budget"
       ],
       "allows_experiment_rejected": true,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Conservative deterministic grammar, source spans, bounded RRF, cancellation and theme-aware packing implemented/tested. Original query retained; experimental/off by default; compound benefit remains unmeasured."
     },
     {
       "id": "P1-09",
@@ -268,7 +268,7 @@
         "P1-02"
       ],
       "spec": "P1.md#p1-09",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "sdk_protocol",
@@ -276,8 +276,8 @@
         "performance"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-09",
+      "result": "Exact official SDK 2.0.0 extra and four read-only stdio tools implemented. Final 6 real SDK tests and final isolated installed-wheel handshake PASS. Final same-source latency evidence recorded in PROGRESS."
     },
     {
       "id": "P1-10",
@@ -288,15 +288,15 @@
         "P0-03"
       ],
       "spec": "P1.md#p1-10",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "agent",
         "answer_compare"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P1-10",
+      "result": "Whole-envelope budget/citation contract and official SDK Agent chain implemented. Real tokenizer matrix PASS at 512/1000/4000/32768 tokens and context 0/1/3, including maximum empty query. Fresh real 80-question answer comparison remains MISSING."
     },
     {
       "id": "P2-01",
@@ -306,7 +306,7 @@
         "P1-01"
       ],
       "spec": "P2.md#p2-01",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "distribution",
@@ -314,8 +314,8 @@
         "performance"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-01",
+      "result": "CLI dispatch split to <=350 lines with focused command modules and package discovery. Frozen compatibility/module tests and final wheel/sdist outside-source installs PASS."
     },
     {
       "id": "P2-02",
@@ -325,7 +325,7 @@
         "P1-01"
       ],
       "spec": "P2.md#p2-02",
-      "status": "TODO",
+      "status": "RUNNING",
       "verification": [
         "offline",
         "scale",
@@ -333,8 +333,8 @@
         "conditional_cache"
       ],
       "allows_experiment_rejected": true,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-02",
+      "result": "All 12 capacity cases and all 12 explicit-cache experiments measured with independent source snapshots and interleaved processes. IDs/scores consistent; 250k/500k resource triggers confirmed. Opt-in derived mmap cache implemented; final 99 cache/Store/distill tests PASS. Full CLI/pack at scale remains MISSING."
     },
     {
       "id": "P2-03",
@@ -344,7 +344,7 @@
         "P2-02"
       ],
       "spec": "P2.md#p2-03",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "watch_live",
@@ -352,8 +352,8 @@
         "resource_cleanup"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-03",
+      "result": "Incremental stage/actual-call instrumentation and lazy startup implemented; unchanged ingest starts/embeds/OCR/ASR zero in focused integration checks. Thirty-pair controlled/real/reference latency tools implemented and exercised. Full real-media ingest benchmark and two strict 10-minute watch profiles remain MISSING. Final bound controlled/real/reference 30-pair latency gates PASS: warm p50 149.07/148.07/144.04ms, candidate controlled MCP extra p95 3.40ms. One initial freshly extracted native warmup timeout retained; first-install lifecycle proof remains incomplete."
     },
     {
       "id": "P2-04",
@@ -364,15 +364,15 @@
         "P1-01"
       ],
       "spec": "P2.md#p2-04",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "distill_real",
         "citation"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-04",
+      "result": "Strict real-label/provenance card evaluator and capture/replay tools implemented; original-text regression fixed and mock hard-variant gate PASS. Audited 100-source/eight-topic labels and real quality gate remain MISSING."
     },
     {
       "id": "P2-05",
@@ -382,15 +382,15 @@
         "P0-06"
       ],
       "spec": "P2.md#p2-05",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "local_ci",
         "failure_injection"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null,
+      "evidence_dir": "reports/execution/P2-05",
+      "result": "Hermetic/native/optional/package workflows implemented; final four local CI profiles PASS and actionlint actually executed. Failure-injection/local CI bundle recorded separately. Hosted verification MISSING because no configured remote. Final CI raw bundle ci-local-006 independently replays PASS; official GitHub Action tag refs also match the pinned commits.",
       "hosted_verification": "hosted_ci"
     },
     {
@@ -401,15 +401,15 @@
         "P2-05"
       ],
       "spec": "P2.md#p2-06",
-      "status": "TODO",
+      "status": "IMPLEMENTED",
       "verification": [
         "distribution",
         "native_assets",
         "migration"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-06",
+      "result": "Final snapshot-005 wheel/sdist, installed base/MCP/sdist smoke, real native OCR+768 embedding and original-v4 to v6 backup/upgrade/restore PASS. Fresh static native dependency/signature proof retained; distribution bundle actually replay-verified."
     },
     {
       "id": "P2-07",
@@ -422,15 +422,15 @@
         "P1-10"
       ],
       "spec": "P2.md#p2-07",
-      "status": "TODO",
+      "status": "RUNNING",
       "verification": [
         "release",
         "docs",
         "rollback"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P0-06",
+      "result": "Feature truth table, CLI/MCP/cache/build/comparison documentation and recovery instructions updated. Version remains 0.2.0 development. Local RC remains MISSING for mandatory quality/data/lifecycle/public-evidence gates; no release/tag/push. Final docs adapter/test_documentation.py remain explicit unfinished code, not just missing external inputs."
     },
     {
       "id": "P2-08",
@@ -441,16 +441,22 @@
         "P2-06"
       ],
       "spec": "P2.md#p2-08",
-      "status": "TODO",
+      "status": "RUNNING",
       "verification": [
         "comparison",
         "performance",
         "recompute_metrics"
       ],
       "allows_experiment_rejected": false,
-      "evidence_dir": null,
-      "result": null
+      "evidence_dir": "reports/execution/P2-08",
+      "result": "Isolated pinned QMD 2.8.3/Recoll 1.44.2 and three-engine common-text adapter implemented. Actual 28 queries per engine and 170 raw streams replay-verified; 21 adapter tests PASS. Diagnostic seed only; complete quality modes/corpus/performance comparison remain MISSING."
     }
   ],
-  "review": "REVIEW.md"
+  "review": "REVIEW.md",
+  "execution_summary": {
+    "implemented": 20,
+    "running": 4,
+    "verified": 0,
+    "note": "IMPLEMENTED means code exists, not full task acceptance. Running tasks retain unfinished adapters/benchmark modes. Real quality, lifecycle and hosted gates remain missing."
+  }
 }

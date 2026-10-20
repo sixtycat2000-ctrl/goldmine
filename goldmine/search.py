@@ -33,6 +33,10 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from .backends.base import query_prompt
+from .admission import AdmissionParameters, SEARCH_BEHAVIOR_VERSION, admit_files
+from .lexical import normalize as normalize_lexical
+from .retrieval_lexical import collect_lexical
+from .retrieval_evidence import select_evidence, semantic_segments
 from .store import Store
 from .util import snippet as make_snippet
 
@@ -69,7 +73,6 @@ _MEANING_WEIGHT = 1.0
 _WORDS_WEIGHT = 2.0
 _LOOKUP_MEANING_WEIGHT = 0.5
 _LOOKUP_WORDS_WEIGHT = 4.0
-_COVERAGE_QUORUM = 0.5
 _TINY_GROUP = 20
 _STD_FLOOR = 0.02
 
@@ -140,21 +143,24 @@ def _date_to_epoch(value: str) -> float | None:
     v = value.strip()
     m = _RELATIVE_RE.match(v.lower())
     if m:
-        n, unit = int(m.group(1)), m.group(2)
-        today = datetime.date.today()
-        if unit == "d":
-            target = today - datetime.timedelta(days=n)
-        elif unit == "w":
-            target = today - datetime.timedelta(weeks=n)
-        else:  # calendar months, clamped to the target month's length
-            year, month = today.year, today.month - n
-            while month <= 0:
-                month += 12
-                year -= 1
-            target = datetime.date(
-                year, month, min(today.day, calendar.monthrange(year, month)[1])
-            )
-        return datetime.datetime(target.year, target.month, target.day).timestamp()
+        try:
+            n, unit = int(m.group(1)), m.group(2)
+            today = datetime.date.today()
+            if unit == "d":
+                target = today - datetime.timedelta(days=n)
+            elif unit == "w":
+                target = today - datetime.timedelta(weeks=n)
+            else:  # constant-time calendar arithmetic, including hostile inputs
+                year, month0 = divmod(today.year * 12 + today.month - 1 - n, 12)
+                if not 1 <= year <= 9999:
+                    return None
+                month = month0 + 1
+                target = datetime.date(
+                    year, month, min(today.day, calendar.monthrange(year, month)[1]),
+                )
+            return datetime.datetime(target.year, target.month, target.day).timestamp()
+        except (OverflowError, ValueError):
+            return None
     try:
         d = datetime.datetime.strptime(v, "%Y-%m-%d")
     except ValueError:
@@ -230,10 +236,16 @@ class Hit:
     duplicate_of: int | None = None     # rank of the hit this near-duplicates
     bm25_rank: int | None = None        # 1-based best bm25 rank (None = no match)
     why: dict | None = None             # score decomposition (--why renders it)
+    supporting_segment_ids: list[int] = field(default_factory=list)
+    evidence_type: str | None = None
+    media_evidence_type: str | None = None
+    query_ids: list[str] = field(default_factory=list)
+    rerank_score: float | None = None
+    admission_reason: str | None = None
 
 
 def _terms_of(text: str) -> list[str]:
-    normalized = unicodedata.normalize("NFC", text).lower()
+    normalized = normalize_lexical(text)
     seen: set[str] = set()
     out: list[str] = []
     for tok in _TOKEN_SPLIT.split(normalized):
@@ -246,9 +258,10 @@ def _terms_of(text: str) -> list[str]:
 class Searcher:
     """Candidate generation and fusion. No DB writes, no backend lifecycle."""
 
-    def __init__(self, store: Store, backend: "EmbeddingBackend | None"):
+    def __init__(self, store: Store, backend: "EmbeddingBackend | None", *, admission_parameters: AdmissionParameters | None = None):
         self.store = store
         self.backend = backend
+        self.admission_parameters = admission_parameters or AdmissionParameters()
 
     # ------------------------------------------------------------ public API
 
@@ -272,15 +285,6 @@ class Searcher:
         if scorer not in ("hybrid", "lexical", "semantic", "rrf"):
             raise ValueError(f"unknown scorer '{scorer}'")
         terms = self.terms(query)
-        # quoted phrases (§5.7) join the pattern list as exact FTS phrases;
-        # the prefix-star keeps applying to the last BARE term only
-        phrase_patterns = []
-        if filters is not None:
-            phrase_patterns = [f'"{p.replace(chr(34), " ")}"' for p in filters.phrases]
-        term_patterns = [f'"{t}"' for t in terms]
-        if term_patterns:
-            term_patterns[-1] = term_patterns[-1] + "*"  # prefix last
-        patterns = phrase_patterns + term_patterns
         semantic_text = query
         if filters is not None and filters.phrases:
             semantic_text = (query + " " + " ".join(filters.phrases)).strip()
@@ -296,29 +300,27 @@ class Searcher:
         word_rank: dict[int, int] = {}        # file -> 1-based rank, best first
         keyword_segment: dict[int, int] = {}  # file -> best (first) matching segment
         coverage: dict[int, float] = {}
-        if want_lexical and patterns:
-            match = " OR ".join(patterns)
-            rows = self.store.search_fts(match, limit=1000)
-            for position, row in enumerate(rows):
-                if row.file_id not in word_rank:
-                    word_rank[row.file_id] = position + 1
-                    keyword_segment[row.file_id] = row.segment_id
-            if rows:
-                coverage = self.store.coverage(
-                    patterns, list(word_rank.keys())
-                )
+        lexical = None
+        if want_lexical:
+            lexical = collect_lexical(
+                self.store, query, terms, filters.phrases if filters is not None else [], self.terms,
+            )
+            word_rank = lexical.word_rank
+            keyword_segment = lexical.keyword_segment
+            coverage = lexical.coverage
 
         # -- meaning ----------------------------------------------------------
         best: dict[int, tuple[float, float, int]] = {}  # file -> (z, cosine, seg_id)
         z_by_file: dict[int, float] = {}
         table = None
+        scores = None
         fids_arr: "np.ndarray | None" = None
         zvals: "np.ndarray | None" = None
         margins: dict[int, float | None] = {}
         if want_semantic:
             table = self.store.load_vectors()
             if len(table) > 0:
-                qvec = self.backend.embed_texts([query_prompt(query)])
+                qvec = self.backend.embed_texts([query_prompt(semantic_text)])
                 q = np.asarray(qvec[0], dtype=np.float32)
                 scores = table.matrix @ q
                 zvals = self.zscores(scores, np.asarray(table.modalities))
@@ -336,23 +338,15 @@ class Searcher:
         allowed = self._allowed_files(kinds, filters)
 
         # -- candidates + fusion ------------------------------------------------
-        if scorer == "lexical":
-            candidates = set(word_rank)
-        elif scorer == "semantic":
-            # pure-semantic ablation: the z gate is this mode's whole contract
-            candidates = {f for f, z in z_by_file.items() if z >= z_gate}
-        elif scorer == "rrf":
-            candidates = set(word_rank) | {f for f, z in z_by_file.items() if z >= z_gate}
-        else:  # hybrid
-            # single qualification rule (v2.1 A/B, see module docstring): the
-            # z gate admits standouts outright — the v2.0 lexical-anchor
-            # disjunct and the separate standout floor it carried are both
-            # absorbed at gate 3.0. The coverage-quorum arm is untouched.
-            candidates = {
-                f for f, z in z_by_file.items() if z >= z_gate
-            } | {f for f, cov in coverage.items() if cov >= _COVERAGE_QUORUM}
-
-        candidates &= allowed
+        if self.admission_parameters.semantic_segment_margin is not None and fids_arr is not None:
+            margins = self._segment_margins(fids_arr, zvals, files=allowed)
+        reasons = admit_files(
+            scorer=scorer, z_by_file=z_by_file, coverage=coverage, word_rank=word_rank,
+            exact=lexical.exact if lexical is not None else {},
+            rejected_exact=lexical.rejected_exact if lexical is not None else set(),
+            z_gate=z_gate, parameters=self.admission_parameters, segment_margins=margins,
+        )
+        candidates = set(reasons) & allowed
         if not candidates:
             return []
 
@@ -391,12 +385,17 @@ class Searcher:
                 scored[f] = score
             ordered = sorted(candidates, key=lambda f: (-scored[f], f))
 
+        if lexical is not None and lexical.exact:
+            original_order = {fid:pos for pos,fid in enumerate(ordered)}
+            ordered.sort(key=lambda fid: (lexical.exact[fid].level if fid in lexical.exact else 3, original_order[fid], fid))
+
         # -- why margins (only the DISPLAYED hits need best-vs-next z; the
         # v2.0 code re-aggregated all rows for at most `limit` consumers)
         if why and want_semantic and fids_arr is not None:
             margins = self._segment_margins(fids_arr, zvals, files=set(ordered[:limit]))
 
         hits: list[Hit] = []
+        evidence_vectors = semantic_segments(table, zvals, scores, set(ordered[:limit]))
         for fid in ordered[:limit]:
             z = z_by_file.get(fid)
             cosine = None
@@ -412,12 +411,21 @@ class Searcher:
             else:
                 use_meaning = fid not in keyword_segment
             seg_id = meaning_seg if use_meaning else keyword_segment.get(fid)
+            if lexical is not None and fid in lexical.exact:
+                seg_id = lexical.exact[fid].segment_id
             if seg_id is None:
                 continue
-            seg_kind, loc, loc_end, seg_excerpt = self.store.segment_row(seg_id)
             rec = self.store.get_file(fid)
             if rec is None:
                 continue
+            evidence = select_evidence(
+                self.store, rec, seg_id, lexical, evidence_vectors.get(fid, []),
+                semantic_only=scorer == "semantic", z_gate=z_gate,
+            )
+            if evidence is None:
+                continue
+            seg_id = evidence.primary
+            seg_kind, loc, loc_end, seg_excerpt = self.store.segment_row(seg_id)
             hit = Hit(
                 rank=len(hits) + 1,
                 score=scored[fid],
@@ -434,6 +442,10 @@ class Searcher:
                 scorer=scorer,
                 segment_id=seg_id,
                 bm25_rank=word_rank.get(fid),
+                supporting_segment_ids=list(evidence.supporting),
+                evidence_type=evidence.evidence_type,
+                media_evidence_type=evidence.media_evidence_type,
+                admission_reason=reasons[fid],
             )
             if why:
                 hit.why = self._why_of(
@@ -446,6 +458,25 @@ class Searcher:
                     hints=hints,
                     margin=margins.get(fid),
                 )
+                hit.why.update(admission_reason=hit.admission_reason, search_behavior_version=SEARCH_BEHAVIOR_VERSION)
+                local_units = lexical.segment_units.get(seg_id, frozenset()) if lexical is not None else frozenset()
+                local_vector = next(((sz, sc) for sid, sz, sc in evidence_vectors.get(fid, []) if sid == seg_id), None)
+                hit.why["display_evidence"] = {
+                    "segment_id": seg_id, "evidence_type": hit.evidence_type,
+                    "media_evidence_type": hit.media_evidence_type,
+                    "body_query_units": len(local_units),
+                    "query_units": lexical.unit_count if lexical is not None else 0,
+                    "segment_z": local_vector[0] if local_vector is not None else None,
+                    "segment_cosine": local_vector[1] if local_vector is not None else None,
+                    "score_scope": "file",
+                }
+                if lexical is not None and fid in lexical.exact:
+                    exact = lexical.exact[fid]
+                    hit.why.update({
+                        "exact_source": exact.source, "exact_match_type": exact.match_type,
+                        "exact_string": exact.raw_term, "exact_priority": exact.level,
+                        "promotion_reason": "verified exact source with supported remaining query",
+                    })
             hits.append(hit)
 
         # -- presentation (item 15): near-dup fold bookkeeping, then «» snippets.
@@ -578,7 +609,7 @@ class Searcher:
         untouched. `--kinds` and `kind:` intersect (honest: no widening)."""
         # P1-5: a `failed` file's content segments were already dropped at the
         # store layer; exclude the rows here too so no stale row can surface.
-        where = ["state != 'failed'"]
+        where = ["state = 'done'"]
         params: list[object] = []
         effective = set(kinds) if kinds is not None else None
         if filters is not None and filters.kinds:

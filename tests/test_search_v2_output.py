@@ -477,9 +477,10 @@ def test_filter_dates_coalesce_content_date_then_mtime(store):
 def test_filter_dates_url_fetched_at(store):
     add_file(store, "https://a.example/x", ["needle unique sentence"], [None],
              source="url")
-    store.db.execute(
-        "UPDATE files SET info = ? WHERE path = 'https://a.example/x'",
-        (json.dumps({"fetched_at": _epoch(2026, 3, 1)}),))
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET info = ? WHERE path = 'https://a.example/x'",
+            (json.dumps({"fetched_at": _epoch(2026, 3, 1)}),))
     add_file(store, "https://b.example/y", ["needle unique sentence"], [None],
              source="url", mtime=_epoch(2020, 1, 1))
     s = Searcher(store, None)

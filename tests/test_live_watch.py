@@ -48,7 +48,8 @@ pytestmark = [
 ]
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MODEL = REPO_ROOT / "models" / "embeddinggemma-2-Q8_0.gguf"
+MODEL = Path(os.environ.get("GOLDMINE_LIVE_MODEL", REPO_ROOT / "models" / "embeddinggemma-2-Q8_0.gguf"))
+VENDOR_SERVER = Path(os.environ.get("GOLDMINE_LIVE_SERVER", VENDOR_SERVER))
 
 
 def _skip_reason() -> str | None:
@@ -91,8 +92,10 @@ class LiveWatch:
             "GOLDMINE_CONFIG": str(self.root / "cfg" / "config.toml"),
             "GOLDMINE_MODEL": str(MODEL),
             "GOLDMINE_LLAMA_SERVER": str(self.server),
-            "GOLDMINE_SERVE_PRESSURE_LEVEL": "1",  # deterministic (module doc)
         })
+        env.pop("GOLDMINE_SERVE_PRESSURE_LEVEL", None)
+        if os.environ.get("GOLDMINE_LIVE_PRESSURE_PROFILE", "controlled") == "controlled":
+            env["GOLDMINE_SERVE_PRESSURE_LEVEL"] = "1"
         env.update(self.env_extra)
         return env
 

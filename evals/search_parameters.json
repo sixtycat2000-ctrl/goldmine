@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "search_behavior_version": "search.v3-evidence-control",
+  "registered_on": "2026-10-21",
+  "status": "MISSING",
+  "selected": null,
+  "default": "control",
+  "missing": [
+    "product.v4 is DRAFT, has no frozen grouped dev/holdout split and does not meet the 420-question coverage contract",
+    "real PDF, OCR, ASR and photo metadata sources for the required strata are not registered",
+    "no candidate has completed a valid frozen train selection; no calibration or quality gain is claimed"
+  ],
+  "candidates": [
+    {"id": "control", "z_gate": 3.0, "coverage_quorum": 0.5, "semantic_segment_margin": null, "new_parameters": 0},
+    {"id": "higher_z", "z_gate": 3.5, "coverage_quorum": 0.5, "semantic_segment_margin": null, "new_parameters": 0},
+    {"id": "within_file_margin", "z_gate": 3.0, "coverage_quorum": 0.5, "semantic_segment_margin": 0.25, "new_parameters": 1}
+  ],
+  "selection": {
+    "split": "train",
+    "train_alias": "product.v4 grouped dev fold, per the registered evaluator contract",
+    "gates": "evals/acceptance_targets.json:product; every answerable stratum and noise gate must pass before objective comparison",
+    "objective_order": ["success@5 descending", "MRR descending", "new_parameters ascending", "candidate registration order ascending"],
+    "if_none_qualifies": "FAIL; retain control, do not add a fourth candidate or lower a target",
+    "semantic_segment_margin_definition": "best versus next vector z within the same file; singleton files have no extra margin restriction",
+    "dev_confirmation": "confirm the selected frozen candidate once; no further parameter search",
+    "holdout": "reserved for the final combined jointrelease; never used to select parameters"
+  }
+}

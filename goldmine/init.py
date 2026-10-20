@@ -259,7 +259,7 @@ def run_init(
 
 
 def _json_summary(ctx: _Ctx) -> dict:
-    from .cli import _envelope  # lazy: cli imports init lazily too
+    from .command_support import _envelope  # lazy: cli imports init lazily too
 
     roots = [str(r) for r in ctx.choices.get("roots", [])]
     media = {
@@ -744,7 +744,7 @@ def _state_ingest(ctx: _Ctx) -> None:
         try:
             backend = create_backend(ctx.cfg, ctx.backend_name)
         except BackendUnavailable as exc:
-            from .cli import _err_backend  # lazy: cli imports init lazily too
+            from .command_support import _err_backend  # lazy: cli imports init lazily too
 
             raise _err_backend(
                 exc,

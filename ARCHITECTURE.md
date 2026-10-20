@@ -1,17 +1,43 @@
 # goldmine — Architecture
 
+> Implementation update (2026-10-21): see [the current feature status](docs/FEATURE_STATUS.md) and the [P0–P2 execution record](docs/execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 > "Ingest anything, search anything." A local-first macOS CLI that ingests files and web links,
-> embeds them with EmbeddingGemma 2 (768-dim, multimodal) running locally, searches them with
+> embeds stored text with the local EmbeddingGemma 2 llama backend (768 dimensions), searches it with
 > hybrid semantic + exact-match scoring, and distills the corpus into source-backed "golden
 > knowledge" cards.
 >
-> Status: **design** (this document). No implementation yet.
+> Status: **0.2.0 development implementation**. Current boundaries are below;
+> the numbered v1 design sections remain historical context.
 > Companion docs: [SPEC.md](SPEC.md) (CLI contract), [docs/MODULE_MAP.md](docs/MODULE_MAP.md),
 > [docs/DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md), [docs/TEST_PLAN.md](docs/TEST_PLAN.md).
 
 ---
 
-## 1. Component diagram
+## Current request boundaries (2026-10-21)
+
+CLI command adapters and the optional stdio MCP adapter call `Application` with
+typed contracts. A request owns one read-only Store connection/transaction and
+one monotonic deadline. Ranking, original evidence, supporting/neighbor citations
+and final packing use that same snapshot. The adapters serialize results; they
+do not independently rerun retrieval or read source files. The MCP SDK is an
+explicit optional dependency, and model operations are serialized with two
+bounded waiters.
+
+Mutations use the registered writer transaction. Explicit lexical reindex upgrades
+derived schema fields, while persistent old-writer guards reject the whole stale
+transaction. Vector-cache generations are explicitly built/enabled derivatives;
+epoch/identity defects fall back to the authoritative SQLite rows. Ingest publishes
+new text, vectors and completed file state together. Search excludes pending files.
+
+`serve` and `watch` are explicitly started daemons with their existing guard and
+ownership rules. Temporary request backends and optional rerankers close on errors,
+deadline, cancellation and termination; clients do not kill shared serve. Local
+HTTP applies the remaining total budget to every socket step, including slow
+headers and body. [The module map](docs/MODULE_MAP.md) identifies the implemented
+owners; [execution contracts](docs/execution-plan/CONTRACTS.md) define exact limits.
+
+## 1. Historical v1 component diagram
 
 ```
                  goldmine — one OS process per command (no daemon of our own)

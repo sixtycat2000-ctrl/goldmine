@@ -51,7 +51,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-TARGET = 4  # == Store.SCHEMA_VERSION; single source, imported by store.py
+TARGET = 6  # == Store.SCHEMA_VERSION; single source, imported by store.py
 
 #: The chunker id a v1 index really ran with (REDESIGN §6 / 05:152,264). The
 #: backfill stamps THIS, never the current CHUNKER_VERSION: staleness then
@@ -139,6 +139,9 @@ def migrate(
         notes.append(f"snapshot {Path(snapshot).name}")
 
     db.execute("PRAGMA busy_timeout = 60000")
+    from .storage_writes import install_fences, register_writer, remove_fences
+
+    register_writer(db, TARGET)
     db.execute("BEGIN IMMEDIATE")
     applied: list[int] = []
     try:
@@ -148,6 +151,7 @@ def migrate(
                 f"index {path or '?'} has schema v{version}, newer than this "
                 f"build (v{TARGET}) — upgrade goldmine"
             )
+        remove_fences(db)
         for target in range(version + 1, TARGET + 1):
             step = MIGRATIONS.get(target)
             if step is None:
@@ -172,6 +176,7 @@ def migrate(
             notes = []  # the snapshot note belongs to the first step only
             applied.append(reached)
             version = reached
+        install_fences(db)
         db.execute("COMMIT")
     except BaseException:
         try:
@@ -389,7 +394,27 @@ def _v3_to_v4(db: sqlite3.Connection, from_version: int) -> int:
     return 4
 
 
-MIGRATIONS: dict[int, callable] = {2: _v1_to_v2, 3: _v2_to_v3, 4: _v3_to_v4}
+def _v4_to_v5(db: sqlite3.Connection, from_version: int) -> int:
+    from .lexical_store import rebuild_derived
+
+    rebuild_derived(db, exact=False)
+    _set_meta(db, "schema_version", "5")
+    db.execute("PRAGMA user_version = 5")
+    return 5
+
+
+def _v5_to_v6(db: sqlite3.Connection, from_version: int) -> int:
+    from .lexical_store import rebuild_derived
+
+    rebuild_derived(db, exact=True)
+    _set_meta(db, "schema_version", "6")
+    db.execute("PRAGMA user_version = 6")
+    return 6
+
+
+MIGRATIONS: dict[int, callable] = {
+    2: _v1_to_v2, 3: _v2_to_v3, 4: _v3_to_v4, 5: _v4_to_v5, 6: _v5_to_v6,
+}
 
 
 # ----------------------------------------------------------------- backups

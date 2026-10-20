@@ -74,12 +74,19 @@ class BackendStartupError(EmbeddingError):
 class EmbeddingBackend(ABC):
     """Contract: embed_texts returns an (n, 768) float32 matrix, L2-normalized.
 
+    Request-scoped callers use goldmine.deadline.request_timeout; backends cap
+    blocking calls and check its remaining time before retries or cold starts.
+    RequestTimeout must propagate, never become a tokenizer estimate/fallback.
+
     DEVIATION from MODULE_MAP (`embed_texts -> list[np.ndarray]`): returns a single
     (n, dim) np.ndarray — the orchestrator's build spec states "(n,768) L2-normalized
     float32", and every consumer (fp16 packing, matrix search) wants a matrix anyway.
     """
 
     backend_id: str = "abstract"
+    fingerprint_without_startup: bool = False
+    model_spawn_count: int | None = None
+    embedding_http_requests: int | None = None
 
     #: The document-prompt template this backend declares — one axis of the
     #: embed identity (fingerprints.live_embed_identity). The default is the

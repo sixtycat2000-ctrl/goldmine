@@ -143,9 +143,13 @@ def test_merge_parts_trims_adjacent_seam():
 def test_collect_records_dedups_duplicate_hits_and_counts_them(multi):
     hits = hits_of(multi, limit=5)
     assert len(hits) >= 2, "fixture must rank two files"
-    hits[1].duplicate_of = hits[0].rank  # simulate a near-dup fold
+    text = multi.segment_text(hits[0].segment_id)
+    fid = multi.db.execute("SELECT file FROM segments WHERE id=?", (hits[1].segment_id,)).fetchone()[0]
+    multi.replace_segments(fid, [SegmentRec(kind="chunk", modality="text", loc=1, loc_end=1,
+                                            text_for_fts=text, vec=evec(0))])
+    hits = hits_of(multi, limit=5)
     neighbor = NeighborIndex(multi)
-    records, folded, also = collect_records(neighbor, hits, 1)
+    records, folded, also = collect_records(neighbor, hits, 0)
     assert folded == 1
     assert all(rec.hit.rank != hits[1].rank for rec in records)
 

@@ -376,9 +376,9 @@ def check_index(cfg: Config, db: Path | None) -> CheckResult:
         )
     from .store import Store
 
-    store = Store(db)
+    store = Store(db, ro=True)
     try:
-        schema = store.meta("schema_version")
+        schema = store.db.execute("PRAGMA user_version").fetchone()[0]
         fingerprint = store.meta("fingerprint_id")
         counts = store.counts()
         orphans = store.db.execute(
@@ -419,6 +419,11 @@ def check_index(cfg: Config, db: Path | None) -> CheckResult:
             fp_json = store.meta("fingerprint_json") or ""
             parsed = json.loads(fp_json) if fp_json else {}
             detail += f" ({parsed.get('backend')}/{parsed.get('model_id')}/dim {parsed.get('dim')})"
+        from .evidence_status import stored_evidence_status
+
+        evidence = stored_evidence_status(store, limit=0)
+        if evidence["media_files"]:
+            detail += "; stored media evidence " + json.dumps(evidence["state_counts"], sort_keys=True)
         return CheckResult("index", STATUS_OK, detail)
     finally:
         store.close()

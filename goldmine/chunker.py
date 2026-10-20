@@ -57,7 +57,7 @@ _KIND_CHARS_PER_TOKEN = {"code": CODE_CHARS_PER_TOKEN}
 #: chunk semantics actually change; a bump marks existing rows stale for the
 #: next plain ingest run, never a refusal (A2/B11: refusal is reserved for an
 #: incompatible embed identity).
-CHUNKER_VERSION = "chunk.v2-tok"
+CHUNKER_VERSION = "chunk.v3-page"
 
 #: Callable returning exact token PIECES (as utf-8 bytes, each piece one token,
 #: concatenated ~= the utf-8 text) or None when unavailable -> estimator path.

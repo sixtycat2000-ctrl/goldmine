@@ -1,9 +1,9 @@
 """v2 item 5 (B1·B2): model manifest + manager + `goldmine model` CLI.
 
 Fully offline: no network, no real downloads. Download paths are exercised
-against `file://` sources and injected fake urlopen responses; manifest pins
-are verified against the repo's real model files when present (B7) and skipped
-on clones without them.
+against `file://` sources and injected fake urlopen responses; hash/size mechanics
+use deterministic local files. The acceptance assets profile separately requires
+actual pinned model files and cannot pass when those assets are missing.
 """
 
 from __future__ import annotations
@@ -87,9 +87,10 @@ def test_manifest_shape_and_urls():
     assert keys == [
         "embeddinggemma-2-Q8_0", "mmproj-embeddinggemma-2-Q8_0",
         "whisper-large-v3-turbo-q5_0", "silero-vad-v5.1.2",
+        "Qwen3-Reranker-0.6B-Q8_0",
     ]
     roles = {e.role for e in MANIFEST}
-    assert roles == {"embedding", "mmproj", "asr", "vad"}
+    assert roles == {"embedding", "mmproj", "asr", "vad", "reranker"}
     embed = by_key("embeddinggemma-2-Q8_0")
     assert embed.url() == (
         "https://huggingface.co/ggml-org/embeddinggemma-2-GGUF/resolve/"
@@ -111,26 +112,16 @@ def test_manifest_vad_bytes_pin_is_the_corrected_value():
     assert len(vad.sha256) == 64
 
 
-def test_manifest_matches_files_on_disk():
-    """B7 (normative): every manifest entry's bytes AND sha256 against the
-    real file, whenever the repo models are present (skipped on lean clones)."""
-    repo_models = Path(__file__).resolve().parents[1] / "models"
-    present = [
-        e for e in MANIFEST
-        if (repo_models / repo_relpath(e)).is_file()
-    ]
-    if not present:
-        pytest.skip("no repo model files present (lean clone) — B7 ran nothing")
-    for entry in present:
-        path = repo_models / repo_relpath(entry)
-        data = hashlib.sha256()
-        size = 0
-        with open(path, "rb") as f:
-            while block := f.read(1 << 22):
-                data.update(block)
-                size += len(block)
-        assert size == entry.bytes, f"{entry.key}: bytes {size} != pin {entry.bytes}"
-        assert data.hexdigest() == entry.sha256, f"{entry.key}: sha256 mismatch"
+def test_manifest_matches_files_on_disk(tmp_path):
+    """B7 hash/size mechanics; actual downloaded model pins belong to assets."""
+    path = tmp_path / "tiny-model.gguf"
+    path.write_bytes(b"GGUF deterministic manifest fixture\n")
+    entry = fake_entry("fixture", path)
+    actual_sha, actual_size = model_mod.sha256_and_size(path)
+    assert (actual_sha, actual_size) == (entry.sha256, entry.bytes)
+    path.write_bytes(path.read_bytes().replace(b"GGUF", b"CORR", 1))
+    changed_sha, changed_size = model_mod.sha256_and_size(path)
+    assert changed_size == entry.bytes and changed_sha != entry.sha256
 
 
 # -------------------------------------------------------------- resolution

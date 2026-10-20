@@ -11,6 +11,8 @@ value is never added into a higher-is-better score.
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+from contextlib import nullcontext
 import json
 import sqlite3
 from dataclasses import dataclass, field
@@ -20,111 +22,10 @@ import numpy as np
 
 from . import migrations
 from .util import pack_fp16, unpack_fp16
+from .storage_connections import connect_index, open_index, read_snapshot  # connect_index compatibility
+from .storage_writes import writer_scope
 
 BLOCK_ROWS = 8192  # fp16 -> f32 conversion block (DigUp pattern)
-
-_DDL = """
-CREATE TABLE IF NOT EXISTS meta(
-    key   TEXT PRIMARY KEY,
-    value TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS files(
-    id                INTEGER PRIMARY KEY,
-    path              TEXT NOT NULL UNIQUE,
-    source            TEXT NOT NULL DEFAULT 'file',
-    kind              TEXT NOT NULL,
-    size              INTEGER NOT NULL,
-    mtime             REAL,
-    sha256            TEXT,
-    state             TEXT NOT NULL DEFAULT 'pending',
-    capability        TEXT,
-    detail            TEXT,
-    info              TEXT,
-    extractor_version TEXT,
-    chunker_version   TEXT,
-    embed_id          TEXT,
-    content_date      REAL,
-    indexed_at        REAL
-);
-CREATE INDEX IF NOT EXISTS files_state ON files(state, kind);
-CREATE INDEX IF NOT EXISTS files_capability ON files(capability);
-CREATE INDEX IF NOT EXISTS files_kind_cap ON files(kind, capability);
-
-CREATE TABLE IF NOT EXISTS segments(
-    id       INTEGER PRIMARY KEY,
-    file     INTEGER NOT NULL REFERENCES files(id) ON DELETE CASCADE,
-    kind     TEXT NOT NULL,
-    modality TEXT NOT NULL,
-    loc      REAL,
-    loc_end  REAL,
-    excerpt  TEXT,
-    vec      BLOB
-);
-CREATE INDEX IF NOT EXISTS segments_file ON segments(file);
-CREATE INDEX IF NOT EXISTS segments_vec_file ON segments(file) WHERE vec IS NOT NULL;
-
-CREATE VIRTUAL TABLE IF NOT EXISTS fts USING fts5(
-    name, body, original UNINDEXED,
-    tokenize = "porter unicode61 remove_diacritics 2 categories 'L* N* Co M*'"
-);
-
-CREATE TABLE IF NOT EXISTS distill_runs(
-    id          TEXT PRIMARY KEY,     -- sha256(algo|tau|scope_json|corpus_hash|mode)
-    algo        TEXT NOT NULL,        -- "leader-avglink.v2"
-    tau         REAL NOT NULL,
-    tau_source  TEXT NOT NULL,        -- otsu|floor|ceil|percentile|manual|inherited
-    scope_json  TEXT NOT NULL,        -- canonical: {under, kinds, after}
-    corpus_hash TEXT NOT NULL,        -- audit identity (D9; never gates reuse, F4)
-    mode        TEXT NOT NULL,        -- full|incremental
-    stats_json  TEXT NOT NULL,
-    created_at  REAL NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS cards(
-    id             INTEGER PRIMARY KEY,
-    run_id         TEXT NOT NULL REFERENCES distill_runs(id),
-    view_id        TEXT NOT NULL,     -- D7: sha256(algo + canonical scope_json)[:16]
-    title          TEXT NOT NULL,
-    title_kind     TEXT NOT NULL DEFAULT 'terms',  -- terms|sentence|llm
-    terms          TEXT NOT NULL,     -- JSON array (renamed from title_terms)
-    excerpts       TEXT NOT NULL,     -- JSON [{text,path,kind,loc,loc_end,role}]
-    size           INTEGER NOT NULL,
-    n_files        INTEGER NOT NULL,
-    parent_id      INTEGER REFERENCES cards(id),    -- header card row (status='header')
-    centroid       BLOB,              -- 768-dim fp16 (1536 B) via util.pack_fp16
-    status         TEXT NOT NULL DEFAULT 'active',  -- active|dissolved|header
-    llm_title      TEXT,
-    llm_summary    TEXT,
-    llm_model      TEXT,
-    fingerprint_id TEXT NOT NULL,
-    distill_algo   TEXT NOT NULL,
-    created_at     REAL NOT NULL,
-    updated_at     REAL NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS card_chunks(
-    card   INTEGER NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-    chunk  INTEGER NOT NULL,      -- NO segments FK (DEVIATION from R6 §3.1):
-                                  -- PRAGMA foreign_keys=ON + this FK would make
-                                  -- ANY segment deletion fail once cards exist;
-                                  -- §4.4 assigns tombstone cleanup to the
-                                  -- dissolve sweep, which requires tombstones
-                                  -- to be storable. Pinned shape contradiction
-                                  -- resolved in favor of §4.4's sweep design.
-    weight REAL NOT NULL,
-    UNIQUE(card, chunk)
-);
-CREATE INDEX IF NOT EXISTS card_chunks_card ON card_chunks(card);
-CREATE INDEX IF NOT EXISTS cards_view ON cards(view_id, status);
-
-CREATE TABLE IF NOT EXISTS distill_views(
-    name        TEXT PRIMARY KEY,
-    scope_json  TEXT NOT NULL,
-    params_json TEXT NOT NULL,        -- {threshold: float|null, min_members: int}
-    created_at  REAL NOT NULL
-);
-"""
 
 
 @dataclass
@@ -174,9 +75,9 @@ class FtsRow:
 
 @dataclass
 class VectorTable:
-    ids: list[int]
-    file_ids: list[int]
-    modalities: list[str]
+    ids: Sequence[int]
+    file_ids: Sequence[int]
+    modalities: Sequence[str]
     matrix: np.ndarray              # (N, 768) float32, rows aligned with ids
 
     def __len__(self) -> int:
@@ -282,90 +183,14 @@ detail, info, extractor_version, chunker_version, embed_id, content_date, indexe
 FROM files"""
 
 
-def connect_index(path: Path | str, *, ro: bool = False) -> sqlite3.Connection:
-    """The ONE sqlite3.connect for the package (storage critique 03 F6): every
-    caller — Store, doctor's deep checks, migrations' backup verification —
-    goes through here so the pragmas are set exactly once and identically.
-
-    Read-write: WAL (persistent), busy_timeout 60 s, foreign_keys ON,
-    synchronous=NORMAL. The index is derived, rebuildable data — WAL+NORMAL is
-    SQLite's recommended pairing for that case (commits ~4.4x cheaper than the
-    FULL default, measured 23.9 -> 5.4 ms per small commit; an app crash still
-    preserves every committed transaction, only a power loss may drop the last
-    one).
-
-    Read-only (``ro=True``): a mode=ro URI — never creates the file, never
-    writes, no journal/WAL pragmas. For short-lived inspection connections
-    (doctor --deep, backup verification).
-
-    DELIBERATE EXCEPTION — migrations._vacuum_into keeps a plain connect: its
-    connection must stay OUT of WAL mode so the VACUUM INTO copy is written as
-    a plain single-file (rollback-journal) database — a WAL-flagged copy is
-    exactly what read-only verification chokes on (03 F4).
-    """
-    path = Path(path)
-    if ro:
-        con = sqlite3.connect(f"file:{path}?mode=ro", uri=True, timeout=60.0)
-        con.execute("PRAGMA busy_timeout = 60000")
-        return con
-    con = sqlite3.connect(str(path), timeout=60.0)
-    # busy_timeout 60000 per the ARCHITECTURE §6 DDL. (Build note said 5000;
-    # the binding DDL wins — see DEVIATION notes in the build report.)
-    con.execute("PRAGMA journal_mode = WAL")
-    con.execute("PRAGMA busy_timeout = 60000")
-    con.execute("PRAGMA foreign_keys = ON")
-    con.execute("PRAGMA synchronous = NORMAL")
-    return con
-
 
 class Store:
     SCHEMA_VERSION = migrations.TARGET  # single source: migrations.py owns the ladder
 
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, *, ro: bool = False, timeout_s: float = 60.0):
         self.path = Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.db = connect_index(self.path)
-        # ORDERING (storage critique 03 F5): user_version is read BEFORE any
-        # DDL. The old order — executescript(_DDL) then version check — meant
-        # (a) a FAILED migration left a v1 file with pre-created v2-shaped
-        # tables (the DDL ran in autocommit before the ladder rolled back),
-        # and (b) an old build opening a future schema re-created any table
-        # that future schema had dropped, before refusing. Now: refuse future
-        # schemas first, hand pre-TARGET files straight to the ladder (the
-        # ladder owns EVERY schema write for them), and only fresh (0) /
-        # already-current files see the idempotent _DDL.
-        version = int(self.db.execute("PRAGMA user_version").fetchone()[0])
-        if version > self.SCHEMA_VERSION:
-            self.db.close()
-            raise RuntimeError(
-                f"index {self.path} has schema v{version}, newer than this build "
-                f"(v{self.SCHEMA_VERSION}) — upgrade goldmine"
-            )
-        if 0 < version < self.SCHEMA_VERSION:
-            # The tested one-per-version ladder (migrations.py): existing
-            # pre-TARGET files are upgraded in ONE additive transaction per
-            # open, with a pre-migration snapshot when the file is large.
-            # NO _DDL before this — a failed migration must leave the file
-            # exactly at its old version, with no current-shaped tables or
-            # indexes pre-created around it.
-            try:
-                migrations.migrate(self.db, path=self.path)
-            except Exception:
-                self.db.close()
-                raise
-        else:
-            # Fresh database (version 0, no tables) or already-current file:
-            # create/ensure the full current shape, idempotently. Fresh dbs are
-            # then stamped at TARGET by the ladder's fresh-db rule (migrations
-            # rule 3) — no ladder rows touched, no history entry.
-            self.db.executescript(_DDL)
-            if version == 0:
-                try:
-                    migrations.migrate(self.db, path=self.path)
-                except Exception:
-                    self.db.close()
-                    raise
-        self.db.commit()
+        self.ro = ro
+        self.db = open_index(self.path, ro=ro, timeout_s=timeout_s)
         # -- VectorTable cache (storage critique 03 F2): load_vectors() reloaded
         # ALL vector blobs + rebuilt the Python lists on every search (measured
         # 102-118 ms per query at 49k vectors / 100k segments). The cache is
@@ -377,8 +202,14 @@ class Store:
         # highest-id vector segment and inserting a fresh one can leave both
         # unchanged while the data differs.
         self._vec_cache: VectorTable | None = None
-        self._vec_cache_key: tuple[int, int] | None = None
+        self._vec_cache_key: tuple | None = None
         self._vec_generation = 0
+
+    def read_snapshot(self):
+        return read_snapshot(self.db)
+
+    def write_transaction(self):
+        return writer_scope(self.db)
 
     # -- meta ---------------------------------------------------------------
 
@@ -387,15 +218,15 @@ class Store:
         return row[0] if row else None
 
     def set_meta(self, key: str, value: str | None) -> None:
-        if value is None:
-            self.db.execute("DELETE FROM meta WHERE key = ?", (key,))
-        else:
-            self.db.execute(
-                "INSERT INTO meta(key, value) VALUES(?, ?) "
-                "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
-                (key, value),
-            )
-        self.db.commit()
+        with self.write_transaction():
+            if value is None:
+                self.db.execute("DELETE FROM meta WHERE key = ?", (key,))
+            else:
+                self.db.execute(
+                    "INSERT INTO meta(key, value) VALUES(?, ?) "
+                    "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
+                    (key, value),
+                )
 
     # -- files ----------------------------------------------------------------
 
@@ -406,7 +237,7 @@ class Store:
         import time
 
         info_json = json.dumps(rec.info) if rec.info else None
-        with self.db:
+        with self.write_transaction():
             cur = self.db.execute(
                 """INSERT INTO files(path, source, kind, size, mtime, sha256, state,
                    capability, detail, info, extractor_version, chunker_version,
@@ -478,7 +309,7 @@ class Store:
         produced one (EXIF taken epoch); None keeps any existing value."""
         import time
 
-        with self.db:
+        with self.write_transaction():
             self.db.execute(
                 """UPDATE files SET state = ?, capability = ?, detail = ?, info = ?,
                    extractor_version = ?, chunker_version = ?, embed_id = ?,
@@ -525,16 +356,17 @@ class Store:
         """Delete a file's non-name segments + their FTS rows, KEEPING the name
         row. P1-5: a file that re-ingests as `failed` must not keep its stale
         text searchable; search additionally excludes failed files."""
-        self.db.execute(
-            "DELETE FROM fts WHERE rowid IN "
-            "(SELECT id FROM segments WHERE file = ? AND kind != 'name')",
-            (fid,),
-        )
-        self.db.execute("DELETE FROM segments WHERE file = ? AND kind != 'name'", (fid,))
-        self._vec_generation += 1
+        with self.write_transaction():
+            self.db.execute(
+                "DELETE FROM fts WHERE rowid IN "
+                "(SELECT id FROM segments WHERE file = ? AND kind != 'name')",
+                (fid,),
+            )
+            self.db.execute("DELETE FROM segments WHERE file = ? AND kind != 'name'", (fid,))
+            self._vec_generation += 1
 
     def delete_file(self, fid: int) -> None:
-        with self.db:
+        with self.write_transaction():
             self._delete_segments_and_fts(fid)
             self.db.execute("DELETE FROM files WHERE id = ?", (fid,))
 
@@ -542,7 +374,7 @@ class Store:
         """Delete files outside `roots`; returns the count (V5d deletions)."""
         file_roots, url_roots = _split_roots(roots)
         removed = 0
-        with self.db:
+        with self.write_transaction():
             for fid, path, source in self.db.execute(
                 "SELECT id, path, source FROM files"
             ).fetchall():
@@ -620,16 +452,25 @@ class Store:
         name_col = _display_name(self.db.execute(
             "SELECT path, source FROM files WHERE id = ?", (fid,)
         ).fetchone())
-        from .util import normalize_text
+        from .lexical import normalize
+        from .lexical_store import insert_derived
 
-        body, changed = normalize_text(seg.text_for_fts)
+        body = normalize(seg.text_for_fts)
         original = seg.original_fts
-        if original is None and changed:
+        if original is None and body != seg.text_for_fts:
             original = seg.text_for_fts
         self.db.execute(
             "INSERT INTO fts(rowid, name, body, original) VALUES(?, ?, ?, ?)",
-            (segment_id, name_col, body, original),
+            (segment_id, normalize(name_col), body, original),
         )
+        insert_derived(self.db, segment_id, fid, seg.kind, name_col, original if original is not None else body)
+
+    def reindex_lexical(self) -> dict:
+        """Explicit stored-row rebuild: no extraction, source reads or models."""
+        from .lexical_store import rebuild_derived
+
+        with self.write_transaction():
+            return rebuild_derived(self.db, exact=self.SCHEMA_VERSION >= 6)
 
     def fts_text(
         self,
@@ -663,7 +504,7 @@ class Store:
             original_fts=original,
             vec=vec if vec_ok else None,
         )
-        with self.db:
+        with self.write_transaction():
             sid = self._insert_segment(fid, seg)
             self._insert_fts(sid, fid, seg)
         return sid
@@ -671,7 +512,7 @@ class Store:
     def replace_segments(self, fid: int, segs: list[SegmentRec]) -> None:
         """ONE transaction: delete the file's old segments (and FTS rows) and
         insert the new set. A failure anywhere rolls back to the old segments."""
-        with self.db:
+        with self.write_transaction():
             old_ids = [
                 r[0] for r in self.db.execute(
                     "SELECT id FROM segments WHERE file = ?", (fid,)
@@ -686,21 +527,32 @@ class Store:
                 self._insert_fts(sid, fid, seg, is_name=(seg.kind == "name"))
 
     def load_vectors(self) -> VectorTable:
-        """All vectors as an (N, 768) float32 matrix, fp16->f32 in blocks.
+        """Immutable vectors from memory, an explicitly enabled pack, or SQLite.
 
-        Cached per Store instance (storage critique 03 F2): a fresh load reads
-        every blob + rebuilds the Python lists — 102 ms measured at 49k vectors
-        — which search used to pay on EVERY query. Invalidated by the segment
-        write-generation counter (bumped by _insert_segment /
-        _delete_segments_and_fts / delete_content_segments — every Store path
-        that touches segments) combined with PRAGMA data_version (changes when
-        a DIFFERENT connection commits). The returned table is shared between
-        callers: treat it as immutable — never mutate ids/matrix in place.
+        The optional persistent cache is built only by explicit maintenance.
+        Its epoch and file checks share the caller's snapshot. Any cache defect
+        falls back to the SQLite fp16 truth; request deadlines still propagate.
         """
-        data_version = int(self.db.execute("PRAGMA data_version").fetchone()[0])
-        key = (self._vec_generation, data_version)
-        if self._vec_cache is not None and key == self._vec_cache_key:
-            return self._vec_cache
+        with nullcontext() if self.db.in_transaction else self.read_snapshot():
+            data_version = int(self.db.execute("PRAGMA data_version").fetchone()[0])
+            enabled = self.meta("vector_cache_enabled") == "1"
+            key = (self._vec_generation, data_version, self.db.total_changes,
+                   self.meta("vector_epoch"), enabled)
+            if self._vec_cache is not None and key == self._vec_cache_key:
+                return self._vec_cache
+            table = None
+            if enabled:
+                from .vector_cache import load_vector_cache
+
+                table = load_vector_cache(self)
+            if table is None:
+                table = self._load_vectors_sqlite()
+            self._vec_cache = table
+            self._vec_cache_key = key
+            return table
+
+    def _load_vectors_sqlite(self) -> VectorTable:
+        """SQLite truth: block fp16 conversion with aligned corrupt-row skips."""
         ids: list[int] = []
         file_ids: list[int] = []
         modalities: list[str] = []
@@ -742,8 +594,6 @@ class Store:
             modalities=modalities,
             matrix=matrix,
         )
-        self._vec_cache = table
-        self._vec_cache_key = key
         return table
 
     def segment_row(self, segment_id: int) -> tuple[str, float | None, float | None, str | None]:
@@ -839,7 +689,7 @@ class Store:
         import time as _time
 
         now = _time.time()
-        with self.db:
+        with self.write_transaction():
             self.db.execute(
                 """INSERT INTO distill_runs(id, algo, tau, tau_source, scope_json,
                    corpus_hash, mode, stats_json, created_at)
@@ -958,7 +808,7 @@ class Store:
         path clustering used, so decisions stay self-consistent (06 §6)."""
         import time
 
-        with self.db:
+        with self.write_transaction():
             self.db.execute(
                 """DELETE FROM card_chunks WHERE card IN
                    (SELECT id FROM cards WHERE view_id = ? AND status = 'active')
@@ -1041,15 +891,15 @@ class Store:
     def upsert_view(self, name: str, scope_json: str, params_json: str) -> None:
         import time as _time
 
-        self.db.execute(
-            """INSERT INTO distill_views(name, scope_json, params_json, created_at)
-               VALUES(?, ?, ?, ?)
-               ON CONFLICT(name) DO UPDATE SET
-                 scope_json = excluded.scope_json,
-                 params_json = excluded.params_json""",
-            (name, scope_json, params_json, _time.time()),
-        )
-        self.db.commit()
+        with self.write_transaction():
+            self.db.execute(
+                """INSERT INTO distill_views(name, scope_json, params_json, created_at)
+                   VALUES(?, ?, ?, ?)
+                   ON CONFLICT(name) DO UPDATE SET
+                     scope_json = excluded.scope_json,
+                     params_json = excluded.params_json""",
+                (name, scope_json, params_json, _time.time()),
+            )
 
     def get_view(self, name: str) -> DistillView | None:
         row = self.db.execute(
@@ -1071,7 +921,10 @@ class Store:
 
     def close(self) -> None:
         try:
-            self.db.commit()
+            if self.ro:
+                self.db.rollback()
+            else:
+                self.db.commit()
         except sqlite3.Error:
             pass
         self.db.close()

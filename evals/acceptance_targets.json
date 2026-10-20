@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "contract_sha256": "0c834540ec18cf3b49bfd927f484656a3c1026c2c71cabfe83f682aa94d9339f",
+  "product": {
+    "min_class_n": 25,
+    "min_media_subtype_n": 8,
+    "all_success5": 0.85,
+    "semantic_success5": 0.85,
+    "semantic_success1": 0.65,
+    "cjk_success5": 0.85,
+    "cjk_success1": 0.65,
+    "lookup_success1": 0.9,
+    "pdf_success5": 0.6,
+    "pdf_success1": 0.4,
+    "media_success5": 0.8,
+    "media_subtype_success5": 0.7,
+    "noise_empty_rate": 0.9,
+    "legal_query_exception_rate": 0,
+    "invalid_citation_rate": 0,
+    "out_of_scope_read_rate": 0,
+    "compound_all_facts": 0.75,
+    "compound_gain": 0.1
+  },
+  "regression": {
+    "legacy_absolute_drop": 0.02,
+    "public_ndcg_absolute_drop": 0.02
+  },
+  "answer": {
+    "answerable_n": 60,
+    "trap_n": 20,
+    "practical_drop_default": 0.1,
+    "practical_drop_allowed": [
+      0.1,
+      0.15,
+      0.2,
+      0.25,
+      0.3
+    ],
+    "trap_min_rate": 0.9,
+    "trap_answer_mean_min": 1.5,
+    "min_source_groups_for_claim": 12,
+    "null_audit_required": false
+  },
+  "latency": {
+    "samples_per_arm": 30,
+    "fast_p50_ms": 300,
+    "fast_p95_ms": 500,
+    "cold_ratio": 3,
+    "task_max_regression_ratio": 1.2,
+    "quality_p95_ms": 2500,
+    "quality_max_degraded_ratio": 0.01,
+    "mcp_extra_p95_ms": 100
+  },
+  "resources": {
+    "reranker_rss_bytes": 1610612736,
+    "reranker_idle_release_s": 300,
+    "watch_visible_s": 90,
+    "watch_churn_s": 600,
+    "watch_writer_period_s": 4,
+    "watch_embed_spawn_max": 24,
+    "unchanged_embed_calls": 0,
+    "unchanged_ocr_calls": 0,
+    "unchanged_asr_calls": 0
+  },
+  "scale": {
+    "sizes": [
+      10000,
+      100000,
+      250000,
+      500000
+    ],
+    "segments_per_file": [
+      1,
+      10,
+      100
+    ],
+    "dimension": 768,
+    "seed": 20261021,
+    "warmups": 3,
+    "runs": 10,
+    "vector_pack_min_vectors": 250000,
+    "trigger_cold_p50_ms": 500,
+    "trigger_rss_bytes": 1610612736,
+    "cache_min_time_improvement": 0.3,
+    "cache_min_rss_improvement": 0.3
+  },
+  "distill": {
+    "min_documents": 100,
+    "min_topics": 8,
+    "min_docs_per_topic": 8,
+    "purity": 0.7,
+    "topics_recovered": 6,
+    "max_card_share": 0.5,
+    "incremental_recluster_share": 0.1
+  }
+}

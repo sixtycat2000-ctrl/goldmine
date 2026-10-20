@@ -1,20 +1,45 @@
 # goldmine — CLI Specification
 
+> Implementation update (2026-10-21): see [the current feature status](docs/FEATURE_STATUS.md) and the [P0–P2 execution record](docs/execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 Normative contract for the `goldmine` command. Implementation must match this document or
 update it in the same change. Design rationale lives in [ARCHITECTURE.md](ARCHITECTURE.md) and
 [docs/DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md); wave designs of record:
 docs/v2.1-r6-distill.md (distill), docs/v2.1-pack-eval.md (pack/context), docs/v2.1-r8-serve.md (serve).
 
-**Aligned to build 2026-10-18** (v2.1 R6 distill + R8 serve). Command set (14):
-`init` · `ingest` · `search` · `serve` (`status`/`stop`) · `status` · `version` ·
+**Aligned to the 2026-10-21 development implementation.** Command set (17):
+`init` · `ingest` · `search` · `serve` (`status`/`stop`) · `watch` · `status` · `version` ·
 `model` (`install`/`list`/`verify`/`use`/`adopt`/`check`) · `distill` · `doctor` ·
-`backup` · `backends` · `reset` · `open` · `help`. (`goldmine models …` is a hidden
+`backup` · `backends` · `reset` · `open` · `reindex` · `mcp` · `help`. (`goldmine models …` is a hidden
 argv alias of `goldmine model …`, `models add X` == `model install X`.)
 
 Python 3.12, stdlib-first. Dependencies: `numpy` (required), `grpcio`+`protobuf` (optional
-`foresight` extra), `pytest` (dev). External tools (`pdftotext`, `textutil`, `ffmpeg`,
+`foresight` extra), `mcp==2.0.0` (optional `mcp` extra), `pytest` (dev). External tools (`pdftotext`, `textutil`, `ffmpeg`,
 `llama-server`, `whisper-cli`, the `goldmine-ocr` helper) are optional at runtime and always
 capability-reported.
+
+### Current additions and compatibility
+
+The [execution contracts](docs/execution-plan/CONTRACTS.md) define current evidence,
+budget, migration, timeout and experimental-quality behavior. Existing default
+fast JSON remains a list; explicit quality JSON includes its actual settings and
+fallback reason. Current additions take precedence over older examples below.
+
+| Interface | Current contract |
+|---|---|
+| `search --mode fast` | Default hybrid retrieval; no reranker or query expansion; request deadline 5s |
+| `search --mode quality --multi-query` | Explicit deterministic source-derived clauses, at most three queries including the original; experimental |
+| `search --mode quality --rerank local` | Explicit separately installed pinned reranker; at most twenty admitted segments, 384 tokens per segment, total deadline 10s; experimental |
+| `search --pack --budget N --context N` | Whole output envelope counts; exact or labeled estimate, opaque citations where the index supports them; typed error if even an empty envelope cannot fit |
+| `mcp --db PATH` | Official optional SDK, stdio, four read-only tools; [complete protocol](docs/MCP.md) |
+| `reindex lexical --db PATH` | Explicit stored-text migration/rebuild to schema v6; preserves original text and vector bytes, reads no source file, performs no embedding |
+| `reindex vectors --db PATH` | Explicit derived-cache build; `--enable-cache` additionally opts in, `--disable-cache` disables without a build; [cache lifecycle](docs/VECTOR_CACHE.md) |
+
+Search/status/doctor use existing indexes read-only. Filename/EXIF evidence remains
+metadata, PDF units are real page numbers, and OCR/ASR evidence has explicit stored
+states. The default llama embedding API supports text; it does not provide photo
+visual semantics. `IMPLEMENTED` features and historical metrics do not imply that
+the missing product/answer/media/card quality or release gates have passed.
 
 ---
 

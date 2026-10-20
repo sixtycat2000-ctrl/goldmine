@@ -19,7 +19,7 @@ mkdir -p "$GOLDMINE_HOME"
 
 ## 2 当前已有命令
 
-这些命令在计划起点已存在。eval_real --help 是 P0-01 要修复的已知失败，不能把其当前失败称为新回归。
+这些命令在计划起点已存在。起点的 eval_real --help 失败已由 P0-01 修复；下面仍保留原命令用于历史回归，不能将它们的退出 0 单独当作新合同的完整验收。
 
 ```bash
 python3 -m pytest tests/ -q -m 'not live'
@@ -30,11 +30,11 @@ python3 scripts/bench.py --gate
 GOLDMINE_LIVE=1 python3 -m pytest tests/test_live_serve.py::test_live_latency_bench_f1 -q -rP
 ```
 
-真实命令依赖的模型、索引、BEIR cache 和 native tools 必须预先准备。`eval_public --offline` 表示不联网，仍然需要 cache；它与下节不依赖模型/缓存的 hermetic offline profile 是两件事。默认 legacy 不能验证全部媒体能力。当前 public gate 为 advisory，退出0不能替代 CONTRACTS 新的公开集回归判定。现有 latency 测试只有22次且没有断言 p95，升级前不能用它满足新合同。
+真实命令依赖的模型、索引、BEIR cache 和 native tools 必须预先准备。`eval_public --offline` 表示不联网，仍然需要 cache；它与下节不依赖模型/缓存的 hermetic offline profile 是两件事。默认 legacy 不能验证全部媒体能力。当前 public gate 为 advisory，退出0不能替代 CONTRACTS 新的公开集回归判定。起点的 latency 测试只有22次且没有断言 p95；现已升级为30次交错且断言 p95。完整新合同仍需要 scripts/bench_search.py 的同源、同输入、两种压力与历史对照原始证据，见 [PROGRESS](PROGRESS.md)。
 
-## 3 待实现的统一命令
+## 3 统一命令
 
-P0-06 实现后，把 [inputs.example.json](inputs.example.json) 复制为本次运行的 inputs.json，填入已构建/已校验资产的真实路径与 SHA。以下示例假定 `$PLAN_RUN/inputs.json` 已填完整；不得把模板中的 null 或不存在路径当作实际输入。
+核心执行器和严格 receipt 重放已实现，部分 public/最终发布适配器仍未完成，缺输入或适配器返回非零 MISSING。把 [inputs.example.json](inputs.example.json) 复制为本次运行的 inputs.json，填入已构建/已校验资产的真实路径与 SHA。以下示例假定 `$PLAN_RUN/inputs.json` 已填完整；不得把模板中的 null 或不存在路径当作实际输入。
 
 ```bash
 python3 scripts/acceptance.py run --profile offline --out "$PLAN_RUN/offline"
@@ -166,3 +166,12 @@ offline / native / assets / optional-mcp / optional-foresight 使用显式marker
 - [ ] 历史baseline字节保留，新reference与candidate独立，模型/题目/分割身份可核查。
 - [ ] 文档、包版本、功能状态、命令示例与测量报告一致。
 - [ ] 只有本地候选资产；任何发布或推送动作按后续明确授权执行。
+
+
+实现入口补充（2026-10-21）：
+
+- source.stable 记录并回放 goldmine/scripts/tests、pyproject、requirements 与 .github 的逐文件 content_sha256；当前任何可执行/验证输入变化均拒绝旧绿报告。Git commit 与派生 tasks/PROGRESS/reports 更新不改变内容身份，也不形成终态自循环。pytest collection 与执行 receipt 必须同属该候选。
+- scripts/bench_search.py 产出 latency.fast.v2：evidence.latency 为 controlled，latency_real 为真实未覆盖压力，latency_reference 为原始7694837 controlled CLI-only；mcp_latency 可引用同一 controlled run 的真实同请求配对数据。三组冷热各≥30，配对逐条回放；新源码使旧快照对最终候选 MISSING。
+- scripts/validate_live.py 产生 watch/serve × controlled/real 四个严格原nodeid/JUnit报告；watch 还要求 scripts/bench_ingest.py 的 evidence.ingest，真实 OCR/ASR/cards 未触发不得当完整资源验收通过。
+- scripts/verify_distribution.py 汇合 build/sdist-build/base/mcp/rebuilt/upgrade/native 并实际执行 twine；scripts/verify_ci_local.py 汇合四个 ci-context.json，执行固定负面用例和 actionlint。它们只生成本地可审阅证据，hosted 仍需要实际run。
+- scripts/capture_distill.py 捕获真实标签评测，适配器重放原始DB与冻结labels。当前12源seed不足100篇/8主题，状态必须MISSING；mock canary分数不迁入该门禁。

@@ -50,8 +50,9 @@ pytestmark = [
 ]
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-MODEL = REPO_ROOT / "models" / "embeddinggemma-2-Q8_0.gguf"
-EVAL_INDEX = REPO_ROOT / "evals" / "eval.sqlite"
+MODEL = Path(os.environ.get("GOLDMINE_LIVE_MODEL", REPO_ROOT / "models" / "embeddinggemma-2-Q8_0.gguf"))
+VENDOR_SERVER = Path(os.environ.get("GOLDMINE_LIVE_SERVER", VENDOR_SERVER))
+EVAL_INDEX = Path(os.environ.get("GOLDMINE_LIVE_INDEX", REPO_ROOT / "evals" / "eval.sqlite"))
 
 WARM_QUERY = "kubernetes pod eviction"
 BENCH_QUERIES = [
@@ -111,8 +112,10 @@ class LiveServe:
             "GOLDMINE_MODEL": str(MODEL),
             "GOLDMINE_LLAMA_SERVER": str(VENDOR_SERVER),
             "GOLDMINE_SERVE": str(self.sock),
-            "GOLDMINE_SERVE_PRESSURE_LEVEL": "1",  # deterministic residency (see module doc)
         })
+        env.pop("GOLDMINE_SERVE_PRESSURE_LEVEL", None)
+        if os.environ.get("GOLDMINE_LIVE_PRESSURE_PROFILE", "controlled") == "controlled":
+            env["GOLDMINE_SERVE_PRESSURE_LEVEL"] = "1"
         return env
 
     def start(self, timeout: float = 30.0) -> None:
@@ -187,7 +190,11 @@ def live(tmp_path_factory) -> LiveServe:
         pytest.skip(f"eval index missing at {EVAL_INDEX}")
     root = tmp_path_factory.mktemp("live-serve")
     box = LiveServe(root)
-    shutil.copy2(EVAL_INDEX, root / "home" / "default.sqlite")
+    from goldmine.migrations import _vacuum_into
+
+    # A raw copy of a WAL-mode DB without its sidecars is not a valid
+    # read-only fixture. Use the product's consistent single-file snapshot.
+    _vacuum_into(EVAL_INDEX, root / "home" / "default.sqlite")
     box.start()
     yield box
     box.stop()
@@ -266,10 +273,26 @@ def test_live_latency_bench_f1(live: LiveServe, capsys):
     unloads_before = status["guard"]["unloads"]
     db = str(live.home / "default.sqlite")
 
-    warm = [live.search([q, "--db", db, "--limit", "5"], measure=True)
-            for q in BENCH_QUERIES]
-    cold = [live.search([q, "--db", db, "--limit", "5", "--no-serve"], measure=True)
-            for q in BENCH_QUERIES]
+    warm, cold, raw_samples = [], [], []
+    for i in range(30):
+        query = BENCH_QUERIES[i % len(BENCH_QUERIES)]
+        for arm in (("warm", "cold") if i % 2 == 0 else ("cold", "warm")):
+            argv = [sys.executable, "-m", "goldmine.cli", "search", query,
+                    "--db", db, "--limit", "5", "--json"]
+            if arm == "cold":
+                argv.append("--no-serve")
+            started = time.perf_counter()
+            process = subprocess.run(argv, cwd=REPO_ROOT, env=live.env(), stdin=subprocess.DEVNULL,
+                                     stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=120)
+            elapsed = time.perf_counter() - started
+            output = json.loads(process.stdout)
+            assert process.returncode == 0 and isinstance(output, list)
+            assert f"via: {'serve' if arm == 'warm' else 'cold'}" in process.stderr.decode()
+            raw_samples.append({"ordinal": i, "arm": arm, "query": query, "argv": argv,
+                                "exit_code": process.returncode, "wall_ms": elapsed*1000,
+                                "json": output, "stderr": process.stderr.decode()})
+            (warm if arm == "warm" else cold).append(elapsed)
+    print("latency raw samples: " + json.dumps(raw_samples, ensure_ascii=False))
 
     status = one_shot_request(str(live.sock), "status", timeout_s=5)
     if status["guard"]["unloads"] != unloads_before:
@@ -287,11 +310,12 @@ def test_live_latency_bench_f1(live: LiveServe, capsys):
         f"warm p50 <= cold/3 ({cold_p50/3*1000:.0f} ms) -> "
         f"{'PASS' if warm_p50 <= cold_p50 / 3 else 'FAIL'}"
     )
-    assert len(warm) >= 20
+    assert len(warm) == len(cold) == 30
     assert warm_p50 <= 0.300, f"warm p50 {warm_p50*1000:.0f} ms > 300 ms gate"
     assert warm_p50 <= cold_p50 / 3, (
         f"warm p50 {warm_p50*1000:.0f} ms not under cold/3 ({cold_p50*1000:.0f} ms)"
     )
+    assert warm_p95 <= .500, f"warm p95 {warm_p95*1000:.0f} ms > 500ms gate"
 
 
 @_skip

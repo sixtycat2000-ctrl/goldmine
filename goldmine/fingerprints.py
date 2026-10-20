@@ -381,12 +381,16 @@ def current_extractors() -> set[str]:
     Scope B: pages rendered via pdftoppm + Vision OCR get
     'pdftotext+visionocr@<ver>'). Staleness/doctor/status all compare against
     this set."""
+    from .deadline import RequestTimeout
+
     versions = set(EXTRACTOR_VERSIONS.values())
     try:
         from .ingest.extract_pdf import pdftotext_version
 
         versions.add(f"pdftotext@{pdftotext_version() or 'unknown'}")
         versions.add(f"pdftotext+visionocr@{pdftotext_version() or 'unknown'}")
+    except RequestTimeout:
+        raise
     except Exception:  # pragma: no cover - tool probing must never break status
         pass
     try:
@@ -394,6 +398,8 @@ def current_extractors() -> set[str]:
 
         if textutil_version():
             versions.add(f"textutil@{textutil_version()}")
+    except RequestTimeout:
+        raise
     except Exception:  # pragma: no cover
         pass
     return versions

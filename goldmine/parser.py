@@ -177,9 +177,18 @@ def build_parser() -> argparse.ArgumentParser:
     p_search.add_argument("--no-serve", dest="no_serve", action="store_true",
                           help="skip the serve daemon for this search (cold "
                                "llama-server spawn, exactly the pre-serve path)")
+    p_search.add_argument("--mode", choices=["fast", "quality"], default="fast",
+                          help="fast by default; quality enables explicit optional experiments")
+    p_search.add_argument("--rerank", choices=["off", "local"], default="off",
+                          help="optional local reranker; requires --mode quality")
+    p_search.add_argument("--multi-query", action="store_true",
+                          help="bounded deterministic compound search; requires --mode quality")
 
     # --- v2.1 R8 (D6): the warm-search daemon — `serve` (start, foreground),
     # `serve status`, `serve stop` ---
+    sub.add_parser("mcp", parents=[common],
+                   help="read-only stdio MCP; explicitly choose --db PATH or --index NAME")
+
     p_serve = sub.add_parser(
         "serve", parents=[common],
         help="warm-search daemon (opt-in): resident embedding model, sub-300ms "
@@ -359,6 +368,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_backends.add_argument("--probe", action="store_true",
                             help="live-test each backend (spawns llama-server "
                                  "and embeds one text)")
+    p_reindex = sub.add_parser(
+        "reindex", parents=[common], help="rebuild stored derived indexes without extraction",
+    )
+    p_reindex.add_argument("component", choices=["lexical", "vectors"],
+                           help="rebuild stored CJK/lookup indexes or derived vector cache; no extraction")
+    vector_mode = p_reindex.add_mutually_exclusive_group()
+    vector_mode.add_argument("--enable-cache", action="store_true",
+                            help="vectors only: explicitly enable the built cache after measurement")
+    vector_mode.add_argument("--disable-cache", action="store_true",
+                            help="vectors only: disable existing cache without rebuilding")
     p_reset = sub.add_parser("reset", parents=[common], help="delete or rebuild the index")
     p_reset.add_argument("--yes", action="store_true",
                          help="delete without confirmation (required when "

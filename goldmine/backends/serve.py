@@ -49,6 +49,9 @@ import numpy as np
 
 from .. import __version__
 from ..config import Config, resolve_home
+from ..deadline import (
+    RequestTimeout, check_deadline, current_deadline, deadline_lock, remaining_timeout,
+)
 from .base import Capability, EmbeddingBackend, EmbeddingError, NotSupported
 from .llama import VEC_DIM, LlamaServerBackend, resolve_model_path
 
@@ -116,6 +119,9 @@ def encode_line(obj: dict) -> bytes:
 
 
 def send_line(sock: socket.socket, obj: dict) -> None:
+    check_deadline()
+    if current_deadline() is not None:
+        sock.settimeout(remaining_timeout(sock.gettimeout() or 60.0))
     sock.sendall(encode_line(obj))
 
 
@@ -142,6 +148,9 @@ class LineReader:
                     f"line exceeds {self._max}-byte cap — closing connection"
                 )
             try:
+                check_deadline()
+                if current_deadline() is not None:
+                    self._sock.settimeout(remaining_timeout(self._sock.gettimeout() or 60.0))
                 chunk = self._sock.recv(65536)
             except socket.timeout:
                 raise  # idle deadline: caller decides (server closes; client retries)
@@ -154,7 +163,7 @@ def recv_response(sock: socket.socket, timeout_s: float) -> dict:
     """One response line as a dict. Raises ServeRequestError on EOF, reset,
     deadline, oversized line, or undecodable payload — all transient-class
     (the F5 retry-once then cold-fallback applies)."""
-    sock.settimeout(timeout_s)
+    sock.settimeout(remaining_timeout(timeout_s))
     try:
         reader = LineReader(sock)
         line = reader.readline()
@@ -163,11 +172,15 @@ def recv_response(sock: socket.socket, timeout_s: float) -> dict:
         if len(line) > MAX_LINE:
             raise ServeRequestError("response exceeds the line cap")
         payload = json.loads(line.decode("utf-8"))
+    except RequestTimeout:
+        raise
     except socket.timeout as exc:
+        check_deadline()
         raise ServeRequestError(
             f"daemon did not answer within {timeout_s:g}s"
         ) from exc
     except (OSError, LineTooLong) as exc:
+        check_deadline()
         raise ServeRequestError(f"connection error: {exc}") from exc
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ServeRequestError(f"undecodable response: {exc}") from exc
@@ -287,12 +300,14 @@ def socket_dir_ok(sock_path: str | Path) -> bool:
 
 def connect_socket(path: str | Path, timeout_s: float) -> socket.socket:
     """Connect to a UDS with a hard deadline. Raises OSError on refusal/timeout."""
+    timeout = remaining_timeout(timeout_s)
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
-    sock.settimeout(timeout_s)
+    sock.settimeout(timeout)
     try:
         sock.connect(str(path))
     except OSError:
         sock.close()
+        check_deadline()
         raise
     return sock
 
@@ -379,11 +394,15 @@ class RemoteBackend(EmbeddingBackend):
         """Connect + handshake (ping proto/version, info drift check). Idempotent;
         raises ServeUnusable when the daemon cannot be used — connect_or_cold
         turns that into the cold path + one notice (D1/§6)."""
+        check_deadline()
         if self._sock is not None or self._cold is not None:
             return
         try:
             sock = connect_socket(self._sock_path, CONNECT_TIMEOUT_S)
+        except RequestTimeout:
+            raise
         except OSError as exc:
+            check_deadline()
             raise ServeUnusable(f"connect failed on {self._sock_path} ({exc})") from exc
         try:
             ping = self._roundtrip(sock, "ping", {})
@@ -472,7 +491,8 @@ class RemoteBackend(EmbeddingBackend):
     def _request(self, op: str, params: dict | None = None) -> dict:
         """One request on the persistent connection; transparent reconnect after
         the server's idle close; F8: carries the client pid on every request."""
-        with self._io_lock:
+        check_deadline()
+        with deadline_lock(self._io_lock):
             if self._sock is None:
                 self._sock = connect_socket(self._sock_path, CONNECT_TIMEOUT_S)
             request = {"op": op, "pid": os.getpid(), **(params or {})}
@@ -481,6 +501,7 @@ class RemoteBackend(EmbeddingBackend):
                     send_line(self._sock, request)
                     return recv_response(self._sock, self._timeout)
                 except (ServeRequestError, OSError) as first:
+                    check_deadline()
                     if not getattr(first, "transient", True):
                         raise
                     # transient: one fresh connection, one retry (F5 discipline)
@@ -498,6 +519,7 @@ class RemoteBackend(EmbeddingBackend):
                 except OSError:
                     pass
                 self._sock = None
+                check_deadline()
                 if isinstance(exc, ServeRequestError):
                     raise
                 raise ServeRequestError(f"connection error: {exc}") from exc
@@ -511,6 +533,7 @@ class RemoteBackend(EmbeddingBackend):
         """THE F5 guarantee: results still delivered, one notice, cold is exactly
         cmd_search's construction. The fingerprint gate already passed with the
         serve fields, and cold fields are byte-identical by construction (D1)."""
+        check_deadline()
         if self._cold is None:
             self._cold = LlamaServerBackend(self.cfg.llama)
             self.fallback_reason = reason
@@ -528,9 +551,13 @@ class RemoteBackend(EmbeddingBackend):
         server-side; this side must not normalize again — see module docstring).
         F5: model_not_resident (guard) -> no retry, straight to cold; transient
         -> retry-once -> cold; any other mid-request failure -> cold."""
+        check_deadline()
         try:
             payload = self._request("embed", {"texts": texts})
+        except RequestTimeout:
+            raise
         except ServeRequestError as exc:
+            check_deadline()
             if exc.transient:
                 try:
                     payload = self._request("embed", {"texts": texts})
@@ -539,6 +566,7 @@ class RemoteBackend(EmbeddingBackend):
             else:
                 return self._fallback_to_cold(str(exc)).embed_texts(texts)
         except OSError as exc:
+            check_deadline()
             try:
                 payload = self._request("embed", {"texts": texts})
             except (ServeRequestError, OSError) as exc2:
@@ -584,6 +612,7 @@ class RemoteBackend(EmbeddingBackend):
         return dict(self._fp_fields)
 
     def embed_texts(self, texts: list[str]) -> np.ndarray:
+        check_deadline()
         if self._cold is not None:
             return self._cold.embed_texts(texts)
         if not texts:
@@ -591,6 +620,7 @@ class RemoteBackend(EmbeddingBackend):
         batch = max(1, int(self.cfg.llama.batch))
         out = np.zeros((len(texts), VEC_DIM), dtype=np.float32)
         for start in range(0, len(texts), batch):
+            check_deadline()
             part = self._embed_batch(list(texts[start:start + batch]))
             out[start:start + part.shape[0]] = part
         return out  # rows already L2-normalized by the daemon's backend
@@ -607,7 +637,10 @@ class RemoteBackend(EmbeddingBackend):
             counts = payload.get("counts")
             if isinstance(counts, list) and len(counts) == len(texts):
                 return [int(n) for n in counts]
+        except RequestTimeout:
+            raise
         except (ServeRequestError, OSError, ValueError, TypeError) as exc:
+            check_deadline()
             logger.debug("serve: count_tokens unavailable (%s) — estimating", exc)
         return None
 
@@ -656,6 +689,7 @@ def connect_or_cold(cfg: Config, backend_name: str | None = None, *,
     when a daemon was found but unusable — silent when simply absent (a dead-pid
     discovery file is the quiet "no daemon" case per T15).
     """
+    check_deadline()
     effective = backend_name or cfg.backend
     if effective != "llama" or no_serve:
         from . import create_backend
@@ -681,4 +715,5 @@ def connect_or_cold(cfg: Config, backend_name: str | None = None, *,
 
     from . import create_backend
 
+    check_deadline()
     return create_backend(cfg, backend_name), "cold"

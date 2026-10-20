@@ -1,5 +1,7 @@
 # goldmine 需求路线图（大白话版）
 
+> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 > 状态标记：**SAVED**（已立项未排期）· **NOW**（当前包）· **DONE**（已交付）· 每条含"用户能干什么 / 为什么 / 完成标准"。
 > 本文档是产品主人的需求记录（2026-10-17），措辞刻意保持非技术化。
 
