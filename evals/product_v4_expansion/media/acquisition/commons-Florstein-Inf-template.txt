@@ -1,0 +1,13 @@
+{{Information
+|Description={{{Description}}}
+|Source={{own}}
+|Date={{taken on|{{{Year}}}-{{{Month}}}-{{{Day}}}|location={{{location|}}}}}
+|Author='''[[User:Florstein|Florstein]]''' ('''''Telegram:{{Plainlink|https://t.me/wikiphotospace|WikiPhoto.Space}}''''')
+|Permission=
+{{User:Florstein/License}}
+{{self|author=Alex 'Florstein' Fedorov|cc-by-sa-4.0|FAL}}
+|other_fields={{Information field|name={{langswitch|ru=[[Commons:Overwriting existing files|Загрузка отредактированных версий файла]]|en=[[Commons:Overwriting existing files|Overwriting existing files]]|mk=[[Commons:Overwriting existing files|Презапишување врз постоечки податотеки]]}}|value={{User:Florstein/Overwriting}}}}
+}}
+<includeonly>
+[[Category:Photos by Florstein taken in {{{Year}}}]]
+</includeonly>

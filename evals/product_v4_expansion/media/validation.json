@@ -1,0 +1,64 @@
+{
+  "status": "STRUCTURALLY_VALID_NOT_A_QUALITY_OR_AUDIT_RESULT",
+  "sources": 30,
+  "queries": 40,
+  "media_subtypes": {
+    "asr": 20,
+    "metadata": 20
+  },
+  "independent_source_groups": 30,
+  "max_questions_per_source": 2,
+  "audio_books": 20,
+  "audio_readers": 20,
+  "audio_duration_s": 167.8200625,
+  "photo_photographers": 10,
+  "photo_DateTimeOriginal_verified_in_original_bytes": 10,
+  "production_metadata_disagreements": [
+    {
+      "pageid": 73462291,
+      "expected_DateTimeOriginal": "2018-10-06 12:42:58",
+      "observed_sips_taken": "2018-10-07 17:11:03"
+    },
+    {
+      "pageid": 56412240,
+      "expected_DateTimeOriginal": "2016-12-23 15:59:38",
+      "observed_sips_taken": "2017-02-19 23:57:51"
+    },
+    {
+      "pageid": 29415136,
+      "expected_DateTimeOriginal": "2013-07-19 15:29:41",
+      "observed_sips_taken": "2014-03-22 11:34:05"
+    },
+    {
+      "pageid": 50398887,
+      "expected_DateTimeOriginal": "2014-07-21 12:28:33",
+      "observed_sips_taken": "2016-07-30 10:39:46"
+    },
+    {
+      "pageid": 94585934,
+      "expected_DateTimeOriginal": "2020-02-08 21:58:41",
+      "observed_sips_taken": "2020-09-29 22:22:13"
+    },
+    {
+      "pageid": 37196673,
+      "expected_DateTimeOriginal": "2014-08-15 11:46:31",
+      "observed_sips_taken": "2014-12-12 18:25:31"
+    },
+    {
+      "pageid": 141842609,
+      "expected_DateTimeOriginal": "2023-09-20 17:47:29",
+      "observed_sips_taken": "2023-12-02 11:04:32"
+    }
+  ],
+  "asset_bytes": 59979027,
+  "shard_sha256": "656c7b9ab7e202873870426dce34a8fc28cb79ab0428826e2ceaaf849fd13153",
+  "checks": [
+    "actual strict _validate_source for every source",
+    "actual strict _labels: schema, evidence spans and Unicode offsets, exact hash, source-group and query-leakage checks",
+    "all ASR FLAC frame/sample duration equals ffprobe",
+    "all Commons originals match publisher SHA1 and byte length",
+    "all photo DateTimeOriginal values match primary API and original JPEG APP1/TIFF bytes"
+  ],
+  "recognition_or_ranking_run": false,
+  "FROZEN_or_audit_approval_written": false
+}

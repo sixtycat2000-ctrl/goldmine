@@ -34,7 +34,7 @@ GOLDMINE_LIVE=1 python3 -m pytest tests/test_live_serve.py::test_live_latency_be
 
 ## 3 统一命令
 
-核心执行器和严格 receipt 重放已实现，部分 public/最终发布适配器仍未完成，缺输入或适配器返回非零 MISSING。把 [inputs.example.json](inputs.example.json) 复制为本次运行的 inputs.json，填入已构建/已校验资产的真实路径与 SHA。以下示例假定 `$PLAN_RUN/inputs.json` 已填完整；不得把模板中的 null 或不存在路径当作实际输入。
+核心执行器和严格 receipt 重放已实现。Public raw/v1 与文档安装适配器已接入，真实数据/捕获不足仍返回非零 MISSING；最终 sealed holdout 与 hosted 证据未完成时也不能通过对应 profile。把 [inputs.example.json](inputs.example.json) 复制为本次运行的 inputs.json，填入已构建/已校验资产的真实路径与 SHA。以下示例假定 `$PLAN_RUN/inputs.json` 已填完整；不得把模板中的 null 或不存在路径当作实际输入。
 
 ```bash
 python3 scripts/acceptance.py run --profile offline --out "$PLAN_RUN/offline"
@@ -98,7 +98,7 @@ offline / native / assets / optional-mcp / optional-foresight 使用显式marker
 | P1-04 | test_pdf_evidence；长页/多证据 | dev页位置指标与公开集 | 放宽页约束；重复文件刷榜 |
 | P1-05 | test_media_evidence；ASR/OCR既有测试 | dev三种media-text子能力与真工具 | name命中冒充内容；自动云caption |
 | P1-06 | test_search_admission | 冻结dev选择；最终local_rc一次联合holdout审计 | 反复扫holdout；全不相关仍强制返回 |
-| P1-07 | test_rerank | off/local对照、时延/RSS/释放 | 默认加载；降级冒充quality成功 |
+| P1-07 | test_rerank | same-candidate off/local对照；dev及最终joint holdout nDCG@10各至少+0.02；时延/RSS/释放 | 默认加载；零收益；降级冒充quality成功 |
 | P1-08 | test_query_plan；过滤器/预算 | compound事实覆盖与单query对照 | LLM拆题；expected facts喂planner |
 | P1-09 | test_mcp；真实SDK子进程 | 真模型CLI/MCP同ID、额外开销 | shell包装假MCP；新增写工具 |
 | P1-10 | test_pack_contract/test_agent_workflow | exact token/引用全检；LIST/PACK比较 | 隐藏超预算、失效引用或伪答对率 |
@@ -175,3 +175,23 @@ offline / native / assets / optional-mcp / optional-foresight 使用显式marker
 - scripts/validate_live.py 产生 watch/serve × controlled/real 四个严格原nodeid/JUnit报告；watch 还要求 scripts/bench_ingest.py 的 evidence.ingest，真实 OCR/ASR/cards 未触发不得当完整资源验收通过。
 - scripts/verify_distribution.py 汇合 build/sdist-build/base/mcp/rebuilt/upgrade/native 并实际执行 twine；scripts/verify_ci_local.py 汇合四个 ci-context.json，执行固定负面用例和 actionlint。它们只生成本地可审阅证据，hosted 仍需要实际run。
 - scripts/capture_distill.py 捕获真实标签评测，适配器重放原始DB与冻结labels。当前12源seed不足100篇/8主题，状态必须MISSING；mock canary分数不迁入该门禁。
+
+Public 原始证据的显式准备与捕获见 [PUBLIC_EVALUATION](../PUBLIC_EVALUATION.md)。
+`public.reference_prepare/candidate_prepare` 指向 capture_public.py --prepare 的独立真实建库回执，
+`public.reference_run/candidate_run` 指向后续评分回执；共四份 command-run manifest，禁止复用。
+验收核对真实 prepare stdout 的三个 finalized DB SHA 与评分实际只读数据库完全相同，
+以及 ZIP/source/model/server/runtime 身份和先后时间；数据库自填 metadata 不能替代建库执行证据。
+适配器直接读取三个固定 ZIP 内的 qrels，重算四臂每题 fetched/post-cut 排名及汇总，
+不执行推理、不缩分母。旧 --gate 与 published BM25 继续仅为 advisory。
+
+文档检查由 scripts/check_documentation.py --wheelhouse PATH --distribution BUNDLE --out RUN
+执行固定 README/MCP 安装区块，隔离 venv/产品状态，禁用 pip 索引，从源码目录外核对
+安装来源并实际执行 CJK 检索、备份、reindex、CLI 帮助与官方 SDK stdio 握手。
+`evidence.docs` 指向其 manifest，并且必须与 local_rc 指向同一 distribution bundle。
+文档内容、包版本、安装源码或命令记录改变后必须重捕；外部链接可用性和其他 live/质量
+能力不由此检查代替，仍由 local_rc 的独立检查负责。P2-07 task-check 同样要求该原始证据。
+
+`release.holdout` 现由显式一次联合审计工具及只读适配器实现，操作、冻结规格和失败后
+不可重置暴露的规则见 [HOLDOUT_AUDIT](../HOLDOUT_AUDIT.md)。仅有机械测试不能通过质量门禁；
+缺少完整真实密封参考、固定候选/控制臂、原始引用回读或 prior0 ledger 时仍为 MISSING。
+实际审计必须在候选、依赖、参数及接受规则最终冻结后单独执行；普通 task-check 不触发。

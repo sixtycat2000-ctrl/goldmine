@@ -17,7 +17,7 @@ _original_popen = subprocess.Popen
 _original_connect = socket.socket.connect
 _original_connect_ex = socket.socket.connect_ex
 NATIVE_TOOLS = {"sips", "pdftotext", "pdfinfo", "pdftoppm", "ffmpeg", "ffprobe",
-                "swiftc", "textutil", "whisper-cli", "llama-server", "goldmine-ocr"}
+                "swiftc", "textutil", "osascript", "whisper-cli", "llama-server", "goldmine-ocr"}
 
 
 def pytest_addoption(parser):

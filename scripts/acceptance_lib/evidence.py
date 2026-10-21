@@ -162,7 +162,7 @@ def capture_command(run_dir: Path, check_id: str, argv: list[str], *, cwd: Path,
     visible = ("GOLDMINE_HOME", "GOLDMINE_CONFIG", "GOLDMINE_LIVE",
                "GOLDMINE_OCR_AUTOCOMPILE", "GOLDMINE_ACCEPTANCE_HERMETIC",
                "GOLDMINE_SERVE_PRESSURE_LEVEL", "GOLDMINE_MODEL", "GOLDMINE_LLAMA_SERVER",
-               "GOLDMINE_SERVE", "PYTHONPATH")
+               "GOLDMINE_SERVE", "PYTHONPATH", "PIP_NO_INDEX", "PIP_FIND_LINKS", "PYTHONNOUSERSITE")
     receipt = {
         "schema": 1, "run_id": run_id, "check_id": check_id, "argv": argv,
         "cwd": str(cwd.resolve()), "env": {k: (env or os.environ)[k] for k in visible

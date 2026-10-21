@@ -1,0 +1,55 @@
+{
+  "url": "https://rich.readthedocs.io/en/stable/tables.html",
+  "title": "Tables — Rich 14.1.0 documentation",
+  "text": " Rich\nlatest\nstable\n \n\nCONTENTS:\n\nIntroduction\nConsole API\nStyles\nConsole Markup\nRich Text\nHighlighting\nPretty Printing\nLogging Handler\nTraceback\nPrompt\nColumns\nRender Groups\nMarkdown\nPadding\nPanel\nProgress Display\nSyntax\nTables\nTable Options\nBorder Styles\nLines\nEmpty Tables\nAdding Columns\nColumn Options\nVertical Alignment\nGrids\nTree\nLive Display\nLayout\nConsole Protocol\nReference\nAppendix\n Tables\nView page source\nTables\n\nRich’s Table class offers a variety of ways to render tabular data to the terminal.\n\nTo render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console.\n\nHere’s an example:\n\nfrom rich.console import Console\nfrom rich.table import Table\n\ntable = Table(title=\"Star Wars Movies\")\n\ntable.add_column(\"Released\", justify=\"right\", style=\"cyan\", no_wrap=True)\ntable.add_column(\"Title\", style=\"magenta\")\ntable.add_column(\"Box Office\", justify=\"right\", style=\"green\")\n\ntable.add_row(\"Dec 20, 2019\", \"Star Wars: The Rise of Skywalker\", \"$952,110,690\")\ntable.add_row(\"May 25, 2018\", \"Solo: A Star Wars Story\", \"$393,151,347\")\ntable.add_row(\"Dec 15, 2017\", \"Star Wars Ep. V111: The Last Jedi\", \"$1,332,539,889\")\ntable.add_row(\"Dec 16, 2016\", \"Rogue One: A Star Wars Story\", \"$1,332,439,889\")\n\nconsole = Console()\nconsole.print(table)\n\n\nThis produces the following output:\n\n                           Star Wars Movies                           \n┏━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━┓\n┃     Released ┃ Title                             ┃     Box Office ┃\n┡━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━┩\n│ Dec 20, 2019 │ Star Wars: The Rise of Skywalker  │   $952,110,690 │\n│ May 25, 2018 │ Solo: A Star Wars Story           │   $393,151,347 │\n│ Dec 15, 2017 │ Star Wars Ep. V111: The Last Jedi │ $1,332,539,889 │\n│ Dec 16, 2016 │ Rogue One: A Star Wars Story      │ $1,332,439,889 │\n└──────────────┴───────────────────────────────────┴────────────────┘\n\n\nRich will calculate the optimal column sizes to fit your content, and will wrap text to fit if the terminal is not wide enough to fit the contents.\n\nNote\n\nYou are not limited to adding text in the add_row method. You can add anything that Rich knows how to render (including another table).\n\nTable Options\n\nThere are a number of keyword arguments on the Table constructor you can use to define how a table should look.\n\ntitle Sets the title of the table (text shown above the table).\n\ncaption Sets the table caption (text shown below the table).\n\nwidth Sets the desired width of the table (disables automatic width calculation).\n\nmin_width Sets a minimum width for the table.\n\nbox Sets one of the Box styles for the table grid, or None for no grid.\n\nsafe_box Set to True to force the table to generate ASCII characters rather than unicode.\n\npadding An integer, or tuple of 1, 2, or 4 values to set the padding on cells (see Padding).\n\ncollapse_padding If True the padding of neighboring cells will be merged.\n\npad_edge Set to False to remove padding around the edge of the table.\n\nexpand Set to True to expand the table to the full available size.\n\nshow_header Set to True to show a header, False to disable it.\n\nshow_footer Set to True to show a footer, False to disable it.\n\nshow_edge Set to False to disable the edge line around the table.\n\nshow_lines Set to True to show lines between rows as well as header / footer.\n\nleading Additional space between rows.\n\nstyle A Style to apply to the entire table, e.g. “on blue”\n\nrow_styles Set to a list of styles to style alternating rows. e.g. [\"dim\", \"\"] to create zebra stripes\n\nheader_style Set the default style for the header.\n\nfooter_style Set the default style for the footer.\n\nborder_style Set a style for border characters.\n\ntitle_style Set a style for the title.\n\ncaption_style Set a style for the caption.\n\ntitle_justify Set the title justify method (“left”, “right”, “center”, or “full”)\n\ncaption_justify Set the caption justify method (“left”, “right”, “center”, or “full”)\n\nhighlight Set to True to enable automatic highlighting of cell contents.\n\nBorder Styles\n\nYou can set the border style by importing one of the preset Box objects and setting the box argument in the table constructor. Here’s an example that modifies the look of the Star Wars table:\n\nfrom rich import box\ntable = Table(title=\"Star Wars Movies\", box=box.MINIMAL_DOUBLE_HEAD)\n\n\nSee Box for other box styles.\n\nYou can also set box=None to remove borders entirely.\n\nThe Table class offers a number of configuration options to set the look and feel of the table, including how borders are rendered and the style and alignment of the columns.\n\nLines\n\nBy default, Tables will show a line under the header only. If you want to show lines between all rows add show_lines=True to the constructor.\n\nYou can also force a line on the next row by setting end_section=True on the call to add_row(), or by calling the add_section() to add a line between the current and subsequent rows.\n\nEmpty Tables\n\nPrinting a table with no columns results in a blank line. If you are building a table dynamically and the data source has no columns, you might want to print something different. Here’s how you might do that:\n\nif table.columns:\n    print(table)\nelse:\n    print(\"[i]No data...[/i]\")\n\nAdding Columns\n\nYou may also add columns by specifying them in the positional arguments of the Table constructor. For example, we could construct a table with three columns like this:\n\ntable = Table(\"Released\", \"Title\", \"Box Office\", title=\"Star Wars Movies\")\n\n\nThis allows you to specify the text of the column only. If you want to set other attributes, such as width and style, you can add a Column class. Here’s an example:\n\nfrom rich.table import Column, Table\ntable = Table(\n    \"Released\",\n    \"Title\",\n    Column(header=\"Box Office\", justify=\"right\"),\n    title=\"Star Wars Movies\"\n)\n\nColumn Options\n\nThere are a number of options you can set on a column to modify how it will look.\n\nheader_style Sets the style of the header, e.g. “bold magenta”.\n\nfooter_style Sets the style of the footer.\n\nstyle Sets a style that applies to the column. You could use this to highlight a column by setting the background with “on green” for example.\n\njustify Sets the text justify to one of “left”, “center”, “right”, or “full”.\n\nvertical Sets the vertical alignment of the cells in a column, to one of “top”, “middle”, or “bottom”.\n\nwidth Explicitly set the width of a row to a given number of characters (disables automatic calculation).\n\nmin_width When set to an integer will prevent the column from shrinking below this amount.\n\nmax_width When set to an integer will prevent the column from growing beyond this amount.\n\nratio Defines a ratio to set the column width. For instance, if there are 3 columns with a total of 6 ratio, and ratio=2 then the column will be a third of the available size.\n\nno_wrap Set to True to prevent this column from wrapping.\n\nhighlight Set to True to enable automatic highlighting of cell contents.\n\nVertical Alignment\n\nYou can define the vertical alignment of a column by setting the vertical parameter of the column. You can also do this per-cell by wrapping your text or renderable with a Align class:\n\ntable.add_row(Align(\"Title\", vertical=\"middle\"))\n\nGrids\n\nThe Table class can also make a great layout tool. If you disable headers and borders you can use it to position content within the terminal. The alternative constructor grid() can create such a table for you.\n\nFor instance, the following code displays two pieces of text aligned to both the left and right edges of the terminal on a single line:\n\nfrom rich import print\nfrom rich.table import Table\n\ngrid = Table.grid(expand=True)\ngrid.add_column()\ngrid.add_column(justify=\"right\")\ngrid.add_row(\"Raising shields\", \"[bold magenta]COMPLETED [green]:heavy_check_mark:\")\n\nprint(grid)\n\n Previous\nNext \n\n© Copyright Will McGugan.\n\nBuilt with Sphinx using a theme provided by Read the Docs.",
+  "headings": [
+    {
+      "id": "",
+      "parent_id": "tables",
+      "text": "Tables"
+    },
+    {
+      "id": "",
+      "parent_id": "table-options",
+      "text": "Table Options"
+    },
+    {
+      "id": "",
+      "parent_id": "border-styles",
+      "text": "Border Styles"
+    },
+    {
+      "id": "",
+      "parent_id": "lines",
+      "text": "Lines"
+    },
+    {
+      "id": "",
+      "parent_id": "empty-tables",
+      "text": "Empty Tables"
+    },
+    {
+      "id": "",
+      "parent_id": "adding-columns",
+      "text": "Adding Columns"
+    },
+    {
+      "id": "",
+      "parent_id": "column-options",
+      "text": "Column Options"
+    },
+    {
+      "id": "",
+      "parent_id": "vertical-alignment",
+      "text": "Vertical Alignment"
+    },
+    {
+      "id": "",
+      "parent_id": "grids",
+      "text": "Grids"
+    }
+  ],
+  "scrollY": 0,
+  "width": 1200,
+  "height": 839
+}

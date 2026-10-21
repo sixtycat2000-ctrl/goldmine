@@ -1,0 +1,43 @@
+Pillow (PIL Fork), Release 13.0.0
+
+Image archives
+The Python Imaging Library is ideal for image archival and batch processing applications. You can use the library to
+create thumbnails, convert between file formats, print images, etc.
+The current version identifies and reads a large number of formats. Write support is intentionally restricted to the most
+commonly used interchange and presentation formats.
+Image display
+The current release includes Tk PhotoImage and BitmapImage interfaces, as well as a Windows DIB interface
+that can be used with PythonWin and other Windows-based toolkits. Many other GUI toolkits come with some kind
+of PIL support.
+For debugging, there’s also a show() method which saves an image to disk, and calls an external display utility.
+Image processing
+The library contains basic image processing functionality, including point operations, filtering with a set of built-in
+convolution kernels, and colour space conversions.
+The library also supports image resizing, rotation and arbitrary affine transforms.
+There’s a histogram method allowing you to pull some statistics out of an image. This can be used for automatic contrast
+enhancement, and for global statistical analysis.
+
+1.2.2 Tutorial
+Using the Image class
+The most important class in the Python Imaging Library is the Image class, defined in the module with the same name.
+You can create instances of this class in several ways; either by loading images from files, processing other images, or
+creating images from scratch.
+To load an image from a file, use the open() function in the Image module:
+>>> from PIL import Image
+>>> im = Image.open("hopper.ppm")
+If successful, this function returns an Image object. You can now use instance attributes to examine the file contents:
+>>> print(im.format, im.size, im.mode)
+PPM (512, 512) RGB
+The format attribute identifies the source of an image. If the image was not read from a file, it is set to None. The
+size attribute is a 2-tuple containing width and height (in pixels). The mode attribute defines the number and names of
+the bands in the image, and also the pixel type and depth. Common modes are “L” (luminance) for grayscale images,
+“RGB” for true color images, and “CMYK” for pre-press images.
+If the file cannot be opened, an OSError exception is raised.
+Once you have an instance of the Image class, you can use the methods defined by this class to process and manipulate
+the image. For example, let’s display the image we just loaded:
+>>> im.show()
+
+12
+
+Chapter 1. Overview
+

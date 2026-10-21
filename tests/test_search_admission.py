@@ -99,8 +99,12 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     control = next(c for c in registered["candidates"] if c["id"] == "control")
     assert control["z_gate"] == 3.0 and control["coverage_quorum"] == 0.5
     assert control["semantic_segment_margin"] is None
-    assert registered["selected"] is None and registered["status"] == "MISSING"
-    assert "holdout" in registered["selection"] and registered["missing"]
+    assert registered["selected"] is None and registered["status"] in ("MISSING", "FAIL")
+    assert "holdout" in registered["selection"]
+    if registered["status"] == "FAIL":
+        assert registered["failed"] and registered["selection_evidence"]["holdout_exposures"] == 0
+    else:
+        assert registered["missing"]
 
 
 @pytest.mark.parametrize("values", [{"coverage_quorum": float("nan")}, {"coverage_quorum": -1},

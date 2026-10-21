@@ -1,0 +1,160 @@
+2
+174,465
+undulalions of which correspond, in rapidity
+of succession, to the vibrations of the magnet.
+in polarity to the direction of its motion, and
+in inteusity to the amplitude of its vibration.
+That the difference between an undulatory
+aud an intermittent current may be more clear-
+ly understood I shall describe the condition
+of the electrical current when the attempt is
+made to tiansmit two ransical notes simulta-
+neously-first upou theone plan and then upon
+the other.
+Let the interval between the two
+sounds be a major third; then their rates of vi-
+bration are in the ratio of 4 to 5.
+Now, when
+the intermitteut current is used the circuit is
+nade and broken four times by one transmit-
+ting instrument in the same time that five
+makes and breaks are caused by the other.
+A
+and B, Figs. 1, 2, and 3, represent the inter-
+mittent currents produced, four impulses of B
+being made in the same time as five impulses
+of A..
+coc, &c., show where and for how long
+time the circuit is inade, and d a d, &c., indi-
+cate the duration of the breaks of the circuit.
+The line A and B shows the total effect upon
+the current when the transmittiog-instruments
+for A aud Bare caused simultaneously to make
+and break the same circuit.
+The resultant ef-
+fect depends very much upon the duration of
+the makerelatively to the break. In Fig. I the
+ratio is as1 to 4; in Fig. 2, as 1 to 2; and in Fig.
+3 the makes and breaks are of equal duration.
+The combined effect, A and B, Fig. 3, is very
+nearly equivalent to a continuous curreut.
+When many transmitting-iustraments of dif-
+ferent rates of vibration are simultaneously
+making and breaking the same circuit the car-
+rent upon the main line becomes for all prac-
+tical purposes continuous.
+Next, consider the effect when an undulatory
+curreut is employed.
+Electrical undulations,
+induced by the vibration of a body capable of
+inductive action, can be represeuted graphic-
+ally, without error, by the same sinusoidal
+curve which expresses the vibration of the
+inducing body itself, and the effect of its vi.
+bration upon the air; for, as above stated, the
+rate of oscillation in the electrical current cor-
+responds to the rate of vibration of the in-
+ducing body-tbat is, to the piteh of the sound
+produced.
+The intensity of the current ra-
+ries with the amplitude of the vibratiou-that
+is, with the loudness of the sound; and the
+• polarity of the current corresponds to the di-
+rection of the vibrating body-that is, to the
+condeusations and rarefactions of air produced
+by the vibration.
+Hence, the sinusoidal curve
+A or B, Fig. 4, represents, graphically, the elec.
+trical undulations induced in a circuit by the
+vibration of a body capable of inductive ac-
+tion.
+The horizontal line a d e J, &c., represents
+the zero of current.
+The elevations b6b, se.,
+inlicate impulses of positive electricity.
+depressious e c c, stc., show impulses of nega-
+tive electricity.
+The vertical distance b d or
+ef of any portion of the carve from the zero-
+liue expresses the intensity of the positive or
+negative impulse it the part observed, and
+the horizontal distance a a indicates the dura-
+tion of the electrical oscillation.
+The vibra-
+tions represented by the sinusoidal curves B
+and A, Fig. 4, are in the ratio aforesaid,
+of-
+4 to 5-thatis,
+four oscillations of B are made
+in the same time as fire oscillations of A.
+The combined effect of A and B, when in.
+duced simultaneously on the same circuit, is
+expressed by the curve AtB,
+Fig. 4, which
+is the algebraical sum of the sinusoidal curves
+A and B
+This curve A+B also indicates
+the actual motion
+of the air when the two
+musical notes cousidered are sounded simul-
+taneously. Thus, when electrical undulations
+of different rates are simultaneously induced
+in the same circuit, an effect is produced ex
+actly analogous to that occasioned in the air by
+the vibration of the inducing bodies. Hence.
+the coexistence upon a telegraphic circuit of
+electrical vibrations of different pitch is mani-
+fested, not by the obliteration of the vibra-
+tory character of the current,
+bat by peca-
+liarities in the shapes of the electrical undu.
+lations, or, in other words, by peculiarities in
+the shapes of the curres which represent those
+undulations.
+There are many ways of producing undula-
+tory currents of electricity, dependent for ef-
+fect upon the vibrations or motions of bodies
+capable of inductive action.
+A few of the
+methods that may be employed I shall here
+When a wire, through which a con.
+tinuous current of electricity is passing, is
+caused to vibrate in the neighborhood of an-
+other wire, an undulatory current of electricity
+is induced in the latter.
+Wheu & cylinder,
+upou which are arranged bar-magnets, is made
+to rotate in front of the pole of an electro-
+magnet, an undulatory current of electricity is
+induced in the coils of the electro-magnet.
+Undulations are caused in a continuous vol-
+taic current by
+the vibration or motion of
+bodies capable of inductive action; or by the
+ribration of the conducting-wire itself in the
+neighborhood of such bodies.
+Electrical un-
+dulations may also be caused by alternately
+increasing and diminishing the resistance of
+the circuit, or by alternately increasing and
+diminishing the power of the battery.
+The
+internal resistance of a battery is diminished
+by bringing the voltaie elements nearer to-
+gether; and increased by "placing them far-
+ther apart.
+The reciprocal vibration of the.
+of a battery, therefore, occasions
+an undulatory action in the voltaie current.
+The external resistance may also be varied.
+For instance, let mereury or some other liq-
+part of a voltaic circuit. tben the
+more deevly the conducting wire is immersed
+in the mercury or other liquid, the less re-
+sistance does the liquid offer to the passare
+of the current.
+Heuce, the vibration of the
+conducting wire in mercury or other liquid
+included in the circuit occasions undalations
+The vertical vibrations of the
+elments of a battery in the liquid in which

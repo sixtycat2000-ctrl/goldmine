@@ -12,7 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from answer_eval.protocol import EvaluationError
 from product_eval.bundle import build_corpus, load_bundle
 from product_eval.ledger import authorize_holdout, initialize_ledger
-from product_eval.runner import evaluate, prepare_index, production_identity
+from product_eval.runner import evaluate, prepare_index, production_identity, production_content
 from product_eval.scoring import score_query
 from product_eval.results import validate_report
 
@@ -131,13 +131,20 @@ def test_absent_or_wrong_freeze_never_spends_exposure(tmp_path):
     assert (path / "holdout_exposure.jsonl").read_bytes() == before
 
 
-def test_mock_index_smoke_is_portable_and_never_quality_evidence(tmp_path):
+def test_mock_index_smoke_is_portable_and_never_quality_evidence(tmp_path, monkeypatch):
     bundle = load_bundle(SEED, require_complete=False)
     build = tmp_path / "build"
     build_corpus(bundle, build, allow_draft=True)
     db = tmp_path / "mock.sqlite"
     prepare_index(bundle, build, db, backend_name="mock", production_root=ROOT, diagnostic=True)
+    # A content-identical commit is compatible; the raw observed commit is
+    # still retained in the report. No checkout or production file is edited.
+    from product_eval import runner
+    current = production_identity(ROOT)
+    changed_head = {**current, "git_commit": "1" * 40}
+    monkeypatch.setattr(runner, "production_identity", lambda *args, **kwargs: changed_head)
     report = evaluate(bundle, build, db, backend_name="mock", production_root=ROOT, diagnostic=True)
+    assert report["production"]["git_commit"] == "1" * 40
     assert report["split"] == "dev" and report["diagnostic_only"] and not report["quality_evidence"]
     assert len(report["rows"]) == len(bundle.queries)
     assert any(row["metrics"]["covered_evidence_ids"] for row in report["rows"])
@@ -150,6 +157,31 @@ def test_mock_index_smoke_is_portable_and_never_quality_evidence(tmp_path):
         validate_report(bundle, edited, diagnostic=True)
     with pytest.raises(EvaluationError, match="sealed"):
         evaluate(bundle, build, db, backend_name="mock", production_root=ROOT, split="holdout", diagnostic=True)
+    altered = copy.deepcopy(changed_head)
+    altered["files"]["goldmine/__init__.py"] = "0" * 64
+    from answer_eval.protocol import canonical_sha256
+    altered["source_sha256"] = canonical_sha256(altered["files"])
+    monkeypatch.setattr(runner, "production_identity", lambda *args, **kwargs: altered)
+    with pytest.raises(EvaluationError, match="code changed"):
+        evaluate(bundle, build, db, backend_name="mock", production_root=ROOT, diagnostic=True)
+
+
+def test_production_content_ignores_only_observed_commit_and_validates_hash_schema():
+    identity = production_identity(ROOT)
+    same = {**identity, "git_commit": "2" * 40}
+    assert production_content(identity) == production_content(same)
+    assert set(production_content(identity)) == {"files", "source_sha256"}
+    for mutate in (lambda value: value.update(extra=True),
+                   lambda value: value.update(git_commit="HEAD"),
+                   lambda value: value.update(source_sha256="0" * 64),
+                   lambda value: value["files"].pop("pyproject.toml"),
+                   lambda value: value["files"].update({"../outside.py": "1" * 64}),
+                   lambda value: value["files"].update({"README.md": "1" * 64}),
+                   lambda value: value["files"].update({"goldmine/fake.py": "not-a-SHA"})):
+        bad = copy.deepcopy(identity)
+        mutate(bad)
+        with pytest.raises(EvaluationError):
+            production_content(bad)
 
 
 def test_reference_never_uses_changed_candidate_checkout():

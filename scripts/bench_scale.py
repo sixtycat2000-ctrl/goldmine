@@ -198,8 +198,9 @@ def paired_measurements(args, db, stem):
     try:
         for arm, source in (("reference", args.reference_root), ("candidate", args.candidate_root)):
             out = args.out / f"{stem}-{arm}.json"
+            arm_db = getattr(args, f"{arm}_db", db)
             argv = [sys.executable, str(Path(__file__).resolve()), "--worker", "measure", "--stream",
-                    "--source-root", str(source.resolve()), "--db", str(db.resolve()), "--out", str(out.resolve()),
+                    "--source-root", str(source.resolve()), "--db", str(arm_db.resolve()), "--out", str(out.resolve()),
                     "--runs", str(args.runs)]
             log = out.with_suffix(".stderr").open("wb")
             try:
@@ -254,6 +255,11 @@ def paired_measurements(args, db, stem):
 
 
 def main(argv=None):
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    if "--full-cli" in arguments:
+        from scale_bench.suite import main as full_main
+
+        return full_main([arg for arg in arguments if arg != "--full-cli"])
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--reference-root", type=Path)
@@ -269,7 +275,7 @@ def main(argv=None):
     parser.add_argument("--db", type=Path, help=argparse.SUPPRESS)
     parser.add_argument("--rows", type=int, help=argparse.SUPPRESS)
     parser.add_argument("--per-file", type=int, help=argparse.SUPPRESS)
-    args = parser.parse_args(argv)
+    args = parser.parse_args(arguments)
     try:
         if args.worker:
             sys.path.insert(0, str(args.source_root.resolve()))
@@ -287,7 +293,13 @@ def main(argv=None):
                 finally:
                     store.close()
             else:
+                began = time.perf_counter()
+                import numpy  # noqa: F401 -- separate process/import phase
+                from goldmine.search import Searcher  # noqa: F401
+                from goldmine.store import Store  # noqa: F401
+                imported_ms = (time.perf_counter() - began) * 1000
                 result = measure(args.db, args.runs, stream=args.stream)
+                result["imports_ms"] = imported_ms
             args.out.write_text(json.dumps(result, indent=2, allow_nan=False) + "\n")
             return 0
         if args.reference_root is None or args.reference_root.resolve() == args.candidate_root.resolve():

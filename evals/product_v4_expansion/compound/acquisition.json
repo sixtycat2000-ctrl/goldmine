@@ -1,0 +1,370 @@
+{
+  "repos": [
+    {
+      "id": "fastapi",
+      "repository": "https://github.com/fastapi/fastapi",
+      "revision": "386a28af2f87af1a32ac26d88f07b7f58ab2dfb1",
+      "sources": [
+        {
+          "original_path": "docs/en/docs/tutorial/background-tasks.md",
+          "url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/docs/en/docs/tutorial/background-tasks.md",
+          "resolved_url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/docs/en/docs/tutorial/background-tasks.md",
+          "bytes": 4786,
+          "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+          "asset": "assets/compound/fastapi/docs/en/docs/tutorial/background-tasks.md"
+        },
+        {
+          "original_path": "docs/en/docs/tutorial/middleware.md",
+          "url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/docs/en/docs/tutorial/middleware.md",
+          "resolved_url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/docs/en/docs/tutorial/middleware.md",
+          "bytes": 3951,
+          "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+          "asset": "assets/compound/fastapi/docs/en/docs/tutorial/middleware.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/fastapi/fastapi/386a28af2f87af1a32ac26d88f07b7f58ab2dfb1/LICENSE",
+        "bytes": 1086,
+        "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e",
+        "asset": "licenses/compound/fastapi-LICENSE"
+      }
+    },
+    {
+      "id": "rich",
+      "repository": "https://github.com/Textualize/rich",
+      "revision": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+      "sources": [
+        {
+          "original_path": "docs/source/tables.rst",
+          "url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/docs/source/tables.rst",
+          "resolved_url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/docs/source/tables.rst",
+          "bytes": 9415,
+          "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+          "asset": "assets/compound/rich/docs/source/tables.rst"
+        },
+        {
+          "original_path": "docs/source/progress.rst",
+          "url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/docs/source/progress.rst",
+          "resolved_url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/docs/source/progress.rst",
+          "bytes": 15295,
+          "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+          "asset": "assets/compound/rich/docs/source/progress.rst"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/Textualize/rich/9d8f9a372cc5916fd4781fec207ced7ddac2f08f/LICENSE",
+        "bytes": 1056,
+        "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15",
+        "asset": "licenses/compound/rich-LICENSE"
+      }
+    },
+    {
+      "id": "pytest",
+      "repository": "https://github.com/pytest-dev/pytest",
+      "revision": "c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4",
+      "sources": [
+        {
+          "original_path": "doc/en/how-to/assert.rst",
+          "url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/doc/en/how-to/assert.rst",
+          "resolved_url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/doc/en/how-to/assert.rst",
+          "bytes": 19934,
+          "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+          "asset": "assets/compound/pytest/doc/en/how-to/assert.rst"
+        },
+        {
+          "original_path": "doc/en/how-to/skipping.rst",
+          "url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/doc/en/how-to/skipping.rst",
+          "resolved_url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/doc/en/how-to/skipping.rst",
+          "bytes": 12278,
+          "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+          "asset": "assets/compound/pytest/doc/en/how-to/skipping.rst"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/pytest-dev/pytest/c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4/LICENSE",
+        "bytes": 1091,
+        "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b",
+        "asset": "licenses/compound/pytest-LICENSE"
+      }
+    },
+    {
+      "id": "pydantic",
+      "repository": "https://github.com/pydantic/pydantic",
+      "revision": "e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3",
+      "sources": [
+        {
+          "original_path": "docs/concepts/strict_mode.md",
+          "url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/docs/concepts/strict_mode.md",
+          "resolved_url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/docs/concepts/strict_mode.md",
+          "bytes": 6309,
+          "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+          "asset": "assets/compound/pydantic/docs/concepts/strict_mode.md"
+        },
+        {
+          "original_path": "docs/concepts/serialization.md",
+          "url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/docs/concepts/serialization.md",
+          "resolved_url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/docs/concepts/serialization.md",
+          "bytes": 33174,
+          "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+          "asset": "assets/compound/pydantic/docs/concepts/serialization.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/pydantic/pydantic/e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3/LICENSE",
+        "bytes": 1129,
+        "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3",
+        "asset": "licenses/compound/pydantic-LICENSE"
+      }
+    },
+    {
+      "id": "httpx",
+      "repository": "https://github.com/encode/httpx",
+      "revision": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+      "sources": [
+        {
+          "original_path": "docs/quickstart.md",
+          "url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/docs/quickstart.md",
+          "resolved_url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/docs/quickstart.md",
+          "bytes": 14706,
+          "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "asset": "assets/compound/httpx/docs/quickstart.md"
+        },
+        {
+          "original_path": "docs/advanced/timeouts.md",
+          "url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/docs/advanced/timeouts.md",
+          "resolved_url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/docs/advanced/timeouts.md",
+          "bytes": 2763,
+          "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "asset": "assets/compound/httpx/docs/advanced/timeouts.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/LICENSE.md",
+        "resolved_url": "https://raw.githubusercontent.com/encode/httpx/b5addb64f0161ff6bfe94c124ef76f6a1fba5254/LICENSE.md",
+        "bytes": 1508,
+        "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d",
+        "asset": "licenses/compound/httpx-LICENSE.md"
+      }
+    },
+    {
+      "id": "ruff",
+      "repository": "https://github.com/astral-sh/ruff",
+      "revision": "c46acee0f9d37d2515d303bc4b1c4c500031a56e",
+      "sources": [
+        {
+          "original_path": "docs/configuration.md",
+          "url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/docs/configuration.md",
+          "resolved_url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/docs/configuration.md",
+          "bytes": 31720,
+          "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+          "asset": "assets/compound/ruff/docs/configuration.md"
+        },
+        {
+          "original_path": "docs/formatter.md",
+          "url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/docs/formatter.md",
+          "resolved_url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/docs/formatter.md",
+          "bytes": 23135,
+          "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+          "asset": "assets/compound/ruff/docs/formatter.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/astral-sh/ruff/c46acee0f9d37d2515d303bc4b1c4c500031a56e/LICENSE",
+        "bytes": 20731,
+        "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18",
+        "asset": "licenses/compound/ruff-LICENSE"
+      }
+    },
+    {
+      "id": "poetry",
+      "repository": "https://github.com/python-poetry/poetry",
+      "revision": "aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4",
+      "sources": [
+        {
+          "original_path": "docs/managing-environments.md",
+          "url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/docs/managing-environments.md",
+          "resolved_url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/docs/managing-environments.md",
+          "bytes": 5503,
+          "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "asset": "assets/compound/poetry/docs/managing-environments.md"
+        },
+        {
+          "original_path": "docs/dependency-specification.md",
+          "url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/docs/dependency-specification.md",
+          "resolved_url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/docs/dependency-specification.md",
+          "bytes": 23536,
+          "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+          "asset": "assets/compound/poetry/docs/dependency-specification.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/python-poetry/poetry/aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4/LICENSE",
+        "bytes": 1070,
+        "sha256": "1786f071a510648a24695f295117f02bae0bbf0fb7c6730aafe9c93a3e4bf7ee",
+        "asset": "licenses/compound/poetry-LICENSE"
+      }
+    },
+    {
+      "id": "typer",
+      "repository": "https://github.com/fastapi/typer",
+      "revision": "a5882dedf0bc7a46cd861fdfca020f88519e0f21",
+      "sources": [
+        {
+          "original_path": "docs/tutorial/options/help.md",
+          "url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/docs/tutorial/options/help.md",
+          "resolved_url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/docs/tutorial/options/help.md",
+          "bytes": 6477,
+          "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "asset": "assets/compound/typer/docs/tutorial/options/help.md"
+        },
+        {
+          "original_path": "docs/tutorial/commands/context.md",
+          "url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/docs/tutorial/commands/context.md",
+          "resolved_url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/docs/tutorial/commands/context.md",
+          "bytes": 3152,
+          "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "asset": "assets/compound/typer/docs/tutorial/commands/context.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/fastapi/typer/a5882dedf0bc7a46cd861fdfca020f88519e0f21/LICENSE",
+        "bytes": 1086,
+        "sha256": "58992cebcf8dfb6e40c4e2112ed12126c243666dca3912a3d78b7ecac4859d49",
+        "asset": "licenses/compound/typer-LICENSE"
+      }
+    },
+    {
+      "id": "uv",
+      "repository": "https://github.com/astral-sh/uv",
+      "revision": "dce03cb9c7ceabcc9a76c9dc3acacbadc031f378",
+      "sources": [
+        {
+          "original_path": "docs/guides/projects.md",
+          "url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/docs/guides/projects.md",
+          "resolved_url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/docs/guides/projects.md",
+          "bytes": 8114,
+          "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "asset": "assets/compound/uv/docs/guides/projects.md"
+        },
+        {
+          "original_path": "docs/guides/tools.md",
+          "url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/docs/guides/tools.md",
+          "resolved_url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/docs/guides/tools.md",
+          "bytes": 7996,
+          "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "asset": "assets/compound/uv/docs/guides/tools.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/LICENSE-MIT",
+        "resolved_url": "https://raw.githubusercontent.com/astral-sh/uv/dce03cb9c7ceabcc9a76c9dc3acacbadc031f378/LICENSE-MIT",
+        "bytes": 1077,
+        "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c",
+        "asset": "licenses/compound/uv-LICENSE-MIT"
+      }
+    },
+    {
+      "id": "pip",
+      "repository": "https://github.com/pypa/pip",
+      "revision": "9dbd9c36a75d332c84ce6e55004471ab0a474595",
+      "sources": [
+        {
+          "original_path": "docs/html/topics/repeatable-installs.md",
+          "url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/docs/html/topics/repeatable-installs.md",
+          "resolved_url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/docs/html/topics/repeatable-installs.md",
+          "bytes": 3514,
+          "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "asset": "assets/compound/pip/docs/html/topics/repeatable-installs.md"
+        },
+        {
+          "original_path": "docs/html/topics/caching.md",
+          "url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/docs/html/topics/caching.md",
+          "resolved_url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/docs/html/topics/caching.md",
+          "bytes": 5116,
+          "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "asset": "assets/compound/pip/docs/html/topics/caching.md"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/LICENSE.txt",
+        "resolved_url": "https://raw.githubusercontent.com/pypa/pip/9dbd9c36a75d332c84ce6e55004471ab0a474595/LICENSE.txt",
+        "bytes": 1093,
+        "sha256": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104",
+        "asset": "licenses/compound/pip-LICENSE.txt"
+      }
+    },
+    {
+      "id": "pip-tools",
+      "repository": "https://github.com/jazzband/pip-tools",
+      "revision": "f31c1e66e48e7ff45de254cf10243b1589234243",
+      "sources": [
+        {
+          "original_path": "README.md",
+          "url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/README.md",
+          "resolved_url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/README.md",
+          "bytes": 22808,
+          "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+          "asset": "assets/compound/pip-tools/README.md"
+        },
+        {
+          "original_path": "piptools/scripts/compile.py",
+          "url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/piptools/scripts/compile.py",
+          "resolved_url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/piptools/scripts/compile.py",
+          "bytes": 18896,
+          "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "asset": "assets/compound/pip-tools/piptools/scripts/compile.py"
+        }
+      ],
+      "license": {
+        "url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/LICENSE",
+        "resolved_url": "https://raw.githubusercontent.com/jazzband/pip-tools/f31c1e66e48e7ff45de254cf10243b1589234243/LICENSE",
+        "bytes": 1522,
+        "sha256": "075f22737ed9245d386a23968c7ec906f66dfb7af35c3ff920aabd165a8ae920",
+        "asset": "licenses/compound/pip-tools-LICENSE"
+      }
+    },
+    {
+      "id": "flask",
+      "repository": "https://github.com/pallets/flask",
+      "revision": "d086db856be187255b8ec61ef409357393020f32",
+      "sources": [
+        {
+          "original_path": "docs/async-await.rst",
+          "url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/docs/async-await.rst",
+          "resolved_url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/docs/async-await.rst",
+          "bytes": 4709,
+          "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+          "asset": "assets/compound/flask/docs/async-await.rst"
+        },
+        {
+          "original_path": "docs/errorhandling.rst",
+          "url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/docs/errorhandling.rst",
+          "resolved_url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/docs/errorhandling.rst",
+          "bytes": 18374,
+          "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+          "asset": "assets/compound/flask/docs/errorhandling.rst"
+        }
+      ],
+      "license": {
+        "original_path": "LICENSE.txt",
+        "url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/LICENSE.txt",
+        "resolved_url": "https://raw.githubusercontent.com/pallets/flask/d086db856be187255b8ec61ef409357393020f32/LICENSE.txt",
+        "bytes": 1475,
+        "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea",
+        "asset": "licenses/compound/flask-LICENSE.txt"
+      }
+    }
+  ],
+  "recovery_notes": [
+    "pip-tools nonexistent docs/cli/pip-compile.md replaced with genuine pinned piptools/scripts/compile.py source code; not generated docs",
+    "Flask Git ls-remote succeeded and pinned d086db856be187255b8ec61ef409357393020f32; original sources/LICENSE downloaded from raw.githubusercontent.com",
+    "GitHub API unauthenticated quota unavailable; no API-auth workaround or quota bypass used"
+  ]
+}

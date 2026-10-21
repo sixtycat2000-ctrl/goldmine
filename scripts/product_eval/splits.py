@@ -32,7 +32,10 @@ def source_groups(sources: dict, queries: list[dict], views: dict) -> dict[str, 
             if ancestor not in sources:
                 raise EvaluationError("source parent is absent from manifest")
             union(group, sources[ancestor]["source_group"])
-        identities = [s["asset"]["sha256"]] + [v["sha256"] for v in s["views"]]
+        # A shared basename/metadata value does not make different documents
+        # copies. Only raw assets and actual content views create hash edges.
+        identities = [s["asset"]["sha256"]] + [v["sha256"] for v in s["views"]
+                                                if v["evidence_type"] != "name_metadata"]
         for identity in identities:
             if identity in hashes:
                 union(group, hashes[identity])
@@ -78,6 +81,48 @@ def make_splits(queries: list[dict], *, seed: int = 20261021) -> dict:
     rng = random.Random(seed)
     keys = sorted(vectors)
     targets = {k: n / 2 for k, n in total.items()}
+    upper = {c: total[c] - 25 for c in CLASSES}
+    upper.update({"media:" + m: total["media:" + m] - 8 for m in MEDIA})
+
+    def within_upper(counts):
+        return all(0 <= counts[k] <= maximum for k, maximum in upper.items())
+
+    def valid_counts(counts):
+        return (within_upper(counts) and all(counts[c] >= 25 for c in CLASSES)
+                and all(counts["media:" + m] >= 8 for m in MEDIA))
+
+    def loss(counts):
+        return sum((counts[k] - targets[k]) ** 2 for k in targets)
+
+    def refine(selected, counts):
+        # Deterministic source-group flips/swaps, using counts only. Coupled
+        # OCR+compound groups must never all enter one fold merely because
+        # their compound contribution outweighs the OCR imbalance.
+        for _ in range(len(keys) * 2):
+            current, move = loss(counts), None
+            for old in [None] + sorted(selected):
+                for new in [None] + sorted(set(keys) - selected):
+                    if old is None and new is None:
+                        continue
+                    candidate = Counter({k: counts[k] - (vectors[old][k] if old is not None else 0)
+                                         + (vectors[new][k] if new is not None else 0) for k in targets})
+                    if not valid_counts(candidate):
+                        continue
+                    value = loss(candidate)
+                    key = (value, old or "", new or "")
+                    if value < current and (move is None or key < move[0]):
+                        move = (key, old, new, candidate)
+            if move is None:
+                break
+            _, old, new, counts = move
+            if old is not None:
+                selected.remove(old)
+            if new is not None:
+                selected.add(new)
+            if loss(counts) == 0:
+                break
+        return selected, counts
+
     best = None
     for _ in range(3000):
         order = keys[:]
@@ -86,19 +131,17 @@ def make_splits(queries: list[dict], *, seed: int = 20261021) -> dict:
         selected, counts = set(), Counter()
         for group in order:
             candidate = counts + vectors[group]
-            before = sum((counts[k] - targets[k]) ** 2 for k in targets)
-            after = sum((candidate[k] - targets[k]) ** 2 for k in targets)
-            if after < before:
+            before, after = loss(counts), loss(candidate)
+            if after < before and within_upper(candidate):
                 selected.add(group)
                 counts = candidate
-        valid = all(25 <= counts[c] <= total[c] - 25 for c in CLASSES)
-        valid &= all(8 <= counts["media:" + m] <= total["media:" + m] - 8 for m in MEDIA)
-        if valid:
-            loss = sum((counts[k] - targets[k]) ** 2 for k in targets)
-            choice = (loss, tuple(sorted(selected)))
+        if valid_counts(counts):
+            if loss(counts) and (best is None or loss(counts) < best[0]):
+                selected, counts = refine(selected, counts)
+            choice = (loss(counts), tuple(sorted(selected)))
             if best is None or choice < best:
                 best = choice
-                if loss == 0:
+                if choice[0] == 0:
                     break
     if best is None:
         raise EvaluationError("no valid grouped stratified split; add independent sources, do not split linked groups", status="MISSING")

@@ -79,7 +79,8 @@ def test_photo_name_and_actual_date_work_without_semantic_backend(setup, tmp_pat
     cand.path.write_bytes(b"photo")
     monkeypatch.setattr(rules, "is_screenshot", lambda p: False)
     monkeypatch.setattr(media, "sips_path", lambda: "stored-metadata-probe")
-    monkeypatch.setattr(media, "exif_taken", lambda p: ("2026:02:14 12:00:00", 1771070400.0))
+    from goldmine.ingest.exif import CaptureResult
+    monkeypatch.setattr(media, "exif_capture", lambda p: CaptureResult(("2026:02:14 12:00:00", 1771070400.0), "imageio", "complete"))
     rec = commit(pipeline, cand, pipeline._extract_image(cand, pipeline.backend.capability()))
     query, filters = parse_filters("summer after:2026-01-01 before:2027-01-01")
     hit = Searcher(store, None).search(query, filters=filters, scorer="lexical")[0]
@@ -163,6 +164,10 @@ def test_no_speech_and_missing_asr_do_not_create_transcript_templates(setup, tmp
 ])
 def test_tools_arriving_only_redo_incomplete_files(setup, tmp_path, monkeypatch, kind, info, ready, skip):
     _, store, pipeline, _ = setup
+    if kind == "image":
+        # This test isolates tool arrival after the separate EXIF metadata
+        # repair has completed; legacy date repair has its own regression.
+        info = {**info, "exif_version": media.EXIF_METADATA_VERSION, "exif_status": "absent"}
     path = tmp_path / "asset"
     fid = store.upsert_file(FileRec(path=str(path), kind=kind, size=10, mtime=2.0, sha256="same", state="done"))
     store.mark_file(fid, state="done", capability="metadata_only", detail=None, info=info,

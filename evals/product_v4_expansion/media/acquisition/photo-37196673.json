@@ -1,0 +1,28 @@
+{
+  "pageid": 37196673,
+  "title": "File:Museo marítimo Ósvör, Bolungarvík, Vestfirðir, Islandia, 2014-08-15, DD 066.JPG",
+  "artist": "Diego Delso",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Museo_mar%C3%ADtimo_%C3%93sv%C3%B6r%2C_Bolungarv%C3%ADk%2C_Vestfir%C3%B0ir%2C_Islandia%2C_2014-08-15%2C_DD_066.JPG",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1281701278",
+  "page_revision": 1281701278,
+  "upload_timestamp": "2014-12-12T17:27:34Z",
+  "published_sha1": "dda39f59625938181f11e53ac338d806580a5580",
+  "sha256": "9a1ef208746ec4a80e7d94a98b940c3e4b2a805dea9de9150033cd1ba45a2bdc",
+  "bytes": 7773187,
+  "basename": "Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+  "asset": "assets/media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+  "license_file": "licenses/media/commons-37196673.txt",
+  "taken": "2014-08-15 11:46:31",
+  "exif_DateTimeOriginal": "2014:08:15 11:46:31",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2014:12:12 18:25:31",
+    "DateTimeOriginal": "2014:08:15 11:46:31",
+    "DateTimeDigitized": "2014:08:15 11:46:31"
+  },
+  "production_sips_taken": "2014-12-12 18:25:31",
+  "production_taken_matches_DateTimeOriginal": false,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG\n  creation: 2014:12:12 18:25:31\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

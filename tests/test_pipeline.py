@@ -989,7 +989,7 @@ def test_ocr_batch_failure_marks_each_row_off(cfg, tmp_path, monkeypatch):
 
 
 def test_exif_taken_reaches_content_date(cfg, tmp_path, monkeypatch):
-    """EXIF creation (sips -g creation via prepare_image) -> info.taken and
+    """Actual EXIF capture time (via prepare_image) -> info.taken and
     files.content_date (05 §4.1c/C10) on the media commit path."""
     import time as _time
 
@@ -997,8 +997,8 @@ def test_exif_taken_reaches_content_date(cfg, tmp_path, monkeypatch):
     taken = ("2024-05-17 09:30:00", 1715928600.0)
     real_prep = media.prepare_image
 
-    def prep_with_exif(path, tmp, *, screenshot=False):
-        prep = real_prep(path, tmp, screenshot=screenshot)
+    def prep_with_exif(path, tmp, *, screenshot=False, metadata=None):
+        prep = real_prep(path, tmp, screenshot=screenshot, metadata=metadata)
         prep.taken, prep.taken_epoch = taken
         return prep
 

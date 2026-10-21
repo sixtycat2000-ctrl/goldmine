@@ -133,6 +133,27 @@ def test_grouped_split_is_deterministic_complete_and_not_score_driven():
         validate_splits(bad, queries)
 
 
+def test_coupled_ocr_compound_groups_preserve_hard_bounds_and_can_balance():
+    queries = split_fixture()
+    ocr = [q for q in queries if q["primary_class"] == "media-text" and "ocr" in q["tags"]]
+    cursor = 0
+    for group, size in enumerate((4, 4, 4, 3, 3, 2)):
+        for q in ocr[cursor:cursor + size]:
+            q["source_group"] = f"compound:group:{group}"
+        cursor += size
+    assert cursor == 20
+    split = make_splits(queries)
+    validate_splits(split, queries)
+    assert split == make_splits(queries)
+    lookup = {q["id"]: q for q in queries}
+    for fold in ("dev", "holdout"):
+        rows = [lookup[qid] for qid in split[fold]]
+        assert sum(q["primary_class"] == "compound" for q in rows) == 30
+        assert sum(q["primary_class"] == "media-text" and "ocr" in q["tags"] for q in rows) == 10
+    assert not ({lookup[qid]["source_group"] for qid in split["dev"]}
+                & {lookup[qid]["source_group"] for qid in split["holdout"]})
+
+
 def test_near_duplicate_source_cannot_be_declared_an_independent_group(tmp_path):
     from product_eval.splits import source_groups
     sources = {"a.txt": {"source_group": "a", "parents": [], "asset": {"sha256": "a"}, "views": [{"id": "body", "sha256": "v", "evidence_type": "content_text"}]},
@@ -140,3 +161,37 @@ def test_near_duplicate_source_cannot_be_declared_an_independent_group(tmp_path)
     views = {("a.txt", "body"): {"text": "same source"}, ("b.txt", "body"): {"text": "same source"}}
     groups = source_groups(sources, [], views)
     assert groups["a.txt"] == groups["b.txt"]
+
+
+@pytest.mark.parametrize("edge,linked", [
+    ("same_basename_only", False),
+    ("same_asset", True),
+    ("same_content_view", True),
+    ("explicit_parent", True),
+])
+def test_same_filename_is_not_a_duplicate_edge_but_real_provenance_still_is(edge, linked):
+    import hashlib
+    from product_eval.splits import source_groups
+
+    def digest(text):
+        return hashlib.sha256(text.encode()).hexdigest()
+
+    paths = ("zipfile/__init__.py", "ctypes/__init__.py")
+    texts = ("ZIP_STORED = 0\n", "class c_void_p: pass\n")
+    sources, views = {}, {}
+    for index, (path, text) in enumerate(zip(paths, texts)):
+        sources[path] = {"source_group": f"group:{index}", "parents": [],
+                         "asset": {"sha256": digest(text)},
+                         "views": [{"id": "body", "sha256": digest(text), "evidence_type": "content_text"},
+                                   {"id": "basename", "sha256": digest("__init__.py"), "evidence_type": "name_metadata"}]}
+        views[(path, "body")] = {"text": text}
+        views[(path, "basename")] = {"text": "__init__.py"}
+    if edge == "same_asset":
+        sources[paths[1]]["asset"] = copy.deepcopy(sources[paths[0]]["asset"])
+    elif edge == "same_content_view":
+        sources[paths[1]]["views"][0] = copy.deepcopy(sources[paths[0]]["views"][0])
+        views[(paths[1], "body")] = copy.deepcopy(views[(paths[0], "body")])
+    elif edge == "explicit_parent":
+        sources[paths[1]]["parents"] = [paths[0]]
+    groups = source_groups(sources, [], views)
+    assert (groups[paths[0]] == groups[paths[1]]) is linked

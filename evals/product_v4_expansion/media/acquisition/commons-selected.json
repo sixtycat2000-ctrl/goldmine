@@ -1,0 +1,2866 @@
+[
+  {
+    "pageid": 73462291,
+    "ns": 6,
+    "title": "File:Large cloud over Mexican landscape.jpg",
+    "index": 3,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2018-10-07T22:17:05Z",
+        "size": 2106756,
+        "width": 6000,
+        "height": 3406,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Large_cloud_over_Mexican_landscape.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Large_cloud_over_Mexican_landscape.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=73462291",
+        "sha1": "56f67fa9eb6287d7a3745436bc32c4069937a114",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "Canon"
+          },
+          {
+            "name": "Model",
+            "value": "Canon EOS 80D"
+          },
+          {
+            "name": "XResolution",
+            "value": "240/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "240/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Adobe Photoshop Lightroom Classic 7.5 (Windows)"
+          },
+          {
+            "name": "DateTime",
+            "value": "2018:10:07 17:11:03"
+          },
+          {
+            "name": "Artist",
+            "value": "Tomas Castelazo"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/500"
+          },
+          {
+            "name": "FNumber",
+            "value": "8/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 1
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2018:10:06 12:42:58"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2018:10:06 12:42:58"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "8965784/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "6/1"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/1"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "3625/1000"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "22/1"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "68"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "68"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "FocalPlaneXResolution",
+            "value": "88104193/32768"
+          },
+          {
+            "name": "FocalPlaneYResolution",
+            "value": "88104193/32768"
+          },
+          {
+            "name": "FocalPlaneResolutionUnit",
+            "value": 3
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 1
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "SerialNumber",
+            "value": "202024011243"
+          },
+          {
+            "name": "Lens",
+            "value": "EF-S18-135mm f/3.5-5.6 IS STM"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2018:10:07 12:11:03"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "588931323FC23D39E56D27451C5B86EE"
+          },
+          {
+            "name": "iimVersion",
+            "value": 4
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2018-10-07 22:17:05",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Large cloud over Mexican landscape",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Featured pictures of Mexico|Taken with Canon EOS 80D|Cumulonimbus calvus|Taken with Canon EF-S 18-135mm F3.5-5.6 IS STM|Self-published work|Information field template with formatting|Nature of Guanajuato|Cumulonimbus in Mexico|Mexico photographs taken on 2018-10-06|Landscapes of Guanajuato|Clouds and blue sky in Mexico|White clouds with blue sky background|Foreground flowers in the Americas",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "Large cloud over Mexican landscape.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "Taken on 6 October 2018, 12:42:58",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Tomascastelazo\" title=\"User:Tomascastelazo\">Tomascastelazo</a>",
+            "source": "commons-desc-page"
+          },
+          "Attribution": {
+            "value": "In order to comply with the use and licensing terms of this image, the following text must must be included with the image when published in any medium, failure to do so constitutes a violation of the licensing terms and copyright infringement: © Tomas Castelazo, <a rel=\"nofollow\" class=\"external text\" href=\"http://www.tomascastelazo.com\">www.tomascastelazo.com</a> / <a href=\"//commons.wikimedia.org/wiki/Main_Page\" title=\"Main Page\">Wikimedia Commons</a>",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1247761918,
+        "parentid": 1211314482,
+        "timestamp": "2026-07-14T15:18:35Z"
+      }
+    ]
+  },
+  {
+    "pageid": 56412240,
+    "ns": 6,
+    "title": "File:River Narmada from Maheshwar Fort.jpg",
+    "index": 6,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2017-02-19T18:29:26Z",
+        "size": 1888166,
+        "width": 3000,
+        "height": 1817,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/f/fd/River_Narmada_from_Maheshwar_Fort.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:River_Narmada_from_Maheshwar_Fort.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=56412240",
+        "sha1": "d84d7540e2431ccc68dcf54992af228344ca857c",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "SONY"
+          },
+          {
+            "name": "Model",
+            "value": "ILCE-6000"
+          },
+          {
+            "name": "XResolution",
+            "value": "609/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "609/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "GIMP 2.8.10"
+          },
+          {
+            "name": "DateTime",
+            "value": "2017:02:19 23:57:51"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/200"
+          },
+          {
+            "name": "FNumber",
+            "value": "19/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 1
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 400
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2016:12:23 15:59:38"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2016:12:23 15:59:38"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "7643856/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "8495855/1000000"
+          },
+          {
+            "name": "BrightnessValue",
+            "value": "13454/2560"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/10"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "926/256"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "LightSource",
+            "value": 1
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "160/10"
+          },
+          {
+            "name": "FlashPixVersion",
+            "value": "0100"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "FocalPlaneXResolution",
+            "value": "83662979/32768"
+          },
+          {
+            "name": "FocalPlaneYResolution",
+            "value": "83662979/32768"
+          },
+          {
+            "name": "FocalPlaneResolutionUnit",
+            "value": 3
+          },
+          {
+            "name": "FileSource",
+            "value": 3
+          },
+          {
+            "name": "SceneType",
+            "value": 1
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 1
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 1
+          },
+          {
+            "name": "DigitalZoomRatio",
+            "value": "16/16"
+          },
+          {
+            "name": "FocalLengthIn35mmFilm",
+            "value": 24
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "Contrast",
+            "value": 0
+          },
+          {
+            "name": "Saturation",
+            "value": 0
+          },
+          {
+            "name": "Sharpness",
+            "value": 0
+          },
+          {
+            "name": "Lens",
+            "value": "E PZ 16-50mm F3.5-5.6 OSS"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2017:02:19 21:19:37"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "EDD9A28160F24382D315213DCAA88216"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2017-02-19 18:29:26",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "River Narmada from Maheshwar Fort",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Ahilya Fort|Self-published work|Featured pictures of Madhya Pradesh|* Featured Pictures by Sumit Surai|Featured pictures on Wikipedia, Bengali|Narmada River in Madhya Pradesh|Madhya Pradesh (Photographs by Sumit Surai)|* Picture of the Day by Sumit Surai",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "A view of the river Narmada from Maheshwar fort.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2016-12-23 15:59:38",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Sumitsurai\" title=\"User:Sumitsurai\">Sumit Surai</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1094973851,
+        "parentid": 721289978,
+        "timestamp": "2025-10-04T11:54:18Z"
+      }
+    ]
+  },
+  {
+    "pageid": 101198740,
+    "ns": 6,
+    "title": "File:Ship Felicità on Moskva River near Moscow Kremlin 2018 Aug 04 (3551).jpg",
+    "index": 20,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2021-03-07T17:36:10Z",
+        "size": 2427348,
+        "width": 2882,
+        "height": 1054,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Ship_Felicit%C3%A0_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_%283551%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Ship_Felicit%C3%A0_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=101198740",
+        "sha1": "9a6368145e5b7acf1167ea59e0438f8a62729180",
+        "metadata": [
+          {
+            "name": "ImageWidth",
+            "value": 2882
+          },
+          {
+            "name": "ImageLength",
+            "value": 1054
+          },
+          {
+            "name": "BitsPerSample",
+            "value": "\n*8\n*8\n*8"
+          },
+          {
+            "name": "Compression",
+            "value": 1
+          },
+          {
+            "name": "Make",
+            "value": "RICOH IMAGING COMPANY, LTD.  "
+          },
+          {
+            "name": "Model",
+            "value": "PENTAX K-70        "
+          },
+          {
+            "name": "SamplesPerPixel",
+            "value": 3
+          },
+          {
+            "name": "XResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "PlanarConfiguration",
+            "value": 1
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "PhotoScape"
+          },
+          {
+            "name": "DateTime",
+            "value": "2018:08:04 13:04:46"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/2000"
+          },
+          {
+            "name": "FNumber",
+            "value": "56/10"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 3
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 280
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2018:08:04 13:04:46"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2018:08:04 13:04:46"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/10"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 2
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "5500/100"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "SensingMethod",
+            "value": 2
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 0
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "FocalLengthIn35mmFilm",
+            "value": 82
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "Contrast",
+            "value": 0
+          },
+          {
+            "name": "Saturation",
+            "value": 0
+          },
+          {
+            "name": "Sharpness",
+            "value": 0
+          },
+          {
+            "name": "SubjectDistanceRange",
+            "value": 3
+          },
+          {
+            "name": "GPSVersionID",
+            "value": "0.0.3.2"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2021-03-07 17:36:10",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Ship Felicità on Moskva River near Moscow Kremlin 2018 Aug 04 (3551)",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Taken with Pentax K-70|Self-published work|Felicità (ship, 2013)|Files with coordinates missing SDC location of creation|August 2018 in Moscow|Russia photographs taken on 2018-08-04|Photographs by Alexey V. Kurochkin|Taken with SMC Pentax-DA* 55mm F1.4 SDM|Passenger ships on the Moskva River in Moscow",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|valued",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "55.749049",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "37.630804",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "Ship <i>Felicità</i> on Moskva River near Moscow Kremlin. The photo was taken from another ship.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2018-08-04 13:04:46",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:LexKurochkin\" title=\"User:LexKurochkin\">Alexey V. Kurochkin</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1107307013,
+        "parentid": 1047500284,
+        "timestamp": "2025-11-01T07:53:56Z"
+      }
+    ]
+  },
+  {
+    "pageid": 97646961,
+    "ns": 6,
+    "title": "File:Yoneshiro River 201911.jpg",
+    "index": 31,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2020-12-16T11:17:45Z",
+        "size": 5325089,
+        "width": 5658,
+        "height": 3772,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Yoneshiro_River_201911.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Yoneshiro_River_201911.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=97646961",
+        "sha1": "ca0675d49fb0c4d3b1d5e7960aa2441304bb76bf",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "Canon"
+          },
+          {
+            "name": "Model",
+            "value": "Canon EOS M100"
+          },
+          {
+            "name": "Orientation",
+            "value": 1
+          },
+          {
+            "name": "XResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Digital Photo Professional"
+          },
+          {
+            "name": "DateTime",
+            "value": "2019:11:05 10:22:32"
+          },
+          {
+            "name": "YCbCrPositioning",
+            "value": 1
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/400"
+          },
+          {
+            "name": "FNumber",
+            "value": "90/10"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 3
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2019:11:05 10:22:32"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2019:11:05 10:22:32"
+          },
+          {
+            "name": "ComponentsConfiguration",
+            "value": "\n#1\n#2\n#3\n#0"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "277/32"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "203/32"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/3"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "15/1"
+          },
+          {
+            "name": "SubSecTime",
+            "value": "06"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "06"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "06"
+          },
+          {
+            "name": "FlashPixVersion",
+            "value": "0100"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 0
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "GPSVersionID",
+            "value": "0.0.3.2"
+          },
+          {
+            "name": "Rating",
+            "value": "0"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2020-12-16 11:17:45",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Yoneshiro River 201911",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Mount Nanakura|Self-published work|Water reflections of clouds in Japan|Yoneshiro River at Noshiro",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "大きく蛇行する米代川と七座山（秋田県能代市二ツ井町）",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2019-11-05 10:22:32",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Wc018\" title=\"User:Wc018\">Wc018</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1013965259,
+        "parentid": 1010078744,
+        "timestamp": "2025-03-26T20:09:51Z"
+      }
+    ]
+  },
+  {
+    "pageid": 149464642,
+    "ns": 6,
+    "title": "File:Saraor river 05.jpg",
+    "index": 30,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2024-06-17T10:12:17Z",
+        "size": 4889792,
+        "width": 4000,
+        "height": 3000,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Saraor_river_05.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Saraor_river_05.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=149464642",
+        "sha1": "c0af648a3eaaecf08f44092f804fc4d38d215287",
+        "metadata": [
+          {
+            "name": "ImageLength",
+            "value": 3000
+          },
+          {
+            "name": "Make",
+            "value": "Xiaomi"
+          },
+          {
+            "name": "Orientation",
+            "value": 1
+          },
+          {
+            "name": "DateTime",
+            "value": "2024:05:28 15:26:12"
+          },
+          {
+            "name": "YResolution",
+            "value": "72/1"
+          },
+          {
+            "name": "XResolution",
+            "value": "72/1"
+          },
+          {
+            "name": "ImageWidth",
+            "value": 4000
+          },
+          {
+            "name": "Model",
+            "value": "2306EPN60G"
+          },
+          {
+            "name": "Software",
+            "value": "MediaTek Camera Application"
+          },
+          {
+            "name": "ImageDescription",
+            "value": null
+          },
+          {
+            "name": "YCbCrPositioning",
+            "value": 2
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0220"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "227/100"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/10"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 2
+          },
+          {
+            "name": "ColorSpace",
+            "value": 65535
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "227/100"
+          },
+          {
+            "name": "BrightnessValue",
+            "value": "86/10"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2024:05:28 15:26:12"
+          },
+          {
+            "name": "FlashPixVersion",
+            "value": "0100"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "011"
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 0
+          },
+          {
+            "name": "ExposureTime",
+            "value": "2205000/1000000000"
+          },
+          {
+            "name": "Flash",
+            "value": 0
+          },
+          {
+            "name": "SubSecTime",
+            "value": "011"
+          },
+          {
+            "name": "FNumber",
+            "value": "2200/1000"
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 50
+          },
+          {
+            "name": "ComponentsConfiguration",
+            "value": "\n#1\n#2\n#3\n#0"
+          },
+          {
+            "name": "FocalLengthIn35mmFilm",
+            "value": 15
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "011"
+          },
+          {
+            "name": "DigitalZoomRatio",
+            "value": "100/100"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2024:05:28 15:26:12"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "8825/1000"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 2
+          },
+          {
+            "name": "FocalLength",
+            "value": "1910/1000"
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "LightSource",
+            "value": 255
+          },
+          {
+            "name": "GPSLatitude",
+            "value": 42.23849
+          },
+          {
+            "name": "GPSAltitude",
+            "value": 1645.6
+          },
+          {
+            "name": "GPSSpeed",
+            "value": "134472/10000"
+          },
+          {
+            "name": "GPSSpeedRef",
+            "value": "K"
+          },
+          {
+            "name": "GPSTimeStamp",
+            "value": "\n*12/1\n*26/1\n*4/1"
+          },
+          {
+            "name": "GPSLongitude",
+            "value": 46.258335
+          },
+          {
+            "name": "GPSDateStamp",
+            "value": "2024:05:28"
+          },
+          {
+            "name": "GPSVersionID",
+            "value": "0.0.2.2"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2024-06-17 10:12:17",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Saraor river 05",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Self-published work|2024 in Dagestan|Files with coordinates missing SDC location of creation|Photos by User:Горбунова М.С.|Saraor",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "42.238490",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "46.258335",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "View on the Saraor river",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2024-05-28 15:26:12",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:%D0%93%D0%BE%D1%80%D0%B1%D1%83%D0%BD%D0%BE%D0%B2%D0%B0_%D0%9C.%D0%A1.\" title=\"User:Горбунова М.С.\">Горбунова М.С.</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 990851960,
+        "parentid": 990822439,
+        "timestamp": "2025-01-31T11:52:59Z"
+      }
+    ]
+  },
+  {
+    "pageid": 29415136,
+    "ns": 6,
+    "title": "File:Karpovka River Embankment 06.jpg",
+    "index": 4,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2014-03-22T07:36:10Z",
+        "size": 8451770,
+        "width": 4200,
+        "height": 2782,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Karpovka_River_Embankment_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Karpovka_River_Embankment_06.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=29415136",
+        "sha1": "8299ef63a8cf457660aa0f3ad95fea65792432e6",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "NIKON CORPORATION"
+          },
+          {
+            "name": "Model",
+            "value": "NIKON D5100"
+          },
+          {
+            "name": "XResolution",
+            "value": "240/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "240/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Adobe Photoshop Lightroom 4.0 (Windows)"
+          },
+          {
+            "name": "DateTime",
+            "value": "2014:03:22 11:34:05"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/500"
+          },
+          {
+            "name": "FNumber",
+            "value": "9/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 3
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2013:07:19 15:29:41"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2013:07:19 15:29:41"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "8965784/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "633985/100000"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/6"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "45/10"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "LightSource",
+            "value": 0
+          },
+          {
+            "name": "Flash",
+            "value": 0
+          },
+          {
+            "name": "FocalLength",
+            "value": "140/10"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "10"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "10"
+          },
+          {
+            "name": "SensingMethod",
+            "value": 2
+          },
+          {
+            "name": "FileSource",
+            "value": 3
+          },
+          {
+            "name": "SceneType",
+            "value": 1
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 0
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "DigitalZoomRatio",
+            "value": "1/1"
+          },
+          {
+            "name": "FocalLengthIn35mmFilm",
+            "value": 21
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "GainControl",
+            "value": 0
+          },
+          {
+            "name": "Contrast",
+            "value": 0
+          },
+          {
+            "name": "Saturation",
+            "value": 0
+          },
+          {
+            "name": "Sharpness",
+            "value": 0
+          },
+          {
+            "name": "SubjectDistanceRange",
+            "value": 0
+          },
+          {
+            "name": "SerialNumber",
+            "value": "8153229"
+          },
+          {
+            "name": "Lens",
+            "value": "10.0-20.0 mm f/4.0-5.6"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2014:03:22 15:34:05"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "7390BAD0E825E89FBCAFDEBFAC22B899"
+          },
+          {
+            "name": "iimVersion",
+            "value": 4
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2014-03-22 07:36:10",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Karpovka River Embankment 06",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Taken with Nikon D5100|FAL|Karpovka River|Self-published work|Images with extracted images|Featured pictures of Saint Petersburg|Taken on missing SDC inception|Featured pictures by Florstein|Featured pictures of cityscapes|Russia photographs taken on 2013-07-19|Files with coordinates missing SDC location of creation|Photos by Florstein taken in 2013|Karpovka, 19",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "59.969811",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "30.307906",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "Karpovka River Embankment in Saint Petersburg",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "Taken on 19 July 2013",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<b><a href=\"//commons.wikimedia.org/wiki/User:Florstein\" title=\"User:Florstein\">Florstein</a></b> (<i><b>Telegram:<span class=\"plainlinks\"><a rel=\"nofollow\" class=\"external text\" href=\"https://t.me/wikiphotospace\">WikiPhoto.Space</a></span></b></i>)",
+            "source": "commons-desc-page"
+          },
+          "Permission": {
+            "value": "You may select the license of your choice.",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Attribution": {
+            "value": "Alex 'Florstein' Fedorov",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1181381479,
+        "parentid": 1038711031,
+        "timestamp": "2026-03-15T07:14:27Z"
+      }
+    ]
+  },
+  {
+    "pageid": 50398887,
+    "ns": 6,
+    "title": "File:View from Skaftafell National Park July 2014 -4.jpg",
+    "index": 17,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2016-09-22T15:13:49Z",
+        "size": 6324306,
+        "width": 4541,
+        "height": 2294,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/View_from_Skaftafell_National_Park_July_2014_-4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=50398887",
+        "sha1": "03b64650370e229d33aa65ebf663c0288fc26f15",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "Canon"
+          },
+          {
+            "name": "Model",
+            "value": "Canon EOS 5D Mark III"
+          },
+          {
+            "name": "Orientation",
+            "value": 1
+          },
+          {
+            "name": "XResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Digital Photo Professional"
+          },
+          {
+            "name": "DateTime",
+            "value": "2016:07:30 10:39:46"
+          },
+          {
+            "name": "Artist",
+            "value": "Martin Falbisoner"
+          },
+          {
+            "name": "YCbCrPositioning",
+            "value": 1
+          },
+          {
+            "name": "Copyright",
+            "value": "some rights reserved\n\n"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/500"
+          },
+          {
+            "name": "FNumber",
+            "value": "8/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 3
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2014:07:21 12:28:33"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2014:07:21 12:28:33"
+          },
+          {
+            "name": "ComponentsConfiguration",
+            "value": "\n#1\n#2\n#3\n#0"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "589824/65536"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "393216/65536"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/1"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "4/1"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "30/1"
+          },
+          {
+            "name": "SubSecTime",
+            "value": "08"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "08"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "08"
+          },
+          {
+            "name": "FlashPixVersion",
+            "value": "0100"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 0
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "GPSVersionID",
+            "value": "0.0.3.2"
+          },
+          {
+            "name": "iimVersion",
+            "value": 4
+          },
+          {
+            "name": "SerialNumber",
+            "value": "073024016087"
+          },
+          {
+            "name": "Lens",
+            "value": "EF17-40mm f/4L USM"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2016:07:30 12:39:46"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "0D5D6A01ED67E5C79D288A67EF327FD9"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2016-09-22 15:13:49",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "View from Skaftafell National Park July 2014 -4",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Self-published work|Featured Pictures by Martin Falbisoner|Iceland photographs taken on 2014-07-21|Braided rivers in Iceland|July 2014 in Iceland|Files with coordinates missing SDC location of creation|Rock flour in Iceland|Featured pictures of landscapes in Iceland|Glacial sediment transport|Fluvial sediment transport|Rock flour in glacial lakes|Views from Skaftafellsheiði|Marginal lakes of Skaftafellsjökull|Recessional moraines of Skaftafellsjökull|Skaftafellsá|Proglacial lakes of Skaftafellsjökull|Hiking trails in Skaftafell National Park|Anastomosing rivers|Skaftafellsjökull in 2014",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "64.031822",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "-16.936970",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "River <a href=\"https://en.wikipedia.org/wiki/Skei%C3%B0ar%C3%A1\" class=\"extiw\" title=\"en:Skeiðará\">Skeiðará</a> and Skeiðarársandur as seen from the Skaftafellsheiði plateau, <a href=\"https://en.wikipedia.org/wiki/Vatnaj%C3%B6kull_National_Park\" class=\"extiw\" title=\"en:Vatnajökull National Park\">Vatnajökull National Park</a>, <a href=\"https://en.wikipedia.org/wiki/Iceland\" class=\"extiw\" title=\"en:Iceland\">Iceland</a>.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2014-07-21 12:28:33",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<bdi>Martin Falbisoner</bdi>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1281702224,
+        "parentid": 1279805500,
+        "timestamp": "2026-09-29T21:19:10Z"
+      }
+    ]
+  },
+  {
+    "pageid": 94585934,
+    "ns": 6,
+    "title": "File:Wrocław MuzeumNarodowe.jpg",
+    "index": 29,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2020-09-29T22:29:28Z",
+        "size": 11680615,
+        "width": 4749,
+        "height": 3322,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/cc/Wroc%C5%82aw_MuzeumNarodowe.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Wroc%C5%82aw_MuzeumNarodowe.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=94585934",
+        "sha1": "2524fd0d45e36c45f6f6afb40ab85b4654ce967f",
+        "metadata": [
+          {
+            "name": "ImageWidth",
+            "value": 6016
+          },
+          {
+            "name": "ImageLength",
+            "value": 4016
+          },
+          {
+            "name": "BitsPerSample",
+            "value": "\n*8\n*8\n*8"
+          },
+          {
+            "name": "PhotometricInterpretation",
+            "value": 2
+          },
+          {
+            "name": "Make",
+            "value": "NIKON CORPORATION"
+          },
+          {
+            "name": "Model",
+            "value": "NIKON D610"
+          },
+          {
+            "name": "Orientation",
+            "value": 1
+          },
+          {
+            "name": "SamplesPerPixel",
+            "value": 3
+          },
+          {
+            "name": "XResolution",
+            "value": "3000000/10000"
+          },
+          {
+            "name": "YResolution",
+            "value": "3000000/10000"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Adobe Photoshop 21.0 (Macintosh)"
+          },
+          {
+            "name": "DateTime",
+            "value": "2020:09:29 22:22:13"
+          },
+          {
+            "name": "Artist",
+            "value": "Sliwecki,Marek"
+          },
+          {
+            "name": "Copyright",
+            "value": "Sliwecki,Marek\n\n"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "36/1"
+          },
+          {
+            "name": "FNumber",
+            "value": "10/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 1
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0231"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2020:02:08 21:58:41"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2020:02:08 21:58:41"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "-5169925/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "6643856/1000000"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/6"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "30/10"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "LightSource",
+            "value": 0
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "290/10"
+          },
+          {
+            "name": "SubSecTime",
+            "value": "30"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "30"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "30"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 65535
+          },
+          {
+            "name": "FocalPlaneXResolution",
+            "value": "54886891/32768"
+          },
+          {
+            "name": "FocalPlaneYResolution",
+            "value": "54886891/32768"
+          },
+          {
+            "name": "FocalPlaneResolutionUnit",
+            "value": 3
+          },
+          {
+            "name": "SensingMethod",
+            "value": 2
+          },
+          {
+            "name": "FileSource",
+            "value": 3
+          },
+          {
+            "name": "SceneType",
+            "value": 1
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 1
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "DigitalZoomRatio",
+            "value": "1/1"
+          },
+          {
+            "name": "FocalLengthIn35mmFilm",
+            "value": 29
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "GainControl",
+            "value": 0
+          },
+          {
+            "name": "Contrast",
+            "value": 0
+          },
+          {
+            "name": "Saturation",
+            "value": 0
+          },
+          {
+            "name": "Sharpness",
+            "value": 0
+          },
+          {
+            "name": "SubjectDistanceRange",
+            "value": 0
+          },
+          {
+            "name": "SerialNumber",
+            "value": "6046691"
+          },
+          {
+            "name": "Lens",
+            "value": "24.0-70.0 mm f/2.8"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2020:09:30 00:22:13"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "0D66D397115020C55BFA8849FD052E6A"
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2020-09-29 22:29:28",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Wrocław MuzeumNarodowe",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Taken with Nikon D610|ISO speed rating 100|Building of the National Museum in Wrocław|Starburst effect|Self-published work|Images with extracted images|Buildings during blue hour in Poland|Cultural heritage monuments in Poland with known IDs|Bare trees in Poland|F-number f/10|Water reflections of buildings in Poland|Water reflections of lights in Poland|Uploaded via Campaign:wlm-pl|Featured pictures of Wrocław|Museums photographed in 2020|Long exposure photographs of Poland|Featured pictures of museums|Poland photographs taken on 2020-02-08|Images from Wiki Loves Monuments 2020|Images from Wiki Loves Monuments 2020 in Poland|February 2020 in Wrocław|Water reflections of buildings at night|Long exposure photography in architecture|Exposure time 36 sec|Diffraction spikes around street lights|Long exposures (rivers)|Lens focal length 29 mm|Featured pictures on Wikipedia, Arabic|Featured pictures from Wiki Loves Monuments Poland 2020|Blue hour in Wrocław|2020s photographs of Wrocław|Images from Wiki Loves Monuments in Poland – Lower Silesian Voivodeship",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "51.110689",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "17.047490",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "<a href=\"https://en.wikipedia.org/wiki/National_Museum_in_Wroc%C5%82aw\" class=\"extiw\" title=\"en:National Museum in Wrocław\">National Museum in Wrocław</a>, 1883-1886, former <a href=\"https://de.wikipedia.org/wiki/Regierungsbezirk_Breslau\" class=\"extiw\" title=\"de:Regierungsbezirk Breslau\">Regierungsbezirk</a> administration building designed by Anton von Behr. View from the River <a href=\"//commons.wikimedia.org/wiki/Oder\" class=\"mw-redirect\" title=\"Oder\">Oder</a>.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2020-02-08",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Slimark\" title=\"User:Slimark\">Marek Śliwecki</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1289145906,
+        "parentid": 1153097105,
+        "timestamp": "2026-10-19T19:08:35Z"
+      }
+    ]
+  },
+  {
+    "pageid": 37196673,
+    "ns": 6,
+    "title": "File:Museo marítimo Ósvör, Bolungarvík, Vestfirðir, Islandia, 2014-08-15, DD 066.JPG",
+    "index": 39,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2014-12-12T17:27:34Z",
+        "size": 7773187,
+        "width": 5103,
+        "height": 3318,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Museo_mar%C3%ADtimo_%C3%93sv%C3%B6r%2C_Bolungarv%C3%ADk%2C_Vestfir%C3%B0ir%2C_Islandia%2C_2014-08-15%2C_DD_066.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Museo_mar%C3%ADtimo_%C3%93sv%C3%B6r,_Bolungarv%C3%ADk,_Vestfir%C3%B0ir,_Islandia,_2014-08-15,_DD_066.JPG",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=37196673",
+        "sha1": "dda39f59625938181f11e53ac338d806580a5580",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "Canon"
+          },
+          {
+            "name": "Model",
+            "value": "Canon EOS 5D Mark II"
+          },
+          {
+            "name": "XResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "300/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "Software",
+            "value": "Adobe Photoshop Lightroom 5.7 (Windows)"
+          },
+          {
+            "name": "DateTime",
+            "value": "2014:12:12 18:25:31"
+          },
+          {
+            "name": "Artist",
+            "value": "Diego Delso"
+          },
+          {
+            "name": "Copyright",
+            "value": "CC-BY-SA 4.0\n\n"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/30"
+          },
+          {
+            "name": "FNumber",
+            "value": "11/1"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 1
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 250
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2014:08:15 11:46:31"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2014:08:15 11:46:31"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "4906891/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "6918863/1000000"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/1"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "4/1"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "27/1"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "21"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "21"
+          },
+          {
+            "name": "FocalPlaneXResolution",
+            "value": "5616000/1459"
+          },
+          {
+            "name": "FocalPlaneYResolution",
+            "value": "3744000/958"
+          },
+          {
+            "name": "FocalPlaneResolutionUnit",
+            "value": 2
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 1
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "SerialNumber",
+            "value": "4262104084"
+          },
+          {
+            "name": "Lens",
+            "value": "EF17-40mm f/4L USM"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2014:12:12 19:25:31"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "CCD98B8C37BA69B100942653B20665CB"
+          },
+          {
+            "name": "WebStatement",
+            "value": "http://creativecommons.org/licenses/by-sa/4.0/"
+          },
+          {
+            "name": "Copyrighted",
+            "value": "True"
+          },
+          {
+            "name": "Contact",
+            "value": "[mailto:diegodelso@gmx.net <span class=\"email\">diegodelso@gmx.net</span>]\n\n\n<div class=\"adr\">\n\n\n, ,  \n</div>\n"
+          },
+          {
+            "name": "iimVersion",
+            "value": 4
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2014-12-12 17:27:34",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Museo marítimo Ósvör, Bolungarvík, Vestfirðir, Islandia, 2014-08-15, DD 066",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Ósvör|Bolungarvík|Road 61 (Iceland)|Images of Iceland by User:Poco a poco|Featured pictures of landscapes|Featured pictures by User:Poco a poco|Images by User:Poco a poco|Featured pictures of Iceland by User:Poco a poco|Featured pictures on Commons by User:Poco a poco|Featured pictures of buildings by User:Poco a poco|Museums photographed in 2014|Iceland photographs taken on 2014-08-15|Salt in Iceland|Wooden boats in Iceland|Featured pictures of architecture in Iceland|Featured pictures of landscapes in Iceland|Ernir (Bolungarvík)|Images by User:Poco a poco taken in 2014|2014 in Vestfirðir",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "View of the Ósvör <a rel=\"mw:WikiLink/Interwiki\" href=\"https://en.wikipedia.org/wiki/maritime%20museum\" title=\"en:maritime museum\" class=\"extiw\">maritime museum</a>, located in the village of <a rel=\"mw:WikiLink/Interwiki\" href=\"https://en.wikipedia.org/wiki/Bolungarv%C3%ADk\" title=\"en:Bolungarvík\" class=\"extiw\">Bolungarvík</a>, Vestfirðir, Iceland. The museum consists of a double 19th century fishing base, a salt hut, a fish drying area, a drying hut and a typical fishing boat of that time.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "Taken on<span typeof=\"mw:Entity\"> </span>15 August 2014, 11:46:31<link rel=\"mw:PageProp/Category\" href=\"./Category:Iceland_photographs_taken_on_2014-08-15\">",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<bdi><a rel=\"mw:WikiLink/Interwiki\" href=\"https://www.wikidata.org/wiki/Q28147777\" title=\"d:Q28147777\" class=\"extiw\"><span title=\"Spanish photographer\">Diego Delso</span></a></bdi>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Attribution": {
+            "value": "Diego Delso",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1281701278,
+        "parentid": 1279782744,
+        "timestamp": "2026-09-29T21:14:56Z"
+      }
+    ]
+  },
+  {
+    "pageid": 141842609,
+    "ns": 6,
+    "title": "File:Water reflection of sunset with gray and orange clouds and boats moored to the bank in Pakse Laos.jpg",
+    "index": 12,
+    "imagerepository": "local",
+    "imageinfo": [
+      {
+        "timestamp": "2023-12-07T01:02:55Z",
+        "size": 6087785,
+        "width": 6421,
+        "height": 3612,
+        "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+        "descriptionurl": "https://commons.wikimedia.org/wiki/File:Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "descriptionshorturl": "https://commons.wikimedia.org/w/index.php?curid=141842609",
+        "sha1": "43dd002437ee245e537c9a8e888258571f0243f6",
+        "metadata": [
+          {
+            "name": "Make",
+            "value": "Canon"
+          },
+          {
+            "name": "Model",
+            "value": "Canon EOS 5D Mark IV"
+          },
+          {
+            "name": "Orientation",
+            "value": 1
+          },
+          {
+            "name": "XResolution",
+            "value": "94/1"
+          },
+          {
+            "name": "YResolution",
+            "value": "94/1"
+          },
+          {
+            "name": "ResolutionUnit",
+            "value": 3
+          },
+          {
+            "name": "Software",
+            "value": "Adobe Photoshop Lightroom 6.0 (Windows)"
+          },
+          {
+            "name": "DateTime",
+            "value": "2023:12:02 11:04:32"
+          },
+          {
+            "name": "Artist",
+            "value": "Basile Morin; Basile Morin"
+          },
+          {
+            "name": "Copyright",
+            "value": "Basile Morin\n\n"
+          },
+          {
+            "name": "ExposureTime",
+            "value": "1/40"
+          },
+          {
+            "name": "FNumber",
+            "value": "71/10"
+          },
+          {
+            "name": "ExposureProgram",
+            "value": 1
+          },
+          {
+            "name": "ISOSpeedRatings",
+            "value": 100
+          },
+          {
+            "name": "ExifVersion",
+            "value": "0230"
+          },
+          {
+            "name": "DateTimeOriginal",
+            "value": "2023:09:20 17:47:29"
+          },
+          {
+            "name": "DateTimeDigitized",
+            "value": "2023:09:20 17:47:29"
+          },
+          {
+            "name": "ShutterSpeedValue",
+            "value": "5321928/1000000"
+          },
+          {
+            "name": "ApertureValue",
+            "value": "5655638/1000000"
+          },
+          {
+            "name": "ExposureBiasValue",
+            "value": "0/1"
+          },
+          {
+            "name": "MaxApertureValue",
+            "value": "3/1"
+          },
+          {
+            "name": "MeteringMode",
+            "value": 5
+          },
+          {
+            "name": "Flash",
+            "value": 16
+          },
+          {
+            "name": "FocalLength",
+            "value": "24/1"
+          },
+          {
+            "name": "SubSecTimeOriginal",
+            "value": "67"
+          },
+          {
+            "name": "SubSecTimeDigitized",
+            "value": "67"
+          },
+          {
+            "name": "ColorSpace",
+            "value": 1
+          },
+          {
+            "name": "FocalPlaneXResolution",
+            "value": "61166933/32768"
+          },
+          {
+            "name": "FocalPlaneYResolution",
+            "value": "61166933/32768"
+          },
+          {
+            "name": "FocalPlaneResolutionUnit",
+            "value": 3
+          },
+          {
+            "name": "CustomRendered",
+            "value": 0
+          },
+          {
+            "name": "ExposureMode",
+            "value": 1
+          },
+          {
+            "name": "WhiteBalance",
+            "value": 0
+          },
+          {
+            "name": "SceneCaptureType",
+            "value": 0
+          },
+          {
+            "name": "GPSLatitude",
+            "value": 15.12155
+          },
+          {
+            "name": "GPSLongitude",
+            "value": 105.79736166666666
+          },
+          {
+            "name": "GPSAltitude",
+            "value": 109.3
+          },
+          {
+            "name": "GPSTimeStamp",
+            "value": "\n*10/1\n*44/1\n*43/1"
+          },
+          {
+            "name": "GPSSatellites",
+            "value": "9"
+          },
+          {
+            "name": "GPSStatus",
+            "value": "A"
+          },
+          {
+            "name": "GPSMeasureMode",
+            "value": "3"
+          },
+          {
+            "name": "GPSDOP",
+            "value": "16/10"
+          },
+          {
+            "name": "GPSMapDatum",
+            "value": "WGS-84"
+          },
+          {
+            "name": "GPSDateStamp",
+            "value": "2023:09:20"
+          },
+          {
+            "name": "GPSVersionID",
+            "value": "0.0.3.2"
+          },
+          {
+            "name": "SerialNumber",
+            "value": "088053003158"
+          },
+          {
+            "name": "Lens",
+            "value": "EF24-70mm f/2.8L II USM"
+          },
+          {
+            "name": "DateTimeMetadata",
+            "value": "2023:12:02 18:04:33"
+          },
+          {
+            "name": "OriginalDocumentID",
+            "value": "666DC95B1715C5C527F5829AB4CEE6D6"
+          },
+          {
+            "name": "iimVersion",
+            "value": 4
+          },
+          {
+            "name": "MEDIAWIKI_EXIF_VERSION",
+            "value": 1
+          }
+        ],
+        "extmetadata": {
+          "DateTime": {
+            "value": "2023-12-07 01:02:55",
+            "source": "mediawiki-metadata",
+            "hidden": ""
+          },
+          "ObjectName": {
+            "value": "Water reflection of sunset with gray and orange clouds and boats moored to the bank in Pakse Laos",
+            "source": "mediawiki-metadata"
+          },
+          "CommonsMetadataExtension": {
+            "value": 1.2,
+            "source": "extension",
+            "hidden": ""
+          },
+          "Categories": {
+            "value": "Taken with Canon EOS 5D Mark IV and Canon EF 24-70mm F2.8L II USM|Self-published work|Featured pictures of Laos|Featured pictures of sunsets|Orange clouds in Laos|Gray clouds in Laos|Water reflections of clouds in Laos|Monsoon in Laos|Featured pictures of watercourses|River banks in Laos|Featured pictures of boats|Featured pictures by Basile Morin|Clouds at sunset in Laos|Photographs by Basile Morin|Featured pictures of clouds|Reflections in still water|Pirogues in Laos|2023 in Champasak Province|Colorful sky in Laos|Xe Don River",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "Assessments": {
+            "value": "quality|featured|potd",
+            "source": "commons-categories",
+            "hidden": ""
+          },
+          "GPSLatitude": {
+            "value": "15.121550",
+            "source": "commons-desc-page"
+          },
+          "GPSLongitude": {
+            "value": "105.797362",
+            "source": "commons-desc-page"
+          },
+          "GPSMapDatum": {
+            "value": "WGS-84",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "ImageDescription": {
+            "value": "Water reflection of sunset with gray and orange clouds over the <i>Xe Don</i> River, and three boats moored to the bank in <a href=\"https://en.wikipedia.org/wiki/Pakse\" class=\"extiw\" title=\"en:Pakse\">Pakse</a>, <a href=\"https://en.wikipedia.org/wiki/Laos\" class=\"extiw\" title=\"en:Laos\">Laos</a>.",
+            "source": "commons-desc-page"
+          },
+          "DateTimeOriginal": {
+            "value": "2023-09-20 17:47:29",
+            "source": "commons-desc-page"
+          },
+          "Credit": {
+            "value": "<span class=\"int-own-work\" lang=\"en\">Own work</span>",
+            "source": "commons-desc-page"
+          },
+          "Artist": {
+            "value": "<a href=\"//commons.wikimedia.org/wiki/User:Basile_Morin\" title=\"User:Basile Morin\">Basile Morin</a>",
+            "source": "commons-desc-page"
+          },
+          "LicenseShortName": {
+            "value": "CC BY-SA 4.0",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "UsageTerms": {
+            "value": "Creative Commons Attribution-Share Alike 4.0",
+            "source": "commons-desc-page"
+          },
+          "AttributionRequired": {
+            "value": "true",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "LicenseUrl": {
+            "value": "https://creativecommons.org/licenses/by-sa/4.0",
+            "source": "commons-desc-page"
+          },
+          "Copyrighted": {
+            "value": "True",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "Restrictions": {
+            "value": "",
+            "source": "commons-desc-page",
+            "hidden": ""
+          },
+          "License": {
+            "value": "cc-by-sa-4.0",
+            "source": "commons-templates",
+            "hidden": ""
+          }
+        }
+      }
+    ],
+    "revisions": [
+      {
+        "revid": 1153097202,
+        "parentid": 1144931087,
+        "timestamp": "2026-01-25T10:03:54Z"
+      }
+    ]
+  }
+]

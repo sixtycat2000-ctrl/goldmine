@@ -7,6 +7,7 @@ from collections import defaultdict
 
 from answer_eval.protocol import EvaluationError
 from answer_eval.statistics import paired_group_bootstrap
+from .alignment import validate_word_alignment
 from .schema import CLASSES, MEDIA, NOISE
 
 
@@ -16,6 +17,7 @@ def _covers(evidence, expected):
     if (evidence["path"] != expected["path"] or evidence["view_id"] != expected["view_id"]
             or evidence["evidence_type"] != expected["evidence_type"]):
         return False
+    validate_word_alignment(evidence)
     a, b = evidence["location"], expected["location"]
     if (a is None) != (b is None):
         return False
@@ -96,6 +98,13 @@ def paired_changes(reference_rows, candidate_rows, *, seed=20261021, reps=10000)
         for qid in sorted(base):
             if base[qid]["source_group"] != candidate[qid]["source_group"]:
                 raise EvaluationError("source groups differ between paired runs")
+            if base[qid]["primary_class"] != candidate[qid]["primary_class"]:
+                raise EvaluationError("primary classes differ between paired runs")
+            # Match summarize(): rank/fact quality is defined on answerable
+            # questions. Noise has its own fixed denominator, not extra zero
+            # rank scores that dilute the paired answerable mean and interval.
+            if metric != "noise_correct_empty" and base[qid]["primary_class"] == "noise":
+                continue
             a, b = base[qid]["metrics"][metric], candidate[qid]["metrics"][metric]
             if (a is None) != (b is None):
                 raise EvaluationError("metric denominator changed")

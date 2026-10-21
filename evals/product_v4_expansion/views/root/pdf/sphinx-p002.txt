@@ -1,0 +1,45 @@
+Sphinx Documentation, Release 9.3.0
+
+gettext_location
+Type
+bool
+Default
+True
+If True, Sphinx generates location information for messages in message catalogs.
+Added in version 1.3.
+gettext_auto_build
+Type
+bool
+Default
+True
+If True, Sphinx builds a .mo file for each translation catalog file.
+Added in version 1.3.
+gettext_additional_targets
+Type
+set[str] | Sequence[str]
+Default
+[]
+Enable gettext translation for certain element types. Example:
+gettext_additional_targets = {'literal-block', 'image'}
+The following element types are supported:
+• 'index' – index terms
+• 'literal-block' – literal blocks (:: annotation and code-block directive)
+• 'doctest-block' – doctest block
+• 'raw' – raw content
+• 'image' – image/figure uri
+Added in version 1.3.
+Changed in version 4.0: The alt text for images is translated by default.
+Changed in version 7.4: Permit and prefer a set type.
+figure_language_filename
+Type
+str
+Default
+'{root}.{language}{ext}'
+The filename format for language-specific figures. The available format tokens are:
+• {root}: the filename, including any path component, without the file extension. For example: images/
+filename.
+
+90
+
+Chapter 4. Using Sphinx
+

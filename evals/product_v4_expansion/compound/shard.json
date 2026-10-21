@@ -1,0 +1,5274 @@
+{
+  "sources": [
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+      "asset": {
+        "path": "assets/compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+        "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468"
+      },
+      "kind": "doc",
+      "source_group": "upstream:fastapi",
+      "parents": [
+        "compound/fastapi/docs/en/docs/tutorial/middleware.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/fastapi/fastapi",
+          "revision": "386a28af2f87af1a32ac26d88f07b7f58ab2dfb1",
+          "path": "docs/en/docs/tutorial/background-tasks.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/fastapi-LICENSE",
+          "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/fastapi/docs/en/docs/tutorial/background-tasks.md.txt",
+          "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 86
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+      "asset": {
+        "path": "assets/compound/fastapi/docs/en/docs/tutorial/middleware.md",
+        "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39"
+      },
+      "kind": "doc",
+      "source_group": "upstream:fastapi",
+      "parents": [
+        "compound/fastapi/docs/en/docs/tutorial/background-tasks.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/fastapi/fastapi",
+          "revision": "386a28af2f87af1a32ac26d88f07b7f58ab2dfb1",
+          "path": "docs/en/docs/tutorial/middleware.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/fastapi-LICENSE",
+          "sha256": "4ec89ffc81485b97fec584b2d4a961032eeffe834453894fd9c1274906cc744e"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/fastapi/docs/en/docs/tutorial/middleware.md.txt",
+          "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 95
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/rich/docs/source/tables.rst",
+      "asset": {
+        "path": "assets/compound/rich/docs/source/tables.rst",
+        "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c"
+      },
+      "kind": "doc",
+      "source_group": "upstream:rich",
+      "parents": [
+        "compound/rich/docs/source/progress.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/Textualize/rich",
+          "revision": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+          "path": "docs/source/tables.rst"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/rich-LICENSE",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/rich/docs/source/tables.rst.txt",
+          "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 171
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/rich/docs/source/progress.rst",
+      "asset": {
+        "path": "assets/compound/rich/docs/source/progress.rst",
+        "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef"
+      },
+      "kind": "doc",
+      "source_group": "upstream:rich",
+      "parents": [
+        "compound/rich/docs/source/tables.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/Textualize/rich",
+          "revision": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f",
+          "path": "docs/source/progress.rst"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/rich-LICENSE",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/rich/docs/source/progress.rst.txt",
+          "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 298
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/assert.rst",
+      "asset": {
+        "path": "assets/compound/pytest/doc/en/how-to/assert.rst",
+        "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pytest",
+      "parents": [
+        "compound/pytest/doc/en/how-to/skipping.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pytest-dev/pytest",
+          "revision": "c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4",
+          "path": "doc/en/how-to/assert.rst"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pytest-LICENSE",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pytest/doc/en/how-to/assert.rst.txt",
+          "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 598
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/skipping.rst",
+      "asset": {
+        "path": "assets/compound/pytest/doc/en/how-to/skipping.rst",
+        "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pytest",
+      "parents": [
+        "compound/pytest/doc/en/how-to/assert.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pytest-dev/pytest",
+          "revision": "c9bf1edf9e0d388f3e7bebc88576e608ffbc40a4",
+          "path": "doc/en/how-to/skipping.rst"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pytest-LICENSE",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pytest/doc/en/how-to/skipping.rst.txt",
+          "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 431
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/strict_mode.md",
+      "asset": {
+        "path": "assets/compound/pydantic/docs/concepts/strict_mode.md",
+        "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pydantic",
+      "parents": [
+        "compound/pydantic/docs/concepts/serialization.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pydantic/pydantic",
+          "revision": "e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3",
+          "path": "docs/concepts/strict_mode.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pydantic-LICENSE",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pydantic/docs/concepts/strict_mode.md.txt",
+          "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 181
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/serialization.md",
+      "asset": {
+        "path": "assets/compound/pydantic/docs/concepts/serialization.md",
+        "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pydantic",
+      "parents": [
+        "compound/pydantic/docs/concepts/strict_mode.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pydantic/pydantic",
+          "revision": "e3b6f55a8c778a143f3ae3ddb0f7bc4d67795dc3",
+          "path": "docs/concepts/serialization.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pydantic-LICENSE",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pydantic/docs/concepts/serialization.md.txt",
+          "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 970
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/httpx/docs/quickstart.md",
+      "asset": {
+        "path": "assets/compound/httpx/docs/quickstart.md",
+        "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811"
+      },
+      "kind": "doc",
+      "source_group": "upstream:httpx",
+      "parents": [
+        "compound/httpx/docs/advanced/timeouts.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/encode/httpx",
+          "revision": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+          "path": "docs/quickstart.md"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/httpx-LICENSE.md",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/httpx/docs/quickstart.md.txt",
+          "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 547
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/httpx/docs/advanced/timeouts.md",
+      "asset": {
+        "path": "assets/compound/httpx/docs/advanced/timeouts.md",
+        "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1"
+      },
+      "kind": "doc",
+      "source_group": "upstream:httpx",
+      "parents": [
+        "compound/httpx/docs/quickstart.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/encode/httpx",
+          "revision": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254",
+          "path": "docs/advanced/timeouts.md"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/httpx-LICENSE.md",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+          "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 71
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/ruff/docs/configuration.md",
+      "asset": {
+        "path": "assets/compound/ruff/docs/configuration.md",
+        "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656"
+      },
+      "kind": "doc",
+      "source_group": "upstream:ruff",
+      "parents": [
+        "compound/ruff/docs/formatter.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/astral-sh/ruff",
+          "revision": "c46acee0f9d37d2515d303bc4b1c4c500031a56e",
+          "path": "docs/configuration.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/ruff-LICENSE",
+          "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/ruff/docs/configuration.md.txt",
+          "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 883
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/ruff/docs/formatter.md",
+      "asset": {
+        "path": "assets/compound/ruff/docs/formatter.md",
+        "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc"
+      },
+      "kind": "doc",
+      "source_group": "upstream:ruff",
+      "parents": [
+        "compound/ruff/docs/configuration.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/astral-sh/ruff",
+          "revision": "c46acee0f9d37d2515d303bc4b1c4c500031a56e",
+          "path": "docs/formatter.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/ruff-LICENSE",
+          "sha256": "2597d854122b77ddc71971564ca2350a37608575ce324adc5650a2b2051c8f18"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/ruff/docs/formatter.md.txt",
+          "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 672
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/poetry/docs/managing-environments.md",
+      "asset": {
+        "path": "assets/compound/poetry/docs/managing-environments.md",
+        "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d"
+      },
+      "kind": "doc",
+      "source_group": "upstream:poetry",
+      "parents": [
+        "compound/poetry/docs/dependency-specification.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/python-poetry/poetry",
+          "revision": "aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4",
+          "path": "docs/managing-environments.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/poetry-LICENSE",
+          "sha256": "1786f071a510648a24695f295117f02bae0bbf0fb7c6730aafe9c93a3e4bf7ee"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/poetry/docs/managing-environments.md.txt",
+          "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 209
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/poetry/docs/dependency-specification.md",
+      "asset": {
+        "path": "assets/compound/poetry/docs/dependency-specification.md",
+        "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c"
+      },
+      "kind": "doc",
+      "source_group": "upstream:poetry",
+      "parents": [
+        "compound/poetry/docs/managing-environments.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/python-poetry/poetry",
+          "revision": "aa601cd4f0ca7e1d1b1fb2cc7118174efc22f6c4",
+          "path": "docs/dependency-specification.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/poetry-LICENSE",
+          "sha256": "1786f071a510648a24695f295117f02bae0bbf0fb7c6730aafe9c93a3e4bf7ee"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/poetry/docs/dependency-specification.md.txt",
+          "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 791
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/typer/docs/tutorial/options/help.md",
+      "asset": {
+        "path": "assets/compound/typer/docs/tutorial/options/help.md",
+        "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135"
+      },
+      "kind": "doc",
+      "source_group": "upstream:typer",
+      "parents": [
+        "compound/typer/docs/tutorial/commands/context.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/fastapi/typer",
+          "revision": "a5882dedf0bc7a46cd861fdfca020f88519e0f21",
+          "path": "docs/tutorial/options/help.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/typer-LICENSE",
+          "sha256": "58992cebcf8dfb6e40c4e2112ed12126c243666dca3912a3d78b7ecac4859d49"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+          "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 157
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/typer/docs/tutorial/commands/context.md",
+      "asset": {
+        "path": "assets/compound/typer/docs/tutorial/commands/context.md",
+        "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1"
+      },
+      "kind": "doc",
+      "source_group": "upstream:typer",
+      "parents": [
+        "compound/typer/docs/tutorial/options/help.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/fastapi/typer",
+          "revision": "a5882dedf0bc7a46cd861fdfca020f88519e0f21",
+          "path": "docs/tutorial/commands/context.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/typer-LICENSE",
+          "sha256": "58992cebcf8dfb6e40c4e2112ed12126c243666dca3912a3d78b7ecac4859d49"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+          "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 125
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/uv/docs/guides/projects.md",
+      "asset": {
+        "path": "assets/compound/uv/docs/guides/projects.md",
+        "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb"
+      },
+      "kind": "doc",
+      "source_group": "upstream:uv",
+      "parents": [
+        "compound/uv/docs/guides/tools.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/astral-sh/uv",
+          "revision": "dce03cb9c7ceabcc9a76c9dc3acacbadc031f378",
+          "path": "docs/guides/projects.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/uv-LICENSE-MIT",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/uv/docs/guides/projects.md.txt",
+          "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 301
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/uv/docs/guides/tools.md",
+      "asset": {
+        "path": "assets/compound/uv/docs/guides/tools.md",
+        "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237"
+      },
+      "kind": "doc",
+      "source_group": "upstream:uv",
+      "parents": [
+        "compound/uv/docs/guides/projects.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/astral-sh/uv",
+          "revision": "dce03cb9c7ceabcc9a76c9dc3acacbadc031f378",
+          "path": "docs/guides/tools.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/uv-LICENSE-MIT",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/uv/docs/guides/tools.md.txt",
+          "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 313
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+      "asset": {
+        "path": "assets/compound/pip/docs/html/topics/repeatable-installs.md",
+        "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pip",
+      "parents": [
+        "compound/pip/docs/html/topics/caching.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pypa/pip",
+          "revision": "9dbd9c36a75d332c84ce6e55004471ab0a474595",
+          "path": "docs/html/topics/repeatable-installs.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pip-LICENSE.txt",
+          "sha256": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+          "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 92
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pip/docs/html/topics/caching.md",
+      "asset": {
+        "path": "assets/compound/pip/docs/html/topics/caching.md",
+        "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pip",
+      "parents": [
+        "compound/pip/docs/html/topics/repeatable-installs.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pypa/pip",
+          "revision": "9dbd9c36a75d332c84ce6e55004471ab0a474595",
+          "path": "docs/html/topics/caching.md"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/compound/pip-LICENSE.txt",
+          "sha256": "634300a669d49aeae65b12c6c48c924c51a4cdf3d1ff086dc3456dc8bcaa2104"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pip/docs/html/topics/caching.md.txt",
+          "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 158
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pip-tools/README.md",
+      "asset": {
+        "path": "assets/compound/pip-tools/README.md",
+        "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea"
+      },
+      "kind": "doc",
+      "source_group": "upstream:pip-tools",
+      "parents": [
+        "compound/pip-tools/piptools/scripts/compile.py"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/jazzband/pip-tools",
+          "revision": "f31c1e66e48e7ff45de254cf10243b1589234243",
+          "path": "README.md"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/pip-tools-LICENSE",
+          "sha256": "075f22737ed9245d386a23968c7ec906f66dfb7af35c3ff920aabd165a8ae920"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pip-tools/README.md.txt",
+          "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 669
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/pip-tools/piptools/scripts/compile.py",
+      "asset": {
+        "path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+        "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9"
+      },
+      "kind": "code",
+      "source_group": "upstream:pip-tools",
+      "parents": [
+        "compound/pip-tools/README.md"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/jazzband/pip-tools",
+          "revision": "f31c1e66e48e7ff45de254cf10243b1589234243",
+          "path": "piptools/scripts/compile.py"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/pip-tools-LICENSE",
+          "sha256": "075f22737ed9245d386a23968c7ec906f66dfb7af35c3ff920aabd165a8ae920"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 572
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/flask/docs/async-await.rst",
+      "asset": {
+        "path": "assets/compound/flask/docs/async-await.rst",
+        "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29"
+      },
+      "kind": "doc",
+      "source_group": "upstream:flask",
+      "parents": [
+        "compound/flask/docs/errorhandling.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pallets/flask",
+          "revision": "d086db856be187255b8ec61ef409357393020f32",
+          "path": "docs/async-await.rst"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/flask-LICENSE.txt",
+          "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/flask/docs/async-await.rst.txt",
+          "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 119
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "compound/flask/docs/errorhandling.rst",
+      "asset": {
+        "path": "assets/compound/flask/docs/errorhandling.rst",
+        "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034"
+      },
+      "kind": "doc",
+      "source_group": "upstream:flask",
+      "parents": [
+        "compound/flask/docs/async-await.rst"
+      ],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "git",
+          "repository": "https://github.com/pallets/flask",
+          "revision": "d086db856be187255b8ec61ef409357393020f32",
+          "path": "docs/errorhandling.rst"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/compound/flask-LICENSE.txt",
+          "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea"
+        },
+        "generation": "No generated source. Complete original upstream file bytes preserved at the pinned commit; independent oracle view applies NFC/LF only. Questions and fact spans were authored after reading the actual paired source text, without models, retrieval, or success-based selection."
+      },
+      "views": [
+        {
+          "id": "original-lines",
+          "path": "views/compound/flask/docs/errorhandling.rst.txt",
+          "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 523
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "compound-real-fastapi-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "In FastAPI, when do background tasks start relative to the returned response, and where do they sit relative to the middleware stack?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 42,
+            "end_char": 113,
+            "text": "You can define background tasks to be run *after* returning a response.",
+            "sha256": "b93a7eb8ef16edf92762361e7691994eaf810949a1118bb7e5afcb9e016b952f"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 18,
+            "end": 18
+          },
+          "span": {
+            "start_char": 932,
+            "end_char": 973,
+            "text": "they will run *after* all the middleware.",
+            "sha256": "da5792060a1615de74d01d0c9a8c50f7051dd6c383fca26bcdff6318133bedd4"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Background tasks run after returning the response.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Background tasks run after all middleware.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:fastapi"
+    },
+    {
+      "id": "compound-real-fastapi-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Can a FastAPI background-task function be synchronous, and which decorator registers HTTP middleware?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 28,
+            "end": 28
+          },
+          "span": {
+            "start_char": 1296,
+            "end_char": 1396,
+            "text": "It can be an `async def` or normal `def` function, **FastAPI** will know how to handle it correctly.",
+            "sha256": "2e6a35892c294df149f4aa813bbc4baf27d70c2b47b7ab1a2322dc68924c754d"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 24,
+            "end": 24
+          },
+          "span": {
+            "start_char": 1029,
+            "end_char": 1121,
+            "text": "To create a middleware you use the decorator `@app.middleware(\"http\")` on top of a function.",
+            "sha256": "f827c67dfba01d347da24dfc1572f1b61f97bac7c235482dace1160c10399d7f"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Task functions can use async def or normal def.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "HTTP middleware uses @app.middleware(\"http\").",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:fastapi"
+    },
+    {
+      "id": "compound-real-fastapi-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does FastAPI combine tasks declared through dependency injection, and which middleware is outermost when several are added?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 52,
+            "end": 52
+          },
+          "span": {
+            "start_char": 2542,
+            "end_char": 2666,
+            "text": "how to reuse the same object, so that all the background tasks are merged together and are run in the background afterwards:",
+            "sha256": "2d62436106e9c5e3e003133ef0e2687d10116a3a18d71213585d8ba3b450f0c2"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 70,
+            "end": 70
+          },
+          "span": {
+            "start_char": 3115,
+            "end_char": 3194,
+            "text": "The last middleware added is the *outermost*, and the first is the *innermost*.",
+            "sha256": "a4a3c339b8f24a5c759cf2ff82d7405ed1118259b93b833cee98bcc1d967cc67"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Dependency injection reuses the same object and merges background tasks.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The last middleware added wraps the others and is outermost.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:fastapi"
+    },
+    {
+      "id": "compound-real-fastapi-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "For FastAPI, what larger tool is suggested for heavy computation without shared process memory, and how can a browser be allowed to read custom response headers?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 78,
+            "end": 78
+          },
+          "span": {
+            "start_char": 3961,
+            "end_char": 4228,
+            "text": "If you need to perform heavy background computation and you don't necessarily need it to be run by the same process (for example, you don't need to share memory, variables, etc), you might benefit from using other bigger tools like [Celery](https://docs.celeryq.dev).",
+            "sha256": "73a4ed881fdaa380b12b2013ca4229f6a962be485c084711babd94dd76878bd3"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 40,
+            "end": 40
+          },
+          "span": {
+            "start_char": 1790,
+            "end_char": 1925,
+            "text": "you need to add them to your CORS configurations ([CORS (Cross-Origin Resource Sharing)](cors.md)) using the parameter `expose_headers`",
+            "sha256": "a2e1c706fc0ba521ed79b1ea1756fd421a37e423b8c53e29fbefd5192ec68ecd"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Celery is suggested for heavy background work that need not share the same process.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Custom headers must be listed in CORS expose_headers for browser access.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:fastapi"
+    },
+    {
+      "id": "compound-real-fastapi-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which FastAPI background-task method accepts the task and its arguments, and which clock does the middleware timing example prefer for precision?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 38,
+            "end": 38
+          },
+          "span": {
+            "start_char": 1753,
+            "end_char": 1840,
+            "text": "pass your task function to the *background tasks* object with the method `.add_task()`:",
+            "sha256": "d3571d11c8ca2b6b0849081a811cf0084b89bed0e0a5caf55fa26b4285c93076"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 64,
+            "end": 64
+          },
+          "span": {
+            "start_char": 2679,
+            "end_char": 2854,
+            "text": "Here we use [`time.perf_counter()`](https://docs.python.org/3/library/time.html#time.perf_counter) instead of `time.time()` because it can be more precise for these use cases.",
+            "sha256": "41509a9fd2e3fce73912fa13fbc3cfdc2fbe0f3e73907fda12a6afd435ef4986"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Use .add_task() to register the task function and its arguments.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The middleware timing example uses time.perf_counter() for precision.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:fastapi"
+    },
+    {
+      "id": "compound-real-rich-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does Rich fit table contents into a narrow terminal, and how can a progress task indicate that its total is not known yet?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/rich/docs/source/tables.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 43,
+            "end": 43
+          },
+          "span": {
+            "start_char": 2445,
+            "end_char": 2592,
+            "text": "Rich will calculate the optimal column sizes to fit your content, and will wrap text to fit if the terminal is not wide enough to fit the contents.",
+            "sha256": "d07411eec36f869546edb6fe25c0206ec02d19dbb201c53202dcfd3761f1eb59"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/rich/docs/source/progress.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 113,
+            "end": 113
+          },
+          "span": {
+            "start_char": 5792,
+            "end_char": 5923,
+            "text": "you can call :meth:`~rich.progress.Progress.add_task` with ``start=False`` or ``total=None`` which will display a pulsing animation",
+            "sha256": "fc43d0c94af1a839dab6f40914823784ef5ff21e89fdb9852cf80ba576a2bc8c"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Rich sizes table columns automatically and wraps content to fit.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "An indeterminate progress task uses start=False or total=None and pulses.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "compound-real-rich-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which Rich table constructor helps position text without headers or borders, and where do messages printed through the progress console appear?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/rich/docs/source/tables.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 158,
+            "end": 158
+          },
+          "span": {
+            "start_char": 8377,
+            "end_char": 8559,
+            "text": "If you disable headers and borders you can use it to position content within the terminal. The alternative constructor :meth:`~rich.table.Table.grid` can create such a table for you.",
+            "sha256": "5274e6ef89c97503bce0636833a8ac435f36c19f42c08f59615db1950106c2a0"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/rich/docs/source/progress.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 195,
+            "end": 195
+          },
+          "span": {
+            "start_char": 10658,
+            "end_char": 10753,
+            "text": "If you print or log to this console, the output will be displayed *above* the progress display.",
+            "sha256": "5dd082c04c923a46fe2a218f41bd464e2b407567c1d2290d8ae9852408365e9a"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Table.grid creates a layout table with headers and borders disabled.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Progress console messages are displayed above the progress display.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "compound-real-rich-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "In Rich, how can table rows alternate styles, and how can the progress display disappear once its context exits?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/rich/docs/source/tables.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 69,
+            "end": 69
+          },
+          "span": {
+            "start_char": 4107,
+            "end_char": 4219,
+            "text": "``row_styles`` Set to a list of styles to style alternating rows. e.g. ``[\"dim\", \"\"]`` to create *zebra stripes*",
+            "sha256": "6a2e2f45cb11d8180bdd298f39616b7e62345268db56966ad08130c71cb56b52"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/rich/docs/source/progress.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 102,
+            "end": 102
+          },
+          "span": {
+            "start_char": 5010,
+            "end_char": 5125,
+            "text": "You can also make the progress display disappear on exit by setting ``transient=True`` on the Progress constructor.",
+            "sha256": "91f5d4deb99af1889170dbeb0af15b3f06e5e693bb80692a93716b6cd9d6c5d7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "row_styles alternates row styles, for example dim and empty styles.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Progress(transient=True) removes the progress display on exit.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "compound-real-rich-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can a Rich table remove its border entirely, and what is the default automatic progress refresh frequency?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/rich/docs/source/tables.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "span": {
+            "start_char": 5134,
+            "end_char": 5191,
+            "text": "You can also set ``box=None`` to remove borders entirely.",
+            "sha256": "d51a2b3c4466586c0c51b3f295b6d454f0ce71991383d9e5533014d0ebac00fb"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/rich/docs/source/progress.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 118,
+            "end": 118
+          },
+          "span": {
+            "start_char": 6236,
+            "end_char": 6304,
+            "text": "By default, the progress information will refresh 10 times a second.",
+            "sha256": "86721e6866165db425165fd0b75037d868169a754f37f2a2310e193fe3447539"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "box=None removes the table border.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Progress refreshes ten times per second by default.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "compound-real-rich-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What Rich table setting draws separators between every row, and what must be done to refresh progress in a Jupyter notebook?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/rich/docs/source/tables.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 97
+          },
+          "span": {
+            "start_char": 5463,
+            "end_char": 5549,
+            "text": "If you want to show lines between all rows add ``show_lines=True`` to the constructor.",
+            "sha256": "605f9dd917987fae5388df5ccb0272520ac2fa43def4aab941bd34bc2d734aa2"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/rich/docs/source/progress.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 17,
+            "end": 17
+          },
+          "span": {
+            "start_char": 633,
+            "end_char": 868,
+            "text": "Progress works with Jupyter notebooks, with the caveat that auto-refresh is disabled. You will need to explicitly call :meth:`~rich.progress.Progress.refresh` or set ``refresh=True`` when calling :meth:`~rich.progress.Progress.update`.",
+            "sha256": "c5dd1227f046ab12d0bf8adf789cb16b686aaf3a204916105b04de7529c6c699"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "show_lines=True draws separators between all table rows.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Jupyter disables auto-refresh; call refresh() or update(refresh=True).",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "compound-real-pytest-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "In pytest, how is the raises match expression applied, and when is a skipif condition evaluated?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pytest/doc/en/how-to/assert.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 168,
+            "end": 169
+          },
+          "span": {
+            "start_char": 4945,
+            "end_char": 5017,
+            "text": "The ``match`` parameter is matched with the :func:`re.search`\n  function",
+            "sha256": "f70426072f2c6c909c0544ec20f1a83aaad08d5378c850b94804cbb7d32a4a03"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pytest/doc/en/how-to/skipping.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 98
+          },
+          "span": {
+            "start_char": 3005,
+            "end_char": 3168,
+            "text": "If the condition evaluates to ``True`` during collection, the test function will be skipped,\nwith the specified reason appearing in the summary when using ``-rs``.",
+            "sha256": "a0c46f877d8b84ea41164e600e5e7166596325b014c8d27739c3b9cf09fbe2d1"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "pytest.raises match uses re.search rather than a full-string match.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "skipif is evaluated during collection and skips if true.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "compound-real-pytest-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does pytest.RaisesGroup treat nested exception structure, and how can a known interpreter-crashing test be recorded as expected failure without executing it?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pytest/doc/en/how-to/assert.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 201,
+            "end": 201
+          },
+          "span": {
+            "start_char": 6371,
+            "end_char": 6552,
+            "text": "It is strict about structure and unwrapped exceptions, unlike :ref:`except* <except_star>`, so you might want to set the ``flatten_subgroups`` and/or ``allow_unwrapped`` parameters.",
+            "sha256": "6451687bf4fd54d08d3f4e5d247c84ff26bd0d442a364e60f9a14006f1ab9a57"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pytest/doc/en/how-to/skipping.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 306,
+            "end": 307
+          },
+          "span": {
+            "start_char": 8964,
+            "end_char": 9093,
+            "text": "If a test should be marked as xfail and reported as such but should not even\nbe executed, use the ``run`` parameter as ``False``:",
+            "sha256": "2237d29627e03bf32bd832060387822954be3b468390617bbea034a1452a96f0"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "RaisesGroup is strict about nesting and unwrapped exceptions unless the documented options relax it.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "xfail(run=False) records expected failure without running the test.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "compound-real-pytest-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can pytest enable rewritten assertions in an imported helper module, and how can a test skip unless docutils version 0.3 is available?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pytest/doc/en/how-to/assert.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 559,
+            "end": 561
+          },
+          "span": {
+            "start_char": 18333,
+            "end_char": 18543,
+            "text": "You can manually enable assertion rewriting for an imported module by calling\n:ref:`register_assert_rewrite <assertion-rewriting>`\nbefore you import it (a good place to do that is in your root ``conftest.py``).",
+            "sha256": "995130001cd27875a1a580f29db43c78126d3a170acfc05d8d0b4710a2108975"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pytest/doc/en/how-to/skipping.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 191,
+            "end": 191
+          },
+          "span": {
+            "start_char": 5850,
+            "end_char": 5910,
+            "text": "docutils = pytest.importorskip(\"docutils\", minversion=\"0.3\")",
+            "sha256": "114787de6446ff2eaa9594b9aadc54c6b90b901934faa937ca87184c7fc9cadf"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Call register_assert_rewrite before importing the helper module.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "pytest.importorskip(\"docutils\", minversion=\"0.3\") enforces availability and minimum version.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "compound-real-pytest-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which kinds of expression values does pytest expose in assertion failures, and how can an unexpectedly passing xfail make the suite fail?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pytest/doc/en/how-to/assert.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 53
+          },
+          "span": {
+            "start_char": 1549,
+            "end_char": 1702,
+            "text": "``pytest`` has support for showing the values of the most common subexpressions\nincluding calls, attributes, comparisons, and binary and unary\noperators.",
+            "sha256": "25f2ebf0df9cf73f63204edbba6c567ddb35e8b015a42422975f30e5bd1d9d2d"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pytest/doc/en/how-to/skipping.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 327,
+            "end": 331
+          },
+          "span": {
+            "start_char": 9550,
+            "end_char": 9709,
+            "text": "@pytest.mark.xfail(strict=True)\n    def test_function(): ...\n\n\nThis will make ``XPASS`` (\"unexpectedly passing\") results from this test to fail the test suite.",
+            "sha256": "b9529a5b4f38f67db758b1cadb6c3022865c99cf1e4b9d5a3996087686e2f749"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Assertion introspection reports calls, attributes, comparisons, and binary/unary subexpressions.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "xfail(strict=True) makes XPASS fail the suite.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "compound-real-pytest-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What pytest helper checks an expected warning, and which command-line option makes xfail markers and pytest.xfail calls ineffective?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pytest/doc/en/how-to/assert.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 375,
+            "end": 376
+          },
+          "span": {
+            "start_char": 12866,
+            "end_char": 12952,
+            "text": "You can check that code raises a particular warning using\n:ref:`pytest.warns <warns>`.",
+            "sha256": "ae3e000e96b37043a6de463146d2a517403b93280404815c23da7acba92eaf64"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pytest/doc/en/how-to/skipping.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 358,
+            "end": 361
+          },
+          "span": {
+            "start_char": 10077,
+            "end_char": 10255,
+            "text": "pytest --runxfail\n\nyou can force the running and reporting of an ``xfail`` marked test\nas if it weren't marked at all. This also causes :func:`pytest.xfail` to produce no effect.",
+            "sha256": "14b9f1e1f26ddd2f91a6d5fb7f3017d508f3144698a49e044d465753c105768d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "pytest.warns checks an expected warning.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "--runxfail ignores xfail marking and disables pytest.xfail's effect.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "compound-real-pydantic-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does Pydantic strict validation change coercion, and which method recursively converts a model to ordinary Python dictionaries?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pydantic/docs/concepts/strict_mode.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 12,
+            "end": 13
+          },
+          "span": {
+            "start_char": 670,
+            "end_char": 816,
+            "text": "When strict mode is enabled, Pydantic will be much\nless lenient when coercing data, and will instead error if the data is not of the correct type.",
+            "sha256": "fc0d4fd55a9ac4be5336b575be3afed13e0ad343323168c53bb58c3ca2097c08"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pydantic/docs/concepts/serialization.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 51
+          },
+          "span": {
+            "start_char": 2071,
+            "end_char": 2302,
+            "text": "When using the Python mode, Pydantic models (and model-like types such as [dataclasses][]) (1) will be (recursively) converted to dictionaries. This is achievable by using the [`model_dump()`][pydantic.BaseModel.model_dump] method:",
+            "sha256": "33caf4f9edc8abbb321b930e52ef7259ca58f7814336617aef63d4a721e539e6"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Strict mode rejects wrong input types instead of silently coercing them.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "model_dump() recursively converts model-like values to Python dictionaries.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "compound-real-pydantic-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Does Pydantic strict JSON validation still accept date strings, and what method returns a JSON-encoded string instead of a Python dictionary?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pydantic/docs/concepts/strict_mode.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 15,
+            "end": 17
+          },
+          "span": {
+            "start_char": 911,
+            "end_char": 1078,
+            "text": "looser rules may apply\nto JSON input (for instance, the [date and time types](../api/standard_library_types.md#date-and-time-types) allow strings\neven in strict mode).",
+            "sha256": "d2c4821568aaf76bdf811bf88a1f47958f1cceb448e3bb6cd59d0ccf30206808"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pydantic/docs/concepts/serialization.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 98
+          },
+          "span": {
+            "start_char": 3614,
+            "end_char": 3848,
+            "text": "Pydantic allows data to be serialized directly to a JSON-encoded string, by trying its best to convert Python values to valid\nJSON data. This is achievable by using the [`model_dump_json()`][pydantic.BaseModel.model_dump_json] method:",
+            "sha256": "07bfaf8c8e3a1632e6596d9d1f4ae285dc10e3227fcb9ed08fae97cfe75bba96"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Date/time strings can remain valid for strict JSON input.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "model_dump_json() returns a JSON-encoded string.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "compound-real-pydantic-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can a Pydantic field stay strict during an otherwise lax validation call, and how can model serialization emit a field's alias?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pydantic/docs/concepts/strict_mode.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 99
+          },
+          "span": {
+            "start_char": 3721,
+            "end_char": 3989,
+            "text": "Strict mode can be enabled on specific fields, by setting the `strict` parameter of the\n[`Field()`][pydantic.Field] function to `True`. Strict mode will be applied for such fields,\neven when the [validation methods](./models.md#validating-data) are called in lax mode.",
+            "sha256": "b84111237d2f05320b314e196ff60f3a45bea9a171b6cee665399c7fdcdf7fe7"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pydantic/docs/concepts/serialization.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 76,
+            "end": 77
+          },
+          "span": {
+            "start_char": 2892,
+            "end_char": 2997,
+            "text": "print(m.model_dump(by_alias=True))\n#> {'banana': 3.14, 'foo_alias': 'hello', 'bar': {'whatever': (1, 2)}}",
+            "sha256": "4bac72f5889248b49ef4e8bd26c1238578c66bdc6be4553748ed92aab63949f7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Field(strict=True) stays strict even during lax validation.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "model_dump(by_alias=True) emits serialization aliases.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "compound-real-pydantic-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Can Pydantic strictness be chosen for one validation call, and which subclass fields are serialized by default for a field annotated as a base model?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pydantic/docs/concepts/strict_mode.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 64,
+            "end": 65
+          },
+          "span": {
+            "start_char": 2754,
+            "end_char": 2951,
+            "text": "Strict mode can be enabled on a per-validation-call basis, when using the [validation methods](./models.md#validating-data)\non [Pydantic models](./models.md) and [type adapters](./type_adapter.md).",
+            "sha256": "5366766f7f3b0794cd02359660b7714eed349ade64fa1ec23a7d79e04ad9e468"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pydantic/docs/concepts/serialization.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 574,
+            "end": 575
+          },
+          "span": {
+            "start_char": 19448,
+            "end_char": 19541,
+            "text": "only the fields declared on the type annotation\nwill be included in the serialization result:",
+            "sha256": "efdba3f6eb69a19565b57bee7282e15fae20ddf7a49722c4b68f32c20786d055"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Strict validation can be enabled per call for models and type adapters.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Default serialization includes fields on the annotated type, rather than extra subclass fields.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "compound-real-pydantic-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can a Pydantic model be strict overall while allowing one coercible age field, and which serialization option removes fields never explicitly supplied?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pydantic/docs/concepts/strict_mode.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 173,
+            "end": 176
+          },
+          "span": {
+            "start_char": 6155,
+            "end_char": 6243,
+            "text": "model_config = ConfigDict(strict=True)\n\n    name: str\n    age: int = Field(strict=False)",
+            "sha256": "190a080a3f0f0ebb74839260377711b1ce3f82592507963ab56c1ff1afcd431c"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pydantic/docs/concepts/serialization.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 938,
+            "end": 940
+          },
+          "span": {
+            "start_char": 32115,
+            "end_char": 32378,
+            "text": "`exclude_unset`: Pydantic keeps track of fields that were *explicitly* set during instantiation (using the\n  [`model_fields_set`][pydantic.BaseModel.model_fields_set] property). Using `exclude_unset`, any field that\n  was not explicitly provided will be excluded:",
+            "sha256": "d5e2e9a2eeda14b947dacc4b58543524ea2621ae692fa212768b30f53f8b21a4"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "ConfigDict(strict=True) can be overridden by Field(strict=False) for age.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "exclude_unset removes fields that were not explicitly provided.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "compound-real-httpx-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does HTTPX attach URL query parameters, and which timeout controls waiting for the socket connection to be established?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/httpx/docs/quickstart.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 34,
+            "end": 34
+          },
+          "span": {
+            "start_char": 655,
+            "end_char": 728,
+            "text": "To include URL query parameters in the request, use the `params` keyword:",
+            "sha256": "68af5bbd95179aa0c416c7bf5bb27b8a9922c5e80d48f7caacfe65f653bd904c"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/httpx/docs/advanced/timeouts.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 48,
+            "end": 49
+          },
+          "span": {
+            "start_char": 1416,
+            "end_char": 1548,
+            "text": "The **connect** timeout specifies the maximum amount of time to wait until\na socket connection to the requested host is established.",
+            "sha256": "76b202f74b3af1b63b21f23ca56e11ad930f94cf74e81ca50642c058584abd2c"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The params keyword attaches URL query parameters.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The connect timeout bounds socket-connection establishment.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "compound-real-httpx-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can HTTPX download a large body without loading it all at once, and does its read timeout bound waiting for each chunk or the entire download?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/httpx/docs/quickstart.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 341,
+            "end": 341
+          },
+          "span": {
+            "start_char": 8288,
+            "end_char": 8410,
+            "text": "For large downloads you may want to use streaming responses that do not load the entire response body into memory at once.",
+            "sha256": "7d5d5e077cc70f1a4bb0025ee7a3d29a8a5a508d64d4ca74e226aa7d5a9505c9"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/httpx/docs/advanced/timeouts.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 52
+          },
+          "span": {
+            "start_char": 1645,
+            "end_char": 1784,
+            "text": "The **read** timeout specifies the maximum duration to wait for a chunk of\ndata to be received (for example, a chunk of the response body).",
+            "sha256": "bcf9ad3a308c4add2e5df1d77a9e90b4e02e908afd4aa0c4b0c6a1d8e5348c56"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Streaming avoids loading the entire response body into memory.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The read timeout bounds waiting for a chunk, rather than imposing a total download deadline.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "compound-real-httpx-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which HTTPX request parameter sends raw bytes or a byte generator, and which timeout applies while sending each chunk?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/httpx/docs/quickstart.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 253,
+            "end": 254
+          },
+          "span": {
+            "start_char": 5710,
+            "end_char": 5840,
+            "text": "For other encodings, you should use the `content=...` parameter, passing\neither a `bytes` type or a generator that yields `bytes`.",
+            "sha256": "212fefce83e13a3d424d4de6663a16effca2e17869c5c570d6dc9ec745d97be1"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/httpx/docs/advanced/timeouts.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 54,
+            "end": 55
+          },
+          "span": {
+            "start_char": 1883,
+            "end_char": 2018,
+            "text": "The **write** timeout specifies the maximum duration to wait for a chunk of\ndata to be sent (for example, a chunk of the request body).",
+            "sha256": "8ed71efaef7e9d7e22a69a6d70a6cf3816c3912a5086b56ac7f989d3268119a4"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Use content= with bytes or a generator yielding bytes.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The write timeout bounds sending a request-body chunk.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "compound-real-httpx-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What HTTPX exception represents a non-success HTTP status, and what separate exception means waiting too long for a pooled connection?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/httpx/docs/quickstart.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 511,
+            "end": 511
+          },
+          "span": {
+            "start_char": 13399,
+            "end_char": 13516,
+            "text": "The `HTTPStatusError` class is raised by `response.raise_for_status()` on responses which are not a 2xx success code.",
+            "sha256": "389d482bf3b2df3243f6f9b780df2a057fb0d7ff5550d146090c171d65e891d2"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/httpx/docs/advanced/timeouts.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 58,
+            "end": 59
+          },
+          "span": {
+            "start_char": 2228,
+            "end_char": 2331,
+            "text": "If HTTPX is unable to acquire a connection\nwithin this time frame, a `PoolTimeout` exception is raised.",
+            "sha256": "73222ae746efecd529bfe4147a7c8b92af877ab36f5305360e8635ee11d19b6d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "raise_for_status() raises HTTPStatusError for a non-2xx response.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A connection-pool acquisition timeout raises PoolTimeout.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "compound-real-httpx-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can an HTTPX response be decoded explicitly as ISO-8859-1, while the client uses a 60-second connect timeout and 10 seconds for the other timeout types?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/httpx/docs/quickstart.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "span": {
+            "start_char": 2051,
+            "end_char": 2076,
+            "text": "r.encoding = 'ISO-8859-1'",
+            "sha256": "3c84d7daf3ae77abf4767b35daed62c5b198a3539dea708f3c93e99924a8c53f"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/httpx/docs/advanced/timeouts.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 66,
+            "end": 67
+          },
+          "span": {
+            "start_char": 2556,
+            "end_char": 2674,
+            "text": "# A client with a 60s timeout for connecting, and a 10s timeout elsewhere.\ntimeout = httpx.Timeout(10.0, connect=60.0)",
+            "sha256": "68bfac62d179aa8f434f01d0eb61f02226188ae5713ab90769166838fe5f3566"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Assign ISO-8859-1 to the response encoding property.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "httpx.Timeout(10.0, connect=60.0) sets a longer connection timeout than the others.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "compound-real-ruff-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which configuration does Ruff choose for a file in a nested directory, and how can formatting violations be checked without changing the file?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/ruff/docs/configuration.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 254,
+            "end": 255
+          },
+          "span": {
+            "start_char": 6733,
+            "end_char": 6811,
+            "text": "For each file, Ruff uses the \"closest\" config file in the\ndirectory hierarchy.",
+            "sha256": "9806190d0313a463e69eced10e121ae32c4edb97359c21cfca8f494d21a39d63"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/ruff/docs/formatter.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 18,
+            "end": 19
+          },
+          "span": {
+            "start_char": 730,
+            "end_char": 896,
+            "text": "`ruff format --check /path/to/file.py` will avoid writing any formatted files back,\nand instead exit with a non-zero status code upon detecting any unformatted files.",
+            "sha256": "4e038f99877d86d2e42a8cf21403d7921c4caa1120f55c83d563d502a7c3f407"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Ruff uses the closest configuration file in the directory hierarchy.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "ruff format --check does not write and returns nonzero for unformatted files.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:ruff"
+    },
+    {
+      "id": "compound-real-ruff-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does Ruff explicitly inherit another config, and does formatting Python examples inside docstrings require opting in?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/ruff/docs/configuration.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 278,
+            "end": 279
+          },
+          "span": {
+            "start_char": 8477,
+            "end_char": 8592,
+            "text": "supports an [`extend`](settings.md#extend) field, which allows you to inherit the settings from another\nconfig file",
+            "sha256": "bfc1dca9c1dab33cae83276004510f74f31a15d3fe939d0913cca6cc2a12ff44"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/ruff/docs/formatter.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 139,
+            "end": 140
+          },
+          "span": {
+            "start_char": 4947,
+            "end_char": 5057,
+            "text": "The Ruff formatter provides an opt-in feature for automatically formatting\nPython code examples in docstrings.",
+            "sha256": "9ba1b4760fd93ef8d093da1159fbc6be39f3742946bed13a6d9950d7bf3c56bd"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The extend field explicitly inherits another configuration file.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Formatting docstring Python examples is an opt-in feature.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:ruff"
+    },
+    {
+      "id": "compound-real-ruff-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which Ruff config wins when .ruff.toml, ruff.toml and pyproject.toml coexist, and what happens to invalid Python examples when docstring formatting is enabled?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/ruff/docs/configuration.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 303,
+            "end": 305
+          },
+          "span": {
+            "start_char": 9119,
+            "end_char": 9334,
+            "text": "If Ruff detects multiple configuration files in the same directory, the `.ruff.toml` file will take\nprecedence over the `ruff.toml` file, and the `ruff.toml` file will take precedence over\nthe `pyproject.toml` file.",
+            "sha256": "4b84fb2ae8df72e4659df595255f1509e5a1fe2b18409bd1e3a7d832b81c04bf"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/ruff/docs/formatter.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 154,
+            "end": 156
+          },
+          "span": {
+            "start_char": 5771,
+            "end_char": 5982,
+            "text": "If a code example is recognized and treated as Python, the Ruff formatter will\nautomatically skip it if the code does not parse as valid Python or if the\nreformatted code would produce an invalid Python program.",
+            "sha256": "10a50034930a64e529ac4fe4fbac2010a276d0d3e97eab68650039f4470e482a"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Precedence is .ruff.toml, then ruff.toml, then pyproject.toml.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Ruff skips unparseable or invalidly reformatted Python docstring examples.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:ruff"
+    },
+    {
+      "id": "compound-real-ruff-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "When Ruff receives a config directly through --config, how are its relative paths resolved, and at what granularity do fmt on/off comments suppress formatting?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/ruff/docs/configuration.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 263,
+            "end": 264
+          },
+          "span": {
+            "start_char": 7245,
+            "end_char": 7390,
+            "text": "any relative paths in that configuration file (like `exclude` globs or\n    `src` paths) are resolved relative to the _current_ working directory.",
+            "sha256": "7f114e3f214a74b1835694b401d9a6c2a237da2c098ebb36d8a604216686367e"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/ruff/docs/formatter.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 335,
+            "end": 335
+          },
+          "span": {
+            "start_char": 10863,
+            "end_char": 10937,
+            "text": "`# fmt: on` and `# fmt: off` comments are enforced at the statement level:",
+            "sha256": "6823c41f0345e19601969161cd688634bb6244f9069ca4904748da8db3fea04a"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Relative paths in an explicitly supplied configuration are resolved against the current working directory.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "fmt on/off suppression operates at statement level.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:ruff"
+    },
+    {
+      "id": "compound-real-ruff-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can Ruff enforce exclusions for files explicitly passed on the command line, and why can a formatted file still trigger E501?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/ruff/docs/configuration.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 345,
+            "end": 346
+          },
+          "span": {
+            "start_char": 11491,
+            "end_char": 11683,
+            "text": "Files that are passed to `ruff` directly are always analyzed, regardless of the above criteria, \nunless [`force-exclude`](settings.md#force-exclude) is also enabled (via CLI or settings file).",
+            "sha256": "b533eb04470e585c28175b0a767ed7bd47af29bb415742719efa9aa71add32db"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/ruff/docs/formatter.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 443,
+            "end": 445
+          },
+          "span": {
+            "start_char": 14264,
+            "end_char": 14508,
+            "text": "the formatter only makes a best-effort attempt to wrap lines at the configured\n[`line-length`](settings.md#line-length). As such, formatted code _may_ exceed the line length,\nleading to [`line-too-long`](rules/line-too-long.md) (`E501`) errors.",
+            "sha256": "82314578a69eed4eb8592fef8569eda9a5dbcea7b4a0a3c335a19d835a0bf3d7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "force-exclude is required to enforce exclusion on directly supplied files.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Formatting is best effort about line length, so E501 may remain.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:ruff"
+    },
+    {
+      "id": "compound-real-poetry-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Does Poetry create another environment when one is already active, and how are dependency entries represented in project.dependencies?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 17,
+            "end": 18
+          },
+          "span": {
+            "start_char": 312,
+            "end_char": 449,
+            "text": "it will first check if it's currently running inside a virtual environment.\nIf it is, it will use it directly without creating a new one.",
+            "sha256": "4e534729af6be5d4c020eaf4f0eefb9b31828c4e9575cfe5e08f5badec178925"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 38,
+            "end": 39
+          },
+          "span": {
+            "start_char": 816,
+            "end_char": 938,
+            "text": "dependencies in `project.dependencies` are specified as strings according\nto [PEP 508](https://peps.python.org/pep-0508/).",
+            "sha256": "f4beb87f2d190b6d3e4d1bef0d3d15e78304abaf5f0eb09685c1c09e0680fbb3"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Poetry directly reuses an already active virtual environment.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "project.dependencies entries are PEP 508 strings.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:poetry"
+    },
+    {
+      "id": "compound-real-poetry-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can Poetry select an interpreter by absolute path and pin a Git dependency to a particular commit in the tool.poetry section?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 57,
+            "end": 57
+          },
+          "span": {
+            "start_char": 1955,
+            "end_char": 1990,
+            "text": "poetry env use /full/path/to/python",
+            "sha256": "4d9ec442a8e660c20ead80c62c57a9f646bc7b8a31078cc0af7d68d9eaf7b5d8"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 309,
+            "end": 310
+          },
+          "span": {
+            "start_char": 9262,
+            "end_char": 9372,
+            "text": "# Get a revision by its commit hash\nflask = { git = \"https://github.com/pallets/flask.git\", rev = \"38eb5d3b\" }",
+            "sha256": "b044078e667068ce0faf3c7d4d9cf35fdcc4051e0f7f184b46e7c05542778b1b"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "poetry env use selects the specified interpreter executable.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A Git dependency's rev key pins the commit hash.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:poetry"
+    },
+    {
+      "id": "compound-real-poetry-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does poetry env activate help activate the environment without a new shell, and how is a local directory dependency installed in editable mode?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 85,
+            "end": 87
+          },
+          "span": {
+            "start_char": 2572,
+            "end_char": 2834,
+            "text": "The `poetry env activate` command prints the activate command of the virtual environment to the console.\nYou can run the output command manually or feed it to the eval command of your shell to activate the environment.\nThis way you won't leave the current shell.",
+            "sha256": "4dc8bc7c3cb5f3d08b6ae1d806c341cf5a8c87ad982a4feb9de709e560aff3b3"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 430,
+            "end": 430
+          },
+          "span": {
+            "start_char": 12915,
+            "end_char": 13019,
+            "text": "To install directory path dependencies in editable mode, use the `develop` keyword and set it to `true`.",
+            "sha256": "d12c47f8c9d4253e867d2889401134d1173259400a31a84eaddf5ffd830b4e63"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "env activate prints a command to evaluate in the current shell.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Local directory dependencies use develop=true for editable installation.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:poetry"
+    },
+    {
+      "id": "compound-real-poetry-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which Poetry command reports the environment's Python executable, and what is tool.poetry.dependencies used for when project.dependencies is also declared?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 152,
+            "end": 152
+          },
+          "span": {
+            "start_char": 4255,
+            "end_char": 4283,
+            "text": "poetry env info --executable",
+            "sha256": "abe9a2f1f85b8a428dc4a528abb0d0690b768e13818a756a8756985285c20d41"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 58,
+            "end": 59
+          },
+          "span": {
+            "start_char": 1477,
+            "end_char": 1659,
+            "text": "When both are specified, `project.dependencies` are used for metadata when building the project,\n`tool.poetry.dependencies` is only used to enrich `project.dependencies` for locking.",
+            "sha256": "32581ec9a7f38b2f1b05348bf5ffb27bd23085965980618e810d6734e6805cbe"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "env info --executable prints the environment's Python executable path.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "project.dependencies supplies build metadata; tool.poetry.dependencies enriches locking information.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:poetry"
+    },
+    {
+      "id": "compound-real-poetry-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can all Poetry virtual environments be removed, and what version-number boundary does a caret requirement preserve during upgrades?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 197,
+            "end": 197
+          },
+          "span": {
+            "start_char": 5160,
+            "end_char": 5183,
+            "text": "poetry env remove --all",
+            "sha256": "d06cbde64a629c4c3545785c7c207642e690a075883048b0d24577f792e5a5f5"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 150,
+            "end": 150
+          },
+          "span": {
+            "start_char": 4538,
+            "end_char": 4666,
+            "text": "An update is allowed if the new version number does not modify the left-most non-zero digit in the major, minor, patch grouping.",
+            "sha256": "ca0566da68bec2728c60c1b0a4db539dee40fd93ebd4761d36ff5b265be1a17e"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "env remove --all removes all project virtual environments.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A caret requirement preserves the leftmost nonzero version component.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:poetry"
+    },
+    {
+      "id": "compound-real-typer-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can a Typer option receive custom help through Annotated, and how does a command request access to the Context object?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 14,
+            "end": 14
+          },
+          "span": {
+            "start_char": 368,
+            "end_char": 450,
+            "text": "lastname: Annotated[str, typer.Option(help=\"this option does this and that\")] = \"\"",
+            "sha256": "aca9a28d39df6018cdff83b7153cf487ed34016a3d17a12a3bdee0ce5c8a1ba1"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 134,
+            "end_char": 223,
+            "text": "But you can access the context by declaring a function parameter of type `typer.Context`.",
+            "sha256": "1a11f35d4b73d0246217297c34b7980e4026eee3cc19e9518d13aa3fbf40b8d7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "typer.Option(help=...) can be placed inside Annotated.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A parameter annotated typer.Context receives the context.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "compound-real-typer-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which Typer option setting groups help into a named Rich panel, and how can the callback run even when no subcommand was supplied?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 57,
+            "end": 57
+          },
+          "span": {
+            "start_char": 1446,
+            "end_char": 1558,
+            "text": "Using Rich, you can set the `rich_help_panel` parameter to the name of the panel you want for each *CLI option*:",
+            "sha256": "ac6b123c4f2e46b21e9520aeab93365412a70a69fb5f605a6865b0678d63d098"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 45,
+            "end": 45
+          },
+          "span": {
+            "start_char": 1254,
+            "end_char": 1340,
+            "text": "But we could make it run even without a subcommand with `invoke_without_command=True`:",
+            "sha256": "bc1877a3ae22ac7b0540cd2fc4145137959339216bdd512e8a1b9f94ee53f7b1"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "rich_help_panel chooses a named option-help panel.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "invoke_without_command=True allows the callback without a subcommand.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "compound-real-typer-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can Typer hide an option's default value in help and detect that only the main callback, not a subcommand, was invoked?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 103,
+            "end": 103
+          },
+          "span": {
+            "start_char": 4532,
+            "end_char": 4624,
+            "text": "You can tell Typer to not show the default value in the help text with `show_default=False`:",
+            "sha256": "b646cf9ec75422d06874b8e8ddb9608ca380a61123d7f0563a6930b08ae336a6"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 73,
+            "end": 75
+          },
+          "span": {
+            "start_char": 1895,
+            "end_char": 2068,
+            "text": "check if there's an invoked command in `ctx.invoked_subcommand`.\n\nIf it's `None`, it means that we are not calling a subcommand but the main program (the callback) directly:",
+            "sha256": "6ffccb75f2d840b37247f6ab4092a6c5dcb55be2b1c6e710e73a949e36d96c0d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "show_default=False hides the displayed default.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "ctx.invoked_subcommand is None for a direct main-callback invocation.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "compound-real-typer-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can Typer replace the displayed default with descriptive text and keep undeclared options as raw command-line arguments?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 132,
+            "end": 132
+          },
+          "span": {
+            "start_char": 5066,
+            "end_char": 5208,
+            "text": "You can use the same `show_default` to pass a custom string (instead of a `bool`) to customize the default value to be shown in the help text:",
+            "sha256": "e41ac91119deca32c7b0c9b005ebe9e041fa8914db0f01d86031fa6b93427c95"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 102,
+            "end": 104
+          },
+          "span": {
+            "start_char": 2509,
+            "end_char": 2741,
+            "text": "For example, you could keep additional *CLI parameters* not declared in your CLI program with `ignore_unknown_options` and `allow_extra_args`.\n\nThen you can access those extra raw *CLI parameters* as a `list` of `str` in `ctx.args`:",
+            "sha256": "e1dce6c09371b4cada3bf34c79b79a5d9fb3dbcc16078788b1bd52c00266e6d8"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "A string value for show_default customizes the displayed default text.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "ignore_unknown_options and allow_extra_args retain raw extra strings in ctx.args.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "compound-real-typer-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Where does Typer put options without a custom Rich help panel, and what happens by default when the application is invoked without a command?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 61,
+            "end": 61
+          },
+          "span": {
+            "start_char": 1664,
+            "end_char": 1776,
+            "text": "you will see a default panel named \"`Options`\" for the *CLI options* that don't have a custom `rich_help_panel`.",
+            "sha256": "b43fadce8b8b9820f12aecf9581db45a0611b17f7aa8dfcf848e12153f284c22"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 41,
+            "end": 43
+          },
+          "span": {
+            "start_char": 1118,
+            "end_char": 1252,
+            "text": "By default, the callback is only executed right before executing a command.\n\nAnd if no command is provided, the help message is shown.",
+            "sha256": "d273fc355992d314e89c60640685744177c5ce19ac461e2b32f8cf667090b1ea"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Options without a custom panel appear in the Options panel.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The callback normally precedes a command; invoking without a command shows help.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "compound-real-uv-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does uv run keep project dependencies synchronized, and why should pytest that needs the installed project use it instead of uvx?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 218,
+            "end": 219
+          },
+          "span": {
+            "start_char": 5690,
+            "end_char": 5856,
+            "text": "Prior to every `uv run` invocation, uv will verify that the lockfile is up-to-date with the\n`pyproject.toml`, and that the environment is up-to-date with the lockfile",
+            "sha256": "0c8dcc12e5e3083e8c859fac9520a314a64e26bc5004db1e978bc2b4f087755f"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 53,
+            "end": 56
+          },
+          "span": {
+            "start_char": 992,
+            "end_char": 1341,
+            "text": "If you are running a tool in a [_project_](../concepts/projects/index.md) and the tool requires that\n    your project is installed, e.g., when using `pytest` or `mypy`, you'll want to use\n    [`uv run`](./projects.md#running-commands) instead of `uvx`. Otherwise, the tool will be run in\n    a virtual environment that is isolated from your project.",
+            "sha256": "7e607d3a5d07e982016f91e7baf56b15b8341ff6dc524064926edc2093660677"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv run synchronizes the lockfile with pyproject and the environment with the lockfile.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Tools requiring the installed project should use uv run because uvx is isolated.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "compound-real-uv-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Why should uv.lock be committed, and does installing a tool with uv make its Python modules importable in the current project environment?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 129,
+            "end": 131
+          },
+          "span": {
+            "start_char": 3394,
+            "end_char": 3612,
+            "text": "the lockfile contains the exact resolved versions that are installed in the project\nenvironment. This file should be checked into version control, allowing for consistent and\nreproducible installations across machines.",
+            "sha256": "fcfbc45ca74b50a8f1e0ec10cc89a9a5fa3c19b93e5cab3b30931f8fc664f4f1"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 185,
+            "end": 186
+          },
+          "span": {
+            "start_char": 4459,
+            "end_char": 4565,
+            "text": "Unlike `uv pip install`, installing a tool does not make its modules available in the current\nenvironment.",
+            "sha256": "0837b77fe57aa72706cc0f01e80c85378b5852a7d97566f3d25cd0eefd557afc"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Commit uv.lock to preserve exact resolved versions reproducibly across machines.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Installed uv tools remain isolated and do not expose modules in the current environment.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "compound-real-uv-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can uv import requirements with a constraints file into a project and run the http command supplied by a differently named package?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 161,
+            "end": 161
+          },
+          "span": {
+            "start_char": 4415,
+            "end_char": 4460,
+            "text": "uv add -r requirements.txt -c constraints.txt",
+            "sha256": "1ca6dd358c62bb3493a907c0d43a927c75231b5e450178be1966446fbea74584"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 72,
+            "end": 72
+          },
+          "span": {
+            "start_char": 1971,
+            "end_char": 1993,
+            "text": "uvx --from httpie http",
+            "sha256": "6f3dcdab7b79466eee77f638d2b5260c1c7c0f56e609f359114026561c2be463"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv add -r requirements.txt -c constraints.txt imports constrained requirements.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "uvx --from httpie http selects the package providing the differently named command.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "compound-real-uv-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can uv upgrade just one locked project package, and will uv tool upgrade discard the tool's existing version constraints?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 176,
+            "end": 177
+          },
+          "span": {
+            "start_char": 4675,
+            "end_char": 4829,
+            "text": "The `--upgrade-package` flag will attempt to update the specified package to the latest compatible\nversion, while keeping the rest of the lockfile intact.",
+            "sha256": "a561c2386fd1a15449be27dcf0786f756a0fda9fafab2964c9e60d4d2f7170d6"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 244,
+            "end": 244
+          },
+          "span": {
+            "start_char": 5960,
+            "end_char": 6045,
+            "text": "Tool upgrades will respect the version constraints provided when installing the tool.",
+            "sha256": "4a653d2714e9b5a84887a07953c3afc7767166b7a0240e7ef5b7ed59c83913e7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv lock --upgrade-package updates the selected package while retaining the rest of the lockfile.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "uv tool upgrade respects existing installation version constraints.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "compound-real-uv-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Where does uv build place the project's distributions by default, and how can mkdocs run with its material theme included without adding it to the project?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 282,
+            "end": 283
+          },
+          "span": {
+            "start_char": 7369,
+            "end_char": 7497,
+            "text": "By default, `uv build` will build the project in the current directory, and place the built\nartifacts in a `dist/` subdirectory:",
+            "sha256": "58f1c9d0b5640fa0f612f23cdb49cb05a2f5ef9a1c9a6d03604cc2154bd8b758"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 156,
+            "end": 156
+          },
+          "span": {
+            "start_char": 3701,
+            "end_char": 3741,
+            "text": "uvx --with mkdocs-material mkdocs --help",
+            "sha256": "8de75bc9b3265cbab01fe03cb0ec5a4821a52ffb55b80afd4ec29f94f9706356"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv build places distribution artifacts in dist/ by default.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "uvx --with mkdocs-material mkdocs includes the additional theme package for the tool invocation.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "compound-real-pip-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can pip capture both direct and transitive package versions, and does its HTTP response cache guarantee an offline install?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 22,
+            "end": 24
+          },
+          "span": {
+            "start_char": 543,
+            "end_char": 735,
+            "text": "A requirements file, containing pinned package versions can be generated using\n{ref}`pip freeze`. This would pin not only the top-level packages, but also all of\ntheir transitive dependencies.",
+            "sha256": "cc2d029798863bd39bcc73f3fc503fe52413a927d87b5ede3b567421ab81e24a"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 26,
+            "end": 27
+          },
+          "span": {
+            "start_char": 800,
+            "end_char": 902,
+            "text": "While this cache attempts to minimize network activity, it does not prevent\nnetwork access altogether.",
+            "sha256": "f265b9e1582eae7738a7c3fa225c612fc685aecb34dc11afe523253803387824"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "pip freeze records pinned direct and transitive dependencies.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The HTTP cache reduces network use but does not guarantee no network access.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip"
+    },
+    {
+      "id": "compound-real-pip-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "For a repeatable pip installation, what operator pins a package to one exact version and which command reports the configured cache directory?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 18,
+            "end": 19
+          },
+          "span": {
+            "start_char": 447,
+            "end_char": 537,
+            "text": "Pinning refers to using the `==` operator to require the package to be a\nspecific version.",
+            "sha256": "b8f8da8b1e6887ec67404969d5778c903135c49de40112e52b8e1c595fee5447"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 73,
+            "end": 73
+          },
+          "span": {
+            "start_char": 2422,
+            "end_char": 2517,
+            "text": "You can use `pip cache dir` to get the cache directory that pip is currently configured to use.",
+            "sha256": "80c74a9f4bdc4ca0647d3320e819330c1d7b0574bfb99be28106013fc7ef56cf"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The == operator pins an exact package version.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "pip cache dir prints the configured cache location.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip"
+    },
+    {
+      "id": "compound-real-pip-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What do hashes add to pip's version pinning, and how can an optional C extension be rebuilt when pip keeps using a cached pure-Python wheel?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 43,
+            "end": 44
+          },
+          "span": {
+            "start_char": 1446,
+            "end_char": 1598,
+            "text": "This protects against a compromise of PyPI or the HTTPS certificate chain. It\nalso guards against a package changing without its version number changing",
+            "sha256": "60a3328f3abec61949b873c5cdf90c61e1c81c4d947a34ca9f7bfb2f2cc674a3"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 118,
+            "end": 120
+          },
+          "span": {
+            "start_char": 3659,
+            "end_char": 3790,
+            "text": "Installing directly from a source\ndistribution will make pip build a wheel, regardless of whether there is a\nmatching cached wheel.",
+            "sha256": "81aae8afe28d2b27fc0491c2979ba0a6b347db9fb91c25a577c65c01c2b34bd0"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Package hashes protect against index/certificate-chain compromise and changed package bytes under the same version.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Installing the source distribution directly forces wheel building despite a matching cached wheel.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip"
+    },
+    {
+      "id": "compound-real-pip-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Is a pip wheelhouse necessarily portable across operating systems, and are wheels from pip install dot reused from cache across separate runs?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 86,
+            "end": 88
+          },
+          "span": {
+            "start_char": 3171,
+            "end_char": 3340,
+            "text": "Note that such a wheelhouse contains compiled packages, which are typically\nOS and architecture-specific, so these archives are not necessarily portable\nacross machines.",
+            "sha256": "6ef4408519a26710dfce0472caa4ae9421e5d192cbbef7a0ee251e234307b46f"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 52
+          },
+          "span": {
+            "start_char": 1868,
+            "end_char": 1992,
+            "text": "Wheels built from source distributions provided to pip as a direct path (such\nas `pip install .`) are not cached across runs",
+            "sha256": "9cf0fc805aff2d5328b9827d902e4f2cd03ef75212427015977d29e2e8d6e95a"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Wheelhouses may contain OS/architecture-specific compiled packages and need not be portable.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Wheels built from direct local source paths are not cached across separate pip runs.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip"
+    },
+    {
+      "id": "compound-real-pip-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which pip install flag prevents installing dependencies absent from the pinned requirements, and how can both wheel and HTTP caches be cleared?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 24,
+            "end": 26
+          },
+          "span": {
+            "start_char": 736,
+            "end_char": 898,
+            "text": "Performing the installation using\n{ref}`--no-deps <install_--no-deps>` would provide an extra dose of insurance\nagainst installing anything not explicitly listed.",
+            "sha256": "29af201f25712882fb7b66f24e534a7f69f20d7ee6208275e7fc21e2061c5f92"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 144,
+            "end": 144
+          },
+          "span": {
+            "start_char": 4479,
+            "end_char": 4551,
+            "text": "`pip cache purge` will clear all files from pip's wheel and HTTP caches.",
+            "sha256": "e9686f63579399d1ab454f2bb8cee84f6897452e07754dbbac6c7e2b63d6a743"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "--no-deps prevents installing unlisted dependencies.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "pip cache purge clears both wheel and HTTP cache contents.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip"
+    },
+    {
+      "id": "compound-real-pip-tools-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Why should pip-compile run inside the project's virtual environment, and in what order does the source code check default input filenames?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 46,
+            "end": 49
+          },
+          "span": {
+            "start_char": 1748,
+            "end_char": 1971,
+            "text": "`pip-compile` should be run from the same virtual environment as your\nproject so conditional dependencies that require a specific Python version,\nor other environment markers, resolve relative to your project's\nenvironment.",
+            "sha256": "d838c0f1055ac4664de22422b73f5dd82d08aee20a72f4b0888c4059dba06383"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 40,
+            "end": 45
+          },
+          "span": {
+            "start_char": 1040,
+            "end_char": 1150,
+            "text": "DEFAULT_REQUIREMENTS_FILES = (\n    \"requirements.in\",\n    \"setup.py\",\n    \"pyproject.toml\",\n    \"setup.cfg\",\n)",
+            "sha256": "22569ddc0d48c545d2fe9e282c61a1f0f3b333c61a035b042b955086ed6c01cc"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Run pip-compile in the project's environment so markers and Python-dependent requirements resolve correctly.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Default input priority is requirements.in, setup.py, pyproject.toml, setup.cfg.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip-tools"
+    },
+    {
+      "id": "compound-real-pip-tools-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How does pip-compile use an existing output file to stabilize versions, and what happens if a file is specified as both input and output?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 236,
+            "end": 239
+          },
+          "span": {
+            "start_char": 7283,
+            "end_char": 7526,
+            "text": "When you run `pip-compile`, it reads any existing output file (e.g.,\n`requirements.txt`) and uses the versions specified there as constraints.\nThis ensures that the output is stable -- `pip-compile` will prefer to\nuse existing pinned versions.",
+            "sha256": "0743977f38937bb9e9c909970df7c2fe6bc8852f81e6f887cd793836b7570322"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 264,
+            "end": 267
+          },
+          "span": {
+            "start_char": 7581,
+            "end_char": 7772,
+            "text": "if output_file.name != \"-\" and output_file.name in src_files:\n        raise click.BadArgumentUsage(\n            f\"input and output filenames must not be matched: {output_file.name}\"\n        )",
+            "sha256": "6f5b2544ea3d97d583526731d152980627792cd413e55674da6cbd2e325a5e4d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Existing output pins become constraints and are preferred for stability.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A matching input/output filename raises click.BadArgumentUsage, except the stdout dash.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip-tools"
+    },
+    {
+      "id": "compound-real-pip-tools-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which packaging tools does pip-sync avoid upgrading or uninstalling, and how does pip-compile pass the configured resolution-round limit to its resolver?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 497,
+            "end": 498
+          },
+          "span": {
+            "start_char": 15237,
+            "end_char": 15342,
+            "text": "`pip-sync` will not upgrade or uninstall packaging tools like\n`setuptools`, `pip`, or `pip-tools` itself.",
+            "sha256": "c2c8095f5b9aadbfed0d340bc0601d544fe6fcca9ba36c4a6c55f1a1992fd202"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 506,
+            "end": 506
+          },
+          "span": {
+            "start_char": 16771,
+            "end_char": 16820,
+            "text": "results = resolver.resolve(max_rounds=max_rounds)",
+            "sha256": "3a2b1ab70e022c8b11d0c5c1c38eacfd2b649a2fca68b7a277114c788bfab7ca"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "pip-sync leaves setuptools, pip, and pip-tools packaging tools alone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "pip-compile forwards the round limit through resolver.resolve(max_rounds=max_rounds).",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip-tools"
+    },
+    {
+      "id": "compound-real-pip-tools-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What pip-compile flag enables package hashes, and how does its implementation choose between legacy and backtracking resolvers?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 253,
+            "end": 254
+          },
+          "span": {
+            "start_char": 8003,
+            "end_char": 8133,
+            "text": "If you would like to use _Hash-Checking Mode_ available in `pip` since\nversion 8.0, `pip-compile` offers `--generate-hashes` flag:",
+            "sha256": "f13103ac0e2fd1017a87ee335fd7916110eed2f740fa099a257f15bafdf974d0"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 492,
+            "end": 492
+          },
+          "span": {
+            "start_char": 16216,
+            "end_char": 16300,
+            "text": "resolver_cls = LegacyResolver if resolver_name == \"legacy\" else BacktrackingResolver",
+            "sha256": "9e78ef0055e5aa727d3a2fda8a37c861712f425e9966586aa08c8d210cc517f7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "--generate-hashes enables pip-compatible hash-checking output.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The legacy name selects LegacyResolver; other supported selections use BacktrackingResolver.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip-tools"
+    },
+    {
+      "id": "compound-real-pip-tools-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which pip-tools requirement files should be version-controlled, and what does the newline helper return if its strategy remains preserve after checking input files?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 503,
+            "end": 505
+          },
+          "span": {
+            "start_char": 15490,
+            "end_char": 15686,
+            "text": "Generally, yes. If you want a reproducible environment installation available\nfrom your source control, then yes, you should commit both `requirements.in`\nand `requirements.txt` to source control.",
+            "sha256": "35128f618e21d2628385b83d2cfdc9a2c8363a3917c677ecc95add733395a217"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 73,
+            "end": 78
+          },
+          "span": {
+            "start_char": 2090,
+            "end_char": 2214,
+            "text": "return {\n        \"native\": os.linesep,\n        \"LF\": \"\\n\",\n        \"CRLF\": \"\\r\\n\",\n        \"preserve\": \"\\n\",\n    }[strategy]",
+            "sha256": "3f63c0d84d8d8df9a7d399730ee24e6e61331abd602d3ba1f1868cdfb1d0ee49"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Commit both requirements.in and requirements.txt for reproducible installation.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The preserve fallback returns the LF newline string.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pip-tools"
+    },
+    {
+      "id": "compound-real-flask-01",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which Flask installation extra enables coroutine error handlers, and does registering a handler automatically set the response's HTTP status?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/flask/docs/async-await.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 8,
+            "end": 10
+          },
+          "span": {
+            "start_char": 102,
+            "end_char": 289,
+            "text": "Routes, error handlers, before request, after request, and teardown\nfunctions can all be coroutine functions if Flask is installed with the\n``async`` extra (``pip install flask[async]``).",
+            "sha256": "ee30154a1cea63e58d1b4c82299f19b528bd44b88d77ea428041a3e7ab5c06d9"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/flask/docs/errorhandling.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 92,
+            "end": 94
+          },
+          "span": {
+            "start_char": 3553,
+            "end_char": 3719,
+            "text": "The status code of the response will not be set to the handler's code. Make\nsure to provide the appropriate HTTP status code when returning a response from\na handler.",
+            "sha256": "0a724b3e34b689276d4c3e200e8985c8f7dbbe0efb5b91457b27f0a9426d64b8"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The flask[async] extra enables coroutine views, error handlers, and request hooks.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A handler must explicitly return the appropriate status code.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:flask"
+    },
+    {
+      "id": "compound-real-flask-02",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Does a Flask async view free its worker to handle other requests, and how is an exception handler selected if there are code and class registrations?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/flask/docs/async-await.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 35,
+            "end": 35
+          },
+          "span": {
+            "start_char": 1137,
+            "end_char": 1197,
+            "text": "Each request still ties up one worker, even for async views.",
+            "sha256": "5d5a4b2f8b981e492d97048eda46c658dc04a3f841d16b04881f36e3f1e81cab"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/flask/docs/errorhandling.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 158,
+            "end": 159
+          },
+          "span": {
+            "start_char": 6077,
+            "end_char": 6293,
+            "text": "When Flask catches an exception while handling a request, it is first looked up by code.\nIf no handler is registered for the code, Flask looks up the error by its class hierarchy; the most specific handler is chosen.",
+            "sha256": "93467d3128195314e2c57b02704dbbd83f27626458deeea229c9fb96bebc6358"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "An async Flask request still occupies one worker.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Flask first checks the HTTP code, then chooses the most specific registered class handler.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:flask"
+    },
+    {
+      "id": "compound-real-flask-03",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "What happens to unfinished tasks spawned by a Flask async view, and where can an InternalServerError handler find the original uncaught exception?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/flask/docs/async-await.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 52,
+            "end": 54
+          },
+          "span": {
+            "start_char": 1914,
+            "end_char": 2029,
+            "text": "This means any additional\nspawned tasks that haven't completed when the async function completes\nwill be cancelled.",
+            "sha256": "2e4ed75f60769376ad96c50901b451dc410c0d39fed468212599aaff3e6c6f2e"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/flask/docs/errorhandling.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 250,
+            "end": 250
+          },
+          "span": {
+            "start_char": 9809,
+            "end_char": 9869,
+            "text": "The original error is available as ``e.original_exception``.",
+            "sha256": "75c6375cc934a2afb8caf75a2fa2f84702242f0aa00adb0dbf971d7609f3de33"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Unfinished tasks are cancelled when the view's event loop stops.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The wrapped original exception is available through e.original_exception.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:flask"
+    },
+    {
+      "id": "compound-real-flask-04",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "How can a Flask extension decorator support coroutine views, and why can't a blueprint's handler catch a routing-level 404?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/flask/docs/async-await.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 95,
+            "end": 96
+          },
+          "span": {
+            "start_char": 3849,
+            "end_char": 3951,
+            "text": "Extension authors can support async functions by utilising the\n:meth:`flask.Flask.ensure_sync` method.",
+            "sha256": "896465c318fc2b64cdba7909a5f8f01a1172d334474fc0051ca2fe10fb9ecacf"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/flask/docs/errorhandling.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 171,
+            "end": 173
+          },
+          "span": {
+            "start_char": 6967,
+            "end_char": 7097,
+            "text": "the blueprint cannot handle 404 routing errors\nbecause the 404 occurs at the routing level before the blueprint can be\ndetermined.",
+            "sha256": "1ff400c9e64dd3e66bf819520491da6e100faa586ca51133298a577051c672b9"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Extension authors can wrap view calls using Flask.ensure_sync.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Routing 404s happen before Flask can determine the blueprint, so its handler cannot handle them.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:flask"
+    },
+    {
+      "id": "compound-real-flask-05",
+      "primary_class": "compound",
+      "tags": [
+        "real",
+        "cross_file"
+      ],
+      "q": "Which framework do Flask's docs suggest considering for a mainly async codebase, and what replaces a registered 500 handler in debug mode?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/flask/docs/async-await.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 69,
+            "end": 70
+          },
+          "span": {
+            "start_char": 2652,
+            "end_char": 2729,
+            "text": "If you have a mainly async codebase it\nwould make sense to consider `Quart`_.",
+            "sha256": "38f4fe6ec93ad400c591f18ac57629916d61b8800ba59e0fb336a441e3b2a0e0"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/flask/docs/errorhandling.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "view_id": "original-lines",
+          "location": {
+            "unit": "line",
+            "start": 253,
+            "end": 255
+          },
+          "span": {
+            "start_char": 9991,
+            "end_char": 10114,
+            "text": "In debug mode, a handler\nfor \"500 Internal Server Error\" will not be used. Instead, the\ninteractive debugger will be shown.",
+            "sha256": "fa04d0e1e45c69d6cbaa25b2315705b62f812ff0937354e886e88a38185180fb"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Flask's docs suggest Quart for a mainly asynchronous codebase.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Debug mode shows the interactive debugger rather than using the 500 error handler.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:flask"
+    }
+  ]
+}

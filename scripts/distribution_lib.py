@@ -20,7 +20,7 @@ REQUIRED_MODULES = ("goldmine/__init__.py", "goldmine/application.py", "goldmine
     "goldmine/mcp_server.py", "goldmine/commands/__init__.py", "goldmine/commands/search.py",
     "goldmine/commands/maintenance.py", "goldmine/lexical.py", "goldmine/storage_connections.py",
     "goldmine/quality.py", "goldmine/query_plan.py", "goldmine/rerank.py", "goldmine/admission.py",
-    "goldmine/ingest/pdf_evidence.py", "goldmine/retrieval_evidence.py", "goldmine/citations.py",
+    "goldmine/ingest/pdf_evidence.py", "goldmine/ingest/exif.py", "goldmine/retrieval_evidence.py", "goldmine/citations.py",
     "goldmine/vector_cache.py", "goldmine/_vector_cache_files.py")
 
 

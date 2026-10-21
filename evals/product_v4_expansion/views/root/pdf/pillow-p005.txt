@@ -1,0 +1,76 @@
+Pillow (PIL Fork), Release 13.0.0
+
+PIL.ImageOps.posterize(image: Image, bits: int) → Image
+Reduce the number of bits for each color channel.
+Parameters
+• image – The image to posterize.
+• bits – The number of bits to keep for each channel (1-8).
+Returns
+An image.
+PIL.ImageOps.solarize(image: Image, threshold: int = 128) → Image
+Invert all pixel values above a threshold.
+Parameters
+• image – The image to solarize.
+• threshold – All pixels above this grayscale level are inverted.
+Returns
+An image.
+PIL.ImageOps.exif_transpose(image: Image, *, in_place: Literal[True]) → None
+PIL.ImageOps.exif_transpose(image: Image, *, in_place: Literal[False] = False) → Image
+If an image has an EXIF Orientation tag, other than 1, transpose the image accordingly, and remove the orientation
+data.
+Parameters
+• image – The image to transpose.
+• in_place – Boolean. Keyword-only argument. If True, the original image is modified
+in-place, and None is returned. If False (default), a new Image object is returned with the
+transposition applied. If there is no transposition, a copy of the image will be returned.
+Resize relative to a given size
+from PIL import Image, ImageOps
+size = (100, 150)
+with Image.open("Tests/images/hopper.webp") as im:
+ImageOps.contain(im, size).save("imageops_contain.webp")
+ImageOps.cover(im, size).save("imageops_cover.webp")
+ImageOps.fit(im, size).save("imageops_fit.webp")
+ImageOps.pad(im, size, color="#f00").save("imageops_pad.webp")
+# thumbnail() can also be used,
+# but will modify the image object in place
+im.thumbnail(size)
+im.save("image_thumbnail.webp")
+
+Given size
+Resulting image
+Resulting size
+
+1.3. Reference
+
+thumbnail()
+
+contain()
+
+cover()
+
+fit()
+
+pad()
+
+(100, 150)
+
+(100, 150)
+
+(100, 150)
+
+(100, 150)
+
+(100, 150)
+
+100×100
+
+100×100
+
+150×150
+
+100×150
+
+100×150
+
+151
+

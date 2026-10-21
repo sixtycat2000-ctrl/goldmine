@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "python": "3.12.0",
+  "numpy": "2.5.4",
+  "production_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "note": "Original production rebuild environment pinned before ranking changes. Corpus was source-curated before any new-corpus relevance run; actual reference preparation must verify this lock and exact original commit. No reference scores are claimed by this input bundle."
+}

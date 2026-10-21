@@ -146,7 +146,8 @@ class CommitMixin:
     ) -> None:
         """The shared verdict tail: mark the row done + tally the report.
         `embedded` selects the live embed identity (None when no vector
-        landed); content_date=None keeps any stored value (store coalesce)."""
+        landed). Image capture metadata replaces/clears the previous epoch;
+        other kinds keep the existing None/coalesce convention."""
         info = dict(info or {})
         if kind in ("image", "audio", "video", "pdf"):
             info["evidence_types"] = file_evidence_types(
@@ -158,7 +159,7 @@ class CommitMixin:
             extractor_version=extractor_version,
             chunker_version=self._chunker_version,
             embed_id=self._embed_identity if embedded else None,
-            content_date=content_date,
+            content_date=content_date, replace_content_date=kind == "image",
         )
         self._tally(report, kind, capability)
 
@@ -198,6 +199,19 @@ class CommitMixin:
         embed: EmbeddingBackend | None,
     ) -> None:
         store = self.store
+        if cand.kind == "image" and outcome.info.get("exif_status") in ("error", "unavailable"):
+            # Extraction workers have no store access. Preserve prior proven
+            # capture metadata here only when the immutable source SHA agrees;
+            # never bless legacy sips dates or carry dates onto changed bytes.
+            from .media import EXIF_METADATA_VERSION
+
+            previous = store.find_by_path(str(cand.path))
+            prior = previous.info or {} if previous else {}
+            if (previous and previous.sha256 == sha and prior.get("exif_version") == EXIF_METADATA_VERSION
+                    and prior.get("taken_source") == "Exif.DateTimeOriginal"
+                    and isinstance(prior.get("taken"), str) and previous.content_date is not None):
+                outcome.info.update({"taken": prior["taken"], "taken_source": prior["taken_source"]})
+                outcome.content_date = previous.content_date
         fid = store.upsert_file(
             FileRec(
                 path=str(cand.path), source="file", kind=cand.kind,
@@ -220,6 +234,7 @@ class CommitMixin:
                     fid, capability="unsupported", detail=outcome.detail,
                     info=info, extractor_version=outcome.extractor_version,
                     report=report, kind=cand.kind,
+                    content_date=outcome.content_date,
                 )
             _merge_reasons(report.unsupported_reasons, outcome.detail or "unknown")
             return

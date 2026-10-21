@@ -1,0 +1,342 @@
+{
+  "schema": 1,
+  "queries_sha256": "44bea88ae1ffecfd9363eb235a0c8f6c55d9162c77beb6477d5b3cafde5ec947",
+  "reviews": [
+    {
+      "question_id": "compound-real-fastapi-04",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read background-tasks.md line78 in the original FastAPI asset: the same-process/shared-memory caveat explicitly recommends Celery. Read middleware.md line40: browser-visible custom headers require CORS expose_headers. Both independent source facts answer their respective clause; neither single file alone supplies both."
+    },
+    {
+      "question_id": "compound-real-httpx-01",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original HTTPX quickstart.md line34 explicitly uses params for URL query parameters. advanced/timeouts.md lines48–50 describes connect timeout as socket-establishment waiting and names ConnectTimeout. The connect/read/write/pool distinction in surrounding lines confirms the label is not borrowing a different timeout."
+    },
+    {
+      "question_id": "compound-real-pip-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original pip repeatable-installs.md lines18–19 defines == as exact-version pinning. caching.md line73 explicitly says pip cache dir prints the configured cache directory. These facts address separate clauses and do not require running pip or assuming a machine-specific directory."
+    },
+    {
+      "question_id": "compound-real-pip-tools-03",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original pip-tools README.md lines497–499: pip-sync does not upgrade/uninstall setuptools, pip or pip-tools itself. Read actual compile.py line506 in the resolver call context: resolver.resolve(max_rounds=max_rounds). The requested forwarded limit is present as executable source, not inferred from the README."
+    },
+    {
+      "question_id": "compound-real-ruff-01",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Ruff configuration.md lines254–256 selects the closest hierarchical config for each file (surrounding exceptions remain visible). formatter.md lines17–19 distinguishes ordinary writes from ruff format --check, which writes nothing and returns nonzero for unformatted files. Both listed facts support the ordinary question as worded."
+    },
+    {
+      "question_id": "compound-real-ruff-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original configuration.md lines275–279 explicitly rejects implicit parent merging and supplies extend for explicit inheritance. formatter.md lines139–140 calls Python docstring example formatting opt-in. The source supports both configuration inheritance and default/opt-in behavior without adding an unstated default."
+    },
+    {
+      "question_id": "compound-real-ruff-03",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original configuration.md lines303–305 gives exact same-directory order .ruff.toml > ruff.toml > pyproject.toml. formatter.md lines154–156 explicitly skips examples that fail to parse or would become invalid after formatting. The two facts preserve the source qualifiers."
+    },
+    {
+      "question_id": "compound-real-uv-03",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original uv projects.md lines159–161: uv add -r requirements.txt -c constraints.txt. Read tools.md lines69–72: the differently named http executable is obtained with uvx --from httpie http. Exact flags and package/executable distinction match both requested actions."
+    },
+    {
+      "question_id": "media-real-asr-2412-153954-0003",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read raw publisher media/acquisition/transcripts/2412-153954.trans.txt line4 (member SHA a96e1be5cb681eba7faaa7941dcc65a9b2f5041a3573b03c5e98276aab8c3a4d): signboards have A BOTTLE AND A GLASS. Removing only utterance-ID prefix reproduces the whole canonical view including LF. Actual unchanged FLAC SHA matches manifest; ffprobe gives130400/16000=8.15s, matching whole-utterance location, with no word-time claim."
+    },
+    {
+      "question_id": "media-real-asr-3000-15664-0005",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Raw publisher media/acquisition/transcripts/3000-15664.trans.txt line6 (SHA7d07118986940b982e96839df3ef733940fb35aac0bc4307b4d2735a2088252c) says the blanket can be foregone AS WOOD FOR FIRES IS EVERYWHERE ABUNDANT. Full raw line, rather than Whisper output, supplies the causal fact. Unchanged FLAC SHA verified;135360frames/16000Hz=8.46s equals the whole-utterance oracle."
+    },
+    {
+      "question_id": "media-real-asr-3536-8226-0000",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Raw publisher media/acquisition/transcripts/3536-8226.trans.txt line1 (SHA9653bc7d450ef1675ade89921ac910c08ca79871cf714fcde01bf7b7dd509eff) explicitly says Lady Milborough scolded him for not returning to his wife and taking her TO NAPLES. Official line after ID removal matches the view exactly. FLAC SHA verified;172080/16000=10.755s, so the cited whole recording covers the fact."
+    },
+    {
+      "question_id": "media-real-asr-5338-284437-0001",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Raw publisher media/acquisition/transcripts/5338-284437.trans.txt line2 (SHAa156765878a4b41dde1ea3799c075db93887b1c2d3a54f18ae107fbd5fc6d5fa) identifies the little stone building as THE PALACE OF TOURMALINE WHO IS OUR QUEEN. Full literal official transcript supports ownership/title. Unchanged FLAC SHA verified;144800/16000=9.05s matches the whole-utterance location."
+    },
+    {
+      "question_id": "noise-conflict_id-001",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read actual CPython hashlib.py algorithm inventory/__all__ and constructor branches: SHA3 variants listed are224/256/384/512, not sha3_1024. Across all175 immutable registered views there is no sha3_1024 definition. A real sha3_512 digest size cannot answer the requested nonexistent constructor; correct behavior must reject the premise rather than substitute an API."
+    },
+    {
+      "question_id": "noise-conflict_id-007",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read actual CPython Modules/zlibmodule.c CRC entry point at1869–1921 and module API description at1980: the implemented named checksum is crc32, not zlib.crc64. Full175-view discriminator check found no zlib.crc64. Polynomial details for a different CRC would not establish this invented function, so empty answer evidence is appropriate."
+    },
+    {
+      "question_id": "noise-conflict_id-018",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read actual Click types.py FloatRange at550–591: __init__ raises TypeError when open bounds and clamp combine, and _clamp also rejects open bounds; no clamp_open entry point or rounding mode exists. Full registered-view check confirms absence. The nearby implementation positively contradicts the question premise; this is not approved by keyword absence alone."
+    },
+    {
+      "question_id": "noise-near_topic-004",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read Click options.rst environment-variable resolution examples around659–750: generic GREETER/USERNAME/PATHS examples describe mechanics, not a warehouse deployment. Inventory of all122 public pinned sources/175views contains no BUILD_ZONE or warehouse CLI record. Yesterday’s actual deployed default depends on missing runtime/config history and cannot be deduced from generic envvar rules."
+    },
+    {
+      "question_id": "noise-near_topic-014",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read CPython random.py seed/getstate semantics around124–158: output depends on seed/state, potentially OS randomness. The122-source public corpus contains no fraud-review worker state,08:15 execution trace or seed; all175views checked for those discriminators. Algorithm documentation cannot recover the next value of this unobserved worker, so no nearby random function is mislabeled as an answer."
+    },
+    {
+      "question_id": "noise-near_topic-016",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read real Pydantic strict-mode/serialization examples and their validation errors: they use generic model/type examples and contain no actual billing-import dataset or last-night customer-row results. Full122-source provenance inventory has no private import log and all175views lack the requested discriminators. Generic validation rules cannot identify unknown input rows without actual data."
+    },
+    {
+      "question_id": "noise-near_topic-018",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read actual uv projects/tools guides: project commands, pyproject/uv.lock and tool invocation examples describe workflow, with no record of a private production lock run or mirror-contact order. Full122-source inventory is public pinned documentation/code/media/papers;175view search found no private-package-mirror execution trace. Default command behavior does not establish yesterday’s observed network first-contact."
+    },
+    {
+      "question_id": "noise-random_terms-016",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Reviewed complete122-source provenance/type inventory (public software docs/code, patents/NIST/Pillow excerpts, public photos and LibriSpeech recordings), plus all175 canonical views: no cafe service record, table-twelve order or coffee-roast batch curve is present. Neither generic random examples nor unrelated natural narratives supplies yesterday’s cafe-specific curve, so this operational fact has no source evidence."
+    },
+    {
+      "question_id": "text-cjk-001",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese reactivity-fundamentals.md line278 states default deep reactivity detects changes to nested objects or arrays, followed by examples. This directly answers whether modifying the nested array is detected; the label does not confuse ref replacement with nested mutation."
+    },
+    {
+      "question_id": "text-cjk-015",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese class-and-style.md lines349–352 shows a multi-value display array and explicitly renders the last browser-supported value. The supported qualifier matters: the answer is not simply the final literal array item on every browser."
+    },
+    {
+      "question_id": "text-cjk-026",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese forms.md line45 says v-model ignores initial value/checked/selected attributes and treats the currently bound JavaScript state as the source of truth. Read the entire tip, including initializing state through data/reactivity APIs; it supports the initial-input-value scenario."
+    },
+    {
+      "question_id": "text-cjk-031",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese watchers.md line230 explicitly attributes deep-watch cost to traversing all nested properties and says to use it only when necessary for large data. This supports both the reason for slowness and the answer to whether it must always be enabled."
+    },
+    {
+      "question_id": "text-cjk-041",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese props.md line138 contrasts 3.4 and earlier with 3.5+, and says the compiler prepends props. when accessing destructured defineProps variables inside the same script setup block. The label preserves version and same-block restrictions."
+    },
+    {
+      "question_id": "text-cjk-042",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Vue Chinese props.md lines367–369 describes downward one-way props updates, no reverse propagation, and warns against mutating a prop in a child. This supports rejecting reverse parent-binding updates; no claim is made that nested object mutation is impossible in every situation."
+    },
+    {
+      "question_id": "text-cjk-056",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original Korean Vite guide/assets.md line29: assets smaller than assetsInlineLimit are imported as Base64 data-URL strings. Adjacent Git-LFS exclusion at line31 remains a qualifier, not contradictory evidence. The requested small-image representation is explicitly stated."
+    },
+    {
+      "question_id": "text-cjk-058",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original Korean Vite guide/assets.md lines69–75 under importing assets as strings: the ?raw suffix imports asset contents as a string. The nearby shader/raw example context supports the query rather than confusing it with URL-only imports."
+    },
+    {
+      "question_id": "text-lookup-002",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Actual original CPython Lib/hashlib.py line58 lists sha256 in __always_supported; surrounding __all__ construction confirms export. This is an exact identifier-navigation query, not a request for an unsupported sha3 variant or digest-size claim."
+    },
+    {
+      "question_id": "text-lookup-004",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/hashlib.py line64 assigns algorithms_guaranteed = set(__always_supported); the neighboring algorithms_available assignment is distinct. The exact identifier and target source file are correct."
+    },
+    {
+      "question_id": "text-lookup-008",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/base64.py lines65–66 define b64decode(s, altchars=None, validate=False) and describe Base64 decoding. This is the precise named function requested, preserving its spelling and module."
+    },
+    {
+      "question_id": "text-lookup-038",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/email/base64mime.py lines49–53 define header_length and compute the Base64 output length. The named helper is present in the cited file; the label is not assigned to another module with a similar header concept."
+    },
+    {
+      "question_id": "text-lookup-040",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/email/base64mime.py lines113–115 explicitly aliases body_decode = decode for compatibility. The exact alias is valid evidence for this identifier-navigation query, with no claim that a separate body_decode function body exists."
+    },
+    {
+      "question_id": "text-lookup-041",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Verified immutable asset path text/cpython/Lib/codecs.py and its actual basename codecs.py. This expected evidence uses name_metadata/basename with no line location; it correctly tests filename navigation rather than pretending the filename is content text."
+    },
+    {
+      "question_id": "text-lookup-044",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/codecs.py lines990–995 define getincrementalencoder(encoding) and document returning the IncrementalEncoder class/factory, raising LookupError if unavailable. The fully qualified lookup points to the correct actual source symbol."
+    },
+    {
+      "question_id": "text-lookup-059",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original CPython Lib/xmlrpc/client.py lines1041–1044 define gzip_encode(data) and explicitly identify RFC1952 gzip content encoding. The exact helper name and target file match; the label is not a generic gzip-module substitution."
+    },
+    {
+      "question_id": "text-semantic-001",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original Requests sessions.py merge_setting context lines79–88: request settings update the merged mapping, then None-valued keys are collected and deleted. This supports removing an inherited key by assigning None and does not confuse omitting a key with deletion."
+    },
+    {
+      "question_id": "text-semantic-021",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original Click termui.py lines102–104 in prompt parameter documentation: confirmation_prompt prompts a second time and may be a custom string. This directly supplies repeated password-entry behavior, independent of the separate hide_input option at lines100–101."
+    },
+    {
+      "question_id": "text-semantic-025",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Read original Click termui.py pause implementation lines769–770: it immediately returns if stdin or stdout is not a TTY. The OR condition verifies that redirecting either stream prevents a keystroke wait, not merely redirecting both."
+    },
+    {
+      "question_id": "text-semantic-026",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Click parser.py lines356–364 handles literal -- explicitly and returns before checking custom prefix handling. This directly supports the unconditional option-terminator behavior and preserves the standalone-token qualifier."
+    },
+    {
+      "question_id": "text-semantic-035",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Requests quickstart.rst lines542–546 explicitly denies an entire-download timeout and clarifies no bytes arriving on the underlying socket for timeout seconds. Read the full note rather than only the truncated anchor: the five-second total-download inference is correctly rejected."
+    },
+    {
+      "question_id": "text-semantic-038",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Requests advanced.rst lines324–329 says a stream=True connection cannot return to the pool until all data is consumed or Response.close is called; the following with-statement advice confirms the partially consumed response context. The label lists both permitted actions."
+    },
+    {
+      "question_id": "text-semantic-055",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Click options.rst lines743–750 distinguishes default whitespace splitting from File/Path OS-path splitting: colon on Unix and semicolon on Windows. The question explicitly asks a repeated path option, so the exception is the correct rule."
+    },
+    {
+      "question_id": "text-semantic-059",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Original Click commands.rst lines316–320 permits nargs=-1 only for the final command in a chain. The question asks which positional argument may be unlimited, and the label preserves the last-command limitation rather than applying the rule to every command."
+    },
+    {
+      "question_id": "v4x-ocr-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Visually read the actual root/screenshots/httpx-connect-timeout.png: the connect-timeout bullet explicitly says inability to establish a connection within that interval raises ConnectTimeout. Compared the full displayed sentence to the independent ocr view; adjacent ReadTimeout/WriteTimeout/PoolTimeout bullets confirm this is the correct exception."
+    },
+    {
+      "question_id": "v4x-ocr-12",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Visually read the original root/screenshots/rich-progress.png under Progress Display: multiple tasks each have a bar, including concurrent work in threads or processes. The whole two-sentence fact is legible in the actual screenshot and matches the ocr view, independently of any production OCR run."
+    },
+    {
+      "question_id": "v4x-ocr-16",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Visually read original root/screenshots/typer-help-panels.png under CLI Options help panels: rich_help_panel sets each option’s named panel; actual code examples also show rich_help_panel=\"Customization and Utils\". The expected parameter spelling is present on pixels, not merely the DOM transcription."
+    },
+    {
+      "question_id": "v4x-ocr-18",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Visually read actual root/screenshots/pytest-monkeypatch.png: the opening paragraph names attribute/dictionary/environment changes and sys.path. The visible helper list confirms setattr/delattr,setitem/delitem,setenv/delenv,syspath_prepend. All question categories are supported by the actual screenshot."
+    },
+    {
+      "question_id": "v4x-pdf-US223898-01",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual root/pdf/US223898-scan.pdf page2 and visually read the left-column opening object paragraph (printed lines7–11): high-resistance lamps allow practical subdivision of electric light. The source pixels support the independent p002 oracle and the exact requested purpose; no OCR ranking used."
+    },
+    {
+      "question_id": "v4x-pdf-US223898-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered and inspected actual US223898 scan page2, left column printed lines12–17: a light-giving body of carbon wire or sheets, coiled/arranged for great electrical resistance. The wording supplies both form and material; the question does not require an unstated filament dimension."
+    },
+    {
+      "question_id": "v4x-pdf-US821393-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual root/pdf/US821393-scan.pdf page4 (printed specification first page), right column around printed lines71–74: each aeroplane has considerably greater side-to-side width than front-to-rear dimension. Visually verified exact directional comparison against p004 oracle, not drawing proportions."
+    },
+    {
+      "question_id": "v4x-pdf-US821393-05",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual US821393 scan page6 (printed page3), right column printed lines116–120: vertical rudder/tail22 is supported to turn around a vertical axis. This directly supports the named component and axis; it is distinct from the preceding central longitudinal-axis balance discussion."
+    },
+    {
+      "question_id": "v4x-pdf-nist-800-145-02",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual nist-800-145-excerpt.pdf page1 (original printed page2), Resource pooling paragraph: customer generally lacks control/knowledge of exact resource location but may specify country/state/datacenter abstraction. The label preserves both generally and higher-level control rather than claiming zero location influence."
+    },
+    {
+      "question_id": "v4x-pdf-nist-800-145-05",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual NIST800-145 excerpt page2 (printed page3), Hybrid cloud paragraph: distinct unique infrastructures are bound by standardized/proprietary technology enabling data/application portability. The oracle/required fact matches this paragraph and does not substitute resource pooling or a public-cloud definition."
+    },
+    {
+      "question_id": "v4x-pdf-nist-800-92-04",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual nist-800-92-excerpt.pdf page4 (printed3-5), section3.3.1 Syslog Format: the bullet explicitly calls message type a facility, with kernel/mail/authorization/printer/audit examples. The date-specific question is supported by the 2006 guide, without assuming another syslog field is a facility."
+    },
+    {
+      "question_id": "v4x-pdf-pillow-04",
+      "reviewer": "AI agent /root/review_delivery (independent of question authors)",
+      "verdict": "verified_from_source",
+      "notes": "Rendered actual pillow-excerpt.pdf page4 (printed68), warning box: greater than twice MAX_IMAGE_PIXELS raises DecompressionBombError; exceeding MAX_IMAGE_PIXELS alone is a warning. Checked strict greater-than and the factor two on actual pixels, not an inferred version-specific numeric constant."
+    }
+  ]
+}

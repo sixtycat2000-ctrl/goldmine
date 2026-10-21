@@ -1,0 +1,28 @@
+{
+  "pageid": 101198740,
+  "title": "File:Ship Felicità on Moskva River near Moscow Kremlin 2018 Aug 04 (3551).jpg",
+  "artist": "Alexey V. Kurochkin",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/8/8b/Ship_Felicit%C3%A0_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_%283551%29.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1107307013",
+  "page_revision": 1107307013,
+  "upload_timestamp": "2021-03-07T17:36:10Z",
+  "published_sha1": "9a6368145e5b7acf1167ea59e0438f8a62729180",
+  "sha256": "1d63c0c11cfc45546e801cc0f9a4f1351550edd1d556d720cddb9326de9b62d3",
+  "bytes": 2427348,
+  "basename": "Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+  "asset": "assets/media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+  "license_file": "licenses/media/commons-101198740.txt",
+  "taken": "2018-08-04 13:04:46",
+  "exif_DateTimeOriginal": "2018:08:04 13:04:46",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2018:08:04 13:04:46",
+    "DateTimeOriginal": "2018:08:04 13:04:46",
+    "DateTimeDigitized": "2018:08:04 13:04:46"
+  },
+  "production_sips_taken": "2018-08-04 13:04:46",
+  "production_taken_matches_DateTimeOriginal": true,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg\n  creation: 2018:08:04 13:04:46\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

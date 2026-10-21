@@ -1,0 +1,902 @@
+[
+  {
+    "chapter_id": "147960",
+    "speaker_id": "2035",
+    "minutes": "1.46",
+    "subset": "dev-clean",
+    "project_id": "1592",
+    "book_id": "19810",
+    "chapter_title": "Book 1 (The Shimerdas), Chapter 7",
+    "project_title": "My Antonia",
+    "metadata_line": 4353,
+    "id": "2035-147960-0002",
+    "text": "ONE DAY WHEN I RODE OVER TO THE SHIMERDAS I FOUND ANTONIA STARTING OFF ON FOOT FOR RUSSIAN PETER'S HOUSE TO BORROW A SPADE AMBROSCH NEEDED",
+    "sample_rate": 16000,
+    "frames": 141440,
+    "duration_s": 8.84,
+    "member": "LibriSpeech/dev-clean/2035/147960/2035-147960-0002.flac",
+    "transcript_member": "LibriSpeech/dev-clean/2035/147960/2035-147960.trans.txt",
+    "transcript_line": 3,
+    "reader_name": "Sharon Bautista",
+    "speaker_metadata_line": 730,
+    "asset": "assets/media/asr/2035-147960-0002.flac",
+    "sha256": "9a6003d48d3f89f4f8a6099fcec13d4b87af5a0b9d37e5e233cef0620d55d9f4",
+    "bytes": 168342,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.840000"
+        }
+      ],
+      "format": {
+        "duration": "8.840000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/2035-147960.trans.txt",
+    "transcript_sha256": "1fd19b6f7381bc94e65861679c0af3b5e418803d34c9fedb1b5a07972dcd2933",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/19810",
+    "librivox_reader_url": "https://librivox.org/reader/2035",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=1592&format=json",
+    "license_file": "licenses/media/librispeech-2035-147960-0002.txt"
+  },
+  {
+    "chapter_id": "110124",
+    "speaker_id": "7976",
+    "minutes": "2.26",
+    "subset": "dev-clean",
+    "project_id": "7215",
+    "book_id": "34431",
+    "chapter_title": "13 - The Little Maid Who Was Wise",
+    "project_title": "Islands of Magic",
+    "metadata_line": 2703,
+    "id": "7976-110124-0001",
+    "text": "EVERY YEAR AT A CERTAIN DAY OF A CERTAIN MONTH HE WENT AWAY TO A DISTANT CITY TO COLLECT MONEY ON AN ACCOUNT",
+    "sample_rate": 16000,
+    "frames": 117601,
+    "duration_s": 7.3500625,
+    "member": "LibriSpeech/dev-clean/7976/110124/7976-110124-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/7976/110124/7976-110124.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "JenniferRutters",
+    "speaker_metadata_line": 2269,
+    "asset": "assets/media/asr/7976-110124-0001.flac",
+    "sha256": "d7657a4692e6e39421ba028c02c5547efc234ddfa47a050fafe01f9fc63f4ae1",
+    "bytes": 127822,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "7.350062"
+        }
+      ],
+      "format": {
+        "duration": "7.350063"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/7976-110124.trans.txt",
+    "transcript_sha256": "b22022422e2408a3464b5165a14842a5d111a651e600c0b26e677d784f8267c6",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/34431",
+    "librivox_reader_url": "https://librivox.org/reader/7976",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=7215&format=json",
+    "license_file": "licenses/media/librispeech-7976-110124-0001.txt"
+  },
+  {
+    "chapter_id": "275156",
+    "speaker_id": "8297",
+    "minutes": "1.92",
+    "subset": "dev-clean",
+    "project_id": "7493",
+    "book_id": "1627",
+    "chapter_title": "Fifth Book - Chapter XLI - Make the Best of It",
+    "project_title": "Evil Genius",
+    "metadata_line": 5380,
+    "id": "8297-275156-0006",
+    "text": "HE HAD PROMISED TO DO HIS BEST TOWARD PERSUADING CATHERINE TO GRANT SYDNEY AN INTERVIEW",
+    "sample_rate": 16000,
+    "frames": 106880,
+    "duration_s": 6.68,
+    "member": "LibriSpeech/dev-clean/8297/275156/8297-275156-0006.flac",
+    "transcript_member": "LibriSpeech/dev-clean/8297/275156/8297-275156.trans.txt",
+    "transcript_line": 7,
+    "reader_name": "David Mecionis",
+    "speaker_metadata_line": 2361,
+    "asset": "assets/media/asr/8297-275156-0006.flac",
+    "sha256": "2e52436814d58a151e21e9642f66b753730f69242a8618e833756427b4f60cba",
+    "bytes": 121463,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "6.680000"
+        }
+      ],
+      "format": {
+        "duration": "6.680000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/8297-275156.trans.txt",
+    "transcript_sha256": "f8b2e0d8ec3d8c07a9cc6ecb39c85a6023b5794feaa3042e717cd9672dea01c5",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/1627",
+    "librivox_reader_url": "https://librivox.org/reader/8297",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=7493&format=json",
+    "license_file": "licenses/media/librispeech-8297-275156-0006.txt"
+  },
+  {
+    "chapter_id": "93302",
+    "speaker_id": "6345",
+    "minutes": "2.67",
+    "subset": "dev-clean",
+    "project_id": "6530",
+    "book_id": "39324",
+    "chapter_title": "01 The Unfaithful Lover",
+    "project_title": "Literary Sense",
+    "metadata_line": 2376,
+    "id": "6345-93302-0001",
+    "text": "HER HANDS SHOULD HAVE BEEN FULL OF BLUEBELLS AND SHE SHOULD HAVE HELD THEM UP TO HIS FACE IN MAIDENLY DEFENCE AS HE SPRANG FORWARD TO TAKE HER IN HIS ARMS",
+    "sample_rate": 16000,
+    "frames": 138000,
+    "duration_s": 8.625,
+    "member": "LibriSpeech/dev-clean/6345/93302/6345-93302-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/6345/93302/6345-93302.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "Jean Bascom",
+    "speaker_metadata_line": 1809,
+    "asset": "assets/media/asr/6345-93302-0001.flac",
+    "sha256": "241ce36622a7bf0192d5a71ead4ba72e3570aac2f54a79f2786a0994e7c1fa9a",
+    "bytes": 146503,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.625000"
+        }
+      ],
+      "format": {
+        "duration": "8.625000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/6345-93302.trans.txt",
+    "transcript_sha256": "2b71c824228c2f1ab618ce3d18b0f2dd4126b0e54fff5cdec62b4f6ef9477b6e",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/39324",
+    "librivox_reader_url": "https://librivox.org/reader/6345",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=6530&format=json",
+    "license_file": "licenses/media/librispeech-6345-93302-0001.txt"
+  },
+  {
+    "chapter_id": "244435",
+    "speaker_id": "6295",
+    "minutes": "3.89",
+    "subset": "dev-clean",
+    "project_id": "6183",
+    "book_id": "3653",
+    "chapter_title": "The Homecoming Part 1",
+    "project_title": "Guns of Bull Run",
+    "metadata_line": 5191,
+    "id": "6295-244435-0001",
+    "text": "COLONEL LEONIDAS TALBOT REGARDED THE WHITE FLAG WITH FEELINGS IN WHICH TRIUMPH AND SADNESS WERE MINGLED STRANGELY",
+    "sample_rate": 16000,
+    "frames": 126160,
+    "duration_s": 7.885,
+    "member": "LibriSpeech/dev-clean/6295/244435/6295-244435-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/6295/244435/6295-244435.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "Michael Packard",
+    "speaker_metadata_line": 1795,
+    "asset": "assets/media/asr/6295-244435-0001.flac",
+    "sha256": "fd1c766546d427730866e37146b25b156522f5d5cfae65d4ecd831a9c4af266d",
+    "bytes": 148468,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "7.885000"
+        }
+      ],
+      "format": {
+        "duration": "7.885000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/6295-244435.trans.txt",
+    "transcript_sha256": "0e0c55208f56922c34b70c0cac41bce7b10a2bfd44a2b37de73ab759f78696d9",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/3653",
+    "librivox_reader_url": "https://librivox.org/reader/6295",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=6183&format=json",
+    "license_file": "licenses/media/librispeech-6295-244435-0001.txt"
+  },
+  {
+    "chapter_id": "66125",
+    "speaker_id": "6313",
+    "minutes": "2.24",
+    "subset": "dev-clean",
+    "project_id": "5485",
+    "book_id": "6067",
+    "chapter_title": "08 - A Daring Rescue",
+    "project_title": "Pony Rider Boys in the Rockies",
+    "metadata_line": 1770,
+    "id": "6313-66125-0011",
+    "text": "BE SURE TO FASTEN HIM SECURELY TO THE LOOP BEFORE YOU GIVE THE SIGNAL TO HAUL UP WARNED THE GUIDE",
+    "sample_rate": 16000,
+    "frames": 81920,
+    "duration_s": 5.12,
+    "member": "LibriSpeech/dev-clean/6313/66125/6313-66125-0011.flac",
+    "transcript_member": "LibriSpeech/dev-clean/6313/66125/6313-66125.trans.txt",
+    "transcript_line": 12,
+    "reader_name": "Jennifer Wiginton",
+    "speaker_metadata_line": 1799,
+    "asset": "assets/media/asr/6313-66125-0011.flac",
+    "sha256": "15105128a9b695c4f1efc09824d948931d0411f777049d30be24d1e55c8b4159",
+    "bytes": 103828,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "5.120000"
+        }
+      ],
+      "format": {
+        "duration": "5.120000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/6313-66125.trans.txt",
+    "transcript_sha256": "feb83c893ae831d7068b8afa87badbd04dafc117f6870d409d0d9004491f691e",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/6067",
+    "librivox_reader_url": "https://librivox.org/reader/6313",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=5485&format=json",
+    "license_file": "licenses/media/librispeech-6313-66125-0011.txt"
+  },
+  {
+    "chapter_id": "284437",
+    "speaker_id": "5338",
+    "minutes": "3.40",
+    "subset": "dev-clean",
+    "project_id": "7879",
+    "book_id": "39159",
+    "chapter_title": "14 - Tourmaline the Poverty Queen",
+    "project_title": "Sky Island (version 2)",
+    "metadata_line": 5579,
+    "id": "5338-284437-0001",
+    "text": "HERE SAID ONE OF THEIR GUIDES AS THE PROCESSION HALTED BEFORE THE LITTLE STONE BUILDING IS THE PALACE OF TOURMALINE WHO IS OUR QUEEN",
+    "sample_rate": 16000,
+    "frames": 144800,
+    "duration_s": 9.05,
+    "member": "LibriSpeech/dev-clean/5338/284437/5338-284437-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/5338/284437/5338-284437.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "S R Colon",
+    "speaker_metadata_line": 1555,
+    "asset": "assets/media/asr/5338-284437-0001.flac",
+    "sha256": "b5e0fe0dcd5fbff502815d302a4e8a9d434a1aac60e4c11b313dee38d9002328",
+    "bytes": 156519,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "9.050000"
+        }
+      ],
+      "format": {
+        "duration": "9.050000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/5338-284437.trans.txt",
+    "transcript_sha256": "a156765878a4b41dde1ea3799c075db93887b1c2d3a54f18ae107fbd5fc6d5fa",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/39159",
+    "librivox_reader_url": "https://librivox.org/reader/5338",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=7879&format=json",
+    "license_file": "licenses/media/librispeech-5338-284437-0001.txt"
+  },
+  {
+    "chapter_id": "57405",
+    "speaker_id": "6319",
+    "minutes": "1.71",
+    "subset": "dev-clean",
+    "project_id": "5170",
+    "book_id": "11582",
+    "chapter_title": "04 - The Flood",
+    "project_title": "Old Greek Stories",
+    "metadata_line": 1541,
+    "id": "6319-57405-0000",
+    "text": "IN THOSE VERY EARLY TIMES THERE WAS A MAN NAMED DEUCALION AND HE WAS THE SON OF PROMETHEUS",
+    "sample_rate": 16000,
+    "frames": 116720,
+    "duration_s": 7.295,
+    "member": "LibriSpeech/dev-clean/6319/57405/6319-57405-0000.flac",
+    "transcript_member": "LibriSpeech/dev-clean/6319/57405/6319-57405.trans.txt",
+    "transcript_line": 1,
+    "reader_name": "thestorygirl",
+    "speaker_metadata_line": 1801,
+    "asset": "assets/media/asr/6319-57405-0000.flac",
+    "sha256": "9a9675d31b8efcc3377910fa1aa86ae9eda393cb3c05025fa1473c0ee5bf0f89",
+    "bytes": 147344,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "7.295000"
+        }
+      ],
+      "format": {
+        "duration": "7.295000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/6319-57405.trans.txt",
+    "transcript_sha256": "e778749efb15bea54040d4a2e8eb0a561c420d6804bca542b2067c94c7e8a345",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/11582",
+    "librivox_reader_url": "https://librivox.org/reader/6319",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=5170&format=json",
+    "license_file": "licenses/media/librispeech-6319-57405-0000.txt"
+  },
+  {
+    "chapter_id": "142845",
+    "speaker_id": "2078",
+    "minutes": "8.03",
+    "subset": "dev-clean",
+    "project_id": "1319",
+    "book_id": "10136",
+    "chapter_title": "081 - Recipes. Chapter 35. Part 1.",
+    "project_title": "Book of Household Management",
+    "metadata_line": 4222,
+    "id": "2078-142845-0013",
+    "text": "A YELLOW VARIETY CALLED GOLDEN MILLET IS SOLD IN THE GROCERS SHOPS FOR MAKING PUDDINGS AND IS VERY DELICATE AND WHOLESOME",
+    "sample_rate": 16000,
+    "frames": 157680,
+    "duration_s": 9.855,
+    "member": "LibriSpeech/dev-clean/2078/142845/2078-142845-0013.flac",
+    "transcript_member": "LibriSpeech/dev-clean/2078/142845/2078-142845.trans.txt",
+    "transcript_line": 14,
+    "reader_name": "Kathy Caver",
+    "speaker_metadata_line": 746,
+    "asset": "assets/media/asr/2078-142845-0013.flac",
+    "sha256": "f77ebdea58b99a74edbd59ac87565ef48ed0989a07ed337fb55cfdc2b5b3315d",
+    "bytes": 194335,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "9.855000"
+        }
+      ],
+      "format": {
+        "duration": "9.855000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/2078-142845.trans.txt",
+    "transcript_sha256": "7d77fbd9ed4ff8814e31823a65ca17b2bd15411e15cd273b93c59e5f74a0027b",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/10136",
+    "librivox_reader_url": "https://librivox.org/reader/2078",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=1319&format=json",
+    "license_file": "licenses/media/librispeech-2078-142845-0013.txt"
+  },
+  {
+    "chapter_id": "161169",
+    "speaker_id": "2803",
+    "minutes": "3.52",
+    "subset": "dev-clean",
+    "project_id": "2260",
+    "book_id": "5792",
+    "chapter_title": "A Peep Into One of God's Storehouses",
+    "project_title": "Stories Mother Nature Told Her Children",
+    "metadata_line": 4693,
+    "id": "2803-161169-0001",
+    "text": "THE SWEETEST PERFUMES FLOATED THROUGH THE AIR WHILE THOUSANDS OF BIRDS ANSWERED THE MUSIC OF FOUNTAINS WITH THEIR SONGS",
+    "sample_rate": 16000,
+    "frames": 151920,
+    "duration_s": 9.495,
+    "member": "LibriSpeech/dev-clean/2803/161169/2803-161169-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/2803/161169/2803-161169.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "aquielisunari",
+    "speaker_metadata_line": 924,
+    "asset": "assets/media/asr/2803-161169-0001.flac",
+    "sha256": "30b7ed1189ca2268621364aa629da6748ac4f941adbd3704b21b3dfc6105b5b1",
+    "bytes": 135819,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "9.495000"
+        }
+      ],
+      "format": {
+        "duration": "9.495000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/2803-161169.trans.txt",
+    "transcript_sha256": "d0dfcb03c21a760cda2af51787c67b156e84d66457cfa7c4e475b51fc214e3fa",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/5792",
+    "librivox_reader_url": "https://librivox.org/reader/2803",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=2260&format=json",
+    "license_file": "licenses/media/librispeech-2803-161169-0001.txt"
+  },
+  {
+    "chapter_id": "4943",
+    "speaker_id": "3752",
+    "minutes": "2.59",
+    "subset": "dev-clean",
+    "project_id": "2528",
+    "book_id": "3424",
+    "chapter_title": "Book 03  Port Arthur. 1838. Chapter 13  The Commandant's Butler",
+    "project_title": "For the Term of His Natural Life",
+    "metadata_line": 245,
+    "id": "3752-4943-0000",
+    "text": "HE HAD BEEN A CLERK IN A BANKING HOUSE AND WAS TRANSPORTED FOR EMBEZZLEMENT THOUGH BY SOME GRAVE DOUBTS AS TO HIS GUILT WERE ENTERTAINED",
+    "sample_rate": 16000,
+    "frames": 141280,
+    "duration_s": 8.83,
+    "member": "LibriSpeech/dev-clean/3752/4943/3752-4943-0000.flac",
+    "transcript_member": "LibriSpeech/dev-clean/3752/4943/3752-4943.trans.txt",
+    "transcript_line": 1,
+    "reader_name": "Mark Welch",
+    "speaker_metadata_line": 1157,
+    "asset": "assets/media/asr/3752-4943-0000.flac",
+    "sha256": "1c5eb27a35b417a40f4393e94f5e94229d7a2c78057656154dfa2735b9781483",
+    "bytes": 163368,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.830000"
+        }
+      ],
+      "format": {
+        "duration": "8.830000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/3752-4943.trans.txt",
+    "transcript_sha256": "5ef2e18f62fa01df5cbfc5e7000d3a59b101b61dbe8d5b8849d3f6f686caecf8",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/3424",
+    "librivox_reader_url": "https://librivox.org/reader/3752",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=2528&format=json",
+    "license_file": "licenses/media/librispeech-3752-4943-0000.txt"
+  },
+  {
+    "chapter_id": "170138",
+    "speaker_id": "1462",
+    "minutes": "2.94",
+    "subset": "dev-clean",
+    "project_id": "2663",
+    "book_id": "94",
+    "chapter_title": "Chapter 2",
+    "project_title": "Alexander's Bridge (version 2)",
+    "metadata_line": 4876,
+    "id": "1462-170138-0006",
+    "text": "WHEN THEY ENTERED THE STAGE BOX ON THE LEFT THE FIRST ACT WAS WELL UNDER WAY THE SCENE BEING THE INTERIOR OF A CABIN IN THE SOUTH OF IRELAND",
+    "sample_rate": 16000,
+    "frames": 137280,
+    "duration_s": 8.58,
+    "member": "LibriSpeech/dev-clean/1462/170138/1462-170138-0006.flac",
+    "transcript_member": "LibriSpeech/dev-clean/1462/170138/1462-170138.trans.txt",
+    "transcript_line": 7,
+    "reader_name": "E. Tavano",
+    "speaker_metadata_line": 542,
+    "asset": "assets/media/asr/1462-170138-0006.flac",
+    "sha256": "ecaddfdff6449400a4d4e5131bfc3d32c51cf483c30f21893318c605675c391e",
+    "bytes": 154113,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.580000"
+        }
+      ],
+      "format": {
+        "duration": "8.580000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/1462-170138.trans.txt",
+    "transcript_sha256": "3e0088f0e1e370db49cca47db6e4411d1ec3b43d9461c48ca8edb4b2f499e25e",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/94",
+    "librivox_reader_url": "https://librivox.org/reader/1462",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=2663&format=json",
+    "license_file": "licenses/media/librispeech-1462-170138-0006.txt"
+  },
+  {
+    "chapter_id": "136532",
+    "speaker_id": "251",
+    "minutes": "3.17",
+    "subset": "dev-clean",
+    "project_id": "994",
+    "book_id": "19445",
+    "chapter_title": "Part 4",
+    "project_title": "Omnilingual",
+    "metadata_line": 3934,
+    "id": "251-136532-0000",
+    "text": "THEY ALSO FOUND A MARTIAN CALENDAR THE YEAR HAD BEEN DIVIDED INTO TEN MORE OR LESS EQUAL MONTHS AND ONE OF THEM HAD BEEN DOMA",
+    "sample_rate": 16000,
+    "frames": 156960,
+    "duration_s": 9.81,
+    "member": "LibriSpeech/dev-clean/251/136532/251-136532-0000.flac",
+    "transcript_member": "LibriSpeech/dev-clean/251/136532/251-136532.trans.txt",
+    "transcript_line": 1,
+    "reader_name": "Mark Nelson",
+    "speaker_metadata_line": 148,
+    "asset": "assets/media/asr/251-136532-0000.flac",
+    "sha256": "39a86dd81ef6a0259f2915845794396df1f420956e31e99179a315f23a6c6ae2",
+    "bytes": 171766,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "9.810000"
+        }
+      ],
+      "format": {
+        "duration": "9.810000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/251-136532.trans.txt",
+    "transcript_sha256": "5f243742976db418f5812983308527911d55324de0f563a4aede24c8863dcb75",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/19445",
+    "librivox_reader_url": "https://librivox.org/reader/251",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=994&format=json",
+    "license_file": "licenses/media/librispeech-251-136532-0000.txt"
+  },
+  {
+    "chapter_id": "83705",
+    "speaker_id": "2428",
+    "minutes": "4.28",
+    "subset": "dev-clean",
+    "project_id": "6157",
+    "book_id": "38188",
+    "chapter_title": "29 - Mr. Whitings and Mary Ann",
+    "project_title": "Amusement Only",
+    "metadata_line": 2159,
+    "id": "2428-83705-0001",
+    "text": "BUT IT IS QUITE PLAIN TO ME THAT ALL THE ARRANGEMENTS FOR MY WEDDING ARE GOING TO BE MADE BY THE SNELLINGS",
+    "sample_rate": 16000,
+    "frames": 109520,
+    "duration_s": 6.845,
+    "member": "LibriSpeech/dev-clean/2428/83705/2428-83705-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/2428/83705/2428-83705.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "Stephen Kinford",
+    "speaker_metadata_line": 840,
+    "asset": "assets/media/asr/2428-83705-0001.flac",
+    "sha256": "a7cfd2d49bd00d7ade17541a2abf885e295ba9155efcf9e800d65afab9a8c5ca",
+    "bytes": 119817,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "6.845000"
+        }
+      ],
+      "format": {
+        "duration": "6.845000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/2428-83705.trans.txt",
+    "transcript_sha256": "e04d475b4a0cbf424bb8674f5c87145ac5153ce149dda9261e6c36bef104063d",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/38188",
+    "librivox_reader_url": "https://librivox.org/reader/2428",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=6157&format=json",
+    "license_file": "licenses/media/librispeech-2428-83705-0001.txt"
+  },
+  {
+    "chapter_id": "137482",
+    "speaker_id": "3170",
+    "minutes": "8.10",
+    "subset": "dev-clean",
+    "project_id": "1037",
+    "book_id": "2981",
+    "chapter_title": "Episode 4: Return to Venice. Chapter 18 part 1",
+    "project_title": "Memoirs of Jacques Casanova Vol. 1",
+    "metadata_line": 3955,
+    "id": "3170-137482-0006",
+    "text": "WE DID THE SAME WITH PHYSICIANS WHOM WE OFTEN SENT HALF DRESSED TO SOME NOBLEMAN WHO WAS ENJOYING EXCELLENT HEALTH",
+    "sample_rate": 16000,
+    "frames": 114320,
+    "duration_s": 7.145,
+    "member": "LibriSpeech/dev-clean/3170/137482/3170-137482-0006.flac",
+    "transcript_member": "LibriSpeech/dev-clean/3170/137482/3170-137482.trans.txt",
+    "transcript_line": 7,
+    "reader_name": "VOICEGUY",
+    "speaker_metadata_line": 1016,
+    "asset": "assets/media/asr/3170-137482-0006.flac",
+    "sha256": "4fdffb603f0a3352c46ab1b7c05a7e0851c0e05205a46c222f426b8d98a89e12",
+    "bytes": 125741,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "7.145000"
+        }
+      ],
+      "format": {
+        "duration": "7.145000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/3170-137482.trans.txt",
+    "transcript_sha256": "3e933f7c8a24323ff0df16ef6e33a88e33700dd1ba2bee8a34ee32e6bf2b2c10",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/2981",
+    "librivox_reader_url": "https://librivox.org/reader/3170",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=1037&format=json",
+    "license_file": "licenses/media/librispeech-3170-137482-0006.txt"
+  },
+  {
+    "chapter_id": "15664",
+    "speaker_id": "3000",
+    "minutes": "8.03",
+    "subset": "dev-clean",
+    "project_id": "3592",
+    "book_id": "326",
+    "chapter_title": "05 - Shasta Rambles and Modoc Memories",
+    "project_title": "Steep Trails",
+    "metadata_line": 661,
+    "id": "3000-15664-0005",
+    "text": "ONE BLANKET WILL BE ENOUGH TO CARRY OR YOU MAY FOREGO THE PLEASURE AND BURDEN ALTOGETHER AS WOOD FOR FIRES IS EVERYWHERE ABUNDANT",
+    "sample_rate": 16000,
+    "frames": 135360,
+    "duration_s": 8.46,
+    "member": "LibriSpeech/dev-clean/3000/15664/3000-15664-0005.flac",
+    "transcript_member": "LibriSpeech/dev-clean/3000/15664/3000-15664.trans.txt",
+    "transcript_line": 6,
+    "reader_name": "Brian von Dedenroth",
+    "speaker_metadata_line": 967,
+    "asset": "assets/media/asr/3000-15664-0005.flac",
+    "sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f",
+    "bytes": 134727,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.460000"
+        }
+      ],
+      "format": {
+        "duration": "8.460000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/3000-15664.trans.txt",
+    "transcript_sha256": "7d07118986940b982e96839df3ef733940fb35aac0bc4307b4d2735a2088252c",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/326",
+    "librivox_reader_url": "https://librivox.org/reader/3000",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=3592&format=json",
+    "license_file": "licenses/media/librispeech-3000-15664-0005.txt"
+  },
+  {
+    "chapter_id": "34629",
+    "speaker_id": "5895",
+    "minutes": "3.02",
+    "subset": "dev-clean",
+    "project_id": "4314",
+    "book_id": "12587",
+    "chapter_title": "061 - Part II, Book the Third, Chapter III - Where the Passer-by Reappears",
+    "project_title": "Man Who Laughs",
+    "metadata_line": 1116,
+    "id": "5895-34629-0007",
+    "text": "THE PLACARD GWYNPLAINE THE LAUGHING MAN TAKEN FROM ITS NAIL IN THE GREEN BOX WAS HUNG UP CLOSE TO THE SIGN OF THE INN",
+    "sample_rate": 16000,
+    "frames": 131120,
+    "duration_s": 8.195,
+    "member": "LibriSpeech/dev-clean/5895/34629/5895-34629-0007.flac",
+    "transcript_member": "LibriSpeech/dev-clean/5895/34629/5895-34629.trans.txt",
+    "transcript_line": 8,
+    "reader_name": "iamartin",
+    "speaker_metadata_line": 1678,
+    "asset": "assets/media/asr/5895-34629-0007.flac",
+    "sha256": "799eed0b067021ad7e64530b2295902006b59468b314081d02a8534b2908e252",
+    "bytes": 154568,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.195000"
+        }
+      ],
+      "format": {
+        "duration": "8.195000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/5895-34629.trans.txt",
+    "transcript_sha256": "47b9eb99ce0ff7bedd61a3fd5b8e95d63d7e1529ea1a169b2ced6d57c5103a72",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/12587",
+    "librivox_reader_url": "https://librivox.org/reader/5895",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=4314&format=json",
+    "license_file": "licenses/media/librispeech-5895-34629-0007.txt"
+  },
+  {
+    "chapter_id": "153954",
+    "speaker_id": "2412",
+    "minutes": "3.24",
+    "subset": "dev-clean",
+    "project_id": "1874",
+    "book_id": "1906",
+    "chapter_title": "First Impressions",
+    "project_title": "Erewhon",
+    "metadata_line": 4499,
+    "id": "2412-153954-0003",
+    "text": "THE VINE GREW OUTSIDE MANY OF THE HOUSES AND THERE WERE SOME WITH SIGN BOARDS ON WHICH WAS PAINTED A BOTTLE AND A GLASS THAT MADE ME FEEL MUCH AT HOME",
+    "sample_rate": 16000,
+    "frames": 130400,
+    "duration_s": 8.15,
+    "member": "LibriSpeech/dev-clean/2412/153954/2412-153954-0003.flac",
+    "transcript_member": "LibriSpeech/dev-clean/2412/153954/2412-153954.trans.txt",
+    "transcript_line": 4,
+    "reader_name": "calystra",
+    "speaker_metadata_line": 836,
+    "asset": "assets/media/asr/2412-153954-0003.flac",
+    "sha256": "9844109ffbdd5630d3de9199bfb0c4edfbfb2287513550840b0b7e78696559b3",
+    "bytes": 144618,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "8.150000"
+        }
+      ],
+      "format": {
+        "duration": "8.150000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/2412-153954.trans.txt",
+    "transcript_sha256": "a96e1be5cb681eba7faaa7941dcc65a9b2f5041a3573b03c5e98276aab8c3a4d",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/1906",
+    "librivox_reader_url": "https://librivox.org/reader/2412",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=1874&format=json",
+    "license_file": "licenses/media/librispeech-2412-153954-0003.txt"
+  },
+  {
+    "chapter_id": "8226",
+    "speaker_id": "3536",
+    "minutes": "3.59",
+    "subset": "dev-clean",
+    "project_id": "2935",
+    "book_id": "5140",
+    "chapter_title": "Mr Bozzle at Home",
+    "project_title": "He Knew He Was Right",
+    "metadata_line": 386,
+    "id": "3536-8226-0000",
+    "text": "IN THE LAST COMMUNICATION WHICH HE HAD RECEIVED FROM LADY MILBOROUGH SHE HAD SCOLDED HIM IN TERMS THAT WERE FOR HER SEVERE BECAUSE HE HAD NOT RETURNED TO HIS WIFE AND TAKEN HER OFF WITH HIM TO NAPLES",
+    "sample_rate": 16000,
+    "frames": 172080,
+    "duration_s": 10.755,
+    "member": "LibriSpeech/dev-clean/3536/8226/3536-8226-0000.flac",
+    "transcript_member": "LibriSpeech/dev-clean/3536/8226/3536-8226.trans.txt",
+    "transcript_line": 1,
+    "reader_name": "Arielle Lipshaw",
+    "speaker_metadata_line": 1099,
+    "asset": "assets/media/asr/3536-8226-0000.flac",
+    "sha256": "18e2eb93889274f30f6898a9b380aafe16f570c33c21191d9d9129ebd016ac59",
+    "bytes": 190185,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "10.755000"
+        }
+      ],
+      "format": {
+        "duration": "10.755000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/3536-8226.trans.txt",
+    "transcript_sha256": "9653bc7d450ef1675ade89921ac910c08ca79871cf714fcde01bf7b7dd509eff",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/5140",
+    "librivox_reader_url": "https://librivox.org/reader/3536",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=2935&format=json",
+    "license_file": "licenses/media/librispeech-3536-8226-0000.txt"
+  },
+  {
+    "chapter_id": "130726",
+    "speaker_id": "652",
+    "minutes": "4.68",
+    "subset": "dev-clean",
+    "project_id": "657",
+    "book_id": "9464",
+    "chapter_title": "Bohemia of the Present, As it is in Germany/recipe",
+    "project_title": "Bohemian San Francisco",
+    "metadata_line": 3546,
+    "id": "652-130726-0001",
+    "text": "THOMPSON OPENED A LARGE RESTAURANT IN O'FARRELL STREET JUST ABOVE FILLMORE AND FOR TWO YEARS OR MORE DID A THRIVING BUSINESS HIS PLACE BEING NOTED FOR ITS GOOD COOKING AND ITS SPLENDID SERVICE",
+    "sample_rate": 16000,
+    "frames": 173680,
+    "duration_s": 10.855,
+    "member": "LibriSpeech/dev-clean/652/130726/652-130726-0001.flac",
+    "transcript_member": "LibriSpeech/dev-clean/652/130726/652-130726.trans.txt",
+    "transcript_line": 2,
+    "reader_name": "Scott Walter",
+    "speaker_metadata_line": 292,
+    "asset": "assets/media/asr/652-130726-0001.flac",
+    "sha256": "2f349c4a0090e473fe41eddd985c686be98ff6b22d461e060019492f814e9ff6",
+    "bytes": 214867,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "flac",
+          "sample_rate": "16000",
+          "channels": 1,
+          "duration": "10.855000"
+        }
+      ],
+      "format": {
+        "duration": "10.855000"
+      }
+    },
+    "transcript_file": "acquisition/transcripts/652-130726.trans.txt",
+    "transcript_sha256": "791f299c9f5de5627f6052c8ab7393827598e3297feb1559e6813adf1075565f",
+    "gutenberg_book_url": "https://www.gutenberg.org/ebooks/9464",
+    "librivox_reader_url": "https://librivox.org/reader/652",
+    "librivox_project_api_url": "https://librivox.org/api/feed/audiobooks?id=657&format=json",
+    "license_file": "licenses/media/librispeech-652-130726-0001.txt"
+  }
+]

@@ -1,0 +1,12 @@
+Public-domain status statement for original historical patent publications
+
+These are faithful raster scans of US patents first published in 1849 (Abraham Lincoln, died 1865), 1876 (Alexander Graham Bell, died 1922), 1880 (Thomas Alva Edison, died 1931), and 1906 (Orville and Wilbur Wright, died 1948 and 1912). The original publications predate 1929; the authors died more than 70 years before acquisition in 2026. No modern drawings, translations, annotations, or Google interface material is included. No patent-rights-expiration claim is used as a substitute for copyright status.
+
+Primary original publications and faithful scan download locations are pinned by full SHA256 and page map in provenance/pdf-pages.json. Repackaging removes only the inaccurate hidden machine-OCR layer and preserves the exact decoded raster pixels of the already-scanned pages. The repackaging adds no authorship to the historical work. Original patent numbers, dates, author names, and all scanned notices remain visible.
+
+US6469: https://patents.google.com/patent/US6469A/en (published May 22, 1849)
+US174465: https://patents.google.com/patent/US174465A/en (published March 7, 1876)
+US223898: https://patents.google.com/patent/US223898A/en (published January 27, 1880)
+US821393: https://patents.google.com/patent/US821393A/en (published May 22, 1906)
+
+This file records the corpus curator's public-domain basis; it is not a new license granted by Google or a claim that all patent publications are copyright-free.

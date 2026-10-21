@@ -62,6 +62,13 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "scripts"))  # eval_real (the house scorer)
 
+# The formal exporter selects an isolated production checkout BEFORE importing
+# goldmine. The historical aggregate/advisory interface below stays compatible.
+if __name__ == "__main__" and "--raw" in sys.argv[1:]:
+    from public_eval.runner import main as raw_main
+
+    raise SystemExit(raw_main(sys.argv[1:]))
+
 from goldmine.backends import create_backend  # noqa: E402
 from goldmine.backends.base import PROMPT_SCHEME  # noqa: E402
 from goldmine.chunker import CHUNKER_VERSION  # noqa: E402
@@ -592,6 +599,9 @@ def run_dataset_arms(store: Store, backend, name: str, entry: dict,
             kept_ids = [docid_from_path(h.path) for h in kept]
             rows.append({
                 "query": {"id": qid, "tag": f"public/{name}"},
+                "fetched_ranked_docids": docids,
+                "post_cut_ranked_docids": kept_ids,
+                "query_text_sha256": hashlib.sha256(queries[qid].encode("utf-8")).hexdigest(),
                 "metrics": score_query_public(kept_ids, qrels[qid], max_grade),
             })
             if verbose:
@@ -986,12 +996,14 @@ def _run(args: argparse.Namespace) -> int:
     if args.json:
         print(json.dumps({
             "suite": "beir-mini", "backend": args.backend,
+            "advisory_only": True,
+            "formal_export": "Use --raw with explicit prepared cache, production root, model and server.",
             "datasets": {
                 name: {
                     "n_queries": res["n_queries"],
                     "wall_search_s": round(res["wall_search_s"], 1),
                     "arms": {arm: {"metrics": data["metrics"],
-                                   "cis": data["cis"]}
+                                   "cis": data["cis"], "rows": data["rows"]}
                              for arm, data in res["arms"].items()},
                 } for name, res in results.items()},
         }, indent=1, ensure_ascii=False))

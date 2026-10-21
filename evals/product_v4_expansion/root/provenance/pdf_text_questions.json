@@ -1,0 +1,218 @@
+{
+  "nist-800-145": [
+    [
+      6,
+      "In the 2011 NIST cloud definition, how many essential characteristics, service models, and deployment models are there?",
+      "This cloud model is composed of five essential characteristics, three service models, and four deployment models."
+    ],
+    [
+      6,
+      "How much location control does the customer normally have when a cloud provider pools resources?",
+      "There is a sense of location independence in that the customer generally has no control or knowledge over the exact location of the provided resources but may be able to specify location at a higher level of abstraction (e.g., country, state, or datacenter)."
+    ],
+    [
+      6,
+      "What makes on-demand cloud self-service independent of a provider's support staff?",
+      "A consumer can unilaterally provision computing capabilities, such as server time and network storage, as needed automatically without requiring human interaction with each service provider."
+    ],
+    [
+      7,
+      "Which parts of an IaaS deployment can a consumer control according to the NIST definition?",
+      "The consumer does not manage or control the underlying cloud infrastructure but has control over operating systems, storage, and deployed applications; and possibly limited control of select networking components (e.g., host firewalls)."
+    ],
+    [
+      7,
+      "What connects the otherwise distinct infrastructures that make up a hybrid cloud?",
+      "Hybrid cloud. The cloud infrastructure is a composition of two or more distinct cloud infrastructures (private, community, or public) that remain unique entities, but are bound together by standardized or proprietary technology that enables data and application portability (e.g., cloud bursting for load balancing between clouds)."
+    ]
+  ],
+  "nist-800-92": [
+    [
+      15,
+      "What distinguishes an individual log entry from a log in the 2006 NIST guide?",
+      "A log is a record of the events occurring within an organization’s systems and networks. Logs are composed of log entries; each entry contains information related to a specific event that has occurred within a system or network."
+    ],
+    [
+      29,
+      "Under what conditions does the logging guide say to rotate a log file?",
+      "Log rotation is closing a log file and opening a new log file when the first file is considered to be complete. Log rotation is typically performed according to a schedule (e.g., hourly, daily, weekly) or when a log file reaches a certain size."
+    ],
+    [
+      30,
+      "What must be calculated and kept securely to detect later changes to archived logs?",
+      "Log file integrity checking involves calculating a message digest for each file and storing the message digest securely to ensure that changes to archived logs are detected."
+    ],
+    [
+      31,
+      "Which syslog message attribute is called a facility in the 2006 NIST logging guide?",
+      "Message type, known as a facility. Examples of facilities include kernel messages, mail system messages, authorization messages, printer messages, and audit messages."
+    ],
+    [
+      37,
+      "What do the three tiers of a typical log management system do?",
+      "The first tier encompasses the hosts that generate the original log data. The second tier includes centralized log servers, which perform consolidation and data storage. The third tier contains consoles that are used to monitor and review log data, and optionally may also be used to manage the log servers and clients."
+    ]
+  ],
+  "nist-800-22r1a": [
+    [
+      24,
+      "What balance does the monobit test expect in a random bit sequence?",
+      "The purpose of this test is to determine whether the number of ones and zeros in a sequence are approximately the same as would be expected for a truly random sequence."
+    ],
+    [
+      26,
+      "What does the block-frequency test become when its block size is one bit?",
+      "For block size M=1, this test degenerates to test 1, the Frequency (Monobit) test."
+    ],
+    [
+      29,
+      "Why does NIST's longest-run test only need to test runs of ones?",
+      "Note that an irregularity in the expected length of the longest run of ones implies that there is also an irregularity in the expected length of the longest run of zeroes. Therefore, only a test for ones is necessary."
+    ],
+    [
+      32,
+      "What kind of dependence is the binary matrix rank test intended to reveal?",
+      "The purpose of this test is to check for linear dependence among fixed length substrings of the original sequence."
+    ],
+    [
+      42,
+      "How does Maurer's universal test use compressibility to identify a non-random sequence?",
+      "The purpose of the test is to detect whether or not the sequence can be significantly compressed without loss of information. A significantly compressible sequence is considered to be non-random."
+    ]
+  ],
+  "nist-800-38a": [
+    [
+      15,
+      "How do the initialization-vector requirements differ for CBC/CFB and OFB in SP 800-38A?",
+      "The IV need not be secret; however, for the CBC and CFB modes, the IV for any particular execution of the encryption process must be unpredictable, and, for the OFB mode, unique IVs must be used for each execution of the encryption process."
+    ],
+    [
+      16,
+      "Can ECB's individual block cipher calculations be performed concurrently?",
+      "In ECB encryption and ECB decryption, multiple forward cipher functions and inverse cipher functions can be computed in parallel."
+    ],
+    [
+      22,
+      "Does CTR decryption call the forward or inverse cipher, and how does it recover plaintext?",
+      "In CTR decryption, the forward cipher function is invoked on each counter block, and the resulting output blocks are exclusive-ORed with the corresponding ciphertext blocks to recover the plaintext blocks."
+    ],
+    [
+      25,
+      "How broadly must counter-block uniqueness hold when using CTR under one key?",
+      "The specification of the CTR mode requires a unique counter block for each plaintext block that is ever encrypted under a given key, across all messages."
+    ],
+    [
+      28,
+      "Where do a ciphertext block's bit errors propagate in the next block of CBC decryption?",
+      "In the CBC mode, any bit positions that contain bit errors in a ciphertext block will also contain bit errors in the decryption of the succeeding ciphertext block; the other bit positions are not affected."
+    ]
+  ],
+  "nist-800-107r1": [
+    [
+      6,
+      "What event is called a hash collision in SP 800-107 Revision 1?",
+      "An event in which two different messages have the same message digest."
+    ],
+    [
+      8,
+      "What guessing probability defines an unbiased random bit in the hash recommendation?",
+      "A bit for which an attacker has exactly a 50% probability of success of guessing the value of the bit as either a zero or one. It is also called an unbiased bit."
+    ],
+    [
+      12,
+      "When shortening a hash to 96 bits, which end of the SHA-256 digest does NIST's example retain?",
+      "The leftmost 96 bits of the 256-bit message digest generated by SHA-256 are selected as the truncated message digest, and the rightmost 160 bits of the message digest are discarded."
+    ],
+    [
+      16,
+      "Who has to share the secret key used to generate and verify an HMAC tag?",
+      "The HMAC algorithm requires the use of a secret key that is shared between the entity that generates the HMAC output (e.g., a message sender), and the entity (or entities) that need to verify the transmitted MacTag (message receiver(s))."
+    ],
+    [
+      18,
+      "Does a matching HMAC tag completely rule out a successful forgery in the 2012 recommendation?",
+      "The successful verification of a MacTag does not completely guarantee that the accompanying text is authentic; there is a slight chance that an adversary with no knowledge of the HMAC key, K, can present a (MacTag, text) pair that will pass the verification procedure."
+    ]
+  ],
+  "pytest": [
+    [
+      17,
+      "Which container types can pytest.approx compare besides individual numbers in the 9.1 manual?",
+      "pytest.approx works with scalars, lists, dictionaries, and NumPy arrays. It also supports comparisons involving NaNs."
+    ],
+    [
+      64,
+      "How many previous temporary test directories does pytest keep by default, and which settings change that?",
+      "By default, the last 3 temporary directories are kept, but this behavior can be configured with tmp_path_retention_count and tmp_path_retention_policy ."
+    ],
+    [
+      65,
+      "When are changes made with pytest's monkeypatch fixture automatically undone?",
+      "All modifications will be undone after the requesting test function or fixture has finished."
+    ],
+    [
+      88,
+      "Does calling capsys.readouterr stop further capture of the test's output?",
+      "The readouterr() call snapshots the output so far - and capturing will be continued."
+    ],
+    [
+      94,
+      "How does the recwarn fixture prevent a warning check from leaking global state into later tests?",
+      "The recwarn fixture automatically ensures to reset the warnings filter at the end of the test, so no global state is leaked."
+    ]
+  ],
+  "sphinx": [
+    [
+      21,
+      "Which Sphinx make target both builds LaTeX and invokes the PDF toolchain?",
+      "make latexpdf runs the LaTeX builder and readily invokes the pdfTeX toolchain for you."
+    ],
+    [
+      102,
+      "Which Sphinx translation setting includes source locations in message catalogs, and is it enabled by default?",
+      "gettext_location Type bool Default True If True, Sphinx generates location information for messages in message catalogs."
+    ],
+    [
+      109,
+      "Which Sphinx source pattern wins if a file matches both an inclusion and an exclusion?",
+      "A list of glob-style patterns that should be excluded when looking for source files. They are matched against the source file names relative to the source directory, using slashes as directory separators on all platforms. exclude_patterns has priority over include_patterns."
+    ],
+    [
+      119,
+      "How can a Sphinx project deliberately copy a dotfile from its static directory?",
+      "For security reasons, dotfiles under html_static_path will not be copied. If you would like to copy them intentionally, explicitly add each file to this setting:"
+    ],
+    [
+      229,
+      "For missing Django dependencies during a Sphinx autodoc build, must every submodule be listed for mocking?",
+      "You may only specify the root package of the dependencies themselves and omit the sub-modules: autodoc_mock_imports = ['django'] Will mock all imports under the django package."
+    ]
+  ],
+  "pillow": [
+    [
+      16,
+      "What does a Pillow image's size tuple represent?",
+      "The size attribute is a 2-tuple containing width and height (in pixels)."
+    ],
+    [
+      18,
+      "Why is Pillow's Image.open normally fast even when an image file is large?",
+      "When you open a file, the file header is read to determine the file format and extract things like mode, size, and other properties required to decode the file, but the rest of the file is not processed until later."
+    ],
+    [
+      30,
+      "Which operations support Pillow's Lanczos resampling filter?",
+      "Resampling.LANCZOS Calculate the output pixel value using a high-quality Lanczos filter (a truncated sinc) on all pixels that may contribute to the output value. This filter can only be used with the resize() and thumbnail() methods."
+    ],
+    [
+      72,
+      "At what pixel count does Pillow raise DecompressionBombError rather than just a warning?",
+      "If the number of pixels is greater than twice MAX_IMAGE_PIXELS, then a DecompressionBombError will be raised instead."
+    ],
+    [
+      155,
+      "After applying an EXIF Orientation transform, what does ImageOps.exif_transpose do with that orientation metadata?",
+      "If an image has an EXIF Orientation tag, other than 1, transpose the image accordingly, and remove the orientation data."
+    ]
+  ]
+}

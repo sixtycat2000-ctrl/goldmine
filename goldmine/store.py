@@ -300,26 +300,29 @@ class Store:
         chunker_version: str | None = None,
         embed_id: str | None = None,
         content_date: float | None = None,
+        replace_content_date: bool = False,
     ) -> None:
         """Finalize a file row. v2 identity plumbing: `chunker_version` /
         `embed_id` write the per-file identity at commit time (05 §4.2) — the
         pipeline passes the live values; embed_id stays NULL on vectorless
         files. Both columns are always written with the given values.
         `content_date` (05 §4.1c, C10) is written only when the extractor
-        produced one (EXIF taken epoch); None keeps any existing value."""
+        produced one (EXIF taken epoch); None keeps any existing value unless
+        replace_content_date explicitly marks authoritative image metadata,
+        where an absent capture date must clear a previous edit timestamp."""
         import time
 
         with self.write_transaction():
             self.db.execute(
                 """UPDATE files SET state = ?, capability = ?, detail = ?, info = ?,
                    extractor_version = ?, chunker_version = ?, embed_id = ?,
-                   content_date = coalesce(?, content_date),
+                   content_date = CASE WHEN ? THEN ? ELSE coalesce(?, content_date) END,
                    indexed_at = ? WHERE id = ?""",
                 (
                     state, capability, detail,
                     json.dumps(info) if info is not None else None,
                     extractor_version, chunker_version, embed_id,
-                    content_date,
+                    replace_content_date, content_date, content_date,
                     time.time(), fid,
                 ),
             )

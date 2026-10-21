@@ -104,6 +104,14 @@ def test_exif_taken_from_real_camera_file():
     assert 946684800 < epoch < 4102444800
 
 
+def test_imageio_heic_capture_with_literal_quoted_unicode_path(tmp_path):
+    target = tmp_path / "literal ' `echo ignored` 中文.heic"
+    original = (Path(__file__).parent / "fixtures_data/exif-date.heic").read_bytes()
+    target.write_bytes(original)
+    assert media.exif_taken(target)[0] == "2024-05-17 09:30:00"
+    assert target.read_bytes() == original
+
+
 def test_thumb_byte_cap_constant():
     """The post-thumbnail cap is the ~8 MB refusal (v1's 20 MB raw cap is
     gone) — pinned so a silent policy change fails here."""

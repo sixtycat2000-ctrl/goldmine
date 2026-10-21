@@ -80,3 +80,20 @@ def test_public_gap_has_concrete_raw_export_migration(targets):
     assert set(plan['datasets'])=={'scifact','nfcorpus','arguana'}
     assert set(plan['arms'])=={'lexical','semantic','rrf','hybrid'}
     assert 'post_cut_ranked_docids' in plan['per_query_required'] and len(plan['migration'])>=4
+
+
+def test_asr_witness_must_occur_literally_in_actual_cited_segment():
+    from types import SimpleNamespace
+    import hashlib
+    from product_eval.alignment import asr_word_spans
+
+    canonical = 'THE WITNESS DID NOT BRING THE SIGNED REPORT HOME TODAY'
+    observed = 'The witness did not bring the signed report home today.'
+    span = {**asr_word_spans(canonical, observed)[0], 'evidence_type': 'asr_text'}
+    store = SimpleNamespace(segment_text=lambda sid: observed if sid == 7 else '')
+    ir._observed_readback(store, 7, span)
+    changed = canonical.lower()  # Same tokens; different actual case/punctuation bytes.
+    span['word_alignment']['observed_text'] = changed
+    span['word_alignment']['observed_sha256'] = hashlib.sha256(changed.encode()).hexdigest()
+    with pytest.raises(InvalidEvidence, match='actual pinned SQLite segment'):
+        ir._observed_readback(store, 7, span)

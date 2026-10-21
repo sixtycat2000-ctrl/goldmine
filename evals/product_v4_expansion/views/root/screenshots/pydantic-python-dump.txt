@@ -1,0 +1,1 @@
+When using the Python mode, Pydantic models (and model-like types such as dataclasses) will be (recursively) converted to dictionaries. This is achievable by using the model_dump() method:

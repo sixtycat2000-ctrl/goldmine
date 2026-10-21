@@ -1,0 +1,1 @@
+You may also use the color’s number (an integer between 0 and 255) with the syntax "color(<number>)". The following will give the equivalent output:

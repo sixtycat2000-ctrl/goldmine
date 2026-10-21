@@ -1,0 +1,28 @@
+{
+  "pageid": 97646961,
+  "title": "File:Yoneshiro River 201911.jpg",
+  "artist": "Wc018",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Yoneshiro_River_201911.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1013965259",
+  "page_revision": 1013965259,
+  "upload_timestamp": "2020-12-16T11:17:45Z",
+  "published_sha1": "ca0675d49fb0c4d3b1d5e7960aa2441304bb76bf",
+  "sha256": "2e32c4cbe0e41e45c025f1f966cc0f0de687556a445e56b3ca1b0c12ec1f34cb",
+  "bytes": 5325089,
+  "basename": "Yoneshiro_River_201911.jpg",
+  "asset": "assets/media/photos/Yoneshiro_River_201911.jpg",
+  "license_file": "licenses/media/commons-97646961.txt",
+  "taken": "2019-11-05 10:22:32",
+  "exif_DateTimeOriginal": "2019:11:05 10:22:32",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2019:11:05 10:22:32",
+    "DateTimeOriginal": "2019:11:05 10:22:32",
+    "DateTimeDigitized": "2019:11:05 10:22:32"
+  },
+  "production_sips_taken": "2019-11-05 10:22:32",
+  "production_taken_matches_DateTimeOriginal": true,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Yoneshiro_River_201911.jpg\n  creation: 2019:11:05 10:22:32\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

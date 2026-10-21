@@ -1,0 +1,21 @@
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=View on the Saraor river}}
+|date=2024-05-28 15:26:12
+|source={{own}}
+|author=[[User:Горбунова М.С.|Горбунова М.С.]]
+|permission=
+|other versions=
+}}
+{{Location|42.23849|46.258335}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Saraor]]
+[[Category:Photos by User:Горбунова М.С.]]
+[[Category:Quality images of rivers in Russia]]
+[[Category:Quality images of Dagestan]]
+[[Category:2024 in Dagestan]]
+[[Category:Quality images by Горбунова М.С.]]
+{{QualityImage}}

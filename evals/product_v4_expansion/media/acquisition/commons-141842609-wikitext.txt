@@ -1,0 +1,49 @@
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=Water reflection of sunset with gray and orange clouds over the ''Xe Don'' River, and three boats moored to the bank in [[:en:Pakse|Pakse]], [[:en:Laos|Laos]].}}
+{{es|1=Reflejos de nubes grises y anaranjadas sobre el agua del [[:c:Category:Xe Don River|río Xe Don]] al atardecer en [[:en:Pakse|Pakse]], Laos. En el muelle están amarrados tres barcos tradicionales de madera.}}
+{{fr|1=Reflet dans l'eau d'un coucher de soleil avec des nuages gris et orange au-dessus de la rivière Sé Don, et trois bateaux amarrés à la berge à [[:fr:Paksé|Paksé]], au [[:fr:Laos|Laos]].}}
+{{uk|1=Водне відображення заходу сонця з сірими та помаранчевими хмарами над річкою {{wu|Сідон (річка)|Сідон}} з трьома човнами, пришвартованими до берега в {{wu|Паксе}}, Лаос.}}
+
+|date=2023-09-20 17:47:29
+|source={{own}}
+|author=[[User:Basile Morin|Basile Morin]]
+|permission=
+|other versions=
+}}{{Location|15.12155|105.797362}}
+
+== {{Assessment}} ==
+{{Assessments|featured=1|quality=1}}
+{{Picture of the day|year=2025|month=2|day=17}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Photographs by Basile Morin]]
+[[Category:Taken with Canon EOS 5D Mark IV and Canon EF 24-70mm F2.8L II USM]]
+[[Category:Water reflections of clouds in Laos]]
+[[Category:Xe Don River]]
+[[Category:Gray clouds in Laos]]
+[[Category:Orange clouds in Laos]]
+[[Category:Colorful sky in Laos]]
+[[Category:River banks in Laos]]
+[[Category:Clouds at sunset in Laos]]
+[[Category:Pirogues in Laos]]
+[[Category:Monsoon in Laos]]
+
+[[Category:Quality images by Basile Morin]]
+[[Category:Quality images by Basile Morin/Landscapes]]
+[[Category:Quality images of clouds in Laos]]
+[[Category:Quality images of Champasak Province]]
+[[Category:Quality images of landscapes in Laos]]
+[[Category:Quality images of boats]]
+[[Category:Featured pictures by Basile Morin]]
+[[Category:Featured pictures of Laos]]
+[[Category:Featured pictures of sunsets]]
+[[Category:Featured pictures of boats]]
+[[Category:Featured pictures of watercourses]]
+[[Category:Featured pictures of clouds]]
+[[Category:Quality images of sunsets]]
+[[Category:2023 in Champasak Province]]
+[[Category:Reflections in still water]]
+[[Category:Quality images of water reflections]]

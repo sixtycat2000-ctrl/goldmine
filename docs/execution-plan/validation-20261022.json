@@ -1,0 +1,164 @@
+{
+  "schema": 1,
+  "date": "2026-10-22",
+  "scope": "current local checkpoint; no release candidate or hosted claim",
+  "platform": {
+    "os": "Darwin",
+    "arch": "arm64",
+    "python": "3.12.0"
+  },
+  "observed_commit": "22bd5059d597650e4ca6c6108d258ab650629b86",
+  "candidate_content_map_sha256": "d91b22d86a1e4f189c41285c496c2fe5ff1cf7a75e7581618449913165fab3b7",
+  "registry_sha256": "a028fbea4fe80688fb6e7c1f89ae5df9f2b93f1416b365f00860c9e77ddee3f2",
+  "parser_sha256": "eca4e40514ff5dca4cbec1ba24ce5bd0fa863169ad509897ceb52c17ae8513f7",
+  "targets_sha256": "85feb27eb9bdad9bd766fef89810d2014a8312d201199b8dde17bd697082024b",
+  "ci_profiles": {
+    "base": {
+      "status": "PASS",
+      "n": 1486,
+      "required_skips": 0,
+      "evidence": {
+        "path": "reports/execution/P0-06/frozen-base-009/manifest.json",
+        "sha256": "9be016b04255324973a27dc20c5c1c21e65ada18e2ad54c2455ad4d7a6a8af5f"
+      }
+    },
+    "native": {
+      "status": "PASS",
+      "n": 189,
+      "required_skips": 0,
+      "evidence": {
+        "path": "reports/execution/P0-06/frozen-native-009/manifest.json",
+        "sha256": "44ff502714841811098dcb3816b5eb5f7432c690710b1de528adf2228cadf614"
+      }
+    },
+    "mcp": {
+      "status": "PASS",
+      "n": 6,
+      "required_skips": 0,
+      "evidence": {
+        "path": "reports/execution/P0-06/frozen-mcp-009/manifest.json",
+        "sha256": "8ce2ff2a1f8ba7df8c4da92c00f313d03a23c24fb6934ad6ccbf06c81b375c2b"
+      }
+    },
+    "foresight": {
+      "status": "PASS",
+      "n": 8,
+      "required_skips": 0,
+      "evidence": {
+        "path": "reports/execution/P0-06/frozen-foresight-009/manifest.json",
+        "sha256": "526cb3c29aa718d942c336a03abd6afd07d51143e369b5f77926917922f10235"
+      }
+    }
+  },
+  "ci_total_passed": 1689,
+  "product_dev": {
+    "status": "FAIL",
+    "missing": [],
+    "n_queries": 210,
+    "task_tests_passed": 94,
+    "readback_atoms": {
+      "reference": 4445,
+      "candidate": 8169
+    },
+    "failed_gate_count": 11,
+    "evidence": {
+      "path": "reports/execution/P0-05/product-expansion-001/task-acceptance-004/manifest.json",
+      "sha256": "e860b6650bc26ced8b2816a68c6ef4902246d3e0cbd5c8f258452a55b3aba611"
+    }
+  },
+  "evidence": {
+    "ci_local": {
+      "path": "reports/execution/P2-05/ci-local-008/manifest.json",
+      "sha256": "0b36406d5525d111db13eabf071e8feb6b9f5a0dfb2174a83cd75c887ac064e3"
+    },
+    "ci_task": {
+      "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
+      "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
+    },
+    "distribution": {
+      "path": "reports/execution/P2-06/distribution-006.json",
+      "sha256": "4c705e1fabe0584e932d675b87196444b867ce883d5721fef08ca8ade6ce5e6c"
+    },
+    "distribution_task": {
+      "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
+      "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
+    },
+    "documentation": {
+      "path": "reports/execution/P2-07/docs-002/manifest.json",
+      "sha256": "a7a723595d52fad36260603eb1a8e4c704b1370c9996dda345abb2794e796b80"
+    },
+    "documentation_component_task": {
+      "path": "reports/execution/P2-07/docs-task-003/manifest.json",
+      "sha256": "84d93f9c7fc153f9fb75d454ab1b47e1ecbce4fa907ca6a1f3bd80b47dc82dca"
+    },
+    "capacity_tool_freeze": {
+      "path": "reports/execution/P2-02/full-cli-source-freeze-001.json",
+      "sha256": "60bd4d6518ff29e68fba7b2e2c3e3b22e5a61829d34895bd989972f1b04d4434"
+    },
+    "capacity_independent_review": {
+      "path": "reports/execution/P2-02/delivery-review-002/results.json",
+      "sha256": "2a4d3961ad5674b296ea481b347ae66e4ee86896962c53bb272e7f4f42f31df3"
+    },
+    "capacity_integration": {
+      "path": "reports/execution/P2-02/full-cli-mechanical-002/manifest.json",
+      "sha256": "dcc695094ad900db27ccef68073638db4240ee40bbfd00b8743554f33ae12710"
+    },
+    "compound_independent_diagnostic": {
+      "path": "reports/execution/P1-06/compound-diagnostic-001/diagnostic.json",
+      "sha256": "130a6d9eb2db5d00c24fda800f000ec288adfe075c508b2adefae757693ffb54"
+    },
+    "public_asset_acquisition": {
+      "path": "reports/execution/P0-06/public-assets-001/execution/manifest.json",
+      "sha256": "2a20b3f7f99690609301fe995859ef689b0b899457dfbd728d8e6a4b11b8965f"
+    },
+    "public_assets_verified": {
+      "path": "reports/execution/P0-06/public-assets-001/verified.json",
+      "sha256": "14bbcda1c771844c5b43ed5662ca8370e0623b48de5448de11f60f73b10d58fb"
+    }
+  },
+  "documentation": {
+    "status": "PASS",
+    "documents": 14,
+    "local_links": 55,
+    "actual_offline_commands": 22,
+    "external_links_checked": false,
+    "whole_P2_07_verified": false
+  },
+  "capacity": {
+    "tooling_status": "independently_reviewed",
+    "integration_passed": 60,
+    "complete12_measured": false
+  },
+  "superseded_or_incomplete_attempts": [
+    {
+      "path": "reports/execution/P0-06/frozen-base-007/",
+      "reason": "one opaque-image fixture invoked ImageIO; retryable error made unchanged assertion fail; fixture isolated and full profiles008 rerun"
+    },
+    {
+      "path": "reports/execution/P0-05/product-expansion-001/task-acceptance-001/",
+      "reason": "evaluation-only interpreter lacked pytest and project import; no complete task result"
+    },
+    {
+      "path": "reports/execution/P0-05/product-expansion-001/task-acceptance-002/",
+      "reason": "complete real quality FAIL; recaptured003 after unrelated hermetic fixture edit to keep current acceptance source binding"
+    },
+    {
+      "path": "reports/execution/P2-06/task-acceptance-006/",
+      "reason": "distribution bundle replay passed but explicit assets.wheel/sdist/native_tar input refs missing; supplied all refs in task007"
+    },
+    {
+      "path": "reports/execution/P0-06/frozen-*-008/",
+      "reason": "all1689 passed; final removal of an extra EOF blank line in test_exif.py changed the strict source hash, so all profiles009 and task proofs were recaptured; no production/evaluator/ranking change"
+    }
+  ],
+  "hosted_status": "MISSING",
+  "holdout_queries_exposed": 0,
+  "release_eligible": false,
+  "public_assets": {
+    "status": "PASS",
+    "datasets": 3,
+    "scope": "exact ZIP assets only; real ingestion/rankings not run",
+    "cache_root": "/Users/yul/.cache/goldmine-evaluation-20261022-expansion/public-assets",
+    "checked_against": "evals/public_manifest.json"
+  }
+}

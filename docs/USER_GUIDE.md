@@ -2,19 +2,21 @@
 
 > Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
 
-The plain-language guide: what goldmine is, how to set it up in three commands, what daily
-use looks like, and what to do when something goes wrong. Every example below is real
-output from a scratch run on this machine (paths trimmed). Jargon is explained where it
-first appears.
+This guide explains setup, daily use and recovery. The terminal transcript below
+is a historical scratch run with trimmed paths. Current behavior and evidence are
+listed in [FEATURE_STATUS](FEATURE_STATUS.md); historical timings are not promises
+for a fresh installation.
 
 ---
 
 ## What goldmine is
 
 goldmine is a Mac command-line tool that indexes the folders you point it at — documents,
-PDFs, notes, code, web pages, screenshots, audio — so you can search them by *meaning*, not
-just by filename. Everything runs on your Mac: the files never leave it, and the only
-network use is downloading the embedding model once (310 MB). It also keeps its promises
+PDFs, notes, code, web pages, screenshots and audio. Text embeddings support meaning
+search; names, metadata, actual OCR and timestamped speech are distinct evidence.
+The default llama backend does not search photographs by visual contents. Local
+indexing and search stay on your Mac. Explicit model preparation downloads models,
+and choosing a URL for ingest fetches that URL. The index keeps its behavior
 auditable: for every file it tells you exactly what happened (fully searchable, name-only,
 skipped on purpose, or failed — with the reason).
 
@@ -26,13 +28,23 @@ of `~/Documents`, `~/Downloads`, or `~/Desktop`. Setup asks you to pick folders 
 echoed before the first index run, recorded in config (`[init] roots`), and shown by
 `goldmine status` — so "what does it actually look at?" is always one command away.
 
-## Setup in 3 commands
+## Setup from a local checkout
 
 ```bash
-python3 -m pip install -e .        # numpy is the only dependency
-goldmine init                      # guided setup, resumable
-goldmine search "pod eviction memory pressure"
+python3 -m venv .venv
+.venv/bin/python -m pip install .
 ```
+
+Python3.12+ is required; numpy is the only base runtime dependency. Use
+`.venv/bin/goldmine` for subsequent commands, or activate this environment first.
+The [README keyword quickstart](../README.md#start-with-local-keyword-search)
+works without a model or native server. No public package release is configured.
+
+For semantic search, prepare the pinned embedding model and a compatible
+llama-server explicitly; a model download does not supply the server binary.
+Set `GOLDMINE_LLAMA_SERVER=/absolute/path/llama-server` to the compatible binary.
+See [local native builds and installation](BUILDING.md). Then
+`.venv/bin/goldmine init` offers resumable guided setup and scope selection.
 
 `goldmine init` walks through eight steps: environment check, embedding model (downloads
 once, resumable, checksum-verified), a live model test, **folder choice**, optional speech
@@ -136,12 +148,25 @@ Do the `fix:` line. If it recurs, run the `more:` line.
 
 Plain text, Markdown, HTML, and web pages; Word (docx), RTF/DOC/ODT (via macOS `textutil`);
 PDFs — text pages directly, **scanned pages via OCR**; source code (with `--code`);
-`.eml` and `.epub`; images (metadata + thumbnails, HEIC included); **screenshots and scans
+`.eml` and `.epub`; `.rst` is indexed as plain text with original markup and lines,
+without rendering or executing directives; images (metadata + thumbnails, HEIC included); **screenshots and scans
 via Vision OCR**; audio and video **via whisper transcription** (searchable with
 `0:06s`-style positions). Deliberately *not* read: secrets (`.env`, keys), minified bundles,
 archives — each gets an explicit `unsupported` row with the reason, so silence never hides a
 file. Missing optional tools (poppler, ffmpeg) downgrade capability for the affected kinds
 and are reported by `goldmine doctor` — they never break a run.
+
+Photo capture metadata uses actual EXIF `DateTimeOriginal`; the IFD0 edit time
+and `sips creation` do not substitute for it. JPEG metadata is read without
+native tools. Other image formats use macOS ImageIO through the built-in
+`osascript` with a bounded timeout. Missing/unsupported capture time is `None`.
+The stored `taken` string preserves the camera's wall clock. An explicit EXIF
+offset determines its epoch; without an offset, date filters retain the
+host-local time convention, without claiming the photographer's timezone.
+Ordinary ingest repairs legacy photo metadata once and records that version.
+Transient native failures retain an error marker and retry on the next ordinary
+ingest. A previously verified capture date survives a failed refresh only when
+the source bytes are unchanged; legacy edit dates receive no such exemption.
 
 ## What v2.0 added vs v1
 
@@ -224,8 +249,15 @@ content is swept (cards that fall below the minimum dissolve), and the threshold
 inherited so labels stay stable. `--refresh` forces a full rebuild; `status` tells you when
 cards are empty after the v4 upgrade. Design of record: `docs/v2.1-r6-distill.md`.
 
-## What's next
+## Explicit background commands and remaining experiments
 
-v2.1 (see `docs/v2/REDESIGN.md` §5): a resident search daemon (warm ~40 ms queries), a
-reindex planner with per-file estimates, distill `--pack`/`--llm` polish, `goldmine watch`
-(auto-refreshing index). Killed by design: any whole-Mac default sweep, telemetry, a GUI.
+`goldmine serve --db PATH` keeps its search model resident subject to the existing
+power, thermal and memory guards. `goldmine watch --roots FOLDER --db PATH` watches
+only chosen roots and refreshes their index. Both commands are implemented and
+must be explicitly started; installation does not register a background service.
+The required controlled/real ten-minute watch verification is separate from the
+measured search latency evidence. See [current status](FEATURE_STATUS.md).
+
+Multi-query and local reranking are optional experiments, off by default. Their
+quality benefit and the remaining real corpus/answer/card checks still need
+acceptance. Whole-Mac default scans, telemetry and a GUI remain outside scope.

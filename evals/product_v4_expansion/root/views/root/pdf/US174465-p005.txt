@@ -1,0 +1,144 @@
+274,865
+3
+they are immersed produces
+an andalatory
+action in the current by alternately increasing
+and diminishing the power of the battery.
+In illustration of the method of creating
+electrical undulations, I sball show and
+scribe one form ofapparatus for producing the
+effect.
+I prefer to employ for this purpose an
+electro-magnet, A, Fig. 6, having a coil upon
+only one of its legs b.
+ture, c, is firmly clamped by one extremity to
+the uncovered leg d of the maguet, and its free
+end is allowed to project above the pole of the
+covered leg.
+vibration in a variety of ways, one of which
+I desire here to remark that there are many
+other uses to which these instruments may be
+put, such as the simultaneous transmission of
+musical notes, differing in londness as well as
+in pitch, and the telegraphic transmission of
+noises or sounds of any kind.
+When the armature e, Fig. 5, is set in vi.
+bration the armatare h responds not only in
+pitch, but in loudness.
+Thus, when c vibrates
+With little amplitude, a very soft musical note
+proceeds from h; and when c vibrates forcibly
+the amplitude of the vibration of his considera-
+bly increased, and the resulting sound becomes
+8o, if A and B. Fig. 6, are sounded
+is by wind, and, in vibrating,
+musical note of a certain deûnite pitch.
+Whan the instrument A is placed in a vol:
+taic circuit, gb ef g,
+the armature c becomes
+One of the wavs in which the armature c
+magnetic, and the polarity of its free end. is
+Pig. 5, may be set in vibration has been stated
+opposed to that of the magnet underneath.
+aboveto be by wind.
+Another mode is shown
+long as the armature c remains at rest, no ef
+in Fig. 7, whereby motion can be imparted to
+fect is produced npon the voltaic curreut, but
+the armature by-the human voice or by means
+the moment it is set in vibration to produce
+of a musical instrament.
+ite musical note a powerful inductive action
+The arinature c, Fig. T, is fastened loosely
+takes place, and electrical undulations trav-
+by one extremity to the uncovered leg a of the
+erse the circuit g bef g.
+The vibratory cur-
+electro maguet b, and itsother extremity is at-
+rent passing through the coil of the electro-
+tached to the center of a stretched membrane,
+magnet f causes vibration in its armature h
+A cone, A, is used to converge saund-vi-
+when the armatures c h of the two instrumerts |
+brations upon the membrane.
+A I are normally in unison with one another; is uttered in the cone the membrane a is set
+but the armature h is unaffected by the pas.
+in vibration, the armature e is forced to par-
+sage of the undulatory
+current when the take of the motion, and thus electrical undu.
+pitches of the two instruments are different.
+lations are created upon the circuit Eb ef g.
+A number of instruments may be placed
+These undulations are similar in form to the
+upon a telegraphic circuit, as in Fig. 6.
+air vibrations caused by the sound-that is,
+the armature of any one of the instraments is
+they are represented graphically by similar
+set in vibration all the other instruments upon
+the circuit which are in anison with it respond,
+The undulatory current passing through the
+but those which have normally a different rate
+electro-magnet f influences its armature i to
+of vibration remain silent.
+Thus, if A, Fig. 6,
+copy the motion of the armature o.
+is set in vibration, the armatures of A'and A'
+lar sound to that uttered into A isthen heard
+will vibrate also, but all the others on the cir-
+to proceed from L.
+cuit will remain still.
+So if B' is caused to
+In this specification the three words "oscil-
+emit its musical note the instruments B B' re-
+lation," "vibration," and 'undulation," are
+spond. They continue sounding so long as the
+used synonymously, and in contradistinction
+mechanical vibration of B' is continued, bat
+to the terms "intermittent" and 'pulsatory."
+become silent with the cessation of its motion.
+By the terms "body capable of inductive ac-
+The duration of the sound may be used to in-
+tion," I mean a body which, when in motion,
+dicate the dot or dash of the Morse alphabet,
+produces dynamical electricity.
+I include in
+and thas a telegraphie dispatch may be indi-
+the category of bodies capable of inductive ac-
+cated by alternately interrupting and renew.
+tion-brass, copper, and other metals, as well
+ing the sound.
+as iron and steel.
+When two or more instruments of different
+Having described my invention, what I
+pitch are simultaneously caused to vibrate, all
+claim, and desire to secure by Letters Patent
+the instruments of cortesponding pitches upon
+is as follows:
+the circuit are set in vibration, each respond.
+1. A system of telegrapuy in which the re-
+ing to that one only of tbe transmitting instru-
+ceiver is set in vibration by the employment
+ments with which it is in unison.
+Thus the
+of undulatory currents of electricity, substan-
+BA Blt by offer instrumented ba the end.
+tially as set forth.
+, but by no other instrument upon the cir-
+2. The combination, substantially as Bet
+cuit; the signals of B' by B and B; and the
+forth, of a permanent magnet or other body
+signals of O' by C and C'-whether A, B', and
+capable of "inductive action,
+with a closed
+C'are successively or simultaneously caused
+circuit, 8o that the vibration of the oue shall
+to vibrate.
+Hence by theso instruments two
+occasion electrical undulations in the otber,
+or more telecraphic signais or messages may
+or in itself, and this I claim,
+whether the
+he sent simultaneonslv over the same cireuit
+permanent magnet be set in vibration in the
+without interfering with one another.
+neighborhood of the conducting wire form:

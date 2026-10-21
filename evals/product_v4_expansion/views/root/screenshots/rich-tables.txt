@@ -1,0 +1,1 @@
+To render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console.

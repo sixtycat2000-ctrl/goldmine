@@ -1,0 +1,41 @@
+Pillow (PIL Fork), Release 13.0.0
+
+(continued from previous page)
+
+if infile != outfile:
+try:
+with Image.open(infile) as im:
+im.thumbnail(size)
+im.save(outfile, "JPEG")
+except OSError:
+print("cannot create thumbnail for", infile)
+
+It is important to note that the library doesn’t decode or load the raster data unless it really has to. When you open a
+file, the file header is read to determine the file format and extract things like mode, size, and other properties required
+to decode the file, but the rest of the file is not processed until later.
+This means that opening an image file is a fast operation, which is independent of the file size and compression type.
+Here’s a simple script to quickly identify a set of image files:
+Identify image files
+import sys
+from PIL import Image
+for infile in sys.argv[1:]:
+try:
+with Image.open(infile) as im:
+print(infile, im.format, f"{im.size}x{im.mode}")
+except OSError:
+pass
+Cutting, pasting, and merging images
+The Image class contains methods allowing you to manipulate regions within an image. To extract a sub-rectangle
+from an image, use the crop() method.
+Copying a subrectangle from an image
+box = (0, 0, 64, 64)
+region = im.crop(box)
+The region is defined by a 4-tuple, where coordinates are (left, upper, right, lower). The Python Imaging Library uses a
+coordinate system with (0, 0) in the upper left corner. Also note that coordinates refer to positions between the pixels,
+so the region in the above example is exactly 64x64 pixels.
+The region could now be processed in a certain manner and pasted back.
+
+14
+
+Chapter 1. Overview
+

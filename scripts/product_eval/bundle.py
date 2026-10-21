@@ -96,7 +96,7 @@ def _validate_source(root, source, views):
         text = read_text(reference(root, {"path": v["path"], "sha256": v["sha256"]}, "view"))
         if not text or normalized(text) != text:
             raise EvaluationError("oracle view must be nonempty, normalized NFC/LF")
-        plaintext = {".py", ".md", ".txt", ".rs", ".go", ".js", ".ts", ".c", ".cpp", ".toml", ".json"}
+        plaintext = {".py", ".md", ".rst", ".txt", ".rs", ".go", ".js", ".ts", ".c", ".cpp", ".toml", ".json"}
         if asset.suffix.lower() in plaintext and v["evidence_type"] == "content_text":
             raw = normalized(read_text(asset))
             loc = v["location"]
@@ -253,14 +253,19 @@ def build_corpus(bundle: ProductBundle, output, *, allow_draft=False):
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix=".goldmine-product-", dir=target.parent))
     try:
+        from .materialization import POLICY, expected_flags, materialize
+
+        observed = {}
         for path, source in bundle.sources.items():
             destination = temporary / "corpus" / path
             destination.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(reference(bundle.root, source["asset"], "source.asset"), destination)
             if sha256_file(destination) != source["asset"]["sha256"]:
                 raise EvaluationError("copied source identity mismatch")
-        receipt = {"schema": 1, "suite_id": "product.v4", "identity": bundle.identity,
+            observed[path] = materialize(destination, source)
+        receipt = {"schema": 2, "suite_id": "product.v4", "identity": bundle.identity,
                    "files": {p: s["asset"]["sha256"] for p, s in bundle.sources.items()},
+                   "materialization": {"policy": POLICY, "expected": expected_flags(bundle.sources), "observed": observed},
                    "diagnostic_only": bool(bundle.missing) or bundle.manifest["evidence_mode"] == "fixture"}
         (temporary / "build.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n")
         temporary.rename(target)

@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "status": "AI_CURATED_AWAITING_INDEPENDENT_AUDIT",
+  "author": "OpenAI Codex AI curator; no human review claimed",
+  "retrieval_exposure": "NONE: no candidate ranking, holdout output or relevance run was read or executed",
+  "sources": 36,
+  "questions": 180,
+  "classes": {
+    "semantic": 60,
+    "cjk": 60,
+    "lookup": 60
+  },
+  "tags": {
+    "code": 90,
+    "real": 180,
+    "docs": 90,
+    "zh_only": 35,
+    "mixed": 15,
+    "ja": 5,
+    "ko": 5,
+    "filename": 10,
+    "mixed_identifier": 17,
+    "punctuated_identifier": 28,
+    "path": 5
+  },
+  "groups_per_class": {
+    "semantic": 12,
+    "cjk": 12,
+    "lookup": 12
+  },
+  "max_questions_per_source": 5,
+  "raw_bytes": 955691,
+  "shard_sha256": "b948bd3ef2b6f3d1fc6b44258658f5aacbae9b6303df93b6df40f099597d839d",
+  "pending": [
+    "independent fixed-sample source label audit by another reviewer",
+    "aggregate420 duplicate/connected-group audit",
+    "root-owned grouped dev/sealed-holdout split and final freeze"
+  ]
+}

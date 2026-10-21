@@ -1,0 +1,1 @@
+Even though name is assigned a value, it is still required and has no default value. If you want to emphasize on the fact that a value must be provided, you can use the ellipsis:

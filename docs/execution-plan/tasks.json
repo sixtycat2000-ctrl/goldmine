@@ -97,7 +97,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-05",
-      "result": "Audited portable corpus/reference harness implemented and tested against actual original commit. Draft has 28 manually reviewed questions from 12 sources. Required 420 corpus is MISSING: 392 questions, real PDF/media, grouped split and frozen reference."
+      "result": "Frozen full420 corpus:122 real sources,175 canonical views,89 answerable source groups;210 dev/210 sealed holdout,56 independently audited labels. Original-v4/current-v6 real indexes and full capability preflights ready. Current strict task004:94 testsPASS,12614 SQLite evidence spans read back,210 dev rows complete,11 quality gates FAIL,0MISSING; holdout0. See product-dev-20261022.json and validation-20261022.json."
     },
     {
       "id": "P0-06",
@@ -114,7 +114,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-06",
-      "result": "Fixed raw-receipt/JUnit/collection/source-bound acceptance runner and strict IR/distribution/lifecycle/CI adapters implemented. Final frozen offline 1233, native 188, MCP 6 and Foresight 8 tests PASS with no required skips. Missing inputs/adapters stay nonzero MISSING. Public ranked-ID export, final holdout/docs/hosted adapters still need implementation; they explicitly refuse green status. Eleven IR anti-forgery cases are now durable tests/test_ir_acceptance.py and included in the task check; all four final scoped CI runs are frozen-*-006."
+      "result": "Strict receipt/source/JUnit/IR/original-v4/public-preparation/raw-qrels/joint-holdout/docs/full-CLI-capacity adapters implemented and adversarially checked. Current four CI profiles1486+189+6+8=1689 PASS,0required skips. Joint3 and capacity4 false-pass/cleanup counterexamples independently closed. Hosted adapter still unimplemented without remote evidence; no final holdout or release PASS."
     },
     {
       "id": "P1-01",
@@ -149,7 +149,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-06",
-      "result": "NFKC CJK grams, strict phrase verification, explicit stored-row lexical reindex and whole-transaction old-writer fencing implemented. Frozen regression PASS; complete product quality gate MISSING."
+      "result": "NFKC CJK grams, strict phrase verification, explicit stored-row lexical reindex and old-writer transaction fencing implemented. Current regression PASS. Real dev CJK success5=18/30 vs original17/30, below.85 target; strict product gate FAIL."
     },
     {
       "id": "P1-03",
@@ -167,7 +167,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-06",
-      "result": "Schema v6 raw/alias lookup, filename-only metadata provenance and remaining-word admission implemented. Frozen regression PASS; product Top-1 target remains unmeasured."
+      "result": "Schema-v6 raw/alias filename/path/identifier lookup and metadata provenance implemented. Real dev lookup success1=18/30 vs original5/30, below.90 target. Compound exact-anchor/remainder admission interactions under read-only diagnosis; no blanket veto removal or noise-target relaxation."
     },
     {
       "id": "P1-04",
@@ -185,7 +185,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-04",
-      "result": "True PDF page units, same-page chunk grouping and up to three stored supporting segments implemented with citations. Adversarial page/neighbor tests PASS; real product PDF quality remains MISSING."
+      "result": "True PDF page units, same-page chunk grouping and up to3 stored supporting segments with citations implemented. Real dev strict PDF success5=12/30 vs original0/30, below.60 target; quality FAIL. Compound pack facts regress17/30->5/30 and remain unresolved."
     },
     {
       "id": "P1-05",
@@ -203,7 +203,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-05",
-      "result": "Stored OCR/ASR evidence states, stale extractor retry rules and honest visual capabilities implemented. Frozen native/mechanical checks PASS; complete full-media provenance/quality remains MISSING."
+      "result": "Actual DateTimeOriginal bounded readers, transient retry recovery and image-worker scratch allocation lock implemented/reviewed;10/10 real original JPEG dates match independent EXIF. Real dev media20/30, OCR5/9,ASR10/11,metadata5/10; overall/OCR/metadata gates FAIL. Legacy fixed169 full-media quality still MISSING."
     },
     {
       "id": "P1-06",
@@ -221,7 +221,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-06",
-      "result": "Explicit admission reasons and three preregistered arms implemented/tested. selected=null and default original control preserved; train/holdout calibration remains MISSING."
+      "result": "All3 preregistered real dev arms measured:control103/180 success5,5/30noise;higher_z103/180,10/30noise;margin98/180,8/30noise. All11 gatesFAIL;selected=null,original control default unchanged,no fourth parameter arm,holdout0. Paired CI answerable denominator fixed and independently audited."
     },
     {
       "id": "P1-07",
@@ -334,7 +334,7 @@
       ],
       "allows_experiment_rejected": true,
       "evidence_dir": "reports/execution/P2-02",
-      "result": "All 12 capacity cases and all 12 explicit-cache experiments measured with independent source snapshots and interleaved processes. IDs/scores consistent; 250k/500k resource triggers confirmed. Opt-in derived mmap cache implemented; final 99 cache/Store/distill tests PASS. Full CLI/pack at scale remains MISSING."
+      "result": "Full native-v4/v6 source-bound CLI capacity tooling implemented:12 fixed cases,10 phase runs,30 cold/warm samples of search/JSONpack/humanpack plus3 warmups, bounded owned workers/receipts/readback/RSS and explicit cache benefit proof. Four independent review blockers CLOSED;60 integration testsPASS. Full12 run still pending; historical vector-only/cache phase results cannot satisfy complete CLI gate."
     },
     {
       "id": "P2-03",
@@ -382,7 +382,7 @@
         "P0-06"
       ],
       "spec": "P2.md#p2-05",
-      "status": "IMPLEMENTED",
+      "status": "VERIFIED",
       "verification": [
         "offline",
         "local_ci",
@@ -390,8 +390,12 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P2-05",
-      "result": "Hermetic/native/optional/package workflows implemented; final four local CI profiles PASS and actionlint actually executed. Failure-injection/local CI bundle recorded separately. Hosted verification MISSING because no configured remote. Final CI raw bundle ci-local-006 independently replays PASS; official GitHub Action tag refs also match the pinned commits.",
-      "hosted_verification": "hosted_ci"
+      "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8Foresight=1689 PASS,0required skips; actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
+      "hosted_verification": "hosted_ci",
+      "verification_evidence": {
+        "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
+        "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
+      }
     },
     {
       "id": "P2-06",
@@ -401,7 +405,7 @@
         "P2-05"
       ],
       "spec": "P2.md#p2-06",
-      "status": "IMPLEMENTED",
+      "status": "VERIFIED",
       "verification": [
         "distribution",
         "native_assets",
@@ -409,7 +413,11 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P2-06",
-      "result": "Final snapshot-005 wheel/sdist, installed base/MCP/sdist smoke, real native OCR+768 embedding and original-v4 to v6 backup/upgrade/restore PASS. Fresh static native dependency/signature proof retained; distribution bundle actually replay-verified."
+      "result": "Current snapshot006 wheel/sdist, rebuilt-sdist wheel, offline outside-source base/MCP installs, actual native OCR+768 embedding, and original-v4->candidate-v6 backup/upgrade/restore PASS. Explicit asset-bound task-acceptance008 PASS. Platform verified only on actual macOS arm64/Python3.12; no public release.",
+      "verification_evidence": {
+        "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
+        "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
+      }
     },
     {
       "id": "P2-07",
@@ -430,7 +438,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-06",
-      "result": "Feature truth table, CLI/MCP/cache/build/comparison documentation and recovery instructions updated. Version remains 0.2.0 development. Local RC remains MISSING for mandatory quality/data/lifecycle/public-evidence gates; no release/tag/push. Final docs adapter/test_documentation.py remain explicit unfinished code, not just missing external inputs."
+      "result": "Documentation adapter and tests implemented; current14documents/55local links/22actual offline commands PASS, docs-task003 PASS for documentation component only. Version0.2.0 development; full local_rc still fails/misses mandatory quality,data,lifecycle and sealed-audit evidence. No RC/tag/push/publication."
     },
     {
       "id": "P2-08",
@@ -458,5 +466,6 @@
     "running": 4,
     "verified": 0,
     "note": "IMPLEMENTED means code exists, not full task acceptance. Running tasks retain unfinished adapters/benchmark modes. Real quality, lifecycle and hosted gates remain missing."
-  }
+  },
+  "updated_at": "2026-10-22"
 }

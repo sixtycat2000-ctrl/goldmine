@@ -1,0 +1,31 @@
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=Large cloud over Mexican landscape.}}
+{{it|1=[[Cloud|Nube]] (un [[:it:Cumulonimbus calvus|cumulonimbus calvus]]) su un tipico paesaggio de ''El Bajío'' di [[:it:Guanajuato|Guanajuato]], in [[México|Messico]].}}
+{{sc|1= Nue manna (unu cumulonimbus calvus) subra de unu paesàgiu tìpicu de El Bajío de Guanajuato, in [[:sc:Mèssicu|Mèssicu]].}}
+{{uk|1=Велика {{wu|Купчасті хмари|купчаста хмара}} над типовим ландшафтом Ель-Бахіо в {{wu|Гуанахуато (штат)|Гуанахуато}}, Мексика.}}
+|date={{taken on|2018-10-06 12:42:58|location=Mexico}}
+|source={{own}}
+|author=[[User:Tomascastelazo|Tomascastelazo]]
+|permission=
+|other versions={{Credit line |Author = In order to comply with the use and licensing terms of this image, the following text must must be included with the image when published in any medium, failure to do so constitutes a violation of the licensing terms and copyright infringement: © Tomas Castelazo, [http://www.tomascastelazo.com www.tomascastelazo.com] | Other = Wikimedia Commons |License = CC-BY-SA-4.0}}
+}}
+
+=={{Assessment}}==
+{{Assessments|featured=1}}
+{{picture of the day|year=2024|month=10|day=06}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Landscapes of Guanajuato]]
+[[Category:Nature of Guanajuato]]
+[[Category:Cumulonimbus calvus]]
+[[Category:Clouds and blue sky in Mexico]]
+[[Category:Taken with Canon EOS 80D]]
+[[Category:Taken with Canon EF-S 18-135mm F3.5-5.6 IS STM]]
+[[Category:Featured pictures of Mexico]]
+[[Category:Mexico photographs taken on 2018-10-06]]
+[[Category:White clouds with blue sky background]]
+[[Category:Foreground flowers in the Americas]]
+[[Category:Cumulonimbus in Mexico]]

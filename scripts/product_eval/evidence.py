@@ -8,6 +8,7 @@ import math
 from pathlib import Path
 
 from answer_eval.protocol import EvaluationError
+from .alignment import asr_word_spans, exact_character_spans
 from .bundle import normalized
 from .results import record_body_present
 
@@ -72,12 +73,25 @@ def read_segment_spans(store, segment_id, source_path, actual_path, bundle):
             lower = sum(len(x) for x in lines[:max(0, int(start - location["start"]))])
             upper = sum(len(x) for x in lines[:min(len(lines), int(end - location["start"] + 1))])
         cursor = lower
+        exact = False
         while (offset := view_text.find(text, cursor, upper)) >= 0:
+            exact = True
             spans.append({"path": source_path, "view_id": view["id"], "evidence_type": view["evidence_type"],
                           "location": {"unit": location["unit"], "start": start, "end": end},
                           "start_char": offset, "end_char": offset + len(text), "text": text,
                           "citation_id": f"eval-segment:{segment_id}", "readback_verified": True})
             cursor = offset + max(1, len(text))
+        if not exact:
+            # An unrelated OCR typo/header must not erase an otherwise exact
+            # complete fact. ASR has its separately versioned word proof; all
+            # other evidence retains literal characters and a 32-char minimum.
+            align = asr_word_spans if view["evidence_type"] == "asr_text" else exact_character_spans
+            for matched in align(view_text[lower:upper], text):
+                spans.append({"path": source_path, "view_id": view["id"], "evidence_type": view["evidence_type"],
+                              "location": {"unit": location["unit"], "start": start, "end": end},
+                              **matched, "start_char": lower + matched["start_char"],
+                              "end_char": lower + matched["end_char"],
+                              "citation_id": f"eval-segment:{segment_id}", "readback_verified": True})
     return spans
 
 
@@ -92,6 +106,17 @@ def emitted_spans(store, meta, pack_text, corpus_root, bundle):
         parts = record["segments"] or ([{"segment_id": record["segment_id"]}] if record["segment_id"] is not None else [])
         for part in parts:
             for span in read_segment_spans(store, part["segment_id"], path, record["path"], bundle):
+                if "word_alignment" in span:
+                    # Re-align against this ONE actual material record. The
+                    # observed witness must also occur literally in read-back;
+                    # text from another stored part cannot impersonate it.
+                    readback = span["word_alignment"]["observed_text"]
+                    for matched in asr_word_spans(span["text"], body):
+                        if matched["word_alignment"]["observed_text"] in readback:
+                            result.append({**span, **matched,
+                                           "start_char": span["start_char"] + matched["start_char"],
+                                           "end_char": span["start_char"] + matched["end_char"]})
+                    continue
                 # Seam trimming can remove a prefix. Retain only actual matching
                 # source text, never the complete untrimmed stored segment.
                 matcher = SequenceMatcher(None, span["text"], body, autojunk=False)
@@ -103,9 +128,18 @@ def emitted_spans(store, meta, pack_text, corpus_root, bundle):
     return result
 
 
-def index_capability_missing(store, bundle, corpus_root):
+def index_capability_missing(store, bundle, corpus_root, *, original_reference=None):
     missing = []
+    unsupported = set()
+    if original_reference is not None:
+        from answer_eval.protocol import fields
+        from .reference_support import verify_original_support
+        fields(original_reference,{"production_root","production"},"original reference context")
+        receipt = verify_original_support(store,bundle,corpus_root,original_reference["production_root"],original_reference["production"])
+        unsupported = {row["path"] for row in receipt["unsupported"]}
     for path, source in bundle.sources.items():
+        if path in unsupported:
+            continue
         actual = str((Path(corpus_root) / path).resolve())
         row = store.db.execute("SELECT id,sha256,state,info,extractor_version FROM files WHERE path=?", (actual,)).fetchone()
         if row is None or row[1] != source["asset"]["sha256"] or row[2] != "done":

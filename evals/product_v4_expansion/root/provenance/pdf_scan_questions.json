@@ -1,0 +1,30 @@
+{
+  "US6469": [
+    [2, "What does Lincoln's buoyancy invention let a vessel cross without unloading its cargo?", "to enable them to pass over bars, or through shallow water, without discharging their cargoes"],
+    [2, "How are Lincoln's buoyant chambers stowed when they are no longer needed?", "can be contracted into a very small space and safely secured as soon as their services can be dispensed with"],
+    [2, "What flexible material forms the sides and ends of the chambers in Lincoln's patent?", "the flexible sides and ends of the chambers, are composed of india-rubber cloth, or other suitable water-proof fabric"],
+    [2, "How does reversing the main shaft affect the buoyant chambers?", "by turning the shaft in an opposite direction, the chambers will be contracted into the position shown in Fig. 2"],
+    [2, "What adjustment governs how deeply Lincoln's buoyant chambers are immersed?", "By varying the length of the check ropes, the depth of immersion of the buoyant chambers can be governed."]
+  ],
+  "US174465": [
+    [3, "What kind of electric current does Bell's new telegraphy method use instead of a merely pulsating current?", "My present invention consists in the employment of a vibratory or undulatory current of electricity in contradistinction to a merely intermittent or pulsatory current"],
+    [3, "How does the change in electrical intensity distinguish Bell's undulations from pulsations?", "electrical pulsations are caused by sudden or instantaneous changes of intensity, and that electrical undulations result from gradual changes of intensity"],
+    [3, "What mathematical curve can represent the electrical movement described in Bell's patent?", "can be represented by a sinusoidal curve or by the resultant of several sinusoidal curves"],
+    [3, "What circuit and battery arrangement does Bell list as the second advantage of undulatory current?", "a closed circuit and single main battery may be used"],
+    [3, "Why does Bell say a spark-arrester is unnecessary in his circuit?", "as the circuit is never broken a spark-arrester becomes unnecessary"]
+  ],
+  "US223898": [
+    [2, "Why does Edison want his incandescent lamps to have high resistance?", "which lamps shall have high resistance, so as to allow of the practical subdivision of the electric light"],
+    [2, "What form and material does Edison specify for the light-giving body?", "a light-giving body of carbon wire or sheets coiled or arranged in such a manner as to offer great resistance to the passage of the electric current"],
+    [2, "What atmosphere protects Edison's high-resistance burner from oxidation?", "a burner of great resistance in a nearly perfect vacuum, to prevent oxidation and injury to the conductor by the atmosphere"],
+    [2, "How are the electrical leads brought through the glass vacuum bulb in Edison's description?", "The current is conducted into the vacuum-bulb through platina wires sealed into the glass."],
+    [3, "Why can Edison's design use fine platinum lead wires without cracking the sealed bulb?", "a small resistance compared to the burner, and hence will not heat and crack the sealed vacuum-bulb"]
+  ],
+  "US821393": [
+    [4, "Does the Wright patent require two stacked aeroplanes, or can its invention use one?", "this construction we prefer, although our invention may be embodied in a structure having a single aeroplane"],
+    [4, "How does the width of each Wright aeroplane compare with its front-to-rear dimension?", "Each aeroplane is of considerably greater width from side to side than from front to rear."],
+    [4, "What material covers the frame to form a Wright aeroplane's supporting surface?", "Upon this framework the cloth which forms the supporting-surface of the aeroplane is secured"],
+    [6, "What shape does twisting the Wright aeroplane's lateral margins give its surface?", "so that each aeroplane-surface is given a helicoidal warp or twist"],
+    [6, "About which axis is the Wright machine's vertical rudder or tail 22 allowed to turn?", "a vertical rudder or tail 22, so supported as to turn around a vertical axis"]
+  ]
+}

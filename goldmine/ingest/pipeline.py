@@ -26,7 +26,7 @@ from ..chunker import CHUNKER_VERSION, Chunk, chunk_text_tokens, effective_token
 from ..config import Config
 from ..store import FileRec, Store
 from ..util import sha256_file
-from . import rules, walk
+from . import media, rules, walk
 from .commit import CommitMixin, IngestReport, _merge_reasons
 from .extraction import CODE_HARD_CAP_BYTES, ExtractMixin, _OcrRequest, _Outcome
 from .metrics import IngestMetrics
@@ -115,6 +115,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         # v2 image prep (B5): thumbnails must outlive extraction (they embed
         # in _commit, one wave later), so the run owns one scratch dir.
         self._media_tmp: tempfile.TemporaryDirectory | None = None
+        self._media_tmp_lock = threading.Lock()
         # G10: current extractor-version set, computed lazily once per run
         # (tool probing is not free).
         self._current_extractors: set[str] | None = None
@@ -446,6 +447,16 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             return False
         if rec.sha256 != sha:
             return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_version") != media.EXIF_METADATA_VERSION:
+            # Repair legacy capture/edit-time confusion once, including
+            # metadata-only photos. The marker also records a truthful absence.
+            return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_status") not in {"complete", "absent", "unsupported", "unavailable"}:
+            # Native timeout/process/JSON failures are not authoritative absence.
+            # Rows written before the status distinction also need one refresh.
+            return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_reader") is None and media.exif_reader(cand.path) is not None:
+            return False  # A formerly missing native metadata reader arrived.
         if rec.capability == "content_indexed":
             if rec.chunker_version != self._chunker_version:
                 return False

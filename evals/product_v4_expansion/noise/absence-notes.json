@@ -1,0 +1,514 @@
+{
+  "status": "DRAFT_PENDING_FINAL_AGGREGATE_ABSENCE_REVIEW",
+  "notes": [
+    {
+      "id": "noise-near_topic-001",
+      "discriminators": [
+        "三十万次",
+        "300000"
+      ],
+      "source_first_absence_reason": "The actual Requests guides explain pooling and streaming, but contain no such 300000-request memory benchmark or hardware measurement.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-002",
+      "discriminators": [
+        "checkout service",
+        "11 August 2025"
+      ],
+      "source_first_absence_reason": "TLS verification guidance does not contain the caller’s service incident log or observed certificate fingerprint.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-003",
+      "discriminators": [
+        "上周",
+        "多少用户"
+      ],
+      "source_first_absence_reason": "Click confirmation and abort behavior is documented; no user telemetry or last-week execution counts are part of the corpus.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-004",
+      "discriminators": [
+        "BUILD_ZONE",
+        "warehouse CLI"
+      ],
+      "source_first_absence_reason": "Click environment-variable resolution examples provide no warehouse deployment configuration or yesterday’s environment value.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-005",
+      "discriminators": [
+        "订单页面",
+        "昨晚"
+      ],
+      "source_first_absence_reason": "Vue reactivity documentation explains dependency behavior, not measurements from an unspecified order-page deployment.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-006",
+      "discriminators": [
+        "SearchPanel"
+      ],
+      "source_first_absence_reason": "The Vue computed guide has generic book and name examples; the company SearchPanel component source and dependency graph are absent.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-007",
+      "discriminators": [
+        "配信先ドメイン"
+      ],
+      "source_first_absence_reason": "The Japanese Vite guide demonstrates an app title in a sample staging file; it does not include the user project’s actual deployment domain.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-008",
+      "discriminators": [
+        "이번 배포",
+        "shader.glsl"
+      ],
+      "source_first_absence_reason": "The Korean Vite guide uses a shader filename as a raw-import example; the shader bytes and deployment checksum are absent.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-009",
+      "discriminators": [
+        "树莓派",
+        "Raspberry Pi"
+      ],
+      "source_first_absence_reason": "Hash constructor code and hashing guidance provide no per-algorithm throughput benchmark on that hardware.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-010",
+      "discriminators": [
+        "backup_2025_09_17.bin"
+      ],
+      "source_first_absence_reason": "The zlib source defines checksum algorithms but the named backup bytes are not a corpus asset.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-011",
+      "discriminators": [
+        "这台生产机器"
+      ],
+      "source_first_absence_reason": "UUID code describes hardware-address discovery, not the actual hardware address of an unspecified production host.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-012",
+      "discriminators": [
+        "finance-quarter4-2028.zip"
+      ],
+      "source_first_absence_reason": "The zipfile implementation contains no such archive or its member directory; generic ZIP capability does not supply the requested contents.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-013",
+      "discriminators": [
+        "libwarehouse.so",
+        "reconcile_batch"
+      ],
+      "source_first_absence_reason": "The foreign-function wrapper source does not include the named shared library, symbol table, or runtime address space.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-014",
+      "discriminators": [
+        "fraud-review worker",
+        "08:15"
+      ],
+      "source_first_absence_reason": "Random generator algorithms do not recover a particular worker’s missing seed, generator state, or execution log.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-015",
+      "discriminators": [
+        "四核网关",
+        "第九十九百分位"
+      ],
+      "source_first_absence_reason": "The HTTPX quickstart and timeout documentation contain no benchmark results for the user gateway.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-016",
+      "discriminators": [
+        "billing import",
+        "customer rows"
+      ],
+      "source_first_absence_reason": "Strict-mode and serialization guides do not contain a billing dataset or the application validation-error log.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-017",
+      "discriminators": [
+        "显卡功耗",
+        "库存表格"
+      ],
+      "source_first_absence_reason": "Rich table and progress documentation have rendering examples, not frame-by-frame hardware power measurements.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-018",
+      "discriminators": [
+        "yesterday",
+        "private package mirror"
+      ],
+      "source_first_absence_reason": "The uv project/tool guides document commands but no private production network trace or execution history.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-019",
+      "discriminators": [
+        "我们公司二季度审计"
+      ],
+      "source_first_absence_reason": "NIST SP 800-92 gives general log-management guidance; the company’s quarterly audit findings are not included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-near_topic-020",
+      "discriminators": [
+        "pay for the copper wire",
+        "first prototype"
+      ],
+      "source_first_absence_reason": "The actual historical telegraphy patent describes apparatus and claims, not Bell’s purchase invoice or prototype material cost.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-001",
+      "discriminators": [
+        "杭州东站",
+        "二〇二七年十一月十九日"
+      ],
+      "source_first_absence_reason": "The corpus has no future railway platform assignment or station operating schedule.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-002",
+      "discriminators": [
+        "tomato beds",
+        "soil pH"
+      ],
+      "source_first_absence_reason": "No greenhouse monitoring records or soil measurements are included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-003",
+      "discriminators": [
+        "M240681"
+      ],
+      "source_first_absence_reason": "No race registration database or runner split timing is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-004",
+      "discriminators": [
+        "school observatory dome",
+        "cracked hinge"
+      ],
+      "source_first_absence_reason": "No school observatory equipment inventory, hinge specification or maintenance record is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-005",
+      "discriminators": [
+        "青釉",
+        "色差数值"
+      ],
+      "source_first_absence_reason": "No pottery firing batch record or glaze colorimetry results are included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-006",
+      "discriminators": [
+        "Harbor Chamber Orchestra",
+        "second encore"
+      ],
+      "source_first_absence_reason": "No record of that concert, programme or encore performance is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-007",
+      "discriminators": [
+        "木版画講座"
+      ],
+      "source_first_absence_reason": "No forthcoming Tokyo workshop notice or materials-fee schedule is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-008",
+      "discriminators": [
+        "어린이 천문 수업"
+      ],
+      "source_first_absence_reason": "No Busan library class registration notice or future class capacity is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-009",
+      "discriminators": [
+        "竣工验收荷载",
+        "自行车道"
+      ],
+      "source_first_absence_reason": "No identified coastal cycle-bridge completion or acceptance load report is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-010",
+      "discriminators": [
+        "Farm Lot 73",
+        "rye flour"
+      ],
+      "source_first_absence_reason": "No bakery supplier traceability record or May flour delivery invoice is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-011",
+      "discriminators": [
+        "银色中提琴",
+        "储物柜"
+      ],
+      "source_first_absence_reason": "No personal instrument check-in or storage-locker assignment exists in the corpus.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-012",
+      "discriminators": [
+        "rescue drone",
+        "sixth salt-spray"
+      ],
+      "source_first_absence_reason": "No drone qualification test or measured battery-capacity record is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-013",
+      "discriminators": [
+        "古地图",
+        "投保"
+      ],
+      "source_first_absence_reason": "Photo names and camera timestamps do not provide a museum relocation insurance policy.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-014",
+      "discriminators": [
+        "KX-472"
+      ],
+      "source_first_absence_reason": "No boat maintenance invoice, registration service history or sail repair record is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-015",
+      "discriminators": [
+        "第七号鸟巢",
+        "有花纹的蛋"
+      ],
+      "source_first_absence_reason": "No identified trail nest-monitoring log or egg count is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-016",
+      "discriminators": [
+        "table twelve",
+        "roast curve"
+      ],
+      "source_first_absence_reason": "No cafe service trace or coffee roasting batch curve is present.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-017",
+      "discriminators": [
+        "社区合唱团",
+        "排练室"
+      ],
+      "source_first_absence_reason": "No community choir rehearsal-room rental agreement is a corpus source.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-018",
+      "discriminators": [
+        "East Pier",
+        "18 March 2024"
+      ],
+      "source_first_absence_reason": "No tide-gauge asset register or dated maintenance visit record is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-019",
+      "discriminators": [
+        "盆景展",
+        "精确水量"
+      ],
+      "source_first_absence_reason": "No bonsai show entry record or irrigation volume log is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-random_terms-020",
+      "discriminators": [
+        "Aster-908"
+      ],
+      "source_first_absence_reason": "No orchard shipping ledger, pallet weighbridge reading or packing-shed record is included.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-001",
+      "discriminators": [
+        "sha3_1024"
+      ],
+      "source_first_absence_reason": "Mutates the genuine hashlib.sha3_512 algorithm name into an unlisted sha3_1024; the requested constructor is not defined.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-002",
+      "discriminators": [
+        "b128encode"
+      ],
+      "source_first_absence_reason": "Changes the genuine b64encode name to nonexistent b128encode; another encoding API is not evidence for this one.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-003",
+      "discriminators": [
+        "IPv8Address"
+      ],
+      "source_first_absence_reason": "Changes the genuine IPv6Address class to an undefined IPv8Address; IPv6 rules cannot answer a request for that class.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-004",
+      "discriminators": [
+        "TLSv1_9"
+      ],
+      "source_first_absence_reason": "Changes the actual TLSv1_3 enum member to an unsupported TLSv1_9 name, with no such guarantees in the source.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-005",
+      "discriminators": [
+        "uuid9"
+      ],
+      "source_first_absence_reason": "The pinned implementation defines versions one, three, four and five; uuid9 and its requested guarantee are absent.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-006",
+      "discriminators": [
+        "ZIP128_LIMIT"
+      ],
+      "source_first_absence_reason": "Mutates the genuine ZIP64_LIMIT constant into absent ZIP128_LIMIT; the defined ZIP64 value must not be substituted.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-007",
+      "discriminators": [
+        "zlib.crc64"
+      ],
+      "source_first_absence_reason": "Changes the genuine crc32 entry point to undefined crc64; the requested polynomial is not described.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-008",
+      "discriminators": [
+        "BOM_UTF64_BE"
+      ],
+      "source_first_absence_reason": "Mutates the genuine BOM_UTF32_BE name into an undefined UTF-64 byte-order-mark constant.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-009",
+      "discriminators": [
+        "c_int128"
+      ],
+      "source_first_absence_reason": "Changes the documented specifically-sized c_int64 type to c_int128; no such selection is defined in the pinned initializer.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-010",
+      "discriminators": [
+        "version=9"
+      ],
+      "source_first_absence_reason": "The source explains seed versions one and two, not a version-nine repeatability contract; permissive runtime code is not a documented guarantee.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-011",
+      "discriminators": [
+        "defineModels"
+      ],
+      "source_first_absence_reason": "Mutates the genuine defineModel macro name into defineModels, which is not defined by the included Vue page.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-012",
+      "discriminators": [
+        "watchEffect.afterWait"
+      ],
+      "source_first_absence_reason": "Adds an undefined afterWait member to watchEffect; the actual synchronous dependency rule is not evidence for this API.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-013",
+      "discriminators": [
+        "confirm_once"
+      ],
+      "source_first_absence_reason": "Changes genuine confirm to undefined confirm_once; no cross-process persistence behavior is documented.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-014",
+      "discriminators": [
+        "ChoiceMap"
+      ],
+      "source_first_absence_reason": "Changes the genuine Choice type into absent ChoiceMap; the existing choice-list implementation cannot supply mapping validation rules.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-015",
+      "discriminators": [
+        "prepare_requests"
+      ],
+      "source_first_absence_reason": "Changes genuine singular prepare_request to prepare_requests and assumes unsupported batch-send semantics.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-016",
+      "discriminators": [
+        "resolve_redirects_v4"
+      ],
+      "source_first_absence_reason": "Adds a version suffix to the actual resolve_redirects method; that versioned method has no definition or default policy.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-017",
+      "discriminators": [
+        "merge_setting_all"
+      ],
+      "source_first_absence_reason": "Extends the genuine merge_setting helper name into absent merge_setting_all with unsupported three-way configuration semantics.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-018",
+      "discriminators": [
+        "clamp_open"
+      ],
+      "source_first_absence_reason": "Invents a clamp_open method from the actual FloatRange clamp behavior; no rounding mode for that method exists in the source.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-019",
+      "discriminators": [
+        "import.meta.env.SECRETS_PRIVATE"
+      ],
+      "source_first_absence_reason": "Changes the genuine built-in environment object access into an absent claimed built-in constant; no object value is supplied.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    },
+    {
+      "id": "noise-conflict_id-020",
+      "discriminators": [
+        "create_default_context_v2"
+      ],
+      "source_first_absence_reason": "Mutates the actual create_default_context function name to a versioned variant and assumes retry behavior absent from TLS-context construction.",
+      "reviewer": "OpenAI Codex AI curator; independent audit pending"
+    }
+  ]
+}

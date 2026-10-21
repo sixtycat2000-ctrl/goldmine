@@ -9,6 +9,9 @@ import sys
 
 import pytest
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from scale_bench_fixtures import scale_capture
+
 ROOT = Path(__file__).resolve().parents[1]
 SPEC = importlib.util.spec_from_file_location("scale_bench", ROOT / "scripts/bench_scale.py")
 scale = importlib.util.module_from_spec(SPEC)
@@ -63,3 +66,88 @@ def test_real_workers_alternate_same_query_and_have_independent_peak_rss(tmp_pat
     receipts = [json.loads((tmp_path / f"paired-{arm}.receipt.json").read_text()) for arm in arms]
     assert receipts[0]["process_id"] != receipts[1]["process_id"]
     assert arms["reference"]["top_files_and_z"] == arms["candidate"]["top_files_and_z"]
+
+
+def test_actual_original_and_current_cli_read_equivalent_native_schemas(scale_capture):
+    from scale_bench.validation import validate
+    from scale_bench_fixtures import mutate
+
+    manifest = json.loads((scale_capture / "manifest.json").read_text())
+    case_dir = scale_capture / "121-10"
+    reference = json.loads((case_dir / "reference/fixture.json").read_text())
+    candidate = json.loads((case_dir / "candidate/fixture.json").read_text())
+    assert reference["schema_version"] == 4 and candidate["schema_version"] == 6
+    assert reference["logical_sha256"] == candidate["logical_sha256"]
+    assert reference["counts"] == {"files": 13, "segments": 121, "fts": 121, "vectors": 121}
+    with mutate(scale_capture) as capture:
+        result = capture.replay()
+        assert result["status"] == "PASS" and result["consistent"]
+        cli = result["cases"][0]["cli"]
+        assert not cli["failures"] and len(cli["metrics"]) == 12
+        assert all(bucket["attempts"] == 30 and bucket["process_peak_rss_bytes"] > 0
+                   for bucket in cli["metrics"].values())
+    assert manifest["status"] == "MISSING" and manifest["quality_claim"] is False
+
+
+def test_sqlite_read_marks_are_distinguished_from_content_writes():
+    from copy import deepcopy
+    from scale_bench.protocol import unchanged
+
+    before = {"sqlite": {"bytes": 100, "sha256": "a" * 64}, "wal": None, "shm": None, "journal": None}
+    after = deepcopy(before)
+    after["shm"] = {"bytes": 32768, "sha256": "b" * 64}
+    assert unchanged(before, after)
+    after["wal"] = {"bytes": 32, "sha256": "c" * 64}
+    assert not unchanged(before, after)
+    after = deepcopy(before)
+    after["sqlite"]["sha256"] = "d" * 64
+    assert not unchanged(before, after)
+
+
+def test_cleanup_rejects_cache_parent_before_deleting_anything(tmp_path):
+    from scale_bench.suite import cleanup
+
+    databases = {arm: tmp_path / arm / "fixture.sqlite" for arm in ("reference", "candidate")}
+    for db in databases.values():
+        db.parent.mkdir()
+        db.write_bytes(b"owned fixture")
+    retained = tmp_path / "case.json"
+    retained.write_bytes(b"raw receipt")
+    with pytest.raises(ValueError, match="exact owned"):
+        cleanup(tmp_path, databases, {"cache_root": str(tmp_path)})
+    assert all(db.exists() for db in databases.values())
+    cache = databases["candidate"].with_name("fixture.sqlite.vectors")
+    cache.mkdir()
+    (cache / "generation.npy").write_bytes(b"derived")
+    cleanup(tmp_path, databases, {"cache_root": str(cache)})
+    assert not cache.exists() and not any(db.exists() for db in databases.values())
+    assert retained.read_bytes() == b"raw receipt"
+
+
+def test_explicit_cache_case_keeps_audits_after_owned_cleanup(tmp_path, scale_capture):
+    from types import SimpleNamespace
+    from scale_bench import fixture_audit, phases, cli_replay
+    from scale_bench.protocol import source_identity
+    from scale_bench.suite import one_case
+    from scale_bench.validation import _cache
+
+    run = json.loads((scale_capture / "manifest.json").read_text())
+    sources = {arm: Path(run["source_roots"][arm]) for arm in ("reference", "candidate")}
+    sources.update({arm + "_identity": source_identity(source) for arm, source in list(sources.items())})
+    args = SimpleNamespace(out=tmp_path, cache_experiment=True, keep_fixtures=False,
+                           runs=10, cli_runs=0, build_timeout=60, sample_timeout=20)
+    # Just the3 warmups exercise the optional build/load/cleanup mechanics. They
+    # are explicitly insufficient for a complete CLI acceptance denominator.
+    case = one_case(args, ROOT, 41, 10, sources)
+    directory = tmp_path / "41-10"
+    run["cache_experiment"] = True
+    fixture_audit.validate(directory, case, run, ROOT)
+    reports, same, _ = phases.validate(directory, case, run, ROOT)
+    thresholds = json.loads((ROOT / "evals/acceptance_targets.json").read_text())["scale"]
+    assert _cache(directory, case, run, reports, thresholds)["triggered"] is False
+    assert same and (directory / "candidate/cache-manifest.json").is_file()
+    assert not list(directory.rglob("fixture.sqlite"))
+    assert not (directory / "candidate/fixture.sqlite.vectors").exists()
+    assert (directory / "case.json").is_file() and (directory / "samples.json").is_file()
+    with pytest.raises(ValueError, match="did not actually complete"):
+        cli_replay.validate(directory, case, run, ROOT)

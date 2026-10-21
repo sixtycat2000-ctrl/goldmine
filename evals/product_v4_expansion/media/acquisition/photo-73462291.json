@@ -1,0 +1,28 @@
+{
+  "pageid": 73462291,
+  "title": "File:Large cloud over Mexican landscape.jpg",
+  "artist": "Tomascastelazo",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Large_cloud_over_Mexican_landscape.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1247761918",
+  "page_revision": 1247761918,
+  "upload_timestamp": "2018-10-07T22:17:05Z",
+  "published_sha1": "56f67fa9eb6287d7a3745436bc32c4069937a114",
+  "sha256": "abfc94f6ca12cc0a376df68ecce0c91a0746136c9cfb2ff3caac484803bc77d9",
+  "bytes": 2106756,
+  "basename": "Large_cloud_over_Mexican_landscape.jpg",
+  "asset": "assets/media/photos/Large_cloud_over_Mexican_landscape.jpg",
+  "license_file": "licenses/media/commons-73462291.txt",
+  "taken": "2018-10-06 12:42:58",
+  "exif_DateTimeOriginal": "2018:10:06 12:42:58",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2018:10:07 17:11:03",
+    "DateTimeOriginal": "2018:10:06 12:42:58",
+    "DateTimeDigitized": "2018:10:06 12:42:58"
+  },
+  "production_sips_taken": "2018-10-07 17:11:03",
+  "production_taken_matches_DateTimeOriginal": false,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Large_cloud_over_Mexican_landscape.jpg\n  creation: 2018:10:07 17:11:03\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

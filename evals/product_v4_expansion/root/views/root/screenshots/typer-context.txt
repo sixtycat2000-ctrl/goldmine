@@ -1,0 +1,1 @@
+The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context.

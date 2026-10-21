@@ -1,0 +1,662 @@
+[
+  {
+    "repository": "cpython",
+    "path": "Lib/hashlib.py",
+    "q": "hashlib.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "hashlib.py",
+    "fact": "The requested source file has the exact basename hashlib.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/hashlib.py",
+    "q": "hashlib.sha256",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "__always_supported = ('md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512',",
+    "fact": "sha256 is listed among the hashing algorithms that hashlib always supports."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/hashlib.py",
+    "q": "hashlib.sha3_512",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "cache['sha3_512'] = _sha3.sha3_512",
+    "fact": "The built-in constructor cache binds sha3_512 to the corresponding _sha3 implementation."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/hashlib.py",
+    "q": "algorithms_guaranteed",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "algorithms_guaranteed = set(__always_supported)",
+    "fact": "algorithms_guaranteed is the set of the always-supported algorithm names."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/hashlib.py",
+    "q": "file_digest",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def file_digest(fileobj, digest, /, *, _bufsize=2**18):\n    \"\"\"Hash the contents of a file-like object. Returns a digest object.",
+    "fact": "file_digest hashes a file-like object and returns a digest object."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/base64.py",
+    "q": "base64.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "base64.py",
+    "fact": "The requested encoding implementation has the exact basename base64.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/base64.py",
+    "q": "base64.b64encode",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def b64encode(s, altchars=None):\n    \"\"\"Encode the bytes-like object s using Base64 and return a bytes object.",
+    "fact": "b64encode encodes bytes-like input as Base64 and returns bytes."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/base64.py",
+    "q": "base64.b64decode",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def b64decode(s, altchars=None, validate=False):\n    \"\"\"Decode the Base64 encoded bytes-like object or ASCII string s.",
+    "fact": "b64decode accepts Base64-encoded bytes-like input or an ASCII string."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/base64.py",
+    "q": "_bytes_from_decode_data",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def _bytes_from_decode_data(s):\n    if isinstance(s, str):\n        try:\n            return s.encode('ascii')",
+    "fact": "The decoding-input helper converts string input to ASCII bytes."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/base64.py",
+    "q": "_urlsafe_encode_translation",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "_urlsafe_encode_translation = bytes.maketrans(b'+/', b'-_')",
+    "fact": "The URL-safe encoding translation maps plus and slash to hyphen and underscore."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ipaddress.py",
+    "q": "ipaddress.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "ipaddress.py",
+    "fact": "The address-manipulation module requested has basename ipaddress.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ipaddress.py",
+    "q": "ipaddress.IPv4Address",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "class IPv4Address(_BaseV4, _BaseAddress):\n\n    \"\"\"Represent and manipulate single IPv4 Addresses.\"\"\"",
+    "fact": "IPv4Address represents and manipulates one IPv4 address."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ipaddress.py",
+    "q": "ipaddress.IPv6Address",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "class IPv6Address(_BaseV6, _BaseAddress):\n\n    \"\"\"Represent and manipulate single IPv6 Addresses.\"\"\"",
+    "fact": "IPv6Address represents and manipulates one IPv6 address."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ipaddress.py",
+    "q": "ip_address",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def ip_address(address):\n    \"\"\"Take an IP string/int and return an object of the correct type.",
+    "fact": "ip_address chooses the appropriate address object type from string or integer input."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ipaddress.py",
+    "q": "ip_network",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def ip_network(address, strict=True):\n    \"\"\"Take an IP string/int and return an object of the correct type.",
+    "fact": "ip_network accepts address input with a strict argument defaulting to true."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ssl.py",
+    "q": "ssl.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "ssl.py",
+    "fact": "The requested TLS wrapper source has basename ssl.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ssl.py",
+    "q": "ssl.TLSVersion.TLSv1_2",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "    TLSv1_2 = _ssl.PROTO_TLSv1_2",
+    "fact": "TLSVersion maps TLSv1_2 to the low-level TLS 1.2 protocol constant."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ssl.py",
+    "q": "ssl.TLSVersion.TLSv1_3",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "    TLSv1_3 = _ssl.PROTO_TLSv1_3",
+    "fact": "TLSVersion maps TLSv1_3 to the low-level TLS 1.3 protocol constant."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ssl.py",
+    "q": "create_default_context",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,\n                           capath=None, cadata=None):\n    \"\"\"Create a SSLContext object with default settings.",
+    "fact": "create_default_context constructs an SSLContext with default settings and accepts certificate authority inputs."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ssl.py",
+    "q": "DER_cert_to_PEM_cert",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def DER_cert_to_PEM_cert(der_cert_bytes):\n    \"\"\"Takes a certificate in binary DER format and returns the\n    PEM version of it as a string.\"\"\"",
+    "fact": "DER_cert_to_PEM_cert converts binary DER certificate bytes to a PEM string."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/uuid.py",
+    "q": "uuid.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "uuid.py",
+    "fact": "The UUID implementation requested is the file named uuid.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/uuid.py",
+    "q": "uuid.uuid3",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def uuid3(namespace, name):\n    \"\"\"Generate a UUID from the MD5 hash of a namespace UUID and a name.\"\"\"",
+    "fact": "uuid3 derives a UUID from the MD5 hash of a namespace UUID and a name."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/uuid.py",
+    "q": "uuid.uuid4",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def uuid4():\n    \"\"\"Generate a random UUID.\"\"\"\n    return UUID(bytes=os.urandom(16), version=4)",
+    "fact": "uuid4 generates a random version-four UUID from sixteen operating-system random bytes."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/uuid.py",
+    "q": "NAMESPACE_DNS",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "NAMESPACE_DNS = UUID('6ba7b810-9dad-11d1-80b4-00c04fd430c8')",
+    "fact": "The DNS namespace UUID constant is 6ba7b810-9dad-11d1-80b4-00c04fd430c8."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/uuid.py",
+    "q": "NAMESPACE_URL",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "NAMESPACE_URL = UUID('6ba7b811-9dad-11d1-80b4-00c04fd430c8')",
+    "fact": "The URL namespace UUID constant is 6ba7b811-9dad-11d1-80b4-00c04fd430c8."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/zipfile/__init__.py",
+    "q": "Lib/zipfile/__init__.py",
+    "tags": [
+      "path"
+    ],
+    "view_id": "basename",
+    "anchor": "__init__.py",
+    "fact": "The requested zipfile package source is its __init__.py initializer; the bound source path identifies the package."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/zipfile/__init__.py",
+    "q": "zipfile/__init__.py",
+    "tags": [
+      "path"
+    ],
+    "view_id": "basename",
+    "anchor": "__init__.py",
+    "fact": "The zipfile-relative initializer request points to a file with basename __init__.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/zipfile/__init__.py",
+    "q": "ZIP64_LIMIT",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "ZIP64_LIMIT = (1 << 31) - 1",
+    "fact": "ZIP64_LIMIT is defined as two to the thirty-first power minus one."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/zipfile/__init__.py",
+    "q": "ZIP_MAX_COMMENT",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "ZIP_MAX_COMMENT = (1 << 16) - 1",
+    "fact": "The maximum ZIP comment length constant is two to the sixteenth power minus one."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/zipfile/__init__.py",
+    "q": "is_zipfile",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def is_zipfile(filename):\n    \"\"\"Quickly see if a file is a ZIP file by checking the magic number.",
+    "fact": "is_zipfile checks the magic number to determine whether a file is a ZIP file."
+  },
+  {
+    "repository": "cpython",
+    "path": "Modules/zlibmodule.c",
+    "q": "zlibmodule.c",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "zlibmodule.c",
+    "fact": "The requested compression extension implementation is named zlibmodule.c."
+  },
+  {
+    "repository": "cpython",
+    "path": "Modules/zlibmodule.c",
+    "q": "zlib.adler32",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "zlib.adler32\n\n    data: Py_buffer\n    value: unsigned_int(bitwise=True) = 1\n        Starting value of the checksum.\n    /\n\nCompute an Adler-32 checksum of data.",
+    "fact": "adler32 computes an Adler-32 checksum and defaults the starting checksum value to one."
+  },
+  {
+    "repository": "cpython",
+    "path": "Modules/zlibmodule.c",
+    "q": "zlib.crc32",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "zlib.crc32 -> unsigned_int\n\n    data: Py_buffer\n    value: unsigned_int(bitwise=True) = 0\n        Starting value of the checksum.\n    /\n\nCompute a CRC-32 checksum of data.",
+    "fact": "crc32 computes a CRC-32 checksum and defaults the starting checksum value to zero."
+  },
+  {
+    "repository": "cpython",
+    "path": "Modules/zlibmodule.c",
+    "q": "zlib.decompressobj",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "zlib.decompressobj\n\n    wbits: int(c_default=\"MAX_WBITS\") = MAX_WBITS\n        The window buffer size and container format.\n    zdict: object(c_default=\"NULL\") = b''\n        The predefined compression dictionary.  This must be the same\n        dictionary as used by the compressor that produced the input data.\n\nReturn a decompressor object.",
+    "fact": "decompressobj returns a decompressor and its predefined dictionary must match the compressor dictionary."
+  },
+  {
+    "repository": "cpython",
+    "path": "Modules/zlibmodule.c",
+    "q": "zlib.Decompress.flush",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "zlib.Decompress.flush\n\n    cls: defining_class\n    length: Py_ssize_t(c_default=\"DEF_BUF_SIZE\") = zlib.DEF_BUF_SIZE\n        the initial size of the output buffer.\n    /\n\nReturn a bytes object containing any remaining decompressed data.",
+    "fact": "The decompressor flush method returns any remaining decompressed data as bytes."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/email/base64mime.py",
+    "q": "base64mime.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "base64mime.py",
+    "fact": "The mail transfer-encoding implementation has basename base64mime.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/email/base64mime.py",
+    "q": "Lib/email/base64mime.py",
+    "tags": [
+      "path"
+    ],
+    "view_id": "basename",
+    "anchor": "base64mime.py",
+    "fact": "The requested email-package source path is bound to the file with basename base64mime.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/email/base64mime.py",
+    "q": "header_length",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def header_length(bytearray):\n    \"\"\"Return the length of s when it is encoded with base64.\"\"\"",
+    "fact": "header_length calculates the length after Base64 encoding."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/email/base64mime.py",
+    "q": "header_encode",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def header_encode(header_bytes, charset='iso-8859-1'):\n    \"\"\"Encode a single header line with Base64 encoding in a given charset.",
+    "fact": "header_encode Base64-encodes a single header line, using the given charset and defaulting to iso-8859-1."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/email/base64mime.py",
+    "q": "body_decode",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "# For convenience and backwards compatibility w/ standard base64 module\nbody_decode = decode\ndecodestring = decode",
+    "fact": "body_decode is a compatibility alias for the decode function."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/codecs.py",
+    "q": "codecs.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "codecs.py",
+    "fact": "The registry and codec-helper source file is named codecs.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/codecs.py",
+    "q": "BOM_UTF8",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "# UTF-8\nBOM_UTF8 = b'\\xef\\xbb\\xbf'",
+    "fact": "The UTF-8 byte-order mark is the byte sequence ef bb bf."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/codecs.py",
+    "q": "BOM_UTF32_BE",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "# UTF-32, big endian\nBOM_UTF32_BE = b'\\x00\\x00\\xfe\\xff'",
+    "fact": "The big-endian UTF-32 byte-order mark is 00 00 fe ff."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/codecs.py",
+    "q": "codecs.getincrementalencoder",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def getincrementalencoder(encoding):\n\n    \"\"\" Lookup up the codec for the given encoding and return\n        its IncrementalEncoder class or factory function.",
+    "fact": "getincrementalencoder looks up an encoding and returns its incremental encoder class or factory."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/codecs.py",
+    "q": "codecs.getincrementaldecoder",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def getincrementaldecoder(encoding):\n\n    \"\"\" Lookup up the codec for the given encoding and return\n        its IncrementalDecoder class or factory function.",
+    "fact": "getincrementaldecoder looks up an encoding and returns its incremental decoder class or factory."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ctypes/__init__.py",
+    "q": "Lib/ctypes/__init__.py",
+    "tags": [
+      "path"
+    ],
+    "view_id": "basename",
+    "anchor": "__init__.py",
+    "fact": "The ctypes package source at the requested path has basename __init__.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ctypes/__init__.py",
+    "q": "ctypes/__init__.py",
+    "tags": [
+      "path"
+    ],
+    "view_id": "basename",
+    "anchor": "__init__.py",
+    "fact": "The package-relative ctypes initializer is the bound __init__.py source file."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ctypes/__init__.py",
+    "q": "ctypes.c_int64",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "for kind in [c_short, c_int, c_long, c_longlong]:\n    if sizeof(kind) == 2: c_int16 = kind\n    elif sizeof(kind) == 4: c_int32 = kind\n    elif sizeof(kind) == 8: c_int64 = kind",
+    "fact": "c_int64 is selected from the signed C integer kinds whose size is eight bytes."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ctypes/__init__.py",
+    "q": "create_string_buffer",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def create_string_buffer(init, size=None):\n    \"\"\"create_string_buffer(aBytes) -> character array\n    create_string_buffer(anInteger) -> character array\n    create_string_buffer(aBytes, anInteger) -> character array",
+    "fact": "create_string_buffer accepts bytes, an integer size, or bytes plus an explicit size and creates a character array."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/ctypes/__init__.py",
+    "q": "c_void_p",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "class c_void_p(_SimpleCData):\n    _type_ = \"P\"",
+    "fact": "c_void_p is the simple C-data wrapper with pointer type code P."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/random.py",
+    "q": "random.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "random.py",
+    "fact": "The pseudo-random generator implementation file has basename random.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/random.py",
+    "q": "_sha512",
+    "tags": [
+      "mixed_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "        elif version == 2 and isinstance(a, (str, bytes, bytearray)):\n            if isinstance(a, str):\n                a = a.encode()\n            a = int.from_bytes(a + _sha512(a).digest())",
+    "fact": "Version-two string and byte seeds are extended with their SHA-512 digest before conversion to an integer."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/random.py",
+    "q": "NV_MAGICCONST",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "NV_MAGICCONST = 4 * _exp(-0.5) / _sqrt(2.0)",
+    "fact": "NV_MAGICCONST is defined as four times exp(-0.5) divided by sqrt(2)."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/random.py",
+    "q": "RECIP_BPF",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "BPF = 53        # Number of bits in a float\nRECIP_BPF = 2 ** -BPF",
+    "fact": "RECIP_BPF is two raised to minus the fifty-three float bits."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/random.py",
+    "q": "Random.getstate",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "    def getstate(self):\n        \"\"\"Return internal state; can be passed to setstate() later.\"\"\"\n        return self.VERSION, super().getstate(), self.gauss_next",
+    "fact": "Random.getstate returns the version, underlying generator state and cached Gaussian value."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/xmlrpc/client.py",
+    "q": "client.py",
+    "tags": [
+      "filename"
+    ],
+    "view_id": "basename",
+    "anchor": "client.py",
+    "fact": "The requested XML-RPC client implementation is the bound source with basename client.py."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/xmlrpc/client.py",
+    "q": "TRANSPORT_ERROR",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "TRANSPORT_ERROR   = -32300",
+    "fact": "The XML-RPC transport error constant is minus 32300."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/xmlrpc/client.py",
+    "q": "_MultiCallMethod",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "class _MultiCallMethod:\n    # some lesser magic to store calls made to a MultiCall object\n    # for batch execution",
+    "fact": "The private _MultiCallMethod class stores calls made to a MultiCall object for batch execution."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/xmlrpc/client.py",
+    "q": "gzip_encode",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def gzip_encode(data):\n    \"\"\"data -> gzip encoded data\n\n    Encode data using the gzip content encoding as described in RFC 1952",
+    "fact": "gzip_encode converts input data into the gzip content encoding from RFC 1952."
+  },
+  {
+    "repository": "cpython",
+    "path": "Lib/xmlrpc/client.py",
+    "q": "gzip_decode",
+    "tags": [
+      "punctuated_identifier"
+    ],
+    "view_id": "body",
+    "anchor": "def gzip_decode(data, max_decode=20971520):\n    \"\"\"gzip encoded data -> unencoded data",
+    "fact": "gzip_decode decodes gzip data and defaults the maximum decoded size to 20971520 bytes."
+  }
+]

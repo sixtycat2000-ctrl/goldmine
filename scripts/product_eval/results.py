@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 
 from answer_eval.protocol import EvaluationError, fields, nonempty, validate_location
+from .alignment import validate_word_alignment
 from .bundle import normalized
 from .scoring import score_query, summarize
 
@@ -22,7 +23,7 @@ def record_body_present(record, context):
 
 
 def _proof(bundle, span):
-    fields(span, {"path", "view_id", "evidence_type", "location", "start_char", "end_char", "text", "citation_id", "readback_verified"}, "returned span")
+    fields(span, {"path", "view_id", "evidence_type", "location", "start_char", "end_char", "text", "citation_id", "readback_verified"}, "returned span", {"word_alignment"})
     nonempty(span["path"], "span.path")
     nonempty(span["view_id"], "span.view_id")
     key = (span["path"], span["view_id"])
@@ -39,6 +40,7 @@ def _proof(bundle, span):
             or view["text"][span["start_char"]:span["end_char"]] != span["text"]):
         raise EvaluationError("returned span does not match the frozen source character range")
     validate_location(span["location"], source["kind"], span["evidence_type"])
+    validate_word_alignment(span)
     location, oracle = span["location"], view["location"]
     if (location is None) != (oracle is None):
         raise EvaluationError("returned span location is missing or invented")
@@ -103,12 +105,13 @@ def validate_report(bundle, report, *, diagnostic=False):
                 raise EvaluationError("saved sidecar body was not emitted")
         for span in row["emitted_spans"]:
             _proof(bundle, span)
+            observed = validate_word_alignment(span) or span["text"]
             sid = int(span["citation_id"].split(":")[-1])
             included = False
             for record in row["pack_records"]:
                 ids = {p["segment_id"] for p in record["segments"]} | {record["segment_id"]}
                 path = Path(record["path"]).as_posix()
-                if sid in ids and path.endswith("/" + span["path"]) and span["text"] in normalized(record["text"]):
+                if sid in ids and path.endswith("/" + span["path"]) and observed in normalized(record["text"]):
                     included = True
             if not included:
                 raise EvaluationError("claimed emitted citation is absent from actual record bodies")

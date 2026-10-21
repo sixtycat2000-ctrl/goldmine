@@ -1,0 +1,27 @@
+{
+  "url": "https://typer.tiangolo.com/tutorial/commands/context/",
+  "title": "Using the Context - Typer",
+  "text": "Using the Context¶\n\nWhen you create a Typer application it always has a special, hidden object underneath called the \"Context\".\n\nBut you can access the context by declaring a function parameter of type typer.Context.\n\nYou might have read it in CLI Option Callback and Context.\n\nThe same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context.\n\nGetting the context¶\n\nFor example, let's say that you want to execute some logic in a Typer callback depending on the subcommand that is being called.\n\nYou can get the name of the subcommand from the context:\n\nPython 3.10+\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef create(username: str):\n\n    print(f\"Creating user: {username}\")\n\n\n\n\n\n@app.command()\n\ndef delete(username: str):\n\n    print(f\"Deleting user: {username}\")\n\n\n\n\n\n@app.callback()\n\ndef main(ctx: typer.Context):\n\n    \"\"\"\n\n    Manage users in the awesome CLI app.\n\n    \"\"\"\n\n    print(f\"About to execute command: {ctx.invoked_subcommand}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n\nCheck it:\n\nExecutable callback¶\n\nBy default, the callback is only executed right before executing a command.\n\nAnd if no command is provided, the help message is shown.\n\nBut we could make it run even without a subcommand with invoke_without_command=True:\n\nPython 3.10+\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef create(username: str):\n\n    print(f\"Creating user: {username}\")\n\n\n\n\n\n@app.command()\n\ndef delete(username: str):\n\n    print(f\"Deleting user: {username}\")\n\n\n\n\n\n@app.callback(invoke_without_command=True)\n\ndef main():\n\n    \"\"\"\n\n    Manage users in the awesome CLI app.\n\n    \"\"\"\n\n    print(\"Initializing database\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n\nCheck it:\n\nExclusive executable callback¶\n\nWe might not want the callback to be executed if there's already other command that will be executed.\n\nFor that, we can get the typer.Context and check if there's an invoked command in ctx.invoked_subcommand.\n\nIf it's None, it means that we are not calling a subcommand but the main program (the callback) directly:\n\nPython 3.10+\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef create(username: str):\n\n    print(f\"Creating user: {username}\")\n\n\n\n\n\n@app.command()\n\ndef delete(username: str):\n\n    print(f\"Deleting user: {username}\")\n\n\n\n\n\n@app.callback(invoke_without_command=True)\n\ndef main(ctx: typer.Context):\n\n    \"\"\"\n\n    Manage users in the awesome CLI app.\n\n    \"\"\"\n\n    if ctx.invoked_subcommand is None:\n\n        print(\"Initializing database\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n\nCheck it:\n\nConfiguring the context¶\n\nYou can pass configurations for the context when creating a command or callback.\n\nFor example, you could keep additional CLI parameters not declared in your CLI program with ignore_unknown_options and allow_extra_args.\n\nThen you can access those extra raw CLI parameters as a list of str in ctx.args:\n\nPython 3.10+\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command(\n\n    context_settings={\"allow_extra_args\": True, \"ignore_unknown_options\": True}\n\n)\n\ndef main(ctx: typer.Context):\n\n    for extra_arg in ctx.args:\n\n        print(f\"Got extra arg: {extra_arg}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n\nTip\n\nNotice that it saves all the extra CLI parameters as a raw list of str, including the CLI option names and values, everything together.",
+  "headings": [
+    {
+      "id": "using-the-context",
+      "text": "Using the Context¶"
+    },
+    {
+      "id": "getting-the-context",
+      "text": "Getting the context¶"
+    },
+    {
+      "id": "executable-callback",
+      "text": "Executable callback¶"
+    },
+    {
+      "id": "exclusive-executable-callback",
+      "text": "Exclusive executable callback¶"
+    },
+    {
+      "id": "configuring-the-context",
+      "text": "Configuring the context¶"
+    }
+  ]
+}

@@ -1,11 +1,16 @@
 # 只读 stdio MCP
 
-安装可选依赖后，显式选择一个已导入的索引：
+从本地 checkout 创建隔离环境并安装可选依赖。当前没有配置公开发布，
+不要把 PyPI 包名当作本分支已发布的安装来源：
 
 ```sh
-pip install 'goldmine[mcp]'
-goldmine mcp --db /absolute/path/index.sqlite
+python3 -m venv .mcp-venv
+.mcp-venv/bin/python -m pip install '.[mcp]'
 ```
+
+也可安装已经构建并核验的本地 wheel 的 MCP extra；步骤见
+[安装验收](BUILDING.md)。使用相应环境的可执行文件，显式选择一个已导入的索引：
+`.mcp-venv/bin/goldmine mcp --db /absolute/path/index.sqlite`。
 
 也可用 `--index NAME` 显式选择命名索引。服务不创建索引、不导入资料、不修改客户端配置。旧库缺 opaque citation 身份时，先显式运行 `goldmine reindex lexical --db PATH`。维护命令完成前，相关工具会返回 missing_capability。
 

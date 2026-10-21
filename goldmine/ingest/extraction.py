@@ -345,7 +345,16 @@ class ExtractMixin:
             `ocr` seg (FTS text; text-vector only under a text-only backend)."""
         path = cand.path
         is_shot = rules.is_screenshot(path)
-        info: dict = {"screenshot": True} if is_shot else {}
+        metadata = media.exif_capture(path)
+        taken = metadata.taken
+        info: dict = {"exif_version": media.EXIF_METADATA_VERSION, "exif_reader": metadata.reader,
+                      "exif_status": metadata.status,
+                      "taken": taken[0] if taken else None}
+        if is_shot:
+            info["screenshot"] = True
+        if taken:
+            info["taken_source"] = "Exif.DateTimeOriginal"
+        content_date: float | None = taken[1] if taken else None
         detail: str | None = None
 
         ocr_details: dict = {}
@@ -376,20 +385,20 @@ class ExtractMixin:
 
         want_image_vec = cap is not None and cap.image and not self.lexical_only
         segs: list[_MediaSeg] = []
-        content_date: float | None = None
         extractor = "image-sips.v2"
 
         if want_image_vec:
             # full v2 prep: EXIF + thumbnail + minSide/cap refusals
             try:
                 prep = media.prepare_image(
-                    path, self._media_tmp_dir(), screenshot=is_shot,
+                    path, self._media_tmp_dir(), screenshot=is_shot, metadata=metadata,
                 )
             except ToolError:
                 return _Outcome(
                     capability="metadata_only",
                     detail="sips not found (image thumbnails)",
                     info=info,
+                    content_date=content_date,
                 )
             except RuntimeError as exc:
                 # sips cannot decode (rc != 0, e.g. "Error 13"): honest
@@ -402,15 +411,19 @@ class ExtractMixin:
                         info=info,
                         extractor_version="image-sips-ocr.v2",
                         media_segs=segs,
+                        content_date=content_date,
                     )
                 return _Outcome(
                     capability="metadata_only",
                     detail=f"sips could not decode: {str(exc)[:120]}",
                     info=info,
+                    content_date=content_date,
                 )
             if prep.taken_epoch is not None:
                 content_date = prep.taken_epoch
                 info["taken"] = prep.taken
+                info["taken_source"] = "Exif.DateTimeOriginal"
+                info["exif_status"] = "complete"
             if prep.refused is not None:
                 if ocr_text:
                     # the pixels are un-embeddable (minSide / pathological
@@ -433,13 +446,6 @@ class ExtractMixin:
                 )
             segs.append(_MediaSeg(kind="image", path=prep.path, excerpt=path.name))
             info["thumb"] = f"{prep.width}x{prep.height}"
-        elif media.sips_path() is not None:
-            # no image vector wanted, but EXIF is backend-independent metadata
-            taken = media.exif_taken(path)
-            if taken is not None:
-                content_date = taken[1]
-                info["taken"] = taken[0]
-
         if ocr_text:
             segs.append(self._ocr_seg(path, ocr_text, cap))
             extractor = "image-sips-ocr.v2"
@@ -663,10 +669,11 @@ class ExtractMixin:
     def _media_tmp_dir(self) -> Path:
         """Scratch dir owned by the run: thumbnails must survive from worker
         extraction into main-thread commit (one wave later)."""
-        if self._media_tmp is None:
-            self._media_tmp = tempfile.TemporaryDirectory(
-                prefix="goldmine-media-tmp-"
-            )
+        with self._media_tmp_lock:
+            if self._media_tmp is None:
+                self._media_tmp = tempfile.TemporaryDirectory(
+                    prefix="goldmine-media-tmp-"
+                )
         return Path(self._media_tmp.name)
 
     def _close_media_tmp(self) -> None:
@@ -675,7 +682,7 @@ class ExtractMixin:
             self._media_tmp = None
 
     def _extract_doc(self, path, ext, override, max_chunks, kind: str = "doc") -> _Outcome:
-        if ext in ("txt", "text"):
+        if ext in ("txt", "text", "rst"):
             ex = extract_txt(path, override)
         elif ext in ("md", "markdown"):
             ex = extract_markdown(path, override)

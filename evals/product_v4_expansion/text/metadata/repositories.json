@@ -1,0 +1,62 @@
+[
+  {
+    "key": "requests",
+    "repository": "https://github.com/psf/requests",
+    "ref_requested": "v2.32.3",
+    "revision": "0e322af87745eff34caffe4df68456ebc20d9068",
+    "license_path": "LICENSE",
+    "license_url": "https://raw.githubusercontent.com/psf/requests/0e322af87745eff34caffe4df68456ebc20d9068/LICENSE",
+    "retrieved_at": "2026-10-21T16:01:43.639185+00:00",
+    "api_url": "https://api.github.com/repos/psf/requests/commits/v2.32.3"
+  },
+  {
+    "key": "click",
+    "repository": "https://github.com/pallets/click",
+    "ref_requested": "8.1.7",
+    "revision": "874ca2bc1c30d93a4ac6e36a15ed685eafe89097",
+    "license_path": "LICENSE.rst",
+    "license_url": "https://raw.githubusercontent.com/pallets/click/874ca2bc1c30d93a4ac6e36a15ed685eafe89097/LICENSE.rst",
+    "retrieved_at": "2026-10-21T16:01:43.757522+00:00",
+    "api_url": "https://api.github.com/repos/pallets/click/commits/8.1.7"
+  },
+  {
+    "key": "cpython",
+    "repository": "https://github.com/python/cpython",
+    "ref_requested": "v3.12.7",
+    "revision": "0b05ead877f909b7efe712db758012d9dbece7ce",
+    "license_path": "LICENSE",
+    "license_url": "https://raw.githubusercontent.com/python/cpython/0b05ead877f909b7efe712db758012d9dbece7ce/LICENSE",
+    "retrieved_at": "2026-10-21T16:01:44.193345+00:00",
+    "api_url": "https://api.github.com/repos/python/cpython/commits/v3.12.7"
+  },
+  {
+    "key": "vue-zh",
+    "repository": "https://github.com/vuejs-translations/docs-zh-cn",
+    "ref_requested": "main",
+    "revision": "418f5ae6e15c7a90beae017e44d58dac3d93ad95",
+    "license_path": "LICENSE",
+    "license_url": "https://raw.githubusercontent.com/vuejs-translations/docs-zh-cn/418f5ae6e15c7a90beae017e44d58dac3d93ad95/LICENSE",
+    "retrieved_at": "2026-10-21T16:01:45.201033+00:00",
+    "api_url": "https://api.github.com/repos/vuejs-translations/docs-zh-cn/commits/main"
+  },
+  {
+    "key": "vite-ja",
+    "repository": "https://github.com/vitejs/docs-ja",
+    "ref_requested": "main",
+    "revision": "fe8db100c93c32cfbd3d86dc7c0261677063efac",
+    "license_path": "LICENSE",
+    "license_url": "https://raw.githubusercontent.com/vitejs/docs-ja/fe8db100c93c32cfbd3d86dc7c0261677063efac/LICENSE",
+    "retrieved_at": "2026-10-21T16:01:44.545567+00:00",
+    "api_url": "https://api.github.com/repos/vitejs/docs-ja/commits/main"
+  },
+  {
+    "key": "vite-ko",
+    "repository": "https://github.com/vitejs/docs-ko",
+    "ref_requested": "main",
+    "revision": "2f8f1ecbacb579273f9a7c52544a9d2e80f46d2a",
+    "license_path": "LICENSE",
+    "license_url": "https://raw.githubusercontent.com/vitejs/docs-ko/2f8f1ecbacb579273f9a7c52544a9d2e80f46d2a/LICENSE",
+    "retrieved_at": "2026-10-21T16:01:45.079802+00:00",
+    "api_url": "https://api.github.com/repos/vitejs/docs-ko/commits/main"
+  }
+]

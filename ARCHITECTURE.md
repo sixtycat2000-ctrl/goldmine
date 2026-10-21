@@ -117,7 +117,7 @@ store.replace_segments(file_id, segments)   ← ONE transaction per file:
 ```
 
 Per-file outcomes are always recorded (verdict 5a): `content_indexed`, `metadata_only`,
-`unsupported`, `failed` — see [SPEC.md § Capability matrix](SPEC.md#7-capability-matrix).
+`unsupported`, `failed` — see [SPEC.md § Capability matrix](SPEC.md#15-capability-matrix-normative-definitions--verdict-5a).
 Deletions (files under a root that vanished) are pruned and reported. Re-ingest of a changed
 file (sha256 mismatch) does **atomic segment replacement**: extract → embed → single
 transaction that deletes the old segments and inserts the new ones.

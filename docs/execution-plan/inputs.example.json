@@ -74,16 +74,16 @@
   },
   "product": {
     "source_manifest": {
-      "path": "evals/product_v4/manifest.json",
-      "sha256": null
+      "path": "evals/product_v4_expansion/manifest.json",
+      "sha256": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0"
     },
     "queries": {
-      "path": "evals/product_v4/queries.jsonl",
-      "sha256": null
+      "path": "evals/product_v4_expansion/queries.jsonl",
+      "sha256": "44bea88ae1ffecfd9363eb235a0c8f6c55d9162c77beb6477d5b3cafde5ec947"
     },
     "splits": {
-      "path": "evals/product_v4/splits.json",
-      "sha256": null
+      "path": "evals/product_v4_expansion/splits.json",
+      "sha256": "c2685d6a27c23420d51d3567b6388dff0bfa89b9d6dfd60edd344d4dc7b48cc8"
     },
     "reference_index": {
       "path": null,
@@ -120,6 +120,22 @@
     "exposure_ledger": {
       "path": null,
       "sha256": null
+    },
+    "single_query_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "single_query_parameters": {
+      "path": null,
+      "sha256": null
+    },
+    "single_query_index": {
+      "path": null,
+      "sha256": null,
+      "identity_manifest": {
+        "manifest_path": null,
+        "sha256": null
+      }
     }
   },
   "public": {
@@ -132,6 +148,14 @@
       "sha256": null
     },
     "candidate_run": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "reference_prepare": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "candidate_prepare": {
       "manifest_path": null,
       "sha256": null
     }
@@ -158,6 +182,10 @@
       "sha256": null
     },
     "null_audit": {
+      "manifest_path": null,
+      "sha256": null
+    },
+    "compare_run": {
       "manifest_path": null,
       "sha256": null
     }

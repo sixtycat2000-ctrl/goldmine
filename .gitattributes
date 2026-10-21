@@ -1,2 +1,14 @@
 # Preserve verbatim tool stdout used as parser/provenance fixtures.
 tests/fixtures_data/comparison/*.stdout whitespace=-blank-at-eol
+# Real upstream source/oracle/licence bytes are evidence, including intentional
+# whitespace. Curator scripts, annotations, and documentation keep normal checks.
+evals/product_v4_expansion/**/assets/** -whitespace conflict-marker-size=256
+evals/product_v4_expansion/**/views/** -whitespace conflict-marker-size=256
+evals/product_v4_expansion/**/licenses/** -whitespace conflict-marker-size=256
+evals/product_v4_expansion/assets/** -whitespace conflict-marker-size=256
+evals/product_v4_expansion/views/** -whitespace conflict-marker-size=256
+evals/product_v4_expansion/licenses/** -whitespace conflict-marker-size=256
+# Upstream reStructuredText headings can be seven '=' characters; these are
+# immutable evidence rather than unresolved merges. PDFs retain binary bytes.
+evals/product_v4_expansion/**/*.pdf binary
+evals/product_v4_expansion/media/acquisition/*.TXT -whitespace

@@ -1,0 +1,22 @@
+{{User:Florstein/Inf
+|Description=
+{{en|Karpovka River Embankment in Saint Petersburg}}
+{{fr|Les quais de la Karpovka, à [[:fr:Saint Petersbourg|Saint Petersbourg]], en Russie.}}
+{{ru|Набережная реки Карповки в Санкт-Петербурге}}
+|Year=2013
+|Month=07
+|Day=19
+|location=Russia}}
+{{Location|59|58|11.32|N|30|18|28.46|E|region:RU_SPE_heading:E}}
+{{Assessments|quality=1|featured=1}}
+{{picture of the day|year=2014|month=10|day=18}}
+{{Image extracted|1=Karpovka River Embankment 06 - Banner.jpg}}
+
+[[Category:Karpovka River]]
+[[Category:Quality images of Petrogradskaya Side]]
+[[Category:Quality images of rivers and canals in Saint Petersburg]]
+[[Category:Featured pictures of Saint Petersburg]]
+[[Category:Featured pictures by Florstein]]
+[[Category:Karpovka, 19]]
+[[Category:Featured pictures of cityscapes]]
+[[Category:Taken with Nikon D5100]]

@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "contract_sha256": "0c834540ec18cf3b49bfd927f484656a3c1026c2c71cabfe83f682aa94d9339f",
+  "contract_sha256": "1d8e7f351d34e8d0ed26428602f4ccc73dbf4ae995c9fadd50bf1b0632a0f1cc",
   "product": {
     "min_class_n": 25,
     "min_media_subtype_n": 8,
@@ -19,7 +19,8 @@
     "invalid_citation_rate": 0,
     "out_of_scope_read_rate": 0,
     "compound_all_facts": 0.75,
-    "compound_gain": 0.1
+    "compound_gain": 0.1,
+    "rerank_ndcg_gain": 0.02
   },
   "regression": {
     "legacy_absolute_drop": 0.02,

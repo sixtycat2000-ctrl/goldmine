@@ -85,6 +85,10 @@ def _plain(check, root: Path, inputs: checks.Inputs, targets: dict) -> tuple[str
         from .performance import mcp
 
         return mcp(inputs, targets)
+    if check.kind == "scale":
+        from .scale import check as scale
+
+        return scale(root, inputs, targets)
     if check.kind == "distribution":
         from .delivery import distribution
 
@@ -101,6 +105,14 @@ def _plain(check, root: Path, inputs: checks.Inputs, targets: dict) -> tuple[str
         from .distill_evidence import check as real_distill
 
         return real_distill(inputs, targets)
+    if check.kind == "documentation":
+        from .documentation import check as documentation
+
+        return documentation(inputs, targets)
+    if check.kind == "holdout":
+        from .holdout import check as holdout
+
+        return holdout(root, inputs, targets)
     if check.kind == "unimplemented":
         return "MISSING", {"reason": f"raw evidence adapter not implemented: {check.id}"}
     raise InvalidEvidence(f"unknown registered check kind: {check.kind}")

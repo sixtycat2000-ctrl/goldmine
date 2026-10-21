@@ -104,6 +104,7 @@ def test_unchanged_still_checks_fingerprint_without_starting_incompatible_llama(
 
 def test_completed_ocr_asr_not_called_again_on_unchanged_pass(tmp_path, monkeypatch):
     from conftest import write_fake_ocr_helper
+    from goldmine.ingest.exif import CaptureResult
 
     root = tmp_path / "sources"
     root.mkdir()
@@ -111,6 +112,9 @@ def test_completed_ocr_asr_not_called_again_on_unchanged_pass(tmp_path, monkeypa
     (root / "opaque-audio.wav").write_bytes(b"audio fixture")
     monkeypatch.setenv("GOLDMINE_OCR_HELPER", str(write_fake_ocr_helper(tmp_path)))
     monkeypatch.setattr(media, "sips_path", lambda: None)
+    # These opaque fixture bytes exercise OCR/ASR accounting. A real metadata
+    # subprocess is outside this hermetic test and its failure must stay retryable.
+    monkeypatch.setattr(media, "exif_capture", lambda _: CaptureResult(None, "fixture", "unsupported"))
     monkeypatch.setattr(asr, "resolve_tools", lambda cfg: object())
     transcribes = []
 

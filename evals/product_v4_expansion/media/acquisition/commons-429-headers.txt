@@ -1,0 +1,21 @@
+HTTP/1.1 200 Connection established
+
+HTTP/2 429 
+date: Wed, 21 Oct 2026 16:04:29 GMT
+server: Varnish
+x-cache: cp5028 int
+x-cache-status: int-front
+server-timing: cache;desc="int-front", host;desc="cp5028"
+strict-transport-security: max-age=106384710; includeSubDomains; preload
+report-to: { "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }
+nel: { "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}
+x-client-ip: 219.74.226.106
+access-control-allow-origin: *
+access-control-expose-headers: Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache
+timing-allow-origin: *
+retry-after: 600
+content-type: text/html; charset=utf-8
+content-length: 2256
+x-request-id: 6c3b6c10-cc5e-413d-9917-512d426c772d
+x-analytics: 
+

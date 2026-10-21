@@ -1,0 +1,23 @@
+{
+  "schema": 1,
+  "status": "DRAFT_MECHANICAL_VALIDATION_ONLY",
+  "checked_at": "2026-10-21T16:25:58.557666+00:00",
+  "questions": 180,
+  "shard_sha256": "b948bd3ef2b6f3d1fc6b44258658f5aacbae9b6303df93b6df40f099597d839d",
+  "checks": [
+    "strict source and question schemas",
+    "raw asset SHA256 and exact canonical body views",
+    "unique source-first anchor occurrence",
+    "Unicode half-open character offsets and span SHA256",
+    "actual line range containment",
+    "exact basename metadata",
+    "no full natural-language query leakage",
+    "connected source groups: 12 per class",
+    "5 questions per source maximum"
+  ],
+  "test_command": "python3 -m pytest -q tests/test_product_corpus.py",
+  "test_result": "18 passed in 0.81s",
+  "changed_grouping_source_sha256": "b711782a56fe43be91baca857c6a304e63a9dd974ddcab974e9036503afe711e",
+  "pending_independent_label_audit": true,
+  "retrieval_exposure": "NONE"
+}
