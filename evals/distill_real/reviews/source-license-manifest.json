@@ -1,0 +1,44 @@
+{
+  "schema": 1,
+  "kind": "goldmine.distill-source-license-review",
+  "review_role": "AI provenance/license record reviewer",
+  "status": "PASS_SCOPED_PROVENANCE_AND_LICENSE_RECORDS",
+  "scope": "source/license records only; corpus remains DRAFT",
+  "sources": 120,
+  "reused": 92,
+  "supplemental": 28,
+  "blocking_findings": [],
+  "artifacts": {
+    "audit_sources.py": {
+      "path": "audit_sources.py",
+      "sha256": "e13639d74342f1254f0bbe719bcae7f3b554ff438ba3207fed13407decd05860"
+    },
+    "README.md": {
+      "path": "README.md",
+      "sha256": "8bc665733f727e738a4859cfdd2c023e5c53ec4559e84e81a55810916ecf1696"
+    },
+    "sources.tsv": {
+      "path": "sources.tsv",
+      "sha256": "e29949ad4b9e999a39a9c08161c98050fb8c60e922f6cfa30cfb0b312b286e95"
+    },
+    "licenses.tsv": {
+      "path": "licenses.tsv",
+      "sha256": "f612fd9f8f89e7f14248a36c30535d71637a86c41e929c7544d653bba15acf68"
+    },
+    "preservation.json": {
+      "path": "preservation.json",
+      "sha256": "b293898977a20afbe82728bd8c29e43dbdba172cc5157fca5dc1eac8043bf55f"
+    },
+    "command/manifest.json": {
+      "path": "command/manifest.json",
+      "sha256": "59507fab2aa5fa082849714b0408ea201d20c997e33ea67429bd83829415d7e3"
+    },
+    "command/output/audit.json": {
+      "path": "command/output/audit.json",
+      "sha256": "cded11ca87ba85206b53437f1edaeacea3752df0a05999f2da55bb56cfba0fee"
+    }
+  },
+  "no_network_requests": true,
+  "no_question_fold_holdout_labels_or_model_results_read": true,
+  "no_source_or_corpus_changes": true
+}

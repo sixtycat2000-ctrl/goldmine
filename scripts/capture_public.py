@@ -56,7 +56,7 @@ def main(argv=None):
                     "GOLDMINE_CONFIG": str(args.out.resolve() / "isolated-config.toml"), "GOLDMINE_OCR_AUTOCOMPILE": "0"})
         check_id = "public." + args.role + ("_prepare" if args.prepare else "")
         manifest = capture_command(args.out, check_id, command, cwd=ROOT, env=env,
-                                   identity=identity, suite_id=SUITE, timeout=7200)
+                                   identity=identity, suite_id=SUITE, timeout=7200, owned_process_group=True)
         from acceptance_lib.evidence import read_command_run
 
         _, receipt, _ = read_command_run(args.out / "manifest.json")

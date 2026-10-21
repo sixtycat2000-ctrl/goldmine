@@ -1,0 +1,1527 @@
+[
+  {
+    "id": "av3-single-002",
+    "old": {
+      "id": "av3-single-002",
+      "class": "single",
+      "q": "How does a short option that consumes a value handle characters attached after it in the same token?",
+      "source_group": "source:text/click/src/click/parser.py",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 440,
+            "end": 442
+          },
+          "span": {
+            "start_char": 15611,
+            "end_char": 15710,
+            "text": "if i < len(arg):\n                    state.rargs.insert(0, arg[i:])\n                    stop = True",
+            "sha256": "5caa89b04bc5c053ba96c9db10e5d8e565a39cf0b8ed269b609656c8f625899e"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-single-002",
+      "class": "single",
+      "q": "How does a short option that consumes a value handle characters attached after it in the same token?",
+      "source_group": "source:text/click/src/click/parser.py",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 437,
+            "end": 452
+          },
+          "span": {
+            "start_char": 15427,
+            "end_char": 15916,
+            "text": "            if option.takes_value:\n                # Any characters left in arg?  Pretend they're the\n                # next arg, and stop consuming characters of arg.\n                if i < len(arg):\n                    state.rargs.insert(0, arg[i:])\n                    stop = True\n\n                value = self._get_value_from_state(opt, option, state)\n\n            else:\n                value = None\n\n            option.process(value, state)\n\n            if stop:\n                break",
+            "sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-single-003",
+    "old": {
+      "id": "av3-single-003",
+      "class": "single",
+      "q": "In session-setting merge code, how can a per-request mapping remove a key inherited from the session?",
+      "source_group": "source:text/requests/src/requests/sessions.py",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 82,
+            "end": 86
+          },
+          "span": {
+            "start_char": 2178,
+            "end_char": 2417,
+            "text": "# Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+            "sha256": "c23770f52bf2e6768f6c0b89ac4e4f338e229a5ea3dcc29557e1dc9f53712f13"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-single-003",
+      "class": "single",
+      "q": "In session-setting merge code, how can a per-request mapping remove a key inherited from the session?",
+      "source_group": "source:text/requests/src/requests/sessions.py",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 79,
+            "end": 86
+          },
+          "span": {
+            "start_char": 2047,
+            "end_char": 2417,
+            "text": "    merged_setting = dict_class(to_key_val_list(session_setting))\n    merged_setting.update(to_key_val_list(request_setting))\n\n    # Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+            "sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-single-006",
+    "old": {
+      "id": "av3-single-006",
+      "class": "single",
+      "q": "组件里调用 defineModel 得到的对象是什么，能承担什么绑定关系？",
+      "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 36,
+            "end": 36
+          },
+          "span": {
+            "start_char": 686,
+            "end_char": 761,
+            "text": "`defineModel()` 返回的值是一个 ref。它可以像其他 ref 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用：",
+            "sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "模型宏返回引用，在父组件与当前变量间提供双向绑定。",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-single-006",
+      "class": "single",
+      "q": "组件里调用 defineModel 得到的对象是什么，能承担什么绑定关系？",
+      "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 36,
+            "end": 36
+          },
+          "span": {
+            "start_char": 686,
+            "end_char": 761,
+            "text": "`defineModel()` 返回的值是一个 ref。它可以像其他 ref 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用：",
+            "sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "defineModel() 返回一个 ref，并在父组件绑定值和当前变量之间提供双向绑定。",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-single-020",
+    "old": {
+      "id": "av3-single-020",
+      "class": "single",
+      "q": "Why could the traveler choose to leave the blanket behind?",
+      "source_group": "librispeech:book:326",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3000-15664-0005.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "span": {
+            "start_char": 92,
+            "end_char": 129,
+            "text": "WOOD FOR FIRES IS EVERYWHERE ABUNDANT",
+            "sha256": "28d10925ac9bcb21c9131f0f9a886743c471cbd3d64adc6478466e2817a05268"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Abundant firewood made it possible to do without the blanket.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-single-020",
+      "class": "single",
+      "q": "Why could the traveler choose to leave the blanket behind?",
+      "source_group": "librispeech:book:326",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3000-15664-0005.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 129,
+            "text": "ONE BLANKET WILL BE ENOUGH TO CARRY OR YOU MAY FOREGO THE PLEASURE AND BURDEN ALTOGETHER AS WOOD FOR FIRES IS EVERYWHERE ABUNDANT",
+            "sha256": "f64098ce1f9966591cbf68789b24ed7ece6b99b485c2f96d8df89fc90c01b5c0"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Abundant firewood made it possible to do without the blanket.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-002",
+    "old": {
+      "id": "av3-multi-002",
+      "class": "multi",
+      "q": "Answer both questions:\n1. Does the long-option matcher silently accept an unregistered abbreviated option name?\n2. How does a short option that consumes a value handle characters attached after it in the same token?",
+      "source_group": "source:text/click/src/click/parser.py",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 394,
+            "end": 398
+          },
+          "span": {
+            "start_char": 13962,
+            "end_char": 14188,
+            "text": "if opt not in self._long_opt:\n            from difflib import get_close_matches\n\n            possibilities = get_close_matches(opt, self._long_opt)\n            raise NoSuchOption(opt, possibilities=possibilities, ctx=self.ctx)",
+            "sha256": "6d891cf88cb23248b6919fc8c03a0a1f2f2f2dec2f50d3cf1def56214193035a"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 440,
+            "end": 442
+          },
+          "span": {
+            "start_char": 15611,
+            "end_char": 15710,
+            "text": "if i < len(arg):\n                    state.rargs.insert(0, arg[i:])\n                    stop = True",
+            "sha256": "5caa89b04bc5c053ba96c9db10e5d8e565a39cf0b8ed269b609656c8f625899e"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "An unregistered long option raises NoSuchOption, with close-match suggestions rather than silent acceptance.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-002",
+      "class": "multi",
+      "q": "Answer both questions:\n1. Does the long-option matcher silently accept an unregistered abbreviated option name?\n2. How does a short option that consumes a value handle characters attached after it in the same token?",
+      "source_group": "source:text/click/src/click/parser.py",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 394,
+            "end": 398
+          },
+          "span": {
+            "start_char": 13962,
+            "end_char": 14188,
+            "text": "if opt not in self._long_opt:\n            from difflib import get_close_matches\n\n            possibilities = get_close_matches(opt, self._long_opt)\n            raise NoSuchOption(opt, possibilities=possibilities, ctx=self.ctx)",
+            "sha256": "6d891cf88cb23248b6919fc8c03a0a1f2f2f2dec2f50d3cf1def56214193035a"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/click/src/click/parser.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 437,
+            "end": 452
+          },
+          "span": {
+            "start_char": 15427,
+            "end_char": 15916,
+            "text": "            if option.takes_value:\n                # Any characters left in arg?  Pretend they're the\n                # next arg, and stop consuming characters of arg.\n                if i < len(arg):\n                    state.rargs.insert(0, arg[i:])\n                    stop = True\n\n                value = self._get_value_from_state(opt, option, state)\n\n            else:\n                value = None\n\n            option.process(value, state)\n\n            if stop:\n                break",
+            "sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "An unregistered long option raises NoSuchOption, with close-match suggestions rather than silent acceptance.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-004",
+    "old": {
+      "id": "av3-multi-004",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 只想隐藏元素而保留节点，条件显示指令是通过修改哪个样式完成的？\n2. 条件区块最初为假时，会先创建里面的子组件再隐藏起来吗？",
+      "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "span": {
+            "start_char": 2070,
+            "end_char": 2141,
+            "text": "不同之处在于 `v-show` 会在 DOM 渲染中保留该元素；`v-show` 仅切换了该元素上名为 `display` 的 CSS 属性。",
+            "sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 97
+          },
+          "span": {
+            "start_char": 2295,
+            "end_char": 2364,
+            "text": "`v-if` 也是**惰性**的：如果在初次渲染时条件值为 false，则不会做任何事。条件区块只有当条件首次变为 true 时才被渲染。",
+            "sha256": "5336693a0b97375a42f8c551097fd48a5d078ee6eb10d992f931b177183cb768"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "显示隐藏指令保留元素，仅切换显示样式属性。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "条件渲染是惰性的，初始为假时不创建，首次变真才渲染。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-004",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 只想隐藏元素而保留节点，条件显示指令是通过修改哪个样式完成的？\n2. 条件区块最初为假时，会先创建里面的子组件再隐藏起来吗？",
+      "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "span": {
+            "start_char": 2070,
+            "end_char": 2141,
+            "text": "不同之处在于 `v-show` 会在 DOM 渲染中保留该元素；`v-show` 仅切换了该元素上名为 `display` 的 CSS 属性。",
+            "sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 97,
+            "end": 97
+          },
+          "span": {
+            "start_char": 2295,
+            "end_char": 2364,
+            "text": "`v-if` 也是**惰性**的：如果在初次渲染时条件值为 false，则不会做任何事。条件区块只有当条件首次变为 true 时才被渲染。",
+            "sha256": "5336693a0b97375a42f8c551097fd48a5d078ee6eb10d992f931b177183cb768"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "v-show 在 DOM 中保留元素，只切换元素的 CSS display 属性。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "条件渲染是惰性的，初始为假时不创建，首次变真才渲染。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-005",
+    "old": {
+      "id": "av3-multi-005",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 子组件 defineModel 配了 default，但父组件没有传值，为何父子状态会不一致？\n2. v-model:title 在子组件中该对应哪个 prop 和更新事件？",
+      "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 100,
+            "end": 100
+          },
+          "span": {
+            "start_char": 2372,
+            "end_char": 2499,
+            "text": "如果为 `defineModel` prop 设置了一个 `default` 值且父组件没有为该 prop 提供任何值，会导致父组件与子组件之间不同步。在下面的示例中，父组件的 `myRef` 是 undefined，而子组件的 `model` 是 1：",
+            "sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 265,
+            "end": 265
+          },
+          "span": {
+            "start_char": 6340,
+            "end_char": 6445,
+            "text": "在这种情况下，子组件应该使用 `title` prop 和 `update:title` 事件来更新父组件的值，而非默认的 `modelValue` prop 和 `update:modelValue` 事件：",
+            "sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "模型属性默认值且父组件未提供值时会造成父子不同步。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "具名标题模型对应标题属性和更新标题事件。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-005",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 子组件 defineModel 配了 default，但父组件没有传值，为何父子状态会不一致？\n2. v-model:title 在子组件中该对应哪个 prop 和更新事件？",
+      "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 100,
+            "end": 100
+          },
+          "span": {
+            "start_char": 2372,
+            "end_char": 2499,
+            "text": "如果为 `defineModel` prop 设置了一个 `default` 值且父组件没有为该 prop 提供任何值，会导致父组件与子组件之间不同步。在下面的示例中，父组件的 `myRef` 是 undefined，而子组件的 `model` 是 1：",
+            "sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/components/v-model.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 265,
+            "end": 265
+          },
+          "span": {
+            "start_char": 6340,
+            "end_char": 6445,
+            "text": "在这种情况下，子组件应该使用 `title` prop 和 `update:title` 事件来更新父组件的值，而非默认的 `modelValue` prop 和 `update:modelValue` 事件：",
+            "sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "父组件没有提供值时，父值仍可为 undefined，而子组件使用 defineModel 的 default（示例为1），所以父子值不同步。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "v-model:title 对应子组件的 title prop 和 update:title 事件。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-009",
+    "old": {
+      "id": "av3-multi-009",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 开启数字转换的输入框被用户清空以后，绑定值会变成零吗？\n2. 输入内容首尾经常多出空格，双向绑定有没有自动清理的选项？",
+      "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/essentials/forms.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 452,
+            "end": 452
+          },
+          "span": {
+            "start_char": 13901,
+            "end_char": 13971,
+            "text": "如果该值无法被 `parseFloat()` 处理，那么将返回原始值。特别是当输入为空时 (例如用户清空输入字段之后)，会返回一个空字符串。",
+            "sha256": "f0d4b0e9e825677f6cec36fef851aec74541ecdd845e816e9c8af832f41bec92"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/essentials/forms.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 458,
+            "end": 458
+          },
+          "span": {
+            "start_char": 14152,
+            "end_char": 14207,
+            "text": "如果你想要默认自动去除用户输入内容中两端的空格，你可以在 `v-model` 后添加 `.trim` 修饰符：",
+            "sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "数字转换无法解析时保留原值，清空输入时返回空字符串。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "去空格修饰符可自动移除用户输入两端的空格。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-009",
+      "class": "multi",
+      "q": "Answer both questions:\n1. 开启数字转换的输入框被用户清空以后，绑定值会变成零吗？\n2. 输入内容首尾经常多出空格，双向绑定有没有自动清理的选项？",
+      "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/vue-zh/src/guide/essentials/forms.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 452,
+            "end": 452
+          },
+          "span": {
+            "start_char": 13901,
+            "end_char": 13971,
+            "text": "如果该值无法被 `parseFloat()` 处理，那么将返回原始值。特别是当输入为空时 (例如用户清空输入字段之后)，会返回一个空字符串。",
+            "sha256": "f0d4b0e9e825677f6cec36fef851aec74541ecdd845e816e9c8af832f41bec92"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/vue-zh/src/guide/essentials/forms.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 458,
+            "end": 458
+          },
+          "span": {
+            "start_char": 14152,
+            "end_char": 14207,
+            "text": "如果你想要默认自动去除用户输入内容中两端的空格，你可以在 `v-model` 后添加 `.trim` 修饰符：",
+            "sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "数字转换无法解析时保留原值，清空输入时返回空字符串。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "在 v-model 后添加 .trim 修饰符，可自动去除用户输入两端的空格。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-012",
+    "old": {
+      "id": "av3-multi-012",
+      "class": "multi",
+      "q": "Answer both questions:\n1. Which option setting supports a verbosity level that rises each time the flag is repeated?\n2. A user-configurable default should still permit an interactive prompt. What approach is recommended instead of a default map?",
+      "source_group": "source:text/click/docs/options.rst",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/click/docs/options.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 230,
+            "end": 231
+          },
+          "span": {
+            "start_char": 6411,
+            "end_char": 6464,
+            "text": "use the repetition\nof options to count an integer up.",
+            "sha256": "5e5a27b9487207ae59192772f3f9cbe18058b82359e2b7651206b343e792c341"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/click/docs/options.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 505,
+            "end": 507
+          },
+          "span": {
+            "start_char": 13386,
+            "end_char": 13575,
+            "text": "If you want to let the user configure the default value, but still be\nprompted if the option isn't specified on the command line, you can do so\nby supplying a callable as the default value.",
+            "sha256": "cd949e8afe2611671befed6bb67acc1aaa8f1d4d4c4e7ca201dfc2d3fb837891"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "A counting option increments an integer for repeated occurrences.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "Supply a callable default so the prompt can still occur when no command-line value is given.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-012",
+      "class": "multi",
+      "q": "Answer both questions:\n1. Which option setting supports a verbosity level that rises each time the flag is repeated?\n2. A user-configurable default should still permit an interactive prompt. What approach is recommended instead of a default map?",
+      "source_group": "source:text/click/docs/options.rst",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/click/docs/options.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 230,
+            "end": 239
+          },
+          "span": {
+            "start_char": 6357,
+            "end_char": 6674,
+            "text": "In some very rare circumstances, it is interesting to use the repetition\nof options to count an integer up.  This can be used for verbosity flags,\nfor instance:\n\n.. click:example::\n\n    @click.command()\n    @click.option('-v', '--verbose', count=True)\n    def log(verbose):\n        click.echo(f\"Verbosity: {verbose}\")",
+            "sha256": "ce825be8ddff5529dbb7572fc93afb8f52b600105bae1de54c3e88ea4987e915"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/click/docs/options.rst",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 505,
+            "end": 507
+          },
+          "span": {
+            "start_char": 13386,
+            "end_char": 13575,
+            "text": "If you want to let the user configure the default value, but still be\nprompted if the option isn't specified on the command line, you can do so\nby supplying a callable as the default value.",
+            "sha256": "cd949e8afe2611671befed6bb67acc1aaa8f1d4d4c4e7ca201dfc2d3fb837891"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "Set count=True on click.option; each repetition increments the integer verbosity level.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "Supply a callable default so the prompt can still occur when no command-line value is given.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-multi-014",
+    "old": {
+      "id": "av3-multi-014",
+      "class": "multi",
+      "q": "Answer both questions:\n1. In session-setting merge code, how can a per-request mapping remove a key inherited from the session?\n2. Does the authentication-stripping decision permit an ordinary same-host upgrade from unencrypted to encrypted transport?",
+      "source_group": "source:text/requests/src/requests/sessions.py",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 82,
+            "end": 86
+          },
+          "span": {
+            "start_char": 2178,
+            "end_char": 2417,
+            "text": "# Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+            "sha256": "c23770f52bf2e6768f6c0b89ac4e4f338e229a5ea3dcc29557e1dc9f53712f13"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 133,
+            "end": 134
+          },
+          "span": {
+            "start_char": 4440,
+            "end_char": 4525,
+            "text": "# Special case: allow http -> https redirect when using the standard\n        # ports.",
+            "sha256": "0811f0de9d9861cd95a9e8b16854b6a5cfe50053deb44fcb08dcf23c8f24640a"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "A same-host HTTP-to-HTTPS redirect on standard ports is allowed without stripping authentication.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-multi-014",
+      "class": "multi",
+      "q": "Answer both questions:\n1. In session-setting merge code, how can a per-request mapping remove a key inherited from the session?\n2. Does the authentication-stripping decision permit an ordinary same-host upgrade from unencrypted to encrypted transport?",
+      "source_group": "source:text/requests/src/requests/sessions.py",
+      "expect": [
+        {
+          "evidence_id": "p1_e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 79,
+            "end": 86
+          },
+          "span": {
+            "start_char": 2047,
+            "end_char": 2417,
+            "text": "    merged_setting = dict_class(to_key_val_list(session_setting))\n    merged_setting.update(to_key_val_list(request_setting))\n\n    # Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+            "sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357"
+          }
+        },
+        {
+          "evidence_id": "p2_e0",
+          "path": "text/requests/src/requests/sessions.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 127,
+            "end": 143
+          },
+          "span": {
+            "start_char": 4139,
+            "end_char": 4937,
+            "text": "    def should_strip_auth(self, old_url, new_url):\n        \"\"\"Decide whether Authorization header should be removed when redirecting\"\"\"\n        old_parsed = urlparse(old_url)\n        new_parsed = urlparse(new_url)\n        if old_parsed.hostname != new_parsed.hostname:\n            return True\n        # Special case: allow http -> https redirect when using the standard\n        # ports. This isn't specified by RFC 7235, but is kept to avoid\n        # breaking backwards compatibility with older versions of requests\n        # that allowed any redirects on the same host.\n        if (\n            old_parsed.scheme == \"http\"\n            and old_parsed.port in (80, None)\n            and new_parsed.scheme == \"https\"\n            and new_parsed.port in (443, None)\n        ):\n            return False",
+            "sha256": "6341ec0884d4b4344dc55c37e0e5d47e6d3436f244673eae5687b6d3683e40f0"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "p1_f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        {
+          "fact_id": "p2_f0",
+          "description": "A same-host HTTP-to-HTTPS redirect on standard ports is allowed without stripping authentication.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-cross-007",
+    "old": {
+      "id": "av3-cross-007",
+      "class": "cross",
+      "q": "How does pip-compile use an existing output file to stabilize versions, and what happens if a file is specified as both input and output?",
+      "source_group": "upstream:pip-tools",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip-tools/README.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 236,
+            "end": 239
+          },
+          "span": {
+            "start_char": 7283,
+            "end_char": 7526,
+            "text": "When you run `pip-compile`, it reads any existing output file (e.g.,\n`requirements.txt`) and uses the versions specified there as constraints.\nThis ensures that the output is stable -- `pip-compile` will prefer to\nuse existing pinned versions.",
+            "sha256": "0743977f38937bb9e9c909970df7c2fe6bc8852f81e6f887cd793836b7570322"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip-tools/piptools/scripts/compile.py",
+          "kind": "code",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 264,
+            "end": 267
+          },
+          "span": {
+            "start_char": 7581,
+            "end_char": 7772,
+            "text": "if output_file.name != \"-\" and output_file.name in src_files:\n        raise click.BadArgumentUsage(\n            f\"input and output filenames must not be matched: {output_file.name}\"\n        )",
+            "sha256": "6f5b2544ea3d97d583526731d152980627792cd413e55674da6cbd2e325a5e4d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Existing output pins become constraints and are preferred for stability.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A matching input/output filename raises click.BadArgumentUsage, except the stdout dash.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-cross-007",
+      "class": "cross",
+      "q": "Where does Typer put options without a custom Rich help panel, and what happens by default when the callback-based application with subcommands is invoked without a command?",
+      "source_group": "upstream:typer",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/typer/docs/tutorial/options/help.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 61,
+            "end": 61
+          },
+          "span": {
+            "start_char": 1664,
+            "end_char": 1776,
+            "text": "you will see a default panel named \"`Options`\" for the *CLI options* that don't have a custom `rich_help_panel`.",
+            "sha256": "b43fadce8b8b9820f12aecf9581db45a0611b17f7aa8dfcf848e12153f284c22"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 39,
+            "end": 45
+          },
+          "span": {
+            "start_char": 1094,
+            "end_char": 1340,
+            "text": "## Executable callback\n\nBy default, the callback is only executed right before executing a command.\n\nAnd if no command is provided, the help message is shown.\n\nBut we could make it run even without a subcommand with `invoke_without_command=True`:",
+            "sha256": "c84ad8ddc7285d069af9c24b02a751c0500cd4e5730a124ec8c70166f4775fb9"
+          }
+        },
+        {
+          "evidence_id": "e2_scope",
+          "path": "compound/typer/docs/tutorial/commands/context.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 13,
+            "end": 15
+          },
+          "span": {
+            "start_char": 492,
+            "end_char": 680,
+            "text": "For example, let's say that you want to execute some logic in a `Typer` callback depending on the subcommand that is being called.\n\nYou can get the name of the subcommand from the context:",
+            "sha256": "9fedb6d3a547d955dc9f9422eaec22dc04a3d0d8ae60b86e67bb7163572d6df0"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Options without a custom panel appear in the Options panel.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "For the described callback-based application, the callback normally runs before a subcommand; with no subcommand the default is to show help.",
+          "sufficient_evidence": [
+            [
+              "e2",
+              "e2_scope"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-cross-008",
+    "old": {
+      "id": "av3-cross-008",
+      "class": "cross",
+      "q": "How can all Poetry virtual environments be removed, and what version-number boundary does a caret requirement preserve during upgrades?",
+      "source_group": "upstream:poetry",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 197,
+            "end": 197
+          },
+          "span": {
+            "start_char": 5160,
+            "end_char": 5183,
+            "text": "poetry env remove --all",
+            "sha256": "d06cbde64a629c4c3545785c7c207642e690a075883048b0d24577f792e5a5f5"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 150,
+            "end": 150
+          },
+          "span": {
+            "start_char": 4538,
+            "end_char": 4666,
+            "text": "An update is allowed if the new version number does not modify the left-most non-zero digit in the major, minor, patch grouping.",
+            "sha256": "ca0566da68bec2728c60c1b0a4db539dee40fd93ebd4761d36ff5b265be1a17e"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "env remove --all removes all project virtual environments.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A caret requirement preserves the leftmost nonzero version component.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-cross-008",
+      "class": "cross",
+      "q": "How can all Poetry virtual environments associated with the current project be removed, and what version-number boundary does a caret requirement preserve during upgrades?",
+      "source_group": "upstream:poetry",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 194,
+            "end": 197
+          },
+          "span": {
+            "start_char": 5084,
+            "end_char": 5183,
+            "text": "Use the `--all` option to delete all virtual environments at once.\n\n```bash\npoetry env remove --all",
+            "sha256": "ab8d8a92bca8aa7ab5f2ee342957cded50b9a1e5323f8cb595a17201c7b96444"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/poetry/docs/dependency-specification.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 150,
+            "end": 150
+          },
+          "span": {
+            "start_char": 4538,
+            "end_char": 4666,
+            "text": "An update is allowed if the new version number does not modify the left-most non-zero digit in the major, minor, patch grouping.",
+            "sha256": "ca0566da68bec2728c60c1b0a4db539dee40fd93ebd4761d36ff5b265be1a17e"
+          }
+        },
+        {
+          "evidence_id": "e1_scope",
+          "path": "compound/poetry/docs/managing-environments.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 155,
+            "end": 158
+          },
+          "span": {
+            "start_char": 4289,
+            "end_char": 4457,
+            "text": "## Listing the environments associated with the project\n\nYou can also list all the virtual environments associated with the current project\nwith the `env list` command:",
+            "sha256": "057fa0a6cd0b828de1121eb8f8e0caeb59479eed39b29a4fd9bdc481354970ad"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "poetry env remove --all removes all virtual environments associated with the current project.",
+          "sufficient_evidence": [
+            [
+              "e1",
+              "e1_scope"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "A caret requirement preserves the leftmost nonzero version component.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "av3-cross-011",
+    "old": {
+      "id": "av3-cross-011",
+      "class": "cross",
+      "q": "For a repeatable pip installation, what operator pins a package to one exact version and which command reports the configured cache directory?",
+      "source_group": "upstream:pip",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 18,
+            "end": 19
+          },
+          "span": {
+            "start_char": 447,
+            "end_char": 537,
+            "text": "Pinning refers to using the `==` operator to require the package to be a\nspecific version.",
+            "sha256": "b8f8da8b1e6887ec67404969d5778c903135c49de40112e52b8e1c595fee5447"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/pip/docs/html/topics/caching.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 73,
+            "end": 73
+          },
+          "span": {
+            "start_char": 2422,
+            "end_char": 2517,
+            "text": "You can use `pip cache dir` to get the cache directory that pip is currently configured to use.",
+            "sha256": "80c74a9f4bdc4ca0647d3320e819330c1d7b0574bfb99be28106013fc7ef56cf"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The == operator pins an exact package version.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "pip cache dir prints the configured cache location.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ]
+    },
+    "new": {
+      "id": "av3-cross-011",
+      "class": "cross",
+      "q": "How can uv upgrade just one locked project package, and will uv tool upgrade discard the tool's existing version constraints?",
+      "source_group": "upstream:uv",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "compound/uv/docs/guides/projects.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 170,
+            "end": 177
+          },
+          "span": {
+            "start_char": 4550,
+            "end_char": 4829,
+            "text": "To upgrade a package, run `uv lock` with the `--upgrade-package` flag:\n\n```console\n$ uv lock --upgrade-package requests\n```\n\nThe `--upgrade-package` flag will attempt to update the specified package to the latest compatible\nversion, while keeping the rest of the lockfile intact.",
+            "sha256": "e0f5bdb440a2293a0ea4bdae1fa622afce4ce5412be9ffa59c521709a3ca06ac"
+          }
+        },
+        {
+          "evidence_id": "e2",
+          "path": "compound/uv/docs/guides/tools.md",
+          "kind": "doc",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "line",
+            "start": 244,
+            "end": 244
+          },
+          "span": {
+            "start_char": 5960,
+            "end_char": 6045,
+            "text": "Tool upgrades will respect the version constraints provided when installing the tool.",
+            "sha256": "4a653d2714e9b5a84887a07953c3afc7767166b7a0240e7ef5b7ed59c83913e7"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Run uv lock --upgrade-package <package> to attempt updating that package to its latest compatible version while keeping the rest of the lockfile intact.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "uv tool upgrade respects existing installation version constraints.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ]
+    }
+  }
+]

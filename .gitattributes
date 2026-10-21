@@ -12,3 +12,9 @@ evals/product_v4_expansion/licenses/** -whitespace conflict-marker-size=256
 # immutable evidence rather than unresolved merges. PDFs retain binary bytes.
 evals/product_v4_expansion/**/*.pdf binary
 evals/product_v4_expansion/media/acquisition/*.TXT -whitespace
+
+# Frozen distillation sources retain publisher bytes.
+evals/distill_real/assets/** -whitespace conflict-marker-size=256
+evals/distill_real/views/** -whitespace conflict-marker-size=256
+evals/distill_real/licenses/** -whitespace conflict-marker-size=256
+evals/distill_real/**/*.pdf binary

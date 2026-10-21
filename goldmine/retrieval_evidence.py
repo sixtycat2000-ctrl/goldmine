@@ -8,6 +8,7 @@ All text comes from the request's Store snapshot, never from source files.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 
 import numpy as np
 
@@ -85,7 +86,8 @@ class EvidenceSelection:
     media_evidence_type: str | None = None
 
 
-def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=False, z_gate=3.0):
+def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=False, z_gate=3.0,
+                    query_text=None):
     """Select the primary pointer and complementary real-text supporting IDs."""
     units = lexical.segment_units if lexical is not None else {}
     exact = lexical.exact.get(file.id) if lexical is not None else None
@@ -108,15 +110,27 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
     ).fetchall()
     by_id = {r[0]: r for r in rows}
     semantic_z = {sid: z for sid, z, _ in semantic}
-    content = [r for r in rows if r[1] != "name" and r[5] is not None]
+    content = [r for r in rows if r[1] != "name" and r[5] and r[5].strip()]
+    content_ids = {r[0] for r in content}
     content.sort(key=lambda r: (
-        0 if exact and exact.source in ("body", "title") and exact.segment_id == r[0] else 1,
         -len(units.get(r[0], ())), -semantic_z.get(r[0], float("-inf")), r[0],
     ))
+    semantic_order = sorted(
+        (sid for sid, z, _ in semantic if sid in content_ids and math.isfinite(z) and z >= z_gate),
+        key=lambda sid: (-semantic_z[sid], sid),
+    )
+    body_exact = exact is not None and exact.segment_id in content_ids and exact.source in ("body", "title")
+    # A title lookup is currently attached to the name row. Stored kind,
+    # not the lookup source label, determines whether a pointer is content.
+    pure_metadata = (exact is not None and exact.segment_id in by_id
+                     and by_id[exact.segment_id][1] == "name" and query_text is not None
+                     and normalize(query_text.strip()) == normalize(exact.query_term))
     if semantic_only:
         primary = fallback
-    elif exact is not None:
+    elif body_exact or pure_metadata:
         primary = exact.segment_id
+    elif semantic_order:
+        primary = semantic_order[0]
     elif content and units.get(content[0][0]):
         primary = content[0][0]
     elif fallback in semantic_z and semantic_z[fallback] >= z_gate:
@@ -127,13 +141,31 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
         return None
     covered = set(units.get(primary, ()))
     supporting = []
-    # Greedy marginal coverage keeps two distant facts, not three copies of
-    # the same fact. It never resurrects a file rejected by admission.
+    # Pure semantic ablation preserves its historical primary+neighbors only.
+    # Protect the hybrid semantic channel even when words duplicate the primary.
+    # Candidates are not a claim that their semantic meanings are independent.
+    allow_support = not semantic_only and primary in content_ids
+    if allow_support:
+        other_semantic = next((sid for sid in semantic_order if sid != primary), None)
+        if other_semantic is not None:
+            supporting.append(other_semantic)
+            covered.update(units.get(other_semantic, ()))
     remaining = [r for r in content if r[0] != primary]
-    while remaining and len(supporting) < 2:
-        row = max(remaining, key=lambda r: (len(set(units.get(r[0], ())) - covered), -r[0]))
+    semantic_rank = {sid: rank for rank, sid in enumerate(semantic_order)}
+    while allow_support and remaining and len(supporting) < 2:
+        remaining = [r for r in remaining if r[0] not in supporting]
+        if not remaining:
+            break
+        row = max(remaining, key=lambda r: (
+            len(set(units.get(r[0], ())) - covered),
+            -semantic_rank.get(r[0], len(semantic_order)), -r[0],
+        ))
         added = set(units.get(row[0], ())) - covered
         if not added:
+            next_semantic = next((sid for sid in semantic_order
+                                  if sid != primary and sid not in supporting), None)
+            if next_semantic is not None:
+                supporting.append(next_semantic)
             break
         supporting.append(row[0])
         covered.update(added)

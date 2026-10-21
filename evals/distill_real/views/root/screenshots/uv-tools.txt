@@ -1,0 +1,11 @@
+The uvx command invokes a tool without installing it.
+
+For example, to run ruff:
+
+$ uvx ruff
+
+This is exactly equivalent to:
+
+$ uv tool run ruff
+
+uvx is provided as an alias for convenience.

@@ -48,3 +48,81 @@ MISSING. The watch suite includes its real600-second duty test. Controlled
 sets the documented pressure override; real removes it. No daemon is installed.
 
 Sources: [GitHub runner reference](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [official actionlint release](https://github.com/rhysd/actionlint/releases/tag/v1.7.12). These describe tool capabilities, not this repository's hosted results.
+
+## Read-only hosted evidence
+
+The hosted adapter accepts only an explicitly named GitHub.com repository,
+run ID, latest complete attempt and full40-character HEAD SHA. The current
+checkout must be clean and committed at exactly that SHA, including its CI
+workflow, validators, test inventory and dependency locks. A metadata-only
+commit also requires a matching hosted run; this stricter hosted identity is
+separate from local content-based replay. The supported events are push and
+workflow_dispatch; fork and pull-request merge identities are rejected.
+
+The fixed workflow names its eight expanded jobs and artifacts:
+base-ubuntu-latest-3.12, base-ubuntu-latest-3.13, base-macos-14-3.12,
+base-macos-14-3.13, native-macos-arm64, optional-mcp, optional-foresight,
+and package-install. Source jobs attach their actual OS, architecture, Python,
+repository/run/attempt/SHA/job/workspace to the same ci_validation receipts.
+The package wrapper calls the existing build/smoke scripts and records wheel,
+exact sdist rebuild, twine and all three outside-checkout install environments.
+Native release binaries and manual live validation retain their separate gates.
+
+After an actual authorized run exists, collection performs GET requests only:
+
+```sh
+python3 scripts/collect_ci_hosted.py collect --repository OWNER/REPO --run-id RUN_ID --run-attempt ATTEMPT --head-sha FULL40SHA --out reports/execution/P0-06/ci-hosted-001
+python3 scripts/collect_ci_hosted.py verify --manifest reports/execution/P0-06/ci-hosted-001/manifest.json
+```
+
+Those capitalized values are placeholders, not evidence or executable defaults.
+No command creates a remote, pushes, dispatches a workflow, installs a runner,
+posts a message or executes downloaded artifact code. Private repositories need
+a pre-existing GH_TOKEN or GITHUB_TOKEN with Actions read and Contents read;
+select it using --token-env. Tokens and signed download URLs stay out of argv
+and persisted logs. Proxy environment variables are ignored for GitHub TLS.
+
+Collection saves the original API responses before and after downloading every
+artifact. Artifact IDs, same-run source identities, successful job/required-step
+conclusions, upload intervals, SHA256 archive digests and sizes must agree.
+Missing, expired, duplicate or unexpected artifacts/jobs are MISSING. A partial
+rerun with retained earlier artifacts is incomplete; the adapter never deletes
+or replaces remote artifacts. Future payload/host/layout changes require an
+explicit adapter revision rather than heuristic fallback.
+
+The verifier checks the complete ZIP directory before extraction, including
+implicit ancestor case aliases, symlinks, absolute/traversing/duplicate paths,
+file-prefix collisions and fixed expansion bounds. It independently bounds
+nested wheels before reading metadata/modules. Source/JUnit scopes are replayed
+against the current registry and actual argv; original runner paths are compared
+through the captured workspace without modifying receipts. Downloaded scripts
+or wheels are never executed during replay.
+
+The --offline switch validates structure and raw mechanics but always exits2
+with MISSING for hosted authenticity. Final hosted PASS additionally requires
+fresh TLS API revalidation of the same completed run, attempt, workflow, jobs,
+artifact identities/digests and source bytes. An unavailable API, URL alone,
+local report, edited green summary, print('PASS') or synthetic API fixture cannot
+satisfy that gate. Saved hashes provide consistency, not an attestation against
+an attacker who controls the trusted committed source and every local file.
+
+In inputs.json, evidence.ci_hosted is the pinned manifest_path/SHA256 pair;
+hosted contains exactly repository, run_id, run_attempt and head_sha and must
+match the bundle. The local_rc profile is unchanged. hosted_release adds this
+actual hosted proof to all local_rc requirements; local failures remain failures.
+
+Engineering limits are content-independent: each GET has an owned isolated
+stdlib worker and a120-second absolute parent deadline (30-second socket
+inactivity cap); timeout kills/reaps only that worker and retains failure bytes.
+API JSON is bounded16MiB. Each outer ZIP is at most2GiB,4GiB expanded,
+100000 entries and2GiB per member, with a2000:1 expansion ceiling. Nested
+wheels are bounded64MiB compressed,128MiB expanded,10000 entries and8MiB
+per member; JUnit parsing is bounded64MiB; source sdists are bounded256MiB
+expanded. Exceeding a bound is MISSING, never partial success.
+
+API protocol sources: [GitHub run/attempt API](https://docs.github.com/en/rest/actions/workflow-runs?apiVersion=2026-03-10),
+[job API](https://docs.github.com/en/rest/actions/workflow-jobs?apiVersion=2026-03-10),
+[artifact/digest/download API](https://docs.github.com/en/rest/actions/artifacts?apiVersion=2026-03-10),
+[committed contents API](https://docs.github.com/en/rest/repos/contents?apiVersion=2026-03-10),
+and [runner network domains](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+These define interfaces; they do not establish this repository's hosted success.

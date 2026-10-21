@@ -1,0 +1,48 @@
+pytest Documentation, Release 9.1
+
+(continued from previous page)
+
+# contents of test_image.py
+def test_histogram(image_file):
+img = load_image(image_file)
+# compute and test histogram
+
+See tmp_path_factory API for details.
+
+2.6.3 The tmpdir and tmpdir_factory ﬁxtures
+The tmpdir and tmpdir_factory fixtures are similar to tmp_path and tmp_path_factory, but use/return legacy
+py.path.local objects rather than standard pathlib.Path objects.
+INFO-CIRCLE Note
+These days, it is preferred to use tmp_path and tmp_path_factory.
+In order to help modernize old code bases, one can run pytest with the legacypath plugin disabled:
+pytest -p no:legacypath
+
+This will trigger errors on tests using the legacy paths. It can also be permanently set as part of the addopts parameter
+in the config file.
+See tmpdir tmpdir_factory API for details.
+
+2.6.4 Temporary directory location and retention
+The temporary directories, as returned by the tmp_path and (now deprecated) tmpdir fixtures, are automatically created
+under a base temporary directory, in a structure that depends on the --basetemp option:
+• By default (when the --basetemp option is not set), the temporary directories will follow this template:
+{temproot}/pytest-of-{user}/pytest-{num}/{testname}/
+
+where:
+– {temproot} is the system temporary directory as determined by tempfile.gettempdir(). It can be
+overridden by the PYTEST_DEBUG_TEMPROOT environment variable.
+– {user} is the user name running the tests,
+– {num} is a number that is incremented with each test suite run
+– {testname} is a sanitized version of the name of the current test.
+The auto-incrementing {num} placeholder provides a basic retention feature and avoids that existing results of
+previous test runs are blindly removed. By default, the last 3 temporary directories are kept, but this behavior can
+be configured with tmp_path_retention_count and tmp_path_retention_policy .
+• When the --basetemp option is used (e.g. pytest --basetemp=mydir), it will be used directly as base
+temporary directory:
+{basetemp}/{testname}/
+
+Note that there is no retention feature in this case: only the results of the most recent run will be kept.
+
+60
+
+Chapter 2. How-to guides
+

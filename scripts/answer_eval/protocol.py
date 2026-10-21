@@ -244,12 +244,14 @@ def answer_request(template: str, question: dict, pack: str) -> str:
     return re.sub("|".join(re.escape(s) for s in slots), lambda m: replacements[m[0]], template)
 
 
-def grader_request(template: str, question: dict, answer: str) -> str:
-    slots = ("<QUESTION>", "<FACTS_JSON>", "<ANSWER>")
+def grader_request(template: str, question: dict, answer: str, pack: str) -> str:
+    if not isinstance(pack, str):
+        raise EvaluationError("grader material pack must be text")
+    slots = ("<QUESTION>", "<FACTS_JSON>", "<PACK>", "<ANSWER>")
     if any(template.count(slot) != 1 for slot in slots):
-        raise EvaluationError("grader template must contain QUESTION, FACTS_JSON, ANSWER once")
+        raise EvaluationError("grader template must contain QUESTION, FACTS_JSON, PACK, ANSWER once")
     facts = {k: question[k] for k in ("class", "expect", "required_facts")}
-    replacements = dict(zip(slots, (question["q"], canonical_json(facts), answer)))
+    replacements = dict(zip(slots, (question["q"], canonical_json(facts), pack, answer)))
     return re.sub("|".join(re.escape(s) for s in slots), lambda m: replacements[m[0]], template)
 
 
@@ -404,7 +406,7 @@ def load_run(path: str | Path, *, allow_fixture: bool = False) -> AnswerRun:
                 raise EvaluationError("answer completion lies outside its run")
             answers[qid].append(answer)
             judge_path = inside(root, f"judge_prompts_{a}/{qid}.txt")
-            if read_text(judge_path) != grader_request(g_template, q, text):
+            if read_text(judge_path) != grader_request(g_template, q, text, pack):
                 raise EvaluationError(f"{qid}/{a}: grader request is not the frozen facts/template/owned answer")
             for j in ("j1", "j2"):
                 grade = read_json(inside(root, f"grades_{a}_{j}/{qid}.json"))

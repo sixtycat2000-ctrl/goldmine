@@ -51,7 +51,7 @@ def make_run(root: Path, *, run_id="reference", mode="fixture", pack_suffix="", 
     (root / "questions.jsonl").write_text("".join(canonical_json(q) + "\n" for q in questions), encoding="utf-8")
     dump(root / "corpus.json", {"schema": 1, "test_only": True, "source_text": "synthetic unit fixture"})
     a_template = "QUESTION: <question text verbatim>\nMATERIAL:\n<pack file contents verbatim>\n"
-    g_template = "QUESTION: <QUESTION>\nFACTS: <FACTS_JSON>\nANSWER: <ANSWER>\n"
+    g_template = "QUESTION: <QUESTION>\nFACTS: <FACTS_JSON>\nMATERIAL: <PACK>\nANSWER: <ANSWER>\n"
     (root / "answerer.txt").write_text(a_template)
     (root / "grader.txt").write_text(g_template)
     ref = lambda name: {"path": name, "sha256": sha256_file(root / name)}
@@ -97,7 +97,7 @@ def make_run(root: Path, *, run_id="reference", mode="fixture", pack_suffix="", 
                 "answerer_model": models["answerer"], "answerer_settings": settings["answerer"],
             })
             judge_path = root / f"judge_prompts_{a}" / f"{qid}.txt"
-            judge_path.write_text(grader_request(g_template, q, answer))
+            judge_path.write_text(grader_request(g_template, q, answer, pack))
             for j in ("j1", "j2"):
                 dump(root / f"grades_{a}_{j}" / f"{qid}.json", {
                     "schema": 3, "run_id": run_id, "question_id": qid, "answer_round": a, "judge_round": j,

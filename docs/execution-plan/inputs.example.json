@@ -299,11 +299,9 @@
     }
   },
   "hosted": {
-    "run_url": null,
-    "commit": null,
-    "artifact_manifest": {
-      "manifest_path": null,
-      "sha256": null
-    }
+    "repository": null,
+    "run_id": null,
+    "run_attempt": null,
+    "head_sha": null
   }
 }

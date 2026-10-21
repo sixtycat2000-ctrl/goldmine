@@ -1,36 +1,11 @@
-# Real distill audit inputs
+# Frozen real distillation sources
 
-No qualifying frozen real-topic dataset is present yet. The current product.v4
-seed contains 12 sources; it cannot establish the required 100-document,
-8-topic quality result. Synthetic canary variants remain explicitly synthetic.
+The independently reviewed corpus contains120 licensed original documents:110 base and10 predeclared incremental additions, across8 topics. `labels.json` and `product-sources.json` are FROZEN before any clustering. Assets, normalized source views and full licenses resolve within this folder. The upstream420-question product suite is unchanged.
 
-Prepare a separately reviewed labels.json before clustering. Its exact schema
-is in scripts/distill_eval/labels.py: schema1, suite_id distill.real.v1, state
-FROZEN, evidence_mode real, a timezone-aware frozen_at, labeling_protocol
-independent-before-clustering, named reviewers, a hash-pinned frozen product
-manifest, at least8 distinct topic IDs and document labels.
+The corpus includes natural duplicate/paraphrase and multilingual cases. Source groups are provenance units; some topics share an upstream project (notably Vue), so8 groups do not establish8 independent projects or broad statistical independence. English108, Chinese10, Japanese1 and Korean1 are deliberately uneven; the latter two are noise. Source/topic/language confounding must remain visible.
 
-Each document has exactly path, topics, role, split, case_tags. Paths are
-portable paths present in the licensed product manifest. Roles are topic
-(one topic), cross_topic (multiple), or noise (none). At least100 base files
-must include noise/cross-topic examples; every topic needs8 independent source
-groups. Exactly10 separately frozen files form the incremental split. Include
-at least2 language:* tags and explicit paraphrase/duplicate cases. Topic
-labels must never be inserted into indexed source text.
+The review snapshots in `reviews/` and `adoption.json` preserve the pre-clustering audit lineage. No real index, embedding, cluster, purity or recovery result is included.
 
-Ingest the base sources with the real llama backend, copy that index, and ingest
-the10 additional files into the copy. Existing segment IDs/text/vectors must
-remain intact. The evaluator copies both inputs before doing any work:
+Use `scripts/prepare_distill.py` with an explicitly provisioned NumPy-capable Python environment and pinned existing model/server/OCR paths. It materializes110 sources at one absolute corpus root, ingests one owned working index, saves a standalone base snapshot, adds the exact10 files to that same root/index, and saves the extended snapshot. Both source registries, screenshot flags, native commands, model activity and all prior file/segment/FTS rows are verified. Labels/licenses stay outside the indexed corpus.
 
-```sh
-python3 scripts/eval_distill.py --report-real /absolute/base.sqlite --labels /absolute/labels.json --corpus-root /absolute/indexed-root --incremental-db /absolute/plus-ten.sqlite --json --out reports/execution/distill-real.json
-```
-
-The strict mode returns0 for complete passing evidence,1 for measured quality
-failure,2 for missing/invalid inputs. It retains raw cards, source/citation spans,
-fixed first20 card support verdicts, distributions, inherited tau, reclustering
-ratio and every membership difference against same-tau full recomputation.
-Whitespace folding is declared; case and original character offsets are kept.
-Deletion and old-citation checks use disposable copies only. Original input
-databases must retain their hashes. Default --report-real without labels stays
-diagnostic and labels its quality status MISSING even when it exits0.
+Then use `scripts/capture_distill.py` with the generated preparation receipt and both snapshots. Strict evaluation and task acceptance require that receipt; default diagnostic output cannot certify quality. See `docs/execution-plan/P2.md` and `scripts/prepare_distill.py --help`. Required quality remains purity>=0.70, recovery>=6/8, largest-card share<=0.50, complete stored excerpt/member provenance and incremental recluster share<=0.10. Real preparation and quality gates are still MISSING.

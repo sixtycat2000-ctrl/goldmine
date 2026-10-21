@@ -1,0 +1,56 @@
+pytest Documentation, Release 9.1
+
+(continued from previous page)
+
+collected 1 item
+test_assert1.py F
+
+[100%]
+
+================================= FAILURES =================================
+______________________________ test_function _______________________________
+
+>
+E
+E
+
+def test_function():
+assert f() == 4
+assert 3 == 4
++ where 3 = f()
+
+test_assert1.py:6: AssertionError
+========================= short test summary info ==========================
+FAILED test_assert1.py::test_function - assert 3 == 4
+============================ 1 failed in 0.12s =============================
+pytest has support for showing the values of the most common subexpressions including calls, attributes, comparisons,
+
+and binary and unary operators. (See Demo of Python failure reports with pytest). This allows you to use the idiomatic
+python constructs without boilerplate code while not losing introspection information.
+If a message is specified with the assertion like this:
+assert a % 2 == 0, "value was odd, should be even"
+
+it is printed alongside the assertion introspection in the traceback.
+See Assertion introspection details for more information on assertion introspection.
+
+2.2.2 Assertions about approximate equality
+When comparing floating point values (or arrays of floats), small rounding errors are common. Instead of using assert
+abs(a - b) < tol or numpy.isclose, you can use pytest.approx():
+import pytest
+import numpy as np
+
+def test_floats():
+assert (0.1 + 0.2) == pytest.approx(0.3)
+
+def test_arrays():
+a = np.array([1.0, 2.0, 3.0])
+b = np.array([0.9999, 2.0001, 3.0])
+assert a == pytest.approx(b)
+pytest.approx works with scalars, lists, dictionaries, and NumPy arrays. It also supports comparisons involving NaNs.
+
+See pytest.approx() for details.
+
+2.2. How to write and report assertions in tests
+
+13
+

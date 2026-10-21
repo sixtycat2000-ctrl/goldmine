@@ -420,7 +420,7 @@ class Searcher:
                 continue
             evidence = select_evidence(
                 self.store, rec, seg_id, lexical, evidence_vectors.get(fid, []),
-                semantic_only=scorer == "semantic", z_gate=z_gate,
+                semantic_only=scorer == "semantic", z_gate=z_gate, query_text=semantic_text,
             )
             if evidence is None:
                 continue

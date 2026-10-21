@@ -114,7 +114,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P0-06",
-      "result": "Strict receipt/source/JUnit/IR/original-v4/public-preparation/raw-qrels/joint-holdout/docs/full-CLI-capacity adapters implemented and adversarially checked. Current four CI profiles1486+189+6+8=1689 PASS,0required skips. Joint3 and capacity4 false-pass/cleanup counterexamples independently closed. Hosted adapter still unimplemented without remote evidence; no final holdout or release PASS."
+      "result": "Strict receipt/source/JUnit/IR/original-v4/public/raw-qrels/joint/docs/capacity/hosted adapters implemented and reviewed. Historical7192395 four-profile1689PASS0required skip; later source requires fresh CI. Public17490-source paired preparation and original2029queries x4 scorers captured; pre-fix candidate scoring canceledbeforequalityoutput for confirmedchunkerdata-loss repair, actual-15/MISSING retained. Fresh corrected-candidate capture pending. Hosted actualruns and sealedholdout remain MISSING; no releasePASS."
     },
     {
       "id": "P1-01",
@@ -185,7 +185,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-04",
-      "result": "True PDF page units, same-page chunk grouping and up to3 stored supporting segments with citations implemented. Real dev strict PDF success5=12/30 vs original0/30, below.60 target; quality FAIL. Compound pack facts regress17/30->5/30 and remain unresolved."
+      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8Foresight), actual422source/config hashes stable. Current003 quality predates these fixes; fresh native prepare/dev still required. C sufficiency design only."
     },
     {
       "id": "P1-05",
@@ -382,7 +382,7 @@
         "P0-06"
       ],
       "spec": "P2.md#p2-05",
-      "status": "VERIFIED",
+      "status": "IMPLEMENTED",
       "verification": [
         "offline",
         "local_ci",
@@ -390,11 +390,16 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P2-05",
-      "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8Foresight=1689 PASS,0required skips; actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
+      "result": "Reviewed hosted adapter and fixed local CI workflow implemented; historical 7192395 local checks passed. Current source changed after that checkpoint; fresh four-profile CI, failure injections and task-check pending. Actual hosted run remains MISSING; no remote.",
       "hosted_verification": "hosted_ci",
-      "verification_evidence": {
-        "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
-        "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
+      "historical_verification": {
+        "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
+        "status": "VERIFIED",
+        "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8Foresight=1689 PASS,0required skips; actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
+        "evidence": {
+          "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
+          "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
+        }
       }
     },
     {
@@ -405,7 +410,7 @@
         "P2-05"
       ],
       "spec": "P2.md#p2-06",
-      "status": "VERIFIED",
+      "status": "IMPLEMENTED",
       "verification": [
         "distribution",
         "native_assets",
@@ -413,10 +418,15 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P2-06",
-      "result": "Current snapshot006 wheel/sdist, rebuilt-sdist wheel, offline outside-source base/MCP installs, actual native OCR+768 embedding, and original-v4->candidate-v6 backup/upgrade/restore PASS. Explicit asset-bound task-acceptance008 PASS. Platform verified only on actual macOS arm64/Python3.12; no public release.",
-      "verification_evidence": {
-        "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
-        "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
+      "result": "Packaging and isolated native/base/MCP install/upgrade implementation retained. Historical 7192395 snapshot006/task008 passed; current source changed and new frozen data were adopted. Fresh source-bound distribution/install/task-check pending; no release.",
+      "historical_verification": {
+        "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
+        "status": "VERIFIED",
+        "result": "Current snapshot006 wheel/sdist, rebuilt-sdist wheel, offline outside-source base/MCP installs, actual native OCR+768 embedding, and original-v4->candidate-v6 backup/upgrade/restore PASS. Explicit asset-bound task-acceptance008 PASS. Platform verified only on actual macOS arm64/Python3.12; no public release.",
+        "evidence": {
+          "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
+          "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
+        }
       }
     },
     {
@@ -457,7 +467,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P2-08",
-      "result": "Isolated pinned QMD 2.8.3/Recoll 1.44.2 and three-engine common-text adapter implemented. Actual 28 queries per engine and 170 raw streams replay-verified; 21 adapter tests PASS. Diagnostic seed only; complete quality modes/corpus/performance comparison remain MISSING."
+      "result": "Pinned QMD2.8.3/Recoll1.44.2 assets and native/common full-source converter implemented. Engine27-file composition and11-role effective resolver/observer003 adopted. Measurements compiler002 semantic-info finding independently closed,88tests+JSsyntaxPASS; current combined comparison/compiler/resource/registry317PASS0skip after preserved failures and test-only controlled completion fix. Typed actual measurement executor/replay still report-only implementation. Full122-source conversion and18-arm210-dev real captures/performance/update/quality remain MISSING; old28-query lexical seed diagnostic only. Independent ENG-AGG-01 proves valid18x210 report can exceed8MiB (8388927bytes with19-byte excerpts); bounded complete framing/accounting repair report-only and unadopted. Full models/quality/performance/update captures remain unrun."
     }
   ],
   "review": "REVIEW.md",
@@ -465,7 +475,7 @@
     "implemented": 20,
     "running": 4,
     "verified": 0,
-    "note": "IMPLEMENTED means code exists, not full task acceptance. Running tasks retain unfinished adapters/benchmark modes. Real quality, lifecycle and hosted gates remain missing."
+    "note": "Current-source status. Historical VERIFIED checkpoints remain linked per task; subsequent executable changes require fresh verification. IMPLEMENTED means code exists, not whole-task acceptance. Real quality, lifecycle, answer execution and hosted evidence remain incomplete."
   },
   "updated_at": "2026-10-22"
 }

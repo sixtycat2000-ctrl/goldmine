@@ -30,26 +30,47 @@ def normalized_span(text, excerpt):
 
 def excerpt_audit(store, cards):
     from goldmine.citations import read_evidence, resolve_citation
+    from goldmine.contracts import ApplicationError
 
-    rows, review = [], []
+    rows, review, member_rows = [], [], []
     for card in cards:
-        if card.status != "active":
+        if card.status not in ("active", "header"):
             continue
+        member_verdicts, verified = [], {}
+        for member in card.members:
+            passed, citation = False, None
+            try:
+                evidence = read_evidence(store, member.sid)
+                citation = evidence.citation
+                actual = (citation.segment_id, citation.file_id, citation.path, citation.kind,
+                          citation.loc, citation.loc_end)
+                declared = (member.sid, member.fid, member.path, member.kind, member.loc, member.loc_end)
+                recovered = resolve_citation(store, citation.citation_id)
+                passed = (actual == declared and recovered.citation == citation and
+                          recovered.text == evidence.text and (evidence.text or "") == member.text)
+                if passed:
+                    verified[id(member)] = evidence
+            except ApplicationError:
+                pass  # Invalid/stale member is an observed provenance failure.
+            member_rows.append({"card_id": card.topic_id, "segment_id": member.sid,
+                "file_id": member.fid, "path": member.path, "kind": member.kind,
+                "loc": member.loc, "loc_end": member.loc_end, "passed": passed,
+                "citation_id": citation.citation_id if passed else None})
+            member_verdicts.append(passed)
         verdicts = []
         for excerpt in card.excerpts:
             matches = [m for m in card.members if (m.path, m.kind, m.loc, m.loc_end) ==
                        (excerpt.get("path"), excerpt.get("kind"), excerpt.get("loc"), excerpt.get("loc_end"))]
             found = None
             for member in matches:
-                row = store.db.execute("SELECT coalesce(original,body) FROM fts WHERE rowid=?", (member.sid,)).fetchone()
-                original = row[0] if row else None
+                evidence = verified.get(id(member))
+                if evidence is None:
+                    continue
+                original = evidence.text
                 span = normalized_span(original, excerpt["text"]) if original else None
                 if span is None:
                     continue
-                citation = read_evidence(store, member.sid).citation
-                recovered = resolve_citation(store, citation.citation_id)
-                if recovered.text != original:
-                    continue
+                citation = evidence.citation
                 found = {"segment_id": member.sid, "citation_id": citation.citation_id,
                          "stored_sha256": hashlib.sha256(original.encode()).hexdigest(), "char_span": span}
                 break
@@ -64,9 +85,13 @@ def excerpt_audit(store, cards):
             supported = bool(card.terms) and all(term.casefold() in original_text.casefold() for term in card.terms)
         review.append({"card_id": card.topic_id, "title": card.title, "title_kind": card.title_kind,
                        "title_supported": supported, "sources_locatable": bool(verdicts) and all(verdicts),
-                       "verdict": "PASS" if supported and verdicts and all(verdicts) else "FAIL"})
+                       "member_provenance_valid": bool(member_verdicts) and all(member_verdicts),
+                       "verdict": "PASS" if supported and verdicts and all(verdicts) and
+                           member_verdicts and all(member_verdicts) else "FAIL"})
     review.sort(key=lambda row: row["card_id"])
     return {"checked": len(rows), "passed": sum(row["passed"] for row in rows), "rows": rows,
+            "members_checked": len(member_rows), "members_passed": sum(row["passed"] for row in member_rows),
+            "member_provenance": member_rows,
             "normalization": "whitespace-v1; displayed truncation ellipsis excluded; original char spans retained",
             "fixed_card_review": review[:20], "review_mode": "automatic original-source/title-support audit"}
 

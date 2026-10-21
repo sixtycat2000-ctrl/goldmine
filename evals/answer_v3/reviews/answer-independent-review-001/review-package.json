@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "created_at": "2026-10-21T19:56:24.415752+00:00",
+  "state": "INDEPENDENT_SOURCE_REVIEW_REQUIRES_EXPLICIT_DRAFT_REVISION",
+  "original80_review": "review.json",
+  "stable80_corrections": "corrections.json",
+  "strict_cross_disposition": "cross-eligibility-disposition-addendum.json",
+  "reserve_review": "reserve-cross-review.json",
+  "concurrent_lightweight_source_check_disclosure": "source-checks/command-intervals.json",
+  "artifacts": [
+    {
+      "path": "review.json",
+      "sha256": "ce1527cb68f69b7a47b610b72d0cc1cfc987673db21d56a42426ad61d0140d0b"
+    },
+    {
+      "path": "question-verdicts.json",
+      "sha256": "9dfb1f4020f68a524ca6c77b543517ae6ec7967f1a6d7ef645fbf092f2047b3d"
+    },
+    {
+      "path": "corrections.json",
+      "sha256": "a97ce649073c5da98ee5fb8e9de344c563a5757af7febaac1b9a78609a4e8cb1"
+    },
+    {
+      "path": "evidence-readback.json",
+      "sha256": "da1f1cbe84fabe17e8639ceb20b169d7964dc913d31ade904de8c2363d1b7ebd"
+    },
+    {
+      "path": "source-pins.json",
+      "sha256": "1a2ddb352503f23b60acf22756252278c022a8b8e06835a652e57711772b2eed"
+    },
+    {
+      "path": "trap-independent-audit.json",
+      "sha256": "f10f72ba2c3e1a31758b66bded80a0c7c5915c9c4e8b461011b0b1279b10dd42"
+    },
+    {
+      "path": "transformation-check.json",
+      "sha256": "649bc4c623ed1773d8f0af1cd0497817e679d11418cb3f99c1fc436df3dceb25"
+    },
+    {
+      "path": "review.md",
+      "sha256": "28c61409b4e8bd7259d603ec93d0a8f971dc6c8d2a70a22870b8519fc13a3d94"
+    },
+    {
+      "path": "reserve-cross-review.json",
+      "sha256": "ffeb0b376c84be82d0466a8feda728e4958b5abfd05263fdc3d2a4590a7d44e3"
+    },
+    {
+      "path": "reserve-cross-review.md",
+      "sha256": "008487d33e266bb1b5c8869463ec0e17aef4807946f81ab77c80f527eaa45f97"
+    },
+    {
+      "path": "cross-eligibility-disposition-addendum.json",
+      "sha256": "473e11395f606ddd9888b9095711bdaa026d0cbb55e9b29f05c95f91366de177"
+    },
+    {
+      "path": "source-checks/direct-asset-checks.json",
+      "sha256": "5a1b4a24d6f3d90730dc99de74a2f682f9b1b10c371b80d474987a5bcb81fde8"
+    },
+    {
+      "path": "source-checks/command-intervals.json",
+      "sha256": "983547a8c646c37b7cf80c9751aebdca27afa69164feecd6c9dcd40dda6d03a8"
+    },
+    {
+      "path": "negative-scope-verification.json",
+      "sha256": "24ad8539e26fb9a792828f232dc292c14a3d206fb2f67e255c72b28b389558e3"
+    }
+  ],
+  "source_or_draft_mutations": false,
+  "updated_at": "2026-10-21T19:57:32.080205+00:00"
+}

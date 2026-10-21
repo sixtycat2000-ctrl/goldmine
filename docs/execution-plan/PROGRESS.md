@@ -4,9 +4,32 @@
 
 ## 状态与范围
 
-24 项全部进入实施；状态逐项记录在 [tasks.json](tasks.json)。`IMPLEMENTED` 表示代码已存在，不能代替完整任务验收；`VERIFIED` 需要该任务全部必需证据。P2-05 的本地 CI 范围与 P2-06 的当前安装交付已通过固定 task-check；hosted 验证仍为 MISSING，其他任务不能由这些局部通过推导为完成。
+24 项全部进入实施；状态逐项记录在 [tasks.json](tasks.json)。`IMPLEMENTED` 表示代码已存在，不能代替完整任务验收；`VERIFIED` 需要该任务全部必需证据。P2-05 的本地 CI 范围与 P2-06 的安装交付曾在 `7192395` 检查点通过固定 task-check；后续源码已有变化，当前整体验收需要新证据。hosted 验证仍为 MISSING，其他任务不能由这些局部通过推导为完成。
 
 三位独立 AI agent 按 IR/统计、数据库/MCP 架构、QA/交付职责审查计划，接受并修订 18 项意见；实现后又接受并修复 6 项反例。角色分工不代表受聘的人类专家背书。具体见 [REVIEW.md](REVIEW.md) 与 `review/`。
+
+## 2026-10-22：7192395 后的实施与证据补齐
+
+- `7192395` 的完整 CLI/pack 容量实测已结束：10k/100k/250k/500k × 每文件 1/10/100 片段，12/12 一致性通过，共 4,752 次真实 CLI 调用（含 warmup）、4,320 次正式计时，记录的命令失败为 0。独立回放在 `P2-02/full-capacity-review-001/review.json`。缓存阶段门槛通过，但 144 个 p50/p95 对照中有 56 个候选更慢，不能声称全部 CLI 变快；cold 表示新解释器，未清空 OS 文件缓存。该结果只认证上述检查点，后续生产修复需要重新测量。
+- 已合入独立审查的连续片段接缝去重与多段引用折叠保护、词法回填查询规划修复、grader 实际 PACK 上下文绑定、hosted CI 收集/回放适配器。保留所有来源、位置、完整材料预算和原质量门槛；没有追加第四个准入参数候选。第一组当前源码集成回归 314 项通过，原始证据在 `integration-after-capacity-001/focused-001/`。
+- 已采用 [answer_v3](../../evals/answer_v3/README.md) 的 80 题（四类各 20 题）及 [distill_real](../../evals/distill_real/README.md) 的 120 份真实文档（110 base +10 incremental、8 主题）。两套来源及标签均经独立审查，冻结只针对输入。答案的 480 次真实作答、960 次真实评分仍缺，不能以机械 fixture 充数；卡片的实际 native 准备、聚类和增量质量运行尚未完成。
+- 已合入真实卡片准备/来源回放及竞品完整来源转换组件。新一组集成回归 **239 项通过、0 skip**，证据在 `integration-after-capacity-002/focused-002/`。首次运行的 24 个 setup error 来自 macOS `/var` 临时目录别名；只修正测试路径 canonicalization，生产所有权校验保持严格，首次失败保留在 `focused-001/`。另对按 manifest 顺序选定的 8 个原始文档/代码/PDF/截图/照片/音频完成 **39 条真实转换命令**，兼容性检查通过，21.88s；`P2-08/converter-canary-001/` 不代表完整语料、检索质量或资源门槛通过。
+- 竞品实际 engine 捕获、有效 native resolver 和 opt-in 资源观察器的独立审查现已闭环并按精确 patch 组合合入；产品 dev 已完成下述 pack/SQL 检查点捕获。随后发现分块数据丢失，旧候选 public 评分已记录取消，修复后的候选需全新准备与实测。卡片、生命周期和新规模验收随后执行。新的完整 CI、安装和文档交付尚未捕获；下文 `*-009` 等结果保留为历史检查点。
+- 答案材料/job 准备组件随后完成独立反例闭环并合入，57 项机械测试通过。错误 output 路径会在任何写入、打开 index 或启动 backend 前拒绝与冻结来源/实际 corpus 重叠。它只准备请求并校验外部记录，真实 answerer/judge 与执行桥仍缺。
+- 新源码已经完成两个全新 native index 和四组固定 dev 实跑（原版 control + 候选既有三 profile），共 **840 个 dev 请求**。原版点估计全部再现；候选检索 success@5 仍为 **103/180**、noise 正确空仍 **5/30**。pack 全事实从 95/180 到 **96/180**，compound 从 5/30 到 **6/30**，唯一变化为 `compound-real-uv-05` 的第二个事实恢复；没有其他题目的 metric 变化。三 profile 仍各 **FAIL 11**，`selected=null`、默认保持 control、第四参数候选为 0。详见 [新源码 dev 摘要](product-dev-post-pack-20261022.json) 与 `P0-05/product-current-003/`；这是一个事实恢复，不是广泛收益或显著性结论。
+- 公开三数据集的两个角色原始准备/四臂评分已经启动，原始 ZIP 仍在独立角色 cache，不在验收期间下载。QMD 的 3 个默认角色模型也已显式从官方不可变 revision 下载并完整核 byte/SHA，依赖复制为自有不可写目录；尚未执行 QMD 模型 canary 或竞品质量查询。这些准备不替代实际同题对照。
+- opt-in 资源观察器 003 已按原样合入。独立审查关闭完整 manifest 写出后的磁盘计数、实际 root exec 之前的内存误归属、FD 数量与 `lsof` receipt 绑定三项问题；原反例和 001/002 提案均保留。根代理独立重建后 **169 项通过**，实际源码与 distill、答案准备、来源转换、公开捕获消费者联合回归 **287 项通过、0 skip**，在 `integration-after-capacity-004/`。观察器记录真实 sampled tree RSS/FD/输出预算；完整生命周期峰值仍未认证，普通 fork 的这一附加限制与必需 sampled measurements 分开报告，逃逸/缺计数/无 target 样本仍为 MISSING。这里没有竞品质量或性能通过结论。
+- 公开三集两臂原始准备均已成功，reference 935.31s、candidate 1060.65s，完整 17,490 份文档已建库；2,029 个 test query 的四 scorer 排名与独立 qrels 回放正在进行。这些阶段时间有已披露的准备/审查并行活动，不是隔离性能比较。完整 122 份来源转换的 9 个工具/模型角色及许可/provenance 输入检查也已通过，实际全量转换尚未执行。
+- 当前产品固定 task-check 随后完成：**94 项测试通过、0 skip**，从两份实际 SQLite 分别回放 **4,445 / 8,175 个证据 span**；`retrieval.product_dev` 仍 **FAIL 11**、MISSING 0，源码稳定性通过。证据在 `P0-05/product-current-003/task-readback-001/`，没有重新排名或重开 holdout。生命周期执行包的 122 份来源及完整 license/NOTICE 也已逐字节准备，根代理复跑其 9 项离线检查与实际 pytest/NumPy import 预检通过；尚未运行真实五阶段序列。
+- engine 捕获的 27 个最终文件在架构审查与独立资源调用审查闭环后合入。真实 resolver 逐项绑定 11 个 Goldmine 工具；资源 publication 校验失败保留一条明确错误 disposition 并阻止下一子进程，已知实测 FAIL 优先于后续 MISSING。根代理独立组合重放 **81 项及 2 条 JS 语法检查通过**，实际合入后的比较/来源转换/资源/registry 联合回归 **229 项通过、0 skip**，在 `integration-after-capacity-005/`。生产与正在运行的 public evaluator SHA 映射均未改变。这里仍没有真实竞品质量、性能或增量结果。
+- 对已暴露 dev 的只读分层诊断发现：180 道可答题中 **161 道 top5 含任一正确来源文件**，而严格证据 success@5 为 103/180；77 道严格失败中 58 道已找对文件、19 道连文件 top5 都未命中。此为定位信息，不能替换严格指标；下一步优先审核通用证据选择/材料包装配修复，全部 30 道 noise 也继续保留。长时间的最终容量/延迟捕获安排在该算法修改明确后，不以第四参数候选补调。
+- 新只读诊断随后在实际 chunker 上证明段落边界会跳过下一 token。独立审查闭环后，三文件修复按原样合入为 `chunk.v4-paragraph`，普通 ingest 会刷新 stale content，metadata-only 不因版本变化重做。实际合入源码的 **79 项 focused 测试通过、0 skip，另 5 项原有慢/协议测试本轮明确未选**，根代理两条英文/中文原始反例均恢复字符守恒；`integration-after-capacity-006/` 保留精确 patch、来源与结果。尚未据此运行新质量评分。
+- UTF8 byte-fallback 修复随后经精确 patch 独立闭环并合入为 `chunk.v5-utf8`；实际 **120 项通过、0 skip，4 项原有协议测试未选**，包含原 5MB token-index 扫描回归，见 `integration-after-capacity-007/`。字符回退路径的硬窗口尾部丢失也已独立修复并合入 `chunk.v6-char-tail`，实际 **165 项通过、0 skip，5 项原有慢/协议测试未选**，见 `integration-after-capacity-008/`；新修复对非正 size 直接抛 ValueError，旧提案的死循环反例保留。完整原生/CLI CI 仍需在最终生产源码上运行。这些是字符守恒与预算机制证据，尚无新质量评分。
+- 证据/pack 的 B003 已独立闭环并按精确九文件 patch 合入，实际 **227 项通过、0 skip**，见 `integration-after-capacity-011/`。它保护 hybrid 的语义正文、按轮分配支持片段，并用实际来源顺序防止跨缺口接缝去重；001/002 遗留的同页 PDF 等反例保留。随后完整 CI 暴露 pure-semantic ablation 也新增支持片段，改变固定容量工作量；窄补充经独立 **232 项通过、0 skip** 后合入 `integration-after-capacity-012/`，恢复该模式既有 primary+neighbors 行为，未修改容量适配器或相等/计时门槛。噪声充分性 C 仍只有设计，数值单位 casefold 反例待修，尚未实现；没有新质量结论。
+- 固定竞品测量协议编译器 002 已独立闭环并合入。原 001 会把整个 `files.info` 丢弃，导致 EXIF 等语义 provenance 变化仍被判逻辑相同；根代理反例及原包保留。修订严格保留语义 metadata/detail，仅排除有实际生产依据的顶层 `ocr_ms` 且仍存原值，独立 **88 项及 JS 语法检查通过**。实际比较/编译器/资源/验收联合回归最终 **317 项通过、0 skip**，见 `integration-after-capacity-009/`、`010/integration-002/`。原先一次自然退出竞态和一次 root 测试目录设置导致的失败均保留；前者只修测试 worker 的完成握手，资源验证/限额/缺测判定未放宽。实际 typed 执行器与严格 raw replay 仍在报告目录实现，尚无真实竞品性能或增量结果。
+- 因上述真实源文本丢失需要全新候选索引，root 在旧候选 public 未输出任何质量结果时取消其自有进程组。实际 receipt 为 **exit -15、timed_out=false、MISSING**，不是 PASS；`P0-06/public-current-001/cancellation-decision.json` 在发信号前登记，SHA `77a9138ad6c5cf8b82061f5d2e69423a5a40d849700811b3bc21d02f85c322a8`。此前 reference/candidate 准备和 reference 全部 2,029 query ×4 scorer 原始结果均保留。后续仅在确切修复源码冻结后，以新候选目录/索引执行，不改变参数或挑分重试。
+- 新一轮四 profile CI 已完整执行，`P0-06/postfix-ci-001/` 保留 base **2137 PASS、10 FAIL、11 ERROR**，native **228 PASS、1 FAIL**，MCP **6 PASS**、Foresight **8 PASS**，源码前后稳定。失败分别来自合成 converter 文件名触发原生工具禁用、上述 semantic-only 支持片段变化，以及 host Python 的 `-I` 子进程读不到 user-site NumPy。前两项做窄修，native 使用已锁定且隔离模式可导入 NumPy 的现有 venv；不移除 hermetic guard、`-I` 或任何断言。修复后的 `P0-06/postfix-ci-002/` 完整四组均 **PASS**：base **2163**、native **229**、MCP **6**、Foresight **8**，合计 **2406 项、0 skip**，422 个代码/配置文件前后稳定。该集成检查点可用于下一次固定 dev 实测；旧失败保留，后续源码更改仍需新验收。
+- 竞品完整 aggregate 另有已独立证明的 producer/reader 大小不匹配：18×210 个有效合成请求、每个 Goldmine excerpt 仅 19 ASCII bytes 时，完整 JSON 已为 **8,388,927 bytes**，超过现有 8MiB reader；实际引擎与模型尚未执行。正在独立报告包中实现有界分片与完整回放，保留全部正文、向量、raw、准备证明及最终磁盘计数；不能用扩大通用 reader 或裁剪记录掩盖该问题。
 
 ## 2026-10-22：新语料与验收补齐
 
@@ -19,20 +42,20 @@
 
 ## 新产品集 dev 实测
 
-同一物化 corpus、同一固定模型与 server，原始 `7694837` 对照当前候选，**210 题全量：180 可答、30 noise；可答 46 个独立来源组**。这里的 success 要求冻结的来源、位置及事实 span 证据，严格于只命中文件名；与 legacy150 的比例不能直接混列。完整摘要、模型/源码/命令 SHA 见 [product-dev-20261022.json](product-dev-20261022.json)。
+同一物化 corpus、同一固定模型与 server，原始 `7694837` 对照 pack/SQL 修复后的 current003 检查点，**210 题全量：180 可答、30 noise；可答 46 个独立来源组**。这是最新完整质量实测，发生在随后段落修复前，不能认证当前更改后的源码。这里的 success 要求冻结的来源、位置及事实 span 证据，严格于只命中文件名；与 legacy150 的比例不能直接混列。模型/源码/命令 SHA 见 [product-dev-post-pack-20261022.json](product-dev-post-pack-20261022.json)，此前结果保留在 [product-dev-20261022.json](product-dev-20261022.json)。
 
-| 开发指标 | 原版 | 当前默认 control |
+| 开发指标 | 原版 | current003 control，段落修复前 |
 |---|---:|---:|
 | 可答 success@1 | 54/180（30.0%） | 88/180（48.9%） |
 | 可答 success@5 | 65/180（36.1%） | 103/180（57.2%） |
-| pack 全部必需事实 | 64/180（35.6%） | 95/180（52.8%） |
+| pack 全部必需事实 | 64/180（35.6%） | 96/180（53.3%） |
 | semantic success@5 | 3/30 | 12/30 |
 | CJK success@5 | 17/30 | 18/30 |
 | lookup success@1 | 5/30 | 18/30 |
 | PDF 精确证据 success@5 | 0/30 | 12/30 |
 | media-text success@5 | 13/30 | 20/30 |
 | compound success@5 | 25/30 | 22/30 |
-| compound pack 全部事实 | 17/30 | **5/30** |
+| compound pack 全部事实 | 17/30 | **6/30** |
 | noise 正确空结果 | 5/30 | **5/30** |
 
 默认 control 的可答 success@5 变化为 +21.1 个百分点，按 46 个来源组的 paired bootstrap 95% 区间约为 [+11.1,+30.5]，seed=20261021、10,000 次；它是该开发套件上的结果，不是总体能力或市场排名保证。nDCG 的组级区间仍跨 0。初次统计把 30 个 noise 的 rank 零分混入可答差值，已修复并独立复核；保留首次原始记录，以同样四个 arm 重新捕获，逐题结果与首次完全一致。
@@ -45,15 +68,15 @@
 | higher_z，z=3.5 | 103/180 | 10/30 | 不足所需 27/30，拒绝选择 |
 | within_file_margin=0.25 | 98/180 | 8/30 | 质量下降，拒绝选择 |
 
-原始新参考在 `P0-05/product-expansion-001/reference-002/dev-command-final/`，三组候选在 `candidate-002/{control,higher_z,within_file_margin}/dev-command-final/`；`dev-selection-final.json` 保存全部门槛与组级对照。12 道 compound 全事实退步案例另存 `compound-regressions.json`，包含真实命中/输出材料与缺失事实，不凭空归因。接下来优先处理这些退步与无答案准入；不降低目标、不启用尚未通过的质量实验、不提前解封 holdout。
+当前新参考在 `P0-05/product-current-003/reference/control/dev-command/`，三组候选在 `candidate/{control,higher_z,within_file_margin}/dev-command/`；`results.json` 保存全部门槛与组级对照。此前同一三臂在 `product-expansion-001/` 的原始记录不变，其 12 道 compound 全事实退步案例保存在 `compound-regressions.json`。本次恢复其中 1 道，其余 11 道仍未解决。接下来优先处理这些退步与无答案准入；不降低目标、不启用尚未通过的质量实验、不提前解封 holdout。
 
-独立架构 agent 随后对这 12 道已暴露 dev 题完成只读逐案诊断：24 个必需事实全部仍在真实 SQLite 的正确原文位置；主要失败阶段为 **4 道 exact-anchor 准入、2 道证据窗口选择、6 道材料包装配**，共丢失 13 个原来已输出的事实。8 道两份必需文件仍在检索结果中；另有 8 道受整条材料预算省略影响，两集合有重叠。不是证据对齐器误判，也不是半句截断。原始证明在 `P1-06/compound-diagnostic-001/diagnostic.json`，SHA `130a6d9eb2db5d00c24fda800f000ec288adfe075c508b2adefae757693ffb54`。下一处最小实现方向是对已证明连续的支持片段恢复精确接缝去重，保留全部来源、引用、断续标记和整包预算；尚未实施或声明通过。不得直接删除 remaining-word 拒收，现有 multi-query grammar 对这 12 题均不扩展，单纯开启它没有已证收益。
+独立架构 agent 对此前 12 道已暴露 dev 题完成只读逐案诊断：24 个必需事实全部仍在真实 SQLite 的正确原文位置；原主要失败阶段为 **4 道 exact-anchor 准入、2 道证据窗口选择、6 道材料包装配**，共丢失 13 个原来已输出的事实。8 道两份必需文件仍在检索结果中；另有 8 道受整条材料预算省略影响，两集合有重叠。原始证明在 `P1-06/compound-diagnostic-001/diagnostic.json`，SHA `130a6d9eb2db5d00c24fda800f000ec288adfe075c508b2adefae757693ffb54`。已合入连续支持片段精确接缝去重和多段引用折叠保护，本次实际只恢复 `compound-real-uv-05` 的第二个事实；独立逐题差分在 `P1-06/product-current-delta-review-001/`，其余归因为 **4 准入、2 窗口、5 包装配**。不得直接删除 remaining-word 拒收，现有 multi-query grammar 对这 12 题均不扩展，单纯开启它没有已证收益。
 
-固定验收入口 `P0-05/product-expansion-001/task-acceptance-004/manifest.json` 已完成 **94 项任务测试 PASS**，并从原版/候选真实 SQLite 回读 **4,445/8,169 个证据 span**。结果为 **retrieval.product_dev FAIL、11 项质量门槛失败、MISSING 0**，source-stability PASS。首次 task-check 误用了只装 NumPy 的评测专用环境，缺 pytest/项目导入；失败目录保留，以准备好的项目解释器和显式当前源码路径重跑，未重做或筛选模型排名。
+当前固定入口 `P0-05/product-current-003/task-readback-001/task-check/manifest.json` 完成 **94 项任务测试 PASS**，并从原版/候选真实 SQLite 回读 **4,445/8,175 个证据 span**，结果为 **retrieval.product_dev FAIL、11 项质量门槛失败、MISSING 0**，source-stability PASS，178.97s。此前 `product-expansion-001/task-acceptance-004/` 的 4,445/8,169 个 span 与失败目录均保留；没有重新执行或筛选排名来获得这次回放结果。
 
-## 当前冻结源码的回归与交付
+## 7192395 冻结检查点的回归与交付
 
-实际环境仍为 macOS arm64 / Python 3.12。当前固定源码四组无必需 skip，合计 **1689 passed**。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
+实际环境仍为 macOS arm64 / Python 3.12。该检查点四组无必需 skip，合计 **1689 passed**，不认证之后已改变的源码。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
 
 | 固定入口 / 范围 | 当前结果 | 原始证据目录 |
 |---|---:|---|
@@ -111,7 +134,7 @@
 
 完整 12 组容量对照覆盖 10k/100k/250k/500k × 每文件 1/10/100 片段、768 维；独立原始/候选快照、独立进程、3 次 warmup、10 次交错测量，top IDs 与 z 一致。250k 的 SQLite 路径已触发 1.5GiB 内存条件，500k 同时触发冷载与内存条件，因此开展缓存实验。`P2-02/capacity-001/` 与 `cache-capacity-002/` 保存全部 12 组，不只保留获胜组。
 
-缓存实验中 250k/500k 的**冷载向量阶段**分别约缩短 96%/98%，查询进程峰值 RSS 约减少 47–50%/46–50%；它不是完整 CLI/pack 延迟。实验绑定较早缓存源码快照；最后 Python int/str 序列兼容修复另有 99 项回归和 zero-copy 证据，不能据此自动继承正式最终性能 PASS。缓存仍须显式启用。完整 CLI/pack 规模阶段仍 MISSING。
+缓存实验中 250k/500k 的**冷载向量阶段**分别约缩短 96%/98%，查询进程峰值 RSS 约减少 47–50%/46–50%；它不是完整 CLI/pack 延迟。实验绑定较早缓存源码快照；最后 Python int/str 序列兼容修复另有 99 项回归和 zero-copy 证据，不能据此自动继承正式最终性能 PASS。缓存仍须显式启用。后续完整 CLI/pack 在 `7192395` 检查点已实跑并独立回放，当前新源码仍需重新测量。
 
 最终候选的真实 legacy 回归门禁 exit 0（`P0-01/candidate-final-004/`，9.77s）。success@5 **0.8000**、success@1 **0.6069**、MRR **0.6930**、nDCG@10 **0.7013**；lookup@1 10/16，noise 正确空 2/5。相对原 baseline 的主指标变化均很小且未建立统计显著提升；这里只证明历史回归门禁通过，不替代新产品集。原始 stdout 保持 legacy 的两个 JSON 文档（检索结果、gate）；`summary.json` 仅为据原文派生的索引。
 
@@ -131,14 +154,14 @@ QMD 2.8.3 与 Recoll 1.44.2 只装在忽略目录，不改用户索引/全局配
 
 ## 未完成且不能放宽的验收
 
-1. **P0-05 / 产品质量**：420 题真实来源、独立标签审计、分割冻结、同源原版/候选索引及真实 dev 参考均完成。三组预登记参数全部真实 FAIL，默认仅 103/180 success@5、5/30 noise 正确空结果，compound pack 事实由 17/30 降为 5/30。质量未达标，不能进入最终 sealed 审计。旧 28 题保留为诊断 seed，holdout 曝光为 0。
+1. **P0-05 / 产品质量**：420 题真实来源、独立标签审计、分割冻结、同源原版/候选索引及真实 dev 参考均完成。三组预登记参数全部真实 FAIL，默认仅 103/180 success@5、5/30 noise 正确空结果；本次 compound pack 从此前候选 5/30 恢复到 6/30，仍低于原版 17/30。质量未达标，不能进入最终 sealed 审计。旧 28 题保留为诊断 seed，holdout 曝光为 0。
 2. **P0-02/03 / P1-10 答案质量**：新 60 可答 +20 trap 的真实独立作答/四评分、校准与候选比较缺失。历史 20 题、fixture/mock 或改名输出不能顶替。
-3. **P0-04 / P1-05 full-media**：固定 169 行的只读预检发现现有库缺实际 EXIF/部分 OCR provenance，严格 exit 2，分母保持 164+5。需按原许可范围补齐真实证据再测。
+3. **P0-04 / P1-05 full-media**：固定 169 行的只读预检发现现有库缺实际 EXIF/部分 OCR provenance，严格 exit 2，分母保持 164+5。进一步原字节审计证明两张原始 PNG 没有 EXIF 或文本 metadata，来自随机像素 fixture 生成器；对同一字节重新 ingest 不能真实生成题目要求的拍摄字段。`P0-01/full-media-input-audit-001/audit.json` 保留证据。不能注入答案 metadata、修改旧标签或减分母来伪造通过；真实 420 题是独立新套件。
 4. **P1-06/07/08**：拒收三臂真实 dev A/B 已完成且全部 FAIL，`selected=null`；可选多查询/rerank 的真实收益与完整资源门槛尚未通过，保持默认控制与关闭实验。
-5. **P2-02/03**：最终缓存源码的完整 CLI/pack 规模测量、真实媒体增量 benchmark，以及 controlled/real 各 10 分钟 watch churn 和完整生命周期证据仍缺。已有真实模型的局部检查不能顶替这些。
-6. **P2-04 卡片**：严格真实标注/来源回放评测器已实现；真实至少 100 文档、8 主题的独立标签缺失。mock hard-variant 结果只验证机制。
-7. **剩余验收代码与输入**：public、联合 holdout、文档和完整容量工具均已实现并经独立反例审查；当前源码 1689 项回归和安装/文档证据通过。仍缺真实外部集/完整容量等运行输入与结果；hosted 适配器仍为未实现且缺实际远程证据。未运行真实 holdout，零收集仍必须 MISSING。
-8. **P2-08 完整竞品对照**：native view、真实 PDF/媒体、语义/quality 模式、同标准位置验证、重复性能/增量/资源对照和完整最终数据缺失。当前表只表示词法诊断。
+5. **P2-02/03**：`7192395` 的完整 CLI/pack 规模测量已经通过独立回放；后续 pack/SQL 新源码需要新一轮测量。真实媒体增量 benchmark、controlled/real 各 10 分钟 watch churn 和完整生命周期证据仍缺。已有真实模型的局部检查不能顶替这些。
+6. **P2-04 卡片**：120 份真实文档、8 主题的独立来源/标签审查及数据冻结已经完成，严格 native 准备/增量身份/全部 emitted member 来源校验已实现。真实聚类、purity/recovery 和增量运行仍缺；mock hard-variant 结果只验证机制。
+7. **剩余验收代码与输入**：public、联合 holdout、文档、完整容量和 hosted 适配器均已实现并经独立反例审查。1689 项回归和安装/文档证据绑定历史检查点，当前整体重新捕获尚未完成。仍缺真实外部集等运行结果和实际 hosted 证据。未运行真实 holdout，零收集仍必须 MISSING。
+8. **P2-08 完整竞品对照**：native/common view、完整真实 PDF/媒体、语义/quality 模式、重复性能/增量/资源对照和完整最终数据仍缺。主比较按同一文件级 qrels 计算 success@1/@5、MRR、nDCG；位置指标在可验证时另报，位置能力缺失不能成为文件级比较的额外前置条件。当前表只表示词法诊断。
 9. **发布**：仓库没有配置 remote，hosted CI 未运行。`local_rc` 的必需数据、质量和生命周期条件也不齐，因此没有发布候选、tag、push 或公开发行。
 
 接续执行严格沿 [P0.md](P0.md)、[P1.md](P1.md)、[P2.md](P2.md) 和 [CONTRACTS.md](CONTRACTS.md)。420 题、独立审计和原始参考已完成；下一步依据已暴露的 dev 反例修复证据选择与准入，完成真实公开集、容量和生命周期等必需运行。三个拒收参数臂已全部测量，不能追加第四组或放宽门槛；新算法需明确登记和审查。全部算法/参数冻结且前置质量达标后，才进行一次联合 sealed 审计。

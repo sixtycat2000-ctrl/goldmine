@@ -1,0 +1,11 @@
+# Frozen80-task answer evaluation data
+
+Source data is FROZEN:20 single-fact,20 within-file multi-fact,20 strict cross-file and20 unanswerable trap tasks. The80 tasks reuse88 unique upstream development questions and29 answerable source groups; they are not80 independent source draws. All102 evidence spans were independently checked against original source views. All20 traps received a fresh corpus-absence review.
+
+This is the explicitly registered correction of draft001:9 tasks required semantic/evidence revision,2 cross tasks were deterministically replaced from the original30-task pool, and advisory precision/context fixes were accepted. `data-amendment-registration.json`, `amendment-lineage.json` and the two review snapshots preserve that lineage. Frozen original420 labels and historical results remain unchanged. Review snapshots retain their original capture paths.
+
+The full122 original assets, source views and licenses are in the pinned `corpus.json` source_bundle.repository_path (`evals/product_v4_expansion`). `source-map.json` maps each new evidence ID to that bundle's canonical view. Source spans are oracle definitions; never place them or the required facts in answerer input. Actual retrieval material belongs in each run's own packs directory.
+
+Real execution is NOT_READY. It requires the same explicitly supplied answerer and judge engines, exact model bytes/revisions/settings/tokenizer, shared prior full v3 preregistration and prompt templates for three arms: reference LIST, reference PACK and candidate PACK. The reference material arms must share the same search hits. Each arm needs2 genuine answer jobs and2 genuine judge jobs per answer per task:480 answer and960 judge completions in total. Reuse of execution IDs, old20-task v2 outputs, invented jobs and retroactive metadata rebinding are invalid.
+
+The material-bound grader contract requires question, frozen fact definitions, actual supplied material and answer. Mechanical disk consistency does not authenticate an external engine. Preserve actual raw execution receipts. The adapter/engine preparation gap and missing models/settings are described in reviews/answer-independent-review-002/real-job-readiness.md. No answer-quality, calibration, improvement or release claim follows from this data freeze.

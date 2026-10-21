@@ -1,0 +1,1099 @@
+{
+  "schema": 1,
+  "state": "RESERVE_CROSS_SOURCE_REVIEW_COMPLETE",
+  "reviewer": "AI agent /root/review_answer_independent; independent of draft/upstream authors, not human certification",
+  "utc_start": "2026-10-21T19:56:23.961474+00:00",
+  "utc_end": "2026-10-21T19:56:24.414149+00:00",
+  "inputs": {
+    "development-questions.jsonl": "635e232c3082eb11c1ac9f2d7097971d1fd373eecaf59b2d8616b9fae04b9933",
+    "manifest.json": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0",
+    "data-selection-registration.json": "f3b3211cc1feb0335135c2a4ce6c8e5b31a26886411b09e0d8b211880f90ea81",
+    "questions.draft.jsonl": "5a47e2360a35d936754b79e654194c5bbeaeca2d9ca7ec1535561d375c2e49ab"
+  },
+  "scope": "The10unused development compound questions in the registered30-question cross pool. This supplement does not alter the frozen original420 or the draft80.",
+  "counts": {
+    "ELIGIBLE_AFTER_ANNOTATION_AMENDMENT": 2,
+    "ELIGIBLE_AFTER_SCOPE_AMENDMENT": 1,
+    "ELIGIBLE_TWO_FILE_SOURCE_FACTS": 6,
+    "INELIGIBLE_STRICT_TWO_FILE_NECESSITY": 1
+  },
+  "immediately_eligible_source_questions": [
+    "compound-real-httpx-02",
+    "compound-real-pip-03",
+    "compound-real-pip-04",
+    "compound-real-poetry-01",
+    "compound-real-typer-04",
+    "compound-real-uv-01"
+  ],
+  "eligible_after_explicit_source_annotation_or_scope_amendment": [
+    "compound-real-httpx-05",
+    "compound-real-typer-05",
+    "compound-real-uv-04"
+  ],
+  "ineligible_strict_cross": [
+    "compound-real-pip-tools-04"
+  ],
+  "candidates": [
+    {
+      "original_dev_id": "compound-real-httpx-02",
+      "source_group": "upstream:httpx",
+      "question": "How can HTTPX download a large body without loading it all at once, and does its read timeout bound waiting for each chunk or the entire download?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Streaming avoids loading the entire response body into memory.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The read timeout bounds waiting for a chunk, rather than imposing a total download deadline.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "quickstart.md explicitly supports streaming without loading the full body. timeouts.md separately defines per-chunk read waiting. quickstart.md has no read-timeout/chunk-limit definition; timeouts.md has no streaming/memory usage instructions.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [
+        "Optional: include the actionable httpx.stream/iter_bytes example in e1, since the first half asks how. The current concept-level streaming fact is supported."
+      ],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/httpx/docs/quickstart.md",
+          "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "view_id": "original-lines",
+          "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "span_sha256": "7d5d5e077cc70f1a4bb0025ee7a3d29a8a5a508d64d4ca74e226aa7d5a9505c9",
+          "start_char": 8288,
+          "end_char": 8410,
+          "location": {
+            "unit": "line",
+            "start": 341,
+            "end": 341
+          },
+          "exact_source_span": true,
+          "text": "For large downloads you may want to use streaming responses that do not load the entire response body into memory at once."
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/httpx/docs/advanced/timeouts.md",
+          "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "view_id": "original-lines",
+          "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "span_sha256": "bcf9ad3a308c4add2e5df1d77a9e90b4e02e908afd4aa0c4b0c6a1d8e5348c56",
+          "start_char": 1645,
+          "end_char": 1784,
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 52
+          },
+          "exact_source_span": true,
+          "text": "The **read** timeout specifies the maximum duration to wait for a chunk of\ndata to be received (for example, a chunk of the response body)."
+        }
+      ],
+      "extra_exact_source_fragments": [
+        {
+          "source_path": "compound/httpx/docs/quickstart.md",
+          "asset_path": "assets/compound/httpx/docs/quickstart.md",
+          "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "view_id": "original-lines",
+          "view_path": "views/compound/httpx/docs/quickstart.md.txt",
+          "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "line_start": 341,
+          "line_end": 348,
+          "start_char": 8288,
+          "end_char": 8596,
+          "text": "For large downloads you may want to use streaming responses that do not load the entire response body into memory at once.\n\nYou can stream the binary content of the response...\n\n```pycon\n>>> with httpx.stream(\"GET\", \"https://www.example.com\") as r:\n...     for data in r.iter_bytes():\n...         print(data)",
+          "sha256": "6b82914e4cc9682a324a911118fa871b603a2ca40929ec83b9e277eaeef05a49"
+        }
+      ],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "streaming responses that do not load the entire response body",
+          "source_view_hits": [
+            {
+              "source_path": "compound/httpx/docs/quickstart.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "maximum duration to wait for a chunk of data to be received",
+          "source_view_hits": [
+            {
+              "source_path": "compound/httpx/docs/advanced/timeouts.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-httpx-05",
+      "source_group": "upstream:httpx",
+      "question": "How can an HTTPX response be decoded explicitly as ISO-8859-1, while the client uses a 60-second connect timeout and 10 seconds for the other timeout types?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Assign ISO-8859-1 to the response encoding property.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "httpx.Timeout(10.0, connect=60.0) sets a longer connection timeout than the others.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_AFTER_ANNOTATION_AMENDMENT",
+      "two_file_semantic_necessity_reason": "quickstart.md supplies r.encoding=ISO-8859-1; timeouts.md supplies the distinct connect/other timeout construction. Neither paired file supplies the other request.",
+      "annotation_or_scope_amendments_if_selected": [
+        {
+          "id": "RES-01",
+          "problem": "The client configuration is requested, but e2 stops at constructing a Timeout object before the Client binding.",
+          "change": "Extend e2 to lines66-68. Fact: Set r.encoding=\"ISO-8859-1\"; construct httpx.Timeout(10.0,connect=60.0) and pass it as httpx.Client(timeout=timeout) for60s connect/10s other timeouts. Keep this as2facts, with the latter timeout configuration one fact.",
+          "source": {
+            "source_path": "compound/httpx/docs/advanced/timeouts.md",
+            "asset_path": "assets/compound/httpx/docs/advanced/timeouts.md",
+            "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+            "view_id": "original-lines",
+            "view_path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+            "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+            "line_start": 66,
+            "line_end": 68,
+            "start_char": 2556,
+            "end_char": 2713,
+            "text": "# A client with a 60s timeout for connecting, and a 10s timeout elsewhere.\ntimeout = httpx.Timeout(10.0, connect=60.0)\nclient = httpx.Client(timeout=timeout)",
+            "sha256": "a6903cb87e421aee9f71b67c5c2e64759dbc35df92913975b64ce0304c9ef45b"
+          }
+        }
+      ],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/httpx/docs/quickstart.md",
+          "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "view_id": "original-lines",
+          "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+          "span_sha256": "3c84d7daf3ae77abf4767b35daed62c5b198a3539dea708f3c93e99924a8c53f",
+          "start_char": 2051,
+          "end_char": 2076,
+          "location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "exact_source_span": true,
+          "text": "r.encoding = 'ISO-8859-1'"
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/httpx/docs/advanced/timeouts.md",
+          "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "view_id": "original-lines",
+          "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+          "span_sha256": "68bfac62d179aa8f434f01d0eb61f02226188ae5713ab90769166838fe5f3566",
+          "start_char": 2556,
+          "end_char": 2674,
+          "location": {
+            "unit": "line",
+            "start": 66,
+            "end": 67
+          },
+          "exact_source_span": true,
+          "text": "# A client with a 60s timeout for connecting, and a 10s timeout elsewhere.\ntimeout = httpx.Timeout(10.0, connect=60.0)"
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "r.encoding = 'ISO-8859-1'",
+          "source_view_hits": [
+            {
+              "source_path": "compound/httpx/docs/quickstart.md",
+              "view_id": "original-lines"
+            },
+            {
+              "source_path": "text/requests/docs/user/quickstart.rst",
+              "view_id": "body"
+            }
+          ]
+        },
+        {
+          "anchor": "httpx.Timeout(10.0, connect=60.0)",
+          "source_view_hits": [
+            {
+              "source_path": "compound/httpx/docs/advanced/timeouts.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-pip-03",
+      "source_group": "upstream:pip",
+      "question": "What do hashes add to pip's version pinning, and how can an optional C extension be rebuilt when pip keeps using a cached pure-Python wheel?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Package hashes protect against index/certificate-chain compromise and changed package bytes under the same version.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Installing the source distribution directly forces wheel building despite a matching cached wheel.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "repeatable-installs.md explains the security and changed-bytes role of package hashes. caching.md separately explains forcing a new wheel build by installing a source distribution. Neither supplies the other full requested fact.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [
+        "Optional: e1 can include lines36-45 to make the hash antecedent and index mutation qualifier explicit. For the C-extension scenario, do not promise successful C compilation; source installation forces wheel rebuilding, in an environment capable of building the extension."
+      ],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "view_id": "original-lines",
+          "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "span_sha256": "60a3328f3abec61949b873c5cdf90c61e1c81c4d947a34ca9f7bfb2f2cc674a3",
+          "start_char": 1446,
+          "end_char": 1598,
+          "location": {
+            "unit": "line",
+            "start": 43,
+            "end": 44
+          },
+          "exact_source_span": true,
+          "text": "This protects against a compromise of PyPI or the HTTPS certificate chain. It\nalso guards against a package changing without its version number changing"
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/pip/docs/html/topics/caching.md",
+          "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "view_id": "original-lines",
+          "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "span_sha256": "81aae8afe28d2b27fc0491c2979ba0a6b347db9fb91c25a577c65c01c2b34bd0",
+          "start_char": 3659,
+          "end_char": 3790,
+          "location": {
+            "unit": "line",
+            "start": 118,
+            "end": 120
+          },
+          "exact_source_span": true,
+          "text": "Installing directly from a source\ndistribution will make pip build a wheel, regardless of whether there is a\nmatching cached wheel."
+        }
+      ],
+      "extra_exact_source_fragments": [
+        {
+          "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "asset_path": "assets/compound/pip/docs/html/topics/repeatable-installs.md",
+          "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+          "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "line_start": 36,
+          "line_end": 45,
+          "start_char": 1239,
+          "end_char": 1677,
+          "text": "Beyond pinning version numbers, you can add hashes against which to verify\ndownloaded packages:\n\n```none\nFooProject == 1.2 --hash=sha256:2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824\n```\n\nThis protects against a compromise of PyPI or the HTTPS certificate chain. It\nalso guards against a package changing without its version number changing (on\nindexes that allow this). This approach is a good fit for automated server",
+          "sha256": "d80d6cd666fdff1d168c73059768398ac4c8604d82c6ec39eda59c5d7e29021c"
+        },
+        {
+          "source_path": "compound/pip/docs/html/topics/caching.md",
+          "asset_path": "assets/compound/pip/docs/html/topics/caching.md",
+          "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+          "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "line_start": 108,
+          "line_end": 125,
+          "start_char": 2968,
+          "end_char": 3944,
+          "text": "In some cases, pip's caching behaviour can be undesirable. As an example, if you\nhave package with optional C extensions, that generates a pure Python wheel\nwhen the C extension can’t be built, pip will use that cached wheel even when\nyou later invoke it from an environment that could have built those optional C\nextensions. This is because pip is seeing a cached wheel that matches the\npackage being built, and pip assumes that the result of building a package from\na package index is deterministic.\n\nThe recommended approach for dealing with these situations is to directly\ninstall from a source distribution instead of letting pip auto-discover the\npackage when it is trying to install. Installing directly from a source\ndistribution will make pip build a wheel, regardless of whether there is a\nmatching cached wheel. This usually means doing something like:\n\n```{pip-cli}\n$ pip download sampleproject==1.0.0 --no-binary :all:\n$ pip install sampleproject-1.0.0.tar.gz\n```",
+          "sha256": "ff8b44e38dd73241bc1b6f018e3587149e029e2c57b901175926a0df9329e640"
+        }
+      ],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "This protects against a compromise of PyPI",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "Installing directly from a source distribution will make pip build a wheel",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip/docs/html/topics/caching.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-pip-04",
+      "source_group": "upstream:pip",
+      "question": "Is a pip wheelhouse necessarily portable across operating systems, and are wheels from pip install dot reused from cache across separate runs?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Wheelhouses may contain OS/architecture-specific compiled packages and need not be portable.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Wheels built from direct local source paths are not cached across separate pip runs.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "repeatable-installs.md states OS/architecture-dependent wheelhouse portability. caching.md separately states direct local-path wheels are not cached across separate runs. Portability and across-run caching are distinct facts absent from the opposite file.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+          "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "view_id": "original-lines",
+          "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+          "span_sha256": "6ef4408519a26710dfce0472caa4ae9421e5d192cbbef7a0ee251e234307b46f",
+          "start_char": 3171,
+          "end_char": 3340,
+          "location": {
+            "unit": "line",
+            "start": 86,
+            "end": 88
+          },
+          "exact_source_span": true,
+          "text": "Note that such a wheelhouse contains compiled packages, which are typically\nOS and architecture-specific, so these archives are not necessarily portable\nacross machines."
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/pip/docs/html/topics/caching.md",
+          "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "view_id": "original-lines",
+          "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "span_sha256": "9cf0fc805aff2d5328b9827d902e4f2cd03ef75212427015977d29e2e8d6e95a",
+          "start_char": 1868,
+          "end_char": 1992,
+          "location": {
+            "unit": "line",
+            "start": 51,
+            "end": 52
+          },
+          "exact_source_span": true,
+          "text": "Wheels built from source distributions provided to pip as a direct path (such\nas `pip install .`) are not cached across runs"
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "not necessarily portable across machines",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "are not cached across runs",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip/docs/html/topics/caching.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-pip-tools-04",
+      "source_group": "upstream:pip-tools",
+      "question": "What pip-compile flag enables package hashes, and how does its implementation choose between legacy and backtracking resolvers?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "--generate-hashes enables pip-compatible hash-checking output.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The legacy name selects LegacyResolver; other supported selections use BacktrackingResolver.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "INELIGIBLE_STRICT_TWO_FILE_NECESSITY",
+      "two_file_semantic_necessity_reason": "compile.py alone explicitly contains the --generate-hashes example, its hash-generation control, and the LegacyResolver/BacktrackingResolver selection. This is a confirmed one-file alternative, rather than only an inference from a decorator name.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/pip-tools/README.md",
+          "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+          "view_id": "original-lines",
+          "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+          "span_sha256": "f13103ac0e2fd1017a87ee335fd7916110eed2f740fa099a257f15bafdf974d0",
+          "start_char": 8003,
+          "end_char": 8133,
+          "location": {
+            "unit": "line",
+            "start": 253,
+            "end": 254
+          },
+          "exact_source_span": true,
+          "text": "If you would like to use _Hash-Checking Mode_ available in `pip` since\nversion 8.0, `pip-compile` offers `--generate-hashes` flag:"
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "span_sha256": "9e78ef0055e5aa727d3a2fda8a37c861712f425e9966586aa08c8d210cc517f7",
+          "start_char": 16216,
+          "end_char": 16300,
+          "location": {
+            "unit": "line",
+            "start": 492,
+            "end": 492
+          },
+          "exact_source_span": true,
+          "text": "resolver_cls = LegacyResolver if resolver_name == \"legacy\" else BacktrackingResolver"
+        }
+      ],
+      "extra_exact_source_fragments": [
+        {
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "line_start": 93,
+          "line_end": 94,
+          "start_char": 2479,
+          "end_char": 2561,
+          "text": "    Include package hashes for extra security:\n    $ pip-compile --generate-hashes",
+          "sha256": "05bb9d8e636845077ccd4abb0cac193485f1365300d25c540f6669dd523663f3"
+        },
+        {
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "line_start": 492,
+          "line_end": 507,
+          "start_char": 16212,
+          "end_char": 16899,
+          "text": "    resolver_cls = LegacyResolver if resolver_name == \"legacy\" else BacktrackingResolver\n    try:\n        resolver = resolver_cls(\n            constraints=constraints,\n            existing_constraints=existing_pins,\n            repository=repository,\n            prereleases=(\n                pre or _pip_api.finder_allows_all_prereleases(repository.finder)\n            ),\n            cache=DependencyCache(cache_dir),\n            clear_caches=rebuild,\n            allow_unsafe=allow_unsafe,\n            unsafe_packages=set(unsafe_package),\n        )\n        results = resolver.resolve(max_rounds=max_rounds)\n        hashes = resolver.resolve_hashes(results) if generate_hashes else None",
+          "sha256": "466fad4dd0653fa190f26502e4ba2fc2815efcf39384e024eeb2e4154958c5f2"
+        }
+      ],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "--generate-hashes",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip-tools/README.md",
+              "view_id": "original-lines"
+            },
+            {
+              "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "LegacyResolver if resolver_name == \"legacy\" else BacktrackingResolver",
+          "source_view_hits": [
+            {
+              "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-poetry-01",
+      "source_group": "upstream:poetry",
+      "question": "Does Poetry create another environment when one is already active, and how are dependency entries represented in project.dependencies?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Poetry directly reuses an already active virtual environment.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "project.dependencies entries are PEP 508 strings.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "managing-environments.md explicitly reuses an active virtual environment, while dependency-specification.md separately defines project.dependencies as PEP508 strings. The other file does not supply the corresponding fact.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/poetry/docs/managing-environments.md",
+          "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "view_id": "original-lines",
+          "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "span_sha256": "4e534729af6be5d4c020eaf4f0eefb9b31828c4e9575cfe5e08f5badec178925",
+          "start_char": 312,
+          "end_char": 449,
+          "location": {
+            "unit": "line",
+            "start": 17,
+            "end": 18
+          },
+          "exact_source_span": true,
+          "text": "it will first check if it's currently running inside a virtual environment.\nIf it is, it will use it directly without creating a new one."
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/poetry/docs/dependency-specification.md",
+          "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+          "view_id": "original-lines",
+          "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+          "span_sha256": "f4beb87f2d190b6d3e4d1bef0d3d15e78304abaf5f0eb09685c1c09e0680fbb3",
+          "start_char": 816,
+          "end_char": 938,
+          "location": {
+            "unit": "line",
+            "start": 38,
+            "end": 39
+          },
+          "exact_source_span": true,
+          "text": "dependencies in `project.dependencies` are specified as strings according\nto [PEP 508](https://peps.python.org/pep-0508/)."
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "use it directly without creating a new one",
+          "source_view_hits": [
+            {
+              "source_path": "compound/poetry/docs/managing-environments.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "specified as strings according to [PEP 508]",
+          "source_view_hits": [
+            {
+              "source_path": "compound/poetry/docs/dependency-specification.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-typer-04",
+      "source_group": "upstream:typer",
+      "question": "How can Typer replace the displayed default with descriptive text and keep undeclared options as raw command-line arguments?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "A string value for show_default customizes the displayed default text.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "ignore_unknown_options and allow_extra_args retain raw extra strings in ctx.args.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "help.md defines show_default as a custom string; context.md separately defines ignore_unknown_options/allow_extra_args and ctx.args. There is no support for the opposite request in either paired file.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/typer/docs/tutorial/options/help.md",
+          "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "view_id": "original-lines",
+          "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "span_sha256": "e41ac91119deca32c7b0c9b005ebe9e041fa8914db0f01d86031fa6b93427c95",
+          "start_char": 5066,
+          "end_char": 5208,
+          "location": {
+            "unit": "line",
+            "start": 132,
+            "end": 132
+          },
+          "exact_source_span": true,
+          "text": "You can use the same `show_default` to pass a custom string (instead of a `bool`) to customize the default value to be shown in the help text:"
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/typer/docs/tutorial/commands/context.md",
+          "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "view_id": "original-lines",
+          "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "span_sha256": "e1dce6c09371b4cada3bf34c79b79a5d9fb3dbcc16078788b1bd52c00266e6d8",
+          "start_char": 2509,
+          "end_char": 2741,
+          "location": {
+            "unit": "line",
+            "start": 102,
+            "end": 104
+          },
+          "exact_source_span": true,
+          "text": "For example, you could keep additional *CLI parameters* not declared in your CLI program with `ignore_unknown_options` and `allow_extra_args`.\n\nThen you can access those extra raw *CLI parameters* as a `list` of `str` in `ctx.args`:"
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "pass a custom string (instead of a `bool`)",
+          "source_view_hits": [
+            {
+              "source_path": "compound/typer/docs/tutorial/options/help.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "`ignore_unknown_options` and `allow_extra_args`",
+          "source_view_hits": [
+            {
+              "source_path": "compound/typer/docs/tutorial/commands/context.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-typer-05",
+      "source_group": "upstream:typer",
+      "question": "Where does Typer put options without a custom Rich help panel, and what happens by default when the application is invoked without a command?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Options without a custom panel appear in the Options panel.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "The callback normally precedes a command; invoking without a command shows help.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_AFTER_SCOPE_AMENDMENT",
+      "two_file_semantic_necessity_reason": "help.md supplies the default Options panel. context.md separately supplies no-subcommand help behavior for the callback-based multi-command application described there. These remain two distinct file facts after making that scope explicit.",
+      "annotation_or_scope_amendments_if_selected": [
+        {
+          "id": "RES-02",
+          "problem": "The second half currently says application generically. Its evidence is specifically the callback/subcommand example, so it should not imply that every Typer application shape shows help on invocation with no command.",
+          "change": "Question: Where does Typer put options without a custom Rich help panel, and what happens by default when the callback-based application with subcommands is invoked without a command? Fact f2: For the described callback-based application, the callback normally runs before a subcommand; with no subcommand the default is to show help.",
+          "source": {
+            "source_path": "compound/typer/docs/tutorial/commands/context.md",
+            "asset_path": "assets/compound/typer/docs/tutorial/commands/context.md",
+            "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+            "view_id": "original-lines",
+            "view_path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+            "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+            "line_start": 13,
+            "line_end": 15,
+            "start_char": 492,
+            "end_char": 680,
+            "text": "For example, let's say that you want to execute some logic in a `Typer` callback depending on the subcommand that is being called.\n\nYou can get the name of the subcommand from the context:",
+            "sha256": "9fedb6d3a547d955dc9f9422eaec22dc04a3d0d8ae60b86e67bb7163572d6df0"
+          },
+          "behavior_source": {
+            "source_path": "compound/typer/docs/tutorial/commands/context.md",
+            "asset_path": "assets/compound/typer/docs/tutorial/commands/context.md",
+            "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+            "view_id": "original-lines",
+            "view_path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+            "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+            "line_start": 39,
+            "line_end": 45,
+            "start_char": 1094,
+            "end_char": 1340,
+            "text": "## Executable callback\n\nBy default, the callback is only executed right before executing a command.\n\nAnd if no command is provided, the help message is shown.\n\nBut we could make it run even without a subcommand with `invoke_without_command=True`:",
+            "sha256": "c84ad8ddc7285d069af9c24b02a751c0500cd4e5730a124ec8c70166f4775fb9"
+          }
+        }
+      ],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/typer/docs/tutorial/options/help.md",
+          "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "view_id": "original-lines",
+          "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+          "span_sha256": "b43fadce8b8b9820f12aecf9581db45a0611b17f7aa8dfcf848e12153f284c22",
+          "start_char": 1664,
+          "end_char": 1776,
+          "location": {
+            "unit": "line",
+            "start": 61,
+            "end": 61
+          },
+          "exact_source_span": true,
+          "text": "you will see a default panel named \"`Options`\" for the *CLI options* that don't have a custom `rich_help_panel`."
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/typer/docs/tutorial/commands/context.md",
+          "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "view_id": "original-lines",
+          "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+          "span_sha256": "d273fc355992d314e89c60640685744177c5ce19ac461e2b32f8cf667090b1ea",
+          "start_char": 1118,
+          "end_char": 1252,
+          "location": {
+            "unit": "line",
+            "start": 41,
+            "end": 43
+          },
+          "exact_source_span": true,
+          "text": "By default, the callback is only executed right before executing a command.\n\nAnd if no command is provided, the help message is shown."
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "default panel named \"`Options`\"",
+          "source_view_hits": [
+            {
+              "source_path": "compound/typer/docs/tutorial/options/help.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "if no command is provided, the help message is shown",
+          "source_view_hits": [
+            {
+              "source_path": "compound/typer/docs/tutorial/commands/context.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-uv-01",
+      "source_group": "upstream:uv",
+      "question": "How does uv run keep project dependencies synchronized, and why should pytest that needs the installed project use it instead of uvx?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv run synchronizes the lockfile with pyproject and the environment with the lockfile.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "Tools requiring the installed project should use uv run because uvx is isolated.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_TWO_FILE_SOURCE_FACTS",
+      "two_file_semantic_necessity_reason": "projects.md defines synchronization from pyproject to lockfile to environment; tools.md separately explains why project-dependent pytest should use uv run instead of isolated uvx. tools.md does not contain the lockfile/pyproject synchronization statement; projects.md does not define uvx.",
+      "annotation_or_scope_amendments_if_selected": [],
+      "advisory_tightening_if_selected": [
+        "Optional: extend e1 through line221 to retain the explicit locked-version environment guarantee and full sentence."
+      ],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/uv/docs/guides/projects.md",
+          "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "view_id": "original-lines",
+          "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "span_sha256": "0c8dcc12e5e3083e8c859fac9520a314a64e26bc5004db1e978bc2b4f087755f",
+          "start_char": 5690,
+          "end_char": 5856,
+          "location": {
+            "unit": "line",
+            "start": 218,
+            "end": 219
+          },
+          "exact_source_span": true,
+          "text": "Prior to every `uv run` invocation, uv will verify that the lockfile is up-to-date with the\n`pyproject.toml`, and that the environment is up-to-date with the lockfile"
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/uv/docs/guides/tools.md",
+          "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "view_id": "original-lines",
+          "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "span_sha256": "7e607d3a5d07e982016f91e7baf56b15b8341ff6dc524064926edc2093660677",
+          "start_char": 992,
+          "end_char": 1341,
+          "location": {
+            "unit": "line",
+            "start": 53,
+            "end": 56
+          },
+          "exact_source_span": true,
+          "text": "If you are running a tool in a [_project_](../concepts/projects/index.md) and the tool requires that\n    your project is installed, e.g., when using `pytest` or `mypy`, you'll want to use\n    [`uv run`](./projects.md#running-commands) instead of `uvx`. Otherwise, the tool will be run in\n    a virtual environment that is isolated from your project."
+        }
+      ],
+      "extra_exact_source_fragments": [
+        {
+          "source_path": "compound/uv/docs/guides/projects.md",
+          "asset_path": "assets/compound/uv/docs/guides/projects.md",
+          "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "view_id": "original-lines",
+          "view_path": "views/compound/uv/docs/guides/projects.md.txt",
+          "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "line_start": 218,
+          "line_end": 221,
+          "start_char": 5690,
+          "end_char": 6048,
+          "text": "Prior to every `uv run` invocation, uv will verify that the lockfile is up-to-date with the\n`pyproject.toml`, and that the environment is up-to-date with the lockfile, keeping your project\nin-sync without the need for manual intervention. `uv run` guarantees that your command is run in an\nenvironment with all required dependencies at their locked versions.",
+          "sha256": "54ec9ef760a8676b1fa52dfc1e7554ca82c48379419447e888fc521d4c817e57"
+        }
+      ],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "verify that the lockfile is up-to-date",
+          "source_view_hits": [
+            {
+              "source_path": "compound/uv/docs/guides/projects.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "a virtual environment that is isolated from your project",
+          "source_view_hits": [
+            {
+              "source_path": "compound/uv/docs/guides/tools.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    },
+    {
+      "original_dev_id": "compound-real-uv-04",
+      "source_group": "upstream:uv",
+      "question": "How can uv upgrade just one locked project package, and will uv tool upgrade discard the tool's existing version constraints?",
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "uv lock --upgrade-package updates the selected package while retaining the rest of the lockfile.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        {
+          "fact_id": "f2",
+          "description": "uv tool upgrade respects existing installation version constraints.",
+          "sufficient_evidence": [
+            [
+              "e2"
+            ]
+          ]
+        }
+      ],
+      "verdict": "ELIGIBLE_AFTER_ANNOTATION_AMENDMENT",
+      "two_file_semantic_necessity_reason": "projects.md supplies selective project lock updates, while tools.md separately says tool upgrades respect installation constraints. tools.md has no uv lock/upgrade-package instruction; projects.md has no uv tool upgrade behavior.",
+      "annotation_or_scope_amendments_if_selected": [
+        {
+          "id": "RES-03",
+          "problem": "Fact f1 names uv lock, but its marked span only names --upgrade-package. It also says updates rather than retaining the source condition that it attempts the latest compatible version.",
+          "change": "Extend e1 to lines170-177. Fact f1: Run uv lock --upgrade-package <package> to attempt updating that package to its latest compatible version while keeping the rest of the lockfile intact.",
+          "source": {
+            "source_path": "compound/uv/docs/guides/projects.md",
+            "asset_path": "assets/compound/uv/docs/guides/projects.md",
+            "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+            "view_id": "original-lines",
+            "view_path": "views/compound/uv/docs/guides/projects.md.txt",
+            "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+            "line_start": 170,
+            "line_end": 177,
+            "start_char": 4550,
+            "end_char": 4829,
+            "text": "To upgrade a package, run `uv lock` with the `--upgrade-package` flag:\n\n```console\n$ uv lock --upgrade-package requests\n```\n\nThe `--upgrade-package` flag will attempt to update the specified package to the latest compatible\nversion, while keeping the rest of the lockfile intact.",
+            "sha256": "e0f5bdb440a2293a0ea4bdae1fa622afce4ce5412be9ffa59c521709a3ca06ac"
+          }
+        }
+      ],
+      "advisory_tightening_if_selected": [],
+      "current_evidence_readback": [
+        {
+          "evidence_id": "e1",
+          "source_path": "compound/uv/docs/guides/projects.md",
+          "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "view_id": "original-lines",
+          "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+          "span_sha256": "a561c2386fd1a15449be27dcf0786f756a0fda9fafab2964c9e60d4d2f7170d6",
+          "start_char": 4675,
+          "end_char": 4829,
+          "location": {
+            "unit": "line",
+            "start": 176,
+            "end": 177
+          },
+          "exact_source_span": true,
+          "text": "The `--upgrade-package` flag will attempt to update the specified package to the latest compatible\nversion, while keeping the rest of the lockfile intact."
+        },
+        {
+          "evidence_id": "e2",
+          "source_path": "compound/uv/docs/guides/tools.md",
+          "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "view_id": "original-lines",
+          "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+          "span_sha256": "4a653d2714e9b5a84887a07953c3afc7767166b7a0240e7ef5b7ed59c83913e7",
+          "start_char": 5960,
+          "end_char": 6045,
+          "location": {
+            "unit": "line",
+            "start": 244,
+            "end": 244
+          },
+          "exact_source_span": true,
+          "text": "Tool upgrades will respect the version constraints provided when installing the tool."
+        }
+      ],
+      "extra_exact_source_fragments": [],
+      "all175_view_support_anchor_search": [
+        {
+          "anchor": "while keeping the rest of the lockfile intact",
+          "source_view_hits": [
+            {
+              "source_path": "compound/uv/docs/guides/projects.md",
+              "view_id": "original-lines"
+            }
+          ]
+        },
+        {
+          "anchor": "Tool upgrades will respect the version constraints",
+          "source_view_hits": [
+            {
+              "source_path": "compound/uv/docs/guides/tools.md",
+              "view_id": "original-lines"
+            }
+          ]
+        }
+      ],
+      "selection_performed": false,
+      "note": "Anchor search supplements source semantics and inventory; literal absence is not a complete necessity proof. This is an independent AI source judgment."
+    }
+  ],
+  "replacement_policy_recommendation": "Preserve the20existing question-slot IDs and their old mappings in the amendment lineage. Retain18eligible existing cross questions, exclude current cross007(original compound-real-pip-tools-02) and cross011(original compound-real-pip-02) for strict necessity, exclude reserve compound-real-pip-tools-04, and fill2slots using the next eligible candidates in the predeclared30-pool deterministic order, after applying any source-required amendment. The selection-order implementation is owned by root/mechanics reviewer; no alternate hash salt/order is invented here. Re-run all80 readback/group/reuse checks and pin the explicit selection/annotation amendment before model registration/jobs. Do not weaken cross to mean merely two annotated paths.",
+  "sufficient_reserves": true,
+  "data_mutated": false,
+  "actual_scores_jobs_or_holdout_results_read": false,
+  "quality_or_model_pass_claim": false
+}

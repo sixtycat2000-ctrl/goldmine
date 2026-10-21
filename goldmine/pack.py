@@ -7,9 +7,9 @@ with the review amendments F8/F9 applied:
   text, `# sources` footer (D1). The WHOLE stdout text is budget-measured via
   ``backend.count_tokens`` (estimator fallback; the mode is decided by ONE
   probe call and printed in the header) (D2).
-- Skip-not-truncate: the fill stops at the first record that does not fit
-  whole; the TOP record may fall back to its slim form (hit chunk only) —
-  dropping context is not truncation (D3).
+- Whole primary seeds are budgeted in rank order, then supporting segments,
+  then neighbors. A nonfitting whole part is skipped and later candidates
+  may fit. No body text or citation is truncated (revised D3).
 - Record order = hit rank order; no re-sorting (D4). Only identical complete
   material folds, retaining every source association; a hit whose segment sits inside an
   earlier record folds into it (``also match``) — structurally unreachable
@@ -139,6 +139,7 @@ class NeighborIndex:
         self._by_file: dict[int, list[dict]] = {}
         self._path_to_id: dict[str, int | None] = {}
         self._texts: dict[int, str] = {}
+        self._source_order: dict[int, dict[int, int]] = {}
 
     def file_id_of(self, path: str) -> int | None:
         if path not in self._path_to_id:
@@ -156,6 +157,19 @@ class NeighborIndex:
                 for r in rows
             ]
         return self._by_file[file_id]
+
+    def source_order(self, path: str) -> dict[int, int]:
+        """All stored non-name units, including unrenderable gaps. Pack only."""
+        fid = self.file_id_of(path)
+        if fid is None:
+            return {}
+        if fid not in self._source_order:
+            rows = self.store.db.execute(
+                "SELECT id FROM segments WHERE file = ? AND kind != 'name' "
+                "ORDER BY loc, loc_end, id", (fid,),
+            ).fetchall()
+            self._source_order[fid] = {row[0]: i for i, row in enumerate(rows)}
+        return self._source_order[fid]
 
     def texts(self, seg_ids: list[int]) -> dict[int, str]:
         missing = [s for s in seg_ids if s not in self._texts]
@@ -260,14 +274,17 @@ class NeighborIndex:
         return out, None
 
 
-def merge_parts(parts: list[dict]) -> str:
+def merge_parts(parts: list[dict], *, join_overlaps: bool = False) -> str:
     """Concatenate position-ordered parts, deduping the chunker overlap at
     each seam (D8): adjacency-gated (next starts at/before prev's end),
-    char-aligned suffix==prefix trim, PDF pages excluded."""
+    char-aligned suffix==prefix trim, PDF pages excluded. Proven supporting
+    runs may join trimmed overlaps without an invented newline; the default
+    preserves the established neighbor-only rendering bytes."""
     out = ""
     prev: dict | None = None
     for p in parts:
         text = p["text"]
+        separator = "\n"
         if out and prev is not None:
             adjacent = (
                 p["loc"] is not None
@@ -275,8 +292,16 @@ def merge_parts(parts: list[dict]) -> str:
                 and p["loc"] <= prev["loc_end"]
             )
             if adjacent and p["kind"] not in _SEAM_EXCLUDED_KINDS:
-                text = trim_seam(out, text)
-        out = f"{out}\n{text}".strip() if out else text
+                trimmed = trim_seam(out, text)
+                if join_overlaps and trimmed != text:
+                    separator = ""
+                text = trimmed
+        if out:
+            out = f"{out}{separator}{text}"
+            if not join_overlaps:
+                out = out.strip()
+        else:
+            out = text
         prev = p
     return out
 
@@ -312,6 +337,7 @@ class PackRecord:
     note: str | None = None       # F9: TEXTLESS_NOTE_SHORT when no quotable text
     also_hits: list[Hit] = field(default_factory=list)
     citation_ids: dict[int, str] = field(default_factory=dict)
+    source_gap: bool = False      # internal rendering proof; never a public location
 
     @property
     def score(self) -> float:
@@ -321,7 +347,11 @@ class PackRecord:
 def collect_records(
     neighbor: NeighborIndex, hits: list[Hit], context: int
 ) -> tuple[list[PackRecord], int, int]:
-    """Rank-order hits -> records with neighbor expansion (§1.4). Returns
+    """Full-material preview with legacy folding, before budget allocation.
+
+    The pack pipeline allocates primary/support/neighbor parts separately and
+    rebuilds folds from its accepted ledger; this helper retains the public
+    full-preview behavior. Returns
     (records, duplicates_folded, also_folded). Identical complete material folds
     with source associations; a hit whose segment is already inside an earlier
     record folds into it (also_hits); a segment renders at most once per
@@ -331,7 +361,7 @@ def collect_records(
     seg_to_record: dict[int, PackRecord] = {}
     folded = 0
     also = 0
-    by_material: dict[str, PackRecord] = {}
+    by_material: dict[tuple[str, str], PackRecord] = {}
 
     for hit in hits:
         if hit.segment_id is not None and hit.segment_id in seg_to_record:
@@ -345,13 +375,24 @@ def collect_records(
             if p["role"] == "hit" or p["segment_id"] not in used_segments
         ]
         rec = PackRecord(n=len(records) + 1, hit=hit, parts=parts, note=note)
-        rec.text = material_text(parts, hit)
+        source_order = (neighbor.source_order(hit.path)
+                        if any(p["role"] == "supporting" for p in parts) else None)
+        fold_material = material_text(parts, hit)
+        rec.text = (material_text(parts, hit, source_order=source_order)
+                    if source_order is not None else fold_material)
         if note == TEXTLESS_NOTE_SHORT:
             rec.text = TEXTLESS_NOTE
         # Similar vectors can contain different dates/numbers or different
         # neighboring facts. Only identical complete emitted material folds.
-        prior = by_material.get(rec.text) if rec.parts and hit.segment != "name" else None
-        if prior is not None and prior.hit.path != hit.path:
+        # Do not introduce new folds between differently sliced sources:
+        # the existing fold keeps only the secondary hit's primary citation.
+        # Both the old presentation and the actual new body must agree.
+        fold_key = (fold_material, rec.text)
+        prior = by_material.get(fold_key) if rec.parts and hit.segment != "name" else None
+        # Existing secondary-source fields can represent only its primary SID.
+        # Keep any additional contributing parts as a complete separate record.
+        primary_only = len(parts) == 1 and parts[0]["segment_id"] == hit.segment_id
+        if prior is not None and prior.hit.path != hit.path and primary_only:
             prior.also_hits.append(hit)
             folded += 1
             if hit.segment_id is not None:
@@ -359,7 +400,7 @@ def collect_records(
             continue
         records.append(rec)
         if rec.parts and hit.segment != "name":
-            by_material.setdefault(rec.text, rec)
+            by_material.setdefault(fold_key, rec)
         for p in parts:
             used_segments.add(p["segment_id"])
             seg_to_record[p["segment_id"]] = rec
@@ -368,22 +409,47 @@ def collect_records(
     return records, folded, also
 
 
-def material_text(parts: list[dict], hit: Hit) -> str:
-    """Keep disjoint spans visibly separate, so page 3 never implies page 17."""
-    separate = any(p["role"] == "supporting" for p in parts) or (
+def _contiguous_line_parts(prev, part, hit, source_order) -> bool:
+    """Require source-order AND line-range proof; text similarity is not proof."""
+    if (hit.kind not in {"doc", "code", "webpage", "image"}
+            or prev["kind"] != part["kind"] or part["kind"] not in {"chunk", "ocr"}
+            or source_order is None):
+        return False
+    position = source_order.get(prev["segment_id"])
+    if position is None or source_order.get(part["segment_id"]) != position + 1:
+        return False
+    bounds = (prev["loc"], part["loc"], prev["loc_end"], part["loc_end"])
+    return None not in bounds and bounds[0] <= bounds[1] <= bounds[2] <= bounds[3]
+
+
+def has_source_gap(parts: list[dict], source_order) -> bool:
+    """Same positions alone cannot bridge a skipped/unrenderable stored unit."""
+    return source_order is not None and any(
+        source_order.get(left["segment_id"]) is None
+        or source_order.get(right["segment_id"]) != source_order[left["segment_id"]] + 1
+        for left, right in zip(parts, parts[1:])
+    )
+
+
+def material_text(parts: list[dict], hit: Hit, *, source_order=None) -> str:
+    """Keep disjoint spans explicit; dedup only proven contiguous line runs."""
+    separate = has_source_gap(parts, source_order) or any(p["role"] == "supporting" for p in parts) or (
         hit.kind == "pdf" and len({p["loc"] for p in parts}) > 1
     )
     if not separate:
         return merge_parts(parts)
     groups = []
     for part in parts:
-        if groups and hit.kind == "pdf" and groups[-1][0]["loc"] == part["loc"]:
+        same_page = (groups and hit.kind == "pdf" and groups[-1][0]["loc"] == part["loc"]
+                     and not has_source_gap([groups[-1][-1], part], source_order))
+        contiguous = groups and _contiguous_line_parts(groups[-1][-1], part, hit, source_order)
+        if same_page or contiguous:
             groups[-1].append(part)
         else:
             groups.append([part])
     return "\n\n".join(
         f"# stored evidence: {_render_loc(hit.kind, group[0]['loc'], group[-1]['loc_end'])}\n"
-        + merge_parts(group) for group in groups
+        + merge_parts(group, join_overlaps=hit.kind != "pdf") for group in groups
     )
 
 
@@ -429,9 +495,14 @@ def render_pack(
             for role in ("before", "after"):
                 side = [p for p in ctx if p["role"] == role]
                 if side:
-                    sides.append(
-                        f"{role} {_render_loc(h.kind, side[0]['loc'], side[-1]['loc_end'])}"
-                    )
+                    if rec.source_gap:
+                        sides.extend(dict.fromkeys(
+                            f"{role} {_render_loc(h.kind, p['loc'], p['loc_end'])}" for p in side
+                        ))
+                    else:
+                        sides.append(
+                            f"{role} {_render_loc(h.kind, side[0]['loc'], side[-1]['loc_end'])}"
+                        )
             if sides:
                 head += f" · context ±{settings.context} ({', '.join(sides)})"
         if rec.note is not None:
@@ -448,7 +519,7 @@ def render_pack(
     cited = []
     for rec in records:
         h = rec.hit
-        if any(p["role"] == "supporting" for p in rec.parts):
+        if rec.source_gap or any(p["role"] == "supporting" for p in rec.parts):
             span = ", ".join(dict.fromkeys(_render_loc(h.kind, p["loc"], p["loc_end"]) for p in rec.parts))
         elif rec.parts:
             span = _render_loc(h.kind, rec.parts[0]["loc"], rec.parts[-1]["loc_end"])
@@ -530,38 +601,15 @@ class _TokenizationLost(RuntimeError):
 
 
 def _build_pack(store, backend, settings, hits, *, citation_id_of=None):
-    """Assemble + budget + render the pack for ALREADY-SEARCHED hits (§2.3).
-    The caller owns the search (one search per invocation); this function is
-    pure presentation + budgeting. Returns (pack_text, meta) where meta is
-    the `--pack --json` payload AND the eval sidecar body (additive keys
-    allowed by goldmine.pack/v1)."""
-    neighbor = NeighborIndex(store)
-    records, folded, also = collect_records(neighbor, hits, settings.context)
-    capped = len(hits) - len(records) - folded - also
-    if citation_id_of is not None:
-        for rec in records:
-            segment_ids = list(dict.fromkeys(
-                [p["segment_id"] for p in rec.parts]
-                + ([rec.hit.segment_id] if rec.hit.segment_id is not None else [])
-                + [other.segment_id for other in rec.also_hits if other.segment_id is not None]
-            ))
-            rec.citation_ids = {sid: citation_id_of(sid) for sid in segment_ids}
-            if rec.hit.segment == "name":
-                rec.parts = []
-                row = store.db.execute("SELECT path,source,kind,info FROM files WHERE path=?",
-                                       (rec.hit.path,)).fetchone()
-                metadata = {"path": row[0], "source": row[1], "kind": row[2],
-                            "info": json.loads(row[3]) if row[3] else None} if row else {}
-                rec.text = ("# stored name metadata; no quotable document body\n"
-                            + json.dumps(metadata, ensure_ascii=False, sort_keys=True,
-                                         separators=(",", ":"), allow_nan=False))
-                rec.note = "name_metadata"
-    index_line = index_line_of(store)
-    # token mode is decided BEFORE selection by one probe call (§2.2): the
-    # header prints it, so it must be known before the first render
+    """Assemble an already-searched snapshot under one whole-envelope budget."""
+    from .deadline import check_deadline
+    from .pack_allocation import allocate_pack
+
+    check_deadline()
     _, token_mode = tokens_of("x", backend)
 
     def count(text):
+        check_deadline()
         if token_mode == "estimate":
             return est_tokens(text)
         used, actual_mode = tokens_of(text, backend)
@@ -569,67 +617,10 @@ def _build_pack(store, backend, settings, hits, *, citation_id_of=None):
             raise _TokenizationLost()
         return used
 
-    def _render(chosen: list[PackRecord], skipped: int, guess: int) -> tuple[str, int]:
-        text = render_pack(
-            chosen, settings, index_line=index_line, n_hits=len(hits),
-            n_folded=folded, n_also=also, n_skipped=skipped,
-            used_tokens=guess, token_mode=token_mode, n_capped=capped,
-        )
-        used = count(text)
-        return text, used
-
-    def _fixpoint(chosen: list[PackRecord], skipped: int):
-        """Footer used-count as a fixpoint (D10): render with N, measure,
-        repeat until the printed number equals the measured one. Returns
-        (text, used, converged)."""
-        guess = 0
-        text, used = _render(chosen, skipped, guess)
-        for _ in range(FIXPOINT_ROUNDS):
-            if used == guess:
-                return text, used, True
-            guess = used
-            text, used = _render(chosen, skipped, guess)
-        return text, used, False
-
-    # greedy fill in rank order; skip-not-truncate (§2.3): the first record
-    # that does not fit WHOLE stops the fill. Slim fallback: the TOP record
-    # may drop its context (a smaller valid record, never a cut).
-    chosen: list[PackRecord] = []
-    for rec in records:
-        candidate = chosen + [rec]
-        text, used, ok = _fixpoint(candidate, len(records) - len(candidate))
-        if ok and used <= settings.budget:
-            chosen = candidate
-            continue
-        if not chosen and len(rec.parts) > 1:
-            slim = PackRecord(
-                n=rec.n, hit=rec.hit,
-                parts=[p for p in rec.parts if p["role"] == "hit"],
-                note=rec.note,
-                citation_ids=rec.citation_ids,
-            )
-            slim.text = material_text(slim.parts, slim.hit) if slim.parts else TEXTLESS_NOTE
-            text, used, ok = _fixpoint([slim], len(records) - 1)
-            if ok and used <= settings.budget:
-                chosen = [slim]
-                continue
-        break
-
-    # F8: a non-converged fixpoint drops the LAST record and redoes — the
-    # footer never ships an unmeasured used-count while a record can go.
-    skipped = len(records) - len(chosen)
-    text, used, converged = _fixpoint(chosen, skipped)
-    while not converged and chosen:
-        chosen = chosen[:-1]
-        skipped = len(records) - len(chosen)
-        text, used, converged = _fixpoint(chosen, skipped)
-
-    if not converged or used > settings.budget:
-        raise BudgetTooSmall(
-            f"budget_too_small: pack envelope requires {used} tokens; "
-            f"budget is {settings.budget} ({token_mode})"
-        )
-
+    text, chosen, folded, also, skipped, capped, used = allocate_pack(
+        store, NeighborIndex(store), settings, hits, index_line=index_line_of(store),
+        count=count, token_mode=token_mode, citation_id_of=citation_id_of,
+    )
     meta = {
         "schema": PACK_SCHEMA,
         "query": settings.query,
@@ -641,7 +632,7 @@ def _build_pack(store, backend, settings, hits, *, citation_id_of=None):
             "budget": settings.budget,
             "token_mode": token_mode,
         },
-        "index": {"line": index_line},
+        "index": {"line": index_line_of(store)},
         "records": [_record_json(rec, backend, settings, count_of=count) for rec in chosen],
         "duplicates_folded": folded,
         "also_folded": also,
@@ -649,7 +640,7 @@ def _build_pack(store, backend, settings, hits, *, citation_id_of=None):
         "skipped_by_record_limit": capped,
         "used_tokens": used,
         "token_mode": token_mode,
-        "fixpoint_converged": converged,
+        "fixpoint_converged": True,
     }
     return text, meta
 

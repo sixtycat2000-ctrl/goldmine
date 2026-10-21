@@ -139,32 +139,72 @@ def now() -> str:
 def capture_command(run_dir: Path, check_id: str, argv: list[str], *, cwd: Path,
                     env: dict[str, str] | None = None, identity: dict | None = None,
                     suite_id: str = "acceptance", timeout: float = 900,
-                    outputs: dict[str, str] | None = None) -> dict:
+                    outputs: dict[str, str] | None = None, owned_process_group: bool = False,
+                    resource_policy: dict | None = None) -> dict:
     """Run explicit argv; record raw bytes and process status without trusting output."""
     if not argv or not all(isinstance(a, str) for a in argv):
         raise InvalidEvidence("command argv must be a nonempty string array")
+    if resource_policy is not None:
+        run_dir = Path(run_dir).absolute()
+        from .resource_policy import OUTPUTS, check_run_location, validate_policy
+        if any("\0" in a for a in argv) or not Path(argv[0]).is_absolute():
+            raise InvalidEvidence("observed command requires absolute executable and NUL-free argv")
+        validate_policy(resource_policy)
+        check_run_location(run_dir, resource_policy)
+        if not owned_process_group or timeout != resource_policy["wall_seconds"]:
+            raise InvalidEvidence("observed capture needs owned group and exact policy deadline")
+        if "resource_observer" in (identity or {}) or set(outputs or {}) & set(OUTPUTS):
+            raise InvalidEvidence("reserved resource identity/artifact key")
+        outputs = {**(outputs or {}), **OUTPUTS}
     run_dir.mkdir(parents=True, exist_ok=False)
     run_id, started = str(uuid.uuid4()), now()
     stdout, stderr = run_dir / "stdout.log", run_dir / "stderr.log"
-    timed_out = False
+    timed_out, observer, capture_error, actual_argv = False, None, None, argv
     with stdout.open("wb") as out, stderr.open("wb") as err:
         wall_started = time.perf_counter()
         try:
-            proc = subprocess.run(argv, cwd=cwd, env=env, stdout=out, stderr=err,
-                                  stdin=subprocess.DEVNULL, timeout=timeout, check=False)
+            if resource_policy is not None:
+                from .resource_observer import Observer
+                observer = Observer(run_dir, resource_policy, argv, out, err)
+            if owned_process_group:
+                from .owned_process import ProcessInterrupted, run_owned
+                try:
+                    proc = run_owned(argv, cwd=cwd, env=env, stdout=out, stderr=err, timeout=timeout,
+                                     **({"observer": observer} if observer is not None else {}))
+                except ProcessInterrupted as exc:
+                    capture_error = str(exc)
+                    err.write(f"{exc}\n".encode())
+                    proc = subprocess.CompletedProcess(argv, exc.exit_code)
+            else:
+                proc = subprocess.run(argv, cwd=cwd, env=env, stdout=out, stderr=err,
+                                      stdin=subprocess.DEVNULL, timeout=timeout, check=False)
             exit_code = proc.returncode
         except subprocess.TimeoutExpired:
-            exit_code, timed_out = 124, True
+            exit_code, timed_out, capture_error = 124, True, "wall deadline exceeded"
         except OSError as exc:
             err.write(f"{type(exc).__name__}: {exc}\n".encode())
-            exit_code = 127
+            exit_code, capture_error = 127, f"{type(exc).__name__}: {exc}"
+        if resource_policy is not None:
+            if observer is not None:
+                actual_argv = observer.outer or argv
+                try:
+                    out.flush()
+                    err.flush()
+                    observer.finish(exit_code, timed_out, capture_error)
+                except (OSError, subprocess.TimeoutExpired) as exc:
+                    err.write(f"resource finalization incomplete: {type(exc).__name__}: {exc}\n".encode())
+                    exit_code = 127
+                binding = observer.binding()
+            else:
+                binding = {"schema": 1, "policy": resource_policy, "initialization": "MISSING"}
+            identity = {**(identity or {}), "resource_observer": binding}
         wall_ms = (time.perf_counter() - wall_started) * 1000
     visible = ("GOLDMINE_HOME", "GOLDMINE_CONFIG", "GOLDMINE_LIVE",
                "GOLDMINE_OCR_AUTOCOMPILE", "GOLDMINE_ACCEPTANCE_HERMETIC",
                "GOLDMINE_SERVE_PRESSURE_LEVEL", "GOLDMINE_MODEL", "GOLDMINE_LLAMA_SERVER",
                "GOLDMINE_SERVE", "PYTHONPATH", "PIP_NO_INDEX", "PIP_FIND_LINKS", "PYTHONNOUSERSITE")
     receipt = {
-        "schema": 1, "run_id": run_id, "check_id": check_id, "argv": argv,
+        "schema": 1, "run_id": run_id, "check_id": check_id, "argv": actual_argv,
         "cwd": str(cwd.resolve()), "env": {k: (env or os.environ)[k] for k in visible
                                                   if k in (env or os.environ)},
         "started_at": started, "finished_at": now(), "exit_code": exit_code,
@@ -179,6 +219,18 @@ def capture_command(run_dir: Path, check_id: str, argv: list[str], *, cwd: Path,
                 "check_id": check_id, "suite_id": suite_id, "identity": identity or {},
                 "receipt": artifact(run_dir, run_dir / "receipt.json")}
     write_json(run_dir / "manifest.json", manifest)
+    if observer is not None:
+        from .resource_publication import publish
+        try:
+            publish(run_dir, manifest, receipt, binding, observer.root_identity)
+        except (OSError, subprocess.TimeoutExpired, InvalidEvidence) as exc:
+            failure = run_dir / "resource-publication-failure.json"
+            write_json(failure, {"schema": 1, "status": "MISSING", "run_id": run_id,
+                                "error": f"{type(exc).__name__}: {exc}"})
+            receipt["artifacts"]["resource_publication_failure"] = artifact(run_dir, failure)
+            write_json(run_dir / "receipt.json", receipt)
+            manifest["receipt"] = artifact(run_dir, run_dir / "receipt.json")
+            write_json(run_dir / "manifest.json", manifest)
     return manifest
 
 

@@ -79,9 +79,10 @@ def rebuild_derived(db, *, exact: bool) -> dict:
     last_id, count = 0, 0
     while True:
         check_deadline()
+        # Keep the primary-key range outermost; FTS-first batches rescan/sort.
         rows = db.execute(
             "SELECT s.id,s.file,s.kind,t.name,t.body,t.original FROM segments s "
-            "JOIN fts t ON t.rowid=s.id WHERE s.id>? ORDER BY s.id LIMIT 256", (last_id,),
+            "CROSS JOIN fts t ON t.rowid=s.id WHERE s.id>? ORDER BY s.id LIMIT 256", (last_id,),
         ).fetchall()
         if not rows:
             break

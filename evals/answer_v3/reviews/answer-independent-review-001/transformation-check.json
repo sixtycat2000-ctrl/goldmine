@@ -1,0 +1,822 @@
+[
+  {
+    "id": "av3-single-001",
+    "original_ids": [
+      "text-semantic-041"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-002",
+    "original_ids": [
+      "text-semantic-029"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-003",
+    "original_ids": [
+      "text-semantic-001"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-004",
+    "original_ids": [
+      "text-semantic-059"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-005",
+    "original_ids": [
+      "text-semantic-039"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-006",
+    "original_ids": [
+      "text-cjk-046"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-007",
+    "original_ids": [
+      "text-cjk-020"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-008",
+    "original_ids": [
+      "text-cjk-001"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-009",
+    "original_ids": [
+      "text-cjk-013"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-010",
+    "original_ids": [
+      "text-cjk-023"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-011",
+    "original_ids": [
+      "v4x-pdf-nist-800-145-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-012",
+    "original_ids": [
+      "v4x-pdf-nist-800-107r1-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-013",
+    "original_ids": [
+      "v4x-pdf-US174465-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-014",
+    "original_ids": [
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-015",
+    "original_ids": [
+      "v4x-pdf-nist-800-38a-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-016",
+    "original_ids": [
+      "media-real-photo-101198740-taken"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-017",
+    "original_ids": [
+      "media-real-photo-94585934-filename"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-018",
+    "original_ids": [
+      "v4x-ocr-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-019",
+    "original_ids": [
+      "media-real-asr-2803-161169-0001"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-single-020",
+    "original_ids": [
+      "media-real-asr-3000-15664-0005"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-001",
+    "original_ids": [
+      "media-real-photo-94585934-filename",
+      "media-real-photo-94585934-taken"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-002",
+    "original_ids": [
+      "text-semantic-028",
+      "text-semantic-029"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-003",
+    "original_ids": [
+      "v4x-pdf-nist-800-92-01",
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-004",
+    "original_ids": [
+      "text-cjk-017",
+      "text-cjk-018"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-005",
+    "original_ids": [
+      "text-cjk-047",
+      "text-cjk-048"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-006",
+    "original_ids": [
+      "media-real-photo-141842609-filename",
+      "media-real-photo-141842609-taken"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-007",
+    "original_ids": [
+      "v4x-pdf-US174465-02",
+      "v4x-pdf-US174465-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-008",
+    "original_ids": [
+      "text-semantic-041",
+      "text-semantic-043"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-009",
+    "original_ids": [
+      "text-cjk-029",
+      "text-cjk-030"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-010",
+    "original_ids": [
+      "text-cjk-021",
+      "text-cjk-023"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-011",
+    "original_ids": [
+      "v4x-pdf-nist-800-107r1-01",
+      "v4x-pdf-nist-800-107r1-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-012",
+    "original_ids": [
+      "text-semantic-053",
+      "text-semantic-054"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-013",
+    "original_ids": [
+      "text-cjk-011",
+      "text-cjk-013"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-014",
+    "original_ids": [
+      "text-semantic-001",
+      "text-semantic-003"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-015",
+    "original_ids": [
+      "v4x-pdf-nist-800-145-01",
+      "v4x-pdf-nist-800-145-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-016",
+    "original_ids": [
+      "text-semantic-037",
+      "text-semantic-040"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-017",
+    "original_ids": [
+      "text-cjk-001",
+      "text-cjk-003"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-018",
+    "original_ids": [
+      "v4x-pdf-nist-800-38a-03",
+      "v4x-pdf-nist-800-38a-04"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-019",
+    "original_ids": [
+      "v4x-pdf-US6469-02",
+      "v4x-pdf-US6469-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-multi-020",
+    "original_ids": [
+      "text-semantic-057",
+      "text-semantic-059"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-001",
+    "original_ids": [
+      "compound-real-pip-tools-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-002",
+    "original_ids": [
+      "compound-real-poetry-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-003",
+    "original_ids": [
+      "compound-real-typer-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-004",
+    "original_ids": [
+      "compound-real-uv-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-005",
+    "original_ids": [
+      "compound-real-pip-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-006",
+    "original_ids": [
+      "compound-real-httpx-04"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-007",
+    "original_ids": [
+      "compound-real-pip-tools-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-008",
+    "original_ids": [
+      "compound-real-poetry-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-009",
+    "original_ids": [
+      "compound-real-typer-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-010",
+    "original_ids": [
+      "compound-real-uv-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-011",
+    "original_ids": [
+      "compound-real-pip-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-012",
+    "original_ids": [
+      "compound-real-httpx-01"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-013",
+    "original_ids": [
+      "compound-real-pip-tools-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-014",
+    "original_ids": [
+      "compound-real-poetry-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-015",
+    "original_ids": [
+      "compound-real-typer-02"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-016",
+    "original_ids": [
+      "compound-real-uv-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-017",
+    "original_ids": [
+      "compound-real-pip-05"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-018",
+    "original_ids": [
+      "compound-real-httpx-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-019",
+    "original_ids": [
+      "compound-real-pip-tools-03"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-cross-020",
+    "original_ids": [
+      "compound-real-poetry-04"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-001",
+    "original_ids": [
+      "noise-random_terms-009"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-002",
+    "original_ids": [
+      "noise-near_topic-010"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-003",
+    "original_ids": [
+      "noise-conflict_id-017"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-004",
+    "original_ids": [
+      "noise-random_terms-004"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-005",
+    "original_ids": [
+      "noise-near_topic-006"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-006",
+    "original_ids": [
+      "noise-conflict_id-004"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-007",
+    "original_ids": [
+      "noise-random_terms-006"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-008",
+    "original_ids": [
+      "noise-near_topic-018"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-009",
+    "original_ids": [
+      "noise-conflict_id-020"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-010",
+    "original_ids": [
+      "noise-random_terms-003"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-011",
+    "original_ids": [
+      "noise-near_topic-007"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-012",
+    "original_ids": [
+      "noise-conflict_id-016"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-013",
+    "original_ids": [
+      "noise-random_terms-014"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-014",
+    "original_ids": [
+      "noise-near_topic-003"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-015",
+    "original_ids": [
+      "noise-conflict_id-009"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-016",
+    "original_ids": [
+      "noise-random_terms-013"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-017",
+    "original_ids": [
+      "noise-near_topic-017"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-018",
+    "original_ids": [
+      "noise-conflict_id-005"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-019",
+    "original_ids": [
+      "noise-random_terms-011"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  },
+  {
+    "id": "av3-trap-020",
+    "original_ids": [
+      "noise-near_topic-002"
+    ],
+    "question_preserved_or_exact_wrapper": true,
+    "facts_and_all_sufficient_alternatives_preserved_after_prefixing": true,
+    "evidence_preserved_except_declared_view_id_relocation": true,
+    "view_ids_preserved_in_source_map": true
+  }
+]

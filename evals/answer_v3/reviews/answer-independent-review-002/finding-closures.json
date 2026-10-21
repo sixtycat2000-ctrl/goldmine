@@ -1,0 +1,597 @@
+[
+  {
+    "finding_id": "IR-001",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-012",
+        "original_dev_question_ids": [
+          "text-semantic-053",
+          "text-semantic-054"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p1_f0",
+          "description": "Set count=True on click.option; each repetition increments the integer verbosity level.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-012",
+          "evidence_id": "p1_e0",
+          "source_path": "text/click/docs/options.rst",
+          "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+          "view_id": "body",
+          "view_path": "views/text/click/docs/options.rst.txt",
+          "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+          "start_char": 6357,
+          "end_char": 6674,
+          "span_sha256": "ce825be8ddff5529dbb7572fc93afb8f52b600105bae1de54c3e88ea4987e915",
+          "source_location": {
+            "unit": "line",
+            "start": 230,
+            "end": 239
+          },
+          "line_start_within_view": 230,
+          "line_end_within_view": 239,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-002",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-single-002",
+        "original_dev_question_ids": [
+          "text-semantic-029"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-single-002",
+          "evidence_id": "e0",
+          "source_path": "text/click/src/click/parser.py",
+          "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "view_id": "body",
+          "view_path": "views/text/click/src/click/parser.py.txt",
+          "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "start_char": 15427,
+          "end_char": 15916,
+          "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+          "source_location": {
+            "unit": "line",
+            "start": 437,
+            "end": 452
+          },
+          "line_start_within_view": 437,
+          "line_end_within_view": 452,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      },
+      {
+        "question_id": "av3-multi-002",
+        "original_dev_question_ids": [
+          "text-semantic-028",
+          "text-semantic-029"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p2_f0",
+          "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-002",
+          "evidence_id": "p2_e0",
+          "source_path": "text/click/src/click/parser.py",
+          "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "view_id": "body",
+          "view_path": "views/text/click/src/click/parser.py.txt",
+          "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "start_char": 15427,
+          "end_char": 15916,
+          "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+          "source_location": {
+            "unit": "line",
+            "start": 437,
+            "end": 452
+          },
+          "line_start_within_view": 437,
+          "line_end_within_view": 452,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-003",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-004",
+        "original_dev_question_ids": [
+          "text-cjk-017",
+          "text-cjk-018"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p1_f0",
+          "description": "v-show 在 DOM 中保留元素，只切换元素的 CSS display 属性。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-004",
+          "evidence_id": "p1_e0",
+          "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+          "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+          "start_char": 2070,
+          "end_char": 2141,
+          "span_sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06",
+          "source_location": {
+            "unit": "line",
+            "start": 89,
+            "end": 89
+          },
+          "line_start_within_view": 89,
+          "line_end_within_view": 89,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-004",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-005",
+        "original_dev_question_ids": [
+          "text-cjk-047",
+          "text-cjk-048"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p1_f0",
+          "description": "父组件没有提供值时，父值仍可为 undefined，而子组件使用 defineModel 的 default（示例为1），所以父子值不同步。",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-005",
+          "evidence_id": "p1_e0",
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 2372,
+          "end_char": 2499,
+          "span_sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a",
+          "source_location": {
+            "unit": "line",
+            "start": 100,
+            "end": 100
+          },
+          "line_start_within_view": 100,
+          "line_end_within_view": 100,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-005",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-005",
+        "original_dev_question_ids": [
+          "text-cjk-047",
+          "text-cjk-048"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p2_f0",
+          "description": "v-model:title 对应子组件的 title prop 和 update:title 事件。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-005",
+          "evidence_id": "p2_e0",
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 6340,
+          "end_char": 6445,
+          "span_sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6",
+          "source_location": {
+            "unit": "line",
+            "start": 265,
+            "end": 265
+          },
+          "line_start_within_view": 265,
+          "line_end_within_view": 265,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-006",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-009",
+        "original_dev_question_ids": [
+          "text-cjk-029",
+          "text-cjk-030"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p2_f0",
+          "description": "在 v-model 后添加 .trim 修饰符，可自动去除用户输入两端的空格。",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-009",
+          "evidence_id": "p2_e0",
+          "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+          "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+          "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+          "start_char": 14152,
+          "end_char": 14207,
+          "span_sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005",
+          "source_location": {
+            "unit": "line",
+            "start": 458,
+            "end": 458
+          },
+          "line_start_within_view": 458,
+          "line_end_within_view": 458,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-007",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-multi-014",
+        "original_dev_question_ids": [
+          "text-semantic-001",
+          "text-semantic-003"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p2_f0",
+          "description": "A same-host HTTP-to-HTTPS redirect on standard ports is allowed without stripping authentication.",
+          "sufficient_evidence": [
+            [
+              "p2_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-014",
+          "evidence_id": "p2_e0",
+          "source_path": "text/requests/src/requests/sessions.py",
+          "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "view_id": "body",
+          "view_path": "views/text/requests/src/requests/sessions.py.txt",
+          "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "start_char": 4139,
+          "end_char": 4937,
+          "span_sha256": "6341ec0884d4b4344dc55c37e0e5d47e6d3436f244673eae5687b6d3683e40f0",
+          "source_location": {
+            "unit": "line",
+            "start": 127,
+            "end": 143
+          },
+          "line_start_within_view": 127,
+          "line_end_within_view": 143,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-008",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-single-020",
+        "original_dev_question_ids": [
+          "media-real-asr-3000-15664-0005"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "f1",
+          "description": "Abundant firewood made it possible to do without the blanket.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-single-020",
+          "evidence_id": "e1",
+          "source_path": "media/asr/3000-15664-0005.flac",
+          "asset_sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f",
+          "view_id": "official-transcript",
+          "view_path": "views/media/asr/3000-15664-0005.txt",
+          "view_sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+          "start_char": 0,
+          "end_char": 129,
+          "span_sha256": "f64098ce1f9966591cbf68789b24ed7ece6b99b485c2f96d8df89fc90c01b5c0",
+          "source_location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "line_start_within_view": 1,
+          "line_end_within_view": 1,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-009",
+    "original_severity": "required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-cross-008",
+        "original_dev_question_ids": [
+          "compound-real-poetry-05"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "f1",
+          "description": "poetry env remove --all removes all virtual environments associated with the current project.",
+          "sufficient_evidence": [
+            [
+              "e1",
+              "e1_scope"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-cross-008",
+          "evidence_id": "e1",
+          "source_path": "compound/poetry/docs/managing-environments.md",
+          "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "view_id": "original-lines",
+          "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+          "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "start_char": 5084,
+          "end_char": 5183,
+          "span_sha256": "ab8d8a92bca8aa7ab5f2ee342957cded50b9a1e5323f8cb595a17201c7b96444",
+          "source_location": {
+            "unit": "line",
+            "start": 194,
+            "end": 197
+          },
+          "line_start_within_view": 194,
+          "line_end_within_view": 197,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-010",
+    "original_severity": "design_resolution_required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-cross-011",
+        "original_dev_question_ids": [
+          "compound-real-uv-04"
+        ],
+        "resolution": "Registered deterministic cross replacement with source-audited reserve"
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-011",
+    "original_severity": "design_resolution_required",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-cross-007",
+        "original_dev_question_ids": [
+          "compound-real-typer-05"
+        ],
+        "resolution": "Registered deterministic cross replacement with source-audited reserve"
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-A01",
+    "original_severity": "advisory",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-single-006",
+        "original_dev_question_ids": [
+          "text-cjk-046"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "f0",
+          "description": "defineModel() 返回一个 ref，并在父组件绑定值和当前变量之间提供双向绑定。",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-single-006",
+          "evidence_id": "e0",
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 686,
+          "end_char": 761,
+          "span_sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d",
+          "source_location": {
+            "unit": "line",
+            "start": 36,
+            "end": 36
+          },
+          "line_start_within_view": 36,
+          "line_end_within_view": 36,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  },
+  {
+    "finding_id": "IR-A02",
+    "original_severity": "advisory",
+    "status": "CLOSED_IN_DRAFT002",
+    "affected": [
+      {
+        "question_id": "av3-single-003",
+        "original_dev_question_ids": [
+          "text-semantic-001"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-single-003",
+          "evidence_id": "e0",
+          "source_path": "text/requests/src/requests/sessions.py",
+          "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "view_id": "body",
+          "view_path": "views/text/requests/src/requests/sessions.py.txt",
+          "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "start_char": 2047,
+          "end_char": 2417,
+          "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+          "source_location": {
+            "unit": "line",
+            "start": 79,
+            "end": 86
+          },
+          "line_start_within_view": 79,
+          "line_end_within_view": 86,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      },
+      {
+        "question_id": "av3-multi-014",
+        "original_dev_question_ids": [
+          "text-semantic-001",
+          "text-semantic-003"
+        ],
+        "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+        "current_fact": {
+          "fact_id": "p1_f0",
+          "description": "Mapping entries whose merged value is None are deleted.",
+          "sufficient_evidence": [
+            [
+              "p1_e0"
+            ]
+          ]
+        },
+        "current_evidence": {
+          "question_id": "av3-multi-014",
+          "evidence_id": "p1_e0",
+          "source_path": "text/requests/src/requests/sessions.py",
+          "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "view_id": "body",
+          "view_path": "views/text/requests/src/requests/sessions.py.txt",
+          "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "start_char": 2047,
+          "end_char": 2417,
+          "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+          "source_location": {
+            "unit": "line",
+            "start": 79,
+            "end": 86
+          },
+          "line_start_within_view": 79,
+          "line_end_within_view": 86,
+          "exact_source_span_and_hash": true,
+          "location_consistent": true
+        }
+      }
+    ]
+  }
+]

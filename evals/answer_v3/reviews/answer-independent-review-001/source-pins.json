@@ -1,0 +1,3958 @@
+[
+  {
+    "source_path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+    "kind": "doc",
+    "source_group": "upstream:fastapi",
+    "parents": [
+      "compound/fastapi/docs/en/docs/tutorial/middleware.md"
+    ],
+    "asset": {
+      "path": "assets/compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+      "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/fastapi/docs/en/docs/tutorial/background-tasks.md.txt",
+        "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 86
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+    "kind": "doc",
+    "source_group": "upstream:fastapi",
+    "parents": [
+      "compound/fastapi/docs/en/docs/tutorial/background-tasks.md"
+    ],
+    "asset": {
+      "path": "assets/compound/fastapi/docs/en/docs/tutorial/middleware.md",
+      "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/fastapi/docs/en/docs/tutorial/middleware.md.txt",
+        "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 95
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/flask/docs/async-await.rst",
+    "kind": "doc",
+    "source_group": "upstream:flask",
+    "parents": [
+      "compound/flask/docs/errorhandling.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/flask/docs/async-await.rst",
+      "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/flask/docs/async-await.rst.txt",
+        "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 119
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/flask/docs/errorhandling.rst",
+    "kind": "doc",
+    "source_group": "upstream:flask",
+    "parents": [
+      "compound/flask/docs/async-await.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/flask/docs/errorhandling.rst",
+      "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/flask/docs/errorhandling.rst.txt",
+        "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 523
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/httpx/docs/advanced/timeouts.md",
+    "kind": "doc",
+    "source_group": "upstream:httpx",
+    "parents": [
+      "compound/httpx/docs/quickstart.md"
+    ],
+    "asset": {
+      "path": "assets/compound/httpx/docs/advanced/timeouts.md",
+      "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+        "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 71
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/httpx/docs/quickstart.md",
+    "kind": "doc",
+    "source_group": "upstream:httpx",
+    "parents": [
+      "compound/httpx/docs/advanced/timeouts.md"
+    ],
+    "asset": {
+      "path": "assets/compound/httpx/docs/quickstart.md",
+      "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/httpx/docs/quickstart.md.txt",
+        "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 547
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pip-tools/README.md",
+    "kind": "doc",
+    "source_group": "upstream:pip-tools",
+    "parents": [
+      "compound/pip-tools/piptools/scripts/compile.py"
+    ],
+    "asset": {
+      "path": "assets/compound/pip-tools/README.md",
+      "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pip-tools/README.md.txt",
+        "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 669
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+    "kind": "code",
+    "source_group": "upstream:pip-tools",
+    "parents": [
+      "compound/pip-tools/README.md"
+    ],
+    "asset": {
+      "path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+      "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 572
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pip/docs/html/topics/caching.md",
+    "kind": "doc",
+    "source_group": "upstream:pip",
+    "parents": [
+      "compound/pip/docs/html/topics/repeatable-installs.md"
+    ],
+    "asset": {
+      "path": "assets/compound/pip/docs/html/topics/caching.md",
+      "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pip/docs/html/topics/caching.md.txt",
+        "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 158
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+    "kind": "doc",
+    "source_group": "upstream:pip",
+    "parents": [
+      "compound/pip/docs/html/topics/caching.md"
+    ],
+    "asset": {
+      "path": "assets/compound/pip/docs/html/topics/repeatable-installs.md",
+      "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+        "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 92
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/poetry/docs/dependency-specification.md",
+    "kind": "doc",
+    "source_group": "upstream:poetry",
+    "parents": [
+      "compound/poetry/docs/managing-environments.md"
+    ],
+    "asset": {
+      "path": "assets/compound/poetry/docs/dependency-specification.md",
+      "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 791
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/poetry/docs/managing-environments.md",
+    "kind": "doc",
+    "source_group": "upstream:poetry",
+    "parents": [
+      "compound/poetry/docs/dependency-specification.md"
+    ],
+    "asset": {
+      "path": "assets/compound/poetry/docs/managing-environments.md",
+      "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 209
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pydantic/docs/concepts/serialization.md",
+    "kind": "doc",
+    "source_group": "upstream:pydantic",
+    "parents": [
+      "compound/pydantic/docs/concepts/strict_mode.md"
+    ],
+    "asset": {
+      "path": "assets/compound/pydantic/docs/concepts/serialization.md",
+      "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pydantic/docs/concepts/serialization.md.txt",
+        "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 970
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pydantic/docs/concepts/strict_mode.md",
+    "kind": "doc",
+    "source_group": "upstream:pydantic",
+    "parents": [
+      "compound/pydantic/docs/concepts/serialization.md"
+    ],
+    "asset": {
+      "path": "assets/compound/pydantic/docs/concepts/strict_mode.md",
+      "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pydantic/docs/concepts/strict_mode.md.txt",
+        "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 181
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pytest/doc/en/how-to/assert.rst",
+    "kind": "doc",
+    "source_group": "upstream:pytest",
+    "parents": [
+      "compound/pytest/doc/en/how-to/skipping.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/pytest/doc/en/how-to/assert.rst",
+      "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pytest/doc/en/how-to/assert.rst.txt",
+        "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 598
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/pytest/doc/en/how-to/skipping.rst",
+    "kind": "doc",
+    "source_group": "upstream:pytest",
+    "parents": [
+      "compound/pytest/doc/en/how-to/assert.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/pytest/doc/en/how-to/skipping.rst",
+      "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/pytest/doc/en/how-to/skipping.rst.txt",
+        "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 431
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/rich/docs/source/progress.rst",
+    "kind": "doc",
+    "source_group": "upstream:rich",
+    "parents": [
+      "compound/rich/docs/source/tables.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/rich/docs/source/progress.rst",
+      "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/rich/docs/source/progress.rst.txt",
+        "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 298
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/rich/docs/source/tables.rst",
+    "kind": "doc",
+    "source_group": "upstream:rich",
+    "parents": [
+      "compound/rich/docs/source/progress.rst"
+    ],
+    "asset": {
+      "path": "assets/compound/rich/docs/source/tables.rst",
+      "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/rich/docs/source/tables.rst.txt",
+        "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 171
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/ruff/docs/configuration.md",
+    "kind": "doc",
+    "source_group": "upstream:ruff",
+    "parents": [
+      "compound/ruff/docs/formatter.md"
+    ],
+    "asset": {
+      "path": "assets/compound/ruff/docs/configuration.md",
+      "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/ruff/docs/configuration.md.txt",
+        "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 883
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/ruff/docs/formatter.md",
+    "kind": "doc",
+    "source_group": "upstream:ruff",
+    "parents": [
+      "compound/ruff/docs/configuration.md"
+    ],
+    "asset": {
+      "path": "assets/compound/ruff/docs/formatter.md",
+      "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/ruff/docs/formatter.md.txt",
+        "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 672
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/typer/docs/tutorial/commands/context.md",
+    "kind": "doc",
+    "source_group": "upstream:typer",
+    "parents": [
+      "compound/typer/docs/tutorial/options/help.md"
+    ],
+    "asset": {
+      "path": "assets/compound/typer/docs/tutorial/commands/context.md",
+      "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+        "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 125
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/typer/docs/tutorial/options/help.md",
+    "kind": "doc",
+    "source_group": "upstream:typer",
+    "parents": [
+      "compound/typer/docs/tutorial/commands/context.md"
+    ],
+    "asset": {
+      "path": "assets/compound/typer/docs/tutorial/options/help.md",
+      "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+        "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 157
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/uv/docs/guides/projects.md",
+    "kind": "doc",
+    "source_group": "upstream:uv",
+    "parents": [
+      "compound/uv/docs/guides/tools.md"
+    ],
+    "asset": {
+      "path": "assets/compound/uv/docs/guides/projects.md",
+      "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/uv/docs/guides/projects.md.txt",
+        "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 301
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "compound/uv/docs/guides/tools.md",
+    "kind": "doc",
+    "source_group": "upstream:uv",
+    "parents": [
+      "compound/uv/docs/guides/projects.md"
+    ],
+    "asset": {
+      "path": "assets/compound/uv/docs/guides/tools.md",
+      "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "original-lines",
+        "path": "views/compound/uv/docs/guides/tools.md.txt",
+        "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 313
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/1462-170138-0006.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:94",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/1462-170138-0006.flac",
+      "sha256": "ecaddfdff6449400a4d4e5131bfc3d32c51cf483c30f21893318c605675c391e"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/1462-170138-0006.txt",
+        "sha256": "730246dbfa953e00a7c7fb43f83938212c954b62f9e591a3bb21fd3a21be675a",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.58
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/2035-147960-0002.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:19810",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/2035-147960-0002.flac",
+      "sha256": "9a6003d48d3f89f4f8a6099fcec13d4b87af5a0b9d37e5e233cef0620d55d9f4"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/2035-147960-0002.txt",
+        "sha256": "3d3c951c7857f8c3b83c36cace0857ad60a7644d78949b87c3e115207efb7a9b",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.84
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/2078-142845-0013.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:10136",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/2078-142845-0013.flac",
+      "sha256": "f77ebdea58b99a74edbd59ac87565ef48ed0989a07ed337fb55cfdc2b5b3315d"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/2078-142845-0013.txt",
+        "sha256": "3752ee6ee2b9d79214956c2b0a0904197fd3449a364afbe51582cb8f32d7be52",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 9.855
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/2412-153954-0003.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:1906",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/2412-153954-0003.flac",
+      "sha256": "9844109ffbdd5630d3de9199bfb0c4edfbfb2287513550840b0b7e78696559b3"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/2412-153954-0003.txt",
+        "sha256": "f60aa83f2fc3eb3dfcb2aaac672d88d53492105a56c8e5a9e0cc124742ac6dc3",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.15
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/2428-83705-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:38188",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/2428-83705-0001.flac",
+      "sha256": "a7cfd2d49bd00d7ade17541a2abf885e295ba9155efcf9e800d65afab9a8c5ca"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/2428-83705-0001.txt",
+        "sha256": "e625209f50e651d2da6d1903cc37e8e866657cad1367c816fd96f1a8db563916",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 6.845
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/251-136532-0000.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:19445",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/251-136532-0000.flac",
+      "sha256": "39a86dd81ef6a0259f2915845794396df1f420956e31e99179a315f23a6c6ae2"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/251-136532-0000.txt",
+        "sha256": "5a9b4becbf95938970f38c0d622800543c7c051a4978d667f34ec9493cd99131",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 9.81
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/2803-161169-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:5792",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/2803-161169-0001.flac",
+      "sha256": "30b7ed1189ca2268621364aa629da6748ac4f941adbd3704b21b3dfc6105b5b1"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/2803-161169-0001.txt",
+        "sha256": "353723ebe37bf7b7a4cd762bac565d550012561585f597140dac7364cad3e26e",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 9.495
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/3000-15664-0005.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:326",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/3000-15664-0005.flac",
+      "sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/3000-15664-0005.txt",
+        "sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.46
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/3170-137482-0006.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:2981",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/3170-137482-0006.flac",
+      "sha256": "4fdffb603f0a3352c46ab1b7c05a7e0851c0e05205a46c222f426b8d98a89e12"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/3170-137482-0006.txt",
+        "sha256": "87fb37a76058c3441caadcd8e3518bed5c690087b3dec2ada452fc303c9b4f44",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 7.145
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/3536-8226-0000.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:5140",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/3536-8226-0000.flac",
+      "sha256": "18e2eb93889274f30f6898a9b380aafe16f570c33c21191d9d9129ebd016ac59"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/3536-8226-0000.txt",
+        "sha256": "fae09390243d3e4e3aae9aae1780fc6a0facac5e96182c8abdd541c1d8a71f8b",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 10.755
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/3752-4943-0000.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:3424",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/3752-4943-0000.flac",
+      "sha256": "1c5eb27a35b417a40f4393e94f5e94229d7a2c78057656154dfa2735b9781483"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/3752-4943-0000.txt",
+        "sha256": "21e8afa8646cdbf120701bcb9bbcb5ba9ead68136eb69b6742118ee6fc77f425",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.83
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/5338-284437-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:39159",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/5338-284437-0001.flac",
+      "sha256": "b5e0fe0dcd5fbff502815d302a4e8a9d434a1aac60e4c11b313dee38d9002328"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/5338-284437-0001.txt",
+        "sha256": "b0b8d4fb299d32d9ff3403f6015d087e870aa3680320c9c70dff8ec6f4362aab",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 9.05
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/5895-34629-0007.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:12587",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/5895-34629-0007.flac",
+      "sha256": "799eed0b067021ad7e64530b2295902006b59468b314081d02a8534b2908e252"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/5895-34629-0007.txt",
+        "sha256": "4c3845b42b4407bb9156e5cd21b40fe44551fa20c743b394053f2293329d534b",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.195
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/6295-244435-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:3653",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/6295-244435-0001.flac",
+      "sha256": "fd1c766546d427730866e37146b25b156522f5d5cfae65d4ecd831a9c4af266d"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/6295-244435-0001.txt",
+        "sha256": "d51963808526485f311536790e30b392568f64e97a1bb45bd53c750154687b36",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 7.885
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/6313-66125-0011.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:6067",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/6313-66125-0011.flac",
+      "sha256": "15105128a9b695c4f1efc09824d948931d0411f777049d30be24d1e55c8b4159"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/6313-66125-0011.txt",
+        "sha256": "6152e54a11121ad6af0e4b248d9892c4301f4d2d1c56501cafef689a17dfb195",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 5.12
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/6319-57405-0000.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:11582",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/6319-57405-0000.flac",
+      "sha256": "9a9675d31b8efcc3377910fa1aa86ae9eda393cb3c05025fa1473c0ee5bf0f89"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/6319-57405-0000.txt",
+        "sha256": "a3d1a3db3e52979f982901ec5b4b8c45a4fa1aeffa9d3a5e58aae667b2a8cae7",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 7.295
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/6345-93302-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:39324",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/6345-93302-0001.flac",
+      "sha256": "241ce36622a7bf0192d5a71ead4ba72e3570aac2f54a79f2786a0994e7c1fa9a"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/6345-93302-0001.txt",
+        "sha256": "7f8b845f44fd84ca16c8999d79abe5088ec1774f1a108257597122451d1ab65a",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.625
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/652-130726-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:9464",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/652-130726-0001.flac",
+      "sha256": "2f349c4a0090e473fe41eddd985c686be98ff6b22d461e060019492f814e9ff6"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/652-130726-0001.txt",
+        "sha256": "16e4a89553398dc552671726c29dd17f7b6651c95c57ec01cbe331ce458b3f8b",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 10.855
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/7976-110124-0001.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:34431",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/7976-110124-0001.flac",
+      "sha256": "d7657a4692e6e39421ba028c02c5547efc234ddfa47a050fafe01f9fc63f4ae1"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/7976-110124-0001.txt",
+        "sha256": "7158c002c5c50d05e5a1889cb801aaed192476983718a038cb441f122b27d4ee",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 7.3500625
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/asr/8297-275156-0006.flac",
+    "kind": "audio",
+    "source_group": "librispeech:book:1627",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/asr/8297-275156-0006.flac",
+      "sha256": "2e52436814d58a151e21e9642f66b753730f69242a8618e833756427b4f60cba"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "official-transcript",
+        "path": "views/media/asr/8297-275156-0006.txt",
+        "sha256": "9162a7c51c43a05f37acf48394c7946e6fd8161726e3a4204544bba8ae4fbeaf",
+        "evidence_type": "asr_text",
+        "location": {
+          "unit": "second",
+          "start": 0,
+          "end": 6.68
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Karpovka_River_Embankment_06.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Alex 'Florstein' Fedorov",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Karpovka_River_Embankment_06.jpg",
+      "sha256": "ea192bb2461fbb21ab7c4cf7dcbcd3ee464001e48acb984e35ad4204a834b319"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/29415136-basename.txt",
+        "sha256": "b872cd91e75d68e8c27b3f99cfb241b19b5709dd97a7c63aa88d473420af9992",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/29415136-DateTimeOriginal.txt",
+        "sha256": "9a7afbfc4e7155ff1d2ae3d9c48131eb5a25792d40cfe224c557d4f3946e0855",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Tomascastelazo",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Large_cloud_over_Mexican_landscape.jpg",
+      "sha256": "abfc94f6ca12cc0a376df68ecce0c91a0746136c9cfb2ff3caac484803bc77d9"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/73462291-basename.txt",
+        "sha256": "912420f5108060ab6b4d6d19f921b459d21e6b88d1b0b60d2b78248904affbe4",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/73462291-DateTimeOriginal.txt",
+        "sha256": "b503b09d143b3bc0d17ccb77b3b47a0ef27a904d33b4a3c708966803a7a3cf98",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+    "kind": "image",
+    "source_group": "commons:photographer:Diego Delso",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+      "sha256": "9a1ef208746ec4a80e7d94a98b940c3e4b2a805dea9de9150033cd1ba45a2bdc"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/37196673-basename.txt",
+        "sha256": "9ccfeb7f07d2586ddc269072cfc57203ee698d81db4dd9a4766c1585308b95e3",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/37196673-DateTimeOriginal.txt",
+        "sha256": "24f15aafe62519c83edcb35e6296a27f28a756644069f151248b90213a4b1dfb",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Sumit Surai",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+      "sha256": "80f2a55b12ad6b455ebb064f78cf81137883b44013c4f74bb74e5d894a2268b0"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/56412240-basename.txt",
+        "sha256": "02547b32afeb45db7e50dec829549fcee6e22443a77c0b53bd02fc5370be2c8f",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/56412240-DateTimeOriginal.txt",
+        "sha256": "0b2579b30a5d1062b5892c9e2b8dfb3dc7ce673e8dbd3d283ea44ec231ed915c",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Saraor_river_05.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Горбунова М.С.",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Saraor_river_05.jpg",
+      "sha256": "84828d0f920008333416d5cff1d1b8829c7a1032436ba741ea5f35fbbe64d0db"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/149464642-basename.txt",
+        "sha256": "c5bb22a1d961e2b5b635fbc20c9ca83ee25c60b36c1170532748196782a051cc",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/149464642-DateTimeOriginal.txt",
+        "sha256": "153cd67c0aaa77aa5c3404cdb7718aba1ceef958f3b60c2890f03ed765233bbf",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Alexey V. Kurochkin",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+      "sha256": "1d63c0c11cfc45546e801cc0f9a4f1351550edd1d556d720cddb9326de9b62d3"
+    },
+    "asset_sha256_recomputed": false,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/101198740-basename.txt",
+        "sha256": "2ec7a655cb108cfda107f24c583376286c1dca015e971ffd98ea6d229f4e8fa8",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/101198740-DateTimeOriginal.txt",
+        "sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Martin Falbisoner",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+      "sha256": "6fed7c900176310f4f6d402c218afc647391797097c7a4f4c1949ce3f6f0feb1"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/50398887-basename.txt",
+        "sha256": "74b019bb6c7e1289eae21461ea0aea49668e1b4b1b5916c5aaaddb6c24e5544f",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/50398887-DateTimeOriginal.txt",
+        "sha256": "2e0ed0ed0c557143d48edc0b943800805952e93e173e3905764f82c906984486",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Basile Morin",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+      "sha256": "e948acc88c936e5db30b9b021dfbe17ce2ee55cc1cb9b2613f2b17e2f1333c94"
+    },
+    "asset_sha256_recomputed": false,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/141842609-basename.txt",
+        "sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/141842609-DateTimeOriginal.txt",
+        "sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Wrocław_MuzeumNarodowe.jpg",
+      "sha256": "e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0"
+    },
+    "asset_sha256_recomputed": false,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/94585934-basename.txt",
+        "sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/94585934-DateTimeOriginal.txt",
+        "sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "media/photos/Yoneshiro_River_201911.jpg",
+    "kind": "image",
+    "source_group": "commons:photographer:Wc018",
+    "parents": [],
+    "asset": {
+      "path": "assets/media/photos/Yoneshiro_River_201911.jpg",
+      "sha256": "2e32c4cbe0e41e45c025f1f966cc0f0de687556a445e56b3ca1b0c12ec1f34cb"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "original-basename",
+        "path": "views/media/photos/97646961-basename.txt",
+        "sha256": "3ecd39c80378caa1de1b042b996f4e43ef9fe66d3b8c0854cea12b42d2663e74",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "exif-DateTimeOriginal",
+        "path": "views/media/photos/97646961-DateTimeOriginal.txt",
+        "sha256": "2918c2c053c4789ff3ac62dcbe971b5f4c0f255f25ce55ccae992589467c4ce1",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "info.taken",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/US174465-scan.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:US174465",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/US174465-scan.pdf",
+      "sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p003",
+        "path": "views/root/pdf/US174465-p003.txt",
+        "sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/US223898-scan.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:US223898",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/US223898-scan.pdf",
+      "sha256": "540bd8ee9adfaa493be05f25e22938c10178d9f5175bd2366a71500ad89a28c9"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p002",
+        "path": "views/root/pdf/US223898-p002.txt",
+        "sha256": "aad807353a9d7a3597cbf7fcc31df0259d8514f73921ba06fd0464a881de6a19",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/US223898-p003.txt",
+        "sha256": "83904694d6d11d927547fa68b6266d32884535a361410b349baa7366d82aa19f",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/US6469-scan.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:US6469",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/US6469-scan.pdf",
+      "sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p002",
+        "path": "views/root/pdf/US6469-p002.txt",
+        "sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/US821393-scan.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:US821393",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/US821393-scan.pdf",
+      "sha256": "e464ce113ceef7f11c18d34f2c5eb8e26acf5176dace9f32b09a393b1e5d6d9a"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p004",
+        "path": "views/root/pdf/US821393-p004.txt",
+        "sha256": "3a4e08d35976b701d452563fc49d2b7987c9f7a3749bcf6b9486c809915e841d",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p006",
+        "path": "views/root/pdf/US821393-p006.txt",
+        "sha256": "c114fc35092179dea02b670760dad7ab6063899db8d301762576e5f673304ad3",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 6,
+          "end": 6
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/nist-800-107r1-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:nist-800-107r1",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/nist-800-107r1-excerpt.pdf",
+      "sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-107r1-p001.txt",
+        "sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/nist-800-107r1-p002.txt",
+        "sha256": "4df0d69ac7824f860617352994b09bbf5371595b3a19e23c9ed4ff14945e4b4d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/nist-800-107r1-p003.txt",
+        "sha256": "f150a935c1d02023d691e1ae2852a67a6d2c81891df89a266736fdbee9400dc0",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/nist-800-107r1-p004.txt",
+        "sha256": "8ea71ce9ef36c6a4da12871392f4efafbdaee89030704659404285eef85fb8ab",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/nist-800-107r1-p005.txt",
+        "sha256": "dc608f481090338e9fce288bb51d4bcb2808674d9c577682d41e3cefacd9630e",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/nist-800-145-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:nist-800-145",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/nist-800-145-excerpt.pdf",
+      "sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-145-p001.txt",
+        "sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/nist-800-145-p002.txt",
+        "sha256": "79047ce13af4421f2017c00978f6e363dc01ee92b3923d320877ba7bce1902f6",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:nist-800-22r1a",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/nist-800-22r1a-excerpt.pdf",
+      "sha256": "a1c51685d4622343839f925b902876b8a19597d562d2e1ad42d75532bf6a1e78"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-22r1a-p001.txt",
+        "sha256": "15b8cb1849de98a3449c1c190b6b090bcd5b2592acae227c0475f7f4e3979717",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/nist-800-22r1a-p002.txt",
+        "sha256": "2e9d01539c35ced37e00becf029d383665c02dd2fc06f867c1dfac73d0d70cc1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/nist-800-22r1a-p003.txt",
+        "sha256": "b1e5023c68bd45662ad2adc28017408b991ceebc4aa998e247c5870dc3bc2486",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/nist-800-22r1a-p004.txt",
+        "sha256": "b79728a831a8414ee2f8531cd0da0685bdac74b4b33ae7365cdd247b900c63dd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/nist-800-22r1a-p005.txt",
+        "sha256": "482d2cb43258c50792f43e68d9d6b964dd71d02e93a30b560bba7884c044e761",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/nist-800-38a-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:nist-800-38a",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/nist-800-38a-excerpt.pdf",
+      "sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-38a-p001.txt",
+        "sha256": "d524535bc24c44707347fa75f8f787d1342bc5541c86a1be2cd22d7494cc275f",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/nist-800-38a-p002.txt",
+        "sha256": "20a9be07fb872618587c0f3c983c729cda021a8aaf4a994d02f7b3b215cc2689",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/nist-800-38a-p003.txt",
+        "sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/nist-800-38a-p004.txt",
+        "sha256": "4a7bc3fcf1ddfd34313d10f36798b7bdf0460eb51823c78dd75f5d7a3a82aa36",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/nist-800-38a-p005.txt",
+        "sha256": "6d632796ec10d687d076ac89533e49d89087101010fbe7939dbaa5221bba4360",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/nist-800-92-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:nist-800-92",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/nist-800-92-excerpt.pdf",
+      "sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-92-p001.txt",
+        "sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/nist-800-92-p002.txt",
+        "sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/nist-800-92-p003.txt",
+        "sha256": "3f7f0bdfb7fb2bbbb7dd4d1a5a34d3ed386f23580634870a00f6d8894cc7cbaf",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/nist-800-92-p004.txt",
+        "sha256": "eac74d6b5555ae5a38f8103ed780fa0de50b3209cb393b33807d512313ba32ac",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/nist-800-92-p005.txt",
+        "sha256": "deae5fa69ad24ddc15adefe5018aeede26f3a35ac567afc3d25a4a0cd1fbf046",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/pillow-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:pillow",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/pillow-excerpt.pdf",
+      "sha256": "f86baf6c0a9f408249580c5e15c3e1ca836ec30f2979b492ae1c7e55a262fefb"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/pillow-p001.txt",
+        "sha256": "8a61d8f3bbd7ace864ade0dba14b6bfc2f707ff4226a450e2f21fb204614eb99",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/pillow-p002.txt",
+        "sha256": "5e12796faa5721df7e2c7033ab67fd2faa4d75464fa9c35260f6c8e2169ed348",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/pillow-p003.txt",
+        "sha256": "2d73a30da34e7bbd049a1c83111804c5f53c7797d470431efd5338c1c7424afd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/pillow-p004.txt",
+        "sha256": "498b9301f2d0966ff7e31155fdf416f623ac7b5a2ad32db2c6a09273c082dc2c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/pillow-p005.txt",
+        "sha256": "aaac53fcd48dd2780fea91d4decbac6c368c15b53bfc72e29387968e9e69ff82",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/pytest-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "upstream:pytest",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/pytest-excerpt.pdf",
+      "sha256": "99e0ae5c50b3638346d89d129efcbf13e99be4ba17d49fd2605ff6ca5ab86dc4"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/pytest-p001.txt",
+        "sha256": "60aa331fc05470e2e0821772be7f5949d3c703662da35049da35b718330543e3",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/pytest-p002.txt",
+        "sha256": "d33b6e75cb887c3755dd73a9fc6a8a7d2a071ce4436f1159dd5794525fcaa7f4",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/pytest-p003.txt",
+        "sha256": "4c57825a778d95db8e7f0833b21dcd7a2be2fa2141364a2dd133c03c78c4f1d7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/pytest-p004.txt",
+        "sha256": "fa4626b5634680ed282bab60563e0584357abc70b0295e7dfd52fa8d4f177545",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/pytest-p005.txt",
+        "sha256": "972fc79192273ab65655671d13073be4f0e739028b4c6e7a3d7268bd0f0df870",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/pdf/sphinx-excerpt.pdf",
+    "kind": "pdf",
+    "source_group": "pdf:sphinx",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/pdf/sphinx-excerpt.pdf",
+      "sha256": "e1d98d0f2848f4bd3763b15ae5bbdaa805db256f81ac1fdce88a97997a67b8bb"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "p001",
+        "path": "views/root/pdf/sphinx-p001.txt",
+        "sha256": "ce44010744c7857cecfec006d3c6de071137fd72480b45e47c064d8a1f2162e2",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p002",
+        "path": "views/root/pdf/sphinx-p002.txt",
+        "sha256": "aa5aaa4975af26a341089575c1b824e2776eebacb8ca58db08dbd0490ab5c764",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p003",
+        "path": "views/root/pdf/sphinx-p003.txt",
+        "sha256": "b469eab576f3aeb3a4e74da22989fee512c169ae95292c2cd62db8800e4c325f",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p004",
+        "path": "views/root/pdf/sphinx-p004.txt",
+        "sha256": "0c8b9a637742e369e38ce21157c161e06e9e5f28480c840250f326da53eac960",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "p005",
+        "path": "views/root/pdf/sphinx-p005.txt",
+        "sha256": "9812ec380ad8877856ba9c83a512054160efd00a6bb51104fe77f476ca18c50f",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/httpx-connect-timeout.png",
+    "kind": "screenshot",
+    "source_group": "upstream:httpx",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/httpx-connect-timeout.png",
+      "sha256": "c7bbed6aaa17ca1aba98550a545a8372fb5b1a16400dc1412601ee5c4426d15e"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-connect-timeout.txt",
+        "sha256": "abf998ef591ba6354aca7b098ab89afaf24b0061ad8103fa9a488d1b01a6dcf8",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/httpx-http2.png",
+    "kind": "screenshot",
+    "source_group": "upstream:httpx",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/httpx-http2.png",
+      "sha256": "bb7b594a13f845a65c7b318434a4a378527639e297bb9b59ecc58c5e475d2328"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-http2.txt",
+        "sha256": "f7bc8dcb36d9cb1e136ac55b3c542d64d52ba54c1390ce8714674b321cf879ec",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/httpx-limits.png",
+    "kind": "screenshot",
+    "source_group": "upstream:httpx",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/httpx-limits.png",
+      "sha256": "2a5d656d5b5235998edfa778ca0f59b1b5665d71eea4a693cdec144f4836d0d2"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-limits.txt",
+        "sha256": "3a7566274663d22ce3e953087324a6c2cdbf72670af89e5698b333e52ce7d19f",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/httpx-timeouts.png",
+    "kind": "screenshot",
+    "source_group": "upstream:httpx",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/httpx-timeouts.png",
+      "sha256": "9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-timeouts.txt",
+        "sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pydantic-fields.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pydantic",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pydantic-fields.png",
+      "sha256": "959fcbc6f3065fb6a72aa92f25de930e8de4cc1f079f5f5e4623db27eaf03ddd"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-fields.txt",
+        "sha256": "e624c996d8a769b4497e72e76672f90ace2f4c5d1c842ccee3ca6931b0adb86d",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pydantic-python-dump.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pydantic",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pydantic-python-dump.png",
+      "sha256": "3698d5117d840ae93221a902710119f1c5eb509bb63dd1e0f70cf7143971984f"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-python-dump.txt",
+        "sha256": "e3e8a002d683d40305334ba01aebb724f78de17c42640977bd35e0d0dfaa2781",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pydantic-strict.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pydantic",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pydantic-strict.png",
+      "sha256": "6f89841ed1bd2eff0f1ba992822fb14409a0216e4a31be92d985bdee14ad5bc4"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-strict.txt",
+        "sha256": "e6710e10f5175d0f30117d701e7b07c0f366dbd266a91788e627f7c1413432bf",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pydantic-unions.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pydantic",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pydantic-unions.png",
+      "sha256": "4fac024192bae598bd4ccd5bdcf0b1a086a55713ffbb970b217b08fd8f38b131"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-unions.txt",
+        "sha256": "001e8485f727ebe2f33d67b33fcc43784819775fc202df7507a751678a27ba2f",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pytest-capture.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pytest",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pytest-capture.png",
+      "sha256": "a3cf23973a46aaa9d46209adf8719c3c9472ad5866f5d0b37fcda533924d6fc1"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-capture.txt",
+        "sha256": "044a54b06c1deb02dccfdbd5f61ec18d56f59d787ddab7441e33ed976bc572a4",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pytest-monkeypatch.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pytest",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pytest-monkeypatch.png",
+      "sha256": "550019956f595ec6becd0900306691ce955fc2951fb1697253dc164798e475df"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-monkeypatch.txt",
+        "sha256": "4f62407831abfe3638703192f7b17dee0af837a81c303aea02536dd6c1228bf2",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/pytest-tmp.png",
+    "kind": "screenshot",
+    "source_group": "upstream:pytest",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/pytest-tmp.png",
+      "sha256": "a087468d6f2177d1a48923d468a7a91bd46b58cea8318b2f1dd700ca610adb0b"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-tmp.txt",
+        "sha256": "9bf8ba455c05093fc4588baf82251ba79b18b68828905064673cd5499620ecab",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/rich-markup.png",
+    "kind": "screenshot",
+    "source_group": "upstream:rich",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/rich-markup.png",
+      "sha256": "14305e8b7321d4e5e5d2668281fbf92743d8ea894bfcb1b59bdbdba0aaec8cee"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-markup.txt",
+        "sha256": "cda05ca1a4379994324a4f94f02c75cbd01fc867b88c747c09748e8539f80f44",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/rich-progress.png",
+    "kind": "screenshot",
+    "source_group": "upstream:rich",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/rich-progress.png",
+      "sha256": "59d3f90a130f374641455a6678aa7ff342114cb168b5108e85cee7e437714e9a"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-progress.txt",
+        "sha256": "2dca4067aaff769f09e638804dcbb706d125bf1fd4fb8a897cd096397163415b",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/rich-styles.png",
+    "kind": "screenshot",
+    "source_group": "upstream:rich",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/rich-styles.png",
+      "sha256": "b7a24412f7d1584124e12e5c6a4fdf9b0928ee18e6d50286a46643ae386e8c5d"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-styles.txt",
+        "sha256": "22bbaf51d9ecac433a71117e72ecd65ffbde028a5f2a032750749087de6f5865",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/rich-tables.png",
+    "kind": "screenshot",
+    "source_group": "upstream:rich",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/rich-tables.png",
+      "sha256": "568fa7d3e41184707ec398ea8c084616c059927fb0ebd21c29ced91662d3980a"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-tables.txt",
+        "sha256": "b5d5a440c39561712ac0337334fa390028e7af9985bb8497008d9dd73f12f5c2",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/typer-context.png",
+    "kind": "screenshot",
+    "source_group": "upstream:typer",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/typer-context.png",
+      "sha256": "3dc701b0e837f986fd21e44fa35be50306eae6839ae273816baa544a9c12b3d7"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/typer-context.txt",
+        "sha256": "0d13ed7c90809184781a606464db27aefb84ce9d31b19b582d846e38eba2a8c9",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/typer-help-panels.png",
+    "kind": "screenshot",
+    "source_group": "upstream:typer",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/typer-help-panels.png",
+      "sha256": "e7a94df03bc1cca62245652840c8abce40c1f8c2ef4ece0da238628bf8504c21"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/typer-help-panels.txt",
+        "sha256": "55dce3ed1f2ca76ade5aa61957e6e5e7f1e699ffce0a70d4653f922a81439452",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/uv-environments.png",
+    "kind": "screenshot",
+    "source_group": "upstream:uv",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/uv-environments.png",
+      "sha256": "4ea93a67cd13dc389a24458354cbdf77c0f83f63bf3eba49eac6a2f5c3757fea"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-environments.txt",
+        "sha256": "dd756d9cd2603f4426b428e7ac50e8f6fc373a43877ad78e4ecdf50149f95304",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/uv-projects.png",
+    "kind": "screenshot",
+    "source_group": "upstream:uv",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/uv-projects.png",
+      "sha256": "7a3cea1f2e74379887f369d67f26a49084e89862e10a9769ae0ff9f0b8021f34"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-projects.txt",
+        "sha256": "17ad5269ade51f43d8ed6c9f76d2e7d9af5fa6ac46218125b7ac546bd01867c3",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "root/screenshots/uv-tools.png",
+    "kind": "screenshot",
+    "source_group": "upstream:uv",
+    "parents": [],
+    "asset": {
+      "path": "assets/root/screenshots/uv-tools.png",
+      "sha256": "050d825a2d0bacc5d91468766ca12b92d558d460c8ac64cd136783a5d5f4f12d"
+    },
+    "asset_sha256_recomputed": null,
+    "views": [
+      {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-tools.txt",
+        "sha256": "4bacc835e806514ec80c53f602dc3fb85ff4324ff8f85b04ea9fc051ee9ada22",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 11
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/docs/arguments.rst",
+    "kind": "doc",
+    "source_group": "source:text/click/docs/arguments.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/docs/arguments.rst",
+      "sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/docs/arguments.rst.txt",
+        "sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 263
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/docs/commands.rst",
+    "kind": "doc",
+    "source_group": "source:text/click/docs/commands.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/docs/commands.rst",
+      "sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/docs/commands.rst.txt",
+        "sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 571
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/docs/options.rst",
+    "kind": "doc",
+    "source_group": "source:text/click/docs/options.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/docs/options.rst",
+      "sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/docs/options.rst.txt",
+        "sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 935
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/src/click/parser.py",
+    "kind": "code",
+    "source_group": "source:text/click/src/click/parser.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/src/click/parser.py",
+      "sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/src/click/parser.py.txt",
+        "sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 529
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/src/click/termui.py",
+    "kind": "code",
+    "source_group": "source:text/click/src/click/termui.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/src/click/termui.py",
+      "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/src/click/termui.py.txt",
+        "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 784
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/click/src/click/types.py",
+    "kind": "code",
+    "source_group": "source:text/click/src/click/types.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/click/src/click/types.py",
+      "sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/click/src/click/types.py.txt",
+        "sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1089
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/base64.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/base64.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/base64.py",
+      "sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/base64.py.txt",
+        "sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 586
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/base64.py.basename.txt",
+        "sha256": "721b4d4ec3040040878ec0a306a13e8bb7f1ffe0c87101fdb08e21afa013d8f9",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/codecs.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/codecs.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/codecs.py",
+      "sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/codecs.py.txt",
+        "sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1129
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/codecs.py.basename.txt",
+        "sha256": "5d430081548ac75c3e9b59dc7d34f70408dcd7a60d14c191cbe5537a17bc21bc",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/ctypes/__init__.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/ctypes/__init__.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/ctypes/__init__.py",
+      "sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ctypes/__init__.py.txt",
+        "sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 579
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/ctypes/__init__.py.basename.txt",
+        "sha256": "8e2c1f727276d30ced72fa67cb848772a9802162bec39b42a8df5359fd063a4c",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/email/base64mime.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/email/base64mime.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/email/base64mime.py",
+      "sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/email/base64mime.py.txt",
+        "sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 115
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/email/base64mime.py.basename.txt",
+        "sha256": "ab15a63a8a1e11d2f9668a328bc0bdb2eadc579d87ba1e8e1950ffc583a566ef",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/hashlib.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/hashlib.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/hashlib.py",
+      "sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/hashlib.py.txt",
+        "sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 253
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/hashlib.py.basename.txt",
+        "sha256": "7d2bfccfa3f7a7cc1c0f7f734079e543ea45d21fb7665deb50a428323183a65d",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/ipaddress.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/ipaddress.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/ipaddress.py",
+      "sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ipaddress.py.txt",
+        "sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2380
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/ipaddress.py.basename.txt",
+        "sha256": "4387a1ca314ac70236a172863df7f256450ce220dd70a987daed2e2cf68ad6e2",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/random.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/random.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/random.py",
+      "sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/random.py.txt",
+        "sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 996
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/random.py.basename.txt",
+        "sha256": "646c8ebdfb1a7730f7a73093eb92b071ed90bcc88ef97583c7b52795a1ab929e",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/ssl.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/ssl.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/ssl.py",
+      "sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ssl.py.txt",
+        "sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1476
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/ssl.py.basename.txt",
+        "sha256": "555870b8a0d8d235f2e57dbb168819d86521fdadfd7878f068746a1ad086d6b5",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/uuid.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/uuid.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/uuid.py",
+      "sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/uuid.py.txt",
+        "sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 793
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/uuid.py.basename.txt",
+        "sha256": "c0fcd2be5e3268f28825a52001d35a54290ea22f0dd844a71bc32d78a4cd3a23",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/xmlrpc/client.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/xmlrpc/client.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/xmlrpc/client.py",
+      "sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/xmlrpc/client.py.txt",
+        "sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1529
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/xmlrpc/client.py.basename.txt",
+        "sha256": "1ebfaf6cb3592166b73835fa82333cb7109e7c624865c0039a7b22ff34aa27fa",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Lib/zipfile/__init__.py",
+    "kind": "code",
+    "source_group": "source:text/cpython/Lib/zipfile/__init__.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Lib/zipfile/__init__.py",
+      "sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Lib/zipfile/__init__.py.txt",
+        "sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2314
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Lib/zipfile/__init__.py.basename.txt",
+        "sha256": "8e2c1f727276d30ced72fa67cb848772a9802162bec39b42a8df5359fd063a4c",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/cpython/Modules/zlibmodule.c",
+    "kind": "code",
+    "source_group": "source:text/cpython/Modules/zlibmodule.c",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/cpython/Modules/zlibmodule.c",
+      "sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/cpython/Modules/zlibmodule.c.txt",
+        "sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2140
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      },
+      {
+        "id": "basename",
+        "path": "views/text/cpython/Modules/zlibmodule.c.basename.txt",
+        "sha256": "cfd93d1e4738511d3a86906abf5fe513e2c01d1823ef4ef48726120ed653ceac",
+        "evidence_type": "name_metadata",
+        "location": null,
+        "storage_field": "basename",
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/docs/user/advanced.rst",
+    "kind": "doc",
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/docs/user/advanced.rst",
+      "sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/docs/user/advanced.rst.txt",
+        "sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1141
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/docs/user/authentication.rst",
+    "kind": "doc",
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/docs/user/authentication.rst",
+      "sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/docs/user/authentication.rst.txt",
+        "sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 145
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/docs/user/quickstart.rst",
+    "kind": "doc",
+    "source_group": "source:text/requests/docs/user/quickstart.rst",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/docs/user/quickstart.rst",
+      "sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/docs/user/quickstart.rst.txt",
+        "sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 570
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/src/requests/models.py",
+    "kind": "code",
+    "source_group": "source:text/requests/src/requests/models.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/src/requests/models.py",
+      "sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/src/requests/models.py.txt",
+        "sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1037
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/src/requests/sessions.py",
+    "kind": "code",
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/src/requests/sessions.py",
+      "sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/src/requests/sessions.py.txt",
+        "sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 831
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/requests/src/requests/utils.py",
+    "kind": "code",
+    "source_group": "source:text/requests/src/requests/utils.py",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/requests/src/requests/utils.py",
+      "sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/requests/src/requests/utils.py.txt",
+        "sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1096
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vite-ja/guide/env-and-mode.md",
+    "kind": "doc",
+    "source_group": "source:text/vite-ja/guide/env-and-mode.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vite-ja/guide/env-and-mode.md",
+      "sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vite-ja/guide/env-and-mode.md.txt",
+        "sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 235
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vite-ko/guide/assets.md",
+    "kind": "doc",
+    "source_group": "source:text/vite-ko/guide/assets.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vite-ko/guide/assets.md",
+      "sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vite-ko/guide/assets.md.txt",
+        "sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 177
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/components/props.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/components/props.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/components/props.md",
+      "sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/components/props.md.txt",
+        "sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 786
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/components/v-model.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/components/v-model.md",
+      "sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+        "sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 610
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/class-and-style.md",
+      "sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+        "sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 352
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/computed.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/computed.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/computed.md",
+      "sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/computed.md.txt",
+        "sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 383
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/conditional.md",
+      "sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+        "sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 109
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/event-handling.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/event-handling.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/event-handling.md",
+      "sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/event-handling.md.txt",
+        "sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 353
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/forms.md",
+      "sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+        "sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 468
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/list.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/list.md",
+      "sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/list.md.txt",
+        "sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 432
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+      "sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+        "sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 598
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/watchers.md",
+    "kind": "doc",
+    "source_group": "source:text/vue-zh/src/guide/essentials/watchers.md",
+    "parents": [],
+    "asset": {
+      "path": "assets/text/vue-zh/src/guide/essentials/watchers.md",
+      "sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd"
+    },
+    "asset_sha256_recomputed": true,
+    "views": [
+      {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/watchers.md.txt",
+        "sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 672
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1",
+        "sha256_verified": true
+      }
+    ]
+  }
+]

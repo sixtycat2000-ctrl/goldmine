@@ -1,0 +1,1 @@
+max_connections, maximum number of allowable connections, or None for no limits. (Default 100)

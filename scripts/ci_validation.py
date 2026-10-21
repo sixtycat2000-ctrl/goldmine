@@ -8,6 +8,7 @@ import sys
 
 from acceptance_lib.evidence import InvalidEvidence, artifact, write_json
 from acceptance_lib.ci_evidence import source_files
+from acceptance_lib.hosted_contract import hosted_context
 from acceptance_lib.runner import exit_code, run, validate
 
 PROFILES = {"base": "offline", "native": "native", "mcp": "optional-mcp",
@@ -25,6 +26,7 @@ def main(argv=None):
         return 2
     root = Path(__file__).resolve().parents[1]
     try:
+        hosted = hosted_context(args.profile, root) if args.profile != "live" else None
         before = source_files(root)
         report = run(root, args.out.resolve(), PROFILES[args.profile], inputs_path=args.inputs)
         validate(root, args.out.resolve() / "manifest.json")
@@ -32,7 +34,8 @@ def main(argv=None):
         if report_path.is_file():
             write_json(args.out.resolve() / "ci-context.json", {"schema": 1, "profile": args.profile,
                 "before": before, "after": source_files(root),
-                "report": artifact(args.out.resolve(), report_path)})
+                "report": artifact(args.out.resolve(), report_path),
+                **({"hosted": hosted} if hosted is not None else {})})
         elif report["status"] == "PASS":
             raise InvalidEvidence("successful CI result lacks its raw report")
         print(f"CI {args.profile}: {report['status']}")

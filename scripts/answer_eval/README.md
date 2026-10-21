@@ -83,8 +83,9 @@ The answerer template contains `<question text verbatim>` and
 `<pack file contents verbatim>` once each. `protocol.answer_request` renders it
 without passing expected facts to the answerer. Save the exact request in the
 corresponding requests directory. The grader template contains `<QUESTION>`,
-`<FACTS_JSON>` and `<ANSWER>` once each; `protocol.grader_request` renders the
-question, frozen fact/evidence definitions, and that answer. Save the exact judge
+`<FACTS_JSON>`, `<PACK>` and `<ANSWER>` once each;
+`protocol.grader_request(template, question, answer, pack)` renders the question,
+frozen fact/evidence definitions, actual supplied material pack, and that answer. Save the exact judge
 request. Arbitrary substitutions or old-pack requests fail validation.
 
 Answer sidecars bind schema, run_id, question_id, answer_round, unique execution_id,
@@ -117,3 +118,20 @@ the original run requires explicit --diagnostic and cannot be release evidence.
 The synthetic records in `tests/answer_eval_fixtures.py` are unit test inputs,
 including tests of the real-record reader branch. They provide no genuine model
 grading evidence and must never be installed as `evals/answer_v3` results.
+
+Both renderers receive the same decoded pack text (UTF-8 read_text normalizes
+line endings); the raw pack file is separately hash-bound. Reference facts
+establish correctness; actual material establishes grounding. Prompt rendering
+and validation bind that context, while genuine grading still requires the
+registered independent model jobs. Payload checks alone establish no quality.
+
+This pre-first-real-run v3 contract amendment requires all four grader slots.
+Earlier three-slot records are incomparable with this reader. Preserve them
+as historical records; new judge input requires new jobs and the proper prior
+registration. The score scale, practical-drop/trap gates, groups and rounds
+are unchanged. Supplied text is inserted literally in one pass, including
+placeholder-like strings inside material, questions, facts or answers.
+
+Hashes establish internal record consistency, not independent proof that a model
+executed a job. Retain the actual registered execution receipts; fabricated or
+rebound job metadata is not valid execution evidence.

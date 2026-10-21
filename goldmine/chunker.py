@@ -21,7 +21,7 @@ from dataclasses import dataclass
 from typing import Callable
 
 __all__ = [
-    "Chunk", "CHUNKER_VERSION", "chunk_text", "chunk_code", "est_tokens",
+    "Chunk", "CHUNKER_VERSION", "ChunkTokenBudgetError", "chunk_text", "chunk_code", "est_tokens",
     "effective_chunk_size", "CODE_CHARS_PER_TOKEN",
     "DEFAULT_TOKEN_BUDGET", "DEFAULT_TOKEN_OVERLAP",
     "effective_token_budget", "chunk_text_tokens", "chunk_code_tokens",
@@ -57,7 +57,7 @@ _KIND_CHARS_PER_TOKEN = {"code": CODE_CHARS_PER_TOKEN}
 #: chunk semantics actually change; a bump marks existing rows stale for the
 #: next plain ingest run, never a refusal (A2/B11: refusal is reserved for an
 #: incompatible embed identity).
-CHUNKER_VERSION = "chunk.v3-page"
+CHUNKER_VERSION = "chunk.v6-char-tail"
 
 #: Callable returning exact token PIECES (as utf-8 bytes, each piece one token,
 #: concatenated ~= the utf-8 text) or None when unavailable -> estimator path.
@@ -97,59 +97,44 @@ def _clean(text: str) -> str:
 
 # --------------------------------------------------------------- token pieces
 
-def piece_char_offsets(text: str, pieces: list[bytes]) -> list[int] | None:
-    """Char offsets into `text` after each consumed piece (offsets[0] == 0);
-    None when the pieces do not align exactly with the text.
+def _piece_boundaries(text: str, pieces: list[bytes]):
+    """Linear exact alignment plus complete-codepoint boundary flags.
 
-    `/tokenize` pieces are exact substrings (verified live against the vendored
-    b11461 server: SPM whitespace is unescaped, so pieces concatenate back to
-    the text). The one tolerated divergence is a tokenizer dummy-prefix space
-    glued to the first piece ("hello" -> [" hello", " world"] in classic SPM).
-    Any other mismatch -> None -> the caller falls back to the estimator.
-
-    The char offset is tracked INCREMENTALLY (running count + a streaming
-    utf-8 decoder): the naive `len(data[:ptr].decode())` per piece is
-    O(bytes x pieces) — 5 MB of code spent 6.5 CPU-minutes there (06-perf F4).
-    Byte-for-byte identical output, O(n) total — including the surrogateescape
-    corner where a byte-fallback piece boundary lands INSIDE a multi-byte
-    sequence: the prefix decode counted one replacement char per dangling
-    byte, so the boundary value adds the decoder's pending bytes.
+    Partial UTF8 prefixes contribute no character. Their raw token positions
+    remain in the offsets array but are not valid starts or cuts.
     """
     data = text.encode("utf-8")
-    n = len(data)
-    ptr = 0
-    chars = 0
-    dec = codecs.getincrementaldecoder("utf-8")("surrogateescape")
-
-    def boundary() -> int:
-        # chars fully decoded so far, + one per dangling byte of an incomplete
-        # trailing sequence — exactly `len(data[:ptr].decode("surrogateescape"))`
-        pending, _ = dec.getstate()
-        return chars + len(pending)
-
-    offsets = [0]
+    ptr = chars = 0
+    decoder = codecs.getincrementaldecoder("utf-8")("strict")
+    offsets, safe = [0], [True]
     for i, piece in enumerate(pieces):
-        if not piece:
-            offsets.append(boundary())  # zero-width special token
-            continue
-        if (
-            ptr == 0
-            and i == 0
-            and piece[:1] == b" "
-            and data[:1] != b" "
-            and len(piece) > 1
-            and data.startswith(piece[1:])
-        ):
-            piece = piece[1:]  # SPM dummy prefix on the first piece
+        if (ptr == 0 and i == 0 and piece[:1] == b" "
+                and data[:1] != b" " and len(piece) > 1
+                and data.startswith(piece[1:])):
+            piece = piece[1:]  # The documented SPM dummy prefix only.
         end = ptr + len(piece)
-        if end > n or data[ptr:end] != piece:
+        if end > len(data) or data[ptr:end] != piece:
             return None
         ptr = end
-        chars += len(dec.decode(piece))
-        offsets.append(boundary())
-    if ptr != n:
+        chars += len(decoder.decode(piece))
+        pending, _ = decoder.getstate()
+        offsets.append(chars)
+        safe.append(not pending)
+    if ptr != len(data) or not safe[-1]:
         return None
-    return offsets
+    return offsets, safe
+
+
+def piece_char_offsets(text: str, pieces: list[bytes]) -> list[int] | None:
+    """Complete source characters after each exact token piece, or None.
+
+    Offsets are monotonic. A byte-fallback token ending inside a UTF8 point
+    keeps the preceding character offset; that position is not a legal cut.
+    _TokenIndex retains the independent boundary flags, so repeated offsets
+    cannot make the remaining byte of a point look like its complete cost.
+    """
+    result = _piece_boundaries(text, pieces)
+    return result[0] if result is not None else None
 
 
 def ptr_char(data: bytes, ptr: int) -> int:
@@ -159,38 +144,63 @@ def ptr_char(data: bytes, ptr: int) -> int:
     return len(data[:ptr].decode("utf-8", "surrogateescape"))
 
 
-class _TokenIndex:
-    """Piece boundaries of one cleaned text: char offset -> token count.
+class ChunkTokenBudgetError(ValueError):
+    """A visited character-aligned raw-token group cannot fit the budget."""
 
-    `tok_at(char_off)` = number of tokens fully before that char position;
-    `char_at(tok)` = first char offset whose token count >= tok (the boundary
-    AFTER token `tok`). Hard cuts and budget walks only ever use these, so a
-    cut never lands inside a token (never mid-ideograph for CJK).
-    """
+
+class _TokenIndex:
+    """Raw token indices with an independent complete-codepoint boundary map."""
 
     def __init__(self, clean: str, pieces: list[bytes]):
         self.clean = clean
-        self.offsets = piece_char_offsets(clean, pieces)
+        result = _piece_boundaries(clean, pieces)
+        self.offsets, self.safe = result if result is not None else (None, None)
         self.total = len(pieces)
+        self.boundaries = [i for i, valid in enumerate(self.safe or ()) if valid]
+        self.boundary_chars = [self.offsets[i] for i in self.boundaries] if result is not None else []
 
     @property
     def ok(self) -> bool:
         return self.offsets is not None
 
     def tok_at(self, char_off: int) -> int:
-        """Token count consumed at (or just before) a char position; a position
-        mid-token counts that token as consumed (conservative for budgets)."""
+        """Last safe token boundary at/before a character position."""
         assert self.offsets is not None
-        return bisect.bisect_right(self.offsets, char_off) - 1
+        pos = max(0, bisect.bisect_right(self.boundary_chars, char_off) - 1)
+        return self.boundaries[pos]
 
     def char_at(self, tok: int) -> int:
-        """Char offset of the boundary after `tok` tokens (clamped)."""
         assert self.offsets is not None
-        if tok <= 0:
+        return self.offsets[max(0, min(tok, self.total))]
+
+    def covering_tokens(self, a: int, b: int) -> int:
+        """Conservatively include pieces crossing either whole-line seam."""
+        if b <= a:
             return 0
-        if tok >= self.total:
-            return len(self.clean)
-        return self.offsets[tok]
+        first = self.tok_at(a)
+        last = self.boundaries[bisect.bisect_left(self.boundary_chars, b)]
+        return last - first
+
+    def cut(self, start: int, budget: int, end: int | None = None) -> int:
+        """Farthest safe cut within budget; never consume a partial point."""
+        if budget < 1:
+            raise ChunkTokenBudgetError("token budget must fit a complete character-aligned token group")
+        assert self.safe[start]
+        stop = min(self.total if end is None else end, start + budget)
+        pos = bisect.bisect_right(self.boundaries, stop) - 1
+        cut = self.boundaries[pos]
+        if self.char_at(cut) <= self.char_at(start):
+            if self.char_at(start) >= len(self.clean):
+                return self.total  # Trailing zero-width pieces contain no text.
+            raise ChunkTokenBudgetError("token budget cannot fit the next complete character-aligned token group")
+        return cut
+
+    def overlap_start(self, old: int, cut: int, overlap: int) -> int:
+        target = max(cut - max(0, overlap), old + 1)
+        pos = bisect.bisect_left(self.boundaries, target)
+        # Empty pieces can be safe without consuming any source character.
+        pos = max(pos, bisect.bisect_right(self.boundary_chars, self.char_at(old)))
+        return min(cut, self.boundaries[pos])
 
 
 def _is_paragraph_cut(clean: str, off: int) -> bool:
@@ -266,7 +276,7 @@ def _walk_tokens(
     n = len(clean)
     start_tok = 0
     while start_tok < index.total and len(chunks) < max_chunks:
-        max_tok = min(start_tok + budget, index.total)
+        max_tok = index.cut(start_tok, budget)
         floor_tok = start_tok + max(1, budget // 2)
         # candidate boundaries: token counts in (start_tok, max_tok], deep
         # enough into the window; tiers paragraph > sentence > whitespace
@@ -275,6 +285,8 @@ def _walk_tokens(
         for tier in ("paragraph", "sentence", "space"):
             best: int | None = None
             for tok in range(max_tok, floor_tok - 1, -1):
+                if not index.safe[tok]:
+                    continue
                 off = index.char_at(tok)
                 if off <= index.char_at(start_tok):
                     continue
@@ -307,12 +319,13 @@ def _walk_tokens(
             nxt = cut_char
             while nxt < n and clean[nxt] == "\n":
                 nxt += 1
-            start_tok = index.tok_at(nxt) if nxt < n else index.total
-            if start_tok <= cut_tok:  # paranoia: always advance
-                start_tok = cut_tok + 1 if cut_tok < index.total else index.total
+            # cut_tok has already advanced beyond the OLD start. Equality
+            # here is the normal no-overlap boundary, not a stalled walk.
+            # Skip only newline/zero-width pieces proven consumed at nxt;
+            # if nxt lies inside a piece, retaining that piece is safe.
+            start_tok = max(cut_tok, index.tok_at(nxt)) if nxt < n else index.total
         else:
-            back = max(cut_tok - max(0, overlap), start_tok + 1)
-            start_tok = back
+            start_tok = index.overlap_start(start_tok, cut_tok, overlap)
     return chunks
 
 
@@ -345,49 +358,46 @@ def _walk_code_lines(
 ) -> list[Chunk]:
     chunks: list[Chunk] = []
     lines = text.split("\n")
-    # char offset of each line start in `text`
-    starts: list[int] = []
-    pos = 0
+    starts, pos = [], 0
     for line in lines:
         starts.append(pos)
         pos += len(line) + 1
 
     def emit(start_line: int, end_line: int, a: int, b: int) -> None:
-        piece = text[a:b].strip("\n")
-        if piece.strip():
-            chunks.append(Chunk(piece, start_line, end_line,
-                                tokens=index.tok_at(b) - index.tok_at(a)))
+        while a < b and text[a] == "\n":
+            a += 1
+        while b > a and text[b - 1] == "\n":
+            b -= 1
+        piece = text[a:b]
+        if piece.strip() and len(chunks) < max_chunks:
+            cost = index.covering_tokens(a, b)
+            if cost > budget:
+                raise ChunkTokenBudgetError("whole-line source interval exceeds token budget")
+            chunks.append(Chunk(piece, start_line, end_line, tokens=cost))
 
-    cur_a = 0
-    cur_start_line = 1
-    cur_tok = 0
+    cur_a, cur_start_line = 0, 1
     for i, line in enumerate(lines):
-        ls = starts[i]
-        le = ls + len(line)
-        line_tok = index.tok_at(le) - index.tok_at(ls)
-        if line_tok > budget:
-            # over-budget single line: flush, then hard-cut at token boundaries
-            if le > cur_a:
-                emit(cur_start_line, i, cur_a, ls)  # accumulated head
+        if len(chunks) >= max_chunks:
+            break
+        ls, le = starts[i], starts[i] + len(line)
+        if index.covering_tokens(ls, le) > budget:
+            if ls > cur_a:
+                emit(cur_start_line, i, cur_a, ls)
             sub_a = ls
-            sub_tok = index.tok_at(sub_a)
-            line_end_tok = index.tok_at(le)
-            while sub_tok < line_end_tok and len(chunks) < max_chunks:
-                nxt_tok = min(sub_tok + budget, line_end_tok)
-                nxt_char = index.char_at(nxt_tok)
-                piece = text[sub_a:nxt_char]
-                if piece.strip():
-                    chunks.append(Chunk(piece, i + 1, i + 1))
-                sub_a, sub_tok = nxt_char, index.tok_at(nxt_char) or nxt_tok
-            cur_a = le + 1 if le + 1 <= len(text) else len(text)
+            while sub_a < le and len(chunks) < max_chunks:
+                start = index.tok_at(sub_a)
+                cut = index.cut(start, budget)
+                sub_b = min(index.char_at(cut), le)
+                if sub_b <= sub_a:
+                    raise ChunkTokenBudgetError("token budget cannot advance the source line")
+                emit(i + 1, i + 1, sub_a, sub_b)
+                sub_a = sub_b
+            cur_a = min(le + 1, len(text))
             cur_start_line = i + 2
-            cur_tok = index.tok_at(cur_a)
             continue
-        if cur_tok + line_tok > budget and le > cur_a:
+        if index.covering_tokens(cur_a, le) > budget and ls > cur_a:
             emit(cur_start_line, i, cur_a, ls)
             cur_a, cur_start_line = ls, i + 1
-            cur_tok = 0
-        cur_tok += line_tok
     if len(text) > cur_a and len(chunks) < max_chunks:
         emit(cur_start_line, len(lines), cur_a, len(text))
     return chunks
@@ -418,7 +428,7 @@ def split_text_by_tokens(
         return out
     tok = 0
     while tok < index.total:
-        nxt = min(tok + max_tokens, index.total)
+        nxt = index.cut(tok, max_tokens)
         a, b = index.char_at(tok), index.char_at(nxt)
         piece = text[a:b]
         if piece.strip():
@@ -454,6 +464,8 @@ def chunk_text(
       `overlap` back, advanced to a word boundary
     - loc/loc_end are 1-based line numbers of the chunk in the cleaned text
     """
+    if size < 1:
+        raise ValueError("character chunk size must be positive")
     clean = _BLANK_RUN.sub("\n\n", _WS_RUN.sub(" ", text)).strip()
     chunks: list[Chunk] = []
     n = len(clean)
@@ -494,7 +506,9 @@ def chunk_text(
             piece = clean[start:end].strip()
             if piece:
                 chunks.append(Chunk(piece, _line_of(clean, start), _line_of(clean, end)))
-            break
+            if end >= n:
+                break
+            start = end  # A hard window has no preferred boundary; keep its tail.
     return chunks
 
 

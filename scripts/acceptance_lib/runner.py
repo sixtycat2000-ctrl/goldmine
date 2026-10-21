@@ -101,6 +101,10 @@ def _plain(check, root: Path, inputs: checks.Inputs, targets: dict) -> tuple[str
         from .ci_evidence import check as ci_local
 
         return ci_local(inputs, targets)
+    if check.kind == "ci_hosted":
+        from .hosted_ci import check as ci_hosted
+
+        return ci_hosted(root, inputs, targets)
     if check.kind == "distill":
         from .distill_evidence import check as real_distill
 

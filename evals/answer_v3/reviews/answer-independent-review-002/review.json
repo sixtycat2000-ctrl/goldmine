@@ -1,0 +1,777 @@
+{
+  "schema": 1,
+  "state": "INDEPENDENT_SOURCE_SEMANTIC_CLOSURE_ACCEPTABLE_DRAFT002",
+  "reviewer": "AI agent /root/review_answer_independent; independent of upstream/draft author, same auditor verifying closure of its recommendations; not human certification",
+  "utc_start": "2026-10-21T20:13:56.242705+00:00",
+  "utc_end": "2026-10-21T20:13:56.293492+00:00",
+  "scope": "All 80 task slots compared to reviewed draft001; 13 amended slots rechecked semantically; all 102 source spans and locations independently read back; two strict cross replacements and required context conjunctions checked. Unchanged traps retain the pinned full-corpus independent absence audit.",
+  "input_pins": {
+    "curate.py": "4cf0829e3bde6e90ea7b075417c2766d91804f42b5b541c8a86969d5ecd33dd2",
+    "draft-validation.json": "30eef7706f2734be852fe6bcfca82eccd1c4a3505679c30179fba02bae4e8eac",
+    "register.py": "dd8bed25dcb736379b37dbe0b0076d25ab81f868c4f06ee5aa1f62cd6692d2ff",
+    "amendment-lineage.json": "57635a33e35c42538c8ccd1ccd3bc0d9605054cc83c29870a6cbf46c961de7ad",
+    "questions.draft.jsonl": "bb395fa254ec2cb5f7ceb0b5bb504e3f16276ccf453b33e1c6e095349736ef28",
+    "source-map.json": "77fd9dbe807234746f089923a9f64112d2931330534656dc03d5c8e128ad5664",
+    "data-amendment-registration.json": "f2130bd7e3279e9d825670f6c20c071231a31e0491b300b001d152c192fb04e3",
+    "corpus.draft.json": "c4fd69eafbd5ecc560c7cc07aee4ea7fcbd210d942e6c5f5a2a99ac0253508f7",
+    "span-readback.json": "d2acbea8506e4a869fc4d2ceaa10c743555556b5f83baa4c4518ca5103dffdbe"
+  },
+  "manifest_sha256": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0",
+  "all_checks": {
+    "three_registered_input_pins": true,
+    "prior_draft_all_pins_preserved": true,
+    "independent_review001_all_pins_preserved": true,
+    "exact13_affected_slots_changed": true,
+    "all80_slot_order_and_classes_preserved": true,
+    "lineage_exact_old_new_13_objects": true,
+    "20_per_class": true,
+    "full122_sources_identical_to_original_and_manifest": true,
+    "manifest_frozen_pin": true,
+    "new_corpus_points_to_registration_and_source_map": true,
+    "registration_before_successful_build": true,
+    "recorded330source_snapshot_equal": true,
+    "traps_objects_and_mapping_unchanged": true,
+    "all_mapped_originals_dev_only": true,
+    "full30_seed_group_order_independently_reproduced": true,
+    "next_two_eligible_unused_reserves_fill_ascending_rejected_slots": true,
+    "replacement_mapping_old_new_exact": true,
+    "three_source_rejected_questions_absent": true,
+    "all175view_hashes_and60text_asset_hashes_and_normalized_views": true,
+    "all102exact_spans_and_locations": true,
+    "all6legitimate_null_metadata_locations_preserved": true,
+    "two_expected_context_conjunctions_only": true,
+    "both_context_conjunctions_require_both_spans": true,
+    "all20multis_original_requests_preserved_disjoint_distinct": true,
+    "all20cross_two_files_two_facts": true,
+    "all_recommended_expanded_spans_match_exact_review001_fragments": true,
+    "all_exact_identifier_and_causal_fact_corrections": true,
+    "Poetry_current_project_scope_explicit": true,
+    "Typer_callback_subcommand_scope_explicit": true,
+    "uv_command_attempt_latest_compatible_qualifiers": true,
+    "source_group_hash_correct": true,
+    "100facts88originalIDs29answerablegroups": true,
+    "failed_attempt_only_null_readback_guard_changed": true,
+    "full_model_settings_preregistration_missing": true
+  },
+  "remaining_required_source_findings": [],
+  "finding_closures": [
+    {
+      "finding_id": "IR-001",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-012",
+          "original_dev_question_ids": [
+            "text-semantic-053",
+            "text-semantic-054"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p1_f0",
+            "description": "Set count=True on click.option; each repetition increments the integer verbosity level.",
+            "sufficient_evidence": [
+              [
+                "p1_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-012",
+            "evidence_id": "p1_e0",
+            "source_path": "text/click/docs/options.rst",
+            "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+            "view_id": "body",
+            "view_path": "views/text/click/docs/options.rst.txt",
+            "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+            "start_char": 6357,
+            "end_char": 6674,
+            "span_sha256": "ce825be8ddff5529dbb7572fc93afb8f52b600105bae1de54c3e88ea4987e915",
+            "source_location": {
+              "unit": "line",
+              "start": 230,
+              "end": 239
+            },
+            "line_start_within_view": 230,
+            "line_end_within_view": 239,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-002",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-single-002",
+          "original_dev_question_ids": [
+            "text-semantic-029"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "f0",
+            "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+            "sufficient_evidence": [
+              [
+                "e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-single-002",
+            "evidence_id": "e0",
+            "source_path": "text/click/src/click/parser.py",
+            "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+            "view_id": "body",
+            "view_path": "views/text/click/src/click/parser.py.txt",
+            "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+            "start_char": 15427,
+            "end_char": 15916,
+            "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+            "source_location": {
+              "unit": "line",
+              "start": 437,
+              "end": 452
+            },
+            "line_start_within_view": 437,
+            "line_end_within_view": 452,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        },
+        {
+          "question_id": "av3-multi-002",
+          "original_dev_question_ids": [
+            "text-semantic-028",
+            "text-semantic-029"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p2_f0",
+            "description": "Remaining characters are inserted as the value input and grouped short-option scanning stops.",
+            "sufficient_evidence": [
+              [
+                "p2_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-002",
+            "evidence_id": "p2_e0",
+            "source_path": "text/click/src/click/parser.py",
+            "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+            "view_id": "body",
+            "view_path": "views/text/click/src/click/parser.py.txt",
+            "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+            "start_char": 15427,
+            "end_char": 15916,
+            "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+            "source_location": {
+              "unit": "line",
+              "start": 437,
+              "end": 452
+            },
+            "line_start_within_view": 437,
+            "line_end_within_view": 452,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-003",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-004",
+          "original_dev_question_ids": [
+            "text-cjk-017",
+            "text-cjk-018"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p1_f0",
+            "description": "v-show 在 DOM 中保留元素，只切换元素的 CSS display 属性。",
+            "sufficient_evidence": [
+              [
+                "p1_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-004",
+            "evidence_id": "p1_e0",
+            "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+            "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+            "view_id": "body",
+            "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+            "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+            "start_char": 2070,
+            "end_char": 2141,
+            "span_sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06",
+            "source_location": {
+              "unit": "line",
+              "start": 89,
+              "end": 89
+            },
+            "line_start_within_view": 89,
+            "line_end_within_view": 89,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-004",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-005",
+          "original_dev_question_ids": [
+            "text-cjk-047",
+            "text-cjk-048"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p1_f0",
+            "description": "父组件没有提供值时，父值仍可为 undefined，而子组件使用 defineModel 的 default（示例为1），所以父子值不同步。",
+            "sufficient_evidence": [
+              [
+                "p1_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-005",
+            "evidence_id": "p1_e0",
+            "source_path": "text/vue-zh/src/guide/components/v-model.md",
+            "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "view_id": "body",
+            "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+            "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "start_char": 2372,
+            "end_char": 2499,
+            "span_sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a",
+            "source_location": {
+              "unit": "line",
+              "start": 100,
+              "end": 100
+            },
+            "line_start_within_view": 100,
+            "line_end_within_view": 100,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-005",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-005",
+          "original_dev_question_ids": [
+            "text-cjk-047",
+            "text-cjk-048"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p2_f0",
+            "description": "v-model:title 对应子组件的 title prop 和 update:title 事件。",
+            "sufficient_evidence": [
+              [
+                "p2_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-005",
+            "evidence_id": "p2_e0",
+            "source_path": "text/vue-zh/src/guide/components/v-model.md",
+            "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "view_id": "body",
+            "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+            "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "start_char": 6340,
+            "end_char": 6445,
+            "span_sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6",
+            "source_location": {
+              "unit": "line",
+              "start": 265,
+              "end": 265
+            },
+            "line_start_within_view": 265,
+            "line_end_within_view": 265,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-006",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-009",
+          "original_dev_question_ids": [
+            "text-cjk-029",
+            "text-cjk-030"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p2_f0",
+            "description": "在 v-model 后添加 .trim 修饰符，可自动去除用户输入两端的空格。",
+            "sufficient_evidence": [
+              [
+                "p2_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-009",
+            "evidence_id": "p2_e0",
+            "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+            "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+            "view_id": "body",
+            "view_path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+            "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+            "start_char": 14152,
+            "end_char": 14207,
+            "span_sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005",
+            "source_location": {
+              "unit": "line",
+              "start": 458,
+              "end": 458
+            },
+            "line_start_within_view": 458,
+            "line_end_within_view": 458,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-007",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-multi-014",
+          "original_dev_question_ids": [
+            "text-semantic-001",
+            "text-semantic-003"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p2_f0",
+            "description": "A same-host HTTP-to-HTTPS redirect on standard ports is allowed without stripping authentication.",
+            "sufficient_evidence": [
+              [
+                "p2_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-014",
+            "evidence_id": "p2_e0",
+            "source_path": "text/requests/src/requests/sessions.py",
+            "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "view_id": "body",
+            "view_path": "views/text/requests/src/requests/sessions.py.txt",
+            "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "start_char": 4139,
+            "end_char": 4937,
+            "span_sha256": "6341ec0884d4b4344dc55c37e0e5d47e6d3436f244673eae5687b6d3683e40f0",
+            "source_location": {
+              "unit": "line",
+              "start": 127,
+              "end": 143
+            },
+            "line_start_within_view": 127,
+            "line_end_within_view": 143,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-008",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-single-020",
+          "original_dev_question_ids": [
+            "media-real-asr-3000-15664-0005"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "f1",
+            "description": "Abundant firewood made it possible to do without the blanket.",
+            "sufficient_evidence": [
+              [
+                "e1"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-single-020",
+            "evidence_id": "e1",
+            "source_path": "media/asr/3000-15664-0005.flac",
+            "asset_sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f",
+            "view_id": "official-transcript",
+            "view_path": "views/media/asr/3000-15664-0005.txt",
+            "view_sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+            "start_char": 0,
+            "end_char": 129,
+            "span_sha256": "f64098ce1f9966591cbf68789b24ed7ece6b99b485c2f96d8df89fc90c01b5c0",
+            "source_location": {
+              "unit": "second",
+              "start": 0,
+              "end": 8.46
+            },
+            "line_start_within_view": 1,
+            "line_end_within_view": 1,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-009",
+      "original_severity": "required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-cross-008",
+          "original_dev_question_ids": [
+            "compound-real-poetry-05"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "f1",
+            "description": "poetry env remove --all removes all virtual environments associated with the current project.",
+            "sufficient_evidence": [
+              [
+                "e1",
+                "e1_scope"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-cross-008",
+            "evidence_id": "e1",
+            "source_path": "compound/poetry/docs/managing-environments.md",
+            "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+            "view_id": "original-lines",
+            "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+            "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+            "start_char": 5084,
+            "end_char": 5183,
+            "span_sha256": "ab8d8a92bca8aa7ab5f2ee342957cded50b9a1e5323f8cb595a17201c7b96444",
+            "source_location": {
+              "unit": "line",
+              "start": 194,
+              "end": 197
+            },
+            "line_start_within_view": 194,
+            "line_end_within_view": 197,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-010",
+      "original_severity": "design_resolution_required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-cross-011",
+          "original_dev_question_ids": [
+            "compound-real-uv-04"
+          ],
+          "resolution": "Registered deterministic cross replacement with source-audited reserve"
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-011",
+      "original_severity": "design_resolution_required",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-cross-007",
+          "original_dev_question_ids": [
+            "compound-real-typer-05"
+          ],
+          "resolution": "Registered deterministic cross replacement with source-audited reserve"
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-A01",
+      "original_severity": "advisory",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-single-006",
+          "original_dev_question_ids": [
+            "text-cjk-046"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "f0",
+            "description": "defineModel() 返回一个 ref，并在父组件绑定值和当前变量之间提供双向绑定。",
+            "sufficient_evidence": [
+              [
+                "e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-single-006",
+            "evidence_id": "e0",
+            "source_path": "text/vue-zh/src/guide/components/v-model.md",
+            "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "view_id": "body",
+            "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+            "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+            "start_char": 686,
+            "end_char": 761,
+            "span_sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d",
+            "source_location": {
+              "unit": "line",
+              "start": 36,
+              "end": 36
+            },
+            "line_start_within_view": 36,
+            "line_end_within_view": 36,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    },
+    {
+      "finding_id": "IR-A02",
+      "original_severity": "advisory",
+      "status": "CLOSED_IN_DRAFT002",
+      "affected": [
+        {
+          "question_id": "av3-single-003",
+          "original_dev_question_ids": [
+            "text-semantic-001"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "f0",
+            "description": "Mapping entries whose merged value is None are deleted.",
+            "sufficient_evidence": [
+              [
+                "e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-single-003",
+            "evidence_id": "e0",
+            "source_path": "text/requests/src/requests/sessions.py",
+            "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "view_id": "body",
+            "view_path": "views/text/requests/src/requests/sessions.py.txt",
+            "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "start_char": 2047,
+            "end_char": 2417,
+            "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+            "source_location": {
+              "unit": "line",
+              "start": 79,
+              "end": 86
+            },
+            "line_start_within_view": 79,
+            "line_end_within_view": 86,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        },
+        {
+          "question_id": "av3-multi-014",
+          "original_dev_question_ids": [
+            "text-semantic-001",
+            "text-semantic-003"
+          ],
+          "resolution": "Requested exact target/context/scope correction applied and rechecked against source",
+          "current_fact": {
+            "fact_id": "p1_f0",
+            "description": "Mapping entries whose merged value is None are deleted.",
+            "sufficient_evidence": [
+              [
+                "p1_e0"
+              ]
+            ]
+          },
+          "current_evidence": {
+            "question_id": "av3-multi-014",
+            "evidence_id": "p1_e0",
+            "source_path": "text/requests/src/requests/sessions.py",
+            "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "view_id": "body",
+            "view_path": "views/text/requests/src/requests/sessions.py.txt",
+            "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+            "start_char": 2047,
+            "end_char": 2417,
+            "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+            "source_location": {
+              "unit": "line",
+              "start": 79,
+              "end": 86
+            },
+            "line_start_within_view": 79,
+            "line_end_within_view": 86,
+            "exact_source_span_and_hash": true,
+            "location_consistent": true
+          }
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "tasks": 80,
+    "per_class": {
+      "single": 20,
+      "multi": 20,
+      "cross": 20,
+      "trap": 20
+    },
+    "changed_slots": 13,
+    "unchanged_slots": 67,
+    "positive_fact_occurrences": 100,
+    "distinct_fact_description_strings": 88,
+    "source_spans": 102,
+    "context_conjunctions": 2,
+    "legitimate_null_metadata_locations": 6,
+    "answerable_source_groups": 29,
+    "cross_groups": {
+      "upstream:pip-tools": 3,
+      "upstream:poetry": 4,
+      "upstream:typer": 4,
+      "upstream:uv": 4,
+      "upstream:pip": 2,
+      "upstream:httpx": 3
+    },
+    "original_question_uses": 100,
+    "unique_original_dev_question_ids": 88,
+    "repeated_original_ids": {
+      "text-semantic-041": 2,
+      "text-semantic-029": 2,
+      "text-semantic-001": 2,
+      "text-semantic-059": 2,
+      "text-cjk-001": 2,
+      "text-cjk-013": 2,
+      "text-cjk-023": 2,
+      "v4x-pdf-nist-800-145-01": 2,
+      "v4x-pdf-US174465-02": 2,
+      "v4x-pdf-nist-800-92-02": 2,
+      "v4x-pdf-nist-800-38a-03": 2,
+      "media-real-photo-94585934-filename": 2
+    }
+  },
+  "deterministic_replacement": {
+    "independently_reproduced_full30_order": [
+      "compound-real-pip-tools-01",
+      "compound-real-poetry-02",
+      "compound-real-typer-01",
+      "compound-real-uv-02",
+      "compound-real-pip-01",
+      "compound-real-httpx-04",
+      "compound-real-pip-tools-02",
+      "compound-real-poetry-05",
+      "compound-real-typer-03",
+      "compound-real-uv-05",
+      "compound-real-pip-02",
+      "compound-real-httpx-01",
+      "compound-real-pip-tools-05",
+      "compound-real-poetry-03",
+      "compound-real-typer-02",
+      "compound-real-uv-03",
+      "compound-real-pip-05",
+      "compound-real-httpx-03",
+      "compound-real-pip-tools-03",
+      "compound-real-poetry-04",
+      "compound-real-typer-05",
+      "compound-real-uv-04",
+      "compound-real-pip-03",
+      "compound-real-httpx-02",
+      "compound-real-pip-tools-04",
+      "compound-real-poetry-01",
+      "compound-real-typer-04",
+      "compound-real-uv-01",
+      "compound-real-pip-04",
+      "compound-real-httpx-05"
+    ],
+    "eligible_unused_order": [
+      "compound-real-typer-05",
+      "compound-real-uv-04",
+      "compound-real-pip-03",
+      "compound-real-httpx-02",
+      "compound-real-poetry-01",
+      "compound-real-typer-04",
+      "compound-real-uv-01",
+      "compound-real-pip-04",
+      "compound-real-httpx-05"
+    ],
+    "chosen_replacements": [
+      {
+        "slot": "av3-cross-007",
+        "old_original": "compound-real-pip-tools-02",
+        "new_original": "compound-real-typer-05"
+      },
+      {
+        "slot": "av3-cross-011",
+        "old_original": "compound-real-pip-02",
+        "new_original": "compound-real-uv-04"
+      }
+    ],
+    "new_salt_or_score_selection": false
+  },
+  "failed_builder_attempt": {
+    "retained": true,
+    "receipt_sha256": "2cf201cadc07594e1373548c2558cf986708d8fe42b4ea36bd872ba3c6c0bc66",
+    "stderr_sha256": "dd46fdc62d593e80d015cb92992093eb2811b0ddb186538f2e6b260e3eea8dc3",
+    "failed_builder_sha256": "f1fb27f1011668fc04b0f19ced6fab4e26786a3d97982b143c4b80ea99933368",
+    "successful_builder_sha256": "4cf0829e3bde6e90ea7b075417c2766d91804f42b5b541c8a86969d5ecd33dd2",
+    "difference": "Only the 12-space-indented line-readback guard now checks location is not None. The earlier 8-space-indented guard in replace_span is unchanged; its calls target source fragments with concrete locations. All six legitimate metadata locations remain null.",
+    "outputs_before_failure": false,
+    "exact_first_attempt_interval_unavailable": true,
+    "observed_wall_seconds": 0.125532583
+  },
+  "reviewer_check_note": "An initial report-only closure assertion used an overbroad string replacement and matched two differently indented guard sites. The verifier was refined to the actual single readback guard hunk; no draft/source data was changed.",
+  "data_freeze_readiness": "SOURCE_REVIEW_ACCEPTABLE_FOR_PINNED_DATA_FREEZE",
+  "actual_run_readiness": "NOT_READY: full local answerer/judge model/settings/run preregistration remains MISSING.",
+  "quality_or_model_pass_claim": false,
+  "models_tokenizers_indexes_network_or_capacityDB_used": false,
+  "limitations": [
+    "The same independent AI auditor closed its earlier recommendations; this is not a new human review or independent model-quality result.",
+    "Unchanged 67 task semantics and 20 trap judgments carry forward from pinned review001. All 175 view hashes and 60 code/doc asset hashes/full normalized views were rechecked. Prior selected binary/EXIF/scan/audio checks were retained without fresh rendering/listening/ASR.",
+    "No original420 queries/splits/label-audit content, full noise label files, holdout/retrieval/answer outputs, or capacity databases were read. No model, tokenizer, index or network job was used.",
+    "Root 330-file before/after equality was checked as recorded, without another broad repo sweep. Prior draft and review pins were directly reverified.",
+    "The 80 tasks share 29 answerable groups and 88 original dev IDs across 100 uses; 20 cross tasks concentrate in 6 groups. They are not 80 independent samples.",
+    "Data amendment is explicitly pre-run and no longer claims faithful unchanged reuse of original annotations. Full actual-job preregistration is still missing."
+  ]
+}

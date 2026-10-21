@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "state": "STRICT_CROSS_REPLACEMENT_RECOMMENDED",
+  "supersedes": "The optional narrow-class reporting fallback in original IR-010/IR-011 minimum suggestions is superseded by the root instruction to retain strict two-file necessity. Original findings and exact alternate-source spans are preserved unchanged.",
+  "original_draft_cross_ineligible": [
+    {
+      "id": "av3-cross-007",
+      "original_dev_id": "compound-real-pip-tools-02",
+      "finding": "IR-011",
+      "alternative_source": "compound/pip-tools/piptools/scripts/compile.py",
+      "alternative_evidence_truth": "Code independently reads existing output pins and forwards them as existing_constraints, and raises the input/output conflict. README is the explicit stability/preference explanation; do not erase this code support or assert all f1 wording is a verbatim code quote."
+    },
+    {
+      "id": "av3-cross-011",
+      "original_dev_id": "compound-real-pip-02",
+      "finding": "IR-010",
+      "alternative_source": "compound/pip/docs/html/topics/caching.md",
+      "alternative_evidence_truth": "caching.md L123 shows sampleproject==1.0.0 and L73 explicitly names pip cache dir. The exact pinning meaning in this example is an inference; retain that qualification."
+    }
+  ],
+  "reserve_rejected": [
+    "compound-real-pip-tools-04"
+  ],
+  "source_eligible_reserve_count": 9,
+  "recommendation": "Use the predeclared deterministic30-pool order to replace the2ineligible current cross tasks from source-audited reserves, applying any listed source amendment before freeze. Preserve old question/registration pins and per-slot old/new lineage; do not tune to scores or weaken cross.",
+  "source_report": "reserve-cross-review.json"
+}

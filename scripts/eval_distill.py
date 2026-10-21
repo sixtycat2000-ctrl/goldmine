@@ -43,6 +43,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import sqlite3
 import json
 import sys
 import tempfile
@@ -884,6 +885,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--labels", type=Path, help="frozen distill.real.v1 topic labels; enables strict real quality gates")
     parser.add_argument("--corpus-root", type=Path, help="explicit indexed root corresponding to label-relative source paths")
     parser.add_argument("--incremental-db", type=Path, help="same index after adding exactly10 predeclared documents")
+    parser.add_argument("--preparation", type=Path, help="source-bound native base/+10 preparation manifest")
     parser.add_argument("--out", type=Path, help="save the complete real-evidence JSON report")
     args = parser.parse_args(argv)
 
@@ -896,8 +898,8 @@ def main(argv: list[str] | None = None) -> int:
                 if args.corpus_root is None:
                     raise InvalidEvidence("--labels requires an explicit --corpus-root")
                 report = evaluate(Path(args.report_real).expanduser(), args.labels,
-                                  args.corpus_root, args.incremental_db)
-            except (InvalidEvidence, ValueError, OSError, KeyError, TypeError) as exc:
+                                  args.corpus_root, args.incremental_db, args.preparation)
+            except (InvalidEvidence, ValueError, OSError, KeyError, TypeError, sqlite3.Error) as exc:
                 report = {"schema": 2, "kind": "goldmine.distill-real", "status": "MISSING", "reason": str(exc)}
             if args.out:
                 if args.out.exists():
@@ -912,7 +914,7 @@ def main(argv: list[str] | None = None) -> int:
         else:
             print(render_report(report))
         return 0
-    if args.labels or args.corpus_root or args.incremental_db or args.out:
+    if args.labels or args.corpus_root or args.incremental_db or args.preparation or args.out:
         parser.error("real labels/output options require --report-real")
 
     import tempfile
