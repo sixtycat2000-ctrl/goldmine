@@ -134,10 +134,11 @@ def evaluate(cache, production_root, *, reference=False, backend_name="llama", m
                       reference=reference, diagnostic=diagnostic)
     result["advisory_published_baselines"] = True
     if query_deadline is not None:
-        # Explicitly registered policy (SC-04): visible in the captured result,
-        # identical for both roles, timeouts are failures — never empty hits.
+        # Explicitly registered policy (SC-04): visible in the captured
+        # parameters, identical for both roles, timeouts are failures — never
+        # empty hits. The frozen raw/v1 export schema forbids extra top-level
+        # keys; timeout events surface through the fail-loud error identity.
         result["parameters"]["query_deadline_seconds"] = query_deadline
-        result["query_timeout_errors"] = []
     with closing(backend):
         for name in DATASETS:
             db, corpus = dataset_dir(cache, name) / "raw-index.sqlite", dataset_dir(cache, name) / CORPUS_MD_DIR
@@ -160,9 +161,6 @@ def evaluate(cache, production_root, *, reference=False, backend_name="llama", m
                                 hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
                             except sqlite3.OperationalError as error:
                                 if query_deadline is not None and "interrupted" in str(error) and time.monotonic() >= deadline_at:
-                                    result["query_timeout_errors"].append(
-                                        {"dataset": name, "arm": arm, "qid": qid,
-                                         "deadline_seconds": query_deadline, "error": str(error)})
                                     raise EvaluationError(
                                         f"public query exceeded its registered {query_deadline}s deadline: "
                                         f"{name}/{arm}/{qid}; recorded failure, not empty hits", status="MISSING") from error
