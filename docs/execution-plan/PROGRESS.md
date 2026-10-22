@@ -10,7 +10,24 @@
 
 当前代码检查点为 `b820988`：typed 测量执行器、C002 锚定准入、完整比较报告 framing 已分别提交；实际 focused 回归为 194 /310 /318 项通过，不能相加为互不重叠的全套测试。最新完整四 profile CI 仍绑定这些提交之前的源码；当前全套 CI 尚未执行。当前最新真实产品质量结果为 current004 **FAIL 11、MISSING 0**，未宣称质量达标。
 
-下一步先修复独立审查实际复现的两项兼容性问题：支持的只读 schema4/5 需要按真实存储格式读取并保留来源核验；可选 whole-metadata 预查须在计数前剔除不可能完整匹配的 alias/stem。新设计/61 项机械验收案例在 `P1-06/legacy-readiness-design-001/`，此时仍为设计，尚未合入。随后在最终源码上执行四 profile CI、一次预登记 C/default210dev、公开集/容量/生命周期和完整竞品对照。真实 answerer/judge 配置与 GitHub remote 仍缺，已向用户请求信息；独立工作继续。原三参数注册、质量目标和未打开的 holdout 保持冻结。
+下一步先修复独立审查实际复现的两项兼容性问题：支持的只读 schema4/5 需要按真实存储格式读取并保留来源核验；可选 whole-metadata 预查须在计数前剔除不可能完整匹配的 alias/stem。新设计/61 项机械验收案例在 `P1-06/legacy-readiness-design-002/`，已独立通过设计审查，当前正在隔离副本实现与测试，尚未合入。随后在最终源码上执行四 profile CI、一次预登记 C/default210dev、公开集/容量/生命周期和完整竞品对照。真实 answerer/judge 配置与 GitHub remote 仍缺，已向用户请求信息；独立工作继续。原三参数注册、质量目标和未打开的 holdout 保持冻结。
+
+## 当前 Mac 的接续入口
+
+以下是现有冻结计划的执行游标；入口文件存在不代表实际运行成功。所有路径以仓库根目录为工作目录，报告目录前缀为 `reports/execution/`。当前仍停留在第 1 步，后续真实任务尚未启动。
+
+| 顺序 | 前置条件 / 入口 | 必须读取的结果 |
+|---|---|---|
+| 1 | `P1-06/legacy-readiness-proposal-001/` 的精确实现独立闭环后，由 root 合入 integration017 并运行 focused 与保留的原始反例 | 真实旧格式、完整 typed/owner/phrase/预算、只读与现代损坏反例均通过；不得改分数或基准合同 |
+| 2 | host Python 3.12 执行 `P0-06/post-c1-ci-001/run.py`，再执行 `P2-05/ci-local-current-001/run.py` | 四 profile 全 PASS、0 必需 skip、同一源码；真实 actionlint/local-CI/P2-05 task-check PASS，hosted 仍单列 |
+| 3 | 产品既有 `product-expansion-001/runtime/bin/python` 顺序执行 `P0-05/product-current-005/seal_fixes.py`、`run.py` | 一次固定 C/default210dev，固定 004 对照；原始 receipt、真实 index/span 回放及 PASS/FAIL 全保留，不能看到 FAIL 就重跑选分 |
+| 4 | 已完成同源码005（严格 PASS 或 FAIL，不能 MISSING）后执行 `P2-08/goldmine-private-assets-002/refresh_installation.py`、`P0-06/public-current-002/run.py` | 新不可变 installation 完整 SHA；三个公开集全部四 scorer 的候选及既有原版严格回放，不缩题目 |
+| 5 | public 完成，检查实际可用磁盘并停止本任务其他重负载后执行 `P2-02/full-capacity-current-002/run.py` | 完整12规模/每文件分布、全部固定阶段及 CLI/pack 调用和严格相等性/资源结果；小型 fixture 不能代替 |
+| 6 | 最终源码保持不变，分别执行 `P2-08/full-source-view-001/run.py`、`P2-04/real-current-001/run.py`、`P2-03/latency-current-001/run.py` 和生命周期包既有 `execute.py --execute lifecycle-real-001` 入口 | 全122来源转换；120真实卡片文档；三组30样本及MCP配对；controlled/real watch各600秒和serve/增量序列，全部保留实际失败 |
+| 7 | 同源码 CI/005 及文档内容稳定后，host Python 执行 `P2-06/current-001/run.py`、`P2-07/current-001/run.py` | 新 wheel/sdist/重建、离线 base/MCP/native/旧库升级恢复、14文档与22真实命令及固定任务检查；旧 snapshot 不能顶替 |
+| 8 | `P2-08/engine-assets-current-002/commands.py --stage all` 仅渲染既有固定入口；按 README 逐阶段核验真实完成后再执行下一条 | 新安装/16工具probe/真实canary/来源与dev导出/18cell plan；先编译固定1728 packet，再3780质量请求、严格回放、完整1728测量/更新及回放 |
+
+CI 或机械检查失败时保留原目录，先做具体修复并重新冻结源码；质量 FAIL 是结果，不是删除、换参数或重复挑分的理由。性能阶段单独执行，不与本任务测试、建库、转换或模型任务混跑。答案实际引擎/设置与 GitHub remote 尚待用户信息；旧169媒体输入缺有效原始 provenance 的问题单列，不能注入答案、减分母或伪造通过。holdout 仍关闭，全部必要条件齐备前不创建 RC/tag/push。
 
 ## 2026-10-22：7192395 后的实施与证据补齐
 
