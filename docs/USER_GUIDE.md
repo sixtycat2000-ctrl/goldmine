@@ -96,16 +96,22 @@ $ goldmine search "pod eviction memory pressure"
     «memory» «pressure» and the «pod»…"
 ```
 
-`«guillemets»` mark where your words matched. A rare token (an error code, a project name)
-automatically flips to an exact-match lookup — `goldmine search "restic"` finds the file
-that names it. Useful extras:
+`«guillemets»` mark where your words matched. Identifiers such as `ZT-84`, paths,
+API names and quantities require a complete match in stored source evidence.
+For example, `5mA` and `5MA` are different quantities for this check. A filename
+can identify a file; the remaining question still needs evidence in that same
+file's body. Quoted phrases must occur contiguously in one stored segment.
+
+Useful extras:
 
 - Inline filters: `kind:pdf kind:doc`, `under:~/notes`, `after:2026-01-01`, `before:2w`,
   `site:example.com`, and `"exact phrases"` in quotes. Unknown words are never mistaken for
   filters.
 - `--why` shows the score arithmetic per hit (`why: 1·z 1.71 + 2·cov^1.5 1.00 = 3.71 · bm25 #1`).
-- Zero hits is an honest answer, not an error:
+- A successful search can return zero hits:
   `nothing found for 'quantum entanglement'` (exit 0 — try fewer words, or drop a filter).
+  This means the request found no admitted evidence in the indexed snapshot;
+  it does not establish that the information is absent from all your files.
 
 **Open what you found** at the moment that matters:
 

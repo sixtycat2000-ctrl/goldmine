@@ -14,7 +14,7 @@
 
 ---
 
-## Current request boundaries (2026-10-21)
+## Current request boundaries (2026-10-22)
 
 CLI command adapters and the optional stdio MCP adapter call `Application` with
 typed contracts. A request owns one read-only Store connection/transaction and
@@ -23,6 +23,14 @@ and final packing use that same snapshot. The adapters serialize results; they
 do not independently rerun retrieval or read source files. The MCP SDK is an
 explicit optional dependency, and model operations are serialized with two
 bounded waiters.
+
+`query_obligations.py`, `anchor_resolver.py` and `anchor_admission.py` enforce
+complete typed source anchors and same-file lexical remainder evidence. The
+closed compare/two-clause grammar records actual owners, and final result limits
+must preserve every required clause. Whole metadata matches identify a file;
+they do not supply body evidence or a body location. The structural registration
+is `anchor.v1-lexical`; semantic remainder is off and its product quality remains
+unvalidated. Existing request deadlines cover bounded source verification.
 
 Mutations use the registered writer transaction. Explicit lexical reindex upgrades
 derived schema fields, while persistent old-writer guards reject the whole stale

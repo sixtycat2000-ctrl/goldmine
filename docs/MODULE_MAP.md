@@ -1,16 +1,17 @@
 # goldmine — Module Map
 
-> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+> Implementation update (2026-10-22): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
 
-## Current boundaries (2026-10-21)
+## Current boundaries (2026-10-22)
 
 | Owner | Modules and responsibility |
 |---|---|
 | Entry and adapters | `cli.py` dispatch and exit mapping; `commands/{search,ingest,distill,inspection,lifecycle,maintenance,models,opener}.py`; `command_support.py` adapter runtime |
 | Read application | `application.py`, `contracts.py`, `citations.py`, `evidence.py`; one request snapshot for rank/details/pack and stored-evidence reads |
 | Retrieval | `search.py`, `lexical.py`, `lexical_store.py`, `retrieval_{lexical,evidence}.py`, `admission.py`; derived normalization, exact tiers and evidence admission |
+| Source obligations | `query_obligations.py`, `anchor_resolver.py`, `anchor_admission.py`; typed complete anchors, actual stored-source witnesses, same-file lexical remainder and final clause coverage |
 | Optional quality | `query_plan.py`, `quality.py`, `rerank.py`; conservative clauses, bounded fusion and explicitly owned local model |
-| Packs | `pack.py`; stored original text, page-aware context, complete-envelope budget and exact-material deduplication |
+| Packs | `pack.py`, `pack_allocation.py`, `retrieval_evidence.py`; stored original text, source-order support, fair bounded allocation, complete-envelope budget and exact-material deduplication |
 | Storage | `store.py`, `storage_connections.py`, `storage_writes.py`, `migrations.py`; read-only URI/snapshots, writer protocol and transactional schema work |
 | Derived vector cache | `vector_cache.py`, `_vector_cache_files.py`; explicit immutable generation build, epoch validation and SQLite fallback |
 | Backend lifecycle | `backends/`, `deadline.py`, `http_transport.py`; shared embedding interface, monotonic budget and bounded local HTTP |
