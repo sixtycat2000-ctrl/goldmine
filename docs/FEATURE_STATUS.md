@@ -8,13 +8,13 @@ No final quality milestone, release candidate, hosted CI success or publication 
 | Capability | Interface and default | Backend / input limits | Evidence and remaining acceptance |
 |---|---|---|---|
 | Latin/CJK lexical retrieval | `search --lexical`; ingest without a model | NFKC derived index preserves stored original; schema v6 | Mechanism tests pass; latest completed product dev quality fails its gates |
-| Name/path/identifier lookup | Normal lexical/hybrid search | Complete typed anchors and same-file body predicates; metadata has no invented body position | C002 and legacy-read focused tests pass; new structural candidate has not been quality-scored; full current-source CI is pending |
+| Name/path/identifier lookup | Normal lexical/hybrid search | Complete typed anchors and same-file body predicates; metadata has no invented body position | C002 and legacy-read focused tests pass; current four-profile CI passes; completed C002 development run fails quality gates |
 | Semantic fast retrieval | Default hybrid, fixed embedding pin | llama is text-only; exact stored fingerprint required | Historical real baseline reproduced; final candidate regression recorded in PROGRESS |
 | PDF / supporting evidence | One file per hit; up to three content segments | True page units, same-page chunks and bounded adjacent pages | Twenty-page and multi-block adversarial cases pass; latest completed real product PDF gate fails |
 | OCR / ASR / photo metadata | Ingest with explicit tools; status records evidence states | Vision OCR; Poppler; whisper/ffmpeg; EXIF is metadata | Tool probes and focused cases pass; complete full-media provenance/quality missing |
 | Photograph visual semantics | Not available through llama | No generated caption fallback | Reports `visual_search=false`; Foresight is a separate optional backend |
 | Packs and opaque citations | `search --pack`, get/context APIs | Whole context, source IDs and why count toward budget; estimator is labeled | Real SDK Agent chain and real-token matrix pass at four budgets/three context widths; fresh answer A/B missing |
-| Read-only MCP | Explicit `mcp --db PATH`, optional exact SDK 2.0.0 | Four tools; one active operation/two waiters; no source reread | Historical SDK/stdio/queue/cancellation/installed smoke pass; latest source needs fresh CI and installation proof |
+| Read-only MCP | Explicit `mcp --db PATH`, optional exact SDK 2.0.0 | Four tools; one active operation/two waiters; no source reread | Current SDK/stdio/queue/cancellation CI passes; fresh installed-wheel proof remains pending |
 | Deterministic multi-query | `--mode quality --multi-query`, off by default | Original plus at most two source-derived clauses | Grammar, identity, filters and cancellation tests pass; compound benefit unmeasured |
 | Local reranker | `--mode quality --rerank local`, off by default | Explicit pinned 639MB model, top twenty admitted segments, 384 tokens each | Six real endpoint probes and real bounded-input/cleanup test pass; dev A/B/resource gates missing |
 | Vector cache | Explicit `reindex vectors`; separate opt-in | Immutable fp32 numpy generations; SQLite truth and epoch validation | Crash/corruption/invalidation tests pass; measured performance experiment recorded separately |
@@ -29,10 +29,13 @@ No final quality milestone, release candidate, hosted CI success or publication 
 The [frozen product suite](../evals/product_v4_expansion/README.md) contains 420
 questions from 122 real sources, including PDF, OCR, audio and EXIF evidence.
 Its grouped dev/holdout split is 210/210; holdout remains unopened. The latest
-completed dev run, current004, has strict success@5 101/180 answerable questions,
-all-facts PACK 102/180, and correct empty results on 5/30 noise questions. It fails
-11 quality gates with no missing evaluation evidence. This result precedes the
-new C002 anchor implementation; a fresh fixed development run is pending.
+completed dev run, current005, has strict success@5 96/180 answerable questions,
+all-facts PACK 97/180, and correct empty results on 20/30 noise questions. It fails
+12 quality gates with no missing evaluation evidence. Compared with current004,
+noise rejection improves while answerable retrieval and PACK point estimates fall;
+the paired intervals for answerable metrics include zero. The current 465-file
+source passes all four CI profiles: 2,821 tests, zero skips. See the
+[current005 summary](execution-plan/product-dev-post-anchor-20261022.json).
 
 The [80-question answer inputs](../evals/answer_v3/README.md) and
 [120-document card inputs](../evals/distill_real/README.md) are frozen and audited.

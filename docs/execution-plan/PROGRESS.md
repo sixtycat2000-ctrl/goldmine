@@ -8,13 +8,13 @@
 
 三位独立 AI agent 按 IR/统计、数据库/MCP 架构、QA/交付职责审查计划，接受并修订 18 项意见；实现后又接受并修复 6 项反例。角色分工不代表受聘的人类专家背书。具体见 [REVIEW.md](REVIEW.md) 与 `review/`。
 
-当前代码已合入 typed 测量执行器、C002 锚定准入、完整比较报告 framing 与旧库兼容修复；实际 focused 回归分别为 194 /310 /318 /419 项通过，不能相加为互不重叠的全套测试。最新完整四 profile CI 仍绑定这些提交之前的源码；当前全套 CI 尚未执行。当前最新真实产品质量结果为 current004 **FAIL 11、MISSING 0**，未宣称质量达标。
+当前代码已合入 typed 测量执行器、C002 锚定准入、完整比较报告 framing 与旧库兼容修复。最终 465 个代码/配置文件的四 profile CI 已完成：base 2575、native 232、MCP 6、Foresight 8，合计 **2821 项通过、0 skip**；真实 actionlint、本地失败注入与 P2-05 task-check 也通过。一次预登记 current005 固定 dev 已完成，严格回放 **FAIL 12、MISSING 0**；机制和 CI 通过不代表质量达标。
 
-独立审查复现的两项兼容性问题已闭环并合入 integration017：只读 schema4/5 按真实存储格式读取和核验来源；可选 whole-metadata 预查在计数前剔除不可能完整匹配的 alias/stem。`P1-06/legacy-readiness-design-002/` 的61项验收映射与原49项均已独立核对。接下来在最终源码上执行四 profile CI、一次预登记 C/default210dev、公开集/容量/生命周期和完整竞品对照。真实 answerer/judge 配置与 GitHub remote 仍缺，已向用户请求信息；独立工作继续。原三参数注册、质量目标和未打开的 holdout 保持冻结。
+独立审查复现的两项兼容性问题已闭环并合入 integration017：只读 schema4/5 按真实存储格式读取和核验来源；可选 whole-metadata 预查在计数前剔除不可能完整匹配的 alias/stem。`P1-06/legacy-readiness-design-002/` 的61项验收映射与原49项均已独立核对。当前 CI 与一次预登记 C/default210dev 已完成；接下来执行公开集、容量、生命周期、交付和完整竞品对照。真实 answerer/judge 配置与 GitHub remote 仍缺，已向用户请求信息；独立工作继续。原三参数注册、质量目标和未打开的 holdout 保持冻结。
 
 ## 当前 Mac 的接续入口
 
-以下是现有冻结计划的执行游标；入口文件存在不代表实际运行成功。所有路径以仓库根目录为工作目录，报告目录前缀为 `reports/execution/`。第 1 步已完成；接下来执行第 2 步，后续真实任务尚未启动。
+以下是现有冻结计划的执行游标；入口文件存在不代表实际运行成功。所有路径以仓库根目录为工作目录，报告目录前缀为 `reports/execution/`。第 1–3 步已完成；接下来执行第 4 步，后续真实任务尚未启动。
 
 | 顺序 | 前置条件 / 入口 | 必须读取的结果 |
 |---|---|---|
@@ -56,6 +56,8 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 - C1 首版实现的 49 个预登记案例及相关回归经 root/架构分别 **274 项通过、0 skip**，但独立实证又发现 NFKC 兼容正负号在 metadata component recall 中丢失的反例；首版不合入且原失败保留。002 改为核验 NFKC 后的完整真实 component，root/架构分别 **310 项通过、0 skip**，原反例全部拒绝、真实 signed-name 正例保留。精确 12 文件及 P1-06 测试注册已合入 `integration-after-capacity-015/`，实际 checkout 再次 **310 项通过、0 skip**；代码/配置为 452 文件，生产身份为 87 文件。行为登记为 `anchor.v1-lexical` / `search.v4-anchor-contract`，semantic remainder 仍 OFF，原三参数失败注册、目标、数据和 holdout 均不改；这仍不是质量达标。下一次 C dev launcher 已补齐历史 004 的实际 index/source/model/span 绑定，root 只读重放 **8,733 个 span** 通过；后续 public/immutable-installation launcher 的同源码完成链也已独立闭环：严格回读真实 capture 命令、准备 argv、run_id 与 index 身份，34 项捕获 fixture 及 7 项既有 raw 反例/正例均符合预期；其中 quality FAIL 可作为已完成 dev 的前置证明，MISSING 或过期来源不可。尚未启动这些真实运行。
 
 - 旧库兼容与完整字段预查的15文件修复已按精确 patch 合入 `integration-after-capacity-017/`。schema4 保留原 NFC 校验、schema5/6 保留 NFKC+casefold；已知 body-only4 只读取真实 body，不补写 original。metadata 完整资格先于候选上限，仍保留32 anchors/2000 distinct source rows 与现代缺表/坏 pointer 错误。作者封存、独立架构、root 精确重建及实际正常 conftest 均 **419 项通过、0 skip**；最终实际回归20.58s，465代码/配置与90生产身份文件稳定。原版生产器/实际4→5迁移的原文/CIT回读与36次固定小型CLI/16项严格比较通过，它们不是完整规模或质量结果。原代码9个机械反例失败、001的LR56二次metadata重入失败，以及root一次父Git上下文导致的隔离patch no-op均保留；后者在任何实际源码变化前由15文件SHA映射断言拒绝，随后用独立Git sandbox重建成功。原始固定alias/stem反例在实际采用代码上回放6种actual/control组合，真实结果1/20/1且IDs、正文、分数与隔离control完全一致，未修改数据库。全部评分/解析器/分块/pack分配/迁移代码及数据、门槛、原三数值注册保持原SHA。下一步完整四profile CI；未开启新模型/质量/holdout运行。
+
+- 最终 C002/兼容源码（`bd46490`）的四 profile CI 与本地 CI 已完成，原始结果为 `P0-06/post-c1-ci-001/results.json` 与 `P2-05/ci-local-current-001/results.json`，**2821 PASS、0 skip**，465 个代码/配置文件稳定。随后 current005 以全新 122-source native index 完成固定 **210 dev 请求**：严格 success@1 **86→83/180**、success@5 **101→96/180**、全事实 PACK **102→97/180**，noise 正确空 **5→20/30**。PDF success@5 为 **14→10/30**，额外触发 PDF success@1 门槛，严格回放 **FAIL 12、MISSING 0**。与预登记 004 对照的 source-group paired 区间在可答指标上均跨 0，noise 区间为 **+0.3333 至 +0.6667**；这是重复暴露 dev 内的取舍，不能宣称普遍质量提升或发布达标。完整聚合、原始 SHA 与失败门槛见 [current005 摘要](product-dev-post-anchor-20261022.json)。未增加参数候选、挑分重试或打开 holdout，接续游标已推进到新安装与公开集。
 
 ## 2026-10-22：新语料与验收补齐
 
