@@ -40,6 +40,7 @@ from dataclasses import dataclass, field
 from typing import Callable
 
 from .chunker import est_tokens
+from .read_source import fts_projection
 from .render import _render_loc
 from .search import Hit, QueryFilters  # noqa: F401  (QueryFilters re-export)
 
@@ -175,8 +176,9 @@ class NeighborIndex:
         missing = [s for s in seg_ids if s not in self._texts]
         if missing:
             ph = ",".join("?" for _ in missing)
+            text_sql, _ = fts_projection(self.store.db)
             rows = self.store.db.execute(
-                f"SELECT rowid, coalesce(original, body) FROM fts "
+                f"SELECT rowid, {text_sql} FROM fts "
                 f"WHERE rowid IN ({ph})",
                 tuple(missing),
             ).fetchall()

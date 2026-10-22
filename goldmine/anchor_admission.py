@@ -19,6 +19,7 @@ class AnchorDecision:
     reason: str | None = None
     inspected_rows: int = 0
     queries: int = 0
+    source_capabilities: dict = field(default_factory=dict)
 
     @property
     def constrained(self):
@@ -37,7 +38,7 @@ class AnchorDecision:
                 "bindings": len(self.bindings), "inspected_source_rows": self.inspected_rows,
                 "source_queries": self.queries,
                 "witnesses": sum(len(w) for w in self.witnesses.values()),
-                "semantic_remainder": "not_implemented"}
+                "semantic_remainder": "not_implemented", "source_capabilities": self.source_capabilities}
 
     def why(self, file_id):
         clauses = [i for i, owners in enumerate(self.owners) if file_id in owners]
@@ -55,6 +56,7 @@ class AnchorDecision:
 def _finish(decision, resolver):
     decision.inspected_rows = len(resolver.attempted)
     decision.queries = resolver.queries
+    decision.source_capabilities = resolver.profile.diagnostics()
     return decision
 
 
@@ -100,8 +102,7 @@ def _owners(plan, resolver, terms_of):
                     if clause.anchor_ids else set(resolver.allowed))
         # Anchorless phrases use bounded global body recall, not every file.
         if not clause.anchor_ids and clause.phrases:
-            eligible &= {r.file for r in resolver.recall(clause.phrases[0])
-                         if literal_occurs(clause.phrases[0], r.text or "")}
+            eligible &= {r.file for r in resolver.literal_rows(clause.phrases[0])}
         if not eligible:
             reason = "anchor_scope_ambiguous" if len(clause.anchor_ids) > 1 else "anchor_unresolved"
             return AnchorDecision(plan, reason=reason)
@@ -131,7 +132,7 @@ def resolve_obligations(store, query, phrases, allowed, terms_of, *, inspected=(
             # Preserve body owners too when the same complete query is stored.
             whole = _whole_anchor(plan)
             plan = QueryPlan((whole,), (Clause(0, (0,), ""),), plan.phrases, plan.pure_text)
-            bindings = tuple(dict.fromkeys([*pure, *resolver.bind(whole)]))
+            bindings = tuple(dict.fromkeys([*pure, *resolver.bind(whole, body_only=True)]))
             decision = AnchorDecision(plan, (frozenset(b.file_id for b in bindings),), bindings,
                                       exact=_best_exact(bindings))
         elif not plan.anchors:

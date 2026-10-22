@@ -8,6 +8,7 @@ import re
 from uuid import UUID
 
 from .contracts import ApplicationError, Citation, StoredEvidence
+from .read_source import fts_projection
 
 _CITATION = re.compile(r"gm1:([0-9a-f-]{36}):([1-9][0-9]{0,18}):([0-9a-f]{16})\Z")
 _MAX_SEGMENT_ID = (1 << 63) - 1
@@ -39,9 +40,10 @@ def read_evidence(store, segment_id: int, *, uuid: str | None = None) -> StoredE
     if isinstance(segment_id, bool) or not isinstance(segment_id, int) or not 0 < segment_id <= _MAX_SEGMENT_ID:
         raise ApplicationError("invalid_params", "invalid citation segment ID", exit_code=2)
     uuid = index_uuid(store) if uuid is None else uuid
+    text_sql, _ = fts_projection(store.db, "t")
     row = store.db.execute(
         "SELECT f.id, f.path, f.source, f.sha256, f.kind, f.info, f.capability, "
-        "s.id, s.kind, s.modality, s.loc, s.loc_end, coalesce(t.original, t.body) "
+        f"s.id, s.kind, s.modality, s.loc, s.loc_end, {text_sql} "
         "FROM segments s JOIN files f ON f.id=s.file "
         "LEFT JOIN fts t ON t.rowid=s.id WHERE s.id=?",
         (segment_id,),

@@ -32,6 +32,16 @@ they do not supply body evidence or a body location. The structural registration
 is `anchor.v1-lexical`; semantic remainder is off and its product quality remains
 unvalidated. Existing request deadlines cover bounded source verification.
 
+Supported schema4 reads validate stored originals with the historical NFC rule;
+schema5/6 retain NFKC+casefold validation. A shared read projection also supports
+the declared body-only schema4 variant without creating views or changing bytes.
+Legacy anchor recall is bounded and explicitly incomplete; lexical reindex remains
+an explicit operation. Complete metadata-field eligibility runs before the optional
+candidate limit on every supported format. The 2000-source limit concerns distinct
+returned/materialized source rows; indexed SQL may inspect additional metadata
+under the same request deadline. Modern missing derived tables and selected corrupt
+pointers remain errors.
+
 Mutations use the registered writer transaction. Explicit lexical reindex upgrades
 derived schema fields, while persistent old-writer guards reject the whole stale
 transaction. Vector-cache generations are explicitly built/enabled derivatives;

@@ -13,6 +13,7 @@ import math
 import numpy as np
 
 from .deadline import check_deadline
+from .read_source import fts_projection
 from .evidence import segment_evidence_types
 from .lexical import normalize
 
@@ -39,8 +40,9 @@ def collect_body_units(db, units, rows):
             for (sid,) in found:
                 matched.setdefault(sid, set()).add(i)
         if cjk_units:
+            text_sql, _ = fts_projection(db)
             found = db.execute(
-                f"SELECT rowid,coalesce(original,body) FROM fts WHERE rowid IN ({marks})", batch,
+                f"SELECT rowid,{text_sql} FROM fts WHERE rowid IN ({marks})", batch,
             )
             for sid, text in found:
                 normalized = normalize(text or "")
@@ -103,8 +105,9 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
     if not candidate_ids:
         return None
     marks = ",".join("?" for _ in candidate_ids)
+    text_sql, _ = fts_projection(store.db, "f")
     rows = store.db.execute(
-        "SELECT s.id,s.kind,s.modality,s.loc,s.loc_end,coalesce(f.original,f.body) "
+        f"SELECT s.id,s.kind,s.modality,s.loc,s.loc_end,{text_sql} "
         f"FROM segments s LEFT JOIN fts f ON f.rowid=s.id WHERE s.file=? AND s.id IN ({marks})",
         (file.id, *sorted(candidate_ids)),
     ).fetchall()

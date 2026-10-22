@@ -611,8 +611,11 @@ class Store:
         fts row (DigUp Searcher.swift:354-358 pattern) — «» snippet windows
         are built from THIS, never from tokenizer-normalized text. None when
         the segment has no fts row (e.g. a pure image vector)."""
+        from .read_source import fts_projection
+
+        text_sql, _ = fts_projection(self.db)
         row = self.db.execute(
-            "SELECT coalesce(original, body) FROM fts WHERE rowid = ?",
+            f"SELECT {text_sql} FROM fts WHERE rowid = ?",
             (segment_id,),
         ).fetchone()
         return row[0] if row else None
@@ -621,8 +624,11 @@ class Store:
 
     def search_fts(self, match: str, limit: int = 1000) -> list[FtsRow]:
         """FTS5 OR-match, best first. bm25 is lower-is-better: ORDER BY ascending."""
+        from .read_source import fts_projection
+
+        _, original_sql = fts_projection(self.db, "fts")
         rows = self.db.execute(
-            """SELECT fts.rowid, s.file, fts.name, fts.body, fts.original,
+            f"""SELECT fts.rowid, s.file, fts.name, fts.body, {original_sql},
                       bm25(fts, 3.0, 1.0) AS rank
                FROM fts JOIN segments s ON s.id = fts.rowid
                WHERE fts MATCH ?

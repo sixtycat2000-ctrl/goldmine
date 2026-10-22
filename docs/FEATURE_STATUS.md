@@ -8,7 +8,7 @@ No final quality milestone, release candidate, hosted CI success or publication 
 | Capability | Interface and default | Backend / input limits | Evidence and remaining acceptance |
 |---|---|---|---|
 | Latin/CJK lexical retrieval | `search --lexical`; ingest without a model | NFKC derived index preserves stored original; schema v6 | Mechanism tests pass; latest completed product dev quality fails its gates |
-| Name/path/identifier lookup | Normal lexical/hybrid search | Complete typed anchors and same-file body predicates; metadata has no invented body position | C002 focused tests pass; new structural candidate has not been quality-scored; legacy-read correction is in progress |
+| Name/path/identifier lookup | Normal lexical/hybrid search | Complete typed anchors and same-file body predicates; metadata has no invented body position | C002 and legacy-read focused tests pass; new structural candidate has not been quality-scored; full current-source CI is pending |
 | Semantic fast retrieval | Default hybrid, fixed embedding pin | llama is text-only; exact stored fingerprint required | Historical real baseline reproduced; final candidate regression recorded in PROGRESS |
 | PDF / supporting evidence | One file per hit; up to three content segments | True page units, same-page chunks and bounded adjacent pages | Twenty-page and multi-block adversarial cases pass; latest completed real product PDF gate fails |
 | OCR / ASR / photo metadata | Ingest with explicit tools; status records evidence states | Vision OCR; Poppler; whisper/ffmpeg; EXIF is metadata | Tool probes and focused cases pass; complete full-media provenance/quality missing |
@@ -59,7 +59,10 @@ the same. `local_rc` remains nonzero until all local mandatory checks are comple
    pre-upgrade.sqlite`. Keep this pre-migration copy for rollback.
 2. `goldmine reindex lexical --db OLD.sqlite` upgrades/rebuilds only derived indexes.
    Stored original text and vector BLOBs are retained. Read-only search/status/doctor
-   do not perform this upgrade.
+   do not perform this upgrade. Supported schema4/5 reads use their actual stored
+   format and bounded source verification; `lexical_upgrade_required` reports that
+   the full current derived recall is unavailable. A missing required table in a
+   modern index remains an error.
 3. A changed chunker/extractor marks existing files stale. Explicit ingest refreshes
    them from the originally chosen roots; no new scope is inferred.
 4. To use an older program, restore the pre-upgrade backup to a different path.

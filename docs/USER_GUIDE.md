@@ -102,6 +102,11 @@ For example, `5mA` and `5MA` are different quantities for this check. A filename
 can identify a file; the remaining question still needs evidence in that same
 file's body. Quoted phrases must occur contiguously in one stored segment.
 
+Search reads supported older indexes without changing them. If diagnostics request
+a lexical upgrade, back up the index and run `goldmine reindex lexical --db OLD.sqlite`
+to add the current derived indexes. A verification-limit refusal is inconclusive;
+it does not prove the requested information is absent.
+
 Useful extras:
 
 - Inline filters: `kind:pdf kind:doc`, `under:~/notes`, `after:2026-01-01`, `before:2w`,

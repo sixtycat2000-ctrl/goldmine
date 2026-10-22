@@ -20,6 +20,7 @@ from .contracts import (
     SearchRequest, SearchResult, SegmentContext, StoredEvidence,
 )
 from .deadline import RequestTimeout, check_deadline, remaining_timeout, request_timeout
+from .lexical import LEXICAL_VERSION
 from .pack import (
     BudgetTooSmall as PackBudgetTooSmall,
     NeighborIndex, PackSettings, build_pack_from_hits, tokens_of,
@@ -116,7 +117,7 @@ class Application:
                         "multi_query": request.multi_query, "z_gate": request.z_gate,
                         "limit": request.limit, "context": request.context,
                         "budget": request.budget, "why": request.why,
-                        "lexical_upgrade_required": store.meta("lexical_version") is None,
+                        "lexical_upgrade_required": store.meta("lexical_version") != LEXICAL_VERSION,
                         **quality,
                     },
                     via=getattr(backend, "via", "cold"),
@@ -144,8 +145,9 @@ class Application:
                       snippet_width=request.snippet_width, why=request.why)
         if request.mode == "fast":
             hits = searcher.search(request.query, **kwargs)
-            meta = ({"anchor_contract": decisions[0][1].diagnostics()}
-                    if decisions and decisions[0][1].constrained else {})
+            meta = ({"source_capabilities": decisions[0][1].source_capabilities} if decisions else {})
+            if decisions and decisions[0][1].constrained:
+                meta["anchor_contract"] = decisions[0][1].diagnostics()
             return hits, meta, None
         from .quality import merge_queries, rerank_candidates, select_results
 
@@ -157,6 +159,8 @@ class Application:
         else:
             hits = searcher.search(request.query, **{**kwargs, "limit": 20 if request.limit > 0 else 0})
         original = next((decision for text, decision in decisions if text == request.query), None)
+        if original is not None:
+            metadata["source_capabilities"] = original.source_capabilities
         if original is not None:
             hits = guard_composed_hits(store, original, hits)
             if original.constrained:

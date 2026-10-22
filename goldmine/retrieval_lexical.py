@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .deadline import check_deadline
+from .read_source import fts_projection
 from .lexical import (
     LexicalResult, fts_quote, normalize, query_units,
 )
@@ -40,8 +41,9 @@ def _cjk_coverage(db, patterns, file_ids):
 def _phrase_files(db, phrase, candidate_rows):
     """A phrase cannot be assembled from different segments or scattered grams."""
     found = {}
+    text_sql, _ = fts_projection(db)
     for fid, sid, _ in candidate_rows:
-        row = db.execute("SELECT name,coalesce(original,body) FROM fts WHERE rowid=?", (sid,)).fetchone()
+        row = db.execute(f"SELECT name,{text_sql} FROM fts WHERE rowid=?", (sid,)).fetchone()
         if row and any(phrase in normalize(text or "") for text in row):
             found.setdefault(fid, sid)
     return found

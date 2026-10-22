@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .read_source import fts_projection
+
 
 def segment_evidence_types(kind, modality, text, file_kind, extractor_version=None, info=None, loc=None):
     if kind == "name":
@@ -18,8 +20,9 @@ def segment_evidence_types(kind, modality, text, file_kind, extractor_version=No
 
 def file_evidence_types(db, fid, *, kind, extractor_version=None, info=None):
     labels = set()
+    text_sql, _ = fts_projection(db, "f")
     for segment_kind, modality, loc, text in db.execute(
-        "SELECT s.kind,s.modality,s.loc,coalesce(f.original,f.body) "
+        f"SELECT s.kind,s.modality,s.loc,{text_sql} "
         "FROM segments s LEFT JOIN fts f ON f.rowid=s.id WHERE s.file=?", (fid,),
     ):
         broad, media = segment_evidence_types(segment_kind, modality, text, kind, extractor_version, info, loc)

@@ -2,12 +2,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-import json
 from pathlib import PurePath
 import re
 import unicodedata
 
 from .deadline import check_deadline
+from .read_source import fts_projection, read_source_profile
+from .metadata_prelookup import decode_info, whole_metadata_predicate
+from .legacy_anchors import LegacyCandidates
 from .lexical import (ExactMatch, cjk_runs, fts_quote, grams, identifier_tokens,
                       normalize, path_identifier_tokens, query_units, term_forms, _is_cjk)
 from .query_obligations import (MAX_SOURCE_ROWS, Anchor, compact_alias, lexemes,
@@ -106,6 +108,8 @@ class Resolver:
     """One request cache; source rows inspected by recall share a fixed bound."""
     def __init__(self, store, allowed):
         self.db, self.allowed = store.db, allowed
+        self.profile = read_source_profile(self.db)
+        self.legacy = None if self.profile.exact else LegacyCandidates(self)
         self.rows: dict[int, SourceRow] = {}
         self.attempted: set[int] = set()
         self.witnesses: set[int] = set()
@@ -125,18 +129,16 @@ class Resolver:
             batch = missing[start:start + 400]
             self.attempted.update(batch)
             marks = ",".join("?" for _ in batch)
+            text_sql, original_sql = fts_projection(self.db, "t")
             found = self.execute(
-                "SELECT s.id,s.file,s.kind,coalesce(t.original,t.body),f.path,f.kind,f.info,t.original,t.body "
+                f"SELECT s.id,s.file,s.kind,{text_sql},f.path,f.kind,f.info,{original_sql},t.body "
                 "FROM segments s JOIN files f ON f.id=s.file "
                 "LEFT JOIN fts t ON t.rowid=s.id WHERE s.id IN (" + marks + ")", batch,
             ).fetchall()
             for sid, fid, kind, text, path, file_kind, info, original, body in found:
                 check_deadline()
-                if original is not None and normalize(original) != body:
-                    raise ValueError("stored original/body normalization is inconsistent")
-                value = json.loads(info) if info is not None else None
-                if value is not None and not isinstance(value, dict):
-                    raise ValueError("invalid stored anchor metadata")
+                self.profile.validate_original(original, body)
+                value = decode_info(info)
                 self.rows[sid] = SourceRow(sid, fid, kind, text, path, file_kind, value)
         return [self.rows[sid] for sid in ids if sid in self.rows and self.rows[sid].file in self.allowed]
 
@@ -165,22 +167,44 @@ class Resolver:
             return {value, *path_identifier_tokens(value)}
         return set(identifier_tokens(value))
 
-    def lookup(self, anchor, *, whole_metadata=False):
-        keys = list(dict.fromkeys(key for key, _ in term_forms(anchor.raw)))
-        marks = ",".join("?" for _ in keys)
-        ids = self._candidate_ids(
-            "SELECT DISTINCT segment_id FROM lookup_terms WHERE normalized_term IN (" + marks
-            + ")" + (" AND source!='body'" if whole_metadata else "") + " ORDER BY segment_id", keys,
-        )
+    def lookup(self, anchor, *, whole_metadata=False, body_only=False):
+        if self.legacy is not None:
+            fields = self.legacy.lookup(anchor, whole_metadata=whole_metadata, body_only=body_only)
+            output = self._bindings(anchor, fields, whole_metadata)
+            if not output and not whole_metadata and not body_only:
+                fields = self.legacy.fields(self.legacy.enumerate())
+                output = self._bindings(anchor, fields, False)
+            return output
+        keys = ([normalize(anchor.raw)] if whole_metadata else
+                list(dict.fromkeys(key for key, _ in term_forms(anchor.raw))))
+        if whole_metadata:
+            with whole_metadata_predicate(self.db, self.allowed, derived=True) as function:
+                ids = self._candidate_ids(
+                    "SELECT DISTINCT l.segment_id FROM lookup_terms l "
+                    "LEFT JOIN segments s ON s.id=l.segment_id LEFT JOIN files f ON f.id=s.file "
+                    "WHERE l.normalized_term=? AND l.source!='body' AND l.match_type='raw' "
+                    f"AND {function}(s.id,s.file,s.kind,f.id,f.path,f.info,l.file_id,l.source,"
+                    "l.raw_term,l.normalized_term,l.match_type,?)=1 ORDER BY l.segment_id", [keys[0], anchor.raw],
+                )
+        else:
+            marks = ",".join("?" for _ in keys)
+            ids = self._candidate_ids(
+                "SELECT DISTINCT segment_id FROM lookup_terms WHERE normalized_term IN (" + marks
+                + ")" + (" AND source='body'" if body_only else "") + " ORDER BY segment_id", keys,
+            )
         self.read(ids)
         if any(sid not in self.rows for sid in ids):
             raise ValueError("anchor lookup points at a missing stored segment")
-        fields_by_row = self._lookup_fields(ids, keys)
+        fields = self._lookup_fields(ids, keys, whole_metadata=whole_metadata, body_only=body_only)
+        return self._bindings(anchor, fields, whole_metadata)
+
+    def _bindings(self, anchor, fields_by_row, whole_metadata):
         output = []
-        for row in self.read(ids):
-            fields = fields_by_row.get(row.id, ())
-            for field in sorted(fields):
+        for row in self.read(fields_by_row):
+            for field in sorted(fields_by_row[row.id]):
                 value = self._field(row, field)
+                if value is None:
+                    continue
                 if whole_metadata:
                     candidates = [value] if field != "body" else []
                 elif field in {"basename", "path"}:
@@ -199,16 +223,18 @@ class Resolver:
                                           "raw" if same else "alias", level, anchor.raw))
         return list(dict.fromkeys(output))
 
-    def _lookup_fields(self, ids, keys):
+    def _lookup_fields(self, ids, keys, *, whole_metadata=False, body_only=False):
         fields = {}
         key_marks = ",".join("?" for _ in keys)
         for start in range(0, len(ids), 400):
             batch = ids[start:start + 400]
             marks = ",".join("?" for _ in batch)
+            raw_only = (" AND source!='body' AND match_type='raw'" if whole_metadata else
+                        " AND source='body'" if body_only else "")
             terms = self.execute(
                 "SELECT segment_id,raw_term,source,file_id,normalized_term,match_type "
                 "FROM lookup_terms WHERE segment_id IN (" + marks + ") AND normalized_term IN ("
-                + key_marks + ") ORDER BY segment_id,source,raw_term", (*batch, *keys),
+                + key_marks + ")" + raw_only + " ORDER BY segment_id,source,raw_term", (*batch, *keys),
             )
             for sid, raw, field, fid, normalized, match_type in terms:
                 check_deadline()
@@ -238,13 +264,21 @@ class Resolver:
         if words:
             expression = "body : (" + " AND ".join(fts_quote(w) for w in dict.fromkeys(words)) + ")"
             ids.extend(self.body_ids(expression, file_id=file_id))
-        if cjk_runs(text):
+        if self.profile.cjk and cjk_runs(text):
             patterns = [fts_quote(g) for run in cjk_runs(text) for g in grams(run)]
             ids.extend(self.body_ids(" OR ".join(patterns), file_id=file_id, cjk=True))
         return self.read(ids)
 
-    def bind(self, anchor):
-        found = self.lookup(anchor)
+    def literal_rows(self, text, *, file_id=None):
+        rows = [row for row in self.recall(text, file_id=file_id)
+                if literal_occurs(text, row.text or "")]
+        if not rows and self.legacy is not None:
+            rows = [row for row in self.legacy.enumerate(file_id)
+                    if row.kind != "name" and literal_occurs(text, row.text or "")]
+        return rows
+
+    def bind(self, anchor, *, body_only=False):
+        found = self.lookup(anchor, body_only=body_only)
         for row in self.recall(anchor.raw):
             for raw in body_surfaces(row.text or ""):
                 if literal_equal(anchor.raw, raw):
@@ -252,7 +286,7 @@ class Resolver:
             if anchor.kind in {"literal", "path"}:
                 for raw in literal_surfaces(anchor.raw, row.text or ""):
                     found.append(Binding(anchor.id, row.file, row.id, "body", raw, "raw", 1, anchor.raw))
-        if not found:
+        if not found and not body_only:
             found = self._qualified(anchor)
         # One deterministic witness for each logical source-field binding;
         # repeated occurrences in a long file cannot multiply per-hit why.
@@ -293,8 +327,11 @@ class Resolver:
         for unit in query_units(text, terms_of(text), []):
             patterns = unit.patterns if unit.kind == "cjk" else ("body : (" + unit.patterns[0] + ")",)
             for pattern in patterns:
-                ids = self.body_ids(pattern, file_id=file_id, cjk=unit.kind == "cjk")
-                rows = self.read(ids)
+                if unit.kind == "cjk" and not self.profile.cjk:
+                    rows = [row for row in self.legacy.enumerate(file_id) if row.kind != "name"]
+                else:
+                    ids = self.body_ids(pattern, file_id=file_id, cjk=unit.kind == "cjk")
+                    rows = self.read(ids)
                 # CJK derived rows include copied names: require actual body.
                 if unit.kind == "cjk":
                     gram = pattern[1:-1].replace('""', '"')
@@ -303,8 +340,7 @@ class Resolver:
                     return None
                 witnesses.append((unit.kind, unit.text, rows[0].id))
         for phrase in phrases:
-            rows = [r for r in self.recall(phrase, file_id=file_id)
-                    if literal_occurs(phrase, r.text or "")]
+            rows = self.literal_rows(phrase, file_id=file_id)
             if not rows:
                 return None
             witnesses.append(("phrase", phrase, rows[0].id))
