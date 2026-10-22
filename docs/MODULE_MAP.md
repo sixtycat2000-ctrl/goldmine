@@ -9,7 +9,7 @@
 | Entry and adapters | `cli.py` dispatch and exit mapping; `commands/{search,ingest,distill,inspection,lifecycle,maintenance,models,opener}.py`; `command_support.py` adapter runtime |
 | Read application | `application.py`, `contracts.py`, `citations.py`, `evidence.py`; one request snapshot for rank/details/pack and stored-evidence reads |
 | Retrieval | `search.py`, `lexical.py`, `lexical_store.py`, `retrieval_{lexical,evidence}.py`, `admission.py`; derived normalization, exact tiers and evidence admission |
-| Source obligations | `query_obligations.py`, `anchor_resolver.py`, `anchor_admission.py`; typed complete anchors, actual stored-source witnesses, same-file lexical remainder and final clause coverage |
+| Source obligations | `query_obligations.py`, `anchor_resolution.py`, `anchor_admission.py`; typed complete anchors, actual stored-source witnesses, same-file lexical remainder and final clause coverage |
 | Optional quality | `query_plan.py`, `quality.py`, `rerank.py`; conservative clauses, bounded fusion and explicitly owned local model |
 | Packs | `pack.py`, `pack_allocation.py`, `retrieval_evidence.py`; stored original text, source-order support, fair bounded allocation, complete-envelope budget and exact-material deduplication |
 | Storage | `store.py`, `storage_connections.py`, `storage_writes.py`, `migrations.py`; read-only URI/snapshots, writer protocol and transactional schema work |

@@ -24,7 +24,7 @@ do not independently rerun retrieval or read source files. The MCP SDK is an
 explicit optional dependency, and model operations are serialized with two
 bounded waiters.
 
-`query_obligations.py`, `anchor_resolver.py` and `anchor_admission.py` enforce
+`query_obligations.py`, `anchor_resolution.py` and `anchor_admission.py` enforce
 complete typed source anchors and same-file lexical remainder evidence. The
 closed compare/two-clause grammar records actual owners, and final result limits
 must preserve every required clause. Whole metadata matches identify a file;
