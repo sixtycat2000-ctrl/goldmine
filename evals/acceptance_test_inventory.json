@@ -614,9 +614,9 @@
    "reason": "CLI ingest fixtures include real native media conversion."
   },
   {
-   "nodeid": "tests/test_cli.py::test_backends_lists_three_and_exits_zero",
+   "nodeid": "tests/test_cli.py::test_backends_lists_known_and_exits_zero",
    "profile": "native",
-   "reason": "CLI ingest fixtures include real native media conversion."
+   "reason": "Renamed with the authorized Foresight retirement (backends now llama+mock); same assertion scope."
   },
   {
    "nodeid": "tests/test_cli.py::test_backends_json_and_probe_never_spawns_llama",
