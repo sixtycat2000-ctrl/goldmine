@@ -3672,6 +3672,31 @@
    "reason": "Hermetic fixture logic."
   },
   {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_file_scoped_body_ids_sql_equivalence",
+   "profile": "offline",
+   "reason": "File-first body_ids SQL result/error equivalence (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_remainder_units_prepared_once_per_clause",
+   "profile": "offline",
+   "reason": "Clause remainder units derived once per clause (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_terms_of_runs_once_per_clause",
+   "profile": "offline",
+   "reason": "terms_of runs once per clause across all owner files (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc03_fts_projection_memoized_per_snapshot",
+   "profile": "offline",
+   "reason": "FTS projection PRAGMA memoized per connection snapshot (SC-03)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc03_whole_metadata_derived_terms_once_per_distinct_value",
+   "profile": "offline",
+   "reason": "Whole-metadata derived sets computed once per distinct value (SC-03)."
+  },
+  {
    "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[doc]",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
