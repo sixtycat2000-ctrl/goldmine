@@ -185,7 +185,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-04",
-      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8Foresight), actual422source/config hashes stable. Current003 quality predates these fixes; fresh native prepare/dev still required. C sufficiency design only."
+      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8Foresight), actual422source/config hashes stable. Fresh current004 full122 native prepare and unchanged210dev control completed with strict readback: S5 101/180 (previous103), PACK102/180 (previous96), compound PACK11/30 (previous6), noise5/30; FAIL11/MISSING0. No fourth profile/holdout/retry. C002 independent design closed, report-only implementation pending."
     },
     {
       "id": "P1-05",
@@ -221,7 +221,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-06",
-      "result": "All3 preregistered real dev arms measured:control103/180 success5,5/30noise;higher_z103/180,10/30noise;margin98/180,8/30noise. All11 gatesFAIL;selected=null,original control default unchanged,no fourth parameter arm,holdout0. Paired CI answerable denominator fixed and independently audited."
+      "result": "All3 preregistered real dev arms measured:control103/180 success5,5/30noise;higher_z103/180,10/30noise;margin98/180,8/30noise. All11 gatesFAIL;selected=null,original control default unchanged,no fourth parameter arm,holdout0. Paired CI answerable denominator fixed and independently audited. Current004 prospective pre-C control is retained regardless of scores: noise5/30, strictFAIL11. C002 complete-identity/same-owner lexical scope design independently closed; production implementation not yet adopted, semantic remainder remainsOFF."
     },
     {
       "id": "P1-07",

@@ -30,6 +30,8 @@
 - 因上述真实源文本丢失需要全新候选索引，root 在旧候选 public 未输出任何质量结果时取消其自有进程组。实际 receipt 为 **exit -15、timed_out=false、MISSING**，不是 PASS；`P0-06/public-current-001/cancellation-decision.json` 在发信号前登记，SHA `77a9138ad6c5cf8b82061f5d2e69423a5a40d849700811b3bc21d02f85c322a8`。此前 reference/candidate 准备和 reference 全部 2,029 query ×4 scorer 原始结果均保留。后续仅在确切修复源码冻结后，以新候选目录/索引执行，不改变参数或挑分重试。
 - 新一轮四 profile CI 已完整执行，`P0-06/postfix-ci-001/` 保留 base **2137 PASS、10 FAIL、11 ERROR**，native **228 PASS、1 FAIL**，MCP **6 PASS**、Foresight **8 PASS**，源码前后稳定。失败分别来自合成 converter 文件名触发原生工具禁用、上述 semantic-only 支持片段变化，以及 host Python 的 `-I` 子进程读不到 user-site NumPy。前两项做窄修，native 使用已锁定且隔离模式可导入 NumPy 的现有 venv；不移除 hermetic guard、`-I` 或任何断言。修复后的 `P0-06/postfix-ci-002/` 完整四组均 **PASS**：base **2163**、native **229**、MCP **6**、Foresight **8**，合计 **2406 项、0 skip**，422 个代码/配置文件前后稳定。该集成检查点可用于下一次固定 dev 实测；旧失败保留，后续源码更改仍需新验收。
 - 竞品完整 aggregate 另有已独立证明的 producer/reader 大小不匹配：18×210 个有效合成请求、每个 Goldmine excerpt 仅 19 ASCII bytes 时，完整 JSON 已为 **8,388,927 bytes**，超过现有 8MiB reader；实际引擎与模型尚未执行。正在独立报告包中实现有界分片与完整回放，保留全部正文、向量、raw、准备证明及最终磁盘计数；不能用扩大通用 reader 或裁剪记录掩盖该问题。
+- `d1e313f` 已保存上述生产修复及准备/观察/验收组件，本地工作树在该检查点干净。随后 `current004` 使用全新 122-source native index、同一默认 control 完成 **210 个 dev 请求**，严格独立回放 **FAIL 11、MISSING 0**：PACK 全事实 **96→102/180**、compound PACK **6→11/30**，严格 success@1 **88→86/180**、success@5 **103→101/180**，noise 正确空仍 **5/30**。全部原始结果保留，未增加第四参数臂或挑分重试，holdout 未打开；这些是分块与 B003 的合并效果，不能归因给某一单独修复。完整聚合与组级 paired 区间见 [current004 摘要](product-dev-post-conservation-20261022.json)，区间均跨 0，不能宣称广泛显著收益。C002 设计独立闭环，但实现仍在报告目录，不读取该结果来调参。
+- typed 竞品执行器 001 的作者及 root 独立机械回放均 **170 项通过、0 skip**，但 root 继续证明完整 cache witness 仍留在根部 slots stream：固定 1,728 slots 的有效合成 cache 形状生成 **19,492,615 bytes**，超过 16MiB administrative allowance。`P2-08/measurements-executor-root-review-001/` 保留空 cache 对照与实际 writer/readback 反例；001 尚未合入，修订将完整 witness 移入 cell-owned shards，限额及记录不裁减。此问题与上条 base aggregate 8MiB 阻断分开闭环。
 
 ## 2026-10-22：新语料与验收补齐
 
@@ -42,7 +44,7 @@
 
 ## 新产品集 dev 实测
 
-同一物化 corpus、同一固定模型与 server，原始 `7694837` 对照 pack/SQL 修复后的 current003 检查点，**210 题全量：180 可答、30 noise；可答 46 个独立来源组**。这是最新完整质量实测，发生在随后段落修复前，不能认证当前更改后的源码。这里的 success 要求冻结的来源、位置及事实 span 证据，严格于只命中文件名；与 legacy150 的比例不能直接混列。模型/源码/命令 SHA 见 [product-dev-post-pack-20261022.json](product-dev-post-pack-20261022.json)，此前结果保留在 [product-dev-20261022.json](product-dev-20261022.json)。
+同一物化 corpus、同一固定模型与 server，原始 `7694837` 对照 pack/SQL 修复后的 current003 检查点，**210 题全量：180 可答、30 noise；可答 46 个独立来源组**。下表保留随后分块/B 修复前的历史实测；最新完整 current004 结果及回退已记录在上方与 [新摘要](product-dev-post-conservation-20261022.json)。这里的 success 要求冻结的来源、位置及事实 span 证据，严格于只命中文件名；与 legacy150 的比例不能直接混列。current003 模型/源码/命令 SHA 见 [product-dev-post-pack-20261022.json](product-dev-post-pack-20261022.json)，此前结果保留在 [product-dev-20261022.json](product-dev-20261022.json)。
 
 | 开发指标 | 原版 | current003 control，段落修复前 |
 |---|---:|---:|
