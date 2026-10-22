@@ -27,6 +27,9 @@ def main(argv=None):
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--python", type=Path, default=Path(sys.executable))
     parser.add_argument("--prepare", action="store_true", help="Capture the actual explicit preparation before scoring, without downloads.")
+    parser.add_argument("--query-deadline-seconds", type=float, default=None,
+                        help="Registered per-query deadline policy forwarded to the evaluator; identical for "
+                             "reference and candidate roles; timeouts fail loudly, never empty hits.")
     args = parser.parse_args(argv)
     try:
         cache, source, model, server = (path.resolve() for path in (args.cache_root, args.production_root, args.model, args.server))
@@ -49,6 +52,8 @@ def main(argv=None):
                    "--production-root", str(source), "--backend", "llama", "--model", str(model), "--server", str(server)]
         if args.role == "reference":
             command.append("--reference-code")
+        if args.query_deadline_seconds is not None:
+            command += ["--query-deadline-seconds", str(args.query_deadline_seconds)]
         command.append("--json")
         # No user daemon is consulted; the selected backend owns its process.
         env = {key: value for key, value in os.environ.items() if not key.startswith("GOLDMINE_") and key != "PYTHONPATH"}
