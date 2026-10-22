@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-SEARCH_BEHAVIOR_VERSION = "search.v3-evidence-control"
+SEARCH_BEHAVIOR_VERSION = "search.v4-anchor-contract"
 
 
 @dataclass(frozen=True)

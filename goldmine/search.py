@@ -22,10 +22,12 @@ candidate, deliberately NOT shipped (one sweep — overfit risk).
 from __future__ import annotations
 
 import calendar
+from contextlib import nullcontext
 import datetime
 import hashlib
 import os
 import re
+import sqlite3
 import unicodedata
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
@@ -35,7 +37,9 @@ import numpy as np
 from .backends.base import query_prompt
 from .admission import AdmissionParameters, SEARCH_BEHAVIOR_VERSION, admit_files
 from .lexical import normalize as normalize_lexical
-from .retrieval_lexical import collect_lexical
+from .retrieval_lexical import collect_lexical, add_verified_witnesses
+from .anchor_admission import resolve_obligations
+from .deadline import check_deadline
 from .retrieval_evidence import select_evidence, semantic_segments
 from .store import Store
 from .util import snippet as make_snippet
@@ -276,14 +280,33 @@ class Searcher:
         filters: QueryFilters | None = None,
         snippet_width: int | None = 240,
         why: bool = False,
+        diagnostics: dict | None = None,
+        obligation_sink: list | None = None,
     ) -> list[Hit]:
         """`query` is the CLEAN query when `filters` is given (parse_filters
         already removed the filter tokens; callers pass the pair through).
         `snippet_width` controls the render-time «» snippet decoration of the
         final hits (None disables it); the stored excerpt is never touched.
         `why=True` attaches the per-hit score decomposition (`--why`)."""
+        snapshot = nullcontext() if self.store.db.in_transaction else self.store.read_snapshot()
+        try:
+            with snapshot:
+                return self._search(query, limit=limit, scorer=scorer, z_gate=z_gate, kinds=kinds,
+                                    filters=filters, snippet_width=snippet_width, why=why,
+                                    diagnostics=diagnostics, obligation_sink=obligation_sink)
+        except sqlite3.Error:
+            check_deadline()  # SQLite interruption must retain RequestTimeout.
+            raise
+
+    def _search(self, query, *, limit, scorer, z_gate, kinds, filters, snippet_width, why,
+                diagnostics, obligation_sink):
         if scorer not in ("hybrid", "lexical", "semantic", "rrf"):
             raise ValueError(f"unknown scorer '{scorer}'")
+        check_deadline()
+        if diagnostics is not None:
+            diagnostics.clear()
+        if limit == 0:
+            return []
         terms = self.terms(query)
         semantic_text = query
         if filters is not None and filters.phrases:
@@ -309,6 +332,27 @@ class Searcher:
             keyword_segment = lexical.keyword_segment
             coverage = lexical.coverage
 
+        allowed = self._allowed_files(kinds, filters)
+        phrases = filters.phrases if filters is not None else []
+        anchor = resolve_obligations(
+            self.store, query, phrases, allowed, self.terms,
+            inspected=lexical.segment_files if lexical is not None else (),
+        )
+        if diagnostics is not None:
+            diagnostics.update(anchor.diagnostics())
+        if obligation_sink is not None:
+            obligation_sink.append((query, anchor))
+        if anchor.reason:
+            return []
+        if anchor.constrained:
+            allowed &= anchor.allowed
+        if lexical is not None:
+            lexical.exact = anchor.exact
+            witness_rows = {(b.segment_id, b.file_id) for b in anchor.bindings if b.field == "body"}
+            witness_rows.update((sid, fid) for (_, fid), proof in anchor.witnesses.items()
+                                for _, _, sid in proof)
+            add_verified_witnesses(self.store, lexical, query, phrases, terms, sorted(witness_rows))
+
         # -- meaning ----------------------------------------------------------
         best: dict[int, tuple[float, float, int]] = {}  # file -> (z, cosine, seg_id)
         z_by_file: dict[int, float] = {}
@@ -320,7 +364,9 @@ class Searcher:
         if want_semantic:
             table = self.store.load_vectors()
             if len(table) > 0:
+                check_deadline()
                 qvec = self.backend.embed_texts([query_prompt(semantic_text)])
+                check_deadline()
                 q = np.asarray(qvec[0], dtype=np.float32)
                 scores = table.matrix @ q
                 zvals = self.zscores(scores, np.asarray(table.modalities))
@@ -334,8 +380,6 @@ class Searcher:
                     scores,
                     np.asarray(table.ids, dtype=np.int64),
                 )
-
-        allowed = self._allowed_files(kinds, filters)
 
         # -- candidates + fusion ------------------------------------------------
         if self.admission_parameters.semantic_segment_margin is not None and fids_arr is not None:
@@ -395,6 +439,7 @@ class Searcher:
             margins = self._segment_margins(fids_arr, zvals, files=set(ordered[:limit]))
 
         hits: list[Hit] = []
+        selected_files: set[int] = set()
         evidence_vectors = semantic_segments(table, zvals, scores, set(ordered[:limit]))
         for fid in ordered[:limit]:
             z = z_by_file.get(fid)
@@ -459,6 +504,8 @@ class Searcher:
                     margin=margins.get(fid),
                 )
                 hit.why.update(admission_reason=hit.admission_reason, search_behavior_version=SEARCH_BEHAVIOR_VERSION)
+                if anchor.constrained:
+                    hit.why["anchor_contract"] = anchor.why(fid)
                 local_units = lexical.segment_units.get(seg_id, frozenset()) if lexical is not None else frozenset()
                 local_vector = next(((sz, sc) for sid, sz, sc in evidence_vectors.get(fid, []) if sid == seg_id), None)
                 hit.why["display_evidence"] = {
@@ -478,6 +525,12 @@ class Searcher:
                         "promotion_reason": "verified exact source with supported remaining query",
                     })
             hits.append(hit)
+            selected_files.add(fid)
+
+        if not anchor.represented(selected_files):
+            if diagnostics is not None:
+                diagnostics["reason"] = "anchor_not_in_selected_limit"
+            return []
 
         # -- presentation (item 15): near-dup fold bookkeeping, then «» snippets.
         # One segment_text fetch per hit, shared by both passes (F4: the v2.0

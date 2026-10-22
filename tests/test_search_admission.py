@@ -1,6 +1,7 @@
 """Admission reasons describe explicit evidence gates, never probability."""
 
 import json
+import hashlib
 from pathlib import Path
 
 import numpy as np
@@ -93,7 +94,17 @@ def test_baseline_ablation_rules_retained():
 
 def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     registered = json.loads((Path(__file__).parents[1] / "evals/search_parameters.json").read_text())
-    assert registered["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION
+    # Historical numeric trials retain their original v3 bytes/status.
+    assert registered["search_behavior_version"] == "search.v3-evidence-control"
+    structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
+    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v4-anchor-contract"
+    assert structural["algorithm_version"] == "anchor.v1-lexical"
+    assert structural["status"] == "UNVALIDATED" and structural["quality_results"] is None
+    assert structural["semantic_remainder"] == "not_implemented"
+    historical = structural["parameter_registration"]
+    assert historical["sha256"] == hashlib.sha256((Path(__file__).parents[1] / historical["path"]).read_bytes()).hexdigest()
+    assert historical["historical_search_behavior_version"] == registered["search_behavior_version"]
+    assert not structural["noise_target_attainment_claim"]
     assert 1 <= len(registered["candidates"]) <= 3
     assert registered["default"] == "control"
     control = next(c for c in registered["candidates"] if c["id"] == "control")

@@ -516,11 +516,10 @@ def test_filter_phrase_and_terms_combine(store):
     clean, flt = parse_filters('needles "cluster setup"')
     assert clean == "needles"
     hits = Searcher(store, None).search(clean, scorer="lexical", filters=flt)
-    # the phrase is an FTS pattern, not a hard filter: the bare term still
-    # anchors loose.txt, but phrase+term coverage ranks the phrase file first
-    assert [h.path for h in hits] == ["/p/both.txt", "/p/loose.txt"]
+    # C002: a quoted phrase is a contiguous source obligation. An unquoted
+    # term cannot admit a second file that lacks the actual quoted literal.
+    assert [h.path for h in hits] == ["/p/both.txt"]
     assert hits[0].coverage == pytest.approx(1.0)
-    assert hits[1].coverage == pytest.approx(0.5)
 
 
 def test_filter_zero_candidates_clean_zero_hit(store):

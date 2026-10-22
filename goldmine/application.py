@@ -25,6 +25,7 @@ from .pack import (
     NeighborIndex, PackSettings, build_pack_from_hits, tokens_of,
 )
 from .search import Hit, Searcher
+from .anchor_admission import guard_composed_hits
 from .store import Store
 
 BackendFactory = Callable[[], EmbeddingBackend | None]
@@ -136,11 +137,16 @@ class Application:
     def _retrieve(self, store, backend, request, scorer):
         searcher = Searcher(store, None if request.lexical_only else backend,
                             admission_parameters=self.admission_parameters)
+        decisions = []
         kwargs = dict(limit=request.limit, scorer=scorer, z_gate=request.z_gate,
+                      obligation_sink=decisions,
                       kinds=request.kinds, filters=request.filters,
                       snippet_width=request.snippet_width, why=request.why)
         if request.mode == "fast":
-            return searcher.search(request.query, **kwargs), {}, None
+            hits = searcher.search(request.query, **kwargs)
+            meta = ({"anchor_contract": decisions[0][1].diagnostics()}
+                    if decisions and decisions[0][1].constrained else {})
+            return hits, meta, None
         from .quality import merge_queries, rerank_candidates, select_results
 
         metadata, fallback = {"quality_validation": "unvalidated_experiment"}, None
@@ -150,13 +156,23 @@ class Application:
                 fallback = "one_or_more_subqueries_failed"
         else:
             hits = searcher.search(request.query, **{**kwargs, "limit": 20 if request.limit > 0 else 0})
+        original = next((decision for text, decision in decisions if text == request.query), None)
+        if original is not None:
+            hits = guard_composed_hits(store, original, hits)
+            if original.constrained:
+                metadata["anchor_contract"] = original.diagnostics()
         if request.rerank == "local":
             hits, metadata["reranker"], reason = rerank_candidates(
                 store, request.query, hits, self.reranker_factory, why=request.why,
             )
             fallback = reason or fallback
-        return select_results(hits, limit=request.limit,
-                              balance_topics=request.pack and request.multi_query), metadata, fallback
+        selected = select_results(hits, limit=request.limit,
+                                  balance_topics=request.pack and request.multi_query)
+        if original is not None:
+            selected = guard_composed_hits(store, original, selected, final=True)
+            if original.constrained and not selected and hits:
+                metadata["anchor_contract"]["reason"] = "anchor_not_in_selected_limit"
+        return selected, metadata, fallback
 
     @staticmethod
     def _pack(store, backend, request: SearchRequest, hits: list[Hit]):
