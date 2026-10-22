@@ -104,21 +104,22 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 
 ## 7192395 冻结检查点的回归与交付
 
-实际环境仍为 macOS arm64 / Python 3.12。该检查点三组无必需 skip，合计 **1681 passed**，不认证之后已改变的源码。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
+实际环境仍为 macOS arm64 / Python 3.12。该检查点四组无必需 skip，合计 **1689 passed**（base/native/MCP/Foresight，Foresight profile 现已按用户授权退役，历史组成照录），不认证之后已改变的源码。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
 
 | 固定入口 / 范围 | 当前结果 | 原始证据目录 |
 |---|---:|---|
 | CI base | **1486 passed** | `reports/execution/P0-06/frozen-base-009/` |
 | CI native | **189 passed** | `reports/execution/P0-06/frozen-native-009/` |
 | CI MCP，locked SDK 环境 | **6 passed** | `reports/execution/P0-06/frozen-mcp-009/` |
-| 三组原始回放、失败注入、实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-008/manifest.json` |
+| CI Foresight（历史组成，profile 现已退役） | **8 passed** | `reports/execution/P0-06/frozen-foresight-009/` |
+| 四组原始回放、失败注入、实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-008/manifest.json` |
 | P2-05 本地固定 task-check | **PASS** | `reports/execution/P2-05/task-acceptance-008/manifest.json` |
 | 当前 wheel/sdist/重建 wheel、离线源码外 base/MCP 安装、实际 native OCR/768 embedding、v4→v6 备份升级恢复 | **PASS** | `reports/execution/P2-06/distribution-006.json` |
 | P2-06 固定 task-check，显式绑定全部资产 | **PASS** | `reports/execution/P2-06/task-acceptance-008/manifest.json` |
 | 14 份文档、55 个本地链接、22 条实际离线命令 | **PASS** | `reports/execution/P2-07/docs-002/manifest.json` |
 | P2-07 文档组件固定 task-check | **PASS**，全任务仍未完成 | `reports/execution/P2-07/docs-task-003/manifest.json` |
 
-完整 CLI/pack 容量工具的四项复核漏洞已闭环，60 项集成测试通过；源码、12 组固定命令、资源估算和失败保留规则在 `P2-02/full-cli-source-freeze-001.json`。最后一处测试文件 EOF 空行清理也触发严格源码 SHA 变化，故重捕获三组 `*-009`、本地 CI 与任务证据；生产与评分结果未变化。完整容量实测单独记录，不能用小型 fixture 或早期向量阶段顶替。各项 SHA 与当前结果索引见 [validation-20261022.json](validation-20261022.json)。
+完整 CLI/pack 容量工具的四项复核漏洞已闭环，60 项集成测试通过；源码、12 组固定命令、资源估算和失败保留规则在 `P2-02/full-cli-source-freeze-001.json`。最后一处测试文件 EOF 空行清理也触发严格源码 SHA 变化，故重捕获四组 `*-009`、本地 CI 与任务证据；生产与评分结果未变化。完整容量实测单独记录，不能用小型 fixture 或早期向量阶段顶替。各项 SHA 与当前结果索引见 [validation-20261022.json](validation-20261022.json)。
 
 ## 已落地的生产改造
 
@@ -143,12 +144,13 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 | `ci_validation.py --profile base` | **1233 passed**，130.92s | `reports/execution/P0-06/frozen-base-006/` |
 | `--profile native` | **188 passed** | `reports/execution/P0-06/frozen-native-006/` |
 | `--profile mcp`，独立 locked SDK 环境 | **6 passed** | `reports/execution/P0-06/frozen-mcp-006/` |
-| 三组 CI + 固定失败注入 + 实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-006/manifest.json` |
+| `--profile foresight`（历史组成，现已退役） | **8 passed** | `reports/execution/P0-06/frozen-foresight-006/` |
+| 四组 CI + 固定失败注入 + 实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-006/manifest.json` |
 | wheel/sdist/重建 wheel、源码外安装、原生资源、升级恢复 | **PASS** | `reports/execution/P2-06/distribution-005.json` |
 
-三组合计 **1427 passed**。11 个防伪造/不完整 IR 证据反例已从临时审查报告提升为 `tests/test_ir_acceptance.py`，并加入 P0-06 的固定 task-check。
+四组合计 **1435 passed**（含现已退役的 Foresight 8 项）。11 个防伪造/不完整 IR 证据反例已从临时审查报告提升为 `tests/test_ir_acceptance.py`，并加入 P0-06 的固定 task-check。
 
-三组均有 collection、原始 stdout/stderr、JUnit、退出码、source-stability 和 SHA receipts；执行器会重放并验证当前代码内容。源码/验收脚本/测试/依赖锁/CI 工作流变化会拒绝复用；仅提交 Git 或更新任务进度不会使验收陷入自我依赖。
+四组均有 collection、原始 stdout/stderr、JUnit、退出码、source-stability 和 SHA receipts；执行器会重放并验证当前代码内容。源码/验收脚本/测试/依赖锁/CI 工作流变化会拒绝复用；仅提交 Git 或更新任务进度不会使验收陷入自我依赖。
 
 另实际运行了真实 llama 的 3 个 pack 测试：预算 512/1000/4000/32768 × context 0/1/3、CJK/表格/代码/长路径/引用、8190-byte 空结果查询，13.54s，`reports/execution/P1-10/live-pack-001.xml`。真实 bounded reranker 测试 1 passed，`reports/execution/P1-07/live-backend-001.xml`；六个 endpoint 输入/顺序探针在 `P1-07/runtime-probe-001/`。这些证明协议、预算和资源机制，不证明答案质量提升。
 
@@ -186,7 +188,7 @@ QMD 2.8.3 与 Recoll 1.44.2 只装在忽略目录，不改用户索引/全局配
 4. **P1-06/07/08**：拒收三臂真实 dev A/B 已完成且全部 FAIL，`selected=null`；可选多查询/rerank 的真实收益与完整资源门槛尚未通过，保持默认控制与关闭实验。
 5. **P2-02/03**：`7192395` 的完整 CLI/pack 规模测量已经通过独立回放；后续 pack/SQL 新源码需要新一轮测量。真实媒体增量 benchmark、controlled/real 各 10 分钟 watch churn 和完整生命周期证据仍缺。已有真实模型的局部检查不能顶替这些。
 6. **P2-04 卡片**：120 份真实文档、8 主题的独立来源/标签审查及数据冻结已经完成，严格 native 准备/增量身份/全部 emitted member 来源校验已实现。真实聚类、purity/recovery 和增量运行仍缺；mock hard-variant 结果只验证机制。
-7. **剩余验收代码与输入**：public、联合 holdout、文档、完整容量和 hosted 适配器均已实现并经独立反例审查。1681 项回归和安装/文档证据绑定历史检查点，当前整体重新捕获尚未完成。仍缺真实外部集等运行结果和实际 hosted 证据。未运行真实 holdout，零收集仍必须 MISSING。
+7. **剩余验收代码与输入**：public、联合 holdout、文档、完整容量和 hosted 适配器均已实现并经独立反例审查。1689 项回归（含现已退役的 Foresight 8 项）和安装/文档证据绑定历史检查点，当前整体重新捕获尚未完成。仍缺真实外部集等运行结果和实际 hosted 证据。未运行真实 holdout，零收集仍必须 MISSING。
 8. **P2-08 完整竞品对照**：native/common view、完整真实 PDF/媒体、语义/quality 模式、重复性能/增量/资源对照和完整最终数据仍缺。主比较按同一文件级 qrels 计算 success@1/@5、MRR、nDCG；位置指标在可验证时另报，位置能力缺失不能成为文件级比较的额外前置条件。当前表只表示词法诊断。
 9. **发布**：仓库没有配置 remote，hosted CI 未运行。`local_rc` 的必需数据、质量和生命周期条件也不齐，因此没有发布候选、tag、push 或公开发行。
 

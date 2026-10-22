@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "corpus_version": "v3-2026-10-18",
+ "corpus_version": "v4-2026-10-23-post-foresight",
  "created": "2026-10-18",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
@@ -211,11 +211,11 @@
  "sources": {
   "digup": {
    "root": "/Users/yul/git/DigUp",
-   "note": "DigUp Swift app \u2014 the fusion/z-score/setsScale provenance goldmine re-implements"
+   "note": "DigUp Swift app — the fusion/z-score/setsScale provenance goldmine re-implements"
   },
   "goldmine": {
    "root": "/Users/yul/git/goldmine/evals/corpus_snapshot",
-   "note": "goldmine itself (package + docs) \u2014 snapshot-pinned bytes (evals/corpus_snapshot/)"
+   "note": "goldmine itself (package + docs) — snapshot-pinned bytes (evals/corpus_snapshot/)"
   }
  },
  "files": [
@@ -641,9 +641,10 @@
   }
  ],
  "notes": [
-  "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
-  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
+  "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them — refresh the manifest deliberately to move the snapshot",
+  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket — its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
-  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)"
+  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index — they quote the noise-query strings (self-leak, F6)",
+  "v4 2026-10-23: user-authorized Foresight retirement removed the foresight-rea root and its 41 pinned files; goldmine-self snapshot re-synced to the post-retirement source. Deliberate version bump per this manifest's own refresh protocol; corpus identity change is honest."
  ]
 }

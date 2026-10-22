@@ -1,8 +1,10 @@
 // goldmine answer eval - question set v2 (2026-10-19). Schema per docs/v2.1-pack-eval.md §3.2
 // + review amendment F1: `evidence` carries EXACTLY ONE regex per must_fact; --emit --check-facts
 // enforces every regex against the emitted pack body (answerable: must match; traps: LEAK
-// patterns, must NOT match). All 20 re-validated against the v3 corpus (corpus_version
-// v3-2026-10-18, re-cut snapshot), llama backend, evals/eval.sqlite, settings
+// patterns, must NOT match). Originally 20 questions re-validated against the v3 corpus
+// (corpus_version v3-2026-10-18, re-cut snapshot), llama backend, evals/eval.sqlite, settings;
+// 2026-10-23: 3 questions whose evidence lived in removed corpus material were dropped
+// (user-authorized Foresight retirement) and the survivors renumbered ans-001..ans-017.
 // scorer=hybrid z_gate=3.0 limit=10 context=1 budget=4000 (mode=tokenize).
 // sources are snapshot-relative for goldmine-self files (F1d); DigUp stays absolute
 // (pinned live, never copied into the repo).
