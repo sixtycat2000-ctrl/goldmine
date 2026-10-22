@@ -26,6 +26,12 @@ def _options(argv):
     parser.add_argument("--model", type=Path)
     parser.add_argument("--server", type=Path)
     parser.add_argument("--diagnostic", action="store_true", help="Allow mock mechanical checks; acceptance refuses their quality evidence.")
+    parser.add_argument("--query-deadline-seconds", type=float, default=None,
+                        help="Explicitly registered per-query request deadline installed on the "
+                             "read transaction (identical for reference and candidate roles). A "
+                             "timeout fails loudly with the query identity recorded; it is never "
+                             "converted into empty hits. Omit to keep the historical no-deadline "
+                             "behavior for reproduction runs.")
     parser.add_argument("--json", action="store_true", required=True)
     return parser.parse_args(argv)
 
@@ -91,13 +97,25 @@ def prepare(cache, production, manifest, data, *, production_root, backend_name,
     return result
 
 
-def evaluate(cache, production_root, *, reference=False, backend_name="llama", model=None, server=None, diagnostic=False):
+def _deadline_progress() -> int:
+    from goldmine.deadline import check_deadline
+
+    try:
+        check_deadline()
+    except TimeoutError:
+        return 1
+    return 0
+
+
+def evaluate(cache, production_root, *, reference=False, backend_name="llama", model=None, server=None, diagnostic=False,
+             query_deadline=None):
     # This function runs in a NEW interpreter so candidate imports cannot shadow
     # the separately checked original checkout.
     production = production_identity(production_root, reference_run=reference)
     select_production(production_root)
     from goldmine import fingerprints
     from goldmine.search import Searcher
+    from goldmine.deadline import RequestTimeout, request_timeout
     from eval_public import CORPUS_MD_DIR, PUBLIC_MANIFEST_JSON, dataset_dir, docid_from_path, load_manifest, zip_path
     from product_eval.reference import open_evaluation_store
 
@@ -109,6 +127,11 @@ def evaluate(cache, production_root, *, reference=False, backend_name="llama", m
     result = _context(cache, production_root, production, backend_name=backend_name, model=model, server=server,
                       reference=reference, diagnostic=diagnostic)
     result["advisory_published_baselines"] = True
+    if query_deadline is not None:
+        # Explicitly registered policy (SC-04): visible in the captured result,
+        # identical for both roles, timeouts are failures — never empty hits.
+        result["parameters"]["query_deadline_seconds"] = query_deadline
+        result["query_timeout_errors"] = []
     with closing(backend):
         for name in DATASETS:
             db, corpus = dataset_dir(cache, name) / "raw-index.sqlite", dataset_dir(cache, name) / CORPUS_MD_DIR
@@ -117,16 +140,34 @@ def evaluate(cache, production_root, *, reference=False, backend_name="llama", m
             with closing(open_evaluation_store(db, original=reference)) as store:
                 store.db.execute("BEGIN")
                 fingerprints.gate(store.meta, fingerprints.build(backend))
+                if query_deadline is not None:
+                    store.db.set_progress_handler(_deadline_progress, 1000)
                 searcher = Searcher(store, backend)
-                for arm in ARMS:
-                    rows = []
-                    for qid in sorted(data[name]["qrels"]):
-                        hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
-                        if any(Path(hit.path).resolve().parent != corpus.resolve() for hit in hits):
-                            raise EvaluationError("public search returned a path outside the prepared corpus")
-                        fetched = [docid_from_path(hit.path) for hit in hits]
-                        rows.append(ranked_row(qid, fetched, data[name], manifest["datasets"][name]["grade_range"][1]))
-                    arm_data[arm] = {"rows": rows, "metrics": summarize(rows)}
+                try:
+                    for arm in ARMS:
+                        rows = []
+                        for qid in sorted(data[name]["qrels"]):
+                            try:
+                                if query_deadline is not None:
+                                    with request_timeout(query_deadline):
+                                        hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
+                                else:
+                                    hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
+                            except RequestTimeout as error:
+                                result["query_timeout_errors"].append(
+                                    {"dataset": name, "arm": arm, "qid": qid,
+                                     "deadline_seconds": query_deadline, "error": str(error)})
+                                raise EvaluationError(
+                                    f"public query exceeded its registered {query_deadline}s deadline: "
+                                    f"{name}/{arm}/{qid}; recorded failure, not empty hits", status="MISSING") from error
+                            if any(Path(hit.path).resolve().parent != corpus.resolve() for hit in hits):
+                                raise EvaluationError("public search returned a path outside the prepared corpus")
+                            fetched = [docid_from_path(hit.path) for hit in hits]
+                            rows.append(ranked_row(qid, fetched, data[name], manifest["datasets"][name]["grade_range"][1]))
+                        arm_data[arm] = {"rows": rows, "metrics": summarize(rows)}
+                finally:
+                    if query_deadline is not None:
+                        store.db.set_progress_handler(None, 0)
             if sha256_file(db) != index["sha256"]:
                 raise EvaluationError("public index changed during scoring", status="MISSING")
             result["datasets"][name] = {"input_identity": data[name]["identity"], "index": index, "arms": arm_data}
@@ -153,7 +194,8 @@ def main(argv=None):
                 raise EvaluationError("public production source changed during explicit preparation", status="MISSING")
         else:
             result = evaluate(args.cache_root, args.production_root, reference=args.reference_code, backend_name=args.backend,
-                              model=args.model, server=args.server, diagnostic=args.diagnostic)
+                              model=args.model, server=args.server, diagnostic=args.diagnostic,
+                              query_deadline=args.query_deadline_seconds)
         code = 0
     except (EvaluationError, OSError, ValueError, sqlite3.Error, BadZipFile) as error:
         result, code = {"schema": 1, "suite": SUITE, "status": "MISSING", "error": str(error), "release_eligible": False}, 2

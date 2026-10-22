@@ -374,6 +374,8 @@ def test_actual_latency_prepare_prefix_only_upgrades_owned_copy(tmp_path, monkey
     from pathlib import Path
     import shutil
     import sys
+    # Standalone runs do not inherit scripts/ from other test modules.
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
     import search_bench.session as session_module
     from acceptance_lib.evidence import read_command_run
     source = build(tmp_path / "original.sqlite", 4, [{"text": "A\u0301 ZT-84 harbor"}])

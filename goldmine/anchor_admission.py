@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass, field, replace
 import unicodedata
 
-from .anchor_resolution import Binding, Resolver, VerificationBound, literal_occurs
+from .anchor_resolution import Binding, Resolver, VerificationBound, literal_occurs, remainder_units
 from .deadline import check_deadline
 from .query_obligations import ANCHOR_VERSION, Anchor, Clause, QueryPlan, plan_query
 
@@ -107,8 +107,11 @@ def _owners(plan, resolver, terms_of):
             reason = "anchor_scope_ambiguous" if len(clause.anchor_ids) > 1 else "anchor_unresolved"
             return AnchorDecision(plan, reason=reason)
         accepted = set()
+        # SC-01: the clause's pure remainder units are identical for every
+        # eligible file; prepare them once per clause in registered order.
+        units = remainder_units(clause.remainder, terms_of)
         for fid in sorted(eligible):
-            proof = resolver.remainder(fid, clause.remainder, clause.phrases, terms_of)
+            proof = resolver.remainder(fid, clause.remainder, clause.phrases, terms_of, units=units)
             if proof is not None:
                 accepted.add(fid)
                 witnesses[clause.id, fid] = proof

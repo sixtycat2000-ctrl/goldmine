@@ -50,6 +50,12 @@ class SourceRow:
     info: dict | None
 
 
+def remainder_units(text, terms_of):
+    """Pure clause-level unit preparation (SC-01): identical for every
+    eligible file, so owners prepare it once per clause, not per file."""
+    return query_units(text, terms_of(text), [])
+
+
 def basename(path):
     return PurePath(path).name
 
@@ -250,11 +256,24 @@ class Resolver:
 
     def body_ids(self, pattern, *, file_id=None, cjk=False):
         table = "fts_cjk" if cjk else "fts"
-        suffix, values = (" AND s.file=?", [file_id]) if file_id is not None else ("", [])
+        if file_id is not None:
+            # File-first shape (SC-01): the existing file index is the outer
+            # relation and the FTS rowid a constrained inner lookup, so a
+            # common term cannot repeatedly walk the global posting list for
+            # every owner file. Identical DISTINCT/ORDER/limit and non-name
+            # predicates; result/error equivalence is pinned by
+            # tests/test_request_local_reuse.py. Divergence is limited to a
+            # malformed pattern combined with a file that has no non-name
+            # segments (patterns are fts_quote-built in production).
+            return self._candidate_ids(
+                f"SELECT DISTINCT s.id FROM segments s CROSS JOIN {table} ON {table}.rowid=s.id "
+                f"WHERE s.file=? AND s.kind!='name' AND {table} MATCH ? ORDER BY s.id",
+                [file_id, pattern],
+            )
         return self._candidate_ids(
             f"SELECT DISTINCT s.id FROM {table} JOIN segments s ON s.id={table}.rowid "
-            f"WHERE {table} MATCH ? AND s.kind!='name'" + suffix + " ORDER BY s.id",
-            [pattern, *values],
+            f"WHERE {table} MATCH ? AND s.kind!='name' ORDER BY s.id",
+            [pattern],
         )
 
     def recall(self, text, *, file_id=None):
@@ -321,10 +340,12 @@ class Resolver:
                                               name.segment_id, name.raw))
         return output
 
-    def remainder(self, file_id, text, phrases, terms_of):
+    def remainder(self, file_id, text, phrases, terms_of, units=None):
         """Every body unit has a same-file real row witness; no name-column support."""
+        if units is None:
+            units = query_units(text, terms_of(text), [])
         witnesses = []
-        for unit in query_units(text, terms_of(text), []):
+        for unit in units:
             patterns = unit.patterns if unit.kind == "cjk" else ("body : (" + unit.patterns[0] + ")",)
             for pattern in patterns:
                 if unit.kind == "cjk" and not self.profile.cjk:

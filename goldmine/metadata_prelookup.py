@@ -41,9 +41,15 @@ def whole_metadata_predicate(db, allowed, *, derived):
 
     SQL can examine extra metadata; only returned/materialized readback SIDs
     consume the Resolver's2000-row budget. SQL/request deadlines still apply.
+    Pure actual-field parsing and derived-term sets are memoized for the
+    lifetime of this ONE predicate invocation, keyed by the actual
+    path/info/field bytes (SC-03); every row's pointer, file, source, raw,
+    normalized, match-type and full-field checks are unchanged.
     """
     name = "_gm_full_metadata_v1"
     errors = []
+    fields_cache = {}
+    derived_cache = {}
 
     def eligible(sid, sid_file, kind, fid, path, info, lookup_file, field, raw, normalized, match_type, query):
         try:
@@ -54,12 +60,18 @@ def whole_metadata_predicate(db, allowed, *, derived):
                 return 0
             if kind != "name":
                 raise ValueError("metadata anchor pointer is not a name segment")
-            fields = metadata_fields(path, info)
+            fields_key = (path, info)
+            if fields_key not in fields_cache:
+                fields_cache[fields_key] = metadata_fields(path, info)
+            fields = fields_cache[fields_key]
             if not derived:
                 return int(any(literal_equal(query, value) for value in fields.values()))
             value = fields.get(field)
+            derived_key = (field, value)
+            if derived_key not in derived_cache:
+                derived_cache[derived_key] = derived_terms(field, value) if isinstance(value, str) else None
             if (lookup_file != fid or value is None or (normalized, match_type) not in term_forms(raw)
-                    or raw not in derived_terms(field, value)):
+                    or raw not in derived_cache[derived_key]):
                 raise ValueError("anchor lookup pointer does not match its actual stored source")
             return int(raw == value and literal_equal(query, value))
         except (ValueError, TypeError, RequestTimeout) as error:
