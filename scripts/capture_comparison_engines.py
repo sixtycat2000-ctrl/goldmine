@@ -60,6 +60,9 @@ def main(argv=None):
         elif a.action in ("capture", "verify"):
             from search_comparison.engine_capture.run import capture, verify_capture
             value = capture(a.plan, a.plan_sha256, a.out, a.parent, fixture=a.fixture) if a.action == "capture" else verify_capture(a.report)
+            # The full logical dictionary remains the Python verifier API.
+            # CLI stdout binds only its bounded complete wire manifest.
+            value = read((a.out if a.action == "capture" else a.report.parent) / "report.json")
         else:
             from search_comparison.engine_capture.canaries import capture_qmd, capture_recoll
             engine = read(reference({"path": str(a.engine.absolute()), "sha256": a.engine_sha256}))
@@ -67,7 +70,8 @@ def main(argv=None):
         code = 2 if value.get("status") == "MISSING" else 0
     except (EvaluationError, OSError, ValueError, KeyError, TypeError) as exc:
         value, code = {"status": "MISSING", "error": str(exc), "release_eligible": False}, 2
-    print(json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False))
+    print(json.dumps(value, ensure_ascii=False, separators=(",", ":"), allow_nan=False) if a.action in ("capture", "verify")
+          else json.dumps(value, ensure_ascii=False, indent=2, allow_nan=False))
     return code
 
 

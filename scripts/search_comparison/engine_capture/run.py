@@ -20,14 +20,12 @@ from .recipes import compile_recipe
 from .results import parse_result
 from .settings import setup
 from .views import verify_view
-from . import resources
+from . import resources, report_framing
 from .native import readback as native_readback
 
 
-def _artifacts(owner):
-    result = inventory(owner)
-    result.pop("report.json", None)
-    return result
+def _artifacts(owner, arms):
+    return report_framing.raw_artifacts(owner, arms)
 
 
 def _backup(owner, values, engine):
@@ -220,19 +218,18 @@ def capture(plan_path, plan_sha256, output, parent, *, fixture=False):
               "resource_status": "FAIL" if any(r["resource_status"] == "FAIL" for r in rows) else "PASS" if all(r["resource_status"] == "PASS" for r in rows) else "MISSING",
               "resource_setup_errors": [{"view": v, "arm": a, "error": e} for (v, a), e in setup_errors.items()],
               "quality_evidence": False, "release_eligible": False,
-              "artifacts": _artifacts(owner)}
-    write_new(owner / "report.json", report)
-    return report
+              "artifacts": _artifacts(owner, plan.arms)}
+    return report_framing.publish(owner, report)
 
 
 def verify_capture(report_path):
-    report_path = Path(report_path).resolve()
-    owner, report = report_path.parent, read(report_path)
+    report_path = Path(report_path).absolute()
+    owner, report = report_path.parent, report_framing.load(report_path)
     plan = load_plan(report["plan"]["path"], report["plan"]["sha256"], fixture=report["evidence_mode"] == "fixture")
     if (report["owner"] != str(owner) or report["suite_id"] != SUITE or report["implementation"] != implementation()
             or report["source_identity"] != plan.bundle.identity or report["projection_identity"] != plan.projection["identity"]
             or report["registered_arms"] != list(plan.arms) or report["n_fixed_queries"] != len(plan.projection["requests"])
-            or report["source_count"] != len(plan.bundle.sources) or report["artifacts"] != _artifacts(owner)
+            or report["source_count"] != len(plan.bundle.sources) or report["artifacts"] != _artifacts(owner, plan.arms)
             or report["quality_evidence"] is not False or report["release_eligible"] is not False
             or sha256_file(owner / "plan.json") != plan.sha256):
         raise EvaluationError("capture raw/source/code/config/query denominator identity changed", status="MISSING")
@@ -264,12 +261,12 @@ def verify_capture(report_path):
             else:
                 raise EvaluationError("a ready arm was replaced by an invented preflight failure")
         actual = _missing(plan, view, arm, reason) if reason else capture_arm(plan, plan.views[view], arm, owner / "arms" / view / arm, saved=saved)
-        if actual != saved:
+        if canonical_sha256(actual) != canonical_sha256(saved):
             raise EvaluationError("retained engine rows/metrics differ from raw disk replay", status="MISSING")
         interrupted = interrupted or actual.get("interrupted", False)
     expected_status = "CAPTURED_DEV_RESULTS" if all(r["status"] == "CAPTURED_DEV_RESULTS" for r in report["systems"]) else "MISSING"
     resource_status = "FAIL" if any(r["resource_status"] == "FAIL" for r in report["systems"]) else "PASS" if all(r["resource_status"] == "PASS" for r in report["systems"]) else "MISSING"
-    full = "MISSING_PERFORMANCE_UPDATE_PHASES" if resource_status == "PASS" else "MISSING_PERFORMANCE_UPDATE_RESOURCE_PHASES"
+    expected_status, resource_status, full = report_framing.statuses(expected_status, resource_status, report["framing"]["publication"]["status"])
     if report["status"] != expected_status or report["resource_status"] != resource_status or report["full_comparison_status"] != full:
         raise EvaluationError("intermediate capture was relabeled as a complete comparison")
     return report

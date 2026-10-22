@@ -110,7 +110,8 @@ TASK_TESTS = {
               "test_measurement_protocol.py", "test_measurement_state.py",
               "test_measurement_execution.py", "test_measurement_updates.py",
               "test_measurement_slots.py",
-              "test_comparison_engines.py", "test_comparison_engine_resources.py",
+              "test_comparison_engines.py", "test_comparison_report_framing.py",
+              "test_comparison_engine_resources.py",
               "test_comparison_resource_dispositions.py", "test_comparison_native_resolvers.py",
               "test_resource_policy.py", "test_resource_observer_native.py"),
 }
