@@ -97,25 +97,31 @@ def prepare(cache, production, manifest, data, *, production_root, backend_name,
     return result
 
 
-def _deadline_progress() -> int:
-    from goldmine.deadline import check_deadline
+def _deadline_progress_factory(current_deadline):
+    """Self-contained monotonic deadline + SQLite interrupt (SC-04).
 
-    try:
-        check_deadline()
-    except TimeoutError:
-        return 1
-    return 0
+    Deliberately independent of goldmine.deadline: the reference role runs the
+    ORIGINAL production code, which does not provide that module. The policy is
+    therefore identical for both roles on any goldmine version.
+    """
+    import time
+
+    def progress() -> int:
+        return 1 if time.monotonic() > current_deadline() else 0
+
+    return progress
 
 
 def evaluate(cache, production_root, *, reference=False, backend_name="llama", model=None, server=None, diagnostic=False,
              query_deadline=None):
     # This function runs in a NEW interpreter so candidate imports cannot shadow
     # the separately checked original checkout.
+    import time
+
     production = production_identity(production_root, reference_run=reference)
     select_production(production_root)
     from goldmine import fingerprints
     from goldmine.search import Searcher
-    from goldmine.deadline import RequestTimeout, request_timeout
     from eval_public import CORPUS_MD_DIR, PUBLIC_MANIFEST_JSON, dataset_dir, docid_from_path, load_manifest, zip_path
     from product_eval.reference import open_evaluation_store
 
@@ -141,25 +147,26 @@ def evaluate(cache, production_root, *, reference=False, backend_name="llama", m
                 store.db.execute("BEGIN")
                 fingerprints.gate(store.meta, fingerprints.build(backend))
                 if query_deadline is not None:
-                    store.db.set_progress_handler(_deadline_progress, 1000)
+                    deadline_at = time.monotonic() + query_deadline
+                    store.db.set_progress_handler(_deadline_progress_factory(lambda: deadline_at), 1000)
                 searcher = Searcher(store, backend)
                 try:
                     for arm in ARMS:
                         rows = []
                         for qid in sorted(data[name]["qrels"]):
+                            if query_deadline is not None:
+                                deadline_at = time.monotonic() + query_deadline
                             try:
-                                if query_deadline is not None:
-                                    with request_timeout(query_deadline):
-                                        hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
-                                else:
-                                    hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
-                            except RequestTimeout as error:
-                                result["query_timeout_errors"].append(
-                                    {"dataset": name, "arm": arm, "qid": qid,
-                                     "deadline_seconds": query_deadline, "error": str(error)})
-                                raise EvaluationError(
-                                    f"public query exceeded its registered {query_deadline}s deadline: "
-                                    f"{name}/{arm}/{qid}; recorded failure, not empty hits", status="MISSING") from error
+                                hits = searcher.search(data[name]["queries"][qid], limit=FETCH_LIMIT, scorer=arm)
+                            except sqlite3.OperationalError as error:
+                                if query_deadline is not None and "interrupted" in str(error) and time.monotonic() >= deadline_at:
+                                    result["query_timeout_errors"].append(
+                                        {"dataset": name, "arm": arm, "qid": qid,
+                                         "deadline_seconds": query_deadline, "error": str(error)})
+                                    raise EvaluationError(
+                                        f"public query exceeded its registered {query_deadline}s deadline: "
+                                        f"{name}/{arm}/{qid}; recorded failure, not empty hits", status="MISSING") from error
+                                raise
                             if any(Path(hit.path).resolve().parent != corpus.resolve() for hit in hits):
                                 raise EvaluationError("public search returned a path outside the prepared corpus")
                             fetched = [docid_from_path(hit.path) for hit in hits]
