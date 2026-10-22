@@ -1,7 +1,7 @@
 # goldmine — Design Decisions
 
-Decision log for v1. Sources: DigUp reference implementation (Swift, production-tested),
-Foresight verified assets, and an independent ChatGPT review (via `codex exec`, 2026-10-12)
+Decision log for v1. Sources: DigUp reference implementation (Swift, production-tested)
+and an independent ChatGPT review (via `codex exec`, 2026-10-12)
 whose five verdicts are treated as agreed requirements. Each decision records: context,
 decision, and what was adopted/deferred/deviated.
 
@@ -9,14 +9,12 @@ decision, and what was adopted/deferred/deviated.
 
 ## 1. Consultation summary — the five verdicts (quoted, 2026-10-12)
 
-> **1. Python AGREE.** Deps allowed: numpy (vector scans), grpcio+protobuf (optional extra for
-> foresight backend), pytest (dev). Everything else stdlib or external CLI tools (pdftotext
+> **1. Python AGREE.** Deps allowed: numpy (vector scans), pytest (dev). Everything else stdlib or external CLI tools (pdftotext
 > from poppler, ffmpeg) detected at runtime with graceful degradation.
 
 > **2. llama-server subprocess + HTTP AGREE.** Must: pin & record llama.cpp build version +
 > model file SHA256 in index meta; bind 127.0.0.1 only; readiness probe; batching; request
-> deadlines; cancellation; bounded log capture; kill only processes we spawned. Foresight
-> backend = optional experimental adapter. CRITICAL: persist per-index embedding fingerprint
+> deadlines; cancellation; bounded log capture; kill only processes we spawned. CRITICAL: persist per-index embedding fingerprint
 > (backend, model id, model hash, dim, prompt scheme, pooling, normalization, preprocessing
 > version); refuse to mix vectors across fingerprints; changing fingerprint requires reindex;
 > never silently switch backends within one index.
@@ -54,8 +52,6 @@ All five verdicts: **adopted**. Disposition details below; deferrals listed in �
 
 - Python 3.12 (matches the machine's pyenv 3.12.0), stdlib-first.
 - `numpy` is the only required third-party dep (matrix scans, fp16 packing, z-score math).
-- `grpcio`+`protobuf` live behind the `foresight` extra and are imported lazily — the llama
-  path never imports them.
 - `pdftotext` (poppler, brew-installed), `textutil` (macOS built-in), `ffmpeg/ffprobe` are
   detected at runtime; absence degrades capability, never crashes, and is always reported.
 - `whisper-cpp` (installed, no model bundled) is a **stretch** ASR hook: `--asr` opt-in,
@@ -79,9 +75,6 @@ All five verdicts: **adopted**. Disposition details below; deferrals listed in �
   (schema 3→4) exists precisely because keying vectors to a brew build forces full reindexes
   on unrelated `brew upgrade`s. Compromise implemented: `meta.llama_build` + a
   `build_changed` WARN notice in `status`/`doctor` recommending (not forcing) reindex.
-- Foresight adapter: experimental, clearly labeled. Since we cannot hash the helper's model
-  files, the `Ping().version` string takes the model-identity slot in the fingerprint; a
-  helper upgrade ⇒ fingerprint change ⇒ reindex. That is conservative in the right direction.
 
 ## 4. Hybrid search — D3 (verdict 3) — ADOPTED, all six fixes integrated
 
@@ -181,7 +174,7 @@ defensive, no-op when the server already normalized.
 |---|---|---|
 | `--llm polish` for cards (provenance-preserving) | verdict 4 "optional, later" | post-v1 |
 | ASR hook (`whisper-cli` + user model) making audio text-indexable under llama | runtime fact "optional ASR hook" | stretch, v1.x |
-| Image/audio embedding via mmproj | `/v1/embeddings` is text-only; mmproj route unverified for embeddings | blocked on llama.cpp capability; foresight covers it meanwhile |
+| Image/audio embedding via mmproj | `/v1/embeddings` is text-only; mmproj route unverified for embeddings | blocked on llama.cpp capability; a multimodal backend covers it meanwhile |
 | Second dedicated code index (DigUp `code.sqlite`) | DigUp architecture | v1 keeps ONE index (`--code`); split only if eval shows contamination |
 | Xattr screenshot detection (`com.apple.metadata:kMDItemIsScreenCapture`) | DigUp `isScreenshot` | name-prefix heuristic only in v1 |
 | ANN / persistence for search | unnecessary at measured scale (~20k vectors, ms brute-force) | revisit >1M vectors |
@@ -194,5 +187,3 @@ defensive, no-op when the server already normalized.
   (TEST_PLAN §5) must report sensitivity before we freeze them.
 - llama-server port pick has a bind race (socket closed before child binds); mitigation is
   retry-on-unhealthy ×3. If flaky in practice, fall back to a fixed high port + probe.
-- Foresight audio bytes: DigUp sends 16 kHz mono PCM16 WAV windows; the live helper's exact
-  expectation is verified by GOLDMINE_LIVE tests before foresight leaves "experimental".

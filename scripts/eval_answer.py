@@ -118,8 +118,8 @@ def validate_questions(qs: list[dict]) -> list[str]:
     that must NOT match the emitted pack body."""
     problems: list[str] = []
     ids = [q.get("id") for q in qs]
-    if len(qs) != 20:
-        problems.append(f"expected 20 questions, got {len(qs)}")
+    if len(qs) != 17:
+        problems.append(f"expected 17 questions, got {len(qs)}")
     if len(set(ids)) != len(ids):
         problems.append("duplicate question ids")
     for i, qid in enumerate(ids):
@@ -509,7 +509,7 @@ def summarize(qs: list[dict], grades: dict, baseline: dict | None) -> str:
     rlo, rhi = eval_real.binom_ci(refusals, len(traps)) if traps else (0.0, 1.0)
     blo, bhi = eval_real.bootstrap_ci(scores)
     out = [
-        f"n=20 → 1 question = {1 / len(qs):.4g} of the mean{label}",
+        f"n={len(qs)} → 1 question = {1 / len(qs):.4g} of the mean{label}",
         f"mean answerable score: {mean:.3f} "
         f"(95% bootstrap CI [{blo:.3f}, {bhi:.3f}], n={len(answerable)})",
         f"answered rate (score ≥ 1): {answered}/{len(answerable)} = "
@@ -549,7 +549,7 @@ def summary_command(args) -> int:
     grades = _stats(qs, Path(args.grades_dir))
     if grades is None:
         print(f"grades incomplete under {args.grades_dir} — run --grade "
-              "--collect for all 20 first", file=sys.stderr)
+              f"--collect for all {len(qs)} first", file=sys.stderr)
         return 2
     baseline = _load_baseline(args.baseline)
     print(summarize(qs, grades, baseline))

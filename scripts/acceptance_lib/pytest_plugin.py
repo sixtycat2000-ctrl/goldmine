@@ -26,7 +26,7 @@ def pytest_addoption(parser):
 
 
 def pytest_configure(config):
-    for marker in ("assets", "native", "optional_mcp", "optional_foresight"):
+    for marker in ("assets", "native", "optional_mcp"):
         config.addinivalue_line("markers", f"{marker}: explicit acceptance capability owner")
     if os.environ.get("GOLDMINE_ACCEPTANCE_HERMETIC") == "1":
         def guarded_popen(args, *pos, **kw):
@@ -69,8 +69,6 @@ def pytest_unconfigure(config):
 
 def pytest_ignore_collect(collection_path, config):
     profile = config.getoption("--acceptance-profile")
-    if collection_path.name == "test_foresight_offline.py":
-        return profile not in (None, "optional-foresight")
     if collection_path.name == "test_mcp.py":
         return profile not in (None, "optional-mcp", "P1-09", "P1-10")
     return None

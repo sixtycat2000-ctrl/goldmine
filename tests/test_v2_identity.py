@@ -133,10 +133,10 @@ def test_prompts_doc_template_matches_the_legacy_d_slot():
 
 
 class _NoDSlotBackend(MockBackend):
-    """A foresight-shaped stub: its `prompts` fingerprint value has NO d='…'
-    slot (the helper frames text internally), so any live derivation that
-    parses the legacy scheme raises ValueError (v2 review F1 — this class of
-    backend used to kill every foresight ingest)."""
+    """A stub whose `prompts` fingerprint value has NO d='…' slot (a
+    helper-style backend that frames text internally), so any live derivation
+    that parses the legacy scheme raises ValueError (v2 review F1 — this
+    class of backend used to kill every ingest)."""
 
     backend_id = "stub-no-d-slot"
     prompts_doc_template = "helper-internal (client sends framed text verbatim)"
@@ -171,7 +171,7 @@ def test_live_embed_id_survives_a_backend_without_a_d_slot():
 
 
 def test_ingest_with_a_no_d_slot_backend_records_the_marker_identity(tmp_path):
-    """F1 end-to-end: a full pipeline ingest with the foresight-shaped stub
+    """F1 end-to-end: a full pipeline ingest with the no-d-slot stub
     succeeds (it used to die in live_embed_id before any file was committed),
     and meta/files carry the marker-based embed identity."""
     db = tmp_path / "idx.sqlite"

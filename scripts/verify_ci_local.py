@@ -12,7 +12,7 @@ from acceptance_lib.runner import code_identity, exit_code
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    for name in ("base", "native", "mcp", "foresight", "actionlint", "out"):
+    for name in ("base", "native", "mcp", "actionlint", "out"):
         parser.add_argument(f"--{name}", type=Path, required=True)
     args = parser.parse_args(argv)
     root = Path(__file__).resolve().parents[1]
@@ -31,7 +31,7 @@ def main(argv=None):
             *(str(root / ".github/workflows" / name) for name in ("ci.yml", "live-validation.yml", "build-release.yml"))],
             cwd=root, suite_id="ci.actionlint.v1")
         report = {"schema": 1, "kind": "goldmine.ci-local",
-                  "evidence": {name: pin(getattr(args, name)) for name in ("base", "native", "mcp", "foresight")},
+                  "evidence": {name: pin(getattr(args, name)) for name in ("base", "native", "mcp")},
                   "counterexamples": {"command": pin(counter / "execution/manifest.json"),
                                       "collection": pin(counter / "collection/manifest.json")},
                   "actionlint": pin(out / "actionlint/manifest.json")}

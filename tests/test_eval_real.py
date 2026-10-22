@@ -69,9 +69,10 @@ def test_query_ids_unique_and_tags_present():
     ids = [q["id"] for q in queries]
     assert len(ids) == len(set(ids))
     assert all(q.get("tag") for q in queries)
-    # the authored set is ~120 queries; the media set merges on top
+    # the authored set is ~80 queries (the retired third-party-corpus slice
+    # was removed); the media set merges on top
     authored = [q for q in queries if q["id"].startswith("real-")]
-    assert 110 <= len(authored) <= 130
+    assert 70 <= len(authored) <= 130
 
 
 # --------------------------------------------------------- media-tag skipping

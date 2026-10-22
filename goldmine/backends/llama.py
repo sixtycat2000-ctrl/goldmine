@@ -715,13 +715,13 @@ class LlamaServerBackend(EmbeddingBackend):
     def embed_image(self, path: Path) -> np.ndarray:
         raise NotSupported(
             "llama /v1/embeddings is text-only — images are metadata-only under "
-            "this backend (use --backend foresight or mock for image vectors)"
+            "this backend (use --backend mock for image vectors)"
         )
 
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
         raise NotSupported(
             "llama /v1/embeddings is text-only — audio is metadata-only under "
-            "this backend (use --backend foresight or mock for audio vectors)"
+            "this backend (use --backend mock for audio vectors)"
         )
 
     # -------------------------------------------------------------- report

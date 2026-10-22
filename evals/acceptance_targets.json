@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "contract_sha256": "1d8e7f351d34e8d0ed26428602f4ccc73dbf4ae995c9fadd50bf1b0632a0f1cc",
+  "contract_sha256": "fcce7ff37d3c231dc44dbe8af28ea74264b96290af61144a6b4db425060a8440",
   "product": {
     "min_class_n": 25,
     "min_media_subtype_n": 8,

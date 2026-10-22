@@ -17,9 +17,9 @@ def verify(path):
     if (set(bundle) != {"schema", "kind", "evidence", "counterexamples", "actionlint"} or
             bundle["schema"] != 1 or bundle["kind"] != "goldmine.ci-local"):
         raise InvalidEvidence("local CI needs fixed schema1 evidence, not a claimed hosted status")
-    required = {"base": "offline", "native": "native", "mcp": "optional-mcp", "foresight": "optional-foresight"}
+    required = {"base": "offline", "native": "native", "mcp": "optional-mcp"}
     if set(bundle["evidence"]) != set(required):
-        raise InvalidEvidence("local CI lacks one of base/native/MCP/Foresight scopes")
+        raise InvalidEvidence("local CI lacks one of base/native/MCP scopes")
     current = source_files(root)
     reports = {}
     for scope, profile in required.items():

@@ -225,10 +225,6 @@
       "manifest_path": null,
       "sha256": null
     },
-    "optional_foresight": {
-      "manifest_path": null,
-      "sha256": null
-    },
     "latency": {
       "manifest_path": null,
       "sha256": null

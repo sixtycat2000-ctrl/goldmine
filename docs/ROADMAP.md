@@ -42,7 +42,7 @@
   冻结成员/τ 继承）；两级主题（D5）；`--preview/--under/--after/--as/--rerun/--refresh`。
 
 ### R7 · 实体关系图谱 — **SAVED**（最靠后，看 R4 数据说话）
-- 蓝图：Foresight 反编译出的 nodes/edges/node_embeddings 表结构（edges 回指证据 chunk）；抽取方式待定（生成式 vs 小模型——Foresight 那个 171MB 模型身份未实锤）。
+- 蓝图：nodes/edges/node_embeddings 表结构（edges 回指证据 chunk）；抽取方式待定（生成式 vs 小模型）。
 - 铁律：图谱边永远能点回原文证据；抽取失败不阻塞普通搜索；可选不开。
 - 2026-10-19：候选边（co-mention/git-import 启发式产出）的核实可由决策层 R11 的 Noul 批量判定——只核实、不发现，边依旧回指证据 chunk——见 docs/v2.1-decision-model.md §4D。
 

@@ -17,8 +17,13 @@ def test_suite_query_sets_keep_historical_denominators():
     queries = eval_real.load_queries()
     legacy = eval_real.eligible_queries(queries)
     full = eval_real.eligible_queries(queries, eval_real.SKIPPED_NEEDS)
-    assert len(legacy) == 150 and len(full) == 169
-    assert sum(q["tag"] != "noise" for q in full) == 164
+    # 2026-10-23: the 41 questions whose only expected sources lived in the
+    # user-deleted foresight-rea tree were removed from the ACTIVE suite
+    # (150->109 / 169->128). The historical 150/169 suite stays byte-frozen in
+    # evals/history/20261021 and docs/execution-plan/baseline-20261021.json.
+    # These pins still forbid any further silent denominator drift.
+    assert len(legacy) == 109 and len(full) == 128
+    assert sum(q["tag"] != "noise" for q in full) == 123
     assert len({q["id"] for q in full} - {q["id"] for q in legacy}) == 19
     assert eval_real.should_skip({"needs": ["asr", "ocr"]}, {"asr"})
 

@@ -4,7 +4,6 @@
  "created": "2026-10-18",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
-  "/Users/yul/git/mac/work/foresight-rea/app-src",
   "/Users/yul/git/goldmine/goldmine",
   "/Users/yul/git/goldmine/docs",
   "/Users/yul/git/goldmine/scripts",
@@ -143,7 +142,7 @@
    {
     "path": "audio/logbook-speech-5min.wav",
     "kind": "audio",
-    "bytes": 7121036,
+    "bytes": 7120340,
     "requires": "say",
     "speech_surrogate_sha256": "f2f6d70767436d6c3e1fc7c8162e5fff1ea9acd8df76a56533338b5fb531facd"
    },
@@ -213,10 +212,6 @@
   "digup": {
    "root": "/Users/yul/git/DigUp",
    "note": "DigUp Swift app \u2014 the fusion/z-score/setsScale provenance goldmine re-implements"
-  },
-  "foresight": {
-   "root": "/Users/yul/git/mac/work/foresight-rea/app-src",
-   "note": "foresight-rea app-src \u2014 reverse-engineered Google AI Edge Foresight (CJK docs, C++/Dart/Python/proto); LOCAL-ONLY, never commit bytes"
   },
   "goldmine": {
    "root": "/Users/yul/git/goldmine/evals/corpus_snapshot",
@@ -477,354 +472,108 @@
    "sha256": "e5836047d6c73fec89fb650983a93c8fd1384a3a6f2770e97ededa06342d6911"
   },
   {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/README.md",
-   "source": "foresight",
-   "bytes": 8333,
-   "sha256": "07e1594c02be7d4742f615aa49328aed7465cdf8108687ec7977a29fb2331164"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/Makefile",
-   "source": "foresight",
-   "bytes": 1109,
-   "sha256": "ed4d04bd194e8a14f012d8cb1c75648f0aae6bc6590e52c0a675e94fc2190f8b"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/architecture.md",
-   "source": "foresight",
-   "bytes": 10038,
-   "sha256": "20cc2704218293c8871dcfea1bab90e2785cff61b25238ff8d751a9c3633b1b9"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/rpc-contracts.md",
-   "source": "foresight",
-   "bytes": 4377,
-   "sha256": "ff0409918170ef8d60a57456d411a8a42399ac14c4d458876c8c8f1b24d9c0ce"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/live-findings.md",
-   "source": "foresight",
-   "bytes": 5441,
-   "sha256": "bd997b29a3878cfe2ba8266edc6fc4a427fd7e0e47bf80ba2873554086ace919"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/evidence-map.md",
-   "source": "foresight",
-   "bytes": 4673,
-   "sha256": "fb450c2669813b0db8ba93f9abfb0f87ffd73bedbe1f62836e43333dbc0da795"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/CORRECTIONS.md",
-   "source": "foresight",
-   "bytes": 4253,
-   "sha256": "50835f7bafbe9b97cd86dad97e070f024e38eff14aeabf851134b65eee8078f1"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/docs/DEPENDENCIES.md",
-   "source": "foresight",
-   "bytes": 4999,
-   "sha256": "fdfa6188f0e02090c0bfd8dcdf2b9a170972f1dde85753dda94580551eda6bd2"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/proto/rag_service.proto",
-   "source": "foresight",
-   "bytes": 2893,
-   "sha256": "4686b4efd39097dc0e4cea3818a9d807d4d6f4a539ddba77bfc99f59d2ce0699"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/main.cc",
-   "source": "foresight",
-   "bytes": 3552,
-   "sha256": "50b1338d527e1fbdc55b2470a9c5e3f365d69cc5c3ca3f88120db33a13236edc"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_service_impl.h",
-   "source": "foresight",
-   "bytes": 6746,
-   "sha256": "2ca4286a2e71e11d1f4ab5bc7460fc7ba984cbed6efd3eeb60f102f185cc7edd"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_service_impl.cc",
-   "source": "foresight",
-   "bytes": 9548,
-   "sha256": "ed0baedc4848f1083737a87ffb8ade5e1dfa20b5bd74b0e630f0ed46ce098850"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/retrieval_pipeline.cc",
-   "source": "foresight",
-   "bytes": 5398,
-   "sha256": "0fb11d34911aa0b658b8b21cb2b9da6482a63c394c58b9caf6a1d708a244a66e"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/rag_sqlite_memory_store.cc",
-   "source": "foresight",
-   "bytes": 5514,
-   "sha256": "a0afcda682577744708d4eedc76e3bd74e957fca81d021bd5ac7966eb687a213"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/sqlite_vector_udf.cc",
-   "source": "foresight",
-   "bytes": 2230,
-   "sha256": "64a46b8fb91dc1bbf1fa9e23eec32b494c2795bf8afaabb43f394fb33308a2c9"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/chunking.cc",
-   "source": "foresight",
-   "bytes": 4001,
-   "sha256": "fb543f9799a0c414016692f232286ae7dc19c93bea8064522aa98b7ca29063bc"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/model_loader.cc",
-   "source": "foresight",
-   "bytes": 3334,
-   "sha256": "ac35a70b247fbaf30ee607dc513c2491083ff324a6bbb252ec8abcf4e21b2618"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/embedding_gemma_api.cc",
-   "source": "foresight",
-   "bytes": 4606,
-   "sha256": "11eac3307aad88d43ed8fa7d1addf54391e3e242879031941c5ff6b8ae7e5dd6"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/native/launch_agent/model_paths.cpp",
-   "source": "foresight",
-   "bytes": 1878,
-   "sha256": "d8a2ea945f78ba1bdba465b62062cd4e95a470a3b6b8f837a602d25c48f14780"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/server/foresight_server.py",
-   "source": "foresight",
-   "bytes": 16294,
-   "sha256": "8bf9e7ffdddcf0e02cc6a0bf3e0bd1476ea0ee5891adb07a34a62a2507fff3ff"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/app/demo_cli.py",
-   "source": "foresight",
-   "bytes": 6416,
-   "sha256": "f4c05776d6dd84d1d1ad46f02984570b87d944f31c1edc3ba8c6d01d558f367c"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/tests/test_server.py",
-   "source": "foresight",
-   "bytes": 6045,
-   "sha256": "45424186921968bbcc9ce7a964cc15fa07dd5eda48b8582cb855212bc2007106"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/tests/live_test.py",
-   "source": "foresight",
-   "bytes": 2767,
-   "sha256": "9142f78b34f01e85b659d958d47f555dffa51ca99558c120abf059a89e35f46d"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/MODULES.md",
-   "source": "foresight",
-   "bytes": 3082,
-   "sha256": "969b466f799447cdb7479143e42dc376d0bde417dcf23b4d1012a437bbe74ef1"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/STATE-MACHINES.md",
-   "source": "foresight",
-   "bytes": 2544,
-   "sha256": "122217b6c45b5171c3f239db1dc30504d1f039843280e8f662f88b33e40dcd76"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/prompts.md",
-   "source": "foresight",
-   "bytes": 49974,
-   "sha256": "0346670b0e4ca5cd443aefff87427dcb879571520476e0851bd36c9fe24e5d4e"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/model-catalog.json",
-   "source": "foresight",
-   "bytes": 1643,
-   "sha256": "c487e534262f81fedd0f55a4846dce201b023917d6ecefb31c116b8f7adf3679"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/rag_orchestrator.dart",
-   "source": "foresight",
-   "bytes": 2574,
-   "sha256": "5225cf3417b48f9dd35219127041f3ffbeec9f670441ebc5d213775a4fc9dc34"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/audio_pipeline.dart",
-   "source": "foresight",
-   "bytes": 3316,
-   "sha256": "23e82be63e7e4cbd1173dc56d96bce38a79d5bdce59840f77de89cffee2e8114"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/graph_and_mapreduce.dart",
-   "source": "foresight",
-   "bytes": 3252,
-   "sha256": "b3ca9cb1eff8a50de376127e79812404969de0010271922199fbcccc3a067a4f"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/chat_insight_service.dart",
-   "source": "foresight",
-   "bytes": 2512,
-   "sha256": "aff81858d9ed121a4512784decb053dabd08aa2c836c20533a6d55cbe6043a67"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/inference_pipeline.dart",
-   "source": "foresight",
-   "bytes": 2964,
-   "sha256": "dff7a6da101c66b56e3206331d8217175777fce93ce9bbec44d9d62fd2dc5001"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/notes_enhancer.dart",
-   "source": "foresight",
-   "bytes": 3036,
-   "sha256": "66fa82ed123e66438ce71653125d8a011aea826828870f8c122b5ba3451407ea"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/model_catalog.dart",
-   "source": "foresight",
-   "bytes": 2765,
-   "sha256": "1b11e1d92c17002ca52843a9e489cc1161620bcbdc13b6f9f4e8dbcf95bcbdc5"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/model_download_controller.dart",
-   "source": "foresight",
-   "bytes": 2309,
-   "sha256": "6ae8a049055d92f49efb5bfc9190ba2de3fb2bcf2cc7f3ecaa91f1a66cea7167"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/contact.dart",
-   "source": "foresight",
-   "bytes": 416,
-   "sha256": "5596a4161a1d31acaf239dec90e2e9cdb2d39eb43f7afb50c80baa766950772a"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/document.dart",
-   "source": "foresight",
-   "bytes": 530,
-   "sha256": "f784c386726103730093f19a82715fb8d6290eaabc9b1d4c0d604e05965e0705"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/insight.dart",
-   "source": "foresight",
-   "bytes": 460,
-   "sha256": "9934134f84f783b4464ec49f597187104ef12d3e760c56b70d1c735c0b2cc765"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/structured_transcript.dart",
-   "source": "foresight",
-   "bytes": 493,
-   "sha256": "96b9d40450af8e48032dc0c5c45590be3d54dc38b3b5ab23584c03726686537b"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/meeting_transcript_link.dart",
-   "source": "foresight",
-   "bytes": 468,
-   "sha256": "7e5dbbf7b456fea16512939da4fa0ac80595ca50577f4aeb00c0fdaab5a9c5e2"
-  },
-  {
-   "path": "/Users/yul/git/mac/work/foresight-rea/app-src/ui/src/models/on_device_model.dart",
-   "source": "foresight",
-   "bytes": 562,
-   "sha256": "2d1b6081058c4bbc4210f2bcb3491e04b0ca8db3bca7244b2a73b72a5e7955e7"
-  },
-  {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/README.md",
    "source": "goldmine",
-   "bytes": 5912,
-   "sha256": "e2bfa9cebbcd37197e49b2090cb0e2a74c51b7e2f50a41028d738532a4fb8620",
+   "bytes": 5189,
+   "sha256": "9fc6b21bd1f1a5fce446b50b37201b13feeef8e7f62e4d87a9aa993b7b4bfeae",
    "origin": "/Users/yul/git/goldmine/README.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/ARCHITECTURE.md",
    "source": "goldmine",
-   "bytes": 26116,
-   "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf",
+   "bytes": 28126,
+   "sha256": "4c97ef9a0d918140c39d160e8943ae42b22da44865cda853b2df4a8cd480dd7d",
    "origin": "/Users/yul/git/goldmine/ARCHITECTURE.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/SPEC.md",
    "source": "goldmine",
-   "bytes": 42391,
-   "sha256": "99e4ed0a1dc130e799ce4f723047d7a29e7adefd40d5067ab52f04b1b6d45306",
+   "bytes": 44119,
+   "sha256": "6d4c2903c2832ae229cf0a01e6d0862d814c91a55ab9df8d22cc6b0ad27a7b07",
    "origin": "/Users/yul/git/goldmine/SPEC.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/search.py",
    "source": "goldmine",
-   "bytes": 34631,
-   "sha256": "ed8432b2b90f847cd567ca112e6dfff61db3adb8412157fb0fe0556aab6ca0b0",
+   "bytes": 39368,
+   "sha256": "936b4d89e70b696f2ec38fe0249ad490a23f6587be7bc9a5f5d41f35380e5377",
    "origin": "/Users/yul/git/goldmine/goldmine/search.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/store.py",
    "source": "goldmine",
-   "bytes": 47316,
-   "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31",
+   "bytes": 41080,
+   "sha256": "bc89e44c827ee6e9cd9aa278eeb951f9169e2712df302ee39acd0778e6eed313",
    "origin": "/Users/yul/git/goldmine/goldmine/store.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/chunker.py",
    "source": "goldmine",
-   "bytes": 23086,
-   "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5",
+   "bytes": 24184,
+   "sha256": "9054b61efd313729e30631115c3cb89d442842ba0042cb21d3498316c22f5410",
    "origin": "/Users/yul/git/goldmine/goldmine/chunker.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/config.py",
    "source": "goldmine",
-   "bytes": 18049,
-   "sha256": "2d9126fd644d79d40c86783b9edaed3711c6ce5061c8f696d29af15cc130f25e",
+   "bytes": 19183,
+   "sha256": "70eb37b99a832a7ea74a46f6914196538e695f69c73be120acc148c2c9aeae3f",
    "origin": "/Users/yul/git/goldmine/goldmine/config.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/fingerprints.py",
    "source": "goldmine",
-   "bytes": 21508,
-   "sha256": "d8a1b78b81d7a690c95b38b2f4e8d5c56fc129c8f45d94e2abdd61fc3b6176ec",
+   "bytes": 21617,
+   "sha256": "72b766a16121851cf9f5c9bf9d9c16ecb4a36f84e8cd7ff731d508b276c818f4",
    "origin": "/Users/yul/git/goldmine/goldmine/fingerprints.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/distill.py",
    "source": "goldmine",
-   "bytes": 57514,
-   "sha256": "244a07d0b0d6a348ea9f3ac16845da3d7b2b3ceabfb1d24a1bdbc4409111057c",
+   "bytes": 57534,
+   "sha256": "abf5e0e3369ef1790df2bfe1957390b7329252c880c67ec941106fbb8839f3bf",
    "origin": "/Users/yul/git/goldmine/goldmine/distill.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/util.py",
    "source": "goldmine",
-   "bytes": 13543,
-   "sha256": "0282029eda4787bc062b5d3e5845ca438bc41711408f4ea215690e85655962b1",
+   "bytes": 13782,
+   "sha256": "9c34f1cc7d85451db75ee238665b7d251dbec145a82a2ef6932351ba945a29a2",
    "origin": "/Users/yul/git/goldmine/goldmine/util.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/migrations.py",
    "source": "goldmine",
-   "bytes": 21482,
-   "sha256": "45ee28fc1e1d2cde1e4d96376eb5cf25b58c1b0a5bfa900f1050a629ca759d22",
+   "bytes": 22177,
+   "sha256": "701c61a19221299441d3f2d9ccab8b5f055aa99f50ec859d02dc6f16f29f0607",
    "origin": "/Users/yul/git/goldmine/goldmine/migrations.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/base.py",
    "source": "goldmine",
-   "bytes": 6328,
-   "sha256": "cb24f132793313f2e8e468c2cdb620dedccb6d19b5ec42c828c3eb57e31483a2",
+   "bytes": 6513,
+   "sha256": "f7e6130283c4a19223fddfef97ae2475da1ec6fb31d2b2a12534101524ed2221",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/base.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/llama.py",
    "source": "goldmine",
-   "bytes": 31014,
-   "sha256": "2fbbccebc622b004ebfc7451493dd107d3127e799d2bd7ae58a4304deff893b5",
+   "bytes": 32762,
+   "sha256": "cefe0f11b4b7114abd32bbd5a486a388a26d65913490d53ce995ffee138c7eab",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/llama.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/mock.py",
    "source": "goldmine",
-   "bytes": 6191,
-   "sha256": "4ccfcc6744e7c580b3b6f51fc205ed608c6d6fdbff7f6675cca044d0fbf7cd8e",
+   "bytes": 6288,
+   "sha256": "b53bf73b9eabf0416dc50e60d037c5fb8b6889564e09a854d729a50df3b1a3ee",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/mock.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/pipeline.py",
    "source": "goldmine",
-   "bytes": 28536,
-   "sha256": "d3dc68666ced3f97fb95fd3895ddbfcf30e54e66ca03fdd838e925d73faff2b8",
+   "bytes": 32565,
+   "sha256": "cb3f2f9665c394f7dff9d043d3fd75e8e4085c0846721f9a9255e9e7ae91b64b",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/pipeline.py"
   },
   {
@@ -837,8 +586,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/rules.py",
    "source": "goldmine",
-   "bytes": 14410,
-   "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de",
+   "bytes": 14427,
+   "sha256": "72905b782e4b418a334e063769521cabf38d949207ff7e928d48fe92f2aa2db7",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/rules.py"
   },
   {
@@ -851,49 +600,48 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/extract_text.py",
    "source": "goldmine",
-   "bytes": 11355,
-   "sha256": "5dcd4cc7add76ac95deb00bfd359a24a042fc2f9913f075d070220746a5ba437",
+   "bytes": 11359,
+   "sha256": "6791fc94dbd58e6f11b4468dac1dc9a5ea07644fd39bb01279bd7edeca7b5158",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/extract_text.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/media.py",
    "source": "goldmine",
-   "bytes": 15243,
-   "sha256": "4abf5a83f19324b3f61163c7e7ab68bfcfee484c07576043ae5fafd2b478df10",
+   "bytes": 15061,
+   "sha256": "2961b8231d4dbfc35ae67586818b0b3332e433a386dfd5ac3fe79a29108e8363",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/media.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/REDESIGN.md",
    "source": "goldmine",
-   "bytes": 50890,
-   "sha256": "be16eaa481dcad9ce5345a726eb8122d11d5e7decf95e936cb59ada0ae3ccde6",
+   "bytes": 50918,
+   "sha256": "ce47cb3b9dcbd8b1ae0cf846bc760e57f2a68cd022b8593d420b16a876be4f74",
    "origin": "/Users/yul/git/goldmine/docs/v2/REDESIGN.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/01-search-relevance.md",
    "source": "goldmine",
-   "bytes": 41288,
-   "sha256": "e53b4d6047440736af234a8d7ebdfad3838facdef117f9d022ec246404688068",
+   "bytes": 40911,
+   "sha256": "a0bdfe60f519de1089f1633c655386973a0bbad65da4bf1e8656c2fff380b72c",
    "origin": "/Users/yul/git/goldmine/docs/v2/01-search-relevance.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/05-architecture-data.md",
    "source": "goldmine",
-   "bytes": 57593,
-   "sha256": "32401b3478eb8c85100eeaca0c655938fc05566f8df35ae9c2ce2c43ec88b5a0",
+   "bytes": 57454,
+   "sha256": "77333cc36a385a999bdb9fa726a979d405ec08b5579dad974bf5b8903b81c4dc",
    "origin": "/Users/yul/git/goldmine/docs/v2/05-architecture-data.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/docs/v2/06-distill-knowledge.md",
    "source": "goldmine",
-   "bytes": 29548,
-   "sha256": "06c70c36a063957878badf500b1cc0bbadc248988b9aafe81a7dc03f615921d1",
+   "bytes": 29038,
+   "sha256": "ccf387c127a6c0475d6f8eaf580bc45b4886a61f571713b018d56ef3185dbe28",
    "origin": "/Users/yul/git/goldmine/docs/v2/06-distill-knowledge.md"
   }
  ],
  "notes": [
   "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
-  "foresight-rea is decompiled third-party code \u2014 local-only, its bytes are never copied into the repo (docs/v2/01 risk 9)",
   "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
   "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)"

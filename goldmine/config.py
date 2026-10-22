@@ -51,12 +51,6 @@ class ModelsCfg:
 
 
 @dataclass
-class ForesightCfg:
-    socket: str = ""
-    expect_version: str = ""
-
-
-@dataclass
 class IngestCfg:
     max_file_mb: int = 200
     max_pages: int = 5000
@@ -147,7 +141,6 @@ class Config:
     home: Path = Path("~/Library/Application Support/goldmine")
     backend: str = "llama"
     llama: LlamaCfg = field(default_factory=LlamaCfg)
-    foresight: ForesightCfg = field(default_factory=ForesightCfg)
     models: ModelsCfg = field(default_factory=ModelsCfg)
     ingest: IngestCfg = field(default_factory=IngestCfg)
     ocr: OcrCfg = field(default_factory=OcrCfg)
@@ -228,12 +221,6 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
         if "dir" in data:
             cfg.models.dir = Path(str(data["dir"]))
         unknown(section, data, {"dir"})
-    elif section == "foresight":
-        if "socket" in data:
-            cfg.foresight.socket = str(data["socket"])
-        if "expect_version" in data:
-            cfg.foresight.expect_version = str(data["expect_version"])
-        unknown(section, data, {"socket", "expect_version"})
     elif section == "ingest":
         for key in ("max_file_mb", "max_pages", "max_chunks", "workers"):
             if key in data and (v := _coerce_int(data[key])) is not None:
@@ -443,8 +430,6 @@ def load(config_path: Path | None = None, env: Mapping[str, str] = os.environ) -
         cfg.llama.model_configured = True
     if v := env.get("GOLDMINE_MODELS"):
         cfg.models.dir = Path(v)
-    if v := env.get("GOLDMINE_FORESIGHT_SOCKET"):
-        cfg.foresight.socket = v
     # R8 serve (D7): the explicit-daemon-socket override; read ONLY here (the
     # cli.py:198-208-era rule that env reads belong to config.load — the env
     # block now lives at these lines, which is the F10 citation refresh)

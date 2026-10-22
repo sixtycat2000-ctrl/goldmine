@@ -1,8 +1,7 @@
 """Backend registry — the single construction point (ARCHITECTURE §4).
 
-llama/foresight modules are agent-B deliverables (build passes 4/7); they are
-imported lazily so this build works fully without them and reports their absence
-honestly instead of crashing.
+Backend modules are imported lazily so this build works fully without them
+and reports their absence honestly instead of crashing.
 """
 
 from __future__ import annotations
@@ -63,7 +62,7 @@ def _load_class(backend_id: str) -> type[EmbeddingBackend] | None:
 def _registry() -> dict[str, type[EmbeddingBackend]]:
     reg: dict[str, type[EmbeddingBackend]] = {"mock": None}  # type: ignore[dict-item]
     reg["mock"] = _load_class("mock")  # type: ignore[assignment]
-    for backend_id in ("llama", "foresight"):
+    for backend_id in ("llama",):
         cls = _load_class(backend_id)
         if cls is not None:
             reg[backend_id] = cls  # type: ignore[assignment]
@@ -76,11 +75,11 @@ def BACKEND_IDS() -> list[str]:  # noqa: N802 - MODULE_MAP names the dict BACKEN
 
 def create_backend(cfg: Config, name: str | None = None) -> EmbeddingBackend:
     """Construct a backend by name (default: cfg.backend). May raise
-    BackendUnavailable (llama/foresight not in this build) or ValueError (unknown)."""
+    BackendUnavailable (llama not in this build) or ValueError (unknown)."""
     backend_name = name or cfg.backend
     registry = _registry()
     if backend_name not in registry:
-        if backend_name in ("llama", "foresight"):
+        if backend_name in ("llama",):
             raise BackendUnavailable(
                 f"backend '{backend_name}' is not available in this build",
                 fix_hint="use --backend mock, or --lexical-only for a keyword-only index",
@@ -91,8 +90,6 @@ def create_backend(cfg: Config, name: str | None = None) -> EmbeddingBackend:
     cls = registry[backend_name]
     if backend_name == "llama":
         return cls(cfg.llama)  # type: ignore[misc]
-    if backend_name == "foresight":
-        return cls(cfg.foresight)  # type: ignore[misc]
     return cls()
 
 
@@ -103,7 +100,7 @@ def probe_all(cfg: Config, live: bool = False) -> dict[str, dict]:
     build probe_all only reports static availability.
     """
     out: dict[str, dict] = {}
-    for backend_id in ("llama", "foresight", "mock"):
+    for backend_id in ("llama", "mock"):
         try:
             backend = create_backend(cfg, backend_id)
         except BackendUnavailable as exc:

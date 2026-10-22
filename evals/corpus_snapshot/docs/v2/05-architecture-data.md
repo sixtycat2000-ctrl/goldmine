@@ -463,14 +463,13 @@ line-JSON; this doc ratifies it as the substrate contract.) Justification:
 is a *secret on disk* that leaks into backups and must be rotated, for a threat
 model (other local users) that single-user macOS doesn't have; (b) no port
 squatting, no ephemeral-port race class at all (v1 needs `_free_port()` +
-retry-×3, `llama.py:230-243` — the daemon deletes that whole bug family);
-(c) it matches the one external integration we already have (ForesightHelper is
-a UDS service, ARCHITECTURE.md:44-46). Rejected HTTP upside (curl-ability) is a
+retry-×3, `llama.py:230-243` — the daemon deletes that whole bug family).
+Rejected HTTP upside (curl-ability) is a
 non-goal: the CLI is the interface (kill list §4.9). **Placement: the socket
 lives at `$TMPDIR/goldmine-serve-<uid>/serve.sock`, NOT under `<home>`** — macOS
 enforces a 104-byte sun_path limit and `~/Library/Application Support/goldmine/`
 + long usernames can exceed it; the discovery file records the real path
-(same `$TMPDIR` pattern as v1's foreign helper).
+(the same `$TMPDIR` pattern v1 used for out-of-process helper sockets).
 
 **Lifecycle:**
 
@@ -651,7 +650,7 @@ the code already has RRF (k=60) for the scorer baseline (`search.py:312-…`).
 
 - **Install**: `uv tool install goldmine` / `pipx install goldmine`;
   console script already declared (`pyproject.toml [project.scripts]`).
-  numpy the only hard dep; grpcio stays behind the `foresight` extra.
+  numpy the only hard dep.
 - **The two non-pip artifacts** (llama-server binary ~ tens of MB; models 865 MB
   + 574 MB ASR) ship via **GitHub release assets**, installed by
   `goldmine model install`:

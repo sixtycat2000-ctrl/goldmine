@@ -24,10 +24,9 @@ PROMPT_SCHEME = (
 
 #: The DOCUMENT-prompt template as a SPLIT, structured constant (v2 review F1):
 #: the LIVE embed identity is computed from this — never by parsing the
-#: combined PROMPT_SCHEME, whose d='…' slot is a llama/mock artifact (the
-#: foresight scheme deliberately has no d-slot because the helper frames text
-#: internally). Byte-identical to PROMPT_SCHEME's d-slot for llama/mock, so
-#: the B2 binding rule holds: migrated v1 embed ids and fresh v2 ids agree.
+#: combined PROMPT_SCHEME. Byte-identical to PROMPT_SCHEME's d-slot for
+#: llama/mock, so the B2 binding rule holds: migrated v1 embed ids and fresh
+#: v2 ids agree.
 DOCUMENT_PROMPT_TEMPLATE = "title: {} | text: {}"
 
 
@@ -91,8 +90,8 @@ class EmbeddingBackend(ABC):
     #: The document-prompt template this backend declares — one axis of the
     #: embed identity (fingerprints.live_embed_identity). The default is the
     #: shared llama/mock template; a backend that applies no client-side
-    #: document prompt (foresight: the helper frames text internally) overrides
-    #: it with its own marker string, used verbatim in the identity.
+    #: document prompt overrides it with its own marker string, used verbatim
+    #: in the identity.
     prompts_doc_template: str = DOCUMENT_PROMPT_TEMPLATE
 
     @property

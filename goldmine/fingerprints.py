@@ -55,8 +55,8 @@ def build(backend: "EmbeddingBackend", preprocessing: str = PREPROCESSING_VERSIO
     """Full fingerprint JSON for a live backend.
 
     The eight canonical fields are joined by any EXTRA keys the backend's
-    fingerprint_fields() returns (e.g. the foresight adapter's `family` /
-    `task_type` mapping). Extra fields flow into the canonical JSON and hence
+    fingerprint_fields() returns (e.g. adapter-specific `family` /
+    `task_type` mappings). Extra fields flow into the canonical JSON and hence
     the id — backends that record none are unaffected.
     """
     fields = dict(backend.fingerprint_fields())
@@ -258,7 +258,7 @@ def embed_identity(fp: dict) -> dict:
     STORED-fingerprint path only (migrations / status / doctor reading
     meta.fingerprint_json): the live path is `live_embed_identity()`, which
     reads the backend's own split constants and never parses the legacy
-    scheme (foresight's prompts value has no d-slot to parse)."""
+    scheme (a legacy prompts value may have no d-slot to parse)."""
     ident = {
         "backend": str(fp.get("backend", "")),
         "model_id": str(fp.get("model_id", "")),
@@ -306,8 +306,8 @@ def live_embed_identity(backend: "EmbeddingBackend") -> dict:
     """The embed-identity dict from a STARTED backend's OWN structured fields
     (v2 review F1): prompts_doc comes from `prompts_doc_template` — the split
     doc-prompt constant each backend declares — NEVER from parsing the
-    combined legacy scheme (whose d='…' slot a foresight backend deliberately
-    lacks; parsing it raised ValueError and killed every foresight ingest).
+    combined legacy scheme (whose d='…' slot a backend's prompts value may
+    deliberately lack; parsing it raised ValueError and killed every ingest).
     Field-for-field identical to `embed_identity()` on the same backend's
     fingerprint (same keys, same extras flow), so live and migrated
     derivations share one shape; `legacy_prompts_doc()` remains for stored v1
@@ -332,7 +332,7 @@ def live_embed_identity(backend: "EmbeddingBackend") -> dict:
 
 def live_embed_id(backend: "EmbeddingBackend") -> str:
     """The live embed identity id from a STARTED backend's structured fields
-    (fields for llama/foresight are only fully known after startup/ping)."""
+    (fields for llama are only fully known after startup/ping)."""
     return _embed_identity_id(live_embed_identity(backend))
 
 

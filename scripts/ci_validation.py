@@ -12,7 +12,7 @@ from acceptance_lib.hosted_contract import hosted_context
 from acceptance_lib.runner import exit_code, run, validate
 
 PROFILES = {"base": "offline", "native": "native", "mcp": "optional-mcp",
-            "foresight": "optional-foresight", "live": "local_rc"}
+            "live": "local_rc"}
 
 
 def main(argv=None):

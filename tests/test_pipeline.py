@@ -454,7 +454,7 @@ def test_mixed_vector_and_vectorless_chunks(cfg, tmp_path):
 # ------------------------------------------------------------------ media (v2)
 #
 # The multimodal pipeline: with a backend that declares image/audio capability
-# (foresight live; MockBackend(multimodal=True) offline) media files become
+# (MockBackend(multimodal=True) offline) media files become
 # content-indexed. The default mock stays text-only — those pins live above.
 
 
@@ -743,7 +743,7 @@ def _screenshot(tmp_path, name="Screenshot 2026-06-01 at 09.00.00.png"):
 
 
 def test_screenshot_ocr_under_multimodal_is_fts_only(cfg, tmp_path, fake_ocr):
-    """Foresight-like policy (DigUp Indexer.swift:510-513): the image vector
+    """Multimodal policy (DigUp Indexer.swift:510-513): the image vector
     EXISTS, so the OCR words are FTS-only — kind='ocr', text indexed, vec NULL."""
     from conftest import FAKE_OCR_TEXT
 

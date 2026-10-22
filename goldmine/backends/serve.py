@@ -653,13 +653,13 @@ class RemoteBackend(EmbeddingBackend):
         # llama.py messages VERBATIM (D1: the ABC surface fits unchanged)
         raise NotSupported(
             "llama /v1/embeddings is text-only — images are metadata-only under "
-            "this backend (use --backend foresight or mock for image vectors)"
+            "this backend (use --backend mock for image vectors)"
         )
 
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
         raise NotSupported(
             "llama /v1/embeddings is text-only — audio is metadata-only under "
-            "this backend (use --backend foresight or mock for audio vectors)"
+            "this backend (use --backend mock for audio vectors)"
         )
 
     def describe(self) -> dict:

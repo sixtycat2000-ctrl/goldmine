@@ -1,6 +1,6 @@
 # Local and hosted validation
 
-The normal CI workflow declares Python3.12/3.13 on Linux and macOS arm64, a separate macOS native-tools job, separate MCP/Foresight SDK jobs, and wheel installation outside the checkout. The declared hosted matrix is not a claim that those jobs have run. This checkout has no configured remote/runner; hosted evidence remains MISSING until an actual run URL and its artifacts exist.
+The normal CI workflow declares Python3.12/3.13 on Linux and macOS arm64, a separate macOS native-tools job, separate MCP SDK jobs, and wheel installation outside the checkout. The declared hosted matrix is not a claim that those jobs have run. This checkout has no configured remote/runner; hosted evidence remains MISSING until an actual run URL and its artifacts exist.
 
 Local and hosted jobs use the same entry:
 
@@ -8,7 +8,6 @@ Local and hosted jobs use the same entry:
 python3 scripts/ci_validation.py --profile base --out reports/ci/base-001
 python3 scripts/ci_validation.py --profile native --out reports/ci/native-001
 python3 scripts/ci_validation.py --profile mcp --out reports/ci/mcp-001
-python3 scripts/ci_validation.py --profile foresight --out reports/ci/foresight-001
 ```
 
 Run each from an environment with its corresponding requirements lock. base does not need downloaded models, BEIR caches or native media tools. SDK jobs fail if their required tests skip. The fixed registry verifies original collection identities and raw JUnit, stdout/stderr and subprocess receipts. Source changes during a run produce MISSING, so final evidence is captured from a frozen candidate. Never rerun sealed holdout to choose a winner.
@@ -25,10 +24,10 @@ The workflow syntax was checked locally with official actionlint1.7.12 (release 
 
 Each scoped invocation writes ci-context.json binding its original report to
 the runtime/validator/test/lock/workflow file hashes before and after execution.
-After all four complete from a frozen candidate, combine those contexts with:
+After all three complete from a frozen candidate, combine those contexts with:
 
 ```sh
-python3 scripts/verify_ci_local.py --base /absolute/base/ci-context.json --native /absolute/native/ci-context.json --mcp /absolute/mcp/ci-context.json --foresight /absolute/foresight/ci-context.json --actionlint /absolute/actionlint --out reports/execution/ci-local-001
+python3 scripts/verify_ci_local.py --base /absolute/base/ci-context.json --native /absolute/native/ci-context.json --mcp /absolute/mcp/ci-context.json --actionlint /absolute/actionlint --out reports/execution/ci-local-001
 ```
 
 This runs the fixed failure-injection tests and actionlint itself, then replays
@@ -59,9 +58,9 @@ commit also requires a matching hosted run; this stricter hosted identity is
 separate from local content-based replay. The supported events are push and
 workflow_dispatch; fork and pull-request merge identities are rejected.
 
-The fixed workflow names its eight expanded jobs and artifacts:
+The fixed workflow names its seven expanded jobs and artifacts:
 base-ubuntu-latest-3.12, base-ubuntu-latest-3.13, base-macos-14-3.12,
-base-macos-14-3.13, native-macos-arm64, optional-mcp, optional-foresight,
+base-macos-14-3.13, native-macos-arm64, optional-mcp,
 and package-install. Source jobs attach their actual OS, architecture, Python,
 repository/run/attempt/SHA/job/workspace to the same ci_validation receipts.
 The package wrapper calls the existing build/smoke scripts and records wheel,

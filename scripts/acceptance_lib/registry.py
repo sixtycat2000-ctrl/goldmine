@@ -55,8 +55,6 @@ def classify(nodeid: str, markers=()) -> str:
     if short in TEST_PROFILES:
         return TEST_PROFILES[short]
     name = nodeid.split("::")[0].rsplit("/", 1)[-1]
-    if name == "test_foresight_offline.py":
-        return "optional-foresight"
     if name == "test_mcp.py" or "optional_mcp" in markers:
         return "optional-mcp"
     if name.startswith("test_live_") or "live" in markers:
@@ -125,7 +123,6 @@ CHECKS = {c.id: c for c in (
     Check("pytest.assets", "pytest", "assets"),
     Check("pytest.native", "pytest", "native"),
     Check("pytest.optional_mcp", "pytest", "optional-mcp", "Install the locked MCP extra and run its real protocol tests."),
-    Check("pytest.optional_foresight", "pytest", "optional-foresight", "Install the Foresight extra for the in-process SDK tests."),
     Check("assets.embedding", "file", "models.embedding", "Provide the pinned local embedding file and SHA."),
     Check("assets.public", "public_assets", "public.cache_manifest", "Prepare verified BEIR zips explicitly; do not download during acceptance."),
     Check("retrieval.legacy", "paired", "legacy"),
@@ -158,7 +155,6 @@ PROFILES = {
     "assets": ("assets.embedding", "assets.public", "pytest.assets"),
     "native": ("pytest.native",),
     "optional-mcp": ("pytest.optional_mcp",),
-    "optional-foresight": ("pytest.optional_foresight",),
     "retrieval": RETRIEVAL, "agent": AGENT, "local_rc": LOCAL_RC,
     "hosted_release": LOCAL_RC + ("release.ci_hosted",),
     "task-check": (),

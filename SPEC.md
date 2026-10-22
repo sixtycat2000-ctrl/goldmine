@@ -13,8 +13,7 @@ docs/v2.1-r6-distill.md (distill), docs/v2.1-pack-eval.md (pack/context), docs/v
 `backup` · `backends` · `reset` · `open` · `reindex` · `mcp` · `help`. (`goldmine models …` is a hidden
 argv alias of `goldmine model …`, `models add X` == `model install X`.)
 
-Python 3.12, stdlib-first. Dependencies: `numpy` (required), `grpcio`+`protobuf` (optional
-`foresight` extra), `mcp==2.0.0` (optional `mcp` extra), `pytest` (dev). External tools (`pdftotext`, `textutil`, `ffmpeg`,
+Python 3.12, stdlib-first. Dependencies: `numpy` (required), `mcp==2.0.0` (optional `mcp` extra), `pytest` (dev). External tools (`pdftotext`, `textutil`, `ffmpeg`,
 `llama-server`, `whisper-cli`, the `goldmine-ocr` helper) are optional at runtime and always
 capability-reported.
 
@@ -55,7 +54,7 @@ Global options (accepted before or after the command):
 |---|---|---|
 | `--index NAME` | `default` | Use `<home>/<NAME>.sqlite` (named index) |
 | `--db PATH` | — | Explicit index file path (overrides `--index`) |
-| `--backend NAME` | config `backend.default` = `llama` | `llama` \| `foresight` \| `mock` (validated at parse time; unknown = usage error) |
+| `--backend NAME` | config `backend.default` = `llama` | `llama` \| `mock` (validated at parse time; unknown = usage error) |
 | `--config PATH` | `~/.config/goldmine/config.toml` | Config file location |
 | `-v / -vv` | off | Log INFO / DEBUG to stderr |
 | `-q` | off | Errors only |
@@ -501,7 +500,7 @@ Checks (each yields OK / WARN / FAIL + detail + fix hint):
 - python 3.12+, numpy importable
 - backends: `llama` (binary found? `--version` parses? model file exists? sidecar sha256
   valid? live probe when `GOLDMINE_LIVE=1`: spawn + embed `"ping"` → expect dim 768),
-  `foresight` (grpcio importable? socket exists? `Ping` → version), `mock` (always OK)
+  `mock` (always OK)
 - tools: `pdftotext -v`, `textutil` (macOS), `ffmpeg -version`, `ffprobe`; speech:
   `whisper-cli` + VAD/model files; OCR: `goldmine-ocr` helper present/enabled
 - index: exists? schema_version current (migration ladder §17)? fingerprint present and
@@ -530,7 +529,6 @@ available backend. This is where the media truth is visible at a glance:
 | backend | text | image | audio | note |
 |---|---|---|---|---|
 | llama | yes | no | no | `/v1/embeddings` is text-only (llama.cpp); audio/video reach it as ASR text |
-| foresight | yes | yes | yes | experimental; helper must be running |
 | mock | yes | yes | yes | deterministic hash vectors, tests only |
 
 Exit 0 always (unavailability is data, not an error). `--probe` failures mark the backend
@@ -740,10 +738,6 @@ batch    = 16
 startup_timeout  = 120     # seconds to /health
 request_timeout  = 60      # per embeddings call
 
-[foresight]
-socket = ""                # empty = $TMPDIR/foresight_helper.sock
-expect_version = ""        # optional pin; mismatch ⇒ WARN (fingerprint uses live version)
-
 [models]
 dir = ""                   # empty = <home>/models (model-manager canonical location)
 
@@ -789,11 +783,10 @@ socket = ""                # explicit socket path (GOLDMINE_SERVE env wins)
 |---|---|---|
 | `GOLDMINE_HOME` | `core.home` | data directory root |
 | `GOLDMINE_CONFIG` | `--config` | config file path |
-| `GOLDMINE_BACKEND` | `backend.default` | `llama`/`foresight`/`mock` |
+| `GOLDMINE_BACKEND` | `backend.default` | `llama`/`mock` |
 | `GOLDMINE_LLAMA_SERVER` | `llama.server` | binary path |
 | `GOLDMINE_MODEL` | `llama.model` | GGUF path |
 | `GOLDMINE_MODELS` | `models.dir` | model-manager directory |
-| `GOLDMINE_FORESIGHT_SOCKET` | `foresight.socket` | UDS path |
 | `GOLDMINE_WHISPER` | `ingest.asr_whisper` | whisper-cli path override |
 | `GOLDMINE_ASR` | `ingest.asr` | `auto`/`always`/`off` |
 | `GOLDMINE_OCR` | `ocr.enabled` | truthy/falsy |
@@ -808,5 +801,4 @@ socket = ""                # explicit socket path (GOLDMINE_SERVE env wins)
 - llama.cpp `0.5.0 (build 11146, commit 7fe450e19)` at `/opt/homebrew/opt/llama.cpp/bin/llama-server`
 - Model `models/embeddinggemma-2-Q8_0.gguf` (310 MB) + `mmproj-embeddinggemma-2-Q8_0.gguf`
   (555 MB), pinned ggml-org rev `bfcd298762cc34d0357ece5ebdd31791a3a374d8` (DigUp's exact pin)
-- ForesightHelper live at `$TMPDIR/foresight_helper.sock`; grpcio 1.84.0 (pip --user);
-  `python3` = pyenv 3.12.0; poppler + ffmpeg + whisper-cpp via brew
+- `python3` = pyenv 3.12.0; poppler + ffmpeg + whisper-cpp via brew

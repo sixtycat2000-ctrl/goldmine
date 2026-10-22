@@ -339,7 +339,7 @@ def _state_model(ctx: _Ctx) -> None:
     from .model import ModelError, ModelManager
 
     ctx.say("step 2/8 · embedding model")
-    if ctx.backend_id in ("mock", "foresight"):
+    if ctx.backend_id == "mock":
         ctx.choices["model"] = ctx.backend_id
         ctx.say(f"  backend {ctx.backend_id} — no embedding model needed")
         return
@@ -448,7 +448,7 @@ def print_to_stderr(message: str) -> None:
 
 def _state_probe(ctx: _Ctx) -> None:
     ctx.say("step 3/8 · live model probe")
-    if ctx.choices.get("model") in ("lexical", "mock", "foresight", None):
+    if ctx.choices.get("model") in ("lexical", "mock", None):
         ctx.say("  skipped — nothing to probe (no local embedding model in play)")
         return
     from .model import ModelManager
@@ -896,7 +896,7 @@ def _model_line(ctx: _Ctx) -> str:
             "keyword-only (no embedding model yet — goldmine model install "
             f"{DEFAULT_EMBEDDING_KEY} adds semantic search)"
         )
-    if choice in ("mock", "foresight"):
+    if choice == "mock":
         return f"backend {choice} (offline/test backend — no model file)"
     from .model import ModelManager
 

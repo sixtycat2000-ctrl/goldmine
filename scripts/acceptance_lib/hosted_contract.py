@@ -38,7 +38,7 @@ JOBS = {
        for py in ("3.12", "3.13")},
     "native-macos-arm64": Job("native-macos-arm64", "native", "Darwin", "3.12", "macos-14", "Native source checks"),
     **{f"optional-{extra}": Job(f"optional-{extra}", extra, "Darwin", "3.12", "macos-14", "SDK protocol checks")
-       for extra in ("mcp", "foresight")},
+       for extra in ("mcp",)},
     "package-install": Job("package-install", "package", "Darwin", "3.12", "macos-14", "Portable package proof"),
 }
 

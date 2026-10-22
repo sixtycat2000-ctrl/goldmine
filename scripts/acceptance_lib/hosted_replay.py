@@ -55,7 +55,7 @@ def pytest_report(root, extracted, selected, job, source):
     from .runner import validate
 
     scope = JOBS[job["name"]].profile
-    relative = f"{scope}/ci-context.json" if scope in {"mcp", "foresight"} else "ci-context.json"
+    relative = f"{scope}/ci-context.json" if scope in {"mcp"} else "ci-context.json"
     context_path = extracted / relative
     context = read_json(context_path)
     if set(context) != {"schema", "profile", "before", "after", "report", "hosted"} or context["schema"] != 1 or context["profile"] != scope:
@@ -67,7 +67,7 @@ def pytest_report(root, extracted, selected, job, source):
     path = verify_artifact(context_path.parent, context["report"])
     preflight_junit(path)
     report = validate(root, path)
-    profile = {"base": "offline", "native": "native", "mcp": "optional-mcp", "foresight": "optional-foresight"}[scope]
+    profile = {"base": "offline", "native": "native", "mcp": "optional-mcp"}[scope]
     if report["requested_profile"] != profile or report["profile"] != profile or report["task_id"] is not None or report["inputs"] is not None:
         raise InvalidEvidence("CI report selected a different or incomplete source scope")
     if any(report[k] != v for k, v in source["identity"].items()) or report["platform"] != context["hosted"]["runner"]:

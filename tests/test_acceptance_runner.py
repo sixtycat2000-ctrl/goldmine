@@ -208,7 +208,6 @@ def test_registry_does_not_use_state_or_require_future_checks_for_task():
     ids = [c.id for c in expand("task-check", "P1-02")]
     assert ids == ["task.P1-02", "retrieval.product_dev", "source.stable"]
     assert all("status" not in c.kind for c in expand("local_rc"))
-    assert classify("tests/test_foresight_offline.py::test_rpc") == "optional-foresight"
     assert classify("tests/test_model.py::test_manifest_matches_files_on_disk") == "offline"
     assert checks.percentile(list(range(1, 31)), .95) == 29
 

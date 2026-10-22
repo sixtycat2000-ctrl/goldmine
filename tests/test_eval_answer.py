@@ -71,10 +71,10 @@ def pack_for(body: str) -> str:
 
 def test_validate_questions_accepts_the_committed_set():
     qs = ea.load_questions()
-    assert len(qs) == 20
+    assert len(qs) == 17
     assert ea.validate_questions(qs) == []
-    assert sum(len(q["must_facts"]) for q in qs) == 50
-    assert sum(1 for q in qs if q["trap"]) == 4
+    assert sum(len(q["must_facts"]) for q in qs) == 43
+    assert sum(1 for q in qs if q["trap"]) == 3
 
 
 def test_validate_questions_requires_evidence_per_fact():

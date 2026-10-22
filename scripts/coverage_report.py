@@ -21,7 +21,7 @@ Floors (02 §9 v2 targets, restated here as the gate's source of truth):
    with a printed reason when the tool is absent)
 
 Backend awareness: the report reads meta.fingerprint_json to learn which
-backend built the index, so the same gate works for mock/foresight (media
+backend built the index, so the same gate works for mock (media
 floors enforced) and llama (media expected honestly metadata-only).
 
 Usage:
@@ -84,7 +84,7 @@ def collect(db_path: Path) -> dict:
             try:
                 fp = json.loads(fp_raw)
                 backend = fp.get("backend")
-                multimodal = "media" in fp or backend == "foresight"
+                multimodal = "media" in fp
             except json.JSONDecodeError:
                 pass
     finally:

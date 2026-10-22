@@ -98,8 +98,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         self._embed_identity: str | None = None
         # F1: the backend-derived identity dict (live_embed_identity) for
         # _finalize's meta bookkeeping — re-deriving from the fingerprint dict
-        # would parse the legacy prompts scheme, which foresight's has no
-        # d-slot for.
+        # would parse the legacy prompts scheme, which has no d-slot for some
+        # backends.
         self._embed_identity_dict: dict | None = None
         # v2 OCR (B4): lazy one-time helper probe shared by screenshots and
         # thin PDF pages ("unknown" -> probed on first need, cached per run;

@@ -72,7 +72,7 @@ def metadata(root):
             "digest": "sha256:" + "1" * 64, "size_in_bytes": 128})
     data = {"repository": repository, "run": run, "attempt": deepcopy(run),
         "workflow": {"id": 11, "path": WORKFLOW, "name": "ci", "state": "active"},
-        "jobs": {"total_count": 8, "jobs": jobs}, "artifacts": {"total_count": 8, "artifacts": artifacts}, "workflow_source": encoded}
+        "jobs": {"total_count": len(JOBS), "jobs": jobs}, "artifacts": {"total_count": len(JOBS), "artifacts": artifacts}, "workflow_source": encoded}
     return selected, source, data
 
 

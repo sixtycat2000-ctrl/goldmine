@@ -62,7 +62,7 @@ python3 scripts/acceptance.py run --profile hosted_release --inputs "$PLAN_RUN/i
 | task-check | task ID、本项注册所需的dev证据 | 本项局部测试、既有行为/已交付能力回归 | 只判本项，不消费holdout，不伪称里程碑通过 |
 | assets | 显式模型文件、BEIR缓存、来源manifest | 真实文件bytes/SHA和完整性 | 缺资产nonzero；不能把mock哈希当真实资产 |
 | native | 声明平台、已准备native工具/fixture | OCR/ASR/PDF/ffmpeg真实调用和结果 | 平台声明范围内必需nodeid全passed |
-| optional-mcp / optional-foresight | 已锁定MCP/Foresight extras、独立环境 | 各extra固定collection、base缺extra降级、真实SDK握手 | 各声明子集完整，无importorskip冒充通过 |
+| optional-mcp | 已锁定MCP extras、独立环境 | 各extra固定collection、base缺extra降级、真实SDK握手 | 各声明子集完整，无importorskip冒充通过 |
 | retrieval | offline/assets/native证据；legacy/media/product两版库与dev结果；公开四臂；冻结候选/分割 | 逐题成对回归、product dev门槛、公开集、warm/cold各≥30次交错测量 | 所有身份一致、分母完整、dev质量/性能过合同 |
 | agent | retrieval证据；optional-mcp；真实包tokenizer；两套答题run与预登记 | SDK协议、越界/陈旧ID、CLI/MCP一致、预算/引用、dev答题比较、配对MCP时延 | 无协议/越界错误，预算与预登记实际退步门槛通过 |
 | local_rc | agent证据；同候选sealed holdout联合审计；wheel/sdist/native tar；安装/watch/serve/distill/本地CI原始结果 | 一次联合发布质量审计、源码外安装、升级/恢复、资源清理、功能事实/文档、CI同脚本与失败注入 | 全部本地必需检查通过；不要求尚不存在的hosted run |
@@ -72,7 +72,7 @@ P2-08 使用独立 comparison 输入与报告，不混入 release profile，也�
 
 `release` 如为兼容保留，固定为 `local_rc` 的别名且在报告中记录 canonical profile；不能根据环境偷偷改为hosted范围。local_rc检查原始证据，不检查P2-07或M3是否已经VERIFIED；成功后才派生P2-07/M3状态。P2-05的本地实现/验证与hosted验证分别记录，后者MISSING不影响已完成的本地证据，也不能被写成GitHub已通过。
 
-offline / native / assets / optional-mcp / optional-foresight 使用显式markers和平台/依赖子集注册；原有nodeid移动到新分类必须有迁移表。机器collection的丢失或模块级importorskip必须被发现；平台例外只允许逐nodeid、原因和适用平台的allowlist。模型/BEIR磁盘实物检查移入assets，系统壁纸等偶然文件改为可搬运fixture；不得删掉验证责任。native和optional依赖的缺失只影响自己的profile，不能让hermetic offline依赖它们。
+offline / native / assets / optional-mcp 使用显式markers和平台/依赖子集注册；原有nodeid移动到新分类必须有迁移表。机器collection的丢失或模块级importorskip必须被发现；平台例外只允许逐nodeid、原因和适用平台的allowlist。模型/BEIR磁盘实物检查移入assets，系统壁纸等偶然文件改为可搬运fixture；不得删掉验证责任。native和optional依赖的缺失只影响自己的profile，不能让hermetic offline依赖它们。
 
 ### 原始证据与校验
 

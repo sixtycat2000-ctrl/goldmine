@@ -27,7 +27,7 @@ from .errors import UserFacingError
 #: static triple on purpose: a build whose llama module fails to import must
 #: still PARSE --backend llama (and report unavailability honestly, exit 4),
 #: not refuse it as a usage error.
-BACKEND_CHOICES = ("llama", "foresight", "mock")
+BACKEND_CHOICES = ("llama", "mock")
 
 class _JsonAwareParser(argparse.ArgumentParser):
     """argparse parser that honors --json for its OWN usage errors (F4): the

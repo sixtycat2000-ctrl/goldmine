@@ -1,7 +1,7 @@
 """Media probes: ffprobe metadata + ffmpeg audio window extraction.
 
 v1 scope (build pass 7): audio windows are the ONLY media embedding path, and
-only via the foresight/mock backends (llama /v1/embeddings is text-only).
+only via media-capable backends (llama /v1/embeddings is text-only).
 - audio: 16 kHz mono PCM16 WAV windows, 30 s window / 25 s hop (5 s overlap —
   DigUp audioWindow: the model ignores anything longer), silent windows
   (RMS < 0.003 ≈ −50 dBFS) skipped, duration capped by cfg.ingest.audio_max_minutes.
@@ -36,7 +36,7 @@ HOP_S = 25.0
 SILENCE_RMS = 0.003        # ≈ −50 dBFS (DigUp)
 FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 
-#: Recorded in the media-capable backends' fingerprints (foresight; the mock's
+#: Recorded in the media-capable backends' fingerprints (the mock's
 #: multimodal flag keeps its own "bytes.v1"): these windowing/gate parameters
 #: define the bytes the model actually sees, so changing any of them must force
 #: a reindex. Media vectors take NO prompt (D7: media unprompted) — this field

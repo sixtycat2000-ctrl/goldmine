@@ -44,7 +44,7 @@ tasks.json 的依赖顺序逐项推进。依赖的实现已可用、仅真实测
   不要求后续任务指标；M1/M2检验dev。最终冻结全部算法/参数后才运行一次联合sealed holdout审计，其他profile消费
   其原始结果与SHA，不能重复跑后挑最好结果。失败后该集合已暴露，再次声明发布质量需独立未见来源。
 - offline必须在无网络/模型/cache/native/optional SDK的干净环境通过；真实资产、
-  原生工具与SDK各有固定profile（optional-mcp/optional-foresight）/collection，缺条件只影响对应profile。
+  原生工具与SDK各有固定profile（optional-mcp）/collection，缺条件只影响对应profile。
   nodeid分类迁移必须有映射，模块importorskip不能冒充已执行。
 - 原始stdout/stderr、真实exit code、输入与输出SHA必须保存，不能只写“通过”。
 - 从固定registry展开检查；receipt绑定run/check/argv/cwd/退出码与原始产物。

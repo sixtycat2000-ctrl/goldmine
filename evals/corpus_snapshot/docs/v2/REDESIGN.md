@@ -55,7 +55,7 @@ the gates, "**measured, kept**" is success — tuning is v2.1 work (G1).
 | Perf | scan+fusion @500k / @1M (T3/T4) | 1.0 s / not viable | unchanged in v2.0; ≤ 60 ms / ≤ 150 ms with the mmap pack (v2.1, gated on G0) | — |
 | Perf | embed throughput (T6) / ingest rate (T7) | 16–18 texts/s; 94 files/min | keep ≥ 16 texts/s; **≥ measured v1 rate (94 files/min), no regression** — token chunking is the lever (28.2 vs 16.3 texts/s), overlap ≤ 1 % (B8) | — |
 | Perf | resident memory @100k (T9) | 729 MB tree | ≤ 600 MB steady; fp32 residency forbidden > 250k vectors (pack: v2.1 per G0) | 1M = file-backed pages, not RSS |
-| Coverage | per-kind vector coverage (02 §9, `status --json` KPI) | text only (images/audio metadata-only under llama) | txt/md/html/docx/rtf/doc/odt/eml/epub/pdf-text/code/webpage/image **100 %** · pdf-scanned ≥ 95 % · audio ≥ 98 % · video ≥ 95 % (soundtrack) · screenshot OCR text 100 % · secrets/minified/archives 0 % with reasons | frames where foresight |
+| Coverage | per-kind vector coverage (02 §9, `status --json` KPI) | text only (images/audio metadata-only under llama) | txt/md/html/docx/rtf/doc/odt/eml/epub/pdf-text/code/webpage/image **100 %** · pdf-scanned ≥ 95 % · audio ≥ 98 % · video ≥ 95 % (soundtrack) · screenshot OCR text 100 % · secrets/minified/archives 0 % with reasons | frames multimodal-backend-only |
 | Coverage | 1 h podcast transcribed + indexed | impossible | **< 15 min** (ASR measured 7.2× realtime) | — |
 | Coverage | 100-file mixed corpus end-to-end | — | < 20 min | — |
 | Distill | canary purity / ARI / recovery (8 planted topics → one card each, ≥ 80 % docs) | no metric; one mega-card failure mode | **v2.1** (E1 deferred): ≥ 0.70 / ≥ 0.50 / ≥ 6 of 8 | — |
@@ -83,7 +83,7 @@ with the v2.1 canary (06 §1).
 | Reindex | `--reindex` clears everything (95–150 min at 100k chunks) | v2.0: stale sets are re-done by plain ingest (02 G10 skip fix), surfaced by `status` ("N files stale since") with no refusal; v2.1: `goldmine reindex plan\|run` per-file stale-reason planner, self-calibrating estimates; refusal exists only on incompatible embed identity |
 | Vector scan | fp32 matrix rebuilt from SQLite blobs every query (0.17–2.0 s) | ≤ 250k vectors: resident fp16 cache, exact scan (04 §5 tree); above that a derived `<index>.vecs` fp16 pack (rebuildable, pack_epoch-header-checked, mmap blockwise f32 scan + `argpartition` top-k) — **v2.1, built only if G0's measured corpus justifies it**; SQLite blobs stay source of truth |
 | Model obtainment | manual GGUF placement in repo `models/`; arch trap found at first search | manifest-pinned `goldmine model install\|list\|verify\|use\|check` into `<home>/models`; live arch probe kills the b11146-class failure at init; llama-server and goldmine-ocr ship as prebuilt release assets (05 §4.3/§4.7) |
-| Extraction | text + raw-bytes images under foresight | whisper ASR (VAD, 7.2× realtime measured), Apple Vision OCR via prebuilt helper, sips thumbnails + EXIF (HEIC/RAW), video frames (v2.1), .eml/.epub, honest `unsupported` archives (02) |
+| Extraction | text + raw-bytes images under a multimodal backend | whisper ASR (VAD, 7.2× realtime measured), Apple Vision OCR via prebuilt helper, sips thumbnails + EXIF (HEIC/RAW), video frames (v2.1), .eml/.epub, honest `unsupported` archives (02) |
 | Search | inherited DigUp fusion, char-based chunks, chunk-start excerpts, `--kinds` only | real-corpus-measured accuracy with a regression gate, token-true chunking (`/tokenize`), «highlighted» snippets, `kind:/under:/after:/before:/site:` filters, `--why`, MMR + weaker-matches fold (01); `--format fzf` as the interactive layer |
 | Distill | full-recompute τ=0.70 demo (observed one-mega-card failure) | v1 distill keeps working in v2.0; Otsu-calibrated τ + average-link admission guard, medoid + coverage excerpts, incremental views, `--pack` RAG digest, `--llm` polish land with E1 (v2.1) (06) |
 | UX | 7 commands, no onboarding, no opener | `init`/`search` (+`--format fzf`)/`open`; `serve`/`find` defer to v2.1; universal 4-line error shape, ticker/ETA with media costs, NO_COLOR, schema-versioned JSON (03) |
@@ -343,7 +343,7 @@ destructive migration); `goldmine watch` keeps the index fresh.
 | G9 | `serve install/uninstall` (opt-in launchd, KeepAlive=false) + status polish | S | C4 |
 | G10 | Multi-model LRU resident (`serve.models_resident=2`, idle 600 s) + `model use` UX | M | C4 |
 | G11 | `goldmine watch`: adaptive polling + sha-skip reuse + pmset power probes + linger + heartbeat (C4 alignment) | M | A3 |
-| G12 | Video frames: ffmpeg one-pass split + aHash dedup (Hamming ≤ 4, maxFrames 1200), foresight-gated | M/L | B5 |
+| G12 | Video frames: ffmpeg one-pass split + aHash dedup (Hamming ≤ 4, maxFrames 1200), multimodal-backend-gated | M/L | B5 |
 | G13 | HTML main-content lite (link-density/class filter, 40 % yield fallback) | M | B8 |
 | G14 | Rules parity batch: vendored/build folders, `.git`-as-file skip, content-level secret/generated/minified gates, ipynb cells, `is_project_root` disposition | M | — |
 | G15 | Incremental distill (centroid reuse, dissolve, corpus_hash, `--refresh`) + two-level topics + backend-scored titles + `--llm` polish (provenance-hard) + `/tokenize` pack budget (C7) | M | E1, C7 |

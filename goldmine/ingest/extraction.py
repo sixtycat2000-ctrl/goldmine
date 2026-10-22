@@ -474,7 +474,7 @@ class ExtractMixin:
         """The screenshot OCR segment policy (02 §5.2/A5): FTS text always;
         a TEXT vector only when the backend cannot embed the image itself
         (llama) and ingest.ocr_text_vector is on. Where an image vector
-        exists (foresight/multimodal) the words stay keyword-only — DigUp
+        exists (multimodal backends) the words stay keyword-only — DigUp
         measured a text vector making screenshots outrank better matches."""
         embed_text = (
             (cap is None or not cap.image)

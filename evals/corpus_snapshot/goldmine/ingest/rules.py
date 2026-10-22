@@ -26,8 +26,8 @@ __all__ = [
 
 # -- extension sets -------------------------------------------------------------
 
-#: Every DigUp doc extension, verbatim; v2 adds eml/epub (02 §5.5).
-DOC_EXTS = {"txt", "text", "md", "markdown", "rtf", "docx", "doc", "odt",
+#: DigUp doc extensions plus eml/epub and reStructuredText through plain text.
+DOC_EXTS = {"txt", "text", "rst", "md", "markdown", "rtf", "docx", "doc", "odt",
             "html", "htm", "eml", "epub"}
 
 #: Archives — NEVER content-extracted (02 §5.5, documented decision: zip-bomb

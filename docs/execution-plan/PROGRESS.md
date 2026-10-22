@@ -8,7 +8,7 @@
 
 三位独立 AI agent 按 IR/统计、数据库/MCP 架构、QA/交付职责审查计划，接受并修订 18 项意见；实现后又接受并修复 6 项反例。角色分工不代表受聘的人类专家背书。具体见 [REVIEW.md](REVIEW.md) 与 `review/`。
 
-当前代码已合入 typed 测量执行器、C002 锚定准入、完整比较报告 framing 与旧库兼容修复。最终 465 个代码/配置文件的四 profile CI 已完成：base 2575、native 232、MCP 6、Foresight 8，合计 **2821 项通过、0 skip**；真实 actionlint、本地失败注入与 P2-05 task-check 也通过。一次预登记 current005 固定 dev 已完成，严格回放 **FAIL 12、MISSING 0**；机制和 CI 通过不代表质量达标。
+当前代码已合入 typed 测量执行器、C002 锚定准入、完整比较报告 framing 与旧库兼容修复。最终 465 个代码/配置文件的历史多 profile CI 已完成：base 2575、native 232、MCP 6、Foresight 8（该 profile 现已按用户授权退役），合计 **2821 项通过、0 skip**；真实 actionlint、本地失败注入与 P2-05 task-check 也通过。该 CI 认证其记录的 Foresight 移除前源码，当前源码需要新 CI。一次预登记 current005 固定 dev 已完成，严格回放 **FAIL 12、MISSING 0**；机制和 CI 通过不代表质量达标。
 
 独立审查复现的两项兼容性问题已闭环并合入 integration017：只读 schema4/5 按真实存储格式读取和核验来源；可选 whole-metadata 预查在计数前剔除不可能完整匹配的 alias/stem。`P1-06/legacy-readiness-design-002/` 的61项验收映射与原49项均已独立核对。当前 CI 与一次预登记 C/default210dev 已完成；接下来执行公开集、容量、生命周期、交付和完整竞品对照。真实 answerer/judge 配置与 GitHub remote 仍缺，已向用户请求信息；独立工作继续。原三参数注册、质量目标和未打开的 holdout 保持冻结。
 
@@ -19,7 +19,7 @@
 | 顺序 | 前置条件 / 入口 | 必须读取的结果 |
 |---|---|---|
 | 1 | `P1-06/legacy-readiness-proposal-001/` 的精确实现独立闭环后，由 root 合入 integration017 并运行 focused 与保留的原始反例 | 真实旧格式、完整 typed/owner/phrase/预算、只读与现代损坏反例均通过；不得改分数或基准合同 |
-| 2 | host Python 3.12 执行 `P0-06/post-c1-ci-001/run.py`，再执行 `P2-05/ci-local-current-001/run.py` | 四 profile 全 PASS、0 必需 skip、同一源码；真实 actionlint/local-CI/P2-05 task-check PASS，hosted 仍单列 |
+| 2 | host Python 3.12 执行 `P0-06/post-c1-ci-001/run.py`，再执行 `P2-05/ci-local-current-001/run.py` | 各 profile 全 PASS、0 必需 skip、同一源码；真实 actionlint/local-CI/P2-05 task-check PASS，hosted 仍单列 |
 | 3 | 产品既有 `product-expansion-001/runtime/bin/python` 顺序执行 `P0-05/product-current-005/seal_fixes.py`、`run.py` | 一次固定 C/default210dev，固定 004 对照；原始 receipt、真实 index/span 回放及 PASS/FAIL 全保留，不能看到 FAIL 就重跑选分 |
 | 4 | 已完成同源码005（严格 PASS 或 FAIL，不能 MISSING）后执行 `P2-08/goldmine-private-assets-002/refresh_installation.py`、`P0-06/public-current-002/run.py` | 新不可变 installation 完整 SHA；三个公开集全部四 scorer 的候选及既有原版严格回放，不缩题目 |
 | 5 | public 完成，检查实际可用磁盘并停止本任务其他重负载后执行 `P2-02/full-capacity-current-002/run.py` | 完整12规模/每文件分布、全部固定阶段及 CLI/pack 调用和严格相等性/资源结果；小型 fixture 不能代替 |
@@ -49,7 +49,7 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 - 证据/pack 的 B003 已独立闭环并按精确九文件 patch 合入，实际 **227 项通过、0 skip**，见 `integration-after-capacity-011/`。它保护 hybrid 的语义正文、按轮分配支持片段，并用实际来源顺序防止跨缺口接缝去重；001/002 遗留的同页 PDF 等反例保留。随后完整 CI 暴露 pure-semantic ablation 也新增支持片段，改变固定容量工作量；窄补充经独立 **232 项通过、0 skip** 后合入 `integration-after-capacity-012/`，恢复该模式既有 primary+neighbors 行为，未修改容量适配器或相等/计时门槛。当时噪声充分性 C 仍只有设计，数值单位 casefold 反例待修；随后 C002 的实现记录见下文。没有新质量结论。
 - 固定竞品测量协议编译器 002 已独立闭环并合入。原 001 会把整个 `files.info` 丢弃，导致 EXIF 等语义 provenance 变化仍被判逻辑相同；根代理反例及原包保留。修订严格保留语义 metadata/detail，仅排除有实际生产依据的顶层 `ocr_ms` 且仍存原值，独立 **88 项及 JS 语法检查通过**。实际比较/编译器/资源/验收联合回归最终 **317 项通过、0 skip**，见 `integration-after-capacity-009/`、`010/integration-002/`。原先一次自然退出竞态和一次 root 测试目录设置导致的失败均保留；前者只修测试 worker 的完成握手，资源验证/限额/缺测判定未放宽。实际 typed 执行器与严格 raw replay 仍在报告目录实现，尚无真实竞品性能或增量结果。
 - 因上述真实源文本丢失需要全新候选索引，root 在旧候选 public 未输出任何质量结果时取消其自有进程组。实际 receipt 为 **exit -15、timed_out=false、MISSING**，不是 PASS；`P0-06/public-current-001/cancellation-decision.json` 在发信号前登记，SHA `77a9138ad6c5cf8b82061f5d2e69423a5a40d849700811b3bc21d02f85c322a8`。此前 reference/candidate 准备和 reference 全部 2,029 query ×4 scorer 原始结果均保留。后续仅在确切修复源码冻结后，以新候选目录/索引执行，不改变参数或挑分重试。
-- 新一轮四 profile CI 已完整执行，`P0-06/postfix-ci-001/` 保留 base **2137 PASS、10 FAIL、11 ERROR**，native **228 PASS、1 FAIL**，MCP **6 PASS**、Foresight **8 PASS**，源码前后稳定。失败分别来自合成 converter 文件名触发原生工具禁用、上述 semantic-only 支持片段变化，以及 host Python 的 `-I` 子进程读不到 user-site NumPy。前两项做窄修，native 使用已锁定且隔离模式可导入 NumPy 的现有 venv；不移除 hermetic guard、`-I` 或任何断言。修复后的 `P0-06/postfix-ci-002/` 完整四组均 **PASS**：base **2163**、native **229**、MCP **6**、Foresight **8**，合计 **2406 项、0 skip**，422 个代码/配置文件前后稳定。该集成检查点可用于下一次固定 dev 实测；旧失败保留，后续源码更改仍需新验收。
+- 新一轮多 profile CI 已完整执行，`P0-06/postfix-ci-001/` 保留 base **2137 PASS、10 FAIL、11 ERROR**，native **228 PASS、1 FAIL**，MCP **6 PASS**，源码前后稳定（当时还含现已按用户授权退役的 Foresight 8 项）。失败分别来自合成 converter 文件名触发原生工具禁用、上述 semantic-only 支持片段变化，以及 host Python 的 `-I` 子进程读不到 user-site NumPy。前两项做窄修，native 使用已锁定且隔离模式可导入 NumPy 的现有 venv；不移除 hermetic guard、`-I` 或任何断言。修复后的 `P0-06/postfix-ci-002/` 各组均 **PASS**：base **2163**、native **229**、MCP **6**、Foresight **8**（历史组成，该 profile 现已退役），合计 **2406 项、0 skip**，422 个代码/配置文件前后稳定。该集成检查点可用于下一次固定 dev 实测；旧失败保留，后续源码更改仍需新验收。
 - 竞品完整 aggregate 另有已独立证明的 producer/reader 大小不匹配：18×210 个有效合成请求、每个 Goldmine excerpt 仅 19 ASCII bytes 时，完整 JSON 已为 **8,388,927 bytes**，超过现有 8MiB reader。精确 9 文件 framing 修复随后独立闭环并合入 `integration-after-capacity-016/`，通用 8MiB reader 不变，以有界 root/cell/typed streams 保留全部正文、向量、raw、准备证明及最终磁盘计数，Python verifier 仍返回完整逻辑 dict。root/架构各 **124 项及两项 JS 检查通过**，独立完整 **18×210 /3,780 rows** synthetic 往返保留每 cell 的 raw100/native10 窗口与 122 个 source/body/vector 记录；root 的 bounded root 为 **10,882 bytes**，并非真实引擎基线。实际 checkout 与 executor002 联合 **318 项通过、0 skip**，459 个代码/配置文件稳定，生产 87 文件不变。初始设计的精确原字节及 8 行追加说明在独立 amendment 包中保留；上限、注册表和质量合同未改。真实转换、canary、引擎质量/性能及最终资源验收尚未执行。
 - `d1e313f` 已保存上述生产修复及准备/观察/验收组件，本地工作树在该检查点干净。随后 `current004` 使用全新 122-source native index、同一默认 control 完成 **210 个 dev 请求**，严格独立回放 **FAIL 11、MISSING 0**：PACK 全事实 **96→102/180**、compound PACK **6→11/30**，严格 success@1 **88→86/180**、success@5 **103→101/180**，noise 正确空仍 **5/30**。全部原始结果保留，未增加第四参数臂或挑分重试，holdout 未打开；这些是分块与 B003 的合并效果，不能归因给某一单独修复。完整聚合与组级 paired 区间见 [current004 摘要](product-dev-post-conservation-20261022.json)，区间均跨 0，不能宣称广泛显著收益。C002 设计独立闭环，但实现仍在报告目录，不读取该结果来调参。
 - typed 竞品执行器 001 的作者及 root 独立机械回放均 **170 项通过、0 skip**，但 root 继续证明完整 cache witness 仍留在根部 slots stream：固定 1,728 slots 的有效合成 cache 形状生成 **19,492,615 bytes**，超过 16MiB administrative allowance。原失败包与反例保留。002 随后把完整 observation 移入固定 cell-owned shards，根部仅存有序 path/SHA/size 引用；没有裁减 cache、clock、raw 或提高限额。root 与独立架构复跑均 **194 项通过、0 skip**，另有完整 1,728 records/126 warm cache slots 的持久化回放，旧 inline **19,655,443 bytes** 对照新 root index **664,483 bytes**，所有 shard 纳入最终 18-cell inventory/census。精确 26 文件及测试注册已合入 `integration-after-capacity-014/`，实际 checkout 再次 **194 项通过、0 skip**，447 个代码/配置文件稳定。此为执行机制验收；base aggregate framing、真实转换、canary、质量及完整性能实测仍待完成。
@@ -57,7 +57,7 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 
 - 旧库兼容与完整字段预查的15文件修复已按精确 patch 合入 `integration-after-capacity-017/`。schema4 保留原 NFC 校验、schema5/6 保留 NFKC+casefold；已知 body-only4 只读取真实 body，不补写 original。metadata 完整资格先于候选上限，仍保留32 anchors/2000 distinct source rows 与现代缺表/坏 pointer 错误。作者封存、独立架构、root 精确重建及实际正常 conftest 均 **419 项通过、0 skip**；最终实际回归20.58s，465代码/配置与90生产身份文件稳定。原版生产器/实际4→5迁移的原文/CIT回读与36次固定小型CLI/16项严格比较通过，它们不是完整规模或质量结果。原代码9个机械反例失败、001的LR56二次metadata重入失败，以及root一次父Git上下文导致的隔离patch no-op均保留；后者在任何实际源码变化前由15文件SHA映射断言拒绝，随后用独立Git sandbox重建成功。原始固定alias/stem反例在实际采用代码上回放6种actual/control组合，真实结果1/20/1且IDs、正文、分数与隔离control完全一致，未修改数据库。全部评分/解析器/分块/pack分配/迁移代码及数据、门槛、原三数值注册保持原SHA。下一步完整四profile CI；未开启新模型/质量/holdout运行。
 
-- 最终 C002/兼容源码（`bd46490`）的四 profile CI 与本地 CI 已完成，原始结果为 `P0-06/post-c1-ci-001/results.json` 与 `P2-05/ci-local-current-001/results.json`，**2821 PASS、0 skip**，465 个代码/配置文件稳定。随后 current005 以全新 122-source native index 完成固定 **210 dev 请求**：严格 success@1 **86→83/180**、success@5 **101→96/180**、全事实 PACK **102→97/180**，noise 正确空 **5→20/30**。PDF success@5 为 **14→10/30**，额外触发 PDF success@1 门槛，严格回放 **FAIL 12、MISSING 0**。与预登记 004 对照的 source-group paired 区间在可答指标上均跨 0，noise 区间为 **+0.3333 至 +0.6667**；这是重复暴露 dev 内的取舍，不能宣称普遍质量提升或发布达标。完整聚合、原始 SHA 与失败门槛见 [current005 摘要](product-dev-post-anchor-20261022.json)。未增加参数候选、挑分重试或打开 holdout，接续游标已推进到新安装与公开集。
+- 最终 C002/兼容源码（`bd46490`）的多 profile CI 与本地 CI 已完成，原始结果为 `P0-06/post-c1-ci-001/results.json` 与 `P2-05/ci-local-current-001/results.json`，全部 PASS、0 skip，465 个代码/配置文件稳定。随后 current005 以全新 122-source native index 完成固定 **210 dev 请求**：严格 success@1 **86→83/180**、success@5 **101→96/180**、全事实 PACK **102→97/180**，noise 正确空 **5→20/30**。PDF success@5 为 **14→10/30**，额外触发 PDF success@1 门槛，严格回放 **FAIL 12、MISSING 0**。与预登记 004 对照的 source-group paired 区间在可答指标上均跨 0，noise 区间为 **+0.3333 至 +0.6667**；这是重复暴露 dev 内的取舍，不能宣称普遍质量提升或发布达标。完整聚合、原始 SHA 与失败门槛见 [current005 摘要](product-dev-post-anchor-20261022.json)。未增加参数候选、挑分重试或打开 holdout，接续游标已推进到新安装与公开集。
 
 ## 2026-10-22：新语料与验收补齐
 
@@ -104,22 +104,21 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 
 ## 7192395 冻结检查点的回归与交付
 
-实际环境仍为 macOS arm64 / Python 3.12。该检查点四组无必需 skip，合计 **1689 passed**，不认证之后已改变的源码。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
+实际环境仍为 macOS arm64 / Python 3.12。该检查点三组无必需 skip，合计 **1681 passed**，不认证之后已改变的源码。先前 `frozen-base-007` 的单项 hermetic fixture 失败保留；只隔离该假图像的 EXIF 调用后重新冻结，没有修改生产代码或放宽断言。
 
 | 固定入口 / 范围 | 当前结果 | 原始证据目录 |
 |---|---:|---|
 | CI base | **1486 passed** | `reports/execution/P0-06/frozen-base-009/` |
 | CI native | **189 passed** | `reports/execution/P0-06/frozen-native-009/` |
 | CI MCP，locked SDK 环境 | **6 passed** | `reports/execution/P0-06/frozen-mcp-009/` |
-| CI Foresight | **8 passed** | `reports/execution/P0-06/frozen-foresight-009/` |
-| 四组原始回放、失败注入、实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-008/manifest.json` |
+| 三组原始回放、失败注入、实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-008/manifest.json` |
 | P2-05 本地固定 task-check | **PASS** | `reports/execution/P2-05/task-acceptance-008/manifest.json` |
 | 当前 wheel/sdist/重建 wheel、离线源码外 base/MCP 安装、实际 native OCR/768 embedding、v4→v6 备份升级恢复 | **PASS** | `reports/execution/P2-06/distribution-006.json` |
 | P2-06 固定 task-check，显式绑定全部资产 | **PASS** | `reports/execution/P2-06/task-acceptance-008/manifest.json` |
 | 14 份文档、55 个本地链接、22 条实际离线命令 | **PASS** | `reports/execution/P2-07/docs-002/manifest.json` |
 | P2-07 文档组件固定 task-check | **PASS**，全任务仍未完成 | `reports/execution/P2-07/docs-task-003/manifest.json` |
 
-完整 CLI/pack 容量工具的四项复核漏洞已闭环，60 项集成测试通过；源码、12 组固定命令、资源估算和失败保留规则在 `P2-02/full-cli-source-freeze-001.json`。最后一处测试文件 EOF 空行清理也触发严格源码 SHA 变化，故重捕获四组 `*-009`、本地 CI 与任务证据；生产与评分结果未变化。完整容量实测单独记录，不能用小型 fixture 或早期向量阶段顶替。各项 SHA 与当前结果索引见 [validation-20261022.json](validation-20261022.json)。
+完整 CLI/pack 容量工具的四项复核漏洞已闭环，60 项集成测试通过；源码、12 组固定命令、资源估算和失败保留规则在 `P2-02/full-cli-source-freeze-001.json`。最后一处测试文件 EOF 空行清理也触发严格源码 SHA 变化，故重捕获三组 `*-009`、本地 CI 与任务证据；生产与评分结果未变化。完整容量实测单独记录，不能用小型 fixture 或早期向量阶段顶替。各项 SHA 与当前结果索引见 [validation-20261022.json](validation-20261022.json)。
 
 ## 已落地的生产改造
 
@@ -144,13 +143,12 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 | `ci_validation.py --profile base` | **1233 passed**，130.92s | `reports/execution/P0-06/frozen-base-006/` |
 | `--profile native` | **188 passed** | `reports/execution/P0-06/frozen-native-006/` |
 | `--profile mcp`，独立 locked SDK 环境 | **6 passed** | `reports/execution/P0-06/frozen-mcp-006/` |
-| `--profile foresight` | **8 passed** | `reports/execution/P0-06/frozen-foresight-006/` |
-| 四组 CI + 固定失败注入 + 实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-006/manifest.json` |
+| 三组 CI + 固定失败注入 + 实际 actionlint | **PASS**，hosted=MISSING | `reports/execution/P2-05/ci-local-006/manifest.json` |
 | wheel/sdist/重建 wheel、源码外安装、原生资源、升级恢复 | **PASS** | `reports/execution/P2-06/distribution-005.json` |
 
-四组合计 **1435 passed**。11 个防伪造/不完整 IR 证据反例已从临时审查报告提升为 `tests/test_ir_acceptance.py`，并加入 P0-06 的固定 task-check。
+三组合计 **1427 passed**。11 个防伪造/不完整 IR 证据反例已从临时审查报告提升为 `tests/test_ir_acceptance.py`，并加入 P0-06 的固定 task-check。
 
-四组均有 collection、原始 stdout/stderr、JUnit、退出码、source-stability 和 SHA receipts；执行器会重放并验证当前代码内容。源码/验收脚本/测试/依赖锁/CI 工作流变化会拒绝复用；仅提交 Git 或更新任务进度不会使验收陷入自我依赖。
+三组均有 collection、原始 stdout/stderr、JUnit、退出码、source-stability 和 SHA receipts；执行器会重放并验证当前代码内容。源码/验收脚本/测试/依赖锁/CI 工作流变化会拒绝复用；仅提交 Git 或更新任务进度不会使验收陷入自我依赖。
 
 另实际运行了真实 llama 的 3 个 pack 测试：预算 512/1000/4000/32768 × context 0/1/3、CJK/表格/代码/长路径/引用、8190-byte 空结果查询，13.54s，`reports/execution/P1-10/live-pack-001.xml`。真实 bounded reranker 测试 1 passed，`reports/execution/P1-07/live-backend-001.xml`；六个 endpoint 输入/顺序探针在 `P1-07/runtime-probe-001/`。这些证明协议、预算和资源机制，不证明答案质量提升。
 
@@ -188,7 +186,7 @@ QMD 2.8.3 与 Recoll 1.44.2 只装在忽略目录，不改用户索引/全局配
 4. **P1-06/07/08**：拒收三臂真实 dev A/B 已完成且全部 FAIL，`selected=null`；可选多查询/rerank 的真实收益与完整资源门槛尚未通过，保持默认控制与关闭实验。
 5. **P2-02/03**：`7192395` 的完整 CLI/pack 规模测量已经通过独立回放；后续 pack/SQL 新源码需要新一轮测量。真实媒体增量 benchmark、controlled/real 各 10 分钟 watch churn 和完整生命周期证据仍缺。已有真实模型的局部检查不能顶替这些。
 6. **P2-04 卡片**：120 份真实文档、8 主题的独立来源/标签审查及数据冻结已经完成，严格 native 准备/增量身份/全部 emitted member 来源校验已实现。真实聚类、purity/recovery 和增量运行仍缺；mock hard-variant 结果只验证机制。
-7. **剩余验收代码与输入**：public、联合 holdout、文档、完整容量和 hosted 适配器均已实现并经独立反例审查。1689 项回归和安装/文档证据绑定历史检查点，当前整体重新捕获尚未完成。仍缺真实外部集等运行结果和实际 hosted 证据。未运行真实 holdout，零收集仍必须 MISSING。
+7. **剩余验收代码与输入**：public、联合 holdout、文档、完整容量和 hosted 适配器均已实现并经独立反例审查。1681 项回归和安装/文档证据绑定历史检查点，当前整体重新捕获尚未完成。仍缺真实外部集等运行结果和实际 hosted 证据。未运行真实 holdout，零收集仍必须 MISSING。
 8. **P2-08 完整竞品对照**：native/common view、完整真实 PDF/媒体、语义/quality 模式、重复性能/增量/资源对照和完整最终数据仍缺。主比较按同一文件级 qrels 计算 success@1/@5、MRR、nDCG；位置指标在可验证时另报，位置能力缺失不能成为文件级比较的额外前置条件。当前表只表示词法诊断。
 9. **发布**：仓库没有配置 remote，hosted CI 未运行。`local_rc` 的必需数据、质量和生命周期条件也不齐，因此没有发布候选、tag、push 或公开发行。
 

@@ -284,49 +284,6 @@ def check_models_media(cfg: Config) -> CheckResult:
     return CheckResult("models: asr/vad", STATUS_OK, ", ".join(found))
 
 
-def check_foresight(cfg: Config) -> CheckResult:
-    from .backends.foresight import ForesightBackend, grpcio_available
-
-    if not grpcio_available():
-        return CheckResult(
-            "backend foresight", STATUS_WARN,
-            "grpcio not installed — the experimental foresight backend is "
-            "unavailable (this is fine: llama/mock cover text)",
-            "pip install --user grpcio",
-        )
-    backend = ForesightBackend(cfg.foresight)
-    socket_path = backend.socket_path()
-    if not socket_path.exists():
-        return CheckResult(
-            "backend foresight", STATUS_WARN,
-            f"socket {socket_path} does not exist (helper not running) — "
-            "optional backend, unavailability is data",
-            "start the Foresight app; the helper owns the socket",
-        )
-    try:
-        version = backend.ping()
-    except Exception as exc:
-        return CheckResult(
-            "backend foresight", STATUS_FAIL,
-            f"Ping failed on {socket_path}: {exc}",
-        )
-    finally:
-        backend.close()
-    expected = cfg.foresight.expect_version
-    if expected and version != expected:
-        return CheckResult(
-            "backend foresight", STATUS_WARN,
-            f"helper version {version} != pinned {expected} "
-            f"({socket_path})",
-            "update foresight.expect_version or rebuild the index after a "
-            "helper upgrade",
-        )
-    return CheckResult(
-        "backend foresight", STATUS_OK,
-        f"helper {version} on {socket_path} (experimental; text+image+audio)",
-    )
-
-
 def check_mock() -> CheckResult:
     from .backends.mock import MockBackend
 
@@ -594,14 +551,14 @@ def check_backup_health(cfg: Config, db: Path) -> CheckResult:
 
 def check_config(cfg: Config) -> CheckResult:
     """Env vars / config values must at least parse to known values."""
-    known = {"llama", "foresight", "mock"}
+    known = {"llama", "mock"}
     backend = cfg.backend
     if backend not in known:
         return CheckResult(
             "config", STATUS_FAIL,
             f"GOLDMINE_BACKEND/backend.default = {backend!r} is not one of "
             f"{sorted(known)}",
-            "set --backend llama|foresight|mock",
+            "set --backend llama|mock",
         )
     return CheckResult(
         "config", STATUS_OK,
@@ -642,7 +599,6 @@ def run_checks(
         check_server_install(cfg),
         check_models_embedding(cfg),
         check_models_media(cfg),
-        check_foresight(cfg),
         check_mock(),
         _tool_check(
             "pdftotext", [extract_pdf.pdftotext_path() or "pdftotext", "-v"],

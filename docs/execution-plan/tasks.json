@@ -185,7 +185,7 @@
       ],
       "allows_experiment_rejected": false,
       "evidence_dir": "reports/execution/P1-04",
-      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8Foresight), actual422source/config hashes stable. Fresh current004 full122 native prepare and unchanged210dev control completed with strict readback: S5 101/180 (previous103), PACK102/180 (previous96), compound PACK11/30 (previous6), noise5/30; FAIL11/MISSING0. No fourth profile/holdout/retry. C002 independent design closed, report-only implementation pending."
+      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8historicalForesight,profile since retired), actual422source/config hashes stable. Fresh current004 full122 native prepare and unchanged210dev control completed with strict readback: S5 101/180 (previous103), PACK102/180 (previous96), compound PACK11/30 (previous6), noise5/30; FAIL11/MISSING0. No fourth profile/holdout/retry. C002 independent design closed, report-only implementation pending."
     },
     {
       "id": "P1-05",
@@ -395,7 +395,7 @@
       "historical_verification": {
         "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
         "status": "VERIFIED",
-        "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8Foresight=1689 PASS,0required skips; actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
+        "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8historicalForesight=1689 PASS,0required skips (Foresight profile later retired by user); actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
         "evidence": {
           "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
           "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"

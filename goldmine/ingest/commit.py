@@ -375,7 +375,7 @@ class CommitMixin:
             return pieces
         ceiling = backend.max_input_tokens()
         if ceiling is None:
-            return pieces  # no server ceiling to guard (mock/foresight)
+            return pieces  # no server ceiling to guard (mock)
         guardable = [i for i, p in enumerate(pieces) if p.vec_ok]
         if not guardable:
             return pieces

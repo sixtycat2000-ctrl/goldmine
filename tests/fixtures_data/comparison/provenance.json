@@ -1,153 +1,153 @@
 {
-  "schema": 1,
-  "source": "actual installed CLI runs on frozen 12-source view, 2026-10-21",
-  "query": "overlap",
-  "systems": {
-    "qmd": {
-      "mode": "lexical",
-      "version": "2.8.3 (facd35e)",
-      "binary": "reports/execution/P2-08/qmd-install-001/node_modules/.bin/qmd",
-      "index": "comparison",
-      "collection": "common",
-      "environment": {
-        "XDG_CONFIG_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-config",
-        "XDG_CACHE_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-cache",
-        "XDG_DATA_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-data"
-      },
-      "provenance": [
-        {
-          "path": "reports/execution/P2-08/qmd-install-001/package-lock.json",
-          "sha256": "6338898a1094e1213f178c3c46916490139ece447ab26e3912d1d4ac61e0bb5e"
-        },
-        {
-          "path": "reports/execution/P2-08/qmd-install-001/version.stdout",
-          "sha256": "f2fde0f2ce1957393ab2348fc31dae60a39e4684689ae9e95845a0ee5d8396ab"
-        },
-        {
-          "path": "reports/execution/P2-08/qmd-install-001/search-help.stdout",
-          "sha256": "99da5d8dd511b96689e2136d3b6831378a3abb6778ce4e7941413819dc7d52c0"
-        },
-        {
-          "path": "reports/execution/P2-08/qmd-install-001/node_modules/@tobilu/qmd/dist/cli/qmd.js",
-          "sha256": "0dd4fd702adb83f27a69e59725478524ee48d00580ab6e9848dcde933000d99a"
-        },
-        {
-          "path": "reports/execution/P2-08/qmd-install-001/node_modules/@tobilu/qmd/dist/cli/formatter.js",
-          "sha256": "277e3695e5c765415ff4be0e0e12ddb8435d0fca5d94905962220f889884a185"
-        },
-        {
-          "path": "reports/execution/P2-08/text-common-seed-001/qmd-config/qmd/comparison.yml",
-          "sha256": "0fe2d55ac40c880ac32cc5e5a7995c9d62ce3b8b24c5f5fceeebb697194d1465"
-        }
-      ]
+ "schema": 1,
+ "source": "actual installed CLI runs on frozen 12-source view, 2026-10-21",
+ "query": "overlap",
+ "systems": {
+  "qmd": {
+   "mode": "lexical",
+   "version": "2.8.3 (facd35e)",
+   "binary": "reports/execution/P2-08/qmd-install-001/node_modules/.bin/qmd",
+   "index": "comparison",
+   "collection": "common",
+   "environment": {
+    "XDG_CONFIG_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-config",
+    "XDG_CACHE_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-cache",
+    "XDG_DATA_HOME": "reports/execution/P2-08/text-common-seed-001/qmd-data"
+   },
+   "provenance": [
+    {
+     "path": "reports/execution/P2-08/qmd-install-001/package-lock.json",
+     "sha256": "6338898a1094e1213f178c3c46916490139ece447ab26e3912d1d4ac61e0bb5e"
     },
-    "recoll": {
-      "mode": "lexical",
-      "version": "1.44.2 + Xapian 2.1.0",
-      "binary": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/MacOS/recollq",
-      "config_dir": "reports/execution/P2-08/text-common-seed-001/recoll-config",
-      "data_dir": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/Resources",
-      "provenance": [
-        {
-          "path": "reports/execution/P2-08/recoll-install-001/download.json",
-          "sha256": "07eaabfe8568602ee7bc42221678921640e64bfb8f6171b00e87417e878ea53b"
-        },
-        {
-          "path": "reports/execution/P2-08/recoll-install-001/version.stdout",
-          "sha256": "63b205eb28441a385abbe952ba9df63aad4fa9876cd285c69503c1139e5f2608"
-        },
-        {
-          "path": "reports/execution/P2-08/recoll-install-001/help.stderr",
-          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        },
-        {
-          "path": "reports/execution/P2-08/recoll-install-001/help.stdout",
-          "sha256": "b928caeee33b0c9461e19c74528c8f75b68cec52871531a8b2c80930b06fea24"
-        },
-        {
-          "path": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/MacOS/recollq",
-          "sha256": "e6082efa01a69121008ff8d54c6a13e0706e86fc071dabc49232886f1a1eb5e6"
-        },
-        {
-          "path": "reports/execution/P2-08/text-common-seed-001/recoll-config/recoll.conf",
-          "sha256": "d98de65f296ea9817bb6442d2233c7bed9e05e8a5be4752db250c0f102df2915"
-        }
-      ]
+    {
+     "path": "reports/execution/P2-08/qmd-install-001/version.stdout",
+     "sha256": "f2fde0f2ce1957393ab2348fc31dae60a39e4684689ae9e95845a0ee5d8396ab"
+    },
+    {
+     "path": "reports/execution/P2-08/qmd-install-001/search-help.stdout",
+     "sha256": "99da5d8dd511b96689e2136d3b6831378a3abb6778ce4e7941413819dc7d52c0"
+    },
+    {
+     "path": "reports/execution/P2-08/qmd-install-001/node_modules/@tobilu/qmd/dist/cli/qmd.js",
+     "sha256": "0dd4fd702adb83f27a69e59725478524ee48d00580ab6e9848dcde933000d99a"
+    },
+    {
+     "path": "reports/execution/P2-08/qmd-install-001/node_modules/@tobilu/qmd/dist/cli/formatter.js",
+     "sha256": "277e3695e5c765415ff4be0e0e12ddb8435d0fca5d94905962220f889884a185"
+    },
+    {
+     "path": "reports/execution/P2-08/text-common-seed-001/qmd-config/qmd/comparison.yml",
+     "sha256": "0fe2d55ac40c880ac32cc5e5a7995c9d62ce3b8b24c5f5fceeebb697194d1465"
     }
+   ]
   },
-  "corpus_root": "/Users/yul/git/goldmine/reports/execution/P2-08/text-common-seed-001/corpus",
-  "documents": [
+  "recoll": {
+   "mode": "lexical",
+   "version": "1.44.2 + Xapian 2.1.0",
+   "binary": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/MacOS/recollq",
+   "config_dir": "reports/execution/P2-08/text-common-seed-001/recoll-config",
+   "data_dir": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/Resources",
+   "provenance": [
     {
-      "source_path": "ARCHITECTURE.md",
-      "view_path": "ARCHITECTURE.md.md",
-      "sha256": "08b6941225aa44b3a868753d7c6fba08d95611789a4e3e53d4e9821c82834cdf"
+     "path": "reports/execution/P2-08/recoll-install-001/download.json",
+     "sha256": "07eaabfe8568602ee7bc42221678921640e64bfb8f6171b00e87417e878ea53b"
     },
     {
-      "source_path": "docs/DESIGN_DECISIONS.md",
-      "view_path": "docs/DESIGN_DECISIONS.md.md",
-      "sha256": "fa8e2a9a28251f14e4e7189a8e3f090d015c88742a5889561a38fde55d5f6681"
+     "path": "reports/execution/P2-08/recoll-install-001/version.stdout",
+     "sha256": "63b205eb28441a385abbe952ba9df63aad4fa9876cd285c69503c1139e5f2608"
     },
     {
-      "source_path": "docs/USER_GUIDE.md",
-      "view_path": "docs/USER_GUIDE.md.md",
-      "sha256": "8f97b29f43653649f29494518e5826d6e29993b20c4355c942da3d7780e92e62"
+     "path": "reports/execution/P2-08/recoll-install-001/help.stderr",
+     "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
     },
     {
-      "source_path": "goldmine/chunker.py",
-      "view_path": "goldmine/chunker.py.md",
-      "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5"
+     "path": "reports/execution/P2-08/recoll-install-001/help.stdout",
+     "sha256": "b928caeee33b0c9461e19c74528c8f75b68cec52871531a8b2c80930b06fea24"
     },
     {
-      "source_path": "goldmine/config.py",
-      "view_path": "goldmine/config.py.md",
-      "sha256": "921a088f050ecde7c5a2b60d3c03399f61bdb4c912605aa3f294bf1b03ed0f88"
+     "path": "reports/execution/P2-08/recoll-install-001/recoll.app/Contents/MacOS/recollq",
+     "sha256": "e6082efa01a69121008ff8d54c6a13e0706e86fc071dabc49232886f1a1eb5e6"
     },
     {
-      "source_path": "goldmine/fingerprints.py",
-      "view_path": "goldmine/fingerprints.py.md",
-      "sha256": "d8a1b78b81d7a690c95b38b2f4e8d5c56fc129c8f45d94e2abdd61fc3b6176ec"
-    },
-    {
-      "source_path": "goldmine/ingest/asr.py",
-      "view_path": "goldmine/ingest/asr.py.md",
-      "sha256": "ed084ad49f3e6c486814ce81ea64d481878c8b61fc586c06567f72a4cf3ca6ef"
-    },
-    {
-      "source_path": "goldmine/ingest/rules.py",
-      "view_path": "goldmine/ingest/rules.py.md",
-      "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de"
-    },
-    {
-      "source_path": "goldmine/model_manifest.py",
-      "view_path": "goldmine/model_manifest.py.md",
-      "sha256": "d1bfa4e70f2835ac7ddcd152bb9136317838afc6c5d9adc4bb6d1df82f9bf979"
-    },
-    {
-      "source_path": "goldmine/pack.py",
-      "view_path": "goldmine/pack.py.md",
-      "sha256": "1fbb08248762aa198ded696d8e05645a199e2fd727bcf14c5f624120a21e0827"
-    },
-    {
-      "source_path": "goldmine/serve.py",
-      "view_path": "goldmine/serve.py.md",
-      "sha256": "a3cde74890fb015962edacfd35fa4a738bdb8d04e426a5497296d7ae510c04a0"
-    },
-    {
-      "source_path": "goldmine/store.py",
-      "view_path": "goldmine/store.py.md",
-      "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31"
+     "path": "reports/execution/P2-08/text-common-seed-001/recoll-config/recoll.conf",
+     "sha256": "d98de65f296ea9817bb6442d2233c7bed9e05e8a5be4752db250c0f102df2915"
     }
-  ],
-  "streams": {
-    "qmd-overlap.stdout": "a69f4878ea88f85c6eaca26abcdc723d00c72fb4408f899c679cdeaf8c6f828f",
-    "qmd-overlap.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "recoll-overlap.stdout": "da180d257bc18ddd76bd31ef36341ea7049846d42799d0423450becf50c616f8",
-    "recoll-overlap.stderr": "57b5d7e32d50835e725c0f51fb4a46d2112f20f1ae170cd713b28c80d3e85c41"
-  },
-  "goldmine": {
-    "source": "actual frozen lexical fast CLI, first seed question, 2026-10-21",
-    "query": "How much shared context is kept when neighboring text chunks split inside a paragraph?",
-    "output": "goldmine-sem01.stdout",
-    "sha256": "56731359c14bcdac5c2e22b4cde3f677f1d723cf0ef8bb7449b4a8a65569eaf0"
+   ]
   }
+ },
+ "corpus_root": "/Users/yul/git/goldmine/reports/execution/P2-08/text-common-seed-001/corpus",
+ "documents": [
+  {
+   "source_path": "ARCHITECTURE.md",
+   "view_path": "ARCHITECTURE.md.md",
+   "sha256": "4c97ef9a0d918140c39d160e8943ae42b22da44865cda853b2df4a8cd480dd7d"
+  },
+  {
+   "source_path": "docs/DESIGN_DECISIONS.md",
+   "view_path": "docs/DESIGN_DECISIONS.md.md",
+   "sha256": "364b61254e45c62ada64f2b0145f89421af6a69a096a0902dd44f5d9366940ca"
+  },
+  {
+   "source_path": "docs/USER_GUIDE.md",
+   "view_path": "docs/USER_GUIDE.md.md",
+   "sha256": "8f97b29f43653649f29494518e5826d6e29993b20c4355c942da3d7780e92e62"
+  },
+  {
+   "source_path": "goldmine/chunker.py",
+   "view_path": "goldmine/chunker.py.md",
+   "sha256": "3728612a1b683b06652fadc325d46e6299ee42fd3f3e47026e316528d44bfde5"
+  },
+  {
+   "source_path": "goldmine/config.py",
+   "view_path": "goldmine/config.py.md",
+   "sha256": "70eb37b99a832a7ea74a46f6914196538e695f69c73be120acc148c2c9aeae3f"
+  },
+  {
+   "source_path": "goldmine/fingerprints.py",
+   "view_path": "goldmine/fingerprints.py.md",
+   "sha256": "72b766a16121851cf9f5c9bf9d9c16ecb4a36f84e8cd7ff731d508b276c818f4"
+  },
+  {
+   "source_path": "goldmine/ingest/asr.py",
+   "view_path": "goldmine/ingest/asr.py.md",
+   "sha256": "ed084ad49f3e6c486814ce81ea64d481878c8b61fc586c06567f72a4cf3ca6ef"
+  },
+  {
+   "source_path": "goldmine/ingest/rules.py",
+   "view_path": "goldmine/ingest/rules.py.md",
+   "sha256": "b8edb0b39a2063313b222fd8342395a345d77bf2ce577b7b5eb77fcd815ef7de"
+  },
+  {
+   "source_path": "goldmine/model_manifest.py",
+   "view_path": "goldmine/model_manifest.py.md",
+   "sha256": "d1bfa4e70f2835ac7ddcd152bb9136317838afc6c5d9adc4bb6d1df82f9bf979"
+  },
+  {
+   "source_path": "goldmine/pack.py",
+   "view_path": "goldmine/pack.py.md",
+   "sha256": "1fbb08248762aa198ded696d8e05645a199e2fd727bcf14c5f624120a21e0827"
+  },
+  {
+   "source_path": "goldmine/serve.py",
+   "view_path": "goldmine/serve.py.md",
+   "sha256": "a3cde74890fb015962edacfd35fa4a738bdb8d04e426a5497296d7ae510c04a0"
+  },
+  {
+   "source_path": "goldmine/store.py",
+   "view_path": "goldmine/store.py.md",
+   "sha256": "c90e415eeccc73dfc07e6e6521ea1cdbd3524a470e71ed059c1762c5fe69ff31"
+  }
+ ],
+ "streams": {
+  "qmd-overlap.stdout": "a69f4878ea88f85c6eaca26abcdc723d00c72fb4408f899c679cdeaf8c6f828f",
+  "qmd-overlap.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "recoll-overlap.stdout": "da180d257bc18ddd76bd31ef36341ea7049846d42799d0423450becf50c616f8",
+  "recoll-overlap.stderr": "57b5d7e32d50835e725c0f51fb4a46d2112f20f1ae170cd713b28c80d3e85c41"
+ },
+ "goldmine": {
+  "source": "actual frozen lexical fast CLI, first seed question, 2026-10-21",
+  "query": "How much shared context is kept when neighboring text chunks split inside a paragraph?",
+  "output": "goldmine-sem01.stdout",
+  "sha256": "ecdfcaf08b1d8aeecaf45e0aa452da86ed34e003d6e92287ea41feb53e131eb3"
+ }
 }

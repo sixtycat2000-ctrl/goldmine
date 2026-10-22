@@ -12,7 +12,7 @@
 
 ## 1. Mission & target metrics
 
-v1 can read text documents and, under the experimental foresight backend, raw image/audio
+v1 can read text documents and, under a multimodal backend, raw image/audio
 bytes. It cannot hear speech, read screenshots or scans, or see video — which is most of what
 a real Mac corpus *is*. v2 closes that with four moves:
 
@@ -29,7 +29,7 @@ a real Mac corpus *is*. v2 closes that with four moves:
 | 1 h podcast transcribed + indexed | not possible | **< 15 min** | ASR measured at **7.2× realtime** [measured]: 21.6 min audio in 3:01 → ~8.4 min ASR; + ffmpeg decode + ~3 min embedding ≈ 12 min |
 | Screenshot text (lookup query like "externally-managed-environment") | miss | hit via OCR FTS | DigUp regression case: `Extractors.swift:75-78` |
 | Scanned PDF pages with a vector | 0 (`thin-text`, ARCHITECTURE.md:399) | ≥ 95 % | OCR failures stay honest, never faked |
-| Images content-indexed (foresight) | only ≤ 20 MB raw bytes (pipeline.py:46-49) | 100 % of decodable images, any size | sips thumbnail removes the raw-byte cap |
+| Images content-indexed (multimodal backend) | only ≤ 20 MB raw bytes (pipeline.py:46-49) | 100 % of decodable images, any size | sips thumbnail removes the raw-byte cap |
 | 100-file mixed corpus | — | < 20 min end-to-end | coverage fixture, §9 |
 | Relevance eval | v1 text baseline | no regression + audio/image queries answered | `scripts/eval_relevance.py`, 40-query set, §9 |
 
@@ -50,7 +50,7 @@ content FTS text. The v2 KPI counts **vector coverage per kind**, reported by
 | Text extraction | `ingest/extract_text.py:46-84` | BOM-aware decode ladder; docx stdlib zip+xml (:111-150); rtf/doc/odt via textutil (:164-187) |
 | HTML | `ingest/extract_html.py:35-107` | HTMLParser strip-all-tags (DigUp `plainText(fromHTML:)` port); **no main-content detection** |
 | PDF | `ingest/extract_pdf.py:140-179` | pdftotext, 30 + 50-page batches; **thin pages < 200 chars stay vectorless** (:25, consumed at pipeline.py:583-590) |
-| Audio | `ingest/media.py:159-220` | ffmpeg 16 kHz mono WAV, 30 s window / 25 s hop (:31-33), RMS silence gate 0.003 (:33), embeddable only under foresight/mock (module doc :2-10) |
+| Audio | `ingest/media.py:159-220` | ffmpeg 16 kHz mono WAV, 30 s window / 25 s hop (:31-33), RMS silence gate 0.003 (:33), embeddable only under a multimodal backend, which the mock simulates offline (module doc :2-10) |
 | Video | `ingest/media.py:223-229` | metadata + soundtrack only; **frames deliberately not built** ("documented stretch") |
 | Images | `pipeline.py:446-468` | raw bytes to `embed_image`, 20 MB refusal cap (:46-49), excerpt = filename (:467), **no OCR, no thumbnail** |
 | Commit | `pipeline.py:649-825` | one transaction per file (`store.replace_segments`, store.py:472); media embedded serially on main thread (:758+) |
@@ -94,8 +94,8 @@ screenshot detection …").
 
 Gaps that block "search anything, accurate", ranked:
 
-- **G1 — Speech is invisible.** A 1 h podcast produces only raw-audio vectors under foresight
-  (pipeline.py:484-521); under the default llama backend it is `metadata_only`
+- **G1 — Speech is invisible.** A 1 h podcast produces only raw-audio vectors under a
+  multimodal backend; under the default llama backend it is `metadata_only`
   (README.md:77). No transcript, no FTS, no verbatim excerpt, no exact lookup.
 - **G2 — Pixels with text are invisible.** Screenshots: name-row only (pipeline.py:463-468,
   OCR explicitly out of scope at :463 comment). Scanned PDFs: `thin-text` FTS-only pages with
@@ -219,9 +219,9 @@ legitimately long); per-run progress printed; Ctrl-C finishes the current file t
 
 | Audio content | v2 behavior |
 |---|---|
-| Speech (VAD finds ≥ 20 % speech AND ASR yield ≥ threshold) | **transcript only**: text chunks (FTS + text vectors). No raw-audio vectors — DigUp measured that a second vector of the same words hurts ranking (Indexer.swift:510-513), and 120 raw window RPCs + ~450 text chunks per podcast is double cost for a strictly weaker signal on speech |
-| Music / non-speech (VAD speech < 20 % or ASR yield ≈ 0) | **raw-audio windows** via the v1 path (media.py:159-220, foresight embed) — this is where the audio encoder actually has signal |
-| ASR unavailable (no model / tool) | v1 fallback: raw windows under foresight; `metadata_only` under llama; doctor suggests `goldmine models add whisper-turbo` |
+| Speech (VAD finds ≥ 20 % speech AND ASR yield ≥ threshold) | **transcript only**: text chunks (FTS + text vectors). No raw-audio vectors — DigUp measured that a second vector of the same words hurts ranking (Indexer.swift:510-513), and 120 raw window embeds + ~450 text chunks per podcast is double cost for a strictly weaker signal on speech |
+| Music / non-speech (VAD speech < 20 % or ASR yield ≈ 0) | **raw-audio windows** via the v1 path (media.py:159-220, multimodal-backend embed) — this is where the audio encoder actually has signal |
+| ASR unavailable (no model / tool) | v1 fallback: raw windows under a multimodal backend; `metadata_only` under llama; doctor suggests `goldmine models add whisper-turbo` |
 | Video | soundtrack first (same table); frames are §5.3 |
 
 **Perf budget check (1 h podcast, target < 15 min)** [measured components]: decode ~10 s +
@@ -273,7 +273,7 @@ bursts):
 Rules.swift:140-144), name prefixes as fallback (rules.py:77 stays). For each screenshot:
 
 1. OCR the full-resolution image → OCR text.
-2. Store **two** segments: `kind="image"` with the foresight image vector (kept! — DigUp
+2. Store **two** segments: `kind="image"` with the multimodal-backend image vector (kept! — DigUp
    screenshots do get image vectors, Indexer.swift:496-504) and `kind="ocr"`,
    `text_for_fts=OCR text`, **`vec=None`**. The OCR words are for exact lookup only;
    a text vector of them measurably made screenshots outrank better matches
@@ -324,14 +324,14 @@ en/fr/it/de/es/pt/zh-Hans/zh-Hant [measured]). doctor reports
 CommandLineTools row for the compile fallback (`swiftc: present | absent — only needed to
 build goldmine-ocr from source; the release asset needs no dev tools`, B13).
 
-### 5.3 Video frames — ffmpeg + scene/AHash dedup (v2.1, M/L; foresight-only)
+### 5.3 Video frames — ffmpeg + scene/AHash dedup (v2.1, M/L; multimodal-backend-only)
 
 **Worth it? Yes — but second.** Frames are the last blind modality, and the machinery is
 verified cheap: `select='gt(scene,0.3)'` fired exactly on the two hard cuts of a synthetic
 clip [measured]. It is deferred behind ASR in priority because for the dominant video
 kinds on this machine (lectures, podcasts, screen recordings) the **soundtrack ASR path
-from §5.1 already makes them searchable**, and frames depend on the experimental foresight
-backend (llama `/v1/embeddings` cannot embed images — README.md:76). Cap the investment
+from §5.1 already makes them searchable**, and frames depend on a multimodal backend
+(llama `/v1/embeddings` cannot embed images — README.md:76). Cap the investment
 accordingly.
 
 **Pipeline** (DigUp semantics, ffmpeg mechanics — no AVFoundation in Python):
@@ -350,7 +350,7 @@ ffmpeg -i video -an \
   MediaExtractors.swift:129-130, :140-156). Replaces any scene-detection pass: fixed
   sampling + dedup already collapses static stretches (DigUp's comment: "screen recordings
   and lectures shrink a lot", :102-103), and it avoids a second full decode.
-- Each kept frame → `embed_image(frame.jpg)` (foresight) → segment `kind="frame"`,
+- Each kept frame → `embed_image(frame.jpg)` (multimodal backend) → segment `kind="frame"`,
   `modality="image"`, `loc=start_sec`, `loc_end=next kept frame's start` (DigUp
   MediaExtractors.swift:135-136). Excerpt `"frame 87s"`.
 - `info: {duration, frames: kept, frames_dropped: n}` + SPEC.md:344's pre-reserved
@@ -364,7 +364,7 @@ ffmpeg -i video -an \
 
 **maxFrames/coverage interplay:** `step` derivation from ffprobe duration (already
 fetched, media.py:88-108) means a 2 h lecture yields ≤ 1200 candidate frames *before*
-dedup, typically ~100-300 kept. Embed cost ≈ one foresight RPC each — acceptable.
+dedup, typically ~100-300 kept. Embed cost ≈ one image-embed call each — acceptable.
 
 ### 5.4 Image pipeline — sips thumbnailing, EXIF, screenshot policy (v2.0, M)
 
@@ -533,7 +533,7 @@ New CLI: `goldmine models add|list` (whisper-turbo, whisper-small, vad, ocr);
 | | Coverage harness + fixture + eval queries (§9) | **M** | the KPI must exist before the features land |
 | | Rules quick-fixes: CODE_FILE_NAMES definition (bug), minSide, bundle skip (§5.7) | **S** | one-pass hygiene |
 | **v2.1 — "keep up while you work"** | `goldmine watch` polling daemon (§5.6) | **M** | incremental freshness; pipeline untouched by design |
-| | Video frames pipeline (§5.3) | **M/L** | last modality; foresight-gated |
+| | Video frames pipeline (§5.3) | **M/L** | last modality; multimodal-backend-gated |
 | | CJK /tokenize chunking (§5.5) | **S/M** | accuracy for CJK corpora |
 | | HTML main-content lite (§5.5) | **M** | chunk quality on web pages |
 | | Rules parity batch: vendored folders, submodule skip, content code gates, ipynb cells, is_project_root disposition (§5.7) | **M** | correctness under `--code` |
@@ -567,8 +567,8 @@ The models manager (v2.0) is shared by whisper and goldmine-ocr.
   first v2.0 task with a rotated-EXIF fixture; fallback is reading orientation via
   `sips -g` and pre-rotating.
 - **llama mmproj route still unverified** (DESIGN_DECISIONS.md:176-177): images/frames/OCR-
-  free audio remain foresight-dependent. If ForesightHelper disappears, v2 degrades exactly
-  like v1 (honest metadata_only) — no new failure modes introduced, but frames (§5.3) would
+  free audio depend on a multimodal backend. If the multimodal backend disappears, v2 degrades
+  exactly like v1 (honest metadata_only) — no new failure modes introduced, but frames (§5.3) would
   be dead code. Open question for the backends doc: vendored llama-server + mmproj for
   embeddings.
 - **/tokenize cost**: one HTTP roundtrip per batch of candidate chunks; if measured slow,
@@ -631,6 +631,6 @@ and asserted (non-regression) by `scripts/eval_relevance.py` extended with:
 
 **v2 targets per kind** (vector coverage): txt/md/html/docx/rtf/doc/odt/eml/epub 100 % ·
 pdf-text 100 % · pdf-scanned ≥ 95 % · code 100 % (`--code`) · webpage 100 % · image 100 %
-(foresight) with screenshot OCR text on 100 % of screenshots · audio ≥ 98 % (rest: honestly
-"no speech" or "ASR failed" — never silent) · video ≥ 95 % via soundtrack, frames where
-foresight · secrets/minified/archives: 0 % by design, reasons recorded.
+(multimodal backend) with screenshot OCR text on 100 % of screenshots · audio ≥ 98 % (rest: honestly
+"no speech" or "ASR failed" — never silent) · video ≥ 95 % via soundtrack, frames where a
+multimodal backend is present · secrets/minified/archives: 0 % by design, reasons recorded.

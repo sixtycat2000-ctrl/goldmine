@@ -34,7 +34,6 @@ classifiers = [
 
 [project.optional-dependencies]
 mcp = ["mcp==2.0.0"]
-foresight = ["grpcio>=1.60", "protobuf>=4.25"]
 dev = ["pytest>=8"]
 
 [project.scripts]
@@ -51,5 +50,4 @@ markers = [
     "assets: verifies explicitly prepared real assets; separate from hermetic tests",
     "native: exercises real platform tools; separate from hermetic tests",
     "optional_mcp: official MCP SDK tests in the optional dependency environment",
-    "optional_foresight: Foresight SDK tests in the optional dependency environment",
 ]

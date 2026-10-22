@@ -72,21 +72,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        extra: [mcp, foresight]
+        extra: [mcp]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
         with:
           python-version: '3.12'
       - name: Install locked optional environment
-        env:
-          EXTRA: ${{ matrix.extra }}
         run: |
-          if [ "$EXTRA" = mcp ]; then
-            python -m pip install -r requirements/mcp.lock
-          else
-            python -m pip install -r requirements/test.lock -r requirements/foresight.lock
-          fi
+          python -m pip install -r requirements/mcp.lock
           python -m pip install --no-deps -e .
       - name: SDK protocol checks
         env:

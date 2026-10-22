@@ -370,7 +370,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sub);fon
       <div class="foot">以 116 行 Swift 小助手进程调用系统 OCR；置信度 &lt;0.5 的碎字丢弃。A/B 实测：截图搜索命中 0% → 67%。</div>
     </div>
   </div>
-  <p class="note rv" style="margin-top:16px">另有编外员工：机器上恰好跑着的 Google Foresight 助手进程。goldmine 会打声招呼，请它代算图片/音频的原生向量（实验性后端）；算完就挂断，不替它重启、也不关它。三个后端实现同一接口——第三个是确定性假模型 mock，让 744 条测试离线全绿。</p>
+  <p class="note rv" style="margin-top:16px">后端可插拔、实现同一接口；图片/音频的原生向量需要多模态后端（llama 目前仅文本）。测试则用确定性假模型 mock，让 744 条测试离线全绿。</p>
 </section>
 
 <!-- ═══════════ 05 架构 ═══════════ -->
@@ -398,7 +398,6 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sub);fon
     <div class="al"><div class="alh"><b>能力</b><span>PLUGGABLE BACKENDS · 同一接口</span></div>
       <div class="boxes">
         <div class="bx"><b>llama（默认）</b><span>自管理的 llama-server 子进程，绑 127.0.0.1</span></div>
-        <div class="bx"><b>foresight（实验）</b><span>Unix socket 借调，图/声原生向量</span></div>
         <div class="bx"><b>mock（测试）</b><span>确定性假向量，离线全绿</span></div>
       </div></div>
     <div class="conn"><svg width="24" height="30" aria-hidden="true"><line class="flow" x1="12" y1="0" x2="12" y2="26"/><path d="M7 20 L12 28 L17 20" fill="none" stroke="#E3A94C" stroke-width="1.6"/></svg></div>

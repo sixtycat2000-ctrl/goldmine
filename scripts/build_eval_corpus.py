@@ -3,22 +3,18 @@
 
 The eval corpus is REAL files on this machine, hash-pinned by
 `evals/corpus_manifest.json` (the committed, verifiable part). External repos
-(DigUp, foresight-rea) are pinned live — they are stable. The GOLDMINE-SELF
+(DigUp) are pinned live — they are stable. The GOLDMINE-SELF
 slice is pinned as committed BYTES: `--refresh-manifest` copies each pinned
 goldmine file into `evals/corpus_snapshot/` and the manifest records the
 snapshot paths, so a normal dev day (editing search.py, store.py, …) no
 longer invalidates the corpus or the labels (04-eval F5: the v1 manifest
-drifted in 11 self files within one day). foresight-rea still stays
-byte-local — its files are NEVER copied into the repo (decompiled
-third-party code, docs/v2/01 §7 risk 9).
+drifted in 11 self files within one day).
 
 Sources:
   1. ~/git/DigUp            — Swift app + docs (fusion/search provenance)
-  2. ~/git/mac/work/foresight-rea/app-src — reverse-engineered Foresight app
-     (docs in Chinese + English, C++, Dart, Python, proto)
-  3. evals/corpus_snapshot/ — goldmine itself, snapshot-pinned (this repo's
+  2. evals/corpus_snapshot/ — goldmine itself, snapshot-pinned (this repo's
      package sources + docs, bytes as of the last --refresh-manifest)
-  4. the coverage fixture   — scripts/make_coverage_fixture.py output
+  3. the coverage fixture   — scripts/make_coverage_fixture.py output
      (deterministic, seeded; regenerated if absent) for media / pdf-page /
      noise labels (evals/media_queries.jsonl already points at it)
 
@@ -125,50 +121,6 @@ DIGUP_FILES = [
     "worker/digup_worker.py",
 ]
 
-FORESIGHT_ROOT = Path.home() / "git" / "mac" / "work" / "foresight-rea" / "app-src"
-FORESIGHT_FILES = [
-    "README.md", "Makefile",
-    "docs/architecture.md",
-    "docs/rpc-contracts.md",
-    "docs/live-findings.md",
-    "docs/evidence-map.md",
-    "docs/CORRECTIONS.md",
-    "docs/DEPENDENCIES.md",
-    "proto/rag_service.proto",
-    "native/launch_agent/main.cc",
-    "native/launch_agent/rag_service_impl.h",
-    "native/launch_agent/rag_service_impl.cc",
-    "native/launch_agent/retrieval_pipeline.cc",
-    "native/launch_agent/rag_sqlite_memory_store.cc",
-    "native/launch_agent/sqlite_vector_udf.cc",
-    "native/launch_agent/chunking.cc",
-    "native/launch_agent/model_loader.cc",
-    "native/launch_agent/embedding_gemma_api.cc",
-    "native/launch_agent/model_paths.cpp",
-    "server/foresight_server.py",
-    "app/demo_cli.py",
-    "tests/test_server.py",
-    "tests/live_test.py",
-    "ui/MODULES.md",
-    "ui/STATE-MACHINES.md",
-    "ui/prompts.md",
-    "ui/model-catalog.json",
-    "ui/src/rag_orchestrator.dart",
-    "ui/src/audio_pipeline.dart",
-    "ui/src/graph_and_mapreduce.dart",
-    "ui/src/chat_insight_service.dart",
-    "ui/src/inference_pipeline.dart",
-    "ui/src/notes_enhancer.dart",
-    "ui/src/model_catalog.dart",
-    "ui/src/model_download_controller.dart",
-    "ui/src/models/contact.dart",
-    "ui/src/models/document.dart",
-    "ui/src/models/insight.dart",
-    "ui/src/models/structured_transcript.dart",
-    "ui/src/models/meeting_transcript_link.dart",
-    "ui/src/models/on_device_model.dart",
-]
-
 GOLDMINE_FILES = [  # relative to REPO_ROOT; snapshot-copied at refresh
     "README.md", "ARCHITECTURE.md", "SPEC.md",
     "goldmine/search.py",
@@ -211,7 +163,6 @@ GOLDMINE_FILES = [  # relative to REPO_ROOT; snapshot-copied at refresh
 #: the rest of the tree keeps its realistic-drift noise.
 INGEST_DIR_ROOTS = [
     DIGUP_ROOT,
-    FORESIGHT_ROOT,
     REPO_ROOT / "goldmine",
     REPO_ROOT / "docs",
     REPO_ROOT / "scripts",
@@ -219,7 +170,6 @@ INGEST_DIR_ROOTS = [
 
 SOURCE_NOTES = {
     "digup": "DigUp Swift app — the fusion/z-score/setsScale provenance goldmine re-implements",
-    "foresight": "foresight-rea app-src — reverse-engineered Google AI Edge Foresight (CJK docs, C++/Dart/Python/proto); LOCAL-ONLY, never commit bytes",
     "goldmine": "goldmine itself (package + docs)",
 }
 
@@ -312,7 +262,6 @@ def _snapshot_goldmine() -> list[str]:
 def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
     sections: list[tuple[str, Path, list[str]]] = [
         ("digup", DIGUP_ROOT, DIGUP_FILES),
-        ("foresight", FORESIGHT_ROOT, FORESIGHT_FILES),
     ]
     files: list[dict] = []
     for source, root, rels in sections:
@@ -356,8 +305,6 @@ def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
         },
         "sources": {
             "digup": {"root": str(DIGUP_ROOT), "note": SOURCE_NOTES["digup"]},
-            "foresight": {"root": str(FORESIGHT_ROOT),
-                          "note": SOURCE_NOTES["foresight"]},
             "goldmine": {"root": str(SNAPSHOT_DIR),
                          "note": SOURCE_NOTES["goldmine"] +
                                  " — snapshot-pinned bytes (evals/corpus_snapshot/)"},
@@ -368,8 +315,6 @@ def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
             "evals/corpus_snapshot/ ('origin' holds the live path); the index "
             "and the labels consume the snapshot, so dev-day edits cannot rot "
             "them — refresh the manifest deliberately to move the snapshot",
-            "foresight-rea is decompiled third-party code — local-only, its "
-            "bytes are never copied into the repo (docs/v2/01 risk 9)",
             "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; "
             "the say wav additionally pins a content-stable surrogate "
             "(tool + transcript + duration bucket — its raw bytes are "

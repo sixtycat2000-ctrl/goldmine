@@ -201,6 +201,6 @@ PDF 新切块若改变持久化段边界，将 chunker 版本升为 `chunk.v3-pa
 
 ## 9 交付层级与检查配置
 
-base hermetic offline 不依赖模型、BEIR 缓存、系统壁纸或可选 SDK；真实模型/公开集哈希归 assets，OCR/ASR/系统能力归 native，MCP/Foresight 有单独 optional SDK collection。每个 profile 验证其固定测试确实收集与通过，禁止全 skip 当绿。task-check 验证本项能力、已完成能力回归及 legacy；retrieval 为全阶段 dev；local_rc 为完整本地候选及一次联合 holdout 审计；hosted_release 在其上另要求真实 CI run 链接。当前无 remote，hosted 缺失不阻碍本地实现，但不得冒充已验证。release 判定只依赖原始检查和资产，完成后才派生任务/里程碑状态。
+base hermetic offline 不依赖模型、BEIR 缓存、系统壁纸或可选 SDK；真实模型/公开集哈希归 assets，OCR/ASR/系统能力归 native，MCP 有单独 optional SDK collection。每个 profile 验证其固定测试确实收集与通过，禁止全 skip 当绿。task-check 验证本项能力、已完成能力回归及 legacy；retrieval 为全阶段 dev；local_rc 为完整本地候选及一次联合 holdout 审计；hosted_release 在其上另要求真实 CI run 链接。当前无 remote，hosted 缺失不阻碍本地实现，但不得冒充已验证。release 判定只依赖原始检查和资产，完成后才派生任务/里程碑状态。
 
 native tar 必须使用全新 staging、精确 revision/patch 与真实架构；打包动态依赖闭包或证明静态链接。离开源码/构建目录、清空 DYLD 覆盖后独立解压运行版本/OCR/真实模型请求，失败 nonzero。错 revision、未知 patch、缺 dylib、旧 staging 均有拒绝反例。
