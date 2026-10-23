@@ -350,6 +350,15 @@ class ExtractMixin:
         info: dict = {"exif_version": media.EXIF_METADATA_VERSION, "exif_reader": metadata.reader,
                       "exif_status": metadata.status,
                       "taken": taken[0] if taken else None}
+        # Bounded camera/GPS live next to the date so text-only backends
+        # (which never reach prepare_image) still store them (D4 revision).
+        from .exif import camera_and_position
+
+        camera = camera_and_position(path)
+        if camera.make is not None:
+            info["camera_make"] = camera.make
+        if camera.gps is not None:
+            info["gps"] = camera.gps
         if is_shot:
             info["screenshot"] = True
         if taken:

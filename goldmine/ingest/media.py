@@ -388,11 +388,12 @@ def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False, metadata=N
     taken = metadata.taken if metadata is not None else exif_taken(path)
     prep = ImagePrep(taken=taken[0] if taken else None,
                      taken_epoch=taken[1] if taken else None)
-    if metadata is None:
-        from .exif import camera_and_position
+    # The retry object only caches the DATE attempt; camera/GPS are separate
+    # bounded reads and always attempted for JPEGs.
+    from .exif import camera_and_position
 
-        camera = camera_and_position(path)
-        prep.camera_make, prep.gps = camera.make, camera.gps
+    camera = camera_and_position(path)
+    prep.camera_make, prep.gps = camera.make, camera.gps
     import uuid
 
     token = uuid.uuid4().hex[:10]

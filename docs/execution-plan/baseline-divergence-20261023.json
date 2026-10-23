@@ -6,7 +6,7 @@
  "files": {
   "evals/corpus_manifest.json": {
    "original_sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534",
-   "current_sha256": "00aac5d4686d87681312906d0900dcdd006aae18e6a04ae485e4d23028996f37",
+   "current_sha256": "87a569d601b3744b4bb395acae4200670b53ac94db824d8cf5de7bd4c5d8fac0",
    "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version v4 (foresight removal), then v5 2026-10-23 (user decision D4: fixture photos regenerated as JPEGs with genuine EXIF date/Make/GPS; affected media-037..040 re-registered)"
   },
   "evals/real.jsonl": {

@@ -607,8 +607,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/media.py",
    "source": "goldmine",
-   "bytes": 15396,
-   "sha256": "2812107da82a7be2be6407765ad3b86ddf751a7feadf454df9f4c0bd39c7856e",
+   "bytes": 15488,
+   "sha256": "b17cb42c6151d5b563380cfefa2c5e05369c82a9e0ae8e76065f636b09c58b2f",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/media.py"
   },
   {
@@ -644,7 +644,6 @@
   "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them — refresh the manifest deliberately to move the snapshot",
   "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket — its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
-  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index — they quote the noise-query strings (self-leak, F6)",
-  "v5 2026-10-23 (user decision D4): the two coverage-fixture photos regenerated as JPEGs genuinely carrying EXIF DateTimeOriginal/Make/GPS (labels stated in the generator); product gained bounded camera/GPS readers; affected media-037..040 expect paths re-registered."
+  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index — they quote the noise-query strings (self-leak, F6)"
  ]
 }
