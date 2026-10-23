@@ -1,481 +1,481 @@
 {
-  "schema": 1,
-  "plan_version": "2026-10-21.2",
-  "state": "EXECUTING",
-  "source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
-  "contract": "CONTRACTS.md",
-  "acceptance": "ACCEPTANCE.md",
-  "status_enum": [
-    "TODO",
-    "RUNNING",
-    "IMPLEMENTED",
-    "VERIFIED",
-    "BLOCKED",
-    "EXPERIMENT_REJECTED"
-  ],
-  "execution_policy": "User authorized all P0-P2 implementation on 2026-10-21. Task checks use dev; one final sealed holdout audit. Evidence-derived status only. Local RC and hosted release are separate.",
-  "tasks": [
-    {
-      "id": "P0-01",
-      "priority": "P0",
-      "title": "冻结历史基线并修复评测入口",
-      "depends_on": [],
-      "spec": "P0.md#p0-01",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "legacy_if_available"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-01",
-      "result": "Six historical files byte-archived; original real legacy baseline exactly reproduced. Final frozen four profiles PASS. Final candidate real legacy gate PASS: S@5 .8000, S@1 .6069, MRR .6930, nDCG .7013; no significant quality-gain claim."
-    },
-    {
-      "id": "P0-02",
-      "priority": "P0",
-      "title": "修复答题波动与校准门禁",
-      "depends_on": [
-        "P0-01"
-      ],
-      "spec": "P0.md#p0-02",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "answer_calibration"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-02",
-      "result": "Strict v3 job provenance, four grades, preregistered practical drop and grouped bootstrap implemented. Mechanical tests PASS. New real 80-question calibration jobs remain MISSING."
-    },
-    {
-      "id": "P0-03",
-      "priority": "P0",
-      "title": "支持基准与候选答案的有效比较",
-      "depends_on": [
-        "P0-02"
-      ],
-      "spec": "P0.md#p0-03",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "answer_compare"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Independent source-bound v3 comparison implemented and counterexample-tested. New independent real reference/candidate answer and grading jobs remain MISSING."
-    },
-    {
-      "id": "P0-04",
-      "priority": "P0",
-      "title": "纳入 ASR OCR EXIF 评测",
-      "depends_on": [
-        "P0-01"
-      ],
-      "spec": "P0.md#p0-04",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "full_media"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Fixed 169-row full-media preflight implemented without denominator shrink. Existing index lacks actual EXIF and some OCR provenance; full-media quality remains MISSING."
-    },
-    {
-      "id": "P0-05",
-      "priority": "P0",
-      "title": "建立可搬运且不泄漏的产品评测集",
-      "depends_on": [
-        "P0-04"
-      ],
-      "spec": "P0.md#p0-05",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "corpus_audit",
-        "real_embedding"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-05",
-      "result": "Frozen full420 corpus:122 real sources,175 canonical views,89 answerable source groups;210 dev/210 sealed holdout,56 independently audited labels. Original-v4/current-v6 real indexes and full capability preflights ready. Current strict task004:94 testsPASS,12614 SQLite evidence spans read back,210 dev rows complete,11 quality gates FAIL,0MISSING; holdout0. See product-dev-20261022.json and validation-20261022.json."
-    },
-    {
-      "id": "P0-06",
-      "priority": "P0",
-      "title": "统一验收执行器和证据格式",
-      "depends_on": [
-        "P0-01"
-      ],
-      "spec": "P0.md#p0-06",
-      "status": "RUNNING",
-      "verification": [
-        "offline",
-        "negative_checks"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Strict receipt/source/JUnit/IR/original-v4/public/raw-qrels/joint/docs/capacity/hosted adapters implemented and reviewed. Historical7192395 four-profile1689PASS0required skip; later source requires fresh CI. Public17490-source paired preparation and original2029queries x4 scorers captured; pre-fix candidate scoring canceledbeforequalityoutput for confirmedchunkerdata-loss repair, actual-15/MISSING retained. Fresh corrected-candidate capture pending. Hosted actualruns and sealedholdout remain MISSING; no releasePASS."
-    },
-    {
-      "id": "P1-01",
-      "priority": "P1",
-      "title": "抽出 CLI 与 MCP 共用应用服务",
-      "depends_on": [
-        "P0-01"
-      ],
-      "spec": "P1.md#p1-01",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "legacy"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Shared read-only snapshot service, canonical citations and absolute deadlines implemented. Frozen four-profile regression PASS; actual SDK/CLI equivalent pack and concurrent replacement checks included."
-    },
-    {
-      "id": "P1-02",
-      "priority": "P1",
-      "title": "中文关键词检索和词法索引升级",
-      "depends_on": [
-        "P1-01"
-      ],
-      "spec": "P1.md#p1-02",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "migration",
-        "retrieval"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "NFKC CJK grams, strict phrase verification, explicit stored-row lexical reindex and old-writer transaction fencing implemented. Current regression PASS. Real dev CJK success5=18/30 vs original17/30, below.85 target; strict product gate FAIL."
-    },
-    {
-      "id": "P1-03",
-      "priority": "P1",
-      "title": "文件名 路径 编号精确检索",
-      "depends_on": [
-        "P1-02"
-      ],
-      "spec": "P1.md#p1-03",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "migration",
-        "retrieval"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Schema-v6 raw/alias filename/path/identifier lookup and metadata provenance implemented. Real dev lookup success1=18/30 vs original5/30, below.90 target. Compound exact-anchor/remainder admission interactions under read-only diagnosis; no blanket veto removal or noise-target relaxation."
-    },
-    {
-      "id": "P1-04",
-      "priority": "P1",
-      "title": "修复 PDF 页与证据片段选择",
-      "depends_on": [
-        "P1-03"
-      ],
-      "spec": "P1.md#p1-04",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "retrieval",
-        "public"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P1-04",
-      "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8historicalForesight,profile since retired), actual422source/config hashes stable. Fresh current004 full122 native prepare and unchanged210dev control completed with strict readback: S5 101/180 (previous103), PACK102/180 (previous96), compound PACK11/30 (previous6), noise5/30; FAIL11/MISSING0. No fourth profile/holdout/retry. C002 independent design closed, report-only implementation pending."
-    },
-    {
-      "id": "P1-05",
-      "priority": "P1",
-      "title": "修复媒体检索与能力呈现",
-      "depends_on": [
-        "P1-04"
-      ],
-      "spec": "P1.md#p1-05",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "full_media",
-        "native_tools"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P1-05",
-      "result": "Actual DateTimeOriginal bounded readers, transient retry recovery and image-worker scratch allocation lock implemented/reviewed;10/10 real original JPEG dates match independent EXIF. Real dev media20/30, OCR5/9,ASR10/11,metadata5/10; overall/OCR/metadata gates FAIL. Legacy fixed169 full-media quality still MISSING."
-    },
-    {
-      "id": "P1-06",
-      "priority": "P1",
-      "title": "校准无答案拒收与融合规则",
-      "depends_on": [
-        "P1-05"
-      ],
-      "spec": "P1.md#p1-06",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "retrieval",
-        "public"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P1-06",
-      "result": "All3 preregistered real dev arms measured:control103/180 success5,5/30noise;higher_z103/180,10/30noise;margin98/180,8/30noise. All11 gatesFAIL;selected=null,original control default unchanged,no fourth parameter arm,holdout0. Paired CI answerable denominator fixed and independently audited. Current004 prospective pre-C control is retained regardless of scores: noise5/30, strictFAIL11. C002 complete-identity/same-owner lexical scope design independently closed; production implementation not yet adopted, semantic remainder remainsOFF."
-    },
-    {
-      "id": "P1-07",
-      "priority": "P1",
-      "title": "可选本地重排与收益验证",
-      "depends_on": [
-        "P1-06"
-      ],
-      "spec": "P1.md#p1-07",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "rerank_ab",
-        "performance"
-      ],
-      "allows_experiment_rejected": true,
-      "evidence_dir": "reports/execution/P1-07",
-      "result": "Optional pinned Qwen3 rank-head backend implemented; six real endpoint probes and bounded real-token/cleanup test PASS. Total HTTP deadline and real SIGTERM cleanup regressions PASS. Dev A/B and full resource gates remain MISSING; disabled by default."
-    },
-    {
-      "id": "P1-08",
-      "priority": "P1",
-      "title": "确定性多查询和证据合并",
-      "depends_on": [
-        "P1-06"
-      ],
-      "spec": "P1.md#p1-08",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "compound_ab",
-        "budget"
-      ],
-      "allows_experiment_rejected": true,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Conservative deterministic grammar, source spans, bounded RRF, cancellation and theme-aware packing implemented/tested. Original query retained; experimental/off by default; compound benefit remains unmeasured."
-    },
-    {
-      "id": "P1-09",
-      "priority": "P1",
-      "title": "只读 stdio MCP 服务",
-      "depends_on": [
-        "P1-01",
-        "P1-02"
-      ],
-      "spec": "P1.md#p1-09",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "sdk_protocol",
-        "real_embedding",
-        "performance"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P1-09",
-      "result": "Exact official SDK 2.0.0 extra and four read-only stdio tools implemented. Final 6 real SDK tests and final isolated installed-wheel handshake PASS. Final same-source latency evidence recorded in PROGRESS."
-    },
-    {
-      "id": "P1-10",
-      "priority": "P1",
-      "title": "统一材料包契约和端到端验收",
-      "depends_on": [
-        "P1-09",
-        "P0-03"
-      ],
-      "spec": "P1.md#p1-10",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "agent",
-        "answer_compare"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P1-10",
-      "result": "Whole-envelope budget/citation contract and official SDK Agent chain implemented. Real tokenizer matrix PASS at 512/1000/4000/32768 tokens and context 0/1/3, including maximum empty query. Fresh real 80-question answer comparison remains MISSING."
-    },
-    {
-      "id": "P2-01",
-      "priority": "P2",
-      "title": "拆分 CLI 并收敛模块依赖",
-      "depends_on": [
-        "P1-01"
-      ],
-      "spec": "P2.md#p2-01",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "distribution",
-        "behavior_parity",
-        "performance"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-01",
-      "result": "CLI dispatch split to <=350 lines with focused command modules and package discovery. Frozen compatibility/module tests and final wheel/sdist outside-source installs PASS."
-    },
-    {
-      "id": "P2-02",
-      "priority": "P2",
-      "title": "规模性能与内存基准",
-      "depends_on": [
-        "P1-01"
-      ],
-      "spec": "P2.md#p2-02",
-      "status": "RUNNING",
-      "verification": [
-        "offline",
-        "scale",
-        "performance",
-        "conditional_cache"
-      ],
-      "allows_experiment_rejected": true,
-      "evidence_dir": "reports/execution/P2-02",
-      "result": "Full native-v4/v6 source-bound CLI capacity tooling implemented:12 fixed cases,10 phase runs,30 cold/warm samples of search/JSONpack/humanpack plus3 warmups, bounded owned workers/receipts/readback/RSS and explicit cache benefit proof. Four independent review blockers CLOSED;60 integration testsPASS. Full12 run still pending; historical vector-only/cache phase results cannot satisfy complete CLI gate."
-    },
-    {
-      "id": "P2-03",
-      "priority": "P2",
-      "title": "增量导入与 watch 资源优化",
-      "depends_on": [
-        "P2-02"
-      ],
-      "spec": "P2.md#p2-03",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "watch_live",
-        "serve_live",
-        "resource_cleanup"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-03",
-      "result": "Incremental stage/actual-call instrumentation and lazy startup implemented; unchanged ingest starts/embeds/OCR/ASR zero in focused integration checks. Thirty-pair controlled/real/reference latency tools implemented and exercised. Full real-media ingest benchmark and two strict 10-minute watch profiles remain MISSING. Final bound controlled/real/reference 30-pair latency gates PASS: warm p50 149.07/148.07/144.04ms, candidate controlled MCP extra p95 3.40ms. One initial freshly extracted native warmup timeout retained; first-install lifecycle proof remains incomplete."
-    },
-    {
-      "id": "P2-04",
-      "priority": "P2",
-      "title": "真实语料知识卡片验收",
-      "depends_on": [
-        "P0-05",
-        "P1-01"
-      ],
-      "spec": "P2.md#p2-04",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "distill_real",
-        "citation"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-04",
-      "result": "Strict real-label/provenance card evaluator and capture/replay tools implemented; original-text regression fixed and mock hard-variant gate PASS. Audited 100-source/eight-topic labels and real quality gate remain MISSING."
-    },
-    {
-      "id": "P2-05",
-      "priority": "P2",
-      "title": "普通 PR CI 和严格 live 入口",
-      "depends_on": [
-        "P0-06"
-      ],
-      "spec": "P2.md#p2-05",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "offline",
-        "local_ci",
-        "failure_injection"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-05",
-      "result": "Reviewed hosted adapter and fixed local CI workflow implemented; historical 7192395 local checks passed. Current source changed after that checkpoint; fresh four-profile CI, failure injections and task-check pending. Actual hosted run remains MISSING; no remote.",
-      "hosted_verification": "hosted_ci",
-      "historical_verification": {
-        "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
-        "status": "VERIFIED",
-        "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8historicalForesight=1689 PASS,0required skips (Foresight profile later retired by user); actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
-        "evidence": {
-          "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
-          "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
-        }
-      }
-    },
-    {
-      "id": "P2-06",
-      "priority": "P2",
-      "title": "wheel 和无源码安装验证",
-      "depends_on": [
-        "P2-05"
-      ],
-      "spec": "P2.md#p2-06",
-      "status": "IMPLEMENTED",
-      "verification": [
-        "distribution",
-        "native_assets",
-        "migration"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-06",
-      "result": "Packaging and isolated native/base/MCP install/upgrade implementation retained. Historical 7192395 snapshot006/task008 passed; current source changed and new frozen data were adopted. Fresh source-bound distribution/install/task-check pending; no release.",
-      "historical_verification": {
-        "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
-        "status": "VERIFIED",
-        "result": "Current snapshot006 wheel/sdist, rebuilt-sdist wheel, offline outside-source base/MCP installs, actual native OCR+768 embedding, and original-v4->candidate-v6 backup/upgrade/restore PASS. Explicit asset-bound task-acceptance008 PASS. Platform verified only on actual macOS arm64/Python3.12; no public release.",
-        "evidence": {
-          "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
-          "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
-        }
-      }
-    },
-    {
-      "id": "P2-07",
-      "priority": "P2",
-      "title": "文档对齐与本地发布候选",
-      "depends_on": [
-        "P2-03",
-        "P2-04",
-        "P2-06",
-        "P1-10"
-      ],
-      "spec": "P2.md#p2-07",
-      "status": "RUNNING",
-      "verification": [
-        "release",
-        "docs",
-        "rollback"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P0-06",
-      "result": "Documentation adapter and tests implemented; current14documents/55local links/22actual offline commands PASS, docs-task003 PASS for documentation component only. Version0.2.0 development; full local_rc still fails/misses mandatory quality,data,lifecycle and sealed-audit evidence. No RC/tag/push/publication."
-    },
-    {
-      "id": "P2-08",
-      "priority": "P2",
-      "title": "QMD 与 Recoll 公平对照",
-      "depends_on": [
-        "P2-02",
-        "P2-06"
-      ],
-      "spec": "P2.md#p2-08",
-      "status": "RUNNING",
-      "verification": [
-        "comparison",
-        "performance",
-        "recompute_metrics"
-      ],
-      "allows_experiment_rejected": false,
-      "evidence_dir": "reports/execution/P2-08",
-      "result": "Pinned QMD2.8.3/Recoll1.44.2 assets and native/common full-source converter implemented. Engine27-file composition and11-role effective resolver/observer003 adopted. Measurements compiler002 semantic-info finding independently closed,88tests+JSsyntaxPASS; current combined comparison/compiler/resource/registry317PASS0skip after preserved failures and test-only controlled completion fix. Typed actual measurement executor/replay still report-only implementation. Full122-source conversion and18-arm210-dev real captures/performance/update/quality remain MISSING; old28-query lexical seed diagnostic only. Independent ENG-AGG-01 proves valid18x210 report can exceed8MiB (8388927bytes with19-byte excerpts); bounded complete framing/accounting repair report-only and unadopted. Full models/quality/performance/update captures remain unrun."
-    }
-  ],
-  "review": "REVIEW.md",
-  "execution_summary": {
-    "implemented": 20,
-    "running": 4,
-    "verified": 0,
-    "note": "Current-source status. Historical VERIFIED checkpoints remain linked per task; subsequent executable changes require fresh verification. IMPLEMENTED means code exists, not whole-task acceptance. Real quality, lifecycle, answer execution and hosted evidence remain incomplete."
+ "schema": 1,
+ "plan_version": "2026-10-21.2",
+ "state": "EXECUTING",
+ "source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+ "contract": "CONTRACTS.md",
+ "acceptance": "ACCEPTANCE.md",
+ "status_enum": [
+  "TODO",
+  "RUNNING",
+  "IMPLEMENTED",
+  "VERIFIED",
+  "BLOCKED",
+  "EXPERIMENT_REJECTED"
+ ],
+ "execution_policy": "User authorized all P0-P2 implementation on 2026-10-21. Task checks use dev; one final sealed holdout audit. Evidence-derived status only. Local RC and hosted release are separate.",
+ "tasks": [
+  {
+   "id": "P0-01",
+   "priority": "P0",
+   "title": "冻结历史基线并修复评测入口",
+   "depends_on": [],
+   "spec": "P0.md#p0-01",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "legacy_if_available"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-01",
+   "result": "Six historical files byte-archived; original real legacy baseline exactly reproduced. Final frozen four profiles PASS. Final candidate real legacy gate PASS: S@5 .8000, S@1 .6069, MRR .6930, nDCG .7013; no significant quality-gain claim."
   },
-  "updated_at": "2026-10-22"
+  {
+   "id": "P0-02",
+   "priority": "P0",
+   "title": "修复答题波动与校准门禁",
+   "depends_on": [
+    "P0-01"
+   ],
+   "spec": "P0.md#p0-02",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "answer_calibration"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-02",
+   "result": "Strict v3 job provenance, four grades, preregistered practical drop and grouped bootstrap implemented. Mechanical tests PASS. New real 80-question calibration jobs remain MISSING."
+  },
+  {
+   "id": "P0-03",
+   "priority": "P0",
+   "title": "支持基准与候选答案的有效比较",
+   "depends_on": [
+    "P0-02"
+   ],
+   "spec": "P0.md#p0-03",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "answer_compare"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Independent source-bound v3 comparison implemented and counterexample-tested. New independent real reference/candidate answer and grading jobs remain MISSING."
+  },
+  {
+   "id": "P0-04",
+   "priority": "P0",
+   "title": "纳入 ASR OCR EXIF 评测",
+   "depends_on": [
+    "P0-01"
+   ],
+   "spec": "P0.md#p0-04",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "full_media"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Fixed 169-row full-media preflight implemented without denominator shrink. Existing index lacks actual EXIF and some OCR provenance; full-media quality remains MISSING."
+  },
+  {
+   "id": "P0-05",
+   "priority": "P0",
+   "title": "建立可搬运且不泄漏的产品评测集",
+   "depends_on": [
+    "P0-04"
+   ],
+   "spec": "P0.md#p0-05",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "corpus_audit",
+    "real_embedding"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-05",
+   "result": "Frozen full420 corpus:122 real sources,175 canonical views,89 answerable source groups;210 dev/210 sealed holdout,56 independently audited labels. Original-v4/current-v6 real indexes and full capability preflights ready. Current strict task004:94 testsPASS,12614 SQLite evidence spans read back,210 dev rows complete,11 quality gates FAIL,0MISSING; holdout0. See product-dev-20261022.json and validation-20261022.json. Current006 (post-Foresight+SC fixes) completed full210dev with identical behavior to current005: every paired metric delta 0.0 (CI [0,0]); strict FAIL 12, MISSING 0; holdout 0. P1-07 rerank A/B on the same fresh index: EXPERIMENT_REJECTED (nDCG@10 delta -0.000024 vs required +0.02; 0 degraded rows; stays disabled). P1-08 multi-query A/B: EXPERIMENT_REJECTED (compound all-facts 11/30 both arms, gain 0.0; stays disabled). See product-current-006/, P1-07/rerank-ab-001/, P1-08/multiquery-ab-001/."
+  },
+  {
+   "id": "P0-06",
+   "priority": "P0",
+   "title": "统一验收执行器和证据格式",
+   "depends_on": [
+    "P0-01"
+   ],
+   "spec": "P0.md#p0-06",
+   "status": "RUNNING",
+   "verification": [
+    "offline",
+    "negative_checks"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Strict receipt/source/JUnit/IR/original-v4/public/raw-qrels/joint/docs/capacity/hosted adapters implemented and reviewed. Historical7192395 four-profile1689PASS0required skip; later source requires fresh CI. Public17490-source paired preparation and original2029queries x4 scorers captured; pre-fix candidate scoring canceledbeforequalityoutput for confirmedchunkerdata-loss repair, actual-15/MISSING retained. Fresh corrected-candidate capture pending. Hosted actualruns and sealedholdout remain MISSING; no releasePASS. 2026-10-23: fresh three-profile CI on the post-retirement source (post-foresight-ci-002): base 2580 PASS + native 232 PASS + MCP 6 PASS, 0 skips; base profile MISSING solely on the history baseline re-pin decision (archive bytes intact). Public: fresh reference arm captured completely (public-current-006) after two harness-correction attempts; candidate scoring timed out AGAIN at the frozen 7200s on the post-SC-fix source (exit 124, zero stdout) — MISSING preserved, no retry; per-query deadline policy (SC-04) implemented opt-in but blocked by the frozen raw/v1 schema/pinned argv — explicit amendment required. C1 fixed41 prospective replay (proposal-002): all 41 REPLAYED_C1_REJECT (29 anchor_unresolved/12 remainder_unsupported), historical branch UNKNOWN."
+  },
+  {
+   "id": "P1-01",
+   "priority": "P1",
+   "title": "抽出 CLI 与 MCP 共用应用服务",
+   "depends_on": [
+    "P0-01"
+   ],
+   "spec": "P1.md#p1-01",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "legacy"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Shared read-only snapshot service, canonical citations and absolute deadlines implemented. Frozen four-profile regression PASS; actual SDK/CLI equivalent pack and concurrent replacement checks included."
+  },
+  {
+   "id": "P1-02",
+   "priority": "P1",
+   "title": "中文关键词检索和词法索引升级",
+   "depends_on": [
+    "P1-01"
+   ],
+   "spec": "P1.md#p1-02",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "migration",
+    "retrieval"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "NFKC CJK grams, strict phrase verification, explicit stored-row lexical reindex and old-writer transaction fencing implemented. Current regression PASS. Real dev CJK success5=18/30 vs original17/30, below.85 target; strict product gate FAIL."
+  },
+  {
+   "id": "P1-03",
+   "priority": "P1",
+   "title": "文件名 路径 编号精确检索",
+   "depends_on": [
+    "P1-02"
+   ],
+   "spec": "P1.md#p1-03",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "migration",
+    "retrieval"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Schema-v6 raw/alias filename/path/identifier lookup and metadata provenance implemented. Real dev lookup success1=18/30 vs original5/30, below.90 target. Compound exact-anchor/remainder admission interactions under read-only diagnosis; no blanket veto removal or noise-target relaxation."
+  },
+  {
+   "id": "P1-04",
+   "priority": "P1",
+   "title": "修复 PDF 页与证据片段选择",
+   "depends_on": [
+    "P1-03"
+   ],
+   "spec": "P1.md#p1-04",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "retrieval",
+    "public"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P1-04",
+   "result": "Stored PDF/page/support/citation mechanisms implemented. Independently reviewed paragraph, UTF8 and character-tail fixes adopted as chunk.v6-char-tail; focused120/165PASS with exclusions recorded. B003 adopted with actual227PASS0skip; independently closed232PASS semantic-only compatibility supplement adopted, restoring fixed primary+neighbors ablation without capacity adapter/gate changes. CI001 base2137PASS10FAIL11ERROR/native228PASS1FAIL preserved. After narrow fixture/runtime fixes CI002 complete2406PASS0skip (2163base/229native/6MCP/8historicalForesight,profile since retired), actual422source/config hashes stable. Fresh current004 full122 native prepare and unchanged210dev control completed with strict readback: S5 101/180 (previous103), PACK102/180 (previous96), compound PACK11/30 (previous6), noise5/30; FAIL11/MISSING0. No fourth profile/holdout/retry. C002 independent design closed, report-only implementation pending."
+  },
+  {
+   "id": "P1-05",
+   "priority": "P1",
+   "title": "修复媒体检索与能力呈现",
+   "depends_on": [
+    "P1-04"
+   ],
+   "spec": "P1.md#p1-05",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "full_media",
+    "native_tools"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P1-05",
+   "result": "Actual DateTimeOriginal bounded readers, transient retry recovery and image-worker scratch allocation lock implemented/reviewed;10/10 real original JPEG dates match independent EXIF. Real dev media20/30, OCR5/9,ASR10/11,metadata5/10; overall/OCR/metadata gates FAIL. Legacy fixed169 full-media quality still MISSING."
+  },
+  {
+   "id": "P1-06",
+   "priority": "P1",
+   "title": "校准无答案拒收与融合规则",
+   "depends_on": [
+    "P1-05"
+   ],
+   "spec": "P1.md#p1-06",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "retrieval",
+    "public"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P1-06",
+   "result": "All3 preregistered real dev arms measured:control103/180 success5,5/30noise;higher_z103/180,10/30noise;margin98/180,8/30noise. All11 gatesFAIL;selected=null,original control default unchanged,no fourth parameter arm,holdout0. Paired CI answerable denominator fixed and independently audited. Current004 prospective pre-C control is retained regardless of scores: noise5/30, strictFAIL11. C002 complete-identity/same-owner lexical scope design independently closed; production implementation not yet adopted, semantic remainder remainsOFF."
+  },
+  {
+   "id": "P1-07",
+   "priority": "P1",
+   "title": "可选本地重排与收益验证",
+   "depends_on": [
+    "P1-06"
+   ],
+   "spec": "P1.md#p1-07",
+   "status": "EXPERIMENT_REJECTED",
+   "verification": [
+    "offline",
+    "rerank_ab",
+    "performance"
+   ],
+   "allows_experiment_rejected": true,
+   "evidence_dir": "reports/execution/P1-07",
+   "result": "Optional pinned Qwen3 rank-head backend implemented; six real endpoint probes and bounded real-token/cleanup test PASS. Total HTTP deadline and real SIGTERM cleanup regressions PASS. Dev A/B and full resource gates remain MISSING; disabled by default. 2026-10-23 preregistered same-source A/B on the fresh current006 index (real Qwen3 rank-head): nDCG@10 mean delta -0.000024 vs required +0.02, 0 degraded rows, wall 459s. Negative result retained; feature stays disabled by default. Evidence: P1-07/rerank-ab-001/."
+  },
+  {
+   "id": "P1-08",
+   "priority": "P1",
+   "title": "确定性多查询和证据合并",
+   "depends_on": [
+    "P1-06"
+   ],
+   "spec": "P1.md#p1-08",
+   "status": "EXPERIMENT_REJECTED",
+   "verification": [
+    "offline",
+    "compound_ab",
+    "budget"
+   ],
+   "allows_experiment_rejected": true,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Conservative deterministic grammar, source spans, bounded RRF, cancellation and theme-aware packing implemented/tested. Original query retained; experimental/off by default; compound benefit remains unmeasured. 2026-10-23 preregistered same-source A/B (deterministic multi-query, quality mode): compound all-required-facts@pack 11/30 in BOTH arms (gain 0.0 vs required +0.10; target 0.75). Negative result retained; stays disabled. Evidence: P1-08/multiquery-ab-001/."
+  },
+  {
+   "id": "P1-09",
+   "priority": "P1",
+   "title": "只读 stdio MCP 服务",
+   "depends_on": [
+    "P1-01",
+    "P1-02"
+   ],
+   "spec": "P1.md#p1-09",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "sdk_protocol",
+    "real_embedding",
+    "performance"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P1-09",
+   "result": "Exact official SDK 2.0.0 extra and four read-only stdio tools implemented. Final 6 real SDK tests and final isolated installed-wheel handshake PASS. Final same-source latency evidence recorded in PROGRESS."
+  },
+  {
+   "id": "P1-10",
+   "priority": "P1",
+   "title": "统一材料包契约和端到端验收",
+   "depends_on": [
+    "P1-09",
+    "P0-03"
+   ],
+   "spec": "P1.md#p1-10",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "agent",
+    "answer_compare"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P1-10",
+   "result": "Whole-envelope budget/citation contract and official SDK Agent chain implemented. Real tokenizer matrix PASS at 512/1000/4000/32768 tokens and context 0/1/3, including maximum empty query. Fresh real 80-question answer comparison remains MISSING."
+  },
+  {
+   "id": "P2-01",
+   "priority": "P2",
+   "title": "拆分 CLI 并收敛模块依赖",
+   "depends_on": [
+    "P1-01"
+   ],
+   "spec": "P2.md#p2-01",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "distribution",
+    "behavior_parity",
+    "performance"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-01",
+   "result": "CLI dispatch split to <=350 lines with focused command modules and package discovery. Frozen compatibility/module tests and final wheel/sdist outside-source installs PASS."
+  },
+  {
+   "id": "P2-02",
+   "priority": "P2",
+   "title": "规模性能与内存基准",
+   "depends_on": [
+    "P1-01"
+   ],
+   "spec": "P2.md#p2-02",
+   "status": "VERIFIED",
+   "verification": [
+    "offline",
+    "scale",
+    "performance",
+    "conditional_cache"
+   ],
+   "allows_experiment_rejected": true,
+   "evidence_dir": "reports/execution/P2-02",
+   "result": "Fresh full-capacity current004 on the post-retirement installation (goldmine-private-assets-003, 86 files, zero model executions): 12/12 cases consistent, PASS; explicit cache experiment PASS (required cold-load/RSS benefit thresholds met); quality_claim false; slower p50/p95 comparisons retained in raw samples. Historical current003 PASS preserved as pre-removal evidence. Evidence: P2-02/full-capacity-current-004/."
+  },
+  {
+   "id": "P2-03",
+   "priority": "P2",
+   "title": "增量导入与 watch 资源优化",
+   "depends_on": [
+    "P2-02"
+   ],
+   "spec": "P2.md#p2-03",
+   "status": "VERIFIED",
+   "verification": [
+    "offline",
+    "watch_live",
+    "serve_live",
+    "resource_cleanup"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-03",
+   "result": "Latency current003 PASS on the post-retirement source: controlled warm p50 182ms/p95 234ms, real warm p50 183ms/p95 236ms, cold p50 ~1.0-1.1s, reference arm included, MCP paired extra p95 6.76ms (≤100ms); 30 warm+cold interleaved samples per arm. Lifecycle packet-002 (amended protocol pins for the authorized retirement; sealed packet-001 refused and preserved) executed lifecycle-real-002: repeated-ingest, watch controlled+real (600s churn each), serve controlled+real ALL PASS with strict adapter replay; unchanged ingest performed zero embedding/OCR/ASR calls. Earlier latency-001 (memory-pressure warmup failure) and latency-002 (swept reference tree) preserved. Evidence: P2-03/latency-current-003/, P2-03/lifecycle-execution-packet-002/runs/lifecycle-real-002/."
+  },
+  {
+   "id": "P2-04",
+   "priority": "P2",
+   "title": "真实语料知识卡片验收",
+   "depends_on": [
+    "P0-05",
+    "P1-01"
+   ],
+   "spec": "P2.md#p2-04",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "distill_real",
+    "citation"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-04",
+   "result": "Real 120-document/8-topic card run COMPLETED (real-current-002) after fixing a never-runnable cancelled-field checker (preserved in real-current-001): honest quality FAIL — purity 0.191 (target 0.70), topics recovered 1/8 (target 6), max card share 0.958 (target 0.50; one mega-card); ALL citation/provenance gates PASS (original excerpts, member provenance, tau inheritance, incremental recluster, deleted members absent, old citation refused). Result recorded, not tuned. Evidence: P2-04/real-current-002/."
+  },
+  {
+   "id": "P2-05",
+   "priority": "P2",
+   "title": "普通 PR CI 和严格 live 入口",
+   "depends_on": [
+    "P0-06"
+   ],
+   "spec": "P2.md#p2-05",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "offline",
+    "local_ci",
+    "failure_injection"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-05",
+   "result": "Reviewed hosted adapter and fixed local CI workflow implemented; historical 7192395 local checks passed. Current source changed after that checkpoint; fresh four-profile CI, failure injections and task-check pending. Actual hosted run remains MISSING; no remote. 2026-10-23: post-foresight-ci-002 captured base/native/MCP (2818 tests PASS, 0 skips); actionlint PASS; failure-injection suite PASS; strict local CI replay MISSING solely because ci_evidence.verify requires all scoped reports PASS and base is MISSING on the pending baseline re-pin decision; hosted MISSING.",
+   "hosted_verification": "hosted_ci",
+   "historical_verification": {
+    "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
+    "status": "VERIFIED",
+    "result": "Current same-source local CI1486offline+189native+6SDK-MCP+8historicalForesight=1689 PASS,0required skips (Foresight profile later retired by user); actual actionlint/failure injections and local bundle replay PASS. Fixed task-acceptance008 PASS. VERIFIED covers the explicitly permitted local scope only; hosted_ci remains MISSING with no remote.",
+    "evidence": {
+     "path": "reports/execution/P2-05/task-acceptance-008/manifest.json",
+     "sha256": "049d9ff097e951943ca6510745709bbd4585ccfaa1cbbf67126f518a71090110"
+    }
+   }
+  },
+  {
+   "id": "P2-06",
+   "priority": "P2",
+   "title": "wheel 和无源码安装验证",
+   "depends_on": [
+    "P2-05"
+   ],
+   "spec": "P2.md#p2-06",
+   "status": "VERIFIED",
+   "verification": [
+    "distribution",
+    "native_assets",
+    "migration"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-06",
+   "result": "Fresh distribution current003 PASS on the post-retirement source: wheel+ sdist built, wheel rebuilt from sdist, twine verification, isolated outside-source base/MCP installs, rebuilt-wheel smoke, original-v4→current upgrade/backup/restore, strict bundle replay, P2-06 task-check PASS. Bound to post-foresight-ci-003; the pytest task-check runs without the pip-stage PYTHONNOUSERSITE isolation. Evidence: P2-06/current-003/.",
+   "historical_verification": {
+    "checkpoint": "71923953d6b41ba9b77e3ec6904d4b92c4c064d8",
+    "status": "VERIFIED",
+    "result": "Current snapshot006 wheel/sdist, rebuilt-sdist wheel, offline outside-source base/MCP installs, actual native OCR+768 embedding, and original-v4->candidate-v6 backup/upgrade/restore PASS. Explicit asset-bound task-acceptance008 PASS. Platform verified only on actual macOS arm64/Python3.12; no public release.",
+    "evidence": {
+     "path": "reports/execution/P2-06/task-acceptance-008/manifest.json",
+     "sha256": "427575ba15f2ca034ba6e228e6226836ae54266e16ad8a7a7f18fee57198723b"
+    }
+   }
+  },
+  {
+   "id": "P2-07",
+   "priority": "P2",
+   "title": "文档对齐与本地发布候选",
+   "depends_on": [
+    "P2-03",
+    "P2-04",
+    "P2-06",
+    "P1-10"
+   ],
+   "spec": "P2.md#p2-07",
+   "status": "IMPLEMENTED",
+   "verification": [
+    "release",
+    "docs",
+    "rollback"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P0-06",
+   "result": "Documentation current003 PASS: fixed documents/local links/22 offline literal commands executed against the current-003 distribution bundle; P2-07 task-check PASS. Full local_rc remains blocked by product quality FAIL, public candidate MISSING and the pending baseline re-pin decision; no RC/tag/push. Evidence: P2-07/current-003/."
+  },
+  {
+   "id": "P2-08",
+   "priority": "P2",
+   "title": "QMD 与 Recoll 公平对照",
+   "depends_on": [
+    "P2-02",
+    "P2-06"
+   ],
+   "spec": "P2.md#p2-08",
+   "status": "RUNNING",
+   "verification": [
+    "comparison",
+    "performance",
+    "recompute_metrics"
+   ],
+   "allows_experiment_rejected": false,
+   "evidence_dir": "reports/execution/P2-08",
+   "result": "Fresh immutable installation refreshed for the post-retirement source (goldmine-private-assets-003: 86 production files, byte-verified, runtime/models reused with zero executions). Full 9-mode/18-cell quality+measurement execution NOT started this session (time budget consumed by public/capacity/lifecycle captures); the fixed engine-assets renderer and prepared sequence remain the entry points."
+  }
+ ],
+ "review": "REVIEW.md",
+ "execution_summary": {
+  "implemented": 20,
+  "running": 4,
+  "verified": 0,
+  "note": "Current-source status. Historical VERIFIED checkpoints remain linked per task; subsequent executable changes require fresh verification. IMPLEMENTED means code exists, not whole-task acceptance. Real quality, lifecycle, answer execution and hosted evidence remain incomplete."
+ },
+ "updated_at": "2026-10-23"
 }

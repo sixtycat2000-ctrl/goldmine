@@ -59,6 +59,27 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 
 - 最终 C002/兼容源码（`bd46490`）的多 profile CI 与本地 CI 已完成，原始结果为 `P0-06/post-c1-ci-001/results.json` 与 `P2-05/ci-local-current-001/results.json`，全部 PASS、0 skip，465 个代码/配置文件稳定。随后 current005 以全新 122-source native index 完成固定 **210 dev 请求**：严格 success@1 **86→83/180**、success@5 **101→96/180**、全事实 PACK **102→97/180**，noise 正确空 **5→20/30**。PDF success@5 为 **14→10/30**，额外触发 PDF success@1 门槛，严格回放 **FAIL 12、MISSING 0**。与预登记 004 对照的 source-group paired 区间在可答指标上均跨 0，noise 区间为 **+0.3333 至 +0.6667**；这是重复暴露 dev 内的取舍，不能宣称普遍质量提升或发布达标。完整聚合、原始 SHA 与失败门槛见 [current005 摘要](product-dev-post-anchor-20261022.json)。未增加参数候选、挑分重试或打开 holdout，接续游标已推进到新安装与公开集。
 
+
+## 2026-10-23：接续会话——退役后基线、等价修复与新实测
+
+### 2026-10-23 会话后半程实测结果
+
+- 公共集：`public-current-006` 以冻结原始调用形态完成全新 reference 臂（prepare 959s + 2,029×4 评分约 23 分钟，严格回放 PASS）；candidate 评分在含 SC 修复的源码上再次于 7,200s 超时（exit 124、零 stdout、无重试、终端回放记录）。两次 harness 修正尝试（004 的 schema 键、005 的 argv 长度）被冻结 raw/v1 契约拒绝并保留为证据；SC-04 每查询 deadline 能力保留为显式可选，启用需用户明确修订契约。候选侧公共规模成本是下一工程项。
+- 容量：`full-capacity-current-004` 在退役后新安装（`goldmine-private-assets-003`）上 12/12 一致 PASS、缓存收益 PASS；慢/快 p50-p95 对照保留原始样本；不做全面提速声明。
+- 蒸馏卡片：`real-current-002` 完成真实 120 文档/8 主题运行（修复一个从未可运行的 cancelled 字段检查器，失败尝试保留）：诚实质量 FAIL——purity 0.191、主题恢复 1/8、最大卡片份额 0.958；全部引用/来源/增量门槛 PASS。
+- 延迟：`latency-current-003` PASS（controlled/real/reference 三臂 30 冷热交错 + MCP 配对额外 p95 6.76ms）；两次失败尝试保留（内存压力 warmup 超时；被清扫的 reference 树已按原始字节恢复）。
+- 生命周期：密封 packet 拒绝退役后源码（2/16 协议 pin 变化），按规则新 amendment packet-002 仅重 pin 这两个文件后执行 `lifecycle-real-002`：重复导入、controlled/real watch（各 600s churn）、controlled/real serve 全部 PASS，未变导入零 embedding/OCR/ASR 调用。
+- 分发与文档：`P2-06/current-003`（wheel/sdist/重建/隔离安装/升级恢复/task-check）与 `P2-07/current-003`（固定文档+22 离线命令，绑定同一 bundle）均 PASS；task-check 的 PYTHONNOUSERSITE 作用域已收窄到 pip 阶段。
+- 未决：公共 candidate、P2-08 完整 18 格、真实 answerer/judge 配置、旧 169 媒体 EXIF 决定、baseline re-pin 决定。
+
+
+- 用户授权的 Foresight 退役已完成收尾并经对抗审查修正（`29b6272`、`33e2e08`）：活动代码/CI/文档/依赖无残留引用；frozen 历史证据（`evals/history`、baseline pins、`product_v4` seed、历史索引 JSON 与历史总数 2821/2406/1689/1435）逐字节保留并补注退役说明；420 题 frozen 套件 manifest `b8351272` 未动；legacy 活动套件因源目录已删除而移除 41 道 foresight 题（109/128 分母、78/31 split 重生成、corpus_version 升 v4）。已知未决：baseline pins 与两个活动输入的分歧使 offline profile `history` 检查 MISSING，等待用户明确 re-pin 决定。
+- SC-01/02/03 请求内复用修复（`d77c195`）以失败先行的复现测试驱动：子句余项单元每子句一次（12 文件 13→1 次）、whole-metadata 派生集按值一次、FTS projection 每连接快照一次；file-scoped body_ids 改 segments 外层 CROSS JOIN，等价性由测试钉住，EXPLAIN QUERY PLAN 与 7,000 段 fixture 上 0.0774s→0.0118s 的同形对比记录在 `P1-06/request-local-reuse-001/`；小规模端到端时间中性，不做端到端提速声明。SC-04 公共评测 deadline 能力为显式可选，冻结 schema/argv 禁止静默启用。
+- current006 全新 122 源索引 + 210 dev 一次完成：与 current005 全部成对指标 delta 精确为 0（等价性的最强实证），严格回放 FAIL 12、MISSING 0；P1-07 rerank A/B（同源同索引、真 Qwen3 rank-head）nDCG delta −0.000024 → EXPERIMENT_REJECTED；P1-08 multi-query A/B compound 全事实两臂同为 11/30、增益 0 → EXPERIMENT_REJECTED；两者保持默认关闭。
+- C1 诊断 replay（proposal-002）：修复 normalization 校验（BOOK/ZK-12 retained/NULL 反例拒绝）与每字段复用（fixture 上 identifier_tokens 51→12 次）后，38 项 synthetic 负例通过，fixed41 一次性 replay 全部 REPLAYED_C1_REJECT（29 anchor_unresolved/12 remainder_unsupported），历史分支保持 UNKNOWN，原始 DB 未动。修正对抗审查发现的披露错误（29/12 而非 26/15；manifest 重生成披露）。
+- 公共集 fresh reference 臂完整捕获（`public-current-006`：reference 17,490 文档 prepare+2,029×4 评分约 23 分钟）；candidate 评分在含 SC 修复的源码上于冻结 7,200s 再次超时（exit 124、零 stdout、无重试），MISSING 原样保留；两次 harness 修正尝试（004 schema 键、005 argv 长度）均被冻结 raw/v1 契约拒绝并保留为证据——engaging 每查询 deadline 或放宽预算需用户明确修订。候选侧公共规模成本（E×H 语句数与 C1 专属工作）仍是下一工程项。
+- Foresight 退役后的新 immutable installation（`goldmine-private-assets-003`，86 文件，模型/运行时零执行复用）已刷新；容量 current004 以其为候选根执行中。
+
 ## 2026-10-22：新语料与验收补齐
 
 - 新建独立的 [product_v4_expansion](../../evals/product_v4_expansion/README.md)，保留旧 28 题 seed 原字节。新增套件已完成 **420 题、122 份真实来源、175 份 oracle view、89 个可答来源组**；七类各 60 题，dev/holdout 各 210 题、各类各 30 题，组无交叉。来源包含原始代码/多语言文档、真实 PDF 页、历史扫描专利、浏览器截图、20 段发布方音频及 10 张原始 EXIF 照片。没有用生成图卡、TTS 或伪造 EXIF 填补真实媒体。
