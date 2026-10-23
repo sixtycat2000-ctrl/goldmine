@@ -424,6 +424,31 @@
    "reason": "Hermetic fixture logic."
   },
   {
+   "nodeid": "tests/test_baseline_divergence.py::test_archive_bytes_must_forever_match_the_original_pin",
+   "profile": "offline",
+   "reason": "Baseline archive immutability under authorized divergence."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_divergence_record_cannot_cover_unknown_inputs",
+   "profile": "offline",
+   "reason": "Divergence registry scope check."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_pinned_inputs_pass_without_any_divergence",
+   "profile": "offline",
+   "reason": "Pinned inputs pass unchanged."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_registered_divergence_passes_and_reports_reason",
+   "profile": "offline",
+   "reason": "Registered divergence passes with reason."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_unregistered_divergence_and_forged_original_are_rejected",
+   "profile": "offline",
+   "reason": "Unregistered/forged divergence rejected."
+  },
+  {
    "nodeid": "tests/test_bench.py::test_bench_gate1_passes_offline[2000]",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
