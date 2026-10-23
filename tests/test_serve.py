@@ -843,6 +843,8 @@ def test_linger_refresh_only_on_model_touch_f7(tmp_path):
             raw_roundtrip(str(cfg.serve.socket), {"op": "ping"}, timeout=2)
         except (OSError, ServeRequestError):
             break
+        except AssertionError:
+            break  # EOF mid-roundtrip: the daemon closed the socket while exiting
         time.sleep(0.1)
     box.thread.join(5)
     assert not box.thread.is_alive()  # pings could not save it (F7)
