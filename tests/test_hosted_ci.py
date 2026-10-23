@@ -460,6 +460,8 @@ def test_real_tiny_junit_replays_and_print_pass_command_substitution_fails(sourc
     history.parent.mkdir(parents=True)
     shutil.copyfile(old, history)
     write_json(source / "docs/execution-plan/baseline-20261021.json", {"sha256": {"evals/old.json": sha256(old)}})
+    write_json(source / "docs/execution-plan/baseline-divergence-20261023.json",
+               {"schema": 1, "kind": "baseline-authorized-divergence", "files": {}})
     write_json(source / "evals/acceptance_targets.json", {"contract_sha256": sha256(contract)})
     write_json(source / "evals/acceptance_test_inventory.json", {"tests": [
         {"nodeid": "tests/test_canary.py::test_arithmetic_canary", "profile": "offline"}]})
