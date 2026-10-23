@@ -135,3 +135,24 @@ placeholder-like strings inside material, questions, facts or answers.
 Hashes establish internal record consistency, not independent proof that a model
 executed a job. Retain the actual registered execution receipts; fabricated or
 rebound job metadata is not valid execution evidence.
+
+## Remote engine execution bridge (extension)
+
+`remote_engine.py` plus `scripts/execute_answer_jobs.py` implement the reviewed
+additive extension documented in
+`reports/execution/P0-03/answer-engine-extension-001/SPEC.md` (user decision D3,
+2026-10-23): a remote OpenAI-compatible chat engine may be registered as
+`{"kind": "remote-openai-chat/v1", "base_url", "model_id", "api_key_sha256",
+"settings", "request_timeout_seconds"}` instead of local engine/model files. The
+key is read from the `GLM_KEY` environment variable and only ever bound by its
+SHA256 fingerprint; requests persisted to disk carry no credential. Each job is
+one sequential call with frozen settings; missing native usage counters fail
+the job instead of being recorded as zero. Raw HTTP receipts
+(`answer-eval.http-run/v1`) mirror the local capture layout and are verified by
+the same completion checks; failed attempts are kept under `raw/failures/` and
+never retried or overwritten. The real engine itself stays outside this package:
+`identity`/`execute`/`execute-question`/`finalize` coordinate prepared jobs, and
+the `GLM_SMOKE=1`-gated smoke proves the path on synthetic material only. The
+frozen 80-question study still requires the formal preregistration, complete
+plan, material captures and post-run execution review.
+
