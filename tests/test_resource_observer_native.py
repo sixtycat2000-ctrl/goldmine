@@ -74,7 +74,10 @@ def rebind(run, *, observation=None, records=None, binding=None, receipt_change=
 
 def test_actual_simple_command_raw_counters_and_hard_fd_handshake(tmp_path):
     before = resource.getrlimit(resource.RLIMIT_NOFILE)
-    run, value, inner, manifest = execute(tmp_path, "import resource,time; print(resource.getrlimit(resource.RLIMIT_NOFILE));time.sleep(.08)")
+    # 0.5s instead of the historical 0.08s: the observer must sample the
+    # short-lived process before it exits; 80ms raced on loaded CI runners
+    # ("process-disappeared-before-ownership-check").
+    run, value, inner, manifest = execute(tmp_path, "import resource,time; print(resource.getrlimit(resource.RLIMIT_NOFILE));time.sleep(.5)")
     result = replay(run, value, inner)
     assert result["status"] == "MISSING" and result["coverage_gaps"] == ["fixture-only-policy"]
     assert result["sample_count"] >= 2 and result["peak"]["sampled_root_rss_bytes"] > 0
