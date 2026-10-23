@@ -36,16 +36,37 @@ class Inputs:
 
 
 def history(root: Path) -> dict:
-    expected = read_json(root / "docs/execution-plan/baseline-20261021.json")["sha256"]
-    verified = {}
-    for name, pin in expected.items():
-        current = root / name
+    pins = read_json(root / "docs/execution-plan/baseline-20261021.json")["sha256"]
+    divergence = read_json(root / "docs/execution-plan/baseline-divergence-20261023.json")
+    if (divergence.get("schema") != 1 or divergence.get("kind") != "baseline-authorized-divergence"
+            or not isinstance(divergence.get("files"), dict)):
+        raise InvalidEvidence("baseline divergence record is malformed")
+    registered = divergence["files"]
+    verified, diverged = {}, {}
+    for name, pin in pins.items():
+        # The byte archive is immutable evidence: it must forever match the
+        # original pin, whether or not the current input diverged.
         historical = root / "evals/history/20261021" / Path(name).name
-        for file in (current, historical):
-            if not file.is_file() or sha256(file) != pin:
-                raise InvalidEvidence(f"historical bytes missing/changed: {file}")
-        verified[name] = pin
-    return {"verified": verified}
+        if not historical.is_file() or sha256(historical) != pin:
+            raise InvalidEvidence(f"historical bytes missing/changed: {historical}")
+        current = root / name
+        actual = sha256(current) if current.is_file() else None
+        if actual == pin:
+            verified[name] = pin
+            continue
+        # A current input may differ only via the explicit authorized record:
+        # its recorded original must equal the pin (no retroactive rewriting)
+        # and the disk bytes must match the registered current hash.
+        row = registered.get(name)
+        if (not isinstance(row, dict) or row.get("original_sha256") != pin
+                or not isinstance(row.get("reason"), str) or not row["reason"]
+                or actual != row.get("current_sha256")):
+            raise InvalidEvidence(f"historical bytes missing/changed: {current}")
+        diverged[name] = {"original": pin, "current": actual, "reason": row["reason"]}
+    extra = set(registered) - set(pins)
+    if extra:
+        raise InvalidEvidence(f"divergence record covers unknown inputs: {sorted(extra)}")
+    return {"verified": verified, "authorized_divergence": diverged}
 
 
 def plan(root: Path, targets: dict) -> dict:

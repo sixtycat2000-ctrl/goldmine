@@ -37,6 +37,8 @@ def mini_root(tmp_path, monkeypatch):
     shutil.copy2(original, root / "evals/history/20261021/old.json")
     write_json(root / "docs/execution-plan/baseline-20261021.json",
                {"sha256": {"evals/old.json": sha256(original)}})
+    write_json(root / "docs/execution-plan/baseline-divergence-20261023.json",
+               {"schema": 1, "kind": "baseline-authorized-divergence", "files": {}})
     write_json(root / "evals/acceptance_targets.json",
                {"schema": 1, "contract_sha256": sha256(contract)})
     write_json(root / "evals/acceptance_test_inventory.json", {"schema": 1, "tests": [
