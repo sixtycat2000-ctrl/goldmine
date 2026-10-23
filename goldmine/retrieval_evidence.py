@@ -19,28 +19,35 @@ from .lexical import normalize
 
 
 def collect_body_units(db, units, rows):
-    """Verify bounded recall rows against *body*, excluding copied FTS.name."""
+    """Verify bounded recall rows against *body*, excluding copied FTS.name.
+
+    Each Latin unit's body MATCH runs once per query, unfiltered by the
+    recalled rowids; the posting set is intersected in Python. Asserting the
+    MATCH per 400-rowid batch re-evaluated the phrase for every candidate
+    rowid and multiplied statement cost ~100x on long public queries.
+    """
     segment_files = dict(rows)
     matched: dict[int, set[int]] = {}
-    ids = list(segment_files)
+    ids = set(segment_files)
     cjk_units = [(i, unit) for i, unit in enumerate(units) if unit.patterns and unit.kind != "latin"]
-    for start in range(0, len(ids), 400):
-        batch = ids[start:start + 400]
-        marks = ",".join("?" for _ in batch)
-        for i, unit in enumerate(units):
+    for i, unit in enumerate(units):
+        check_deadline()
+        if unit.kind != "latin" and unit.patterns:
+            continue
+        # FTS's token/phrase/prefix semantics are authoritative for Latin.
+        pattern = unit.patterns[0] if unit.patterns else '"' + unit.text.replace('"', '""') + '"'
+        found = db.execute(
+            "SELECT rowid FROM fts WHERE fts MATCH ?", ("body : (" + pattern + ")",))
+        hits = {sid for (sid,) in found}
+        for sid in hits & ids:
+            matched.setdefault(sid, set()).add(i)
+    if cjk_units and ids:
+        text_sql, _ = fts_projection(db)
+        ordered = sorted(ids)
+        for start in range(0, len(ordered), 400):
+            batch = ordered[start:start + 400]
             check_deadline()
-            if unit.kind != "latin" and unit.patterns:
-                continue
-            # FTS's token/phrase/prefix semantics are authoritative for Latin.
-            pattern = unit.patterns[0] if unit.patterns else '"' + unit.text.replace('"', '""') + '"'
-            found = db.execute(
-                f"SELECT rowid FROM fts WHERE fts MATCH ? AND rowid IN ({marks})",
-                ("body : (" + pattern + ")", *batch),
-            )
-            for (sid,) in found:
-                matched.setdefault(sid, set()).add(i)
-        if cjk_units:
-            text_sql, _ = fts_projection(db)
+            marks = ",".join("?" for _ in batch)
             found = db.execute(
                 f"SELECT rowid,{text_sql} FROM fts WHERE rowid IN ({marks})", batch,
             )
