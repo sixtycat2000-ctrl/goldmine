@@ -70,6 +70,7 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 - 延迟：`latency-current-003` PASS（controlled/real/reference 三臂 30 冷热交错 + MCP 配对额外 p95 6.76ms）；两次失败尝试保留（内存压力 warmup 超时；被清扫的 reference 树已按原始字节恢复）。
 - 生命周期：密封 packet 拒绝退役后源码（2/16 协议 pin 变化），按规则新 amendment packet-002 仅重 pin 这两个文件后执行 `lifecycle-real-002`：重复导入、controlled/real watch（各 600s churn）、controlled/real serve 全部 PASS，未变导入零 embedding/OCR/ASR 调用。
 - 分发与文档：`P2-06/current-003`（wheel/sdist/重建/隔离安装/升级恢复/task-check）与 `P2-07/current-003`（固定文档+22 离线命令，绑定同一 bundle）均 PASS；task-check 的 PYTHONNOUSERSITE 作用域已收窄到 pip 阶段。
+- 对抗审查附注：`P2-08/text-common-seed-001/corpus/` 的 4 个诊断 seed 文本（本会话前的清扫所为，01:01）已按退役后源码机械重同步但未随附披露，且同目录 Oct-21 的 recoll/qmd seed 索引未重建（诊断专用、无 sha pin；语料与索引暂不一致，随 P2-08 完整执行时重建）。SC 编号澄清：本会话实现 SC-01/SC-03 与 SC-04 能力（未启用）；SC-02 仅由 file-first 形态部分覆盖。
 - 未决：公共 candidate、P2-08 完整 18 格、真实 answerer/judge 配置、旧 169 媒体 EXIF 决定、baseline re-pin 决定。
 
 
