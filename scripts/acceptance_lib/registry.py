@@ -26,12 +26,19 @@ NATIVE_MODULES = {
     "test_coverage.py": "Corpus builders exercise native media/PDF fixtures.",
     "test_eval_harness.py": "Real multiformat fixture extraction, mock embeddings.",
     "test_resource_observer_native.py": "Real Darwin ps/lsof/kqueue counters and owned tiny-process cleanup.",
+    "test_comparison_source_views.py": "Synthetic capture fixtures materialize macOS screen-capture xattr.",
+    "test_measurement_protocol.py": "Measurement packets bind the Darwin ps/lsof resource-observer identity.",
 }
 TEST_PROFILES = {
     "tests/test_eval_real.py::test_real_jsonl_validates_against_manifest": "assets",
     "tests/test_eval_real.py::test_end_to_end_mock_subset": "assets",
     "tests/test_output.py::test_fzf_widget_file_exists_and_parses": "native",
     "tests/test_ocr.py::test_live_real_helper_handshake_and_ocr": "live",
+    "tests/test_ocr.py::test_xattr_screenshot_detection": "native",
+    "tests/test_comparison_engines.py::test_actual_fixture_export_fixed_missing_matrix_and_disk_replay":
+        "native",
+    "tests/test_comparison_report_framing.py::test_existing_strict_capture_verifier_keeps_logical_api_and_starts_no_child_on_replay":
+        "native",
     **{f"tests/test_asr.py::{name}": "native" for name in (
         "test_transcribe_canned_stub", "test_transcribe_timeout_raises",
         "test_transcribe_nonzero_rc_raises", "test_pipeline_asr_transcript_segments_with_vectors",

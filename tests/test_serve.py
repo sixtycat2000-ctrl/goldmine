@@ -1317,9 +1317,9 @@ def test_fuzz_lite_daemon_survives_and_serves(daemon_box):
         try:
             resp = raw_roundtrip(sock_path, {"op": "ping"})
             break
-        except BlockingIOError:
-            # Linux connect() returns EAGAIN while the accept backlog drains
-            # the fuzz burst; the daemon itself keeps serving.
+        except (BlockingIOError, ConnectionRefusedError):
+            # The accept backlog drains the fuzz burst transiently: Linux
+            # connect() returns EAGAIN, macOS ECONNREFUSED. Keep serving.
             time.sleep(0.05)
     else:
         raise

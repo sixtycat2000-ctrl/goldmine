@@ -3125,7 +3125,7 @@
   },
   {
    "nodeid": "tests/test_ocr.py::test_xattr_screenshot_detection",
-   "profile": "offline",
+   "profile": "native",
    "reason": "Hermetic fixture logic."
   },
   {
