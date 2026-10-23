@@ -63,10 +63,13 @@ def _phase(root, out, prep, phase, count, unchanged, snapshot):
     metrics = report.get("metrics")
     counters = ("scanned", "content_indexed", "unchanged", "failed", "unsupported", "metadata_only", "partial", "deleted")
     if (not isinstance(files, dict) or any(type(files.get(key)) is not int for key in counters) or
-            report.get("dry_run") is not False or report.get("cancelled") is not False or report.get("failures") != [] or
+            report.get("dry_run") is not False or report.get("cancelled") is True or report.get("failures") != [] or
             any(files.get(key) != 0 for key in ("failed", "unsupported", "metadata_only", "partial", "deleted")) or
             files.get("scanned") != count + unchanged or files.get("content_indexed") != count or files.get("unchanged") != unchanged):
         raise InvalidEvidence("native preparation did not completely ingest the exact base/+10 split")
+        # "cancelled" note: IngestReport.to_json() has never serialized that field; a cancelled
+        # ingest exits 130 and already fails the exit-code check above. Only an explicit
+        # cancelled:true (never emitted today) is treated as cancellation here.
     if not isinstance(metrics, dict) or any(type(metrics.get(key)) is not int or metrics[key] <= 0
                                           for key in ("model_spawns", "embedding_http_requests", "embed_calls", "embed_inputs")):
         raise InvalidEvidence("native preparation lacks observed actual model spawn/embedding calls")
