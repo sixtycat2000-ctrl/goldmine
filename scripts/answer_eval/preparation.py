@@ -14,6 +14,7 @@ from .protocol import (CLASSES, PROTOCOL, EvaluationError, _load_preregistration
                        answer_request, canonical_sha256, fields, grader_request,
                        model, parse_json, read_json, read_text, sha, sha256_file,
                        timestamp, tokenizer, validate_question)
+from .remote_engine import ENGINE_KIND, engine_binding, validate_engine
 
 ARMS = ("reference_LIST", "reference_PACK", "candidate_PACK")
 EXPECTED = {"answer_completions": 480, "judge_completions": 960}
@@ -105,12 +106,29 @@ def _common(plan, questions, *, verify_runtime):
     _load_preregistration(reg_path.parent, m, timestamp(plan["registered_at"], "plan.registered_at"))
     runtime = c["runtime"]
     fields(runtime, {"answerer", "judge", "tokenizer_file"}, "runtime")
+    remote_roles = []
     for role in ("answerer", "judge"):
-        fields(runtime[role], {"engine", "model_file"}, "runtime." + role)
-        for name, ref in runtime[role].items():
+        value = runtime[role]
+        engine = value.get("engine") if isinstance(value, dict) else None
+        if isinstance(engine, dict) and engine.get("kind") == ENGINE_KIND:
+            # Reviewed additive extension (answer-engine-extension-001/SPEC.md): a
+            # remote engine identity replaces the local engine/model payload files.
+            # It never invents local hashes; the model SHA binds the identity bytes.
+            remote_roles.append(role)
+            fields(value, {"engine"}, "runtime." + role)
+            validate_engine(engine, "runtime." + role + ".engine")
+            if engine_binding(engine) != c["models"][role]:
+                raise EvaluationError("remote engine identity must equal the registered model binding")
+            if c["settings"][role] != engine["settings"]:
+                raise EvaluationError("registered settings must equal the frozen remote engine settings")
+            continue
+        fields(value, {"engine", "model_file"}, "runtime." + role)
+        for name, ref in value.items():
             file_ref(ref, "runtime." + role + "." + name, verify=verify_runtime)
-        if runtime[role]["model_file"]["sha256"] != c["models"][role]["model_sha256"]:
+        if value["model_file"]["sha256"] != c["models"][role]["model_sha256"]:
             raise EvaluationError("local model payload SHA must equal registered model SHA")
+    if len(remote_roles) == 1:
+        raise EvaluationError("both roles must register the same engine form (local files or one remote identity)")
     file_ref(runtime["tokenizer_file"], "tokenizer_file", verify=verify_runtime)
     if runtime["tokenizer_file"]["sha256"] != c["tokenizer"]["sha256"]:
         raise EvaluationError("actual tokenizer payload differs from preregistration")

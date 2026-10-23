@@ -179,9 +179,7 @@ def execute_prompt(engine: dict, key: str, prompt_text: str) -> tuple[Completion
     try:
         choice = body["choices"][0]
         content = choice["message"]["content"]
-        usage = body["usage"]
-        prompt_tokens, completion_tokens = usage["prompt_tokens"], usage["completion_tokens"]
-        finish_reason, response_model = body["choices"][0]["finish_reason"], body.get("model", "")
+        finish_reason, response_model = choice["finish_reason"], body.get("model", "")
     except (KeyError, IndexError, TypeError) as exc:
         return None, {**_failure(f"native response lacks required fields: {exc}", kind="INVALID_RESPONSE"),
                       "run_id": run_id, "started_at": started, "finished_at": finished,
@@ -192,13 +190,16 @@ def execute_prompt(engine: dict, key: str, prompt_text: str) -> tuple[Completion
                       "run_id": run_id, "started_at": started, "finished_at": finished,
                       "duration_ms": duration_ms, "status": exchange.status,
                       "request_bytes": request_bytes, "response_bytes": exchange.response_bytes}
-    if (type(prompt_tokens) is not int or type(completion_tokens) is not int
-            or prompt_tokens < 0 or completion_tokens < 0):
+    usage = body.get("usage")
+    if (not isinstance(usage, dict)
+            or type(usage.get("prompt_tokens")) is not int or type(usage.get("completion_tokens")) is not int
+            or usage["prompt_tokens"] < 0 or usage["completion_tokens"] < 0):
         return None, {**_failure("native usage counters are missing or non-integer; never recorded as zero",
                                  kind="MISSING_USAGE"),
                       "run_id": run_id, "started_at": started, "finished_at": finished,
                       "duration_ms": duration_ms, "status": exchange.status,
                       "request_bytes": request_bytes, "response_bytes": exchange.response_bytes}
+    prompt_tokens, completion_tokens = usage["prompt_tokens"], usage["completion_tokens"]
     try:
         _bounded_bytes(exchange.response_bytes, "native response")
     except EvaluationError as exc:

@@ -13,6 +13,7 @@ from .job_material import descriptor, study_run
 from .preparation import ARMS, file_ref
 from .protocol import (PROTOCOL, EvaluationError, answer_request, fields, grader_request,
                        inside, load_run, read_json, read_text, sha256_file, timestamp)
+from .remote_engine import ENGINE_KIND, verify_http_manifest
 
 ANSWER_FIELDS = {"schema", "run_id", "question_id", "answer_round", "execution_id", "completed_at",
                  "answer_sha256", "pack_sha256", "answerer_prompt_sha256", "request_sha256",
@@ -30,10 +31,37 @@ def _bounded_completion(path, label):
         raise EvaluationError(label + " exceeds1MiB")
 
 
+def _remote_raw_completion(run, job, record, qid, a, j, name):
+    """Extension branch (answer-engine-extension-001/SPEC.md §3): verify the
+    remote http-run receipt family with the same strictness as the local one."""
+    path = run / "raw" / name / qid
+    for artifact in ("manifest.json", "receipt.json"):
+        _bounded_completion(path / artifact, "raw " + artifact)
+    manifest, receipt, stdout = verify_http_manifest(path, job)
+    if (record["execution_id"] != manifest["run_id"]
+            or record["completed_at"] != receipt["finished_at"]):
+        raise EvaluationError("raw completion job/execution/engine identity mismatch")
+    response = read_json(path / "response.json")
+    choice = response["choices"][0]
+    if receipt["finish_reason"] != str(choice.get("finish_reason")) or receipt["response_model"] != str(response.get("model")):
+        raise EvaluationError("raw receipt finish_reason/model differs from the native response")
+    if j:
+        result = read_json(stdout)
+        fields(result, GRADE_OUTPUT, "raw judge response")
+        if result != {key: record[key] for key in GRADE_OUTPUT}:
+            raise EvaluationError("raw judge output differs from supplied v3 grade")
+    elif stdout.read_bytes() != (run / name / (qid + ".md")).read_bytes():
+        raise EvaluationError("raw answer output differs from supplied answer bytes")
+    return receipt
+
+
 def raw_completion(run, job, record):
     """Closed receipt layout; accepts no executable command or endpoint argument."""
     qid, a, j = job["question_id"], job["answer_round"], job["judge_round"]
     name = f"grades_{a}_{j}" if j else f"answers_{a}"
+    engine = job["runtime"].get("engine") if isinstance(job["runtime"], dict) else None
+    if isinstance(engine, dict) and engine.get("kind") == ENGINE_KIND:
+        return _remote_raw_completion(run, job, record, qid, a, j, name)
     for key, ref in job["runtime"].items():
         file_ref(ref, "actual completion runtime." + key)
     path = run / "raw" / name / qid / "manifest.json"
@@ -117,6 +145,20 @@ def prepare_judges(study, arm, qid, a):
             "actual_judge_completions": 0, "release_eligible": False}
 
 
+def checked_judge(run, prepared, qid, a, j, answer):
+    """Verify one judge record family against the frozen disk protocol."""
+    grade_path = run / f"grades_{a}_{j}" / (qid + ".json")
+    _bounded_completion(grade_path, "grade sidecar")
+    grade = read_json(grade_path)
+    expected_job = descriptor(run, prepared, qid, a, judge=j)
+    if read_json(run / "jobs" / f"{qid}-{a}-{j}.json") != expected_job:
+        raise EvaluationError("judge job changed")
+    command = raw_completion(run, expected_job, grade)
+    if timestamp(command["started_at"], "judge start") < timestamp(answer["completed_at"], "answer completion"):
+        raise EvaluationError("judge started before the actual answer completed")
+    return grade, command
+
+
 def check_complete_records(study):
     """Read all1440 distinct external completions; never complete a run for an engine."""
     run_manifests, all_ids, all_capture_ids, n_answers, n_judges = [], set(), set(), 0, 0
@@ -136,15 +178,7 @@ def check_complete_records(study):
                 records = [(answer, raw)]
                 n_answers += 1
                 for j in ("j1", "j2"):
-                    grade_path = run / f"grades_{a}_{j}" / (qid + ".json")
-                    _bounded_completion(grade_path, "grade sidecar")
-                    grade = read_json(grade_path)
-                    expected_job = descriptor(run, prepared, qid, a, judge=j)
-                    if read_json(run / "jobs" / f"{qid}-{a}-{j}.json") != expected_job:
-                        raise EvaluationError("judge job changed")
-                    command = raw_completion(run, expected_job, grade)
-                    if timestamp(command["started_at"], "judge start") < timestamp(answer["completed_at"], "answer completion"):
-                        raise EvaluationError("judge started before the actual answer completed")
+                    grade, command = checked_judge(run, prepared, qid, a, j, answer)
                     records.append((grade, command))
                     n_judges += 1
                 for record, command in records:
