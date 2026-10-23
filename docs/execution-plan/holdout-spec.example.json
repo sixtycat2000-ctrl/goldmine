@@ -1,0 +1,26 @@
+{
+  "schema": 1,
+  "bundle": null,
+  "candidate_root": null,
+  "candidate_build": null,
+  "candidate_index": null,
+  "reference_root": null,
+  "reference_build": null,
+  "reference_index": null,
+  "reference_parameters": null,
+  "reference_seal_capture": {
+    "manifest_path": null,
+    "sha256": null
+  },
+  "model": null,
+  "server": null,
+  "reranker": null,
+  "ledger": null,
+  "parameters": {
+    "fast": null
+  },
+  "experiments": {
+    "rerank": "disabled",
+    "multi_query": "disabled"
+  }
+}

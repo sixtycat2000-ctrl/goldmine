@@ -23,12 +23,11 @@ outputs:
       grades2/<qid>.json     double-grades for the variance measurement (F2)
       grades_list/<qid>.json list-arm grades (advisory)
 
-Gate discipline (F2/F3/F4/F5): --gate re-emits the packs and byte-compares
-shas BEFORE touching grades (drifted pack -> exit 2); refuses when >2 answer
-files differ from the baseline's recorded answer shas; mean score over the 16
-ANSWERABLE questions only (traps report honest_refusal_rate, non-gating);
-threshold derived from the measured round-1/round-2 waver rates so a no-change
-re-run trips < 5% of the time.
+Historical v2 outputs remain readable for advisory summaries. Formal gates
+now use the independent disk-only answer-eval/v3 protocol: preregistered
+practical drop threshold, two answer rounds with two judgments each, complete
+SHA provenance and source-group paired resampling. No variance-derived false
+positive claim is made; old v2 baselines cannot pass a formal gate.
 
 Usage:
   python3 scripts/eval_answer.py --validate-questions
@@ -37,8 +36,10 @@ Usage:
   python3 scripts/eval_answer.py --grade [--jobs DIR]      # write grader prompts
   python3 scripts/eval_answer.py --grade --collect         # replies -> grades/
   python3 scripts/eval_answer.py --summary                 # report from grades/
-  python3 scripts/eval_answer.py --gate                    # vs the baseline
-  python3 scripts/eval_answer.py --update-baseline --yes   # requires variance
+  python3 scripts/eval_answer.py --validate-run RUN --json
+  python3 scripts/eval_answer.py --compare BASE_RUN CANDIDATE_RUN --json
+  python3 scripts/eval_answer.py --gate --out RUN --baseline V3_RECEIPT
+  python3 scripts/eval_answer.py --update-baseline --yes --out RUN
 """
 
 from __future__ import annotations
@@ -46,7 +47,6 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
-import math
 import re
 import sys
 from pathlib import Path
@@ -68,7 +68,7 @@ from goldmine.util import excerpt as make_excerpt  # noqa: E402
 EVALS = REPO_ROOT / "evals"
 DEFAULT_DB = EVALS / "eval.sqlite"
 DEFAULT_OUT = EVALS / "answer"
-DEFAULT_BASELINE = EVALS / "answer_baseline.json"
+DEFAULT_BASELINE = EVALS / "answer_v3" / "baseline.json"
 DEFAULT_MANIFEST = EVALS / "corpus_manifest.json"
 QUESTIONS_PATH = DEFAULT_OUT / "questions.jsonl"
 ANSWERER_PROMPT = DEFAULT_OUT / "answerer_prompt.md"
@@ -88,20 +88,8 @@ BUDGET_FLOOR, BUDGET_CEILING = 512, 32768
 MAX_CONTEXT = 3
 
 PROMPT_VERSIONS = {"answerer": "answerer.v2", "grader": "grader.v2"}
-PROTOCOL_VERSION = "answer-eval/v2"
-BASELINE_SCHEMA = 2
 DEFAULT_MODEL_ID = "GLM-5.3-Flash (ZCode subagent)"
 
-#: F2: a no-change re-run may trip the gate at most p_max of the time;
-#: the threshold is raised until the measured waver rates clear that bar.
-TRIP_P_MAX = 0.05
-THRESHOLD_CANDIDATES = (0.10, 0.15, 0.20, 0.25, 0.30)
-#: F2: --gate refuses the comparison when MORE than this many answer files'
-#: shas differ from the baseline's record (deliberate re-run required).
-MAX_DRIFTED_ANSWERS = 2
-#: F2: --update-baseline requires a double-grade over at least this many
-#: questions, covering EVERY round-1 borderline (score 1) question.
-MIN_DOUBLE_GRADES = 12
 ANSWERABLE_CLASSES = ("single", "multi", "cross")
 TRAP_CLASS = "trap"
 VALID_CLASSES = ANSWERABLE_CLASSES + (TRAP_CLASS,)
@@ -130,8 +118,8 @@ def validate_questions(qs: list[dict]) -> list[str]:
     that must NOT match the emitted pack body."""
     problems: list[str] = []
     ids = [q.get("id") for q in qs]
-    if len(qs) != 20:
-        problems.append(f"expected 20 questions, got {len(qs)}")
+    if len(qs) != 17:
+        problems.append(f"expected 17 questions, got {len(qs)}")
     if len(set(ids)) != len(ids):
         problems.append("duplicate question ids")
     for i, qid in enumerate(ids):
@@ -432,7 +420,7 @@ def parse_grader_output(text: str, qid: str) -> dict:
     for c in checks:
         if not isinstance(c, dict) or "id" not in c or "pass" not in c:
             raise ValueError(f"{qid}: malformed check {c!r}")
-    if score not in (0, 1, 2):
+    if type(score) is not int or score not in (0, 1, 2):
         raise ValueError(f"{qid}: score {score!r} out of range")
     if not isinstance(obj.get("reason"), str):
         raise ValueError(f"{qid}: missing reason")
@@ -516,12 +504,12 @@ def summarize(qs: list[dict], grades: dict, baseline: dict | None) -> str:
     mean = sum(scores) / len(scores) if scores else 0.0
     answered = sum(1 for qid in answerable if grades[qid]["score"] >= 1)
     refusals = sum(1 for qid in traps if grades[qid]["score"] == 2)
-    label = "" if baseline and baseline.get("date") else "  [advisory-until-baseline]"
+    label = "  [historical-v2 advisory; not release evidence]"
     lo, hi = eval_real.binom_ci(answered, len(answerable))
     rlo, rhi = eval_real.binom_ci(refusals, len(traps)) if traps else (0.0, 1.0)
     blo, bhi = eval_real.bootstrap_ci(scores)
     out = [
-        f"n=20 → 1 question = {1 / len(qs):.4g} of the mean{label}",
+        f"n={len(qs)} → 1 question = {1 / len(qs):.4g} of the mean{label}",
         f"mean answerable score: {mean:.3f} "
         f"(95% bootstrap CI [{blo:.3f}, {bhi:.3f}], n={len(answerable)})",
         f"answered rate (score ≥ 1): {answered}/{len(answerable)} = "
@@ -561,7 +549,7 @@ def summary_command(args) -> int:
     grades = _stats(qs, Path(args.grades_dir))
     if grades is None:
         print(f"grades incomplete under {args.grades_dir} — run --grade "
-              "--collect for all 20 first", file=sys.stderr)
+              f"--collect for all {len(qs)} first", file=sys.stderr)
         return 2
     baseline = _load_baseline(args.baseline)
     print(summarize(qs, grades, baseline))
@@ -576,57 +564,6 @@ def _load_baseline(path: Path) -> dict | None:
     if not p.is_file():
         return None
     return json.loads(p.read_text(encoding="utf-8"))
-
-
-def empty_baseline(corpus_version: str) -> dict:
-    """The committed scaffolding: everything knowable without a Phase B/C run
-    is filled; every run-dependent field stays null until --update-baseline."""
-    return {
-        "schema": BASELINE_SCHEMA,
-        "protocol_version": PROTOCOL_VERSION,
-        "date": None,
-        "models": {"answerer": None, "judge": None},
-        "pack_settings": {**PACK_SETTINGS, "token_mode": None},
-        "index": {
-            "fingerprint_id": None, "model_id": None, "model_sha256": None,
-            "dim": None, "chunker_version": None,
-        },
-        "questions_sha256": None,
-        "prompt_versions": dict(PROMPT_VERSIONS),
-        "corpus_version": corpus_version,
-        "variance": None,
-        "mean_score": None,
-        "answered_rate": None,
-        "honest_refusal_rate": None,
-        "per_question": {},
-        "per_class": None,
-        "list_arm": None,
-        "gate": {
-            "threshold": 0.1,
-            "derived": False,
-            "rule": "mean answerable-score drop > threshold vs baseline -> exit 1",
-            "n_answerable": 16,
-            "trip_p_max": TRIP_P_MAX,
-        },
-    }
-
-
-def _binom_tail_ge(k: int, n: int, p: float) -> float:
-    """P(X >= k), X ~ Bin(n, p), exact via the complement tail."""
-    return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i)
-               for i in range(k, n + 1))
-
-
-def derive_threshold(q_eff: float, n_answerable: int = 16) -> tuple[float, float, int]:
-    """F2: smallest candidate threshold whose NO-CHANGE trip probability
-    (>= ceil atoms flip under Bin(n, q_eff)) stays under TRIP_P_MAX. Returns
-    (threshold, trip_p, atoms)."""
-    for t in THRESHOLD_CANDIDATES:
-        atoms = math.floor(round(t * n_answerable, 9)) + 1  # min a with a/n > t
-        trip_p = _binom_tail_ge(atoms, n_answerable, q_eff)
-        if trip_p < TRIP_P_MAX:
-            return t, trip_p, atoms
-    return THRESHOLD_CANDIDATES[-1], trip_p, atoms
 
 
 def _settings_from_args(args) -> dict:
@@ -647,389 +584,19 @@ def _settings_from_args(args) -> dict:
     return s
 
 
-def _emit_pack_shas(args, settings: dict) -> dict[str, tuple[str, dict]]:
-    """Fresh emit of every question -> {qid: (pack_sha, meta)}; the gate's
-    byte round-trip (F4) and update-baseline's pack pinning both need this."""
-    qs = load_questions(QUESTIONS_PATH)
-    store, backend = open_index(Path(args.db), args.backend)
-    shas: dict[str, tuple[str, dict]] = {}
-    try:
-        for q in qs:
-            text, meta, _ = build_question_pack(store, backend, q, settings)
-            shas[q["id"]] = (sha256_bytes(text.encode("utf-8")), meta)
-    finally:
-        backend.close()
-        store.close()
-    return shas
-
-
-def _index_fingerprints(db: Path) -> dict:
-    store = Store(db)
-    try:
-        fp_json = store.meta("fingerprint_json") or "{}"
-        try:
-            fp = json.loads(fp_json)
-        except (ValueError, TypeError):
-            fp = {}
-        chunkers = [
-            r[0] for r in store.db.execute(
-                "SELECT DISTINCT chunker_version FROM files "
-                "WHERE chunker_version IS NOT NULL ORDER BY 1"
-            )
-        ]
-        return {
-            "fingerprint_id": store.meta("fingerprint_id"),
-            "model_id": fp.get("model_id"),
-            "model_sha256": fp.get("model_sha256"),
-            "dim": fp.get("dim"),
-            "chunker_version": "+".join(chunkers) if chunkers else None,
-        }
-    finally:
-        store.close()
-
-
-def _corpus_version() -> str:
-    manifest = json.loads(DEFAULT_MANIFEST.read_text(encoding="utf-8"))
-    return manifest["corpus_version"]
-
-
-def _answers_model(answers_dir: Path) -> str | None:
-    p = Path(answers_dir) / "run.json"
-    if not p.is_file():
-        return None
-    return json.loads(p.read_text(encoding="utf-8")).get("answerer")
-
-
 def update_baseline(args) -> int:
-    """Full run + commit the baseline. REQUIRES the F2 variance data: 20
-    round-2 answers (answers2/) and >= MIN_DOUBLE_GRADES round-2 grades
-    (grades2/) covering every round-1 score-1 question."""
-    qs = load_questions(QUESTIONS_PATH)
-    problems = validate_questions(qs)
-    if problems:
-        for p in problems:
-            print(f"question set invalid: {p}", file=sys.stderr)
-        return 2
-    answerable = [q["id"] for q in qs if q["class"] in ANSWERABLE_CLASSES]
-    traps = [q["id"] for q in qs if q["class"] == TRAP_CLASS]
-    out = Path(args.out)
-    answers, answers2 = out / "answers", out / "answers2"
-    grades, grades2 = out / "grades", out / "grades2"
-    missing = []
-    for q in qs:
-        for d in (answers, answers2):
-            if not (d / f"{q['id']}.md").is_file():
-                missing.append(str(d.relative_to(out) / f"{q['id']}.md"))
-        for d in (grades,):
-            if not (d / f"{q['id']}.json").is_file():
-                missing.append(str(d.relative_to(out) / f"{q['id']}.json"))
-    if missing:
-        print(f"update-baseline: incomplete run ({len(missing)} missing "
-              "answer/grade files), e.g.:", file=sys.stderr)
-        for m in missing[:5]:
-            print(f"  {m}", file=sys.stderr)
-        return 2
-    a1 = _answers_model(answers)
-    a2 = _answers_model(answers2)
-    if not a1 or not a2:
-        print("update-baseline: answers/run.json missing (record the answerer "
-              "model id there) — see the spec §3 Phase B", file=sys.stderr)
-        return 2
-    if a1 != a2:
-        print(f"update-baseline: answerer differs between rounds ({a1!r} vs "
-              f"{a2!r}) — variance needs the SAME model twice", file=sys.stderr)
-        return 2
-    g1 = _stats(qs, grades)
-    g2 = _stats(qs, grades2)
-    if g2 is None:
-        double = [
-            q["id"] for q in qs if (grades2 / f"{q['id']}.json").is_file()
-        ]
-        if len(double) < MIN_DOUBLE_GRADES:
-            print(f"update-baseline: variance needs >= {MIN_DOUBLE_GRADES} "
-                  f"double-grades in grades2/, found {len(double)}",
-                  file=sys.stderr)
-            return 2
-        g2 = {qid: json.loads((grades2 / f"{qid}.json").read_text())
-              for qid in double}
-    borderlines = {qid for qid in answerable if g1[qid]["score"] == 1}
-    uncovered = borderlines - set(g2)
-    if uncovered:
-        print(f"update-baseline: double-grade must cover every borderline "
-              f"(score 1) question, missing {sorted(uncovered)}", file=sys.stderr)
-        return 2
-
-    # -- variance (F2) ------------------------------------------------------
-    n_flip = sum(
-        1 for q in qs
-        if sha256_file(answers / f"{q['id']}.md")
-        != sha256_file(answers2 / f"{q['id']}.md")
-    )
-    answerer_flip = n_flip / len(qs)
-    shared = sorted(set(g2) & set(g1))
-    g_flip = sum(1 for qid in shared if g1[qid]["score"] != g2[qid]["score"])
-    grader_flip = g_flip / len(shared) if shared else 0.0
-    q_eff = 1.0 - (1.0 - answerer_flip) * (1.0 - grader_flip)
-    threshold, trip_p, atoms = derive_threshold(q_eff)
-
-    # -- pack round-trip: fresh emit must equal the packs on disk (F4) ------
-    settings = {**PACK_SETTINGS}
-    fresh = _emit_pack_shas(args, settings)
-    drifted = []
-    for q in qs:
-        disk = out / "packs" / f"{q['id']}.md"
-        if disk.is_file() and sha256_file(disk) != fresh[q["id"]][0]:
-            drifted.append(q["id"])
-    if drifted:
-        print(f"update-baseline: packs on disk drifted from a fresh emit "
-              f"({', '.join(drifted)}) — re-run --emit, then Phase B again "
-              "(the answers no longer describe these packs)", file=sys.stderr)
-        return 2
-
-    token_mode = fresh[qs[0]["id"]][1]["token_mode"]
-    baseline = empty_baseline(_corpus_version())
-    baseline.update({
-        "date": args.date,
-        "models": {"answerer": a1, "judge": args.judge_model},
-        "pack_settings": {**settings, "token_mode": token_mode},
-        "index": _index_fingerprints(Path(args.db)),
-        "questions_sha256": sha256_file(QUESTIONS_PATH),
-        "variance": {
-            "answerer_flip_rate": round(answerer_flip, 4),
-            "grader_flip_rate": round(grader_flip, 4),
-            "q_effective": round(q_eff, 4),
-            "n_double_answered": len(qs),
-            "n_double_graded": len(shared),
-        },
-        "mean_score": round(
-            sum(g1[qid]["score"] for qid in answerable) / len(answerable), 4
-        ),
-        "answered_rate": {
-            "value": round(
-                sum(1 for qid in answerable if g1[qid]["score"] >= 1)
-                / len(answerable), 4
-            ),
-            "n": len(answerable),
-        },
-        "honest_refusal_rate": {
-            "value": round(
-                sum(1 for qid in traps if g1[qid]["score"] == 2) / len(traps), 4
-            ),
-            "n": len(traps),
-        },
-        "per_question": {
-            qid: {
-                "score": g1[qid]["score"],
-                "answer_sha256": sha256_file(answers / f"{qid}.md"),
-                "pack_sha256": fresh[qid][0],
-            }
-            for qid in (q["id"] for q in qs)
-        },
-        "per_class": {
-            cls: round(
-                sum(g1[qid]["score"] for qid in (
-                    q["id"] for q in qs if q["class"] == cls))
-                / max(1, sum(1 for q in qs if q["class"] == cls)), 4
-            )
-            for cls in VALID_CLASSES
-        },
-        "list_arm": _list_arm(out, qs, answerable),
-        "gate": {
-            "threshold": threshold,
-            "derived": True,
-            "rule": "mean answerable-score drop > threshold vs baseline -> exit 1",
-            "n_answerable": len(answerable),
-            "trip_p_max": TRIP_P_MAX,
-            "measured_no_change_trip_p": round(trip_p, 4),
-            "trip_atoms": atoms,
-        },
-    })
-    Path(args.baseline).write_text(
-        json.dumps(baseline, indent=1, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    print(f"baseline written: {args.baseline}")
-    print(f"  variance: answerer_flip {answerer_flip:.2f}, grader_flip "
-          f"{grader_flip:.2f} -> q_eff {q_eff:.3f}")
-    print(f"  gate: threshold {threshold} (no-change trip p = {trip_p:.3f} "
-          f"< {TRIP_P_MAX}, {atoms}-atom wire)")
-    print(f"  mean answerable score {baseline['mean_score']} · "
-          f"answered {baseline['answered_rate']['value']:.3f} · "
-          f"honest refusal {baseline['honest_refusal_rate']['value']:.3f} "
-          f"(non-gating)")
-    return 0
-
-
-def _list_arm(out: Path, qs: list[dict], answerable: list[str]) -> dict | None:
-    """F11: the advisory list arm — filled when answers_list/ + grades_list/
-    are complete for the answerable questions; never gating."""
-    lists_answers = out / "answers_list"
-    lists_grades = out / "grades_list"
-    ids = answerable
-    if not all((lists_answers / f"{qid}.md").is_file() for qid in ids):
-        return None
-    if not all((lists_grades / f"{qid}.json").is_file() for qid in ids):
-        return None
-    scores = {
-        qid: json.loads((lists_grades / f"{qid}.json").read_text())["score"]
-        for qid in ids
-    }
-    return {
-        "mean_score": round(sum(scores.values()) / len(ids), 4),
-        "answered_rate": round(
-            sum(1 for v in scores.values() if v >= 1) / len(ids), 4
-        ),
-        "n": len(ids),
-        "note": "advisory: single round, never gates",
-    }
-
-
-# ----------------------------------------------------------------- the gate
+    """Record a fully validated v3 reference; never overwrite historical data."""
+    from answer_eval.cli import command
+    return command("baseline", run=args.out, output=args.baseline,
+                   yes=getattr(args, "yes", False), as_json=getattr(args, "json", False))
 
 
 def gate(args) -> int:
-    """--gate (F2/F3/F4/F5): invalidation set -> pack sha round-trip ->
-    answer-sha drift -> answerable-mean threshold. Exit 2 = not comparable
-    (fix deliberately), 1 = material regression, 0 = green."""
-    baseline = _load_baseline(args.baseline)
-    if baseline is None:
-        print(f"no baseline at {args.baseline} — run --update-baseline --yes "
-              "first (advisory until then)", file=sys.stderr)
-        return 2
-    if not baseline.get("date") or not baseline.get("per_question"):
-        print("baseline is empty scaffolding (no Phase B run recorded) — "
-              "nothing to compare; all runs stay advisory", file=sys.stderr)
-        return 2
-    qs = load_questions(QUESTIONS_PATH)
-    problems = validate_questions(qs)
-    if problems:
-        for p in problems:
-            print(f"question set invalid: {p}", file=sys.stderr)
-        return 2
-    answerable = [q["id"] for q in qs if q["class"] in ANSWERABLE_CLASSES]
-    out = Path(args.out)
-
-    # 0. fresh emit — the current packs AND the current token mode (the
-    # settings comparison includes token_mode, so it must be known first)
-    settings = {**PACK_SETTINGS}
-    fresh = _emit_pack_shas(args, settings)
-    token_mode = fresh[qs[0]["id"]][1]["token_mode"]
-
-    # 1. invalidation set (§3.5 + F3) — never compare across these
-    mismatches = []
-    idx = _index_fingerprints(Path(args.db))
-    for key, current in idx.items():
-        if baseline["index"].get(key) != current:
-            mismatches.append(f"index.{key}: baseline "
-                              f"{baseline['index'].get(key)!r} != current {current!r}")
-    b_settings = dict(baseline["pack_settings"])
-    if b_settings.get("token_mode") is None:
-        b_settings.pop("token_mode")
-    if b_settings != {**settings, "token_mode": token_mode}:
-        mismatches.append(f"pack_settings: baseline {b_settings} != current "
-                          f"{ {**settings, 'token_mode': token_mode} }")
-    if baseline["questions_sha256"] != sha256_file(QUESTIONS_PATH):
-        mismatches.append("questions_sha256 changed")
-    if baseline["prompt_versions"] != PROMPT_VERSIONS:
-        mismatches.append(f"prompt_versions: baseline "
-                          f"{baseline['prompt_versions']} != current {PROMPT_VERSIONS}")
-    if baseline["corpus_version"] != _corpus_version():
-        mismatches.append(f"corpus_version: baseline "
-                          f"{baseline['corpus_version']} != current "
-                          f"{_corpus_version()}")
-    answerer = _answers_model(out / "answers")
-    if not answerer:
-        mismatches.append("answers/run.json missing (cannot verify who answered)")
-    elif answerer != baseline["models"]["answerer"]:
-        mismatches.append(f"models.answerer: baseline "
-                          f"{baseline['models']['answerer']!r} != current {answerer!r}")
-    judges = {
-        json.loads((out / "grades" / f"{q['id']}.json").read_text()).get("judge_model")
-        for q in qs if (out / "grades" / f"{q['id']}.json").is_file()
-    }
-    bad_judges = {j for j in judges if j and j != baseline["models"]["judge"]}
-    if bad_judges:
-        mismatches.append(f"models.judge: grades carry {sorted(bad_judges)} "
-                          f"!= baseline {baseline['models']['judge']!r}")
-    if mismatches:
-        print("gate: NOT COMPARABLE — fingerprint/protocol drift (exit 2):",
-              file=sys.stderr)
-        for m in mismatches:
-            print(f"  - {m}", file=sys.stderr)
-        print("re-run Phase B deliberately, then --update-baseline --yes",
-              file=sys.stderr)
-        return 2
-
-    # 2. pack sha round-trip (F4) — the fresh emit byte-compares FIRST
-    drifted = [
-        qid for qid in (q["id"] for q in qs)
-        if qid in baseline["per_question"]
-        and baseline["per_question"][qid]["pack_sha256"] != fresh[qid][0]
-    ]
-    if drifted:
-        print("gate: NOT COMPARABLE — packs drifted from the baseline's "
-              "recorded bytes (exit 2):", file=sys.stderr)
-        for qid in drifted:
-            print(f"  - {qid}", file=sys.stderr)
-        print("ranking/chunker/backend/tokenizer drift subsumed here: "
-              "re-emit, re-run Phase B, --update-baseline --yes",
-              file=sys.stderr)
-        return 2
-
-    # 3. answer-sha drift (F2) — the scores describe ONE answer run
-    moved = [
-        qid for qid in (q["id"] for q in qs)
-        if not (out / "answers" / f"{qid}.md").is_file()
-        or sha256_file(out / "answers" / f"{qid}.md")
-        != baseline["per_question"][qid]["answer_sha256"]
-    ]
-    if len(moved) > MAX_DRIFTED_ANSWERS:
-        print(f"gate: NOT COMPARABLE — {len(moved)} answer files differ from "
-              f"the baseline's run (> {MAX_DRIFTED_ANSWERS}) (exit 2):",
-              file=sys.stderr)
-        for qid in moved[:10]:
-            print(f"  - {qid}", file=sys.stderr)
-        print("re-run Phase B deliberately, then --update-baseline --yes",
-              file=sys.stderr)
-        return 2
-    if moved:
-        print(f"note: {len(moved)} answer file(s) re-answered since the "
-              "baseline (<= " + str(MAX_DRIFTED_ANSWERS) + ", allowed): "
-              + ", ".join(moved), file=sys.stderr)
-
-    # 4. the comparison (F5): mean over the 16 answerable only
-    grades = _stats(qs, out / "grades")
-    if grades is None:
-        print("grades incomplete — run --grade --collect for all 20 first",
-              file=sys.stderr)
-        return 2
-    threshold = baseline["gate"]["threshold"]
-    base_mean = baseline["mean_score"]
-    scores = {qid: grades[qid]["score"] for qid in answerable}
-    current = sum(scores.values()) / len(scores)
-    drop = base_mean - current
-    traps = [q["id"] for q in qs if q["class"] == TRAP_CLASS]
-    refusal_now = sum(1 for qid in traps if grades[qid]["score"] == 2) / len(traps)
-    print(f"gate: mean answerable score {current:.3f} vs baseline "
-          f"{base_mean:.3f} (drop {drop:+.3f}, threshold {threshold}, "
-          f"n={len(answerable)})")
-    print(f"honest refusal rate {refusal_now:.3f} vs baseline "
-          f"{baseline['honest_refusal_rate']['value']:.3f} (non-gating)")
-    if drop > threshold:
-        per_q = {
-            qid: scores[qid] - baseline["per_question"][qid]["score"]
-            for qid in answerable
-        }
-        fallen = sorted((pq for pq in per_q.items() if pq[1] < 0),
-                        key=lambda kv: kv[1])
-        print("gate: FAIL — mean drop exceeds the threshold; per-question "
-              "drops:", file=sys.stderr)
-        for qid, d in fallen:
-            print(f"  - {qid}: {baseline['per_question'][qid]['score']} -> "
-                  f"{scores[qid]} ({d:+d})", file=sys.stderr)
-        return 1
-    print("gate: green")
-    return 0
+    """Verify a v3 receipt and gate its run; schema2 is historical only."""
+    from answer_eval.cli import command
+    return command("gate", base=args.baseline, candidate=args.out,
+                   diagnostic=getattr(args, "diagnostic", False),
+                   as_json=getattr(args, "json", False))
 
 
 # --------------------------------------------------------------------- main
@@ -1054,11 +621,16 @@ def main(argv: list[str] | None = None) -> int:
                     help="with --grade: parse <jobs>/<qid>.out -> grades/")
     ap.add_argument("--summary", action="store_true",
                     help="report from grades/ alone")
+    ap.add_argument("--compare", nargs=2, metavar=("BASE_RUN", "CANDIDATE_RUN"),
+                    help="compare two independent, complete answer-eval/v3 runs")
+    ap.add_argument("--validate-run", metavar="RUN", help="validate v3 completeness and job provenance")
+    ap.add_argument("--json", action="store_true", help="structured v3 report")
+    ap.add_argument("--diagnostic", action="store_true",
+                    help="allow fixture/self comparison; never accepted as release evidence")
     ap.add_argument("--gate", action="store_true",
-                    help="compare the current run against the baseline")
+                    help="verify a v3 baseline receipt and run; legacy baselines are rejected")
     ap.add_argument("--update-baseline", action="store_true",
-                    help="full run + commit the baseline (needs --yes and "
-                         "the F2 variance data)")
+                    help="create a new v3 reference receipt (needs --yes and complete real grades)")
     ap.add_argument("--yes", action="store_true",
                     help="confirm a baseline write")
     ap.add_argument("--backend", default="llama",
@@ -1076,13 +648,24 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--scorer", default=None)
     ap.add_argument("--judge-model", default=DEFAULT_MODEL_ID)
     ap.add_argument("--date", default=None,
-                    help="baseline date stamp (update-baseline; default today)")
+                    help="accepted legacy option; v3 receipts use recorded run timestamps")
     args = ap.parse_args(argv)
+
+    actions = (args.validate_questions, args.emit, args.grade, args.summary,
+               bool(args.compare), bool(args.validate_run), args.gate, args.update_baseline)
+    if sum(actions) > 1:
+        ap.error("choose exactly one evaluation action")
 
     if args.date is None:
         import datetime
 
         args.date = datetime.date.today().isoformat()
+    if args.compare or args.validate_run:
+        from answer_eval.cli import command
+        if args.compare:
+            return command("compare", base=args.compare[0], candidate=args.compare[1],
+                           diagnostic=args.diagnostic, as_json=args.json)
+        return command("validate", run=args.validate_run, diagnostic=args.diagnostic, as_json=args.json)
     if args.validate_questions:
         qs = load_questions(QUESTIONS_PATH)
         problems = validate_questions(qs)

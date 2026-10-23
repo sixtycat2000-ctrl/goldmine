@@ -48,11 +48,24 @@ CREATE TABLE files_v1(
 _V2_ONLY_META_KEYS = ("embed_id", "embed_identity_json", "migration_history_json")
 
 
+def _remove_current_derived_fixture(con):
+    """Build an actual historical fixture, without current writer guards/data."""
+    from goldmine.storage_writes import remove_fences
+
+    remove_fences(con)
+    con.execute("DROP TRIGGER IF EXISTS gm_lexical_delete")
+    con.execute("DROP TABLE IF EXISTS fts_cjk")
+    con.execute("DROP TABLE IF EXISTS lookup_terms")
+    con.execute("DELETE FROM meta WHERE key IN ('index_uuid','lexical_version')")
+    con.commit()
+
+
 def _strip_to_v1(db_path: Path) -> None:
     """Simulate a v1 index: rebuild `files` without the v2 columns, stamp
     user_version=1, drop v2-only meta keys."""
     con = sqlite3.connect(str(db_path))
     try:
+        _remove_current_derived_fixture(con)
         con.executescript(_V1_FILES_DDL)
         con.execute(
             "INSERT INTO files_v1 SELECT id, path, source, kind, size, mtime, "
@@ -318,6 +331,7 @@ def test_v2_index_migrates_to_v3_partial_indexes(tmp_path):
         store.close()
     # make it an honest v2 file: drop the v3 indexes, stamp v2, trim the tail
     con = sqlite3.connect(str(db))
+    _remove_current_derived_fixture(con)
     con.execute("DROP INDEX segments_vec_file")
     con.execute("DROP INDEX files_kind_cap")
     con.execute("DELETE FROM meta WHERE key = 'migration_history_json'")
@@ -786,23 +800,27 @@ def test_doctor_deep_flags_staleness_and_cards_drift(tmp_home, tmp_path, capsys)
     # age the index: stale chunker + stale extractor + stale embed id + old cards
     store = Store(db)
     try:
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v0', extractor_version = "
-            "'txt-stdlib.v0' WHERE capability = 'content_indexed'"
-        )
-        store.db.execute("UPDATE files SET embed_id = 'deadbeefdeadbeef'")
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v0', extractor_version = "
+                "'txt-stdlib.v0' WHERE capability = 'content_indexed'"
+            )
+        with store.write_transaction():
+            store.db.execute("UPDATE files SET embed_id = 'deadbeefdeadbeef'")
         store.db.commit()
-        store.db.execute(
-            "INSERT INTO distill_runs(id, algo, tau, tau_source, scope_json, "
-            "corpus_hash, mode, stats_json, created_at) VALUES('r', 'a', 0.7, "
-            "'manual', '{}', 'h', 'full', '{}', 0.0)"
-        )
-        store.db.execute(
-            "INSERT INTO cards(run_id, view_id, title, title_kind, terms, "
-            "excerpts, size, n_files, status, fingerprint_id, distill_algo, "
-            "created_at, updated_at) VALUES('r', 'v', 't', 'terms', '[]', "
-            "'[]', 1, 1, 'active', 'oldfp', 'a', 0.0, 0.0)"
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "INSERT INTO distill_runs(id, algo, tau, tau_source, scope_json, "
+                "corpus_hash, mode, stats_json, created_at) VALUES('r', 'a', 0.7, "
+                "'manual', '{}', 'h', 'full', '{}', 0.0)"
+            )
+        with store.write_transaction():
+            store.db.execute(
+                "INSERT INTO cards(run_id, view_id, title, title_kind, terms, "
+                "excerpts, size, n_files, status, fingerprint_id, distill_algo, "
+                "created_at, updated_at) VALUES('r', 'v', 't', 'terms', '[]', "
+                "'[]', 1, 1, 'active', 'oldfp', 'a', 0.0, 0.0)"
+            )
         store.db.commit()
     finally:
         store.close()
@@ -831,7 +849,7 @@ def test_doctor_deep_without_index_is_a_warn_not_a_crash(tmp_home, capsys):
 # ------------------------------------------------------- v3 -> v4 (cards v2)
 
 
-def test_v3_to_v4_drops_and_recreates_cards(tmp_path):
+def test_v3_to_v4_drops_and_recreates_cards(tmp_path, monkeypatch):
     """R6 §3 (D6): the announced destructive step. A v3 index with v1-shaped
     cards rows migrates to v4: cards/card_chunks recreated EMPTY,
     distill_runs/distill_views created, the rebuild note written, everything
@@ -879,6 +897,9 @@ def test_v3_to_v4_drops_and_recreates_cards(tmp_path):
     finally:
         con.close()
 
+    # This specifically verifies the historical v4 step; newer additions have
+    # their own migration tests and must not change these v4 assertions.
+    monkeypatch.setattr(migrations, "TARGET", 4)
     store = Store(db)  # reopening runs the ladder through v4
     try:
         assert store.db.execute("PRAGMA user_version").fetchone()[0] == 4

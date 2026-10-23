@@ -1,0 +1,153 @@
+Source: https://www.nist.gov/open/copyright-fair-use-and-licensing-statements-srd-data-software-and-technical-series-publications
+Captured 2026-10-22 Asia/Shanghai
+
+Skip to main content
+
+An official website of the United States government
+
+Here’s how you know
+Search NIST
+Menu
+
+Public Access to NIST Research
+
+Previous
+Next
+Celebrating a Year of Open Science
+Policies, Directives, and NIST's Public Access Plan
+Information for Awardees
+Information for Developers
+Copyright, Fair Use, and Licensing Statements for SRD, Data, Software, and Technical Series Publications
+Open Government Performance Metrics
+Copyright, Fair Use, and Licensing Statements for SRD, Data, Software, and Technical Series Publications
+Standard Reference Data
+Fair Use of Other NIST Data/Works
+Extramural Data
+NIST Software
+NIST Technical Series Publications
+Citation Recommendations
+ 
+Standard Reference Data (SRD)
+
+The Standard Reference Data Act, 15 U.S.C. § 290e, empowers the Secretary of Commerce to secure copyright on behalf of the United States in Standard Reference Data (SRD) prepared by NIST.  SRD data products should include the following statement:
+
+Copyright protection on this compilation of data has been secured by the Secretary of the U.S. Department of Commerce on behalf of the United States in the United States and all countries that are parties to the Universal Copyright Convention, pursuant to Section 290(e) of Title 15 of the United States Code.
+
+NIST Standard Reference Data (SRD);
+ ©Copyright [©YEAR] by the U.S. Secretary of Commerce on behalf of the United States of America. All rights reserved.
+
+For SRD that is licensed, licensing information is available at http://www.nist.gov/srd/. 
+
+Fair Use of Other NIST Data/Works
+
+Data/works created by NIST employees that are not covered by the Standard Reference Data Act are subject to 17 U.S.C. §105 and generally are not subject to copyright protection within the United States.  NIST data or other works may be subject to copyright protection in foreign countries.  NIST may also obtain and hold copyright in data/works created by non-NIST employees (e.g., NIST contractors) when copyright is assigned to NIST.  Distributions of non-SRD products should include the following statement:
+
+This data/work was created by employees of the National Institute of Standards and Technology (NIST), an agency of the Federal Government. Pursuant to title 17 United States Code Section 105, works of NIST employees are not subject to copyright protection in the United States.  This data/work may be subject to foreign copyright.
+
+The data/work is provided by NIST as a public service and is expressly provided “AS IS.” NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED OR STATUTORY, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND DATA ACCURACY. NIST does not warrant or make any representations regarding the use of the data or the results thereof, including but not limited to the correctness, accuracy, reliability or usefulness of the data. NIST SHALL NOT BE LIABLE AND YOU HEREBY RELEASE NIST FROM LIABILITY FOR ANY INDIRECT, CONSEQUENTIAL, SPECIAL, OR INCIDENTAL DAMAGES (INCLUDING DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, LOSS OF BUSINESS INFORMATION, AND THE LIKE), WHETHER ARISING IN TORT, CONTRACT, OR OTHERWISE, ARISING FROM OR RELATING TO THE DATA (OR THE USE OF OR INABILITY TO USE THIS DATA), EVEN IF NIST HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+To the extent that NIST may hold copyright in countries other than the United States, you are hereby granted the non-exclusive irrevocable and unconditional right to print, publish, prepare derivative works and distribute the NIST data, in any medium, or authorize others to do so on your behalf, on a royalty-free basis throughout the world.
+
+You may improve, modify, and create derivative works of the data or any portion of the data, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the data and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the data:  Data citation recommendations are provided at https://www.nist.gov/open/license.
+
+Permission to use this data is contingent upon your acceptance of the terms of this agreement and upon your providing appropriate acknowledgments of NIST’s creation of the data/work.
+
+Extramural Data
+
+ Describes how NIST may also make available data produced by recipients of a grant, contract or other award if the following criteria are met.
+
+The awardee is an individual researcher or research group.
+The funding agreement gives NIST the right to make the data public.
+The data has a high potential for re-use, and its continued availability is in NIST’s interest.
+The Federal Program Officer and their Division Chief agree that the data is of sufficient quality for NIST to make it public.
+
+A NIST point of contact must be provided for the entry in NIST’s data inventory, and the following disclaimer must be included:
+
+This data was produced as part of grant <grant number> with the National Institute of Standards and Technology. NIST provides this data as a public service and assumes no liability whatsoever for use of the data. NIST provides the data “AS IS” and makes NO WARRANTY OF ANY TYPE, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION NO WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE OR USE, AND NO WARRANTY OF NON-INFRINGEMENT OF THIRD PARTY INTELLECTUAL PROPERTY RIGHTS. Users are solely responsible for ensuring the accuracy, currency, and other qualities for use of NIST-provided data or for any products derived from or in connection with the NIST-provided data.
+
+NIST Software
+
+Like non-SRD data, software produced at NIST is generally not subject to copyright protection in the United States, but may be subject to foreign copyright (as per 17 U.S.C. §105).  Like data/works, domestic copyright may be held be NIST if copyright is assigned to NIST by a third-party (e.g. contractor).  Distributions of NIST created software, whether in source or compiled form, should include the following licensing statement:
+
+NIST-developed software is provided by NIST as a public service. You may use, copy, and distribute copies of the software in any medium, provided that you keep intact this entire notice. You may improve, modify, and create derivative works of the software or any portion of the software, and you may copy and distribute such modifications or works. Modified works should carry a notice stating that you changed the software and should note the date and nature of any such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the software. 
+
+NIST-developed software is expressly provided "AS IS." NIST MAKES NO WARRANTY OF ANY KIND, EXPRESS, IMPLIED, IN FACT, OR ARISING BY OPERATION OF LAW, INCLUDING, WITHOUT LIMITATION, THE IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, AND DATA ACCURACY. NIST NEITHER REPRESENTS NOR WARRANTS THAT THE OPERATION OF THE SOFTWARE WILL BE UNINTERRUPTED OR ERROR-FREE, OR THAT ANY DEFECTS WILL BE CORRECTED. NIST DOES NOT WARRANT OR MAKE ANY REPRESENTATIONS REGARDING THE USE OF THE SOFTWARE OR THE RESULTS THEREOF, INCLUDING BUT NOT LIMITED TO THE CORRECTNESS, ACCURACY, RELIABILITY, OR USEFULNESS OF THE SOFTWARE.
+
+You are solely responsible for determining the appropriateness of using and distributing the software and you assume all risks associated with its use, including but not limited to the risks and costs of program errors, compliance with applicable laws, damage to or loss of data, programs or equipment, and the unavailability or interruption of operation. This software is not intended to be used in any situation where a failure could cause risk of injury or damage to property. The software developed by NIST employees is not subject to copyright protection within the United States.
+
+Distributions of NIST software should also include copyright and licensing statements of any third-party software that are legally bundled with the code in compliance with the conditions of those licenses.  Contact the NIST Office of Chief Counsel.
+
+Recommendations for citation of software are provided below.
+
+NIST Technical Series Publications
+
+In accordance with Public Law 100-519, Section 107 (Oct 24, 1988), NIST maintains a research information center to support the research, publishing, and preservation needs required to fulfill the scientific and technical mission of NIST.  This includes publishing the NIST Technical Series: technical reports and Journal of Research of NIST.  Works authored by NIST employees are not subject to Copyright protection within the United States; foreign rights are reserved.  To the extent NIST may assert rights outside of the United States, the public is granted the non-exclusive, perpetual, paid-up, royalty-free, worldwide right to reprint works in all formats including print, electronically, and online, and in all subsequent editions, and derivative works.  Please use the recommended citation format below followed by “Republished courtesy of the National Institute of Standards and Technology.”  Some works published by NIST may have been written by third parties and may be subject to copyright protection.
+
+Citation Recommendations
+
+Journals often have their own citing formats for publications and other items included in article reference lists. NIST's data and software citation recommendations are consistent in using the same citation elements (author, title, publisher, year of publication, etc.) as used by journals. In the absence of other (e.g., journal) defined requirements, these recommendations provide a consistent manner for appropriate attribution to scientific datasets and software that are made available under NIST's public access policy.
+
+Recommended Formats for Data
+
+The following minimum requirements and format should be used to cite NIST datasets (a URL is used if a PID is not available):
+
+Recommended Format 1:
+
+Author/editor (Publication Year), Title, Publisher, Persistent Identifier (PID) or URL (Access date)
+
+Example:
+
+Siderius, D.W., Shen, V.K., Johnson III, R.D.,  and van Zee, R.D., eds. (2013), NIST/ARPA-E Database of Novel and Emerging Adsorbent Materials, NIST Standard Reference Database 205, National Institute of Standards and Technology, https://doi.org/10.18434/T43882 (Accessed July 13, 2016)
+
+An extended format can be used to include two optional properties, Version and Type of Medium, when appropriate. If so, the recommended format with NIST example is as follows.
+
+Recommended Format 2:
+
+Author/editor (Publication Year), Title, Version, Publisher, [Type of Medium] Persistent Identifier (PID) or URL (Access date)
+
+Example:
+
+Sansonetti, J.E., Martin, W.C., and Young, S.L. (2005), NIST Basic Atomic Spectroscopic Data, NIST Standard Reference Database 108, Version 1.1.2, National Institute of Standards and Technology, [Online] https://doi.org/10.18434/T4FW23 (Accessed July 13, 2016)
+
+Recommended Format for Software
+
+The use of NIST software can be cited either through a citation to a published literature article describing the software or through a citation of the software itself. Consult the software's home page for the recommended citation.
+
+If a literature article does not exist, the software citation should use extended format described above, specifying "[Software]" as the medium type. If a URL is provided (instead of a PID), it should point to the best "home page" for the software product. This may be the root of the software's code repository if a more appropriate home page does not exist. The publication release date should correspond to the release year for the version of the software used.
+
+Example:
+
+Guyer, J.E., Wheeler, D.A., and Warren, J.A. (2013), FiPy: A Finite Volume PDE Solver Using Python, Version 3.1, National Institute of Standards and Technology, [Software], https://www.ctcms.nist.gov/fipy/ (Accessed May 26, 2015)
+
+Recommended Format for NIST Technical Series Publications
+
+Author/editor (Publication Year), Title, Series and Publication Identifier, Publisher, Persistent Identifier (PID) or URL (Access date)
+
+Example:
+
+Joint Task Force Transformation Initiative Interagency Working Group (2013), Security and Privacy Controls for Federal Information Systems and Organizations, NIST Special Publication (SP) 800-53, Rev. 4, Includes updates as of January 22, 2015, National Institute of Standards and Technology, Gaithersburg, MD, https://doi.org/10.6028/NIST.SP.800-53r4 (Accessed June 21, 2018)
+
+ 
+
+ Standards
+Created May 27, 2015, Updated June 24, 2025
+Information for Developers
+Open Government Performance Metrics
+Was this page helpful?
+HEADQUARTERS
+100 Bureau Drive
+Gaithersburg, MD 20899
+301-975-2000
+
+Webmaster | Contact Us | Our Other Offices
+
+X.com
+Facebook
+LinkedIn
+Instagram
+YouTube
+Giphy
+RSS Feed
+Mailing List
+How are we doing? Feedback
+Site Privacy  Accessibility  Privacy Program  Copyright & Disclaimers  Vulnerability Disclosure  No Fear Act Policy  FOIA  Environmental Policy  Scientific Integrity  Information Quality Standards  Commerce.gov  Science.gov  USA.gov  Vote.gov

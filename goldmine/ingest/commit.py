@@ -12,7 +12,7 @@ ctx guard (_token_budget/_tokenize_fn) and the failure-row recorder
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import numpy as np
@@ -25,6 +25,7 @@ from ..chunker import (
     split_text_by_tokens,
 )
 from ..store import FileRec, SegmentRec, _folder_words
+from ..evidence import file_evidence_types
 from ..util import excerpt
 from . import walk
 from .extraction import _Outcome, _Piece
@@ -51,12 +52,13 @@ class IngestReport:
     notices: list[dict] = field(default_factory=list)
     dry_run: bool = False
     cancelled: bool = False
+    metrics: dict | None = None
 
     def note(self, code: str, message: str) -> None:
         self.notices.append({"code": code, "message": message})
 
     def to_json(self) -> dict:
-        return {
+        result = {
             "roots": self.roots,
             "files": {
                 "scanned": self.scanned,
@@ -78,6 +80,9 @@ class IngestReport:
             "notices": self.notices,
             "dry_run": self.dry_run,
         }
+        if self.metrics is not None:
+            result["metrics"] = self.metrics
+        return result
 
 
 def name_segment(excerpt_text: str, fts_words: str) -> SegmentRec:
@@ -91,12 +96,20 @@ def name_segment(excerpt_text: str, fts_words: str) -> SegmentRec:
 
 def embed_batched(
     embed: EmbeddingBackend, prompts: list[str], batch: int,
+    *, metrics=None,
 ) -> dict[int, np.ndarray]:
     """Embed prompted texts in `batch`-sized slices -> {position: vector}.
     Raises EmbeddingError; the caller owns the per-file failure policy."""
     vectors: dict[int, np.ndarray] = {}
     for i in range(0, len(prompts), batch):
-        part = embed.embed_texts(prompts[i:i + batch])
+        inputs = prompts[i:i + batch]
+        if metrics is None:
+            part = embed.embed_texts(inputs)
+        else:
+            metrics.call("embed_calls")
+            metrics.call("embed_inputs", len(inputs))
+            with metrics.stage("embed"):
+                part = embed.embed_texts(inputs)
         for j, vec in enumerate(part):
             vectors[i + j] = vec
     return vectors
@@ -133,14 +146,20 @@ class CommitMixin:
     ) -> None:
         """The shared verdict tail: mark the row done + tally the report.
         `embedded` selects the live embed identity (None when no vector
-        landed); content_date=None keeps any stored value (store coalesce)."""
+        landed). Image capture metadata replaces/clears the previous epoch;
+        other kinds keep the existing None/coalesce convention."""
+        info = dict(info or {})
+        if kind in ("image", "audio", "video", "pdf"):
+            info["evidence_types"] = file_evidence_types(
+                self.store.db, fid, kind=kind, extractor_version=extractor_version, info=info,
+            )
         self.store.mark_file(
             fid, state="done", capability=capability,
             detail=detail, info=info or None,
             extractor_version=extractor_version,
             chunker_version=self._chunker_version,
             embed_id=self._embed_identity if embedded else None,
-            content_date=content_date,
+            content_date=content_date, replace_content_date=kind == "image",
         )
         self._tally(report, kind, capability)
 
@@ -159,13 +178,15 @@ class CommitMixin:
     ) -> None:
         """Atomic segment replacement + the verdict tail (one transaction
         per file: the old segments die with the new ones or not at all)."""
-        self.store.replace_segments(fid, segs)
-        self._finish_file(
-            fid, capability=capability, detail=detail, info=info,
-            extractor_version=extractor_version, report=report, kind=kind,
-            embedded=any(s.vec is not None for s in segs),
-            content_date=content_date,
-        )
+        with self._metrics.stage("commit"):
+            with self.store.write_transaction():
+                self.store.replace_segments(fid, segs)
+                self._finish_file(
+                    fid, capability=capability, detail=detail, info=info,
+                    extractor_version=extractor_version, report=report, kind=kind,
+                    embedded=any(s.vec is not None for s in segs),
+                    content_date=content_date,
+                )
 
     def _commit(
         self,
@@ -178,6 +199,19 @@ class CommitMixin:
         embed: EmbeddingBackend | None,
     ) -> None:
         store = self.store
+        if cand.kind == "image" and outcome.info.get("exif_status") in ("error", "unavailable"):
+            # Extraction workers have no store access. Preserve prior proven
+            # capture metadata here only when the immutable source SHA agrees;
+            # never bless legacy sips dates or carry dates onto changed bytes.
+            from .media import EXIF_METADATA_VERSION
+
+            previous = store.find_by_path(str(cand.path))
+            prior = previous.info or {} if previous else {}
+            if (previous and previous.sha256 == sha and prior.get("exif_version") == EXIF_METADATA_VERSION
+                    and prior.get("taken_source") == "Exif.DateTimeOriginal"
+                    and isinstance(prior.get("taken"), str) and previous.content_date is not None):
+                outcome.info.update({"taken": prior["taken"], "taken_source": prior["taken_source"]})
+                outcome.content_date = previous.content_date
         fid = store.upsert_file(
             FileRec(
                 path=str(cand.path), source="file", kind=cand.kind,
@@ -186,7 +220,7 @@ class CommitMixin:
         )
         if outcome.capability == "failed":
             self._record_failed(store, str(cand.path), outcome.detail, report, fid=fid,
-                                kind=cand.kind)
+                                kind=cand.kind, info=outcome.info or None)
             return
         if outcome.capability == "unsupported":
             # keep the extractor's info (screenshot flag etc.) beside the
@@ -194,11 +228,14 @@ class CommitMixin:
             info = dict(outcome.info or {})
             if outcome.detail:
                 info["reason"] = outcome.detail
-            self._finish_file(
-                fid, capability="unsupported", detail=outcome.detail,
-                info=info, extractor_version=outcome.extractor_version,
-                report=report, kind=cand.kind,
-            )
+            with store.write_transaction():
+                store.delete_content_segments(fid)
+                self._finish_file(
+                    fid, capability="unsupported", detail=outcome.detail,
+                    info=info, extractor_version=outcome.extractor_version,
+                    report=report, kind=cand.kind,
+                    content_date=outcome.content_date,
+                )
             _merge_reasons(report.unsupported_reasons, outcome.detail or "unknown")
             return
 
@@ -258,10 +295,10 @@ class CommitMixin:
         with_loc=False commits segments with loc=None regardless of chunk locs
         (the URL path's url-stdlib behavior — pages have no line numbers)."""
         if not pieces:
-            self._finish_file(
-                fid, capability="metadata_only",
-                detail=detail or "no content", info=info,
-                extractor_version=extractor_version, report=report, kind=kind,
+            self._commit_segments(
+                fid, [name_segment(name, fts_words)], capability="metadata_only",
+                detail=detail or "no content", info=info, extractor_version=extractor_version,
+                report=report, kind=kind, content_date=content_date,
             )
             return
 
@@ -282,7 +319,7 @@ class CommitMixin:
         vectors: dict[int, np.ndarray] = {}
         if embed is not None and vec_chunks:
             prompts = [document_prompt(title, p.chunk.text) for p in vec_chunks]
-            vectors = embed_batched(embed, prompts, batch)
+            vectors = embed_batched(embed, prompts, batch, metrics=self._metrics)
         # map (chunk, ok) list position -> vector position
         vec_pos = 0
         vec_index_of: dict[int, int] = {}
@@ -338,7 +375,7 @@ class CommitMixin:
             return pieces
         ceiling = backend.max_input_tokens()
         if ceiling is None:
-            return pieces  # no server ceiling to guard (mock/foresight)
+            return pieces  # no server ceiling to guard (mock)
         guardable = [i for i, p in enumerate(pieces) if p.vec_ok]
         if not guardable:
             return pieces
@@ -376,9 +413,15 @@ class CommitMixin:
         for i, piece in enumerate(pieces):
             if i in split_map:
                 for sub in split_map[i]:
+                    if piece.location_unit in ("page", "second"):
+                        sub = replace(sub, loc=piece.chunk.loc, loc_end=piece.chunk.loc_end)
+                    elif piece.chunk.loc is not None:
+                        sub = replace(sub, loc=piece.chunk.loc + (sub.loc or 1) - 1,
+                                      loc_end=piece.chunk.loc + (sub.loc_end or 1) - 1)
                     out.append(_Piece(
                         sub, piece.vec_ok, kind=piece.kind,
                         excerpt_override=piece.excerpt_override,
+                        location_unit=piece.location_unit,
                     ))
             else:
                 out.append(piece)
@@ -409,7 +452,24 @@ class CommitMixin:
             name_segment(Path(cand.path).name,
                          _folder_words(str(cand.path), "file"))
         ]
+        media_segs = []
         for m in outcome.media_segs:
+            if m.kind != "ocr" or not m.text_for_fts:
+                media_segs.append(m)
+                continue
+            limit = int(self.cfg.ingest.max_chunks)
+            chunks = self._chunk_text(m.text_for_fts, "image", limit + 1)
+            if len(chunks) > limit:
+                info["partial"] = True
+                if not outcome.partial:
+                    report.partial += 1
+                chunks = chunks[:limit]
+            pieces = self._ctx_guard_split([_Piece(chunk, m.embed_text, kind="ocr") for chunk in chunks], Path(cand.path).stem)
+            for piece in pieces:
+                chunk = piece.chunk
+                media_segs.append(replace(m, text_for_fts=chunk.text, excerpt=excerpt(chunk.text),
+                                          loc=chunk.loc, loc_end=chunk.loc_end))
+        for m in media_segs:
             vec: np.ndarray | None = None
             if embed is not None:
                 try:
@@ -417,11 +477,20 @@ class CommitMixin:
                         if m.embed_text and m.text_for_fts:
                             title = Path(cand.path).stem
                             prompted = document_prompt(title, m.text_for_fts)
-                            vec = embed.embed_texts([prompted])[0]
+                            self._metrics.call("embed_calls")
+                            self._metrics.call("embed_inputs")
+                            with self._metrics.stage("embed"):
+                                vec = embed.embed_texts([prompted])[0]
                     elif m.kind == "image":
-                        vec = embed.embed_image(m.path)
+                        self._metrics.call("embed_calls")
+                        self._metrics.call("embed_inputs")
+                        with self._metrics.stage("embed"):
+                            vec = embed.embed_image(m.path)
                     else:
-                        vec = embed.embed_audio_wav(m.wav)
+                        self._metrics.call("embed_calls")
+                        self._metrics.call("embed_inputs")
+                        with self._metrics.stage("embed"):
+                            vec = embed.embed_audio_wav(m.wav)
                 except OSError as exc:
                     # file vanished/unreadable since the walk: per-file failure,
                     # not a backend crash
@@ -451,7 +520,7 @@ class CommitMixin:
                     vec=vec,
                 )
             )
-        has_fts_text = any(s.text_for_fts for s in segs)
+        has_fts_text = any(s.kind != "name" and s.text_for_fts for s in segs)
         indexed = any(s.vec is not None for s in segs) or has_fts_text
         self._commit_segments(
             fid, segs,

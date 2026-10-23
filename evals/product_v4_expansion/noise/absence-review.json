@@ -1,0 +1,334 @@
+{
+  "schema": 1,
+  "status": "DRAFT_AI_ABSENCE_REVIEWED_AWAITING_INDEPENDENT_AUDIT",
+  "reviewed_at": "2026-10-21T17:01:02.703481+00:00",
+  "reviewer": "OpenAI Codex AI curator; not a human review",
+  "questions": 60,
+  "subtypes": {
+    "near_topic": 20,
+    "random_terms": 20,
+    "conflict_id": 20
+  },
+  "source_files": 122,
+  "source_views": 175,
+  "source_view_inventory_sha256": "1e7fd8c14273ecbe709a6ed622642c575e1a86831e2f581b7ae9489750f30637",
+  "noise_shard_sha256": "6c7ca1345855160f1b8d0c57cc2c1cf8ac3b4c5d4d67b2f4e2e6e729ad23da2d",
+  "reviewed_manifest": {
+    "path": "/Users/yul/git/goldmine/evals/product_v4_expansion/manifest.json",
+    "sha256": "73ad4f1442228e7f9a9e3352504d35bab43fbb5d85c6a432f248af6adb5b19b7"
+  },
+  "method": "Reviewed every explicit source-first scope reason against complete source inventory and all-view discriminator search; read all20 publisher ASR clips and relevant Bell copper passage. Literal absence alone is not treated as an answerability proof.",
+  "hit_dispositions": [
+    {
+      "id": "noise-near_topic-008",
+      "source": "text/vite-ko/guide/assets.md",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Only shader.glsl?raw appears in an import example. No shader bytes, deployment artifact, or SHA256 value is supplied."
+    }
+  ],
+  "question_dispositions": [
+    {
+      "id": "noise-near_topic-001",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The actual Requests guides explain pooling and streaming, but contain no such 300000-request memory benchmark or hardware measurement."
+    },
+    {
+      "id": "noise-near_topic-002",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "TLS verification guidance does not contain the caller’s service incident log or observed certificate fingerprint."
+    },
+    {
+      "id": "noise-near_topic-003",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Click confirmation and abort behavior is documented; no user telemetry or last-week execution counts are part of the corpus."
+    },
+    {
+      "id": "noise-near_topic-004",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Click environment-variable resolution examples provide no warehouse deployment configuration or yesterday’s environment value."
+    },
+    {
+      "id": "noise-near_topic-005",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Vue reactivity documentation explains dependency behavior, not measurements from an unspecified order-page deployment."
+    },
+    {
+      "id": "noise-near_topic-006",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The Vue computed guide has generic book and name examples; the company SearchPanel component source and dependency graph are absent."
+    },
+    {
+      "id": "noise-near_topic-007",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The Japanese Vite guide demonstrates an app title in a sample staging file; it does not include the user project’s actual deployment domain."
+    },
+    {
+      "id": "noise-near_topic-008",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The Korean Vite guide uses a shader filename as a raw-import example; the shader bytes and deployment checksum are absent."
+    },
+    {
+      "id": "noise-near_topic-009",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Hash constructor code and hashing guidance provide no per-algorithm throughput benchmark on that hardware."
+    },
+    {
+      "id": "noise-near_topic-010",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The zlib source defines checksum algorithms but the named backup bytes are not a corpus asset."
+    },
+    {
+      "id": "noise-near_topic-011",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "UUID code describes hardware-address discovery, not the actual hardware address of an unspecified production host."
+    },
+    {
+      "id": "noise-near_topic-012",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The zipfile implementation contains no such archive or its member directory; generic ZIP capability does not supply the requested contents."
+    },
+    {
+      "id": "noise-near_topic-013",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The foreign-function wrapper source does not include the named shared library, symbol table, or runtime address space."
+    },
+    {
+      "id": "noise-near_topic-014",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Random generator algorithms do not recover a particular worker’s missing seed, generator state, or execution log."
+    },
+    {
+      "id": "noise-near_topic-015",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The HTTPX quickstart and timeout documentation contain no benchmark results for the user gateway."
+    },
+    {
+      "id": "noise-near_topic-016",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Strict-mode and serialization guides do not contain a billing dataset or the application validation-error log."
+    },
+    {
+      "id": "noise-near_topic-017",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Rich table and progress documentation have rendering examples, not frame-by-frame hardware power measurements."
+    },
+    {
+      "id": "noise-near_topic-018",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The uv project/tool guides document commands but no private production network trace or execution history."
+    },
+    {
+      "id": "noise-near_topic-019",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "NIST SP 800-92 gives general log-management guidance; the company’s quarterly audit findings are not included."
+    },
+    {
+      "id": "noise-near_topic-020",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The actual historical telegraphy patent describes apparatus and claims, not Bell’s purchase invoice or prototype material cost."
+    },
+    {
+      "id": "noise-random_terms-001",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The corpus has no future railway platform assignment or station operating schedule."
+    },
+    {
+      "id": "noise-random_terms-002",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No greenhouse monitoring records or soil measurements are included."
+    },
+    {
+      "id": "noise-random_terms-003",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No race registration database or runner split timing is present."
+    },
+    {
+      "id": "noise-random_terms-004",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No school observatory equipment inventory, hinge specification or maintenance record is present."
+    },
+    {
+      "id": "noise-random_terms-005",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No pottery firing batch record or glaze colorimetry results are included."
+    },
+    {
+      "id": "noise-random_terms-006",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No record of that concert, programme or encore performance is included."
+    },
+    {
+      "id": "noise-random_terms-007",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No forthcoming Tokyo workshop notice or materials-fee schedule is included."
+    },
+    {
+      "id": "noise-random_terms-008",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No Busan library class registration notice or future class capacity is included."
+    },
+    {
+      "id": "noise-random_terms-009",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No identified coastal cycle-bridge completion or acceptance load report is present."
+    },
+    {
+      "id": "noise-random_terms-010",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No bakery supplier traceability record or May flour delivery invoice is present."
+    },
+    {
+      "id": "noise-random_terms-011",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No personal instrument check-in or storage-locker assignment exists in the corpus."
+    },
+    {
+      "id": "noise-random_terms-012",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No drone qualification test or measured battery-capacity record is included."
+    },
+    {
+      "id": "noise-random_terms-013",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Photo names and camera timestamps do not provide a museum relocation insurance policy."
+    },
+    {
+      "id": "noise-random_terms-014",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No boat maintenance invoice, registration service history or sail repair record is present."
+    },
+    {
+      "id": "noise-random_terms-015",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No identified trail nest-monitoring log or egg count is included."
+    },
+    {
+      "id": "noise-random_terms-016",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No cafe service trace or coffee roasting batch curve is present."
+    },
+    {
+      "id": "noise-random_terms-017",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No community choir rehearsal-room rental agreement is a corpus source."
+    },
+    {
+      "id": "noise-random_terms-018",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No tide-gauge asset register or dated maintenance visit record is included."
+    },
+    {
+      "id": "noise-random_terms-019",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No bonsai show entry record or irrigation volume log is included."
+    },
+    {
+      "id": "noise-random_terms-020",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "No orchard shipping ledger, pallet weighbridge reading or packing-shed record is included."
+    },
+    {
+      "id": "noise-conflict_id-001",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Mutates the genuine hashlib.sha3_512 algorithm name into an unlisted sha3_1024; the requested constructor is not defined."
+    },
+    {
+      "id": "noise-conflict_id-002",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the genuine b64encode name to nonexistent b128encode; another encoding API is not evidence for this one."
+    },
+    {
+      "id": "noise-conflict_id-003",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the genuine IPv6Address class to an undefined IPv8Address; IPv6 rules cannot answer a request for that class."
+    },
+    {
+      "id": "noise-conflict_id-004",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the actual TLSv1_3 enum member to an unsupported TLSv1_9 name, with no such guarantees in the source."
+    },
+    {
+      "id": "noise-conflict_id-005",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The pinned implementation defines versions one, three, four and five; uuid9 and its requested guarantee are absent."
+    },
+    {
+      "id": "noise-conflict_id-006",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Mutates the genuine ZIP64_LIMIT constant into absent ZIP128_LIMIT; the defined ZIP64 value must not be substituted."
+    },
+    {
+      "id": "noise-conflict_id-007",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the genuine crc32 entry point to undefined crc64; the requested polynomial is not described."
+    },
+    {
+      "id": "noise-conflict_id-008",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Mutates the genuine BOM_UTF32_BE name into an undefined UTF-64 byte-order-mark constant."
+    },
+    {
+      "id": "noise-conflict_id-009",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the documented specifically-sized c_int64 type to c_int128; no such selection is defined in the pinned initializer."
+    },
+    {
+      "id": "noise-conflict_id-010",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "The source explains seed versions one and two, not a version-nine repeatability contract; permissive runtime code is not a documented guarantee."
+    },
+    {
+      "id": "noise-conflict_id-011",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Mutates the genuine defineModel macro name into defineModels, which is not defined by the included Vue page."
+    },
+    {
+      "id": "noise-conflict_id-012",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Adds an undefined afterWait member to watchEffect; the actual synchronous dependency rule is not evidence for this API."
+    },
+    {
+      "id": "noise-conflict_id-013",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes genuine confirm to undefined confirm_once; no cross-process persistence behavior is documented."
+    },
+    {
+      "id": "noise-conflict_id-014",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the genuine Choice type into absent ChoiceMap; the existing choice-list implementation cannot supply mapping validation rules."
+    },
+    {
+      "id": "noise-conflict_id-015",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes genuine singular prepare_request to prepare_requests and assumes unsupported batch-send semantics."
+    },
+    {
+      "id": "noise-conflict_id-016",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Adds a version suffix to the actual resolve_redirects method; that versioned method has no definition or default policy."
+    },
+    {
+      "id": "noise-conflict_id-017",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Extends the genuine merge_setting helper name into absent merge_setting_all with unsupported three-way configuration semantics."
+    },
+    {
+      "id": "noise-conflict_id-018",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Invents a clamp_open method from the actual FloatRange clamp behavior; no rounding mode for that method exists in the source."
+    },
+    {
+      "id": "noise-conflict_id-019",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Changes the genuine built-in environment object access into an absent claimed built-in constant; no object value is supplied."
+    },
+    {
+      "id": "noise-conflict_id-020",
+      "disposition": "NO_SUPPORTED_ANSWER",
+      "reason": "Mutates the actual create_default_context function name to a versioned variant and assumes retry behavior absent from TLS-context construction."
+    }
+  ],
+  "retrieval_exposure": "NONE",
+  "independent_label_audit_pending": true,
+  "freeze_claim": false
+}

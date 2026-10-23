@@ -1,0 +1,51 @@
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=River [[:en:Skeiðará|Skeiðará]] and Skeiðarársandur as seen from the Skaftafellsheiði plateau, [[:en:Vatnajökull National Park|Vatnajökull National Park]], [[:en:Iceland|Iceland]].}}
+{{es|1=Vista panorámica del [[:es:Skeiðará|río Skeiðará]] y Skeiðarár[[:es:Sandur|sandur]], desde la meseta de Skaftafellsheiði, [[:es:Parque nacional Vatnajökull|Parque nacional Vatnajökull]], [[:es:Islandia|Islandia]].}}
+{{pl|1=Rzeka ''[[:pl:Skeiðará|Skeiðará]]'' oraz ''Skeiðarársandur'' ([[:pl:Sandr|sandr]] utworzony przez tę rzekę) widziane z [[:pl:Płaskowyż|płaskowyżu]] ''Skaftafellsheiði'' w [[:pl:Park Narodowy Vatnajökull|Parku Narodowym ''Vatnajökull'']] w [[:pl:Islandia|Islandii]].}}
+{{cs|Řeka [[:Category:Skeiðará|Skeiðará]] a ledovec Skeiðarársandur při pohledu z náhorní plošiny Skaftafellsheiði, Národní park Vatnajökull, [[:cs:Island|Island]].}}
+{{hu|A [[:hu:Skeiðará|Skeiðará]] látképe a Skaftafellsheiði fennsíkról (Vatnajökull Nemzeti Park, [[:hu:Izland|Izland]])}}
+{{it|Lo [[:it:Skeiðará|Skeiðará]] e lo Skeiðarársandur visti dall'altopiano Skaftafellsheiði in [[:it:Islanda|Islanda]].}}
+{{ko|[[:ko:아이슬란드|아이슬란드]] [[:ko:바트나이외쿠틀 국립공원|바트나이외쿠틀 국립공원]] 스카프타펠스헤이디 고원에서 바라본 [[:en:Skeiðará|스케이다라우]] 강과 스케이다라우르산뒤르.}}
+{{mk|Поглед на реката [[:en:Skeiðará|Скејдарау]] од висорамнината Скафтафелсхејди во [[:en:Vatnajökull National Park|националниот парк Ватнајекидл]], Исланд.}}
+{{nl|De [[:nl:Skeiðará|Skeiðará]] in het [[:nl:Nationaal park Vatnajökull|Nationaal park Vatnajökull]] in [[:nl:IJsland|IJsland]]}}
+{{pt|Vista panorâmica do [[:pt:Skeiðará|rio Skeiðará]] e da [[:pt:Planície aluvial|planície sedimentar]] proveniente da [[:pt:Erosão|erosão]] de [[:pt:Geleira|geleiras]], [[:pt:Parque Nacional Vatnajökull|Parque Nacional Vatnajökull]], [[:pt:Islândia|Islândia]].}}
+|date=2014-07-21 12:28:33
+|source={{own}}
+|author={{creator:Martin Falbisoner}}
+|permission=
+|other versions=
+<gallery>
+View from Skaftafell National Park July 2014 -3.jpg|derived from
+</gallery>
+}}
+{{Location|64.031822|-16.93697}}
+
+=={{Assessment}}==
+{{Picture of the day|year=2016|month=12|day=11}}
+{{Assessments|featured=1}}
+{{QualityImage}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Views from Skaftafellsheiði]]
+[[Category:Quality Images by Martin Falbisoner]]
+[[Category:Featured Pictures by Martin Falbisoner]]
+[[Category:Quality images of nature in Iceland]]
+[[Category:Rock flour in glacial lakes]]
+[[Category:Recessional moraines of Skaftafellsjökull]]
+[[Category:Fluvial sediment transport]]
+[[Category:Glacial sediment transport]]
+[[Category:Skaftafellsá]]
+[[Category:Braided rivers in Iceland]]
+[[Category:Anastomosing rivers]]
+[[Category:Rock flour in Iceland]]
+[[Category:Hiking trails in Skaftafell National Park]]
+[[Category:Proglacial lakes of Skaftafellsjökull]]
+[[Category:Marginal lakes of Skaftafellsjökull]]
+[[Category:July 2014 in Iceland]]
+[[Category:Skaftafellsjökull in 2014]]
+[[Category:Iceland photographs taken on 2014-07-21]]
+[[Category:Quality images of trails]]
+[[Category:Featured pictures of landscapes in Iceland]]

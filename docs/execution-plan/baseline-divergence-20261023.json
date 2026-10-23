@@ -1,0 +1,23 @@
+{
+ "schema": 1,
+ "kind": "baseline-authorized-divergence",
+ "decided_by": "user decision 2026-10-23 (D1): Foresight sources deleted from the machine; clean re-pin authorized",
+ "policy": "evals/history/20261021 must forever match the original baseline-20261021 pins. A current input may diverge only by explicit registration here: its original sha must equal the pin, and the current file on disk must match the registered current sha.",
+ "files": {
+  "evals/corpus_manifest.json": {
+   "original_sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534",
+   "current_sha256": "87a569d601b3744b4bb395acae4200670b53ac94db824d8cf5de7bd4c5d8fac0",
+   "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version v4 (foresight removal), then v5 2026-10-23 (user decision D4: fixture photos regenerated as JPEGs with genuine EXIF date/Make/GPS; affected media-037..040 re-registered)"
+  },
+  "evals/real.jsonl": {
+   "original_sha256": "850c430f10e270e20c74b85ce919807f664b854ed4b84bc8e8bc7f3cbd24448a",
+   "current_sha256": "39bf3c4bd2f6e2e74ac590af06ead8f00d5a8e4020bffaf8ddc06eaa3086164c",
+   "reason": "41 questions whose only expected sources lived in the deleted foresight-rea tree removed; splits regenerated (78/31, same seed); active legacy denominators 109/128"
+  },
+  "evals/media_queries.jsonl": {
+   "original_sha256": "b88f4fce6ca4a4f37c8d140c52908748b145724dbc311c6926cf3933c95df03e",
+   "current_sha256": "f45bd5dac0f142604e7d49ab46e97c85f9dd7e6cdadf2888ca91f80da3c30804",
+   "reason": "media-037..040 expect paths updated .png->.jpg (user decision D4: fixture photos regenerated as genuine EXIF JPEGs)"
+  }
+ }
+}

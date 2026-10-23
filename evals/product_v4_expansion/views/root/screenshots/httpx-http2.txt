@@ -1,0 +1,1 @@
+When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time. It is possible that a future version of httpx may enable HTTP/2 support by default.

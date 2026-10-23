@@ -1,0 +1,658 @@
+{
+  "schema": 1,
+  "state": "INDEPENDENT_SEMANTIC_SOURCE_AUDIT_COMPLETE_REVISION_REQUIRED",
+  "reviewer": "AI agent /root/review_answer_independent; independent of this draft and its upstream question/annotation authors; not a human certification",
+  "completed_at": "2026-10-21T19:50:12.199857+00:00",
+  "scope": "All80 draft tasks, all100 positive fact/evidence occurrences, their88 original development question IDs, full122-source manifest and175 frozen views; no answerer/judge outputs or jobs.",
+  "input_pins": {
+    "data-selection-registration.json": "f3b3211cc1feb0335135c2a4ce6c8e5b31a26886411b09e0d8b211880f90ea81",
+    "questions.draft.jsonl": "5a47e2360a35d936754b79e654194c5bbeaeca2d9ca7ec1535561d375c2e49ab",
+    "corpus.draft.json": "f0948825f6448baa73e1764f5526b894d73bd21b06c644fecfc164ecfed749c0",
+    "source-map.json": "ba72c3e548e567aea62e9b00d1fdf816c6fb361f8e2060b71bd65361e0eec47f",
+    "span-readback.json": "2f5e56fb145c46cf7616bf5c963cedf37ded9ec8b665cf69306149d6484b7440",
+    "draft-validation.json": "4c62b8f04c1343cc2e35028338cb220e06ee1c7289db75279940b18bd7b23b91",
+    "development-questions.jsonl": "635e232c3082eb11c1ac9f2d7097971d1fd373eecaf59b2d8616b9fae04b9933",
+    "development-source-extract.json": "95881f8c45fa8853d2f64ff3188022e60189c1b05d59dd9ba72ed9a58da678fa",
+    "selected-trap-negative-audit.json": "adc8a4a780247540123e79b37f7d4db677c9564e3d573475222f729b8bf0fbd4",
+    "evals/product_v4_expansion/manifest.json": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0"
+  },
+  "counts": {
+    "questions": 80,
+    "single": 20,
+    "multi": 20,
+    "cross": 20,
+    "trap": 20,
+    "positive_fact_occurrences": 100,
+    "unique_original_question_ids": 88,
+    "original_question_uses": 100,
+    "unique_original_fact_ids": 88,
+    "answerable_source_groups": 29,
+    "cross_groups": {
+      "upstream:pip-tools": 4,
+      "upstream:poetry": 4,
+      "upstream:typer": 3,
+      "upstream:uv": 3,
+      "upstream:pip": 3,
+      "upstream:httpx": 3
+    },
+    "per_question_verdicts": {
+      "SOURCE_LABEL_ACCEPTABLE": 49,
+      "REVISION_REQUIRED": 9,
+      "CROSS_FILE_NECESSITY_RESOLUTION_REQUIRED": 2,
+      "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS": 20
+    }
+  },
+  "finding_counts": {
+    "required": 9,
+    "design_resolution_required": 2,
+    "advisory": 2
+  },
+  "source_integrity": {
+    "manifest_sha_verified": true,
+    "corpus_sources_exactly_equal_manifest_sources": true,
+    "all175_view_sha256_verified": true,
+    "all60_code_doc_asset_sha256_verified": true,
+    "all60_code_doc_full_text_views_equal_NFC_LF_normalized_original_asset": true,
+    "all100_positive_spans_and_locations_independently_read_back": true,
+    "errors": []
+  },
+  "selection_transformation_check": {
+    "all80_questions_preserved_or_exact_two_original_wrapper": true,
+    "all100_facts_and_sufficient_evidence_alternatives_preserved_after_prefixing": true,
+    "evidence_changes_only_view_id_removed_from_question_entries_and_preserved_in_source_map": true,
+    "duplicate_question_or_reuse_dependence": "12 original development questions recur twice.100 original question usages cover88 IDs.100 positive fact occurrences cover88 original fact IDs.80 tasks must not be reported as80 independent samples.",
+    "repeat_original_questions": {
+      "text-semantic-041": 2,
+      "text-semantic-029": 2,
+      "text-semantic-001": 2,
+      "text-semantic-059": 2,
+      "text-cjk-001": 2,
+      "text-cjk-013": 2,
+      "text-cjk-023": 2,
+      "v4x-pdf-nist-800-145-01": 2,
+      "v4x-pdf-US174465-02": 2,
+      "v4x-pdf-nist-800-92-02": 2,
+      "v4x-pdf-nist-800-38a-03": 2,
+      "media-real-photo-94585934-filename": 2
+    }
+  },
+  "semantic_findings": [
+    {
+      "id": "IR-001",
+      "severity": "required",
+      "type": "missing_answer_setting",
+      "affected": [
+        {
+          "question_id": "av3-multi-012",
+          "fact_id": "p1_f0",
+          "evidence_id": "p1_e0",
+          "upstream_id": "text-semantic-053"
+        }
+      ],
+      "problem": "The question asks which option setting enables repeated verbosity flags. The fact only restates counting behavior, and the cited span stops six lines before count=True. Neither the target nor the current evidence requires the setting that answers the question.",
+      "minimal_suggested_change": "Fact: Set count=True on click.option; each repetition increments the integer verbosity level. Extend p1_e0 through the actual decorator at line237, for example the supplied lines230-239.",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/click/docs/options.rst",
+          "asset_path": "assets/text/click/docs/options.rst",
+          "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+          "view_id": "body",
+          "view_path": "views/text/click/docs/options.rst.txt",
+          "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+          "start_char": 6357,
+          "end_char": 6674,
+          "line_start": 230,
+          "line_end": 239,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 935
+          },
+          "text": "In some very rare circumstances, it is interesting to use the repetition\nof options to count an integer up.  This can be used for verbosity flags,\nfor instance:\n\n.. click:example::\n\n    @click.command()\n    @click.option('-v', '--verbose', count=True)\n    def log(verbose):\n        click.echo(f\"Verbosity: {verbose}\")",
+          "sha256": "ce825be8ddff5529dbb7572fc93afb8f52b600105bae1de54c3e88ea4987e915"
+        }
+      ]
+    },
+    {
+      "id": "IR-002",
+      "severity": "required",
+      "type": "code_evidence_missing_control_flow",
+      "affected": [
+        {
+          "question_id": "av3-single-002",
+          "fact_id": "f0",
+          "evidence_id": "e0",
+          "upstream_id": "text-semantic-029"
+        },
+        {
+          "question_id": "av3-multi-002",
+          "fact_id": "p2_f0",
+          "evidence_id": "p2_e0",
+          "upstream_id": "text-semantic-029"
+        }
+      ],
+      "problem": "The present three lines insert a suffix and set a variable named stop. They omit the takes_value guard, extraction of the suffix as the option value, and the actual conditional break. They therefore do not fully prove both behaviors claimed by the fact.",
+      "minimal_suggested_change": "Retain the fact and replace both reused spans with lines437-452, which include value extraction and if stop: break.",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/click/src/click/parser.py",
+          "asset_path": "assets/text/click/src/click/parser.py",
+          "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "view_id": "body",
+          "view_path": "views/text/click/src/click/parser.py.txt",
+          "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+          "start_char": 15427,
+          "end_char": 15916,
+          "line_start": 437,
+          "line_end": 452,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 529
+          },
+          "text": "            if option.takes_value:\n                # Any characters left in arg?  Pretend they're the\n                # next arg, and stop consuming characters of arg.\n                if i < len(arg):\n                    state.rargs.insert(0, arg[i:])\n                    stop = True\n\n                value = self._get_value_from_state(opt, option, state)\n\n            else:\n                value = None\n\n            option.process(value, state)\n\n            if stop:\n                break",
+          "sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40"
+        }
+      ]
+    },
+    {
+      "id": "IR-003",
+      "severity": "required",
+      "type": "missing_answer_identifier",
+      "affected": [
+        {
+          "question_id": "av3-multi-004",
+          "fact_id": "p1_f0",
+          "evidence_id": "p1_e0",
+          "upstream_id": "text-cjk-017"
+        }
+      ],
+      "problem": "The question asks which CSS style is modified. The fact says only that a display style property is toggled; it omits the actual display identifier, although the source evidence includes it.",
+      "minimal_suggested_change": "Fact: v-show 在 DOM 中保留元素，只切换元素的 CSS display 属性。",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+          "asset_path": "assets/text/vue-zh/src/guide/essentials/conditional.md",
+          "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+          "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+          "start_char": 2070,
+          "end_char": 2141,
+          "line_start": 89,
+          "line_end": 89,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 109
+          },
+          "text": "不同之处在于 `v-show` 会在 DOM 渲染中保留该元素；`v-show` 仅切换了该元素上名为 `display` 的 CSS 属性。",
+          "sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06"
+        }
+      ]
+    },
+    {
+      "id": "IR-004",
+      "severity": "required",
+      "type": "causal_answer_target_incomplete",
+      "affected": [
+        {
+          "question_id": "av3-multi-005",
+          "fact_id": "p1_f0",
+          "evidence_id": "p1_e0",
+          "upstream_id": "text-cjk-047"
+        }
+      ],
+      "problem": "The question already states that default is configured and the parent supplies no value, then asks why states diverge. The fact merely repeats those conditions and divergence without the explanatory state difference shown in the evidence.",
+      "minimal_suggested_change": "Fact: 父组件没有提供值时，父值仍可为 undefined，而子组件使用 defineModel 的 default（示例为1），所以父子值不同步。",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_path": "assets/text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 2372,
+          "end_char": 2499,
+          "line_start": 100,
+          "line_end": 100,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 610
+          },
+          "text": "如果为 `defineModel` prop 设置了一个 `default` 值且父组件没有为该 prop 提供任何值，会导致父组件与子组件之间不同步。在下面的示例中，父组件的 `myRef` 是 undefined，而子组件的 `model` 是 1：",
+          "sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a"
+        }
+      ]
+    },
+    {
+      "id": "IR-005",
+      "severity": "required",
+      "type": "missing_answer_identifiers",
+      "affected": [
+        {
+          "question_id": "av3-multi-005",
+          "fact_id": "p2_f0",
+          "evidence_id": "p2_e0",
+          "upstream_id": "text-cjk-048"
+        }
+      ],
+      "problem": "The question explicitly asks for the prop and update event corresponding to v-model:title. The fact describes a title property and title-update event in Chinese without their exact API names.",
+      "minimal_suggested_change": "Fact: v-model:title 对应子组件的 title prop 和 update:title 事件。",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_path": "assets/text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 6340,
+          "end_char": 6445,
+          "line_start": 265,
+          "line_end": 265,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 610
+          },
+          "text": "在这种情况下，子组件应该使用 `title` prop 和 `update:title` 事件来更新父组件的值，而非默认的 `modelValue` prop 和 `update:modelValue` 事件：",
+          "sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6"
+        }
+      ]
+    },
+    {
+      "id": "IR-006",
+      "severity": "required",
+      "type": "missing_answer_modifier",
+      "affected": [
+        {
+          "question_id": "av3-multi-009",
+          "fact_id": "p2_f0",
+          "evidence_id": "p2_e0",
+          "upstream_id": "text-cjk-030"
+        }
+      ],
+      "problem": "The question asks for the automatic trimming option. The fact mentions a whitespace-removal modifier without naming .trim, so it does not require the actionable syntax supplied by the source.",
+      "minimal_suggested_change": "Fact: 在 v-model 后添加 .trim 修饰符，可自动去除用户输入两端的空格。",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+          "asset_path": "assets/text/vue-zh/src/guide/essentials/forms.md",
+          "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+          "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+          "start_char": 14152,
+          "end_char": 14207,
+          "line_start": 458,
+          "line_end": 458,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 468
+          },
+          "text": "如果你想要默认自动去除用户输入内容中两端的空格，你可以在 `v-model` 后添加 `.trim` 修饰符：",
+          "sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005"
+        }
+      ]
+    },
+    {
+      "id": "IR-007",
+      "severity": "required",
+      "type": "evidence_missing_host_port_and_auth_semantics",
+      "affected": [
+        {
+          "question_id": "av3-multi-014",
+          "fact_id": "p2_f0",
+          "evidence_id": "p2_e0",
+          "upstream_id": "text-semantic-003"
+        }
+      ],
+      "problem": "The current span is only the two-line comment about HTTP-to-HTTPS on standard ports. It omits the hostname inequality rejection, exact port conditions, the should_strip_auth definition, and return False that prove the full same-host/no-auth-stripping fact.",
+      "minimal_suggested_change": "Retain the fact; extend p2_e0 to lines127-143, showing the function meaning, same-host prerequisite, HTTP80/None to HTTPS443/None conditions, and return False.",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/requests/src/requests/sessions.py",
+          "asset_path": "assets/text/requests/src/requests/sessions.py",
+          "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "view_id": "body",
+          "view_path": "views/text/requests/src/requests/sessions.py.txt",
+          "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "start_char": 4139,
+          "end_char": 4937,
+          "line_start": 127,
+          "line_end": 143,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 831
+          },
+          "text": "    def should_strip_auth(self, old_url, new_url):\n        \"\"\"Decide whether Authorization header should be removed when redirecting\"\"\"\n        old_parsed = urlparse(old_url)\n        new_parsed = urlparse(new_url)\n        if old_parsed.hostname != new_parsed.hostname:\n            return True\n        # Special case: allow http -> https redirect when using the standard\n        # ports. This isn't specified by RFC 7235, but is kept to avoid\n        # breaking backwards compatibility with older versions of requests\n        # that allowed any redirects on the same host.\n        if (\n            old_parsed.scheme == \"http\"\n            and old_parsed.port in (80, None)\n            and new_parsed.scheme == \"https\"\n            and new_parsed.port in (443, None)\n        ):\n            return False",
+          "sha256": "6341ec0884d4b4344dc55c37e0e5d47e6d3436f244673eae5687b6d3683e40f0"
+        }
+      ]
+    },
+    {
+      "id": "IR-008",
+      "severity": "required",
+      "type": "causal_evidence_truncated",
+      "affected": [
+        {
+          "question_id": "av3-single-020",
+          "fact_id": "f1",
+          "evidence_id": "e1",
+          "upstream_id": "media-real-asr-3000-15664-0005"
+        }
+      ],
+      "problem": "WOOD FOR FIRES IS EVERYWHERE ABUNDANT states wood availability, but the marked span omits the blanket and the causal AS that makes availability the reason it can be forgone.",
+      "minimal_suggested_change": "Retain the fact and whole-utterance time range; extend the text span to the complete utterance (chars0-129) so it proves the causal relation. Do not invent internal word timestamps.",
+      "exact_source_fragments": [
+        {
+          "source_path": "media/asr/3000-15664-0005.flac",
+          "asset_path": "assets/media/asr/3000-15664-0005.flac",
+          "asset_sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f",
+          "view_id": "official-transcript",
+          "view_path": "views/media/asr/3000-15664-0005.txt",
+          "view_sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+          "start_char": 0,
+          "end_char": 129,
+          "line_start": 1,
+          "line_end": 1,
+          "source_location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "text": "ONE BLANKET WILL BE ENOUGH TO CARRY OR YOU MAY FOREGO THE PLEASURE AND BURDEN ALTOGETHER AS WOOD FOR FIRES IS EVERYWHERE ABUNDANT",
+          "sha256": "f64098ce1f9966591cbf68789b24ed7ece6b99b485c2f96d8df89fc90c01b5c0"
+        }
+      ]
+    },
+    {
+      "id": "IR-009",
+      "severity": "required",
+      "type": "question_scope_qualifier",
+      "affected": [
+        {
+          "question_id": "av3-cross-008",
+          "fact_id": "f1",
+          "evidence_id": "e1",
+          "upstream_id": "compound-real-poetry-05"
+        }
+      ],
+      "problem": "The question says all Poetry virtual environments, while the required fact correctly narrows this to project virtual environments. The guide is operating on environments associated with the current project; the command should not be interpreted as machine-wide cleanup.",
+      "minimal_suggested_change": "Question first half: How can all Poetry virtual environments associated with the current project be removed? Retain the second half. Fact: poetry env remove --all removes all virtual environments associated with the current project. The source context and --all instruction are supplied here.",
+      "exact_source_fragments": [
+        {
+          "source_path": "compound/poetry/docs/managing-environments.md",
+          "asset_path": "assets/compound/poetry/docs/managing-environments.md",
+          "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "view_id": "original-lines",
+          "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+          "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "start_char": 4289,
+          "end_char": 4457,
+          "line_start": 155,
+          "line_end": 158,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 209
+          },
+          "text": "## Listing the environments associated with the project\n\nYou can also list all the virtual environments associated with the current project\nwith the `env list` command:",
+          "sha256": "057fa0a6cd0b828de1121eb8f8e0caeb59479eed39b29a4fd9bdc481354970ad"
+        },
+        {
+          "source_path": "compound/poetry/docs/managing-environments.md",
+          "asset_path": "assets/compound/poetry/docs/managing-environments.md",
+          "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "view_id": "original-lines",
+          "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+          "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+          "start_char": 5084,
+          "end_char": 5183,
+          "line_start": 194,
+          "line_end": 197,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 209
+          },
+          "text": "Use the `--all` option to delete all virtual environments at once.\n\n```bash\npoetry env remove --all",
+          "sha256": "ab8d8a92bca8aa7ab5f2ee342957cded50b9a1e5323f8cb595a17201c7b96444"
+        }
+      ]
+    },
+    {
+      "id": "IR-010",
+      "severity": "design_resolution_required",
+      "type": "cross_file_necessity_weakened_by_example",
+      "affected": [
+        {
+          "question_id": "av3-cross-011",
+          "upstream_id": "compound-real-pip-02"
+        }
+      ],
+      "problem": "caching.md contains both pip cache dir and a sampleproject==1.0.0 download example. An informed reader can identify == and the cache command from this one file. Two annotated source paths do not establish that both files are semantically necessary.",
+      "minimal_suggested_change": "Before claiming that every cross task needs both files, replace/revise this task under an explicit pre-run data revision, or explicitly narrow the class definition to two annotated source facts rather than two-file necessity. This review does not choose new facts or alter selection.",
+      "exact_source_fragments": [
+        {
+          "source_path": "compound/pip/docs/html/topics/caching.md",
+          "asset_path": "assets/compound/pip/docs/html/topics/caching.md",
+          "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+          "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "start_char": 2422,
+          "end_char": 2517,
+          "line_start": 73,
+          "line_end": 73,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 158
+          },
+          "text": "You can use `pip cache dir` to get the cache directory that pip is currently configured to use.",
+          "sha256": "80c74a9f4bdc4ca0647d3320e819330c1d7b0574bfb99be28106013fc7ef56cf"
+        },
+        {
+          "source_path": "compound/pip/docs/html/topics/caching.md",
+          "asset_path": "assets/compound/pip/docs/html/topics/caching.md",
+          "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+          "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+          "start_char": 3545,
+          "end_char": 3944,
+          "line_start": 117,
+          "line_end": 125,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 158
+          },
+          "text": "install from a source distribution instead of letting pip auto-discover the\npackage when it is trying to install. Installing directly from a source\ndistribution will make pip build a wheel, regardless of whether there is a\nmatching cached wheel. This usually means doing something like:\n\n```{pip-cli}\n$ pip download sampleproject==1.0.0 --no-binary :all:\n$ pip install sampleproject-1.0.0.tar.gz\n```",
+          "sha256": "4f7597355bf5242b18a30bbb2976429d1cd45dbdf0a640404fd618046c7e3a60"
+        }
+      ],
+      "confidence": "moderate: the exact-version meaning is inferential from the example, unlike the explicit definition in repeatable-installs.md"
+    },
+    {
+      "id": "IR-011",
+      "severity": "design_resolution_required",
+      "type": "cross_file_necessity_weakened_by_code",
+      "affected": [
+        {
+          "question_id": "av3-cross-007",
+          "upstream_id": "compound-real-pip-tools-02"
+        }
+      ],
+      "problem": "compile.py itself parses an existing output file, retains pinned requirements, forwards existing_constraints=existing_pins, and contains the same-input/output error. The first half can substantially be answered from that code without README. Thus two annotation paths alone do not establish strict two-file necessity.",
+      "minimal_suggested_change": "Before claiming that every cross task needs both files, replace/revise this task under an explicit pre-run data revision, or narrow the class definition as described in IR-010. Preserve correct current facts if the task is retained as annotated cross-file aggregation.",
+      "exact_source_fragments": [
+        {
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "start_char": 9846,
+          "end_char": 11467,
+          "line_start": 328,
+          "line_end": 361,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 572
+          },
+          "text": "    # Exclude packages from --upgrade-package/-P from the existing constraints\n    existing_pins = {}\n\n    # Proxy with a LocalRequirementsRepository if --upgrade is not specified\n    # (= default invocation)\n    output_file_exists = os.path.exists(output_file.name)\n    if not upgrade and output_file_exists:\n        output_file_is_empty = os.path.getsize(output_file.name) == 0\n        if upgrade_install_reqs and output_file_is_empty:\n            log.warning(\n                f\"WARNING: the output file {output_file.name} exists but is empty. \"\n                \"Pip-tools cannot upgrade only specific packages (using -P/--upgrade-package) \"\n                \"without an existing pin file to provide constraints. \"\n                \"This often occurs if you redirect standard output to your output file, \"\n                \"as any existing content is truncated.\"\n            )\n\n        # Use a temporary repository to ensure outdated(removed) options from\n        # existing requirements.txt wouldn't get into the current repository.\n        tmp_repository = PyPIRepository(pip_args, cache_dir=cache_dir)\n        ireqs = parse_requirements(\n            output_file.name,\n            finder=tmp_repository.finder,\n            session=tmp_repository.session,\n            options=tmp_repository.options,\n        )\n\n        for ireq in filter(is_pinned_requirement, ireqs):\n            key = key_from_ireq(ireq)\n            if key not in upgrade_install_reqs:\n                existing_pins[key] = ireq\n        repository = LocalRequirementsRepository(\n            existing_pins, repository, reuse_hashes=reuse_hashes\n        )",
+          "sha256": "f3ed8daf4c8d6bb477a5130768b8b1578c6236f628049fc22fc0a3cfce4376c5"
+        },
+        {
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "start_char": 16212,
+          "end_char": 16462,
+          "line_start": 492,
+          "line_end": 497,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 572
+          },
+          "text": "    resolver_cls = LegacyResolver if resolver_name == \"legacy\" else BacktrackingResolver\n    try:\n        resolver = resolver_cls(\n            constraints=constraints,\n            existing_constraints=existing_pins,\n            repository=repository,",
+          "sha256": "8c503d0fc76ec11bd4b02282db052bd8d917ba0245c8ca80654e8abfb41b82a6"
+        },
+        {
+          "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+          "asset_path": "assets/compound/pip-tools/piptools/scripts/compile.py",
+          "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "view_id": "original-lines",
+          "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+          "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+          "start_char": 7577,
+          "end_char": 7772,
+          "line_start": 264,
+          "line_end": 267,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 572
+          },
+          "text": "    if output_file.name != \"-\" and output_file.name in src_files:\n        raise click.BadArgumentUsage(\n            f\"input and output filenames must not be matched: {output_file.name}\"\n        )",
+          "sha256": "2e23943f60d4e4437584a594c1ae67073483bb132a6cee7bdb36e0cd299c03ea"
+        }
+      ],
+      "confidence": "moderate: code clearly proves existing pins become resolver constraints; the README gives the explicit stability/preference explanation"
+    },
+    {
+      "id": "IR-A01",
+      "severity": "advisory",
+      "type": "ref_identifier_precision",
+      "affected": [
+        {
+          "question_id": "av3-single-006",
+          "fact_id": "f0",
+          "evidence_id": "e0",
+          "upstream_id": "text-cjk-046"
+        }
+      ],
+      "problem": "The Chinese fact uses 引用 for ref. This is a reasonable paraphrase, but the exact reactive ref identifier would make the answer target less ambiguous.",
+      "minimal_suggested_change": "Optional fact tightening: defineModel() 返回一个 ref，并在父组件绑定值和当前变量之间提供双向绑定。",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/vue-zh/src/guide/components/v-model.md",
+          "asset_path": "assets/text/vue-zh/src/guide/components/v-model.md",
+          "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "view_id": "body",
+          "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+          "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+          "start_char": 686,
+          "end_char": 761,
+          "line_start": 36,
+          "line_end": 36,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 610
+          },
+          "text": "`defineModel()` 返回的值是一个 ref。它可以像其他 ref 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用：",
+          "sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d"
+        }
+      ]
+    },
+    {
+      "id": "IR-A02",
+      "severity": "advisory",
+      "type": "request_override_context",
+      "affected": [
+        {
+          "question_id": "av3-single-003",
+          "fact_id": "f0",
+          "evidence_id": "e0",
+          "upstream_id": "text-semantic-001"
+        },
+        {
+          "question_id": "av3-multi-014",
+          "fact_id": "p1_f0",
+          "evidence_id": "p1_e0",
+          "upstream_id": "text-semantic-001"
+        }
+      ],
+      "problem": "The current span proves None-valued merged entries are deleted. Including the two preceding merge lines would also directly prove why a per-request None overrides an inherited session value.",
+      "minimal_suggested_change": "Optional: extend both reused spans to lines79-86. The current fact itself is supported; this is context tightening.",
+      "exact_source_fragments": [
+        {
+          "source_path": "text/requests/src/requests/sessions.py",
+          "asset_path": "assets/text/requests/src/requests/sessions.py",
+          "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "view_id": "body",
+          "view_path": "views/text/requests/src/requests/sessions.py.txt",
+          "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+          "start_char": 2047,
+          "end_char": 2417,
+          "line_start": 79,
+          "line_end": 86,
+          "source_location": {
+            "unit": "line",
+            "start": 1,
+            "end": 831
+          },
+          "text": "    merged_setting = dict_class(to_key_val_list(session_setting))\n    merged_setting.update(to_key_val_list(request_setting))\n\n    # Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+          "sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357"
+        }
+      ]
+    }
+  ],
+  "design_observations": [
+    "All20 multi composites preserve both original requests and have distinct source facts; their original marked spans are disjoint within shared views. No extra answer-bearing hints were added outside the registered wrapper.",
+    "All20 cross tasks annotate two distinct source files and require two stated facts. Their6 upstream source groups create concentrated dependence. IR-010/IR-011 question the stronger semantic necessity claim for2tasks.",
+    "Cross tasks are mostly concatenated factual requests; two annotated source paths do not establish relational synthesis difficulty.",
+    "20traps are supported as absent from this supplied corpus. This is a corpus-scoped source judgment, not a guarantee that a model will abstain or that an outside-world answer cannot exist."
+  ],
+  "run_gate": {
+    "data_freeze_ready": false,
+    "reason": "Resolve9 required semantic/evidence findings affecting9tasks and2cross-file necessity findings; then pin an explicit revision and request closure review. Preserve original draft pins.",
+    "full_model_settings_registration": "MISSING, deliberately pending explicitly supplied local answerer/judge model or completed v3 job identities.",
+    "answerer_or_judge_jobs_authorized_by_this_review": false,
+    "actual_scores_or_answers_reviewed": false,
+    "quality_or_release_claim": false
+  },
+  "limitations": [
+    "This is an independent AI-role source review, not human professional certification.",
+    "No original420queries.jsonl, splits.json content, label-audit.json, original full noise files, retrieval/answer/holdout reports, model results, capacity databases, network endpoints, model/tokenizer/index jobs, or heavy benchmark work were opened/run. Manifest references to their pins were read as metadata only.",
+    "All175frozen view hashes and all60code/doc assets were checked. Selected digital PDF evidence was checked using Poppler text; Bell page3 and Lincoln page2 were visually checked from rendered scans. The HTTPX screenshot was visually checked.",
+    "Only selectedJPEG EXIF headers were read directly, without decoding or hashing the full JPEG files. Other nonselected binary assets were not rehashed/rendered/listened to. Their manifest pins and source inventory were retained for absence-scope review.",
+    "All20official ASR transcripts were read; no fresh ASR/transcription or listening-based content verification was performed. Audio truth is reviewed against the frozen publisher transcript views, with original FLAC SHA verified for the2selected clips.",
+    "The extracted dev210 file was parsed, and the selected88 original question objects were compared. Unselected development questions were not semantically re-annotated.",
+    "Selected-trap-negative-audit contained20selected audit rows and only1prior independent fixed-sample review. This reviewer did not inflate that1into20; all20received a new corpus-scoped independent absence judgment."
+  ]
+}

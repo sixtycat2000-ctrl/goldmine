@@ -1,0 +1,23 @@
+{| {{CC-Layout}}
+|
+[[File:Nikon Z7II w Nikkor 24-200mm wo bg.png|120px|left|link=]]
+|
+{{collapse top|[[File:Flag of Russia.svg|50px|left|link=]] Нажмите сюда, чтобы узнать о лицензии и условиях использования этой фотографии}}
+Эта фотография сделана участником [[User:Florstein|Алексеем Фёдоровым]].
+<br>
+Если вы хотите использовать её вне проектов фонда Викимедиа, вам необходимо выбрать один из следующих вариантов:
+* Упомянуть автора фотографии: проставить подпись «'''© ''Алексей Фёдоров, Wikimedia Commons'''''» под фотографией или так, чтобы она была видна после нажатия на фотографию
+* [https://t.me/AlexFlorstein Связаться с автором], чтобы приобрести индивидуальную лицензию согласно вашим пожеланиям
+При соблюдении первого из вышеуказанных условий информировать автора о факте использования фотографии не обязательно, но в случае использования вами этой фотографии в печатном издании автор будет признателен, если вы всё же сообщите ему об этом.
+<div class="center"><big>Для получения дополнительной информации посетите мой '''[https://t.me/wikiphotospace телеграм-канал]'''</big></div>
+{{collapse bottom}}
+{{collapse top|[[File:Flag of the United Kingdom.svg|50px|left|link=]] Click here to learn more about the license and terms of re-usage of this photo}}
+This photo is taken by [[User:Florstein|Alex 'Florstein' Fedorov]].
+<br>
+If you want to reuse it outside Wikimedia Foundation projects, please choose between two options:
+* Mention the author: place the notice «'''© ''Alex Fedorov, Wikimedia Commons'''''» either below the photo, or the way it is visible after clicking on the photo
+* [https://t.me/AlexFlorstein Contact the author] to purchase an individual license of your preference
+If you choose the first option, it is not mandatory to inform the author about the usage. As a courtesy, however, please let the author know about any usage of this photo in a printed medium.
+<div class="center"><big>For additional information, please visit my '''[https://t.me/wikiphotospace telegram channel]'''</big></div>
+{{collapse bottom}}
+|}

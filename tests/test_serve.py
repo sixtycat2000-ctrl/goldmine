@@ -843,6 +843,8 @@ def test_linger_refresh_only_on_model_touch_f7(tmp_path):
             raw_roundtrip(str(cfg.serve.socket), {"op": "ping"}, timeout=2)
         except (OSError, ServeRequestError):
             break
+        except AssertionError:
+            break  # EOF mid-roundtrip: the daemon closed the socket while exiting
         time.sleep(0.1)
     box.thread.join(5)
     assert not box.thread.is_alive()  # pings could not save it (F7)
@@ -1311,7 +1313,16 @@ def test_fuzz_lite_daemon_survives_and_serves(daemon_box):
             sock.close()
         except OSError:
             pass  # a refused/-reset connection must not matter either
-    resp = raw_roundtrip(sock_path, {"op": "ping"})
+    for _ in range(40):
+        try:
+            resp = raw_roundtrip(sock_path, {"op": "ping"})
+            break
+        except (BlockingIOError, ConnectionRefusedError):
+            # The accept backlog drains the fuzz burst transiently: Linux
+            # connect() returns EAGAIN, macOS ECONNREFUSED. Keep serving.
+            time.sleep(0.05)
+    else:
+        raise
     assert resp["ok"] is True
     embed = raw_roundtrip(sock_path, {"op": "embed", "texts": ["post-fuzz"]},
                           timeout=30)

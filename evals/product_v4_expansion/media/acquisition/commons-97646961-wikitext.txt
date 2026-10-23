@@ -1,0 +1,18 @@
+=={{int:filedesc}}==
+{{Information
+|description={{ja|1=大きく蛇行する米代川と七座山（秋田県能代市二ツ井町）}}
+|date=2019-11-05 10:22:32
+|source={{own}}
+|author=[[User:Wc018|Wc018]]
+|permission=
+|other versions=
+}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Yoneshiro River at Noshiro]]
+[[Category:Mount Nanakura]]
+[[Category:Water reflections of clouds in Japan]]
+[[Category:Quality images of objects]]
+{{QualityImage}}

@@ -94,7 +94,7 @@ def test_piece_char_offsets_exact():
     ptr = 0
     for off, piece in zip(offsets[1:], pieces):
         ptr += len(piece)
-        assert len(data[:ptr].decode("utf-8", "surrogateescape")) == off
+        assert len(data[:ptr].decode("utf-8", "ignore")) == off
 
 
 def test_piece_char_offsets_tolerates_spm_dummy_prefix():
@@ -121,16 +121,19 @@ def test_byte_array_pieces_align():
 
 
 def _reference_offsets(text: str, pieces: list[bytes]) -> list[int] | None:
-    """The PRE-FIX quadratic implementation, kept verbatim as the equivalence
-    reference (06-perf F4: it decoded data[:ptr] per piece — O(bytes x pieces),
-    391 s on 5 MB of code). The shipped function must stay byte-identical."""
+    """Slow independent complete-prefix reference for the linear scanner.
+
+    This reference discards incomplete UTF8 suffix bytes, so they do not count
+    as source characters. It deliberately does not emulate unsafe surrogate
+    prefix offsets. Ordinary aligned pieces keep their existing result.
+    """
     data = text.encode("utf-8")
     n = len(data)
     ptr = 0
     offsets = [0]
     for i, piece in enumerate(pieces):
         if not piece:
-            offsets.append(len(data[:ptr].decode("utf-8", "surrogateescape")))
+            offsets.append(len(data[:ptr].decode("utf-8", "ignore")))
             continue
         if (ptr == 0 and i == 0 and piece[:1] == b" " and data[:1] != b" "
                 and len(piece) > 1 and data.startswith(piece[1:])):
@@ -139,7 +142,7 @@ def _reference_offsets(text: str, pieces: list[bytes]) -> list[int] | None:
         if end > n or data[ptr:end] != piece:
             return None
         ptr = end
-        offsets.append(len(data[:ptr].decode("utf-8", "surrogateescape")))
+        offsets.append(len(data[:ptr].decode("utf-8", "ignore")))
     if ptr != n:
         return None
     return offsets
@@ -502,10 +505,11 @@ def test_chunker_stale_files_redone_by_plain_ingest(tmp_path):
         ).fetchall()
         assert first
         # age the file: v1-char rows from an older binary
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v1-char' "
-            "WHERE path = ?", (str(f.resolve()),),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v1-char' "
+                "WHERE path = ?", (str(f.resolve()),),
+            )
         store.db.commit()
         store.close()
 
@@ -673,17 +677,18 @@ def test_tokenize_failure_falls_back_to_estimator(fake_cfg, monkeypatch, tmp_pat
             )
             # no tokenize-fail control plane: monkeypatch the HTTP layer for
             # /tokenize only — every tokenize POST raises
-            real_urlopen = urllib.request.urlopen
+            from goldmine.backends import llama as llama_client
+            real_request = llama_client.http_request
 
-            def refusing_urlopen(req, *a, **kw):
-                if getattr(req, "full_url", "").endswith("/tokenize"):
+            def refusing_request(url, *a, **kw):
+                if url.endswith("/tokenize"):
                     raise urllib.error.HTTPError(
-                        req.full_url, 500, "boom", {}, None  # type: ignore[arg-type]
+                        url, 500, "boom", {}, None  # type: ignore[arg-type]
                     )
-                return real_urlopen(req, *a, **kw)
+                return real_request(url, *a, **kw)
 
             monkeypatch.setattr(
-                "goldmine.backends.llama.urllib.request.urlopen", refusing_urlopen
+                "goldmine.backends.llama.http_request", refusing_request
             )
             assert backend.token_pieces("anything") is None
             assert backend.count_tokens(["x"]) is None

@@ -1,0 +1,26 @@
+[
+  {
+    "question_id": "av3-cross-007",
+    "fact_id": "f2",
+    "description": "For the described callback-based application, the callback normally runs before a subcommand; with no subcommand the default is to show help.",
+    "sufficient_evidence": [
+      [
+        "e2",
+        "e2_scope"
+      ]
+    ],
+    "either_span_alone_is_insufficient_by_annotation": true
+  },
+  {
+    "question_id": "av3-cross-008",
+    "fact_id": "f1",
+    "description": "poetry env remove --all removes all virtual environments associated with the current project.",
+    "sufficient_evidence": [
+      [
+        "e1",
+        "e1_scope"
+      ]
+    ],
+    "either_span_alone_is_insufficient_by_annotation": true
+  }
+]

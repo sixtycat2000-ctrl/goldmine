@@ -1,0 +1,55 @@
+pytest Documentation, Release 9.1
+
+(continued from previous page)
+
+>>> with warns(UserWarning, match=r"must be \d+$"):
+...
+warnings.warn("this is not here", UserWarning)
+...
+Traceback (most recent call last):
+...
+Failed: Regex pattern did not match any of the 1 warnings emitted.
+Regex: ...
+Emitted warnings: ...UserWarning...
+>>> with warns(UserWarning, match=re.escape("issue with foo() func")):
+...
+warnings.warn("issue with foo() func")
+...
+
+The function also returns a list of all raised warnings (as warnings.WarningMessage objects), which you can query
+for additional information:
+with pytest.warns(RuntimeWarning) as record:
+warnings.warn("another warning", RuntimeWarning)
+# check that only one warning was raised
+assert len(record) == 1
+# check that the message matches
+assert record[0].message.args[0] == "another warning"
+
+Alternatively, you can examine raised warnings in detail using the recwarn fixture (see below).
+The recwarn fixture automatically ensures to reset the warnings filter at the end of the test, so no global state is leaked.
+
+2.12.9 Recording warnings
+You can record raised warnings either using the pytest.warns() context manager or with the recwarn fixture.
+To record with pytest.warns() without asserting anything about the warnings, pass no arguments as the expected
+warning type and it will default to a generic Warning:
+with pytest.warns() as record:
+warnings.warn("user", UserWarning)
+warnings.warn("runtime", RuntimeWarning)
+assert len(record) == 2
+assert str(record[0].message) == "user"
+assert str(record[1].message) == "runtime"
+
+The recwarn fixture will record warnings for the whole function:
+import warnings
+
+def test_hello(recwarn):
+warnings.warn("hello", UserWarning)
+assert len(recwarn) == 1
+w = recwarn.pop(UserWarning)
+assert issubclass(w.category, UserWarning)
+(continues on next page)
+
+90
+
+Chapter 2. How-to guides
+

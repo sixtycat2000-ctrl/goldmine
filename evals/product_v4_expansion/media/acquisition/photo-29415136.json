@@ -1,0 +1,28 @@
+{
+  "pageid": 29415136,
+  "title": "File:Karpovka River Embankment 06.jpg",
+  "artist": "Alex 'Florstein' Fedorov",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Karpovka_River_Embankment_06.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1181381479",
+  "page_revision": 1181381479,
+  "upload_timestamp": "2014-03-22T07:36:10Z",
+  "published_sha1": "8299ef63a8cf457660aa0f3ad95fea65792432e6",
+  "sha256": "ea192bb2461fbb21ab7c4cf7dcbcd3ee464001e48acb984e35ad4204a834b319",
+  "bytes": 8451770,
+  "basename": "Karpovka_River_Embankment_06.jpg",
+  "asset": "assets/media/photos/Karpovka_River_Embankment_06.jpg",
+  "license_file": "licenses/media/commons-29415136.txt",
+  "taken": "2013-07-19 15:29:41",
+  "exif_DateTimeOriginal": "2013:07:19 15:29:41",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2014:03:22 11:34:05",
+    "DateTimeOriginal": "2013:07:19 15:29:41",
+    "DateTimeDigitized": "2013:07:19 15:29:41"
+  },
+  "production_sips_taken": "2014-03-22 11:34:05",
+  "production_taken_matches_DateTimeOriginal": false,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Karpovka_River_Embankment_06.jpg\n  creation: 2014:03:22 11:34:05\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

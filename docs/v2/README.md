@@ -30,7 +30,7 @@ capability reporting, or the numpy-only, local-first posture.
 
 **v2.0 IMPLEMENTED and verified** (2026-10-17): all 21 roadmap rows built across 5
 implementation waves + a final adversarial review (0 P0 / 2 P1 / 9 P2 / 6 P3 — all 15
-findings fixed, incl. the foresight live-identity crash and the migration chunker
+findings fixed, incl. the live-backend identity crash and the migration chunker
 backfill). 677 offline tests + 12 live tests green; real-model eval: success@5 0.747 /
 MRR 0.646 (n=146, regression gate green); bench + coverage gates PASS. Start at
 `../../docs/USER_GUIDE.md` (plain-language), `../../README.md` (quickstart), then

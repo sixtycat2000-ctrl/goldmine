@@ -1,0 +1,1 @@
+Using Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:

@@ -1,0 +1,182 @@
+[
+  {
+    "document": "US6469",
+    "original_page": 2,
+    "question": "What does Lincoln's buoyancy invention let a vessel cross without unloading its cargo?",
+    "start_char": 298,
+    "end_char": 391,
+    "text": "to enable them to pass over bars, or through shallow water, without discharging their cargoes",
+    "notes": "Visually verified against the original scanned page render: left column, opening vessel-purpose paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US6469",
+    "original_page": 2,
+    "question": "How are Lincoln's buoyant chambers stowed when they are no longer needed?",
+    "start_char": 791,
+    "end_char": 899,
+    "text": "can be contracted into a very small space and safely secured as soon as their services can be dispensed with",
+    "notes": "Visually verified against the original scanned page render: left column, expandable/contractible chamber paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US6469",
+    "original_page": 2,
+    "question": "What flexible material forms the sides and ends of the chambers in Lincoln's patent?",
+    "start_char": 1023,
+    "end_char": 1140,
+    "text": "the flexible sides and ends of the chambers, are composed of india-rubber cloth, or other suitable water-proof fabric",
+    "notes": "Visually verified against the original scanned page render: left column, chamber material paragraph near bottom. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US6469",
+    "original_page": 2,
+    "question": "How does reversing the main shaft affect the buoyant chambers?",
+    "start_char": 1470,
+    "end_char": 1582,
+    "text": "by turning the shaft in an opposite direction, the chambers will be contracted into the position shown in Fig. 2",
+    "notes": "Visually verified against the original scanned page render: right column, main-shaft direction paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US6469",
+    "original_page": 2,
+    "question": "What adjustment governs how deeply Lincoln's buoyant chambers are immersed?",
+    "start_char": 1871,
+    "end_char": 1976,
+    "text": "By varying the length of the check ropes, the depth of immersion of the buoyant chambers can be governed.",
+    "notes": "Visually verified against the original scanned page render: right column, check-rope paragraph near bottom. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US174465",
+    "original_page": 3,
+    "question": "What kind of electric current does Bell's new telegraphy method use instead of a merely pulsating current?",
+    "start_char": 0,
+    "end_char": 166,
+    "text": "My present invention consists in the employment of a vibratory or undulatory current of electricity in contradistinction to a merely intermittent or pulsatory current",
+    "notes": "Visually verified against the original scanned page render: right column, paragraph beginning My present invention. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US174465",
+    "original_page": 3,
+    "question": "How does the change in electrical intensity distinguish Bell's undulations from pulsations?",
+    "start_char": 362,
+    "end_char": 516,
+    "text": "electrical pulsations are caused by sudden or instantaneous changes of intensity, and that electrical undulations result from gradual changes of intensity",
+    "notes": "Visually verified against the original scanned page render: right column, paragraph distinguishing intensity changes. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US174465",
+    "original_page": 3,
+    "question": "What mathematical curve can represent the electrical movement described in Bell's patent?",
+    "start_char": 664,
+    "end_char": 753,
+    "text": "can be represented by a sinusoidal curve or by the resultant of several sinusoidal curves",
+    "notes": "Visually verified against the original scanned page render: right column, sentence about electrical movement and sinusoidal curves. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US174465",
+    "original_page": 3,
+    "question": "What circuit and battery arrangement does Bell list as the second advantage of undulatory current?",
+    "start_char": 987,
+    "end_char": 1039,
+    "text": "a closed circuit and single main battery may be used",
+    "notes": "Visually verified against the original scanned page render: right column, second enumerated advantage. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US174465",
+    "original_page": 3,
+    "question": "Why does Bell say a spark-arrester is unnecessary in his circuit?",
+    "start_char": 1432,
+    "end_char": 1499,
+    "text": "as the circuit is never broken a spark-arrester becomes unnecessary",
+    "notes": "Visually verified against the original scanned page render: right column, fifth enumerated advantage. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US223898",
+    "original_page": 2,
+    "question": "Why does Edison want his incandescent lamps to have high resistance?",
+    "start_char": 89,
+    "end_char": 194,
+    "text": "which lamps shall have high resistance, so as to allow of the practical subdivision of the electric light",
+    "notes": "Visually verified against the original scanned page render: page 2 left column, object-of-invention paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US223898",
+    "original_page": 2,
+    "question": "What form and material does Edison specify for the light-giving body?",
+    "start_char": 223,
+    "end_char": 371,
+    "text": "a light-giving body of carbon wire or sheets coiled or arranged in such a manner as to offer great resistance to the passage of the electric current",
+    "notes": "Visually verified against the original scanned page render: page 2 left column, light-giving body paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US223898",
+    "original_page": 2,
+    "question": "What atmosphere protects Edison's high-resistance burner from oxidation?",
+    "start_char": 503,
+    "end_char": 626,
+    "text": "a burner of great resistance in a nearly-perfect vacuum, to prevent oxidation and injury to the conductor by the atmosphere",
+    "notes": "Visually verified against the original scanned page render: page 2 left column, resistance/vacuum paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring. The printed line ending nearly- followed by perfect is retained as nearly-perfect; the source-first draft omitted that hyphen. This does not change the question or the vacuum fact."
+  },
+  {
+    "document": "US223898",
+    "original_page": 2,
+    "question": "How are the electrical leads brought through the glass vacuum bulb in Edison's description?",
+    "start_char": 628,
+    "end_char": 718,
+    "text": "The current is conducted into the vacuum-bulb through platina wires sealed into the glass.",
+    "notes": "Visually verified against the original scanned page render: page 2 left column, sentence immediately following the vacuum purpose. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US223898",
+    "original_page": 3,
+    "question": "Why can Edison's design use fine platinum lead wires without cracking the sealed bulb?",
+    "start_char": 126,
+    "end_char": 225,
+    "text": "a small resistance compared to the burner, and hence will not heat and crack the sealed vacuum-bulb",
+    "notes": "Visually verified against the original scanned page render: page 3 left column, fine platinum leading-wire paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US821393",
+    "original_page": 4,
+    "question": "Does the Wright patent require two stacked aeroplanes, or can its invention use one?",
+    "start_char": 208,
+    "end_char": 316,
+    "text": "this construction we prefer, although our invention may be embodied in a structure having a single aeroplane",
+    "notes": "Visually verified against the original scanned page render: page 4 right column, first apparatus paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US821393",
+    "original_page": 4,
+    "question": "How does the width of each Wright aeroplane compare with its front-to-rear dimension?",
+    "start_char": 318,
+    "end_char": 408,
+    "text": "Each aeroplane is of considerably greater width from side to side than from front to rear.",
+    "notes": "Visually verified against the original scanned page render: page 4 right column, width comparison in first apparatus paragraph. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US821393",
+    "original_page": 4,
+    "question": "What material covers the frame to form a Wright aeroplane's supporting surface?",
+    "start_char": 410,
+    "end_char": 502,
+    "text": "Upon this framework the cloth which forms the supporting-surface of the aeroplane is secured",
+    "notes": "Visually verified against the original scanned page render: page 4 right column near bottom, cloth/supporting-surface sentence. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US821393",
+    "original_page": 6,
+    "question": "What shape does twisting the Wright aeroplane's lateral margins give its surface?",
+    "start_char": 314,
+    "end_char": 380,
+    "text": "so that each aeroplane-surface is given a helicoidal warp or twist",
+    "notes": "Visually verified against the original scanned page render: page 6 left column, sentence describing helicoidal warp. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  },
+  {
+    "document": "US821393",
+    "original_page": 6,
+    "question": "About which axis is the Wright machine's vertical rudder or tail 22 allowed to turn?",
+    "start_char": 453,
+    "end_char": 529,
+    "text": "a vertical rudder or tail 22, so supported as to turn around a vertical axis",
+    "notes": "Visually verified against the original scanned page render: page 6 right column near bottom, vertical rudder/tail 22 sentence. Question unchanged. Exact fact is original printed prose, anchored in a source-verified paragraph excerpt; surrounding unreviewed OCR is not canonicalized. Line-wrap joins and actual column order are source-based transcription corrections, not a production recognition fix. Native raw OCR/before-view/diff are retained; recognition mistakes remain visible in later scoring."
+  }
+]

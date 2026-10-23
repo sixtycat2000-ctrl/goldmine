@@ -1,0 +1,49 @@
+pytest Documentation, Release 9.1
+
+2.11.4 Accessing captured output from a test function
+The capsys, capteesys, capsysbinary , capfd , and capfdbinary fixtures allow access to stdout/stderr output
+created during test execution.
+Here is an example test function that performs some output related checks:
+def test_myoutput(capsys): # or use "capfd" for fd-level
+print("hello")
+sys.stderr.write("world\n")
+captured = capsys.readouterr()
+assert captured.out == "hello\n"
+assert captured.err == "world\n"
+print("next")
+captured = capsys.readouterr()
+assert captured.out == "next\n"
+
+The readouterr() call snapshots the output so far - and capturing will be continued. After the test function finishes
+the original streams will be restored. Using capsys this way frees your test from having to care about setting/resetting
+output streams and also interacts well with pytest’s own per-test capturing.
+The return value of readouterr() is a namedtuple with two attributes, out and err.
+If the code under test writes non-textual data (bytes), you can capture this using the capsysbinary fixture which
+instead returns bytes from the readouterr method.
+If you want to capture at the file descriptor level you can use the capfd fixture which offers the exact same interface but
+allows to also capture output from libraries or subprocesses that directly write to operating system level output streams
+(FD1 and FD2). Similarly to capsysbinary , capfdbinary can be used to capture bytes at the file descriptor level.
+To temporarily disable capture within a test, the capture fixtures have a disabled() method that can be used as a context
+manager, disabling capture inside the with block:
+def test_disabling_capturing(capsys):
+print("this output is captured")
+with capsys.disabled():
+print("output not captured, going directly to sys.stdout")
+print("this output is also captured")
+
+INFO-CIRCLE Note
+When a capture fixture such as capsys or capfd is used, it takes precedence over the global capturing configuration
+set via command-line options such as -s or --capture=no.
+This means that output produced within a test using a capture fixture will still be captured and available via readouterr(), even if global capturing is disabled.
+
+2.12 How to capture warnings
+Starting from version 3.1, pytest now automatically catches warnings during test execution and displays them at the end
+of the session:
+# content of test_show_warnings.py
+import warnings
+(continues on next page)
+
+84
+
+Chapter 2. How-to guides
+

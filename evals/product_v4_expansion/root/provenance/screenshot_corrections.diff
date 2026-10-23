@@ -1,0 +1,617 @@
+--- raw-native-ocr/final-capture-01
++++ source-verified-paragraph/httpx-timeouts.txt
+@@ -1,18 +1 @@
+-Timeouts
+-HTTPX is careful to enforce timeouts everywhere by default.
+ The default behavior is to raise a TimeoutException after 5 seconds of network inactivity.
+-Setting and disabling timeouts
+-You can set timeouts for an individual request:
+-# Using the top-level API:
+-httpx.get('http://example.com/api/v1/example', timeout=10.0)
+-# Using a client instance:
+-with httpx.Client() as client:
+-client.get("http://example.com/api/v1/example"
+-timeout=10.0)
+-Or disable timeouts for an individual request:
+-# Using the top-level API:
+-httpx.get('http://example.com/api/v1/example', timeout=None)
+-# Using a client instance:
+-with httpx.Client() as client:
+-client.get("http://example.com/api/v1/example", timeout=None)
+-Settina a default timeout on a client
+
+--- raw-native-ocr/final-capture-02
++++ source-verified-paragraph/httpx-connect-timeout.txt
+@@ -1,35 +1 @@
+-=
+-this client:
+-Timeouts
+-Search
+-encode/httpx
+-client = httpx.Client()
+-client = httpx.Client(timeout=10.0)
+-client = httpx.Client(timeout=None)
+-# Use a default 5s timeout everywhere.
+-# Use
+-default 10s timeout everywhere.
+-# Disable all timeouts by default.
+-Table of contents
+-Setting and disabling timeouts
+-Setting a default timeout on a
+-client
+-Fine tuning the configuration
+-Fine tuning the configuration
+-HTTPX also allows you to specify the timeout behavior in more fine grained detail.
+-There are four different types of timeouts that may occur. These are connect, read, write, and pool timeouts.
+-• The connect timeout specifies the maximum amount of time to wait until a socket connection to the requested host is
+-established. If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised.
+-• The read timeout specifies the maximum duration to wait for a chunk of data to be received (for example, a chunk of the
+-response body). If HTTPX is unable to receive data within this time frame, a ReadTimeout exception is raised.
+-• The write timeout specifies the maximum duration to wait for a chunk of data to be sent (for example, a chunk of the request
+-body). If HTTPX is unable to send data within this time frame, a WriteTimeout exception is raised.
+-• The pool timeout specifies the maximum duration to wait for acquiring a connection from the connection pool. If HTTPX is
+-unable to acquire a connection within this time frame, a PoolTimeout exception is raised. A related configuration here is the
+-maximum number of allowable connections in the connection pool, which is configured by the limits argument.
+-You can configure the timeout behavior for any of these values...
+-# A client with a 60s timeout for connecting, and a 10s timeout elsewhere.
+-timeout = httpx.Timeout(10.0, connect=60.0)
+-client = httpx.Client(timeout=timeout)
+-response = client.get'http://example.com/')
+-Made with Material for MkDocs
++The connect timeout specifies the maximum amount of time to wait until a socket connection to the requested host is established. If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised.
+
+--- raw-native-ocr/final-capture-03
++++ source-verified-paragraph/httpx-limits.txt
+@@ -1,8 +1 @@
+-Resource Limits
+-You can control the connection pool size using the limits keyword argument on the client. It takes instances of httpx.Limits
+-which define:
+-• max_keepalive_connections, number of allowable keep-alive connections, or None to always allow. (Defaults 20)
+-• max_connections, maximum number of allowable connections, or None for no limits. (Default 100)
+-• keepalive_expiry, time limit on idle keep-alive connections in seconds, or None for no limits. (Default 5)
+-limits = httpx.Limits(max_keepalive_connections=5, max_connections=10)
+-client = httpx.Client(limits=limits)
++max_connections, maximum number of allowable connections, or None for no limits. (Default 100)
+
+--- raw-native-ocr/final-capture-04
++++ source-verified-paragraph/httpx-http2.txt
+@@ -1,11 +1 @@
+-=
+-HTTP/2 Support
+-Search
+-Enabling HTTP/2
+-When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport
+-layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time. It is possible that a future
+-version of httpx may enable HTTP/2 support by default.
+-If you're issuing highly concurrent requests you might want to consider trying out our HTTP/2 support. You can do so by first
+-making sure to install the optional HTTP/2 dependencies...
+-$ pip install httpx[http2]
+-And then instantiating a client with HTTP/2 support enabled:
++When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time. It is possible that a future version of httpx may enable HTTP/2 support by default.
+
+--- raw-native-ocr/final-capture-05
++++ source-verified-paragraph/pydantic-strict.txt
+@@ -1,18 +1 @@
+-Strict Mode
+-› API Documentation
+-By default, Pydantic will attempt to coerce values to the desired type when possible. For
+-example, you can pass the string '123' as the input forthe int number type, and it will be
+-converted to the value 123 . This coercion behavior is useful in many scenarios - think: UIDs,
+-URL parameters, HTTP headers, environment variables, dates, etc.
+-However, there are also situations where this is not desirable, and you want Pydantic to error
+-instead of coercing data.
+-To better support this use case, Pydantic provides a "strict mode". When strict mode is
+-enabled, Pydantic will be much less lenient when coercing data, and will instead error if the
+-data is not of the correct type.
+-Most of the time, strict mode will only allow instances of the type to be provided, although
+-looser rules may apply to JSON input (for instance, the date and time types allow strings even
+-in strict mode).
+-The strict behavior for each type can be found in the standard library types documentation,
+-and is summarized in the conversion table.
+-Here is a brief example showing the validation behavior difference in strict and the default lax
+-mode:
++To better support this use case, Pydantic provides a “strict mode”. When strict mode is enabled, Pydantic will be much less lenient when coercing data, and will instead error if the data is not of the correct type.
+
+--- raw-native-ocr/final-capture-06
++++ source-verified-paragraph/pydantic-fields.txt
+@@ -1,16 +1 @@
+-Fields
+-› API Documentation
+-In this section, we will go through the available mechanisms to customize Pydantic model
+-fields: default values, JSON Schema metadata, constraints, etc.
+-To do so, the Field() function is used a lot, and behaves the same way as the standard
+-library field () function for dataclasses - by assigning to the annotated attribute:
+-from
+-pydantic import BaseModel, Field
+-class Model (BaseModel) :
+-name: str = Field(frozen=True)
+-• Note
+-Even though name is assigned a value, it is still required and has no default value. If you
+-want to emphasize on the fact that a value must be provided, you can use the ellipsis:
+-class Model (BaseModel):
+-name: str = Field(..., frozen=True)
+-However, its usage is discouraged as it doesn't play well with static type checkers.
++Even though name is assigned a value, it is still required and has no default value. If you want to emphasize on the fact that a value must be provided, you can use the ellipsis:
+
+--- raw-native-ocr/final-capture-07
++++ source-verified-paragraph/pydantic-python-dump.txt
+@@ -1,83 +1 @@
+-Pydantic / Does
+-Pydantic Validation
+-Pydantic AI Pydantic Logfire
+-More
+-Get Started
+-Concepts
+-Models
+-Fields
+-JSON Schema
+-JSON
+-Types
+-Unions
+-Alias
+-Configuration
+-Serialization
+-Validators
+-Dataclasses
+-Forward Annotations
+-Strict Mode
+-Type Adapter
+-Validation Decorator
+-Conversion Table
+-Settings Management
+-Performance
+-Experimental
+-API Documentation
+-Internals
+-Examples
+-Error Messaaes
+-Python mode
+-When using the Python mode, Pydantic models (and model-like types such as dataclasses)
+-will be (recursively) converted to dictionaries. This is achievable by using the model dump ()
+-method:
+-from
+-pydantic import BaseModel, Field
+-class BarModel (BaseModel):
+-whatever: tuple[int, ...]
+-class FooBarModel (BaseModel):
+-banana: float | None = 1.1
+-foo: str = Field(serialization_alias='foo_alias')
+-bar: BarModel
+-m = FooBarModel (banana=3.14, foo='hello', bar=('whatever': (1, 2)})
+-# returns a dictionary:
+-print (m.model dump())
+-#> ['banana': 3.14, "foo': 'hello', "bar': (whatever': (1, 2)}}
+-print (m.model_dump(by_alias=True))
+-#> {'banana': 3.14, |
+-'foo alias':
+-'hello'
+-'bar': {whatever': (1, 2)}}
+-Notice that the value of whatever was dumped as tuple, which isn't a known JSON type. The
+-mode argument can be set to 'json' to ensure JSON-compatible types are used:
+-print(m.model dump(mode='ison'))
+-Q
+-On this page
+-Overview
+-Serializing data
+-Python mode
+-JSON mode
+-Iterating over models
+-Pickling support
+-Serializers
+-Field serializers
+-Which serializer pattern to use
+-Model serializers
+-Serialization info
+-Serialization context
+-Serializing subclasses
+-Subclasses of supported types
+-Subclasses of model-like types
+-Polymorphic serialization
+-Serializing "as Any"
+-SerializeAsAny annotation
+-serialize_as_any runtime
+-setting
+-Field inclusion and exclusion
+-At the field level
+-As parameters to the
+-serialization methods
+-Excluding and including
+-specific fields
+-Excluding and including fields
+-based on their value
++When using the Python mode, Pydantic models (and model-like types such as dataclasses) will be (recursively) converted to dictionaries. This is achievable by using the model_dump() method:
+
+--- raw-native-ocr/final-capture-08
++++ source-verified-paragraph/pydantic-unions.txt
+@@ -1,68 +1 @@
+-Pydantic / Docs
+-Get Started
+-Concepts
+-Models
+-Fields
+-JSON Schema
+-JSON
+-Types
+-Unions
+-Alias
+-Configuration
+-Serialization
+-Validators
+-Dataclasses
+-Forward Annotations
+-Strict Mode
+-Type Adapter
+-Validation Decorator
+-Conversion Table
+-Settings Management
+-Performance
+-Experimental
+-API Documentation
+-Internals
+-Examples
+-Error Messaaes
+-Pydantic Validation
+-Pydantic AI
+-Pydantic Logfire
+-More v
+-Left to Right Mode
+-Note
+-Because this mode often leads to unexpected validation results, it is not the default in
+-Pydantic >=2, instead
+-union mode=' smart" is the default.
+-With this approach, validation is attempted against each member of the union in their order
+-they're defined, and the first successful validation is accepted as input.
+-If validation fails on all members, the validation error includes the errors from all members of
+-the union.
+-union_ mode="left_to_right' must be set as a Field parameter on union fields where you
+-want to use it.
+-Union with left to right mode
+-from
+-pydantic import BaseModel, Field, ValidationError
+-class User (BaseModel) :
+-id: str | int = Field (union mode='left_to_right')
+->
+-print (User(id=123))|
+-#> id=123
+-print (User (id='hello'))
+-#> id='hello'
+-try:
+-User(id= 1)
+-Q
+-On this page
+-Overview
+-Union Modes
+-Left to Right Mode
+-Smart Mode
+-Number of valid fields set
+-Exactness
+-Discriminated unions
+-Discriminated unions with
+-string discriminators
+-Discriminated Unions with
+-callable Discriminator
+-Nested Discriminated Unions
+-Union Validation Errors
++Because this mode often leads to unexpected validation results, it is not the default in Pydantic >=2, instead union_mode='smart' is the default.
+
+--- raw-native-ocr/final-capture-09
++++ source-verified-paragraph/rich-markup.txt
+@@ -1,10 +1 @@
+-Syntax
+-Console markup uses a syntax inspired by bbcode. If you write the style (see Styles) in square
+-brackets, e.g. [bold red] , that style will apply until it is closed with a corresponding I/bold red] •
+-Here's a simple example:
+-from rich import print
+-print("[bold red]alert! [/bold red] Something happened")
+-If you don't close a style, it will apply until the end of the string. Which is sometimes convenient if
+-you want to style a single line. For example:
+-print ("[bold italic yellow on red blink]This text is impossible to read")
+-There is a shorthand for closing a style. If you omit the style name from the closing tag, Rich will
++If you don’t close a style, it will apply until the end of the string. Which is sometimes convenient if you want to style a single line. For example:
+
+--- raw-native-ocr/final-capture-10
++++ source-verified-paragraph/rich-styles.txt
+@@ -1,12 +1 @@
+-Defining Styles
+-A style definition is a string containing one or more words to set colors and attributes.
+-To specify a foreground color use one of the 256 Standard Colors. For example, to print "Hello" in
+-magenta:
+-console print ("Hello", style="magenta")
+-You may also use the color's number (an integer between 0 and 255) with the syntax
+-"color (<number>)". The following will give the equivalent output:
+-console print("Hello", style="color (5)")
+-Alternatively you can use a CSS-like syntax to specify a color with a "#" followed by three pairs of
+-hex characters, or in RGB form with three decimal integers. The following two lines both print
+-"Hello" in the same color (purple):
+-console print ("Hello", style="#af00ff")
++You may also use the color’s number (an integer between 0 and 255) with the syntax "color(<number>)". The following will give the equivalent output:
+
+--- raw-native-ocr/final-capture-11
++++ source-verified-paragraph/rich-tables.txt
+@@ -1,25 +1 @@
+-Tables
+-Rich's Table class offers a variety of ways to render tabular data to the terminal.
+-To render a table, construct a Table object, add columns with add_column () , and rows with
+-add_row() - then print it to the console.
+-Here's an example:
+-from rich.console import Console
+-from rich. table import Table
+-table = Table(title="Star Wars Movies")
+-table. add_column ("Released", justify="right", style="cyan", no_wrap=True)
+-table. add_column ("Title", style="magenta")
+-table. add_column ("Box Office", justify=" right", style="green")
+-table. add_row("Dec 20, 2019", "Star Wars: The Rise of Skywalker", "$952, 110, 690")
+-table. add_row("May 25, 2018",
+-"Solo: A Star Wars Story", "$393, 151, 347")
+-table. add_row("Dec 15, 2017",
+-"Star Wars Ep. V111: The Last Jedi",
+-"$1, 332, 539, 889")
+-table. add_row("Dec 16, 2016", "Rogue One: A Star Wars Story", "$1, 332, 439, 889")
+-console = Console()
+-console.print (table)
+-This produces the following output:
+-Star Wars Movies
+-Released
+-Title
+-Box Office
++To render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console.
+
+--- raw-native-ocr/final-capture-12
++++ source-verified-paragraph/rich-progress.txt
+@@ -1,17 +1 @@
+-Progress Display
+-Rich can display continuously updated information regarding the progress of long running tasks /
+-file copies etc. The information displayed is configurable, the default will display a description of the
+-'task, a progress bar, percentage complete, and estimated time remaining.
+-Rich progress display supports multiple tasks, each with a bar and progress information. You can
+-use this to track concurrent tasks where the work is happening in threads or processes.
+-To see how the progress display looks, try this from the command line:
+-python -m rich.progress
+-• Note
+-Progress works with Jupyter notebooks, with the caveat that auto-refresh is disabled. You will
+-need to explicitly call refresh() or set refresh=True when calling update() . Or use the
+-track() function which does a refresh automatically on each loop.
+-Basic Usage
+-For basic usage call the track() function, which accepts a sequence (such as a list or range object)
+-and an optional description of the job you are working on. The track function will yield values from
+-the sequence and update the progress information on each iteration. Here's an example:
+-import time
++Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes.
+
+--- raw-native-ocr/final-capture-13
++++ source-verified-paragraph/uv-projects.txt
+@@ -1,43 +1 @@
+-Working on projects
+-Search
+-UV
+-Project structure
+-A project consists of a few important parts that work together and allow uv to manage your project. In addition to the files created
+-by uv init, uv will create a virtual environment and uv. lock file in the root of your project the first time you run a project
+-command, i.e., uv run, uv sync, or uv lock.
+-A complete listing would look like:
+-Table of contents
+-Creating a new project
+-Project structure
+-pyproject.toml
+-python-version
+-.venv
+-uv.lock
+-Managing dependencies
+-Viewing your version
+-Running commands
+-Building distributions
+-Next steps
+-•git/
+-. venv/
+-- bin
+-lib
+-pyvenv.cfg
+-• gitignore
+-• python-version
+-README.md
+-src
+-- hello_world
+-- __init__py
+-pyproject.toml
+-- uv. Lock
+-pyproject.tom1
+-The pyproject. toml contains metadata about your project:
+-pyproject.toml
+-[project]
+-name = "hello-world"
+-version = "0.1.0"
+-description = "Add your description here"
+-readme = "README.md"
+-authors = l
+-"C..i."
++A project consists of a few important parts that work together and allow uv to manage your project. In addition to the files created by uv init, uv will create a virtual environment and uv.lock file in the root of your project the first time you run a project command, i.e., uv run, uv sync, or uv lock.
+
+--- raw-native-ocr/final-capture-14
++++ source-verified-paragraph/uv-tools.txt
+@@ -1,15 +1,11 @@
+-=
+-Using tools
+-Search
+-Running tools
+ The uvx command invokes a tool without installing it.
+-For example, to run
+-ruff:
+-uvx ruff
+-Note
++
++For example, to run ruff:
++
++$ uvx ruff
++
+ This is exactly equivalent to:
++
+ $ uv tool run ruff
++
+ uvx is provided as an alias for convenience.
+-Arguments can be provided after the tool name:
+-$ uvx pycowsay hello
+-from uv
+
+--- raw-native-ocr/final-capture-15
++++ source-verified-paragraph/uv-environments.txt
+@@ -1,17 +1 @@
+-uv
+-Search
+-Using Python environments
+-Each Python installation has an environment that is active when Python is used. Packages can be installed into an environment to
+-make their modules available from your Python scripts. Generally, it is considered best practice not to modify a Python
+-installation's environment. This is especially important for Python installations that come with the operating system which often
+-manage the packages themselves. A virtual environment is a lightweight way to isolate packages from a Python installation's
+-environment. Unlike pip, uv requires using a virtual environment by default.
+-Creating a virtual environment
+-uv supports creating virtual environments, e.g., to create a virtual environment at . ven:
+-$ uv venv
+-A specific name or path can be specified, e.g., to create a virtual environment at my-name :
+-S uv venv my-name
+-A Python version can be requested, e.g., to create a virtual environment with Python 3.11:
+-$ uv venv --python 3.11
+-Note this requires the requested Python version to be available on the system. However, if unavailable, uv will download Python for
+-vou Ceo the Puthan vereion documentation for more detaile
++A virtual environment is a lightweight way to isolate packages from a Python installation's environment. Unlike pip, uv requires using a virtual environment by default.
+
+--- raw-native-ocr/final-capture-16
++++ source-verified-paragraph/typer-help-panels.txt
+@@ -1,34 +1 @@
+-CLI Options with Help
+-Q Search
+-fastapi/typer
+-CLI Options help panels
+-The same as with CLI arguments, you can put the help for some CLI options in different panels to be shown with the --help
+-option.
+ Using Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:
+-Python 3.10+
+-from typing import Annotated
+-import typer
+-app = typer. Typer()
+-On this page
+-CLI Options help panels
+-Help with style using Rich
+-Hide default from help
+-Custom default string
+-@app. command()
+-def main(
+-Lastname: Annotated|str, typer, Option(help="Last name of person to greet.")! . ..,
+-formal: Annotated[
+-bool,
+-typer. Option(
+-help="Say hi formally.", rich_help_panel="Customization and Utils"
+-),
+-1 = False,
+-debug: Annotated[
+-bool,
+-typer. Option(
+-help="Enable debugging.", rich_help_panel="Customization and Utils"
+-) ,
+-] = False,
+-):
+-Say hi to 'name', optionally with a --lastname.
+-If --formal is used, say hi very formally.
+
+--- raw-native-ocr/final-capture-17
++++ source-verified-paragraph/typer-context.txt
+@@ -1,15 +1 @@
+-Using the Context
+-When you create a Typer application it always has a special, hidden object underneath called the "Context".
+-But you can access the context by declaring a function parameter of type typer. Context.
+-You might have read it in CLI Option Callback and Context a.
+-The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type
+-typer. Context.
+-Getting the context
+-For example, let's say that you want to execute some logic in a Typer callback depending on the subcommand that is being
+-called
+-You can get the name of the subcommand from the context:
+-Python 3.10+
+-import typer
+-app = typer. Typer()
+-@app. command()
+-dof exotolicornamo. cty.
++The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context.
+
+--- raw-native-ocr/final-capture-18
++++ source-verified-paragraph/pytest-monkeypatch.txt
+@@ -1,23 +1 @@
+-modules and environments
+-Sometimes tests need to invoke functionality which depends on global settings or which invokes code
+-which cannot be easily tested such as network access. The monkeypatch fixture helps you to safely
+-set/delete an attribute, dictionary item or environment variable, or to modify sys. path for importing.
+-The monkeypatch fixture provides these helper methods for safely patching and mocking functionality
+-in tests:
+-• monkeypatch.setattr(obj, name, value, raising=True)
+-• monkeypatch.delattr(obj, name, raising=True)
+-• monkeypatch.setitem(mapping, name, value)
+-• monkeypatch.delitem(obj, name, raising=True)
+-• monkeypatch.setenv(name, value, prepend=None)
+-• monkeypatch.delen(name, raising=True)
+-• monkeypatch.syspath_prepend (path)
+-• monkeypatch.chdir(path)
+-•monkeypatch.context()
+-All modifications will be undone after the requesting test function or fixture has finished. The raising
+-parameter determines if a KeyError or AttributeError will be raised if the target of the set/deletion
+-operation does not exist.
+-Consider the following scenarios:
+-1. Modifying the behavior of a function or the property of a class for a test e.g. there is an API call or
+-database connection you will not make for a test but you know what the expected output should be.
+-Use monkeypatch.setattr to patch the function or property with your desired testing behavior. This
+-can include your own functions. Use monkeypatch.delattr to remove the function or property for the
++Sometimes tests need to invoke functionality which depends on global settings or which invokes code which cannot be easily tested such as network access. The monkeypatch fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing.
+
+--- raw-native-ocr/final-capture-19
++++ source-verified-paragraph/pytest-capture.txt
+@@ -1,20 +1 @@
+-output
+-Pytest intercepts stout and stderr as configured by the --capture= command-line argument or by
+-using fixtures. The --capture= flag configures reporting, whereas the fixtures offer more granular
+-control and allow inspection of output during testing. The reports can be customized with the =r
+-flag.
+-Default stdout/stderr/stdin capturing behaviour
+-During test execution any output sent to stout and stderr is captured. If a test or a setup method
+-fails its according captured output will usually be shown along with the failure traceback. (This
+-behavior can be configured by the --show-capture command-line option).
+-In addition, stdin is set to a "null" object which will fail on attempts to read from it because it is rarely
+-desired to wait for interactive input when running automated tests.
+-By default capturing is done by intercepting writes to low level file descriptors. This allows capturing
+-output from simple print statements as well as output from a subprocess started by a test.
+-Setting capturing methods or disabling
+-capturing
+-There are three ways in which pytest can perform capturing:
+-• fd (file descriptor) level capturing (default): All writes going to the operating system file
+-descriptors 1 and 2 will be captured.
+-• sys level capturing: Only writes to Python files sys. stdout and sys. stderr will be captured. No
+-capturing of writes to filedescriptors is performed.
++By default capturing is done by intercepting writes to low level file descriptors. This allows capturing output from simple print statements as well as output from a subprocess started by a test.
+
+--- raw-native-ocr/final-capture-20
++++ source-verified-paragraph/pytest-tmp.txt
+@@ -1,26 +1 @@
+-and files in tests
+-The tmp_path fixture
+-You can use the tmp_path fixture which will provide a temporary directory unique to each test
+-function.
+-tmp_path Is a
+-pathlib. Path
+-object. Here is an example test usage:
+-# content of test_tmp_path.py
+-CONTENT = "content"
+-def test_create_file(tmp_path):
+-d = tmp_path
+-/ "sub"
+-d.mkdir()
+-p = d / "hello.txt"
+-p. write_text (CONTENT, encoding="utf-8")
+-assert p. read_text (encoding="utf-8") == CONTENT
+-assert len(list(tmp_path. iterdir())) == 1
+-assert 0
+-Running this would result in a passed test except for the last assert o line which we use to look at
+-values:
+-$ pytest test_tmp_path-py
+-=== test session starts ===
+-platform linux -- Python 3.x.y, pytest-9.x.y, pluggy-1.x.y
+-rootdir: /home/sweet/project
+-collected 1 item
+-TARRAT
++tmp_path is a pathlib.Path object. Here is an example test usage:

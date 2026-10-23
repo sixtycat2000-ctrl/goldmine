@@ -1,0 +1,1 @@
+tmp_path is a pathlib.Path object. Here is an example test usage:

@@ -1,0 +1,174 @@
+{
+  "schema": 1,
+  "queries_sha256": "6940dba6ae7a1aa48fa6d37b4cf87853f84090f465d2fe24347106add406e57d",
+  "reviews": [
+    {
+      "question_id": "seed-sem-01",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-02",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-03",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-04",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-05",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-06",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-07",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-08",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-09",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-10",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-11",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-sem-12",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-01",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-02",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-03",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-04",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-05",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-cjk-06",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-lookup-01",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-lookup-02",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-compound-01",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-compound-02",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read exact frozen source span and checked wording/units; source-only audit, no candidate ranking inspected."
+    },
+    {
+      "question_id": "seed-noise-01",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    },
+    {
+      "question_id": "seed-noise-02",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    },
+    {
+      "question_id": "seed-noise-03",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    },
+    {
+      "question_id": "seed-noise-04",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    },
+    {
+      "question_id": "seed-noise-05",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    },
+    {
+      "question_id": "seed-noise-06",
+      "reviewer": "IR/statistics execution agent; source-only review before retrieval",
+      "verdict": "verified_from_source",
+      "notes": "Read the registered source bundle; requested token/entity/mechanism has no supporting evidence."
+    }
+  ]
+}

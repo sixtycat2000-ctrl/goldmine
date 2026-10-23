@@ -1,0 +1,7 @@
+{
+  "tool": "/Users/yul/git/goldmine/reports/execution/P2-06/base-005/outside-source/native/goldmine-ocr",
+  "tool_sha256": "6b64087f05fbea3774abad0d6a49373329ecbcc8f2854185e7f4bcc8b9e48c5b",
+  "questions_preexisted_sha256": "1b5ae3059f0e1ff3070edfb20189cb64dfa31a3c7a98f1550bb0885cbeb30db5",
+  "stderr": "",
+  "note": "Standalone source transcription only, no index/query/ranking; target facts selected by visual inspection before OCR. Raw recognition is retained beside subsequent source-verified corrections."
+}

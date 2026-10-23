@@ -26,9 +26,10 @@ from ..chunker import CHUNKER_VERSION, Chunk, chunk_text_tokens, effective_token
 from ..config import Config
 from ..store import FileRec, Store
 from ..util import sha256_file
-from . import rules, walk
+from . import media, rules, walk
 from .commit import CommitMixin, IngestReport, _merge_reasons
 from .extraction import CODE_HARD_CAP_BYTES, ExtractMixin, _OcrRequest, _Outcome
+from .metrics import IngestMetrics
 from .urls import UrlIngestMixin
 
 logger = logging.getLogger("goldmine.ingest")
@@ -50,16 +51,19 @@ def _needs_ocr_redo(rec) -> bool:
     screenshot flag, OCR marker absent or 'unavailable'): plain ingest re-does
     it once OCR is ready so it gains its text (A5 upgrade path). Rows marked
     'no text' or with ocr_chars never re-do — no churn."""
-    if rec.kind != "image" or rec.capability != "metadata_only":
+    info = rec.info or {}
+    if rec.kind == "pdf":
+        states = info.get("ocr_page_states", {})
+        if states:
+            return any(state in ("unavailable", "error") for state in states.values())
+        return _thin_marker(rec)  # legacy thin pages, before per-page provenance
+    if rec.kind != "image" or not info.get("screenshot"):
         return False
-    if rec.detail != "backend lacks image embedding":
+    if info.get("ocr_status") in ("unavailable", "error"):
+        return True
+    if info.get("ocr_status") in ("complete", "no_text", "low_confidence"):
         return False
-    if not rec.info or not rec.info.get("screenshot"):
-        return False
-    marker = rec.info.get("ocr")
-    if marker is None:
-        return True   # v1-era row, OCR never attempted
-    return marker == "unavailable"
+    return info.get("ocr") == "unavailable" or ("ocr" not in info and "ocr_chars" not in info)
 
 
 class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
@@ -94,8 +98,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         self._embed_identity: str | None = None
         # F1: the backend-derived identity dict (live_embed_identity) for
         # _finalize's meta bookkeeping — re-deriving from the fingerprint dict
-        # would parse the legacy prompts scheme, which foresight's has no
-        # d-slot for.
+        # would parse the legacy prompts scheme, which has no d-slot for some
+        # backends.
         self._embed_identity_dict: dict | None = None
         # v2 OCR (B4): lazy one-time helper probe shared by screenshots and
         # thin PDF pages ("unknown" -> probed on first need, cached per run;
@@ -111,9 +115,15 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         # v2 image prep (B5): thumbnails must outlive extraction (they embed
         # in _commit, one wave later), so the run owns one scratch dir.
         self._media_tmp: tempfile.TemporaryDirectory | None = None
+        self._media_tmp_lock = threading.Lock()
         # G10: current extractor-version set, computed lazily once per run
         # (tool probing is not free).
         self._current_extractors: set[str] | None = None
+        self._asr_ready: bool | None = None
+        self._metrics = IngestMetrics(enabled=False, backend=backend)
+        self.last_metrics: dict | None = None
+        self._backend_started = False
+        self._startup_interrupted = False
 
     # ------------------------------------------------------------------ run
 
@@ -131,7 +141,11 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         include_datasets: bool = False,
         update_roots: bool = True,
         progress=None,
+        instrument: bool = True,
     ) -> IngestReport:
+        self._metrics = IngestMetrics(enabled=instrument, backend=self.backend)
+        self._backend_started = False
+        self._startup_interrupted = False
         exclude = list(exclude or [])
         # P2-11: one absolute, CWD-independent form for everything stored or
         # compared (file rows, roots_json, prune comparisons). URLs stay verbatim.
@@ -170,9 +184,10 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             )
 
         if dry_run:
-            return self._dry_run(
-                resolved_roots, code=code, exclude=exclude, report=report
-            )
+            with self._metrics.stage("scan"):
+                result = self._dry_run(resolved_roots, code=code, exclude=exclude, report=report)
+            result.metrics = self.last_metrics = self._metrics.snapshot(files_skipped=result.unchanged)
+            return result
 
         assert self.store is not None, "pipeline needs a Store unless dry_run"
         max_file_bytes = int(self.cfg.ingest.max_file_mb) * (1 << 20)
@@ -182,56 +197,36 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         live_fp = None
         try:
             if self.backend is not None and not self.lexical_only:
-                # startup FIRST: the foresight fingerprint's identity slot is the
-                # helper's Ping().version, which is only known after the ping (a
-                # pre-startup build recorded "helper@unknown"). For llama startup
-                # is a spawn; the fingerprint itself reads the model file.
-                self.backend.startup()
-                live_fp = fingerprints.build(self.backend)
-                self._embed_identity = fingerprints.live_embed_id(self.backend)
-                self._embed_identity_dict = fingerprints.live_embed_identity(
-                    self.backend
-                )
-                # Refusal gate: never mix vectors across fingerprints (V2 CRITICAL).
-                fingerprints.gate(self.store.meta, live_fp)
+                # Known static identities can be gated without loading a model.
+                # Unknown/helper identities still require startup before Ping's
+                # version is trusted. Explicit reindex must start successfully
+                # before destructive clearing, even for an empty source tree.
+                eager = reindex or bool(url_roots) or not self.backend.fingerprint_without_startup
+                with self._metrics.stage("embed"):
+                    live_fp = self._prepare_backend(report, startup=eager)
                 if reindex:
                     # P1-3: clear only AFTER startup + the fingerprint gate
                     # passed — a failed startup must not leave a hollow index
                     # that the content-hash skip would never rebuild.
                     self._clear_vectors()
-                # llama.cpp build string is provenance, NOT fingerprint (D2): stored
-                # in meta; a change produces a build_changed notice, not a refusal.
-                build_string = getattr(self.backend, "build_string", None)
-                if build_string and self.store is not None:
-                    previous = self.store.meta("llama_build")
-                    if previous and previous != build_string:
-                        report.note(
-                            "build_changed",
-                            f"llama.cpp build changed (recorded: {previous}, "
-                            f"installed: {build_string}) — reindex recommended",
-                        )
-                    self.store.set_meta("llama_build", build_string)
             elif reindex:
                 # lexical-only reindex: no backend, no gate — clear directly.
                 self._clear_vectors()
 
             candidates: list[walk.Candidate] = []
-            for item in walk.walk_files(
-                [Path(r) for r in file_roots],
-                code=code,
-                exclude=exclude,
-                max_file_bytes=max_file_bytes,
-            ):
-                if isinstance(item, walk.Candidate):
-                    candidates.append(item)
-                elif item.is_dir:
-                    pass  # folder-level skip: counted only, never a file row
-                else:
-                    self._record_unsupported(self.store, item.path, item.reason, report)
-
-            if not include_datasets:
-                # P2-9: --include-datasets skips dataset-folder detection.
-                self._drop_dataset_folders(candidates, file_roots, report)
+            with self._metrics.stage("scan"):
+                for item in walk.walk_files(
+                    [Path(r) for r in file_roots], code=code, exclude=exclude,
+                    max_file_bytes=max_file_bytes,
+                ):
+                    if isinstance(item, walk.Candidate):
+                        candidates.append(item)
+                    elif not item.is_dir:
+                        with self._metrics.stage("commit"):
+                            self._record_unsupported(self.store, item.path, item.reason, report)
+                if not include_datasets:
+                    with self._metrics.stage("commit"):
+                        self._drop_dataset_folders(candidates, file_roots, report)
 
             report.scanned += len(candidates)
             wave = max(int(self.cfg.ingest.workers) * 8, 16)
@@ -242,14 +237,19 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                     if self.cancelled:
                         break
                     wave_items = candidates[wave_start:wave_start + wave]
-                    hashes = [sha256_file(c.path) for c in wave_items]
+                    with self._metrics.stage("hash"):
+                        hashes = [sha256_file(c.path) for c in wave_items]
                     jobs = []
                     for cand, sha in zip(wave_items, hashes):
-                        if self._skip_unchanged(cand, sha, reindex,
-                                                 refresh_thin=refresh_thin):
+                        with self._metrics.stage("scan"):
+                            unchanged = self._skip_unchanged(cand, sha, reindex, refresh_thin=refresh_thin)
+                        if unchanged:
                             report.unchanged += 1
                             done += 1
                             continue
+                        if not self.lexical_only and not self._backend_started:
+                            with self._metrics.stage("embed"):
+                                live_fp = self._prepare_backend(report, startup=True)
                         # extract ONLY what will be committed: submitting the
                         # future BEFORE the skip check ran a full extraction
                         # for every unchanged file as a discarded orphan —
@@ -259,7 +259,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                         jobs.append((
                             cand, sha,
                             pool.submit(
-                                self._extract, cand,
+                                self._extract_measured, cand,
                                 encoding_override=encoding_override,
                                 max_chunks=max_chunks,
                             ),
@@ -273,11 +273,11 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                                 detail=f"{type(exc).__name__}: {exc}",
                             )
                         try:
-                            self._commit(
-                                cand, sha, outcome, report,
-                                batch=batch,
-                                embed=None if self.lexical_only else self.backend,
-                            )
+                            with self._metrics.stage("commit"):
+                                self._commit(
+                                    cand, sha, outcome, report, batch=batch,
+                                    embed=None if self.lexical_only else self.backend,
+                                )
                         except EmbeddingError as exc:
                             self._record_failed(
                                 self.store, str(cand.path),
@@ -293,6 +293,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                                 f"{report.failed} failed"
                             )
             except KeyboardInterrupt:
+                if self._startup_interrupted:
+                    raise
                 self.cancelled = True
                 report.cancelled = True
             finally:
@@ -302,22 +304,53 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             # this build records URLs honestly instead of pretending.
             for url in url_roots:
                 try:
-                    self._ingest_urls([url], crawl_bounds, report)
+                    with self._metrics.stage("extract"):
+                        self._ingest_urls([url], crawl_bounds, report)
                 except ImportError:
                     self._record_url_unimplemented(url, report)
 
             # Deletions: files under a root that vanished since the last ingest.
-            gone = walk.compute_deletions(self.store, resolved_roots)
-            for fid in gone:
-                self.store.delete_file(fid)
+            with self._metrics.stage("scan"):
+                gone = walk.compute_deletions(self.store, resolved_roots)
+            with self._metrics.stage("commit"):
+                for fid in gone:
+                    self.store.delete_file(fid)
             report.deleted = len(gone)
         finally:
             if self.backend is not None:
                 self.backend.close()
             self._close_media_tmp()
+            report.metrics = self.last_metrics = self._metrics.snapshot(files_skipped=report.unchanged)
 
-        self._finalize(report, live_fp, update_roots=update_roots)
+        with self._metrics.stage("commit"):
+            self._finalize(report, live_fp, update_roots=update_roots)
+        report.metrics = self.last_metrics = self._metrics.snapshot(files_skipped=report.unchanged)
         return report
+
+    def _prepare_backend(self, report, *, startup):
+        if startup and not self._backend_started:
+            try:
+                self.backend.startup()
+            except KeyboardInterrupt:
+                self._startup_interrupted = True
+                raise
+            self._backend_started = True
+        live_fp = fingerprints.build(self.backend)
+        fingerprints.gate(self.store.meta, live_fp)
+        self._embed_identity = fingerprints.live_embed_id(self.backend)
+        self._embed_identity_dict = fingerprints.live_embed_identity(self.backend)
+        build_string = getattr(self.backend, "build_string", None)
+        if build_string and self._backend_started:
+            previous = self.store.meta("llama_build")
+            if previous and previous != build_string:
+                report.note("build_changed", f"llama.cpp build changed (recorded: {previous}, installed: {build_string}) — reindex recommended")
+            with self._metrics.stage("commit"):
+                self.store.set_meta("llama_build", build_string)
+        return live_fp
+
+    def _extract_measured(self, cand, **kwargs):
+        with self._metrics.stage("extract"):
+            return self._extract(cand, **kwargs)
 
     # ------------------------------------------------------------- dry run
 
@@ -414,6 +447,16 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             return False
         if rec.sha256 != sha:
             return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_version") != media.EXIF_METADATA_VERSION:
+            # Repair legacy capture/edit-time confusion once, including
+            # metadata-only photos. The marker also records a truthful absence.
+            return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_status") not in {"complete", "absent", "unsupported", "unavailable"}:
+            # Native timeout/process/JSON failures are not authoritative absence.
+            # Rows written before the status distinction also need one refresh.
+            return False
+        if rec.kind == "image" and (rec.info or {}).get("exif_reader") is None and media.exif_reader(cand.path) is not None:
+            return False  # A formerly missing native metadata reader arrived.
         if rec.capability == "content_indexed":
             if rec.chunker_version != self._chunker_version:
                 return False
@@ -425,7 +468,22 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             # a screenshot indexed under a text-only backend BEFORE OCR was
             # available can now gain text. The re-done row always carries an
             # ocr marker (ocr_chars or info.ocr), so this cannot churn.
-            return False
+            if rec.kind != "pdf":
+                return False
+            from .extract_pdf import pdftoppm_path
+
+            if pdftoppm_path() is not None:
+                return False
+        if (rec.kind in ("audio", "video")
+                and (rec.info or {}).get("asr_status") in ("unavailable", "error")
+                and not self.lexical_only and self.backend.capability().text
+                and str(self.cfg.ingest.asr) != "off"):
+            if self._asr_ready is None:
+                from .asr import resolve_tools
+
+                self._asr_ready = resolve_tools(self.cfg) is not None
+            if self._asr_ready:
+                return False
         return True
 
     def _current_extractor_set(self) -> set[str]:
@@ -490,21 +548,22 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         _merge_reasons(report.unsupported_reasons, reason)
 
     def _record_failed(self, store: Store, path: str, detail: str | None, report,
-                       fid: int | None = None, kind: str = "doc") -> None:
+                       fid: int | None = None, kind: str = "doc", info: dict | None = None) -> None:
         if fid is None:
             rec = store.find_by_path(path)
             fid = rec.id if rec and rec.id is not None else store.upsert_file(
                 FileRec(path=path, source="file", kind=kind, size=0, state="pending")
             )
-        store.mark_file(
-            fid, state="failed", capability="failed", detail=detail,
-            info=None, extractor_version=None,
-            chunker_version=self._chunker_version, embed_id=None,
-        )
         # P1-5: drop the previous extract's content segments (+ their FTS rows)
         # so search cannot serve text of a file that no longer extracts; the
         # name row stays. Search also excludes failed files (belt and braces).
-        store.delete_content_segments(fid)
+        with store.write_transaction():
+            store.delete_content_segments(fid)
+            store.mark_file(
+                fid, state="failed", capability="failed", detail=detail,
+                info=info, extractor_version=None,
+                chunker_version=self._chunker_version, embed_id=None,
+            )
         self._tally(report, kind, "failed")
         report.failures.append({"path": path, "detail": detail or "failed"})
         del report.failures[:-10]
@@ -541,7 +600,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
 
     def _clear_vectors(self) -> None:
         """--reindex: clear segments + fingerprint; re-extract everything."""
-        with self.store.db:
+        with self.store.write_transaction():
             self.store.db.execute("DELETE FROM fts")
             self.store.db.execute("DELETE FROM segments")
         self.store.set_meta("fingerprint_id", None)

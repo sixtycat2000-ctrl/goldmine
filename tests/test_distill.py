@@ -64,6 +64,24 @@ def _item(sid: int, fid: int, vec: np.ndarray, text: str = "text") -> CItem:
     )
 
 
+def test_corpus_uses_verbatim_original_after_lexical_normalization(tmp_path):
+    from goldmine.store import FileRec, SegmentRec
+
+    store = Store(tmp_path / "original.sqlite")
+    text = "Zircon ＡＢ－１２ keeps Original CASE. 中文知识库。"
+    try:
+        fid = store.upsert_file(FileRec(path="/explicit/neutral.txt", state="done", capability="content_indexed"))
+        store.replace_segments(fid, [SegmentRec(kind="chunk", modality="text", loc=11, loc_end=12,
+                                               text_for_fts=text, vec=_vec(0))])
+        body, original = store.db.execute("SELECT body,original FROM fts").fetchone()
+        assert body != text and original == text
+        items = distill._corpus(store, Scope())
+        assert len(items) == 1 and items[0].text == text
+        assert (items[0].loc, items[0].loc_end) == (11, 12)
+    finally:
+        store.close()
+
+
 # ------------------------------------------------------------- measure_tau
 
 

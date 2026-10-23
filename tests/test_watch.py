@@ -470,16 +470,24 @@ class TestPassMechanics:
     def test_deletion_sweep_prunes_rows(self, tmp_path):
         root = tmp_path / "r"
         drop(root / "a.txt", "zanzibar unique file\n")
-        daemon, _ = make_daemon(tmp_path, roots=[str(root)],
+        daemon, clock = make_daemon(tmp_path, roots=[str(root)],
                                 watch_min_pass_gap_s=0.0,
                                 watch_full_period_s=1)
         daemon.run(max_ticks=1)
         assert hits_for(daemon.db_path, "zanzibar unique")
         (root / "a.txt").unlink()
-        daemon.run(max_ticks=2)
+        clock.sleep(daemon.full_period_s)
+        # Observe the first due sweep. A second legitimate periodic sweep
+        # would overwrite last_pass with deleted=0 after doing no extra work.
+        daemon.run(max_ticks=1)
         lp = last_pass_of(daemon)
         assert lp["kind"] == "sweep"
         assert lp["deleted"] == 1
+        assert hits_for(daemon.db_path, "zanzibar unique") == []
+        clock.sleep(daemon.full_period_s)
+        daemon.run(max_ticks=1)
+        assert last_pass_of(daemon)["kind"] == "sweep"
+        assert last_pass_of(daemon)["deleted"] == 0
         assert hits_for(daemon.db_path, "zanzibar unique") == []
 
 

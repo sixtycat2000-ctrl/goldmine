@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "state": "DRAFT",
+  "declared_at": "2026-10-21T18:53:01.469910+00:00",
+  "purpose": "source-first real distill curation; labels before clustering; no models/tokenizers/servers/questions/folds/results read",
+  "frozen_product_manifest": {
+    "path": "/Users/yul/git/goldmine/evals/product_v4_expansion/manifest.json",
+    "sha256": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0"
+  },
+  "topic_definitions": {
+    "reactive-ui-state": "Reactive frontend state, component bindings, events and conditional/list/form rendering.",
+    "cli-interfaces": "Command-line interfaces: argument/option declarations, command context, help and terminal presentation.",
+    "http-requests": "HTTP request/response lifecycle, client sessions/authentication, timeouts, server middleware and error handling.",
+    "python-environments": "Python package installation, dependency resolution, reproducible project/tool environments.",
+    "python-testing": "Automated Python tests: fixtures/assertions, mocking/property/async testing, coverage and test orchestration.",
+    "typed-data": "Typed data validation, schema checking, coercion and structured serialization.",
+    "code-quality": "Python source formatting, linting, style checking and static analysis.",
+    "cryptographic-security": "Cryptographic primitives, secure transport, and cryptographic random-generator statistical tests."
+  },
+  "membership_policy": "Assign a primary topic from the dominant actual document purpose; cross-topic requires substantive material in at least two definitions; noise means no dominant membership, not keyword absence. All decisions require original-source evidence and independent review before freezing.",
+  "grouping_policy": "Preserve each existing frozen source_group exactly. New supplemental groups are one per official upstream repository. Derivative, translated or duplicate content must never increase independent-group counts. These groups are predeclared provenance units, not a statistical independence guarantee.",
+  "base_rule": ">=100 documents and >=8 distinct existing/new source groups per primary topic; cross-topic/noise do not satisfy topic group minima",
+  "incremental_paths": [
+    "compound/httpx/docs/advanced/timeouts.md",
+    "compound/poetry/docs/managing-environments.md",
+    "compound/pydantic/docs/concepts/strict_mode.md",
+    "compound/pytest/doc/en/how-to/skipping.rst",
+    "compound/ruff/docs/formatter.md",
+    "compound/typer/docs/tutorial/options/help.md",
+    "compound/uv/docs/guides/tools.md",
+    "text/cpython/Lib/zipfile/__init__.py",
+    "text/vue-zh/src/guide/essentials/computed.md",
+    "text/vue-zh/src/guide/essentials/watchers.md"
+  ],
+  "supplemental_repositories_by_topic": {
+    "python-environments": [
+      "pypa/hatch",
+      "pdm-project/pdm",
+      "conda/conda",
+      "prefix-dev/pixi"
+    ],
+    "python-testing": [
+      "pytest-dev/pytest-mock",
+      "pytest-dev/pytest-asyncio",
+      "HypothesisWorks/hypothesis",
+      "tox-dev/tox",
+      "wntrblm/nox",
+      "nedbat/coveragepy",
+      "pytest-dev/pytest-cov"
+    ],
+    "typed-data": [
+      "python-attrs/attrs",
+      "python-attrs/cattrs",
+      "marshmallow-code/marshmallow",
+      "jcrist/msgspec",
+      "python-jsonschema/jsonschema",
+      "pyeve/cerberus",
+      "alecthomas/voluptuous"
+    ],
+    "code-quality": [
+      "psf/black",
+      "PyCQA/isort",
+      "PyCQA/flake8",
+      "pylint-dev/pylint",
+      "PyCQA/pycodestyle",
+      "hhatto/autopep8",
+      "google/yapf"
+    ],
+    "cryptographic-security": [
+      "pyca/cryptography",
+      "Legrandin/pycryptodome",
+      "openssl/openssl"
+    ]
+  },
+  "expected_final_counts_if_sources_validated": {
+    "base": 110,
+    "incremental": 10,
+    "total": 120
+  },
+  "models_run": false,
+  "tokenizers_run": false,
+  "clusters_observed": false,
+  "questions_folds_holdout_read": false,
+  "freeze_requires": [
+    "independent source/label/license review",
+    "exact multilingual/paraphrase/duplicate evidence review",
+    "source manifest and labels materialization integrity check",
+    "explicit approval to freeze data; no quality claim"
+  ]
+}

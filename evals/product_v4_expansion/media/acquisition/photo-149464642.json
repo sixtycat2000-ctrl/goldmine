@@ -1,0 +1,28 @@
+{
+  "pageid": 149464642,
+  "title": "File:Saraor river 05.jpg",
+  "artist": "Горбунова М.С.",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/9/9e/Saraor_river_05.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=990851960",
+  "page_revision": 990851960,
+  "upload_timestamp": "2024-06-17T10:12:17Z",
+  "published_sha1": "c0af648a3eaaecf08f44092f804fc4d38d215287",
+  "sha256": "84828d0f920008333416d5cff1d1b8829c7a1032436ba741ea5f35fbbe64d0db",
+  "bytes": 4889792,
+  "basename": "Saraor_river_05.jpg",
+  "asset": "assets/media/photos/Saraor_river_05.jpg",
+  "license_file": "licenses/media/commons-149464642.txt",
+  "taken": "2024-05-28 15:26:12",
+  "exif_DateTimeOriginal": "2024:05:28 15:26:12",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2024:05:28 15:26:12",
+    "DateTimeOriginal": "2024:05:28 15:26:12",
+    "DateTimeDigitized": "2024:05:28 15:26:12"
+  },
+  "production_sips_taken": "2024-05-28 15:26:12",
+  "production_taken_matches_DateTimeOriginal": true,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/Saraor_river_05.jpg\n  creation: 2024:05:28 15:26:12\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

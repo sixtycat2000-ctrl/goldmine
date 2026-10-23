@@ -36,11 +36,15 @@ import subprocess
 import threading
 import time
 import urllib.error
-import urllib.request
 from pathlib import Path
 
 import numpy as np
 
+from ..deadline import (
+    RequestTimeout, check_deadline, current_deadline, deadline_lock,
+    deadline_sleep, remaining_timeout,
+)
+from ..http_transport import request as http_request
 from .base import (
     PROMPT_SCHEME,
     BackendStartupError,
@@ -193,10 +197,14 @@ def probe_version(binary: Path) -> str | None:
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             stdin=subprocess.DEVNULL,
-            timeout=3.0,
+            timeout=remaining_timeout(3.0),
         )
+    except RequestTimeout:
+        raise
     except (OSError, subprocess.TimeoutExpired):
+        check_deadline()
         return None
+    check_deadline()
     lines = [
         line.strip()
         for line in (proc.stdout or b"").decode("utf-8", "replace").splitlines()
@@ -216,6 +224,7 @@ def _l2_normalize(matrix: np.ndarray) -> np.ndarray:
 
 class LlamaServerBackend(EmbeddingBackend):
     backend_id = "llama"
+    fingerprint_without_startup = True
 
     def __init__(self, cfg):
         self.cfg = cfg
@@ -228,6 +237,8 @@ class LlamaServerBackend(EmbeddingBackend):
         self._started = False
         self._start_lock = threading.Lock()
         self._sha256_cache: str | None = None
+        self.model_spawn_count = 0
+        self.embedding_http_requests = 0
 
     # ------------------------------------------------------------- identity
 
@@ -246,6 +257,7 @@ class LlamaServerBackend(EmbeddingBackend):
     def model_sha256(self) -> str:
         """sha256 of the GGUF with a `<model>.sha256` sidecar cache; recomputed
         when size or mtime changed (MODULE_MAP contract)."""
+        check_deadline()
         model = self.model_path()
         if self._sha256_cache is not None:
             return self._sha256_cache
@@ -317,11 +329,11 @@ class LlamaServerBackend(EmbeddingBackend):
         """Probe-then-start: a healthy llama-server already on this port means we
         pick another port (never adopt, never kill processes we did not spawn)."""
         try:
-            with urllib.request.urlopen(
-                f"http://127.0.0.1:{port}/health", timeout=0.5
-            ) as resp:
-                return resp.status == 200
+            return http_request(f"http://127.0.0.1:{port}/health", timeout_s=0.5, max_bytes=2000).status == 200
+        except RequestTimeout:
+            raise
         except OSError:
+            check_deadline()
             return False
 
     def _drain(self, stream) -> None:
@@ -337,6 +349,7 @@ class LlamaServerBackend(EmbeddingBackend):
                 pass
 
     def _spawn(self, port: int) -> subprocess.Popen:
+        check_deadline()
         argv = [
             str(self.server_path),
             "--embeddings", "--pooling", "mean",
@@ -360,24 +373,29 @@ class LlamaServerBackend(EmbeddingBackend):
             "-ub", str(int(self.cfg.ctx)),
             "--host", "127.0.0.1", "--port", str(port),
         ]
-        return subprocess.Popen(
+        proc = subprocess.Popen(
             argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             stdin=subprocess.DEVNULL,
         )
+        self.model_spawn_count += 1
+        return proc
 
     def _wait_healthy(self, proc: subprocess.Popen, port: int, deadline_s: float) -> bool:
         url = f"http://127.0.0.1:{port}/health"
         deadline = time.monotonic() + deadline_s
         while time.monotonic() < deadline:
+            check_deadline()
             if proc.poll() is not None:
                 return False  # child exited: surfaced by the caller
             try:
-                with urllib.request.urlopen(url, timeout=1.0) as resp:
-                    if resp.status == 200:
-                        return True
+                response = http_request(url, timeout_s=max(0.001, min(1.0, deadline - time.monotonic())), max_bytes=2000)
+                if response.status == 200:
+                    return True
+            except RequestTimeout:
+                raise
             except OSError:
-                pass
-            time.sleep(0.25)
+                check_deadline()
+            deadline_sleep(min(0.25, max(0.0, deadline - time.monotonic())))
         return False
 
     def startup(self) -> None:
@@ -386,12 +404,18 @@ class LlamaServerBackend(EmbeddingBackend):
         count_tokens/token_pieces run on extraction worker threads while the
         main thread embeds (D3), so concurrent first-starts must not
         double-spawn."""
+        check_deadline()
         if self._started:
             return
-        with self._start_lock:
-            return self._startup_locked()
+        with deadline_lock(self._start_lock):
+            try:
+                return self._startup_locked()
+            except BaseException:
+                self.close()
+                raise
 
     def _startup_locked(self) -> None:
+        check_deadline()
         if self._started:
             return
         self._ring.clear()
@@ -426,10 +450,12 @@ class LlamaServerBackend(EmbeddingBackend):
 
         last_error = "unknown startup failure"
         for attempt in range(1, 4):  # port-bind race mitigation: 3 attempts
+            check_deadline()
             port = self._free_port()
             while self._port_has_foreign_server(port):  # never adopt a foreign server
                 logger.info("llama: port %d already serves a healthy server; picking another", port)
                 port = self._free_port()
+            check_deadline()
             proc = self._spawn(port)
             self._proc, self._port = proc, port
             threads = [
@@ -478,11 +504,13 @@ class LlamaServerBackend(EmbeddingBackend):
         if proc.poll() is None:
             proc.terminate()
             try:
-                proc.wait(timeout=5.0)
+                deadline = current_deadline()
+                grace = 5.0 if deadline is None else max(0.0, min(0.25, deadline.expires_at - time.monotonic()))
+                proc.wait(timeout=grace)
             except subprocess.TimeoutExpired:
                 proc.kill()
                 try:
-                    proc.wait(timeout=5.0)
+                    proc.wait(timeout=5.0 if current_deadline() is None else 1.0)
                 except subprocess.TimeoutExpired:  # pragma: no cover
                     pass
         for stream in (proc.stdout, proc.stderr):
@@ -504,30 +532,33 @@ class LlamaServerBackend(EmbeddingBackend):
         — ~0.2-1 ms/request measured class). Returns the parsed `tokens` list
         (ids, or {"id","piece"} objects when with_pieces). Raises
         EmbeddingError/_TransientEmbeddingError like the embeddings path."""
+        check_deadline()
         assert self._port is not None
         body = json.dumps({
             "content": content,
             "add_special": add_special,
             "with_pieces": with_pieces,
         }).encode("utf-8")
-        request = urllib.request.Request(
-            f"http://127.0.0.1:{self._port}/tokenize",
-            data=body,
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
         try:
-            with urllib.request.urlopen(
-                request, timeout=min(float(self.cfg.request_timeout), 30.0)
-            ) as resp:
-                payload = json.loads(resp.read())
+            response = http_request(
+                f"http://127.0.0.1:{self._port}/tokenize", data=body,
+                headers={"Content-Type": "application/json"},
+                timeout_s=min(float(self.cfg.request_timeout), 30.0),
+            )
+            payload = json.loads(response.body)
         except urllib.error.HTTPError as exc:
             detail = exc.read(2000).decode("utf-8", "replace")
             if exc.code in (500, 502, 503, 504):
                 raise _TransientEmbeddingError(f"HTTP {exc.code}: {detail.strip()}")
             raise EmbeddingError(f"tokenize HTTP {exc.code}", detail.strip())
+        except RequestTimeout:
+            raise
         except _TRANSIENT as exc:
+            check_deadline()
             raise _TransientEmbeddingError(f"connection error: {exc}") from exc
+        except ValueError as exc:
+            raise EmbeddingError("invalid tokenize HTTP response", str(exc)) from exc
+        check_deadline()
         tokens = payload.get("tokens")
         if not isinstance(tokens, list):
             raise EmbeddingError(f"unexpected tokenize payload shape: {payload!r}"[:400])
@@ -546,7 +577,10 @@ class LlamaServerBackend(EmbeddingBackend):
                                 with_pieces=False))
                 for t in texts
             ]
+        except RequestTimeout:
+            raise
         except (EmbeddingError, OSError, ValueError) as exc:
+            check_deadline()
             logger.debug("llama: count_tokens unavailable (%s) — estimating", exc)
             return None
 
@@ -560,7 +594,10 @@ class LlamaServerBackend(EmbeddingBackend):
             self.startup()
             tokens = self._retry(self._post_tokenize, text, add_special=False,
                                  with_pieces=True)
+        except RequestTimeout:
+            raise
         except (EmbeddingError, OSError, ValueError) as exc:
+            check_deadline()
             logger.debug("llama: token_pieces unavailable (%s) — estimating", exc)
             return None
         pieces: list[bytes] = []
@@ -581,9 +618,11 @@ class LlamaServerBackend(EmbeddingBackend):
 
     def _retry(self, fn, *args, **kwargs):
         """Retry-once wrapper for cheap tokenize calls (mirrors _embed_batch)."""
+        check_deadline()
         try:
             return fn(*args, **kwargs)
         except _TransientEmbeddingError as first:
+            check_deadline()
             if self._proc is not None and self._proc.poll() is not None:
                 raise EmbeddingError("llama-server died mid-run", self.stderr_tail()) from first
             logger.warning("llama: transient tokenize failure (%s) — retrying once", first)
@@ -596,26 +635,29 @@ class LlamaServerBackend(EmbeddingBackend):
 
     def _post_embeddings(self, texts: list[str]) -> np.ndarray:
         """One POST /v1/embeddings; returns (len(texts), dim) float32 (raw)."""
+        check_deadline()
         assert self._port is not None
         body = json.dumps({"input": list(texts)}).encode("utf-8")
-        request = urllib.request.Request(
-            f"http://127.0.0.1:{self._port}/v1/embeddings",
-            data=body,
-            headers={"Content-Type": "application/json"},
-            method="POST",
-        )
         try:
-            with urllib.request.urlopen(
-                request, timeout=float(self.cfg.request_timeout)
-            ) as resp:
-                payload = json.loads(resp.read())
+            self.embedding_http_requests += 1
+            response = http_request(
+                f"http://127.0.0.1:{self._port}/v1/embeddings", data=body,
+                headers={"Content-Type": "application/json"}, timeout_s=float(self.cfg.request_timeout),
+            )
+            payload = json.loads(response.body)
         except urllib.error.HTTPError as exc:
             detail = exc.read(2000).decode("utf-8", "replace")
             if exc.code in (500, 502, 503, 504):
                 raise _TransientEmbeddingError(f"HTTP {exc.code}: {detail.strip()}")
             raise EmbeddingError(f"embeddings HTTP {exc.code}", detail.strip())
+        except RequestTimeout:
+            raise
         except _TRANSIENT as exc:
+            check_deadline()
             raise _TransientEmbeddingError(f"connection error: {exc}") from exc
+        except ValueError as exc:
+            raise EmbeddingError("invalid embeddings HTTP response", str(exc)) from exc
+        check_deadline()
         data = payload.get("data")
         if not isinstance(data, list) or len(data) != len(texts):
             raise EmbeddingError(
@@ -637,10 +679,12 @@ class LlamaServerBackend(EmbeddingBackend):
         """One batch with retry-once on transient connection/server errors;
         a server that died mid-run is a hard EmbeddingError (SIGINT path kills
         the child, so a dead child after cancellation must not respawn)."""
+        check_deadline()
         assert self._proc is not None
         try:
             return self._post_embeddings(texts)
         except _TransientEmbeddingError as first:
+            check_deadline()
             if self._proc.poll() is not None:
                 raise EmbeddingError(
                     "llama-server died mid-run",
@@ -656,12 +700,14 @@ class LlamaServerBackend(EmbeddingBackend):
                 ) from second
 
     def embed_texts(self, texts: list[str]) -> np.ndarray:
+        check_deadline()
         if not texts:
             return np.zeros((0, VEC_DIM), dtype=np.float32)
         self.startup()  # idempotent; raises BackendStartupError when unusable
         batch = max(1, int(self.cfg.batch))
         out = np.zeros((len(texts), VEC_DIM), dtype=np.float32)
         for start in range(0, len(texts), batch):
+            check_deadline()
             part = self._embed_batch(list(texts[start:start + batch]))
             out[start:start + part.shape[0]] = part
         return _l2_normalize(out)  # defensive; record 'l2_post' in fingerprint
@@ -669,13 +715,13 @@ class LlamaServerBackend(EmbeddingBackend):
     def embed_image(self, path: Path) -> np.ndarray:
         raise NotSupported(
             "llama /v1/embeddings is text-only — images are metadata-only under "
-            "this backend (use --backend foresight or mock for image vectors)"
+            "this backend (use --backend mock for image vectors)"
         )
 
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
         raise NotSupported(
             "llama /v1/embeddings is text-only — audio is metadata-only under "
-            "this backend (use --backend foresight or mock for audio vectors)"
+            "this backend (use --backend mock for audio vectors)"
         )
 
     # -------------------------------------------------------------- report

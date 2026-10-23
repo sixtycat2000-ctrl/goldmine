@@ -454,7 +454,7 @@ def test_mixed_vector_and_vectorless_chunks(cfg, tmp_path):
 # ------------------------------------------------------------------ media (v2)
 #
 # The multimodal pipeline: with a backend that declares image/audio capability
-# (foresight live; MockBackend(multimodal=True) offline) media files become
+# (MockBackend(multimodal=True) offline) media files become
 # content-indexed. The default mock stays text-only — those pins live above.
 
 
@@ -743,7 +743,7 @@ def _screenshot(tmp_path, name="Screenshot 2026-06-01 at 09.00.00.png"):
 
 
 def test_screenshot_ocr_under_multimodal_is_fts_only(cfg, tmp_path, fake_ocr):
-    """Foresight-like policy (DigUp Indexer.swift:510-513): the image vector
+    """Multimodal policy (DigUp Indexer.swift:510-513): the image vector
     EXISTS, so the OCR words are FTS-only — kind='ocr', text indexed, vec NULL."""
     from conftest import FAKE_OCR_TEXT
 
@@ -989,7 +989,7 @@ def test_ocr_batch_failure_marks_each_row_off(cfg, tmp_path, monkeypatch):
 
 
 def test_exif_taken_reaches_content_date(cfg, tmp_path, monkeypatch):
-    """EXIF creation (sips -g creation via prepare_image) -> info.taken and
+    """Actual EXIF capture time (via prepare_image) -> info.taken and
     files.content_date (05 §4.1c/C10) on the media commit path."""
     import time as _time
 
@@ -997,8 +997,8 @@ def test_exif_taken_reaches_content_date(cfg, tmp_path, monkeypatch):
     taken = ("2024-05-17 09:30:00", 1715928600.0)
     real_prep = media.prepare_image
 
-    def prep_with_exif(path, tmp, *, screenshot=False):
-        prep = real_prep(path, tmp, screenshot=screenshot)
+    def prep_with_exif(path, tmp, *, screenshot=False, metadata=None):
+        prep = real_prep(path, tmp, screenshot=screenshot, metadata=metadata)
         prep.taken, prep.taken_epoch = taken
         return prep
 
@@ -1191,10 +1191,11 @@ def test_g10_stale_extractor_version_redone_by_plain_ingest(
     rec = store.find_by_path(str(doc))
     assert rec.extractor_version == "txt-stdlib.v1"
 
-    store.db.execute(
-        "UPDATE files SET extractor_version = 'txt-stdlib.v0-ancient' "
-        "WHERE path = ?", (str(doc),)
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET extractor_version = 'txt-stdlib.v0-ancient' "
+            "WHERE path = ?", (str(doc),)
+        )
     store.db.commit()
     report = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(fixture_tree)])
     # every OTHER done file skipped; the stale one re-extracted
@@ -1203,10 +1204,11 @@ def test_g10_stale_extractor_version_redone_by_plain_ingest(
     assert rec.extractor_version == "txt-stdlib.v1"   # re-extracted & current
 
     # and the stale chunker dimension rides the same check
-    store.db.execute(
-        "UPDATE files SET chunker_version = 'chunk.v0-ancient' WHERE path = ?",
-        (str(doc),)
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET chunker_version = 'chunk.v0-ancient' WHERE path = ?",
+            (str(doc),)
+        )
     store.db.commit()
     IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(fixture_tree)])
     rec = store.find_by_path(str(doc))
@@ -1223,10 +1225,11 @@ def test_g10_old_image_version_redone(cfg, tmp_path):
     root, shot = _screenshot(tmp_path)
     store = Store(cfg.home / "g10-image.sqlite")
     IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
-    store.db.execute(
-        "UPDATE files SET extractor_version = 'image-bytes.v1' WHERE path = ?",
-        (str(shot),),
-    )
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET extractor_version = 'image-bytes.v1' WHERE path = ?",
+            (str(shot),),
+        )
     store.db.commit()
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     assert report.unchanged == 0

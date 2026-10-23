@@ -1,0 +1,1 @@
+The connect timeout specifies the maximum amount of time to wait until a socket connection to the requested host is established. If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised.

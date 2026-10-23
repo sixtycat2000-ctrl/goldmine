@@ -3,9 +3,9 @@
 Covers: question-schema validation (incl. the F1 evidence-per-fact rule), the
 check-facts failure path (present + leak patterns), the grader-output parser
 (valid / malformed / score out of range), the F2 threshold derivation
-arithmetic, and the F2/F4 gate paths (invalidation → exit 2, pack-sha drift →
-exit 2, answer-drift refusal, threshold trip vs green) against a synthetic
-baseline in a tmp eval directory.
+historical behavior rejection, and the v3 adapter paths. Historical test node
+IDs stay stable; variance-derived thresholds and non-gating traps are now
+explicitly rejected under the reviewed v3 contract.
 """
 
 from __future__ import annotations
@@ -21,6 +21,8 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 import eval_answer as ea  # noqa: E402
+from answer_eval import compute_score_variance, load_run, write_baseline  # noqa: E402
+from answer_eval_fixtures import edit, make_run  # noqa: E402
 
 
 # ---------------------------------------------------------------- fixtures
@@ -69,10 +71,10 @@ def pack_for(body: str) -> str:
 
 def test_validate_questions_accepts_the_committed_set():
     qs = ea.load_questions()
-    assert len(qs) == 20
+    assert len(qs) == 17
     assert ea.validate_questions(qs) == []
-    assert sum(len(q["must_facts"]) for q in qs) == 50
-    assert sum(1 for q in qs if q["trap"]) == 4
+    assert sum(len(q["must_facts"]) for q in qs) == 43
+    assert sum(1 for q in qs if q["trap"]) == 3
 
 
 def test_validate_questions_requires_evidence_per_fact():
@@ -176,31 +178,34 @@ def test_grader_prompt_slots_and_trap_adjudications():
 
 
 def test_binom_tail_ge_known_values():
-    assert ea._binom_tail_ge(0, 16, 0.5) == 1.0
-    assert ea._binom_tail_ge(17, 16, 0.5) == 0.0
-    # P(X >= 1) = 1 - (1-p)^n
-    assert abs(ea._binom_tail_ge(1, 16, 0.05) - (1 - 0.95 ** 16)) < 1e-12
+    """Historical node ID: binomial model must no longer imply gate guarantees."""
+    stats = compute_score_variance({"q": [2, 2, 2, 2]})
+    assert stats["p_score"] == 0
+    assert stats["false_positive_bound"] is None
+    assert not hasattr(ea, "_binom_tail_ge")
 
 
-def test_derive_threshold_low_waver_keeps_010():
-    t, trip_p, atoms = ea.derive_threshold(0.0)
-    assert (t, atoms) == (0.10, 2)
-    assert trip_p == 0.0
+def test_derive_threshold_low_waver_keeps_010(tmp_path):
+    """The .10 default comes from preregistration, never a zero-flip estimate."""
+    run = make_run(tmp_path / "run")
+    result = load_run(run, allow_fixture=True)
+    assert result.preregistration["practical_drop_threshold"] == 0.10
+    assert "threshold" not in compute_score_variance({"q": [2, 2, 2, 2]})
 
 
-def test_derive_threshold_raises_when_waver_too_high():
-    # q=0.10: P(Bin(16,0.10) >= 2) ~ 0.49 — far over 5%; 0.10 must be rejected
-    t, trip_p, atoms = ea.derive_threshold(0.10)
-    assert t > 0.10 and trip_p < ea.TRIP_P_MAX
-    # sanity: at q=0.10 the 0.10-threshold trip probability really is high
-    assert ea._binom_tail_ge(2, 16, 0.10) >= 0.4
+def test_derive_threshold_raises_when_waver_too_high(tmp_path):
+    """Historical node ID: high variation may not raise the registered wire."""
+    run = make_run(tmp_path / "run", score_for=lambda q, a, j: 0 if a == "a2" else 2)
+    result = load_run(run, allow_fixture=True)
+    assert result.preregistration["practical_drop_threshold"] == 0.10
+    assert compute_score_variance(result.scores)["calibration_status"] == "uncalibrated"
 
 
 # ----------------------------------------------------------------- the gate
 
 
 def _write_baseline(path: Path, **over):
-    base = ea.empty_baseline("v3-2026-10-18")
+    base = json.loads((REPO_ROOT / "evals/answer_baseline.json").read_text())
     base.update({
         "date": "2026-10-19",
         "models": {"answerer": "GLM-test", "judge": "GLM-test"},
@@ -252,15 +257,10 @@ def _gate_args(tmp: Path, baseline: Path) -> argparse.Namespace:
 
 @pytest.fixture
 def patched_index(tmp_path, monkeypatch):
-    """Freeze the environment probes the gate makes."""
-    monkeypatch.setattr(ea, "QUESTIONS_PATH", REPO_ROOT / "evals/answer/questions.jsonl")
-    monkeypatch.setattr(ea, "_index_fingerprints", lambda db: {
-        "fingerprint_id": "fp1", "model_id": "m", "model_sha256": "s",
-        "dim": 768, "chunker_version": "chunk.v2-tok"})
-    monkeypatch.setattr(ea, "_corpus_version", lambda: "v3-2026-10-18")
-    monkeypatch.setattr(ea, "_emit_pack_shas", lambda args, s: {
-        q["id"]: (ea.sha256_bytes(f"pack {q['id']}\n".encode()), {"token_mode": "tokenize"})
-        for q in ea.load_questions()})
+    """Legacy input must be rejected before any model/index probing."""
+    def forbidden(*args, **kwargs):
+        raise AssertionError("legacy gate attempted model/index access")
+    monkeypatch.setattr(ea, "open_index", forbidden)
     yield
 
 
@@ -307,7 +307,7 @@ def test_gate_pack_sha_drift_exit2(tmp_path, patched_index):
     }
     baseline.write_text(json.dumps(b))
     rc, err = capsys_err(lambda: ea.gate(_gate_args(tmp_path, baseline)))
-    assert rc == 2 and "packs drifted" in err
+    assert rc == 2 and "NOT_COMPARABLE" in err
 
 
 def capsys_err(fn):
@@ -333,59 +333,36 @@ def test_gate_answer_drift_over_two_exit2(tmp_path, patched_index):
     }
     baseline.write_text(json.dumps(b))
     rc, err = capsys_err(lambda: ea.gate(_gate_args(tmp_path, baseline)))
-    assert rc == 2 and "answer files differ" in err
+    assert rc == 2 and "NOT_COMPARABLE" in err
 
 
 def test_gate_two_answer_drifts_allowed_and_atom_wire_trips(tmp_path, patched_index):
-    """At n=16 the 0.1 wire is TWO atoms (2/16 = 0.125 > 0.1): one atom flip
-    stays green, two trip and list the fallen questions."""
-    baseline = tmp_path / "b.json"
-    qs = ea.load_questions()
-    answerable = [q["id"] for q in qs if q["class"] != "trap"]
-    # baseline: all 2s; current: exactly 2 answerable questions drop one atom
-    scores = {qid: (1 if i < 2 else 2) for i, qid in enumerate(answerable)}
-    _write_baseline(baseline)
-    _write_run(tmp_path, scores, answer_sha="new" + "a" * 60)
-    b = json.loads(baseline.read_text())
-    b["mean_score"] = 2.0
-    b["gate"] = {**b["gate"], "threshold": 0.1}
-    b["per_question"] = {
-        q["id"]: {"score": 2, "answer_sha256": ea.sha256_bytes(f"answer {q['id']}\n".encode()),
-                  "pack_sha256": ea.sha256_bytes(f"pack {q['id']}\n".encode())}
-        for q in qs
-    }
-    baseline.write_text(json.dumps(b))
-    rc, err = capsys_err(lambda: ea.gate(_gate_args(tmp_path, baseline)))
-    assert rc == 1 and "mean drop exceeds" in err
-    assert "ans-001: 2 -> 1 (-1)" in err
-
-    # ONE atom flip (1/16 = 0.0625) stays under the 0.1 wire
-    scores1 = {qid: (1 if i < 1 else 2) for i, qid in enumerate(answerable)}
-    _write_run(tmp_path, scores1, answer_sha="new" + "a" * 60)
-    rc, err = capsys_err(lambda: ea.gate(_gate_args(tmp_path, baseline)))
-    assert rc == 0 and "gate: green" in err
+    """Historical node ID: v3 uses complete independent jobs and exact .10 wire."""
+    base_run = make_run(tmp_path / "base", run_id="base", mode="real")
+    baseline = tmp_path / "baseline.json"
+    write_baseline(base_run, baseline, yes=True)
+    candidate = make_run(tmp_path / "candidate", run_id="candidate", mode="real",
+                         score_for=lambda q, a, j: 1 if int(q["id"][2:]) < 7 else 2)
+    rc, output = capsys_err(lambda: ea.gate(_gate_args(candidate, baseline)))
+    assert rc == 1 and "mean drop" in output
+    # Six one-point losses among 60 equals .10 and must not fail by rounding.
+    for a in ("a1", "a2"):
+        for j in ("j1", "j2"):
+            edit(candidate / f"grades_{a}_{j}/q-006.json", lambda g: g.update(score=2))
+    rc, output = capsys_err(lambda: ea.gate(_gate_args(candidate, baseline)))
+    assert rc == 0 and "PASS" in output
 
 
 def test_trap_refusal_rate_reported_not_gating(tmp_path, patched_index):
-    baseline = tmp_path / "b.json"
-    qs = ea.load_questions()
-    traps = [q["id"] for q in qs if q["class"] == "trap"]
-    # answerable all perfect; ALL traps drop to 0 — must NOT trip the gate
-    scores = {qid: (0 if qid in traps else 2) for qid in [q["id"] for q in qs]}
-    _write_baseline(baseline)
-    _write_run(tmp_path, scores)
-    b = json.loads(baseline.read_text())
-    b["mean_score"] = 2.0
-    b["per_question"] = {
-        q["id"]: {"score": 2, "answer_sha256": ea.sha256_bytes(f"answer {q['id']}\n".encode()),
-                  "pack_sha256": ea.sha256_bytes(f"pack {q['id']}\n".encode())}
-        for q in qs
-    }
-    baseline.write_text(json.dumps(b))
-    rc, err = capsys_err(lambda: ea.gate(_gate_args(tmp_path, baseline)))
-    out = err
-    assert rc == 0
-    assert "honest refusal rate 0.000" in out or "honest refusal" in out
+    """Historical node ID: the reviewed contract REQUIRES a separate trap gate."""
+    base_run = make_run(tmp_path / "base", run_id="base", mode="real")
+    baseline = tmp_path / "baseline.json"
+    write_baseline(base_run, baseline, yes=True)
+    candidate = make_run(tmp_path / "candidate", run_id="candidate", mode="real")
+    for i in range(60, 80):
+        edit(candidate / f"grades_a1_j1/q-{i:03d}.json", lambda g: g.update(refused=False))
+    rc, output = capsys_err(lambda: ea.gate(_gate_args(candidate, baseline)))
+    assert rc == 1 and "trap refusal 0/20" in output
 
 
 # ---------------------------------------------------------- update-baseline
@@ -406,11 +383,8 @@ def test_update_baseline_requires_variance(tmp_path, monkeypatch):
 
 
 def test_derive_threshold_matches_reviewer_math():
-    """The reviewer's own numbers: per-question waver 5% -> the 0.1 gate (3-atom
-    wire at n=16 is 2 atoms; P(Bin(16,.05)>=2) ~ 0.19 > 5%) must RAISE."""
-    t, trip_p, atoms = ea.derive_threshold(0.05)
-    assert t > 0.10 or trip_p < 0.05
-    if t == 0.10:
-        assert trip_p < ea.TRIP_P_MAX
-    else:
-        assert ea._binom_tail_ge(2, 16, 0.05) >= ea.TRIP_P_MAX
+    """The original math ignored shared run shocks; it is no longer gate code."""
+    stats = compute_score_variance({f"q{i}": [2, 2, 2, 2] for i in range(60)})
+    assert stats["calibration_status"] == "uncalibrated"
+    assert stats["false_positive_bound"] is None
+    assert not hasattr(ea, "derive_threshold")

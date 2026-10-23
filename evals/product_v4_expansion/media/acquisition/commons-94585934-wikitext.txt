@@ -1,0 +1,58 @@
+=={{int:filedesc}}==
+{{Information
+|description={{Zabytek nieruchomy|Q30056113}}
+  {{ar|1=[[:ar:المتحف الوطني في فروتسواف|المتحف الوطني في فروتسواف]]، [[:ar:بولندا|بولندا]]}}
+  {{de|1=Breslau, Nationalmuseum bei Nacht}}
+  {{en|1=[[:en:National Museum in Wrocław|National Museum in Wrocław]], 1883-1886, former [[:de:Regierungsbezirk Breslau|Regierungsbezirk]] administration building designed by Anton von Behr. View from the River [[Oder]].}}
+  {{it|Il palazzo del [[:Category:National Museum in Wrocław|Museo nazionale]] di {{w|Breslavia||it}}, in {{w|Polonia||it}}, fu edificato sulla sponde del fiume {{w|Oder||it}} tra il 1883 e il 1886, su progetto di Anton von Behr, quale sede per l'amministrazione del {{w|Distretti governativi della Germania|distretto|it}} di Breslavia (corrispondente alla {{w|Slesia|Media Slesia|it}}). Il museo, istituito nel 1947, fu inaugurato l'11 luglio 1948.}}
+  {{pl|1=Wrocław, Muzeum Narodowe nocą}}
+  {{ru|1=Ночной вид [[:ru:Национальный музей (Вроцлав)|Национального музея]] во [[:ru:Вроцлав|Вроцлаве]], Польша. Вид с реки {{wr|Одра}}.}}
+  {{uk|1={{wu|Національний музей (Вроцлав)|Національний музей}} у {{wu|Вроцлав}}і, Польща, 1883-1886. Колишня адміністративна будівля {{wd|Regierungsbezirk Breslau|округу Бреслау}} за проектом Антона фон Бера. Вид з річки {{wu|Одра}}.
+}}
+|date=2020-02-08
+|source={{own}}
+|author=[[User:Slimark|Marek Śliwecki]]
+|permission=
+|other versions={{Image extracted|1=Wrocław Muzeum Narodowe (cropped).jpg}}
+}}{{Location|51.110689|17.04749}}
+
+=={{Assessment}}==
+{{Assessments|featured=1|quality=1|arwiki=1|arwiki-nom=المتحف الوطني في فروتسواف}}
+{{Picture of the day|year=2025|month=06|day=06}}
+{{Wiki Loves Monuments 2020|pl}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Uploaded via Campaign:wlm-pl]]
+[[Category:Building of the National Museum in Wrocław]]
+[[Category:Blue hour in Wrocław]]
+[[Category:Buildings during blue hour in Poland]]
+[[Category:Water reflections of buildings in Poland]]
+[[Category:Water reflections of buildings at night]]
+[[Category:Water reflections of lights in Poland]]
+[[Category:Diffraction spikes around street lights]]
+[[Category:Long exposure photography in architecture]]
+[[Category:Exposure time 36 sec]]
+[[Category:Bare trees in Poland]]
+[[Category:Museums photographed in 2020]]
+[[Category:February 2020 in Wrocław]]
+[[Category:Poland photographs taken on 2020-02-08]]
+[[Category:Featured pictures of Wrocław]]
+[[Category:Featured pictures of museums]]
+[[Category:Quality images of Wrocław]]
+[[Category:Quality images of buildings in Poland]]
+[[Category:Quality images of museums]]
+[[Category:Images from Wiki Loves Monuments in Poland – Lower Silesian Voivodeship]]
+[[Category:Quality images from Wiki Loves Monuments Poland 2020]]
+[[Category:Quality images with long exposure]]
+[[Category:Long exposures (rivers)]]
+[[Category:Long exposure photographs of Poland]]
+[[Category:Taken with Nikon D610]]
+[[Category:F-number f/10]]
+[[Category:ISO speed rating 100]]
+[[Category:Lens focal length 29 mm]]
+[[Category:Starburst effect]]
+[[Category:2020s photographs of Wrocław]]
+[[Category:Quality images of water reflections]]
+[[Category:Featured pictures from Wiki Loves Monuments Poland 2020]]

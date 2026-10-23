@@ -1,0 +1,2956 @@
+{
+  "sources": [
+    {
+      "path": "media/asr/2035-147960-0002.flac",
+      "asset": {
+        "path": "assets/media/asr/2035-147960-0002.flac",
+        "sha256": "9a6003d48d3f89f4f8a6099fcec13d4b87af5a0b9d37e5e233cef0620d55d9f4"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:19810",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/2035/147960/2035-147960-0002.flac;member_sha256:9a6003d48d3f89f4f8a6099fcec13d4b87af5a0b9d37e5e233cef0620d55d9f4"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-2035-147960-0002.txt",
+          "sha256": "43bac4e5adf2b71d0fae61c1101fcad594a088e6bb8a7f2ee67f2a7af38fa016"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/2035/147960/2035-147960.trans.txt, line 3, SHA256 1fd19b6f7381bc94e65861679c0af3b5e418803d34c9fedb1b5a07972dcd2933; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 141440 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Sharon Bautista (https://librivox.org/reader/2035); book My Antonia (https://www.gutenberg.org/ebooks/19810)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/2035-147960-0002.txt",
+          "sha256": "3d3c951c7857f8c3b83c36cace0857ad60a7644d78949b87c3e115207efb7a9b",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.84
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/7976-110124-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/7976-110124-0001.flac",
+        "sha256": "d7657a4692e6e39421ba028c02c5547efc234ddfa47a050fafe01f9fc63f4ae1"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:34431",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/7976/110124/7976-110124-0001.flac;member_sha256:d7657a4692e6e39421ba028c02c5547efc234ddfa47a050fafe01f9fc63f4ae1"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-7976-110124-0001.txt",
+          "sha256": "fff7d97f9cb6dd70a72270fb360f5931d4f029201d471c49d76caa822a74136e"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/7976/110124/7976-110124.trans.txt, line 2, SHA256 b22022422e2408a3464b5165a14842a5d111a651e600c0b26e677d784f8267c6; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 117601 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader JenniferRutters (https://librivox.org/reader/7976); book Islands of Magic (https://www.gutenberg.org/ebooks/34431)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/7976-110124-0001.txt",
+          "sha256": "7158c002c5c50d05e5a1889cb801aaed192476983718a038cb441f122b27d4ee",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.3500625
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/8297-275156-0006.flac",
+      "asset": {
+        "path": "assets/media/asr/8297-275156-0006.flac",
+        "sha256": "2e52436814d58a151e21e9642f66b753730f69242a8618e833756427b4f60cba"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:1627",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/8297/275156/8297-275156-0006.flac;member_sha256:2e52436814d58a151e21e9642f66b753730f69242a8618e833756427b4f60cba"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-8297-275156-0006.txt",
+          "sha256": "399decffcbcf5ef242c6f0be85869a5e7e7e5f9c30cd257a48bef6bf0e94066a"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/8297/275156/8297-275156.trans.txt, line 7, SHA256 f8b2e0d8ec3d8c07a9cc6ecb39c85a6023b5794feaa3042e717cd9672dea01c5; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 106880 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader David Mecionis (https://librivox.org/reader/8297); book Evil Genius (https://www.gutenberg.org/ebooks/1627)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/8297-275156-0006.txt",
+          "sha256": "9162a7c51c43a05f37acf48394c7946e6fd8161726e3a4204544bba8ae4fbeaf",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 6.68
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/6345-93302-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/6345-93302-0001.flac",
+        "sha256": "241ce36622a7bf0192d5a71ead4ba72e3570aac2f54a79f2786a0994e7c1fa9a"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:39324",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/6345/93302/6345-93302-0001.flac;member_sha256:241ce36622a7bf0192d5a71ead4ba72e3570aac2f54a79f2786a0994e7c1fa9a"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-6345-93302-0001.txt",
+          "sha256": "23ade335cd28bf72c68409f894e10a7b9eb554f55e35f74da8f8bcfc8144533a"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/6345/93302/6345-93302.trans.txt, line 2, SHA256 2b71c824228c2f1ab618ce3d18b0f2dd4126b0e54fff5cdec62b4f6ef9477b6e; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 138000 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Jean Bascom (https://librivox.org/reader/6345); book Literary Sense (https://www.gutenberg.org/ebooks/39324)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/6345-93302-0001.txt",
+          "sha256": "7f8b845f44fd84ca16c8999d79abe5088ec1774f1a108257597122451d1ab65a",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.625
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/6295-244435-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/6295-244435-0001.flac",
+        "sha256": "fd1c766546d427730866e37146b25b156522f5d5cfae65d4ecd831a9c4af266d"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:3653",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/6295/244435/6295-244435-0001.flac;member_sha256:fd1c766546d427730866e37146b25b156522f5d5cfae65d4ecd831a9c4af266d"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-6295-244435-0001.txt",
+          "sha256": "bafe7a25b772fc8d032196dc8ca29babd7663d7516f7a761a6d24f76c8cdde94"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/6295/244435/6295-244435.trans.txt, line 2, SHA256 0e0c55208f56922c34b70c0cac41bce7b10a2bfd44a2b37de73ab759f78696d9; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 126160 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Michael Packard (https://librivox.org/reader/6295); book Guns of Bull Run (https://www.gutenberg.org/ebooks/3653)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/6295-244435-0001.txt",
+          "sha256": "d51963808526485f311536790e30b392568f64e97a1bb45bd53c750154687b36",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.885
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/6313-66125-0011.flac",
+      "asset": {
+        "path": "assets/media/asr/6313-66125-0011.flac",
+        "sha256": "15105128a9b695c4f1efc09824d948931d0411f777049d30be24d1e55c8b4159"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:6067",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/6313/66125/6313-66125-0011.flac;member_sha256:15105128a9b695c4f1efc09824d948931d0411f777049d30be24d1e55c8b4159"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-6313-66125-0011.txt",
+          "sha256": "cb6d1481a3287940140b2e6d4df2b4d179abea50e67ee9c4e92aeaff848e5a93"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/6313/66125/6313-66125.trans.txt, line 12, SHA256 feb83c893ae831d7068b8afa87badbd04dafc117f6870d409d0d9004491f691e; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 81920 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Jennifer Wiginton (https://librivox.org/reader/6313); book Pony Rider Boys in the Rockies (https://www.gutenberg.org/ebooks/6067)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/6313-66125-0011.txt",
+          "sha256": "6152e54a11121ad6af0e4b248d9892c4301f4d2d1c56501cafef689a17dfb195",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 5.12
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/5338-284437-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/5338-284437-0001.flac",
+        "sha256": "b5e0fe0dcd5fbff502815d302a4e8a9d434a1aac60e4c11b313dee38d9002328"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:39159",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/5338/284437/5338-284437-0001.flac;member_sha256:b5e0fe0dcd5fbff502815d302a4e8a9d434a1aac60e4c11b313dee38d9002328"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-5338-284437-0001.txt",
+          "sha256": "b663f096cea779dff01bc115008295598f1411cc2ef17459ccf4eefa8793cb0e"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/5338/284437/5338-284437.trans.txt, line 2, SHA256 a156765878a4b41dde1ea3799c075db93887b1c2d3a54f18ae107fbd5fc6d5fa; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 144800 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader S R Colon (https://librivox.org/reader/5338); book Sky Island (version 2) (https://www.gutenberg.org/ebooks/39159)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/5338-284437-0001.txt",
+          "sha256": "b0b8d4fb299d32d9ff3403f6015d087e870aa3680320c9c70dff8ec6f4362aab",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.05
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/6319-57405-0000.flac",
+      "asset": {
+        "path": "assets/media/asr/6319-57405-0000.flac",
+        "sha256": "9a9675d31b8efcc3377910fa1aa86ae9eda393cb3c05025fa1473c0ee5bf0f89"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:11582",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/6319/57405/6319-57405-0000.flac;member_sha256:9a9675d31b8efcc3377910fa1aa86ae9eda393cb3c05025fa1473c0ee5bf0f89"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-6319-57405-0000.txt",
+          "sha256": "4d37cbcd811f057510d9ed9010e7b70007fc9b662facfaadd4b972cc6c6c0c9f"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/6319/57405/6319-57405.trans.txt, line 1, SHA256 e778749efb15bea54040d4a2e8eb0a561c420d6804bca542b2067c94c7e8a345; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 116720 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader thestorygirl (https://librivox.org/reader/6319); book Old Greek Stories (https://www.gutenberg.org/ebooks/11582)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/6319-57405-0000.txt",
+          "sha256": "a3d1a3db3e52979f982901ec5b4b8c45a4fa1aeffa9d3a5e58aae667b2a8cae7",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.295
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/2078-142845-0013.flac",
+      "asset": {
+        "path": "assets/media/asr/2078-142845-0013.flac",
+        "sha256": "f77ebdea58b99a74edbd59ac87565ef48ed0989a07ed337fb55cfdc2b5b3315d"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:10136",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/2078/142845/2078-142845-0013.flac;member_sha256:f77ebdea58b99a74edbd59ac87565ef48ed0989a07ed337fb55cfdc2b5b3315d"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-2078-142845-0013.txt",
+          "sha256": "0ef5fa77b021cd976dffb76b670a55a2e0aa1b2df2d163d27615fbc1ac7d5dc2"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/2078/142845/2078-142845.trans.txt, line 14, SHA256 7d77fbd9ed4ff8814e31823a65ca17b2bd15411e15cd273b93c59e5f74a0027b; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 157680 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Kathy Caver (https://librivox.org/reader/2078); book Book of Household Management (https://www.gutenberg.org/ebooks/10136)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/2078-142845-0013.txt",
+          "sha256": "3752ee6ee2b9d79214956c2b0a0904197fd3449a364afbe51582cb8f32d7be52",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.855
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/2803-161169-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/2803-161169-0001.flac",
+        "sha256": "30b7ed1189ca2268621364aa629da6748ac4f941adbd3704b21b3dfc6105b5b1"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:5792",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/2803/161169/2803-161169-0001.flac;member_sha256:30b7ed1189ca2268621364aa629da6748ac4f941adbd3704b21b3dfc6105b5b1"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-2803-161169-0001.txt",
+          "sha256": "cf2a27bc2b07850c4c04474be8d0202be37f9db40b2b1da31449be4712511f91"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/2803/161169/2803-161169.trans.txt, line 2, SHA256 d0dfcb03c21a760cda2af51787c67b156e84d66457cfa7c4e475b51fc214e3fa; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 151920 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader aquielisunari (https://librivox.org/reader/2803); book Stories Mother Nature Told Her Children (https://www.gutenberg.org/ebooks/5792)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/2803-161169-0001.txt",
+          "sha256": "353723ebe37bf7b7a4cd762bac565d550012561585f597140dac7364cad3e26e",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.495
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/3752-4943-0000.flac",
+      "asset": {
+        "path": "assets/media/asr/3752-4943-0000.flac",
+        "sha256": "1c5eb27a35b417a40f4393e94f5e94229d7a2c78057656154dfa2735b9781483"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:3424",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/3752/4943/3752-4943-0000.flac;member_sha256:1c5eb27a35b417a40f4393e94f5e94229d7a2c78057656154dfa2735b9781483"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-3752-4943-0000.txt",
+          "sha256": "cf5c8404be61bfffc3af09ac0f2bbae8123401858d326cf7cc95f550e2723480"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/3752/4943/3752-4943.trans.txt, line 1, SHA256 5ef2e18f62fa01df5cbfc5e7000d3a59b101b61dbe8d5b8849d3f6f686caecf8; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 141280 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Mark Welch (https://librivox.org/reader/3752); book For the Term of His Natural Life (https://www.gutenberg.org/ebooks/3424)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/3752-4943-0000.txt",
+          "sha256": "21e8afa8646cdbf120701bcb9bbcb5ba9ead68136eb69b6742118ee6fc77f425",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.83
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/1462-170138-0006.flac",
+      "asset": {
+        "path": "assets/media/asr/1462-170138-0006.flac",
+        "sha256": "ecaddfdff6449400a4d4e5131bfc3d32c51cf483c30f21893318c605675c391e"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:94",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/1462/170138/1462-170138-0006.flac;member_sha256:ecaddfdff6449400a4d4e5131bfc3d32c51cf483c30f21893318c605675c391e"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-1462-170138-0006.txt",
+          "sha256": "e5b222d4ff63facfcc570fc8ae2b5cd5664cf8ce60c023902033554ebf2d6653"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/1462/170138/1462-170138.trans.txt, line 7, SHA256 3e0088f0e1e370db49cca47db6e4411d1ec3b43d9461c48ca8edb4b2f499e25e; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 137280 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader E. Tavano (https://librivox.org/reader/1462); book Alexander's Bridge (version 2) (https://www.gutenberg.org/ebooks/94)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/1462-170138-0006.txt",
+          "sha256": "730246dbfa953e00a7c7fb43f83938212c954b62f9e591a3bb21fd3a21be675a",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.58
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/251-136532-0000.flac",
+      "asset": {
+        "path": "assets/media/asr/251-136532-0000.flac",
+        "sha256": "39a86dd81ef6a0259f2915845794396df1f420956e31e99179a315f23a6c6ae2"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:19445",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/251/136532/251-136532-0000.flac;member_sha256:39a86dd81ef6a0259f2915845794396df1f420956e31e99179a315f23a6c6ae2"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-251-136532-0000.txt",
+          "sha256": "2e65562ed192a4f69e842e7ddacabb47f61487f3958d9ec810fff5fb29d46b8b"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/251/136532/251-136532.trans.txt, line 1, SHA256 5f243742976db418f5812983308527911d55324de0f563a4aede24c8863dcb75; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 156960 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Mark Nelson (https://librivox.org/reader/251); book Omnilingual (https://www.gutenberg.org/ebooks/19445)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/251-136532-0000.txt",
+          "sha256": "5a9b4becbf95938970f38c0d622800543c7c051a4978d667f34ec9493cd99131",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.81
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/2428-83705-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/2428-83705-0001.flac",
+        "sha256": "a7cfd2d49bd00d7ade17541a2abf885e295ba9155efcf9e800d65afab9a8c5ca"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:38188",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/2428/83705/2428-83705-0001.flac;member_sha256:a7cfd2d49bd00d7ade17541a2abf885e295ba9155efcf9e800d65afab9a8c5ca"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-2428-83705-0001.txt",
+          "sha256": "0889ac547f50e4fed3383fa270daf4371545578aca933d9b905b12f55497f6b1"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/2428/83705/2428-83705.trans.txt, line 2, SHA256 e04d475b4a0cbf424bb8674f5c87145ac5153ce149dda9261e6c36bef104063d; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 109520 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Stephen Kinford (https://librivox.org/reader/2428); book Amusement Only (https://www.gutenberg.org/ebooks/38188)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/2428-83705-0001.txt",
+          "sha256": "e625209f50e651d2da6d1903cc37e8e866657cad1367c816fd96f1a8db563916",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 6.845
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/3170-137482-0006.flac",
+      "asset": {
+        "path": "assets/media/asr/3170-137482-0006.flac",
+        "sha256": "4fdffb603f0a3352c46ab1b7c05a7e0851c0e05205a46c222f426b8d98a89e12"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:2981",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/3170/137482/3170-137482-0006.flac;member_sha256:4fdffb603f0a3352c46ab1b7c05a7e0851c0e05205a46c222f426b8d98a89e12"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-3170-137482-0006.txt",
+          "sha256": "56b1a2cab9709f4de11dcaab805fc8f58c6abbc76b711d92c762359aa38a1afc"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/3170/137482/3170-137482.trans.txt, line 7, SHA256 3e933f7c8a24323ff0df16ef6e33a88e33700dd1ba2bee8a34ee32e6bf2b2c10; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 114320 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader VOICEGUY (https://librivox.org/reader/3170); book Memoirs of Jacques Casanova Vol. 1 (https://www.gutenberg.org/ebooks/2981)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/3170-137482-0006.txt",
+          "sha256": "87fb37a76058c3441caadcd8e3518bed5c690087b3dec2ada452fc303c9b4f44",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.145
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/3000-15664-0005.flac",
+      "asset": {
+        "path": "assets/media/asr/3000-15664-0005.flac",
+        "sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:326",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/3000/15664/3000-15664-0005.flac;member_sha256:22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-3000-15664-0005.txt",
+          "sha256": "1580e53daa0d34b2de4e615aad6194387d6e8e3a16a55bd3b4d0f91d845a54b2"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/3000/15664/3000-15664.trans.txt, line 6, SHA256 7d07118986940b982e96839df3ef733940fb35aac0bc4307b4d2735a2088252c; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 135360 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Brian von Dedenroth (https://librivox.org/reader/3000); book Steep Trails (https://www.gutenberg.org/ebooks/326)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/3000-15664-0005.txt",
+          "sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/5895-34629-0007.flac",
+      "asset": {
+        "path": "assets/media/asr/5895-34629-0007.flac",
+        "sha256": "799eed0b067021ad7e64530b2295902006b59468b314081d02a8534b2908e252"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:12587",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/5895/34629/5895-34629-0007.flac;member_sha256:799eed0b067021ad7e64530b2295902006b59468b314081d02a8534b2908e252"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-5895-34629-0007.txt",
+          "sha256": "7c6c0c8d21cde6d74eac2c92aa530373492aeeb59c74f70c8199eca8f4846b4a"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/5895/34629/5895-34629.trans.txt, line 8, SHA256 47b9eb99ce0ff7bedd61a3fd5b8e95d63d7e1529ea1a169b2ced6d57c5103a72; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 131120 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader iamartin (https://librivox.org/reader/5895); book Man Who Laughs (https://www.gutenberg.org/ebooks/12587)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/5895-34629-0007.txt",
+          "sha256": "4c3845b42b4407bb9156e5cd21b40fe44551fa20c743b394053f2293329d534b",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.195
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/2412-153954-0003.flac",
+      "asset": {
+        "path": "assets/media/asr/2412-153954-0003.flac",
+        "sha256": "9844109ffbdd5630d3de9199bfb0c4edfbfb2287513550840b0b7e78696559b3"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:1906",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/2412/153954/2412-153954-0003.flac;member_sha256:9844109ffbdd5630d3de9199bfb0c4edfbfb2287513550840b0b7e78696559b3"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-2412-153954-0003.txt",
+          "sha256": "4d93eda5ab5d86e09b98865708c12ed6a84992da377abd4fa105ecc815ebded5"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/2412/153954/2412-153954.trans.txt, line 4, SHA256 a96e1be5cb681eba7faaa7941dcc65a9b2f5041a3573b03c5e98276aab8c3a4d; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 130400 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader calystra (https://librivox.org/reader/2412); book Erewhon (https://www.gutenberg.org/ebooks/1906)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/2412-153954-0003.txt",
+          "sha256": "f60aa83f2fc3eb3dfcb2aaac672d88d53492105a56c8e5a9e0cc124742ac6dc3",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.15
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/3536-8226-0000.flac",
+      "asset": {
+        "path": "assets/media/asr/3536-8226-0000.flac",
+        "sha256": "18e2eb93889274f30f6898a9b380aafe16f570c33c21191d9d9129ebd016ac59"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:5140",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/3536/8226/3536-8226-0000.flac;member_sha256:18e2eb93889274f30f6898a9b380aafe16f570c33c21191d9d9129ebd016ac59"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-3536-8226-0000.txt",
+          "sha256": "2e65c270c18556de0e42f75ec159aa6890fa9f1a0e474dd60b7d81b59eca56d3"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/3536/8226/3536-8226.trans.txt, line 1, SHA256 9653bc7d450ef1675ade89921ac910c08ca79871cf714fcde01bf7b7dd509eff; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 172080 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Arielle Lipshaw (https://librivox.org/reader/3536); book He Knew He Was Right (https://www.gutenberg.org/ebooks/5140)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/3536-8226-0000.txt",
+          "sha256": "fae09390243d3e4e3aae9aae1780fc6a0facac5e96182c8abdd541c1d8a71f8b",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 10.755
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/asr/652-130726-0001.flac",
+      "asset": {
+        "path": "assets/media/asr/652-130726-0001.flac",
+        "sha256": "2f349c4a0090e473fe41eddd985c686be98ff6b22d461e060019492f814e9ff6"
+      },
+      "kind": "audio",
+      "source_group": "librispeech:book:9464",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://openslr.elda.org/resources/12/dev-clean.tar.gz",
+          "revision": "archive_sha256:76f87d090650617fca0cac8f88b9416e0ebf80350acb97b343a85fa903728ab3;member:LibriSpeech/dev-clean/652/130726/652-130726-0001.flac;member_sha256:2f349c4a0090e473fe41eddd985c686be98ff6b22d461e060019492f814e9ff6"
+        },
+        "license": "CC-BY-4.0",
+        "license_file": {
+          "path": "licenses/media/librispeech-652-130726-0001.txt",
+          "sha256": "3a878ce192639918eb1c5943619104ae4383bd5d9bbd5e646dc031aa4d47eea1"
+        },
+        "generation": "No generated media. Original publisher-segmented natural LibriVox recording, unchanged FLAC bytes. Independent official transcript member LibriSpeech/dev-clean/652/130726/652-130726.trans.txt, line 2, SHA256 791f299c9f5de5627f6052c8ab7393827598e3297feb1559e6813adf1075565f; remove only the utterance-ID prefix and apply NFC/LF. Official uppercase spelling is preserved; no Whisper output or punctuation edits. Time range is the whole utterance, measured as 173680 frames / 16000 Hz and checked by ffprobe; no internal word timestamps are claimed. Reader Scott Walter (https://librivox.org/reader/652); book Bohemian San Francisco (https://www.gutenberg.org/ebooks/9464)."
+      },
+      "views": [
+        {
+          "id": "official-transcript",
+          "path": "views/media/asr/652-130726-0001.txt",
+          "sha256": "16e4a89553398dc552671726c29dd17f7b6651c95c57ec01cbe331ce458b3f8b",
+          "evidence_type": "asr_text",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 10.855
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+      "asset": {
+        "path": "assets/media/photos/Large_cloud_over_Mexican_landscape.jpg",
+        "sha256": "abfc94f6ca12cc0a376df68ecce0c91a0746136c9cfb2ff3caac484803bc77d9"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Tomascastelazo",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1247761918",
+          "revision": "description_revid:1247761918;upload:2018-10-07T22:17:05Z;sha1:56f67fa9eb6287d7a3745436bc32c4069937a114;sha256:abfc94f6ca12cc0a376df68ecce0c91a0746136c9cfb2ff3caac484803bc77d9"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-73462291.txt",
+          "sha256": "cfb21a65817ab0cf3d0a40ac4b3f9b793e0dc37b6041a0a064c4eeefef3897d2"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Tomascastelazo. Original image URL https://upload.wikimedia.org/wikipedia/commons/f/fb/Large_cloud_over_Mexican_landscape.jpg. EXIF DateTimeOriginal 2018:10:06 12:42:58 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/73462291-basename.txt",
+          "sha256": "912420f5108060ab6b4d6d19f921b459d21e6b88d1b0b60d2b78248904affbe4",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/73462291-DateTimeOriginal.txt",
+          "sha256": "b503b09d143b3bc0d17ccb77b3b47a0ef27a904d33b4a3c708966803a7a3cf98",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+      "asset": {
+        "path": "assets/media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+        "sha256": "80f2a55b12ad6b455ebb064f78cf81137883b44013c4f74bb74e5d894a2268b0"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Sumit Surai",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1094973851",
+          "revision": "description_revid:1094973851;upload:2017-02-19T18:29:26Z;sha1:d84d7540e2431ccc68dcf54992af228344ca857c;sha256:80f2a55b12ad6b455ebb064f78cf81137883b44013c4f74bb74e5d894a2268b0"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-56412240.txt",
+          "sha256": "6fa0fbc9bfd4bd808969bc52922de1bacaf099e11a1172fa0eb7a5b99de9ce2f"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Sumit Surai. Original image URL https://upload.wikimedia.org/wikipedia/commons/f/fd/River_Narmada_from_Maheshwar_Fort.jpg. EXIF DateTimeOriginal 2016:12:23 15:59:38 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/56412240-basename.txt",
+          "sha256": "02547b32afeb45db7e50dec829549fcee6e22443a77c0b53bd02fc5370be2c8f",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/56412240-DateTimeOriginal.txt",
+          "sha256": "0b2579b30a5d1062b5892c9e2b8dfb3dc7ce673e8dbd3d283ea44ec231ed915c",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+      "asset": {
+        "path": "assets/media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+        "sha256": "1d63c0c11cfc45546e801cc0f9a4f1351550edd1d556d720cddb9326de9b62d3"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Alexey V. Kurochkin",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1107307013",
+          "revision": "description_revid:1107307013;upload:2021-03-07T17:36:10Z;sha1:9a6368145e5b7acf1167ea59e0438f8a62729180;sha256:1d63c0c11cfc45546e801cc0f9a4f1351550edd1d556d720cddb9326de9b62d3"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-101198740.txt",
+          "sha256": "46da39e38759878ce3709905103d3f6634acbd51229e4c03f5b60ac5d349b79b"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Alexey V. Kurochkin. Original image URL https://upload.wikimedia.org/wikipedia/commons/8/8b/Ship_Felicit%C3%A0_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_%283551%29.jpg. EXIF DateTimeOriginal 2018:08:04 13:04:46 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/101198740-basename.txt",
+          "sha256": "2ec7a655cb108cfda107f24c583376286c1dca015e971ffd98ea6d229f4e8fa8",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/101198740-DateTimeOriginal.txt",
+          "sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Yoneshiro_River_201911.jpg",
+      "asset": {
+        "path": "assets/media/photos/Yoneshiro_River_201911.jpg",
+        "sha256": "2e32c4cbe0e41e45c025f1f966cc0f0de687556a445e56b3ca1b0c12ec1f34cb"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Wc018",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1013965259",
+          "revision": "description_revid:1013965259;upload:2020-12-16T11:17:45Z;sha1:ca0675d49fb0c4d3b1d5e7960aa2441304bb76bf;sha256:2e32c4cbe0e41e45c025f1f966cc0f0de687556a445e56b3ca1b0c12ec1f34cb"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-97646961.txt",
+          "sha256": "cd920df372f3f99b178c3935846e3e902a61b36964b4e2063eb070fd1af7ed1c"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Wc018. Original image URL https://upload.wikimedia.org/wikipedia/commons/2/2e/Yoneshiro_River_201911.jpg. EXIF DateTimeOriginal 2019:11:05 10:22:32 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/97646961-basename.txt",
+          "sha256": "3ecd39c80378caa1de1b042b996f4e43ef9fe66d3b8c0854cea12b42d2663e74",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/97646961-DateTimeOriginal.txt",
+          "sha256": "2918c2c053c4789ff3ac62dcbe971b5f4c0f255f25ce55ccae992589467c4ce1",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Saraor_river_05.jpg",
+      "asset": {
+        "path": "assets/media/photos/Saraor_river_05.jpg",
+        "sha256": "84828d0f920008333416d5cff1d1b8829c7a1032436ba741ea5f35fbbe64d0db"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Горбунова М.С.",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=990851960",
+          "revision": "description_revid:990851960;upload:2024-06-17T10:12:17Z;sha1:c0af648a3eaaecf08f44092f804fc4d38d215287;sha256:84828d0f920008333416d5cff1d1b8829c7a1032436ba741ea5f35fbbe64d0db"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-149464642.txt",
+          "sha256": "49816f359a23d654a297b225f99ffbb59949a62f96f0ff898d3ffea998c7f352"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Горбунова М.С.. Original image URL https://upload.wikimedia.org/wikipedia/commons/9/9e/Saraor_river_05.jpg. EXIF DateTimeOriginal 2024:05:28 15:26:12 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/149464642-basename.txt",
+          "sha256": "c5bb22a1d961e2b5b635fbc20c9ca83ee25c60b36c1170532748196782a051cc",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/149464642-DateTimeOriginal.txt",
+          "sha256": "153cd67c0aaa77aa5c3404cdb7718aba1ceef958f3b60c2890f03ed765233bbf",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Karpovka_River_Embankment_06.jpg",
+      "asset": {
+        "path": "assets/media/photos/Karpovka_River_Embankment_06.jpg",
+        "sha256": "ea192bb2461fbb21ab7c4cf7dcbcd3ee464001e48acb984e35ad4204a834b319"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Alex 'Florstein' Fedorov",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1181381479",
+          "revision": "description_revid:1181381479;upload:2014-03-22T07:36:10Z;sha1:8299ef63a8cf457660aa0f3ad95fea65792432e6;sha256:ea192bb2461fbb21ab7c4cf7dcbcd3ee464001e48acb984e35ad4204a834b319"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-29415136.txt",
+          "sha256": "55a24cdf8e26c88298481ac273997381a970936b381b0c7f1e741a46a29350b3"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Alex 'Florstein' Fedorov. Original image URL https://upload.wikimedia.org/wikipedia/commons/3/3d/Karpovka_River_Embankment_06.jpg. EXIF DateTimeOriginal 2013:07:19 15:29:41 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/29415136-basename.txt",
+          "sha256": "b872cd91e75d68e8c27b3f99cfb241b19b5709dd97a7c63aa88d473420af9992",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/29415136-DateTimeOriginal.txt",
+          "sha256": "9a7afbfc4e7155ff1d2ae3d9c48131eb5a25792d40cfe224c557d4f3946e0855",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+      "asset": {
+        "path": "assets/media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+        "sha256": "6fed7c900176310f4f6d402c218afc647391797097c7a4f4c1949ce3f6f0feb1"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Martin Falbisoner",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1281702224",
+          "revision": "description_revid:1281702224;upload:2016-09-22T15:13:49Z;sha1:03b64650370e229d33aa65ebf663c0288fc26f15;sha256:6fed7c900176310f4f6d402c218afc647391797097c7a4f4c1949ce3f6f0feb1"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-50398887.txt",
+          "sha256": "9f891ceb2bdb6efcbf81f5143f5e6264ee59d474de093833a5012583e5f6aea0"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Martin Falbisoner. Original image URL https://upload.wikimedia.org/wikipedia/commons/c/ce/View_from_Skaftafell_National_Park_July_2014_-4.jpg. EXIF DateTimeOriginal 2014:07:21 12:28:33 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/50398887-basename.txt",
+          "sha256": "74b019bb6c7e1289eae21461ea0aea49668e1b4b1b5916c5aaaddb6c24e5544f",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/50398887-DateTimeOriginal.txt",
+          "sha256": "2e0ed0ed0c557143d48edc0b943800805952e93e173e3905764f82c906984486",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+      "asset": {
+        "path": "assets/media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "sha256": "e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Marek Śliwecki",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1289145906",
+          "revision": "description_revid:1289145906;upload:2020-09-29T22:29:28Z;sha1:2524fd0d45e36c45f6f6afb40ab85b4654ce967f;sha256:e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-94585934.txt",
+          "sha256": "397053d383b9d188942fb0ae92d33de0f6ea4ecb2d30d5af5385adeec58deb4e"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Marek Śliwecki. Original image URL https://upload.wikimedia.org/wikipedia/commons/c/cc/Wroc%C5%82aw_MuzeumNarodowe.jpg. EXIF DateTimeOriginal 2020:02:08 21:58:41 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/94585934-basename.txt",
+          "sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/94585934-DateTimeOriginal.txt",
+          "sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+      "asset": {
+        "path": "assets/media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+        "sha256": "9a1ef208746ec4a80e7d94a98b940c3e4b2a805dea9de9150033cd1ba45a2bdc"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Diego Delso",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1281701278",
+          "revision": "description_revid:1281701278;upload:2014-12-12T17:27:34Z;sha1:dda39f59625938181f11e53ac338d806580a5580;sha256:9a1ef208746ec4a80e7d94a98b940c3e4b2a805dea9de9150033cd1ba45a2bdc"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-37196673.txt",
+          "sha256": "4727e3957e04644a572b26aa2b3ad3795a12175e005f1b0aed464ae7cd271b69"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Diego Delso. Original image URL https://upload.wikimedia.org/wikipedia/commons/c/c5/Museo_mar%C3%ADtimo_%C3%93sv%C3%B6r%2C_Bolungarv%C3%ADk%2C_Vestfir%C3%B0ir%2C_Islandia%2C_2014-08-15%2C_DD_066.JPG. EXIF DateTimeOriginal 2014:08:15 11:46:31 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/37196673-basename.txt",
+          "sha256": "9ccfeb7f07d2586ddc269072cfc57203ee698d81db4dd9a4766c1585308b95e3",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/37196673-DateTimeOriginal.txt",
+          "sha256": "24f15aafe62519c83edcb35e6296a27f28a756644069f151248b90213a4b1dfb",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+      "asset": {
+        "path": "assets/media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "sha256": "e948acc88c936e5db30b9b021dfbe17ce2ee55cc1cb9b2613f2b17e2f1333c94"
+      },
+      "kind": "image",
+      "source_group": "commons:photographer:Basile Morin",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://commons.wikimedia.org/w/index.php?oldid=1153097202",
+          "revision": "description_revid:1153097202;upload:2023-12-07T01:02:55Z;sha1:43dd002437ee245e537c9a8e888258571f0243f6;sha256:e948acc88c936e5db30b9b021dfbe17ce2ee55cc1cb9b2613f2b17e2f1333c94"
+        },
+        "license": "CC-BY-SA-4.0",
+        "license_file": {
+          "path": "licenses/media/commons-141842609.txt",
+          "sha256": "b1fe2e54219b3213d91ef131993355e9a76fa35ea8260e3b570577b7ebb71c54"
+        },
+        "generation": "No generated media or metadata. Original Commons JPEG bytes and published URL basename preserved; author Basile Morin. Original image URL https://upload.wikimedia.org/wikipedia/commons/9/95/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg. EXIF DateTimeOriginal 2023:09:20 17:47:29 was verified both in the primary imageinfo metadata and directly in the original JPEG APP1/TIFF bytes, then formatted as YYYY-MM-DD HH:MM:SS for the intended info.taken storage field. No timezone is inferred. The oracle is camera-original time, not modified time; production sips disagreements are retained in acquisition diagnostics and never change this truth. Filename facts concern the actual original basename only; no visual description or OCR text is claimed. Primary CC BY-SA 4.0 license/attribution verified in the pinned file-description revision and retained with legal terms."
+      },
+      "views": [
+        {
+          "id": "original-basename",
+          "path": "views/media/photos/141842609-basename.txt",
+          "sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "basename",
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "exif-DateTimeOriginal",
+          "path": "views/media/photos/141842609-DateTimeOriginal.txt",
+          "sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+          "evidence_type": "name_metadata",
+          "location": null,
+          "storage_field": "info.taken",
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "media-real-asr-2035-147960-0002",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Why was Antonia walking to Russian Peter's house?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/2035-147960-0002.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.84
+          },
+          "span": {
+            "start_char": 105,
+            "end_char": 138,
+            "text": "TO BORROW A SPADE AMBROSCH NEEDED",
+            "sha256": "25a17a2ec6a7783c7ae4b6c1d9a657b6551ff44d89c42a9c416e312398965a50"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Antonia was going to borrow a spade that Ambrosch needed.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:19810"
+    },
+    {
+      "id": "media-real-asr-7976-110124-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Why did he travel to a distant city on a particular day every year?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/7976-110124-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.3500625
+          },
+          "span": {
+            "start_char": 78,
+            "end_char": 108,
+            "text": "TO COLLECT MONEY ON AN ACCOUNT",
+            "sha256": "97303fe647d8b7448bd9537c74fc8ca973ea5bf73fa15cc5b926a999d6ef0f5d"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The annual trip was to collect money on an account.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:34431"
+    },
+    {
+      "id": "media-real-asr-8297-275156-0006",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What meeting was he going to try to persuade Catherine to allow?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/8297-275156-0006.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 6.68
+          },
+          "span": {
+            "start_char": 38,
+            "end_char": 87,
+            "text": "PERSUADING CATHERINE TO GRANT SYDNEY AN INTERVIEW",
+            "sha256": "d4f2dae240c3035d9ef299f3af49aed1d3ddab8d29de2daeaf86ef1b4e01a688"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "He would try to persuade Catherine to give Sydney an interview.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:1627"
+    },
+    {
+      "id": "media-real-asr-6345-93302-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Which flowers should the woman have been holding up to his face?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/6345-93302-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.625
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 44,
+            "text": "HER HANDS SHOULD HAVE BEEN FULL OF BLUEBELLS",
+            "sha256": "90a9acc2c6e6d3d685a1d4a331b7cacd633bdd6d8010cc26b71c6bc887bc20f3"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The imagined flowers in her hands were bluebells.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:39324"
+    },
+    {
+      "id": "media-real-asr-6295-244435-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What conflicting feelings did Colonel Leonidas Talbot have about the white flag?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/6295-244435-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.885
+          },
+          "span": {
+            "start_char": 71,
+            "end_char": 113,
+            "text": "TRIUMPH AND SADNESS WERE MINGLED STRANGELY",
+            "sha256": "177c4d89b4897b77069b4444b324f774fb3a4d89404794917fb6c0b15d26264f"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Talbot felt both triumph and sadness.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:3653"
+    },
+    {
+      "id": "media-real-asr-6313-66125-0011",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What precaution did the guide require before the signal to pull him up?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/6313-66125-0011.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 5.12
+          },
+          "span": {
+            "start_char": 11,
+            "end_char": 80,
+            "text": "FASTEN HIM SECURELY TO THE LOOP BEFORE YOU GIVE THE SIGNAL TO HAUL UP",
+            "sha256": "a06592aa635be0be859ad14e4795f33f310cc49fe6760c09f15d2207104c8714"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "He had to be securely fastened to the loop before the hauling signal.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:6067"
+    },
+    {
+      "id": "media-real-asr-5338-284437-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Whose palace did the guide say the little stone building was?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/5338-284437-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.05
+          },
+          "span": {
+            "start_char": 91,
+            "end_char": 132,
+            "text": "THE PALACE OF TOURMALINE WHO IS OUR QUEEN",
+            "sha256": "9ab3a9d1a1a6e2bc57d05ea591c19211d6402dce59c232f5a2a2ccf71a5414a5"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The little stone building was the palace of Queen Tourmaline.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:39159"
+    },
+    {
+      "id": "media-real-asr-6319-57405-0000",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Who was Deucalion's father in the ancient story?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/6319-57405-0000.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.295
+          },
+          "span": {
+            "start_char": 62,
+            "end_char": 90,
+            "text": "HE WAS THE SON OF PROMETHEUS",
+            "sha256": "e5f27214d147debc34c0dfa100a94faf30ba5b2b421d673cb4c42e9eeff3dd02"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Deucalion was the son of Prometheus.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:11582"
+    },
+    {
+      "id": "media-real-asr-2078-142845-0013",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What is the yellow grain sold by grocers for making puddings called?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/2078-142845-0013.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.855
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 37,
+            "text": "A YELLOW VARIETY CALLED GOLDEN MILLET",
+            "sha256": "937d18bbb99af901d47dc0f0d3b46be5ebe5c5aabfc036c6791d03dea335b407"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The yellow pudding grain was called golden millet.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:10136"
+    },
+    {
+      "id": "media-real-asr-2803-161169-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What sound did the thousands of birds answer with their songs?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/2803-161169-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.495
+          },
+          "span": {
+            "start_char": 52,
+            "end_char": 119,
+            "text": "THOUSANDS OF BIRDS ANSWERED THE MUSIC OF FOUNTAINS WITH THEIR SONGS",
+            "sha256": "4eaa2eeb333c68cb880f334b40700526e9f97e16dd0fbbf2b0b0432780990625"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The birds answered the music of fountains.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:5792"
+    },
+    {
+      "id": "media-real-asr-3752-4943-0000",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "For what alleged offense had the former bank clerk been transported?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3752-4943-0000.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.83
+          },
+          "span": {
+            "start_char": 43,
+            "end_char": 75,
+            "text": "WAS TRANSPORTED FOR EMBEZZLEMENT",
+            "sha256": "2ff55bd2ae418a869d74f5cf3bc9fa3a4f96f83150f53b55f680a50b7afdc928"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The former clerk was transported for embezzlement, although some doubted his guilt.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:3424"
+    },
+    {
+      "id": "media-real-asr-1462-170138-0006",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Where was the first act's cabin scene supposed to take place?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/1462-170138-0006.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.58
+          },
+          "span": {
+            "start_char": 93,
+            "end_char": 140,
+            "text": "THE INTERIOR OF A CABIN IN THE SOUTH OF IRELAND",
+            "sha256": "f0134d1523023a2b50fa17655e0dbe4a67c970de2b0ea6a6eb75184a37fac1fa"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The first act was set inside a cabin in southern Ireland.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:94"
+    },
+    {
+      "id": "media-real-asr-251-136532-0000",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "How many months did the discovered Martian calendar divide the year into?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/251-136532-0000.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 9.81
+          },
+          "span": {
+            "start_char": 35,
+            "end_char": 95,
+            "text": "THE YEAR HAD BEEN DIVIDED INTO TEN MORE OR LESS EQUAL MONTHS",
+            "sha256": "1691e5658a81356f3051fed6bc6f4dd6accbc737c64e0bcec22b23e0e2f2f29e"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The Martian year had ten approximately equal months.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:19445"
+    },
+    {
+      "id": "media-real-asr-2428-83705-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Who was going to make all the arrangements for the narrator's wedding?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/2428-83705-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 6.845
+          },
+          "span": {
+            "start_char": 33,
+            "end_char": 106,
+            "text": "ALL THE ARRANGEMENTS FOR MY WEDDING ARE GOING TO BE MADE BY THE SNELLINGS",
+            "sha256": "7bb101d3106a8855fc98cf668fca218b0108a7e98125bca1d2db6a69041bb3f4"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The Snellings were going to arrange the wedding.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:38188"
+    },
+    {
+      "id": "media-real-asr-3170-137482-0006",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What was the practical joke played on the physicians?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3170-137482-0006.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 7.145
+          },
+          "span": {
+            "start_char": 46,
+            "end_char": 114,
+            "text": "SENT HALF DRESSED TO SOME NOBLEMAN WHO WAS ENJOYING EXCELLENT HEALTH",
+            "sha256": "70f0366252d456a52b5941deca51ee3814a55386929a13a32bbd52b33a18a420"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The physicians were sent half dressed to a nobleman who was actually healthy.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:2981"
+    },
+    {
+      "id": "media-real-asr-3000-15664-0005",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Why could the traveler choose to leave the blanket behind?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3000-15664-0005.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.46
+          },
+          "span": {
+            "start_char": 92,
+            "end_char": 129,
+            "text": "WOOD FOR FIRES IS EVERYWHERE ABUNDANT",
+            "sha256": "28d10925ac9bcb21c9131f0f9a886743c471cbd3d64adc6478466e2817a05268"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Abundant firewood made it possible to do without the blanket.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:326"
+    },
+    {
+      "id": "media-real-asr-5895-34629-0007",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Where was the Gwynplaine the Laughing Man placard hung after removal from the green box?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/5895-34629-0007.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.195
+          },
+          "span": {
+            "start_char": 77,
+            "end_char": 117,
+            "text": "WAS HUNG UP CLOSE TO THE SIGN OF THE INN",
+            "sha256": "628482cee33dc49e79fe85a7d0d2cdeb0e51a3913d5a4de8fd9b9b51ed6d9877"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The placard was hung beside the inn's sign.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:12587"
+    },
+    {
+      "id": "media-real-asr-2412-153954-0003",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "What was painted on the house signboards that made the traveler feel at home?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/2412-153954-0003.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 8.15
+          },
+          "span": {
+            "start_char": 87,
+            "end_char": 119,
+            "text": "WAS PAINTED A BOTTLE AND A GLASS",
+            "sha256": "5aa8d52ae58d6204493638a14fbafbafff5b0ab2eb8fb19714e3ad62dcdaef22"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The signboards depicted a bottle and a glass.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:1906"
+    },
+    {
+      "id": "media-real-asr-3536-8226-0000",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Where had Lady Milborough wanted him to take his wife?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/3536-8226-0000.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 10.755
+          },
+          "span": {
+            "start_char": 167,
+            "end_char": 199,
+            "text": "TAKEN HER OFF WITH HIM TO NAPLES",
+            "sha256": "69373bccf6bb2d9eec99000894cfec39b67726124a75c12c557e0081c4cf37b8"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Lady Milborough wanted him to return to his wife and take her to Naples.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:5140"
+    },
+    {
+      "id": "media-real-asr-652-130726-0001",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "asr"
+      ],
+      "q": "Where did Thompson open the restaurant praised for its cooking and service?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/asr/652-130726-0001.flac",
+          "kind": "audio",
+          "grade": 3,
+          "evidence_type": "asr_text",
+          "view_id": "official-transcript",
+          "location": {
+            "unit": "second",
+            "start": 0,
+            "end": 10.855
+          },
+          "span": {
+            "start_char": 35,
+            "end_char": 74,
+            "text": "IN O'FARRELL STREET JUST ABOVE FILLMORE",
+            "sha256": "778f8b865c92cf40aeeb73a910afe4ddec0679cf5e69a02b684beff317fe80a5"
+          }
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "Thompson's restaurant was on O'Farrell Street just above Fillmore.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "asr"
+      ],
+      "source_group": "librispeech:book:9464"
+    },
+    {
+      "id": "media-real-photo-73462291-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Find the photograph with 'Large cloud over Mexican landscape' in its original filename.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 38,
+            "text": "Large_cloud_over_Mexican_landscape.jpg",
+            "sha256": "912420f5108060ab6b4d6d19f921b459d21e6b88d1b0b60d2b78248904affbe4"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Large_cloud_over_Mexican_landscape.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Tomascastelazo"
+    },
+    {
+      "id": "media-real-photo-73462291-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What camera-original capture timestamp is in the EXIF for Large cloud over Mexican landscape?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2018-10-06 12:42:58",
+            "sha256": "b503b09d143b3bc0d17ccb77b3b47a0ef27a904d33b4a3c708966803a7a3cf98"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2018-10-06 12:42:58 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Tomascastelazo"
+    },
+    {
+      "id": "media-real-photo-56412240-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Locate the photograph whose original filename names River Narmada and Maheshwar Fort.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 37,
+            "text": "River_Narmada_from_Maheshwar_Fort.jpg",
+            "sha256": "02547b32afeb45db7e50dec829549fcee6e22443a77c0b53bd02fc5370be2c8f"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is River_Narmada_from_Maheshwar_Fort.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Sumit Surai"
+    },
+    {
+      "id": "media-real-photo-56412240-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What is the EXIF DateTimeOriginal for the River Narmada from Maheshwar Fort photograph?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2016-12-23 15:59:38",
+            "sha256": "0b2579b30a5d1062b5892c9e2b8dfb3dc7ce673e8dbd3d283ea44ec231ed915c"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2016-12-23 15:59:38 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Sumit Surai"
+    },
+    {
+      "id": "media-real-photo-101198740-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Find the original filename for the Ship Felicità Moscow Kremlin photograph numbered 3551.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 72,
+            "text": "Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+            "sha256": "2ec7a655cb108cfda107f24c583376286c1dca015e971ffd98ea6d229f4e8fa8"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Alexey V. Kurochkin"
+    },
+    {
+      "id": "media-real-photo-101198740-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What camera-original capture date and time is stored in the Ship Felicità Kremlin 3551 photo's EXIF?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2018-08-04 13:04:46",
+            "sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2018-08-04 13:04:46 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Alexey V. Kurochkin"
+    },
+    {
+      "id": "media-real-photo-97646961-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Which photograph has Yoneshiro River and 201911 in its original filename?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Yoneshiro_River_201911.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 26,
+            "text": "Yoneshiro_River_201911.jpg",
+            "sha256": "3ecd39c80378caa1de1b042b996f4e43ef9fe66d3b8c0854cea12b42d2663e74"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Yoneshiro_River_201911.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Wc018"
+    },
+    {
+      "id": "media-real-photo-97646961-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What is the EXIF DateTimeOriginal of the photograph named Yoneshiro River 201911?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Yoneshiro_River_201911.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2019-11-05 10:22:32",
+            "sha256": "2918c2c053c4789ff3ac62dcbe971b5f4c0f255f25ce55ccae992589467c4ce1"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2019-11-05 10:22:32 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Wc018"
+    },
+    {
+      "id": "media-real-photo-149464642-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Locate the photograph whose original filename identifies Saraor river number 05.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Saraor_river_05.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "Saraor_river_05.jpg",
+            "sha256": "c5bb22a1d961e2b5b635fbc20c9ca83ee25c60b36c1170532748196782a051cc"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Saraor_river_05.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Горбунова М.С."
+    },
+    {
+      "id": "media-real-photo-149464642-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What camera-original timestamp is recorded in EXIF for Saraor river 05?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Saraor_river_05.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2024-05-28 15:26:12",
+            "sha256": "153cd67c0aaa77aa5c3404cdb7718aba1ceef958f3b60c2890f03ed765233bbf"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2024-05-28 15:26:12 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Горбунова М.С."
+    },
+    {
+      "id": "media-real-photo-29415136-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Find the photograph with Karpovka River Embankment 06 in its original filename.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Karpovka_River_Embankment_06.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 32,
+            "text": "Karpovka_River_Embankment_06.jpg",
+            "sha256": "b872cd91e75d68e8c27b3f99cfb241b19b5709dd97a7c63aa88d473420af9992"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Karpovka_River_Embankment_06.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Alex 'Florstein' Fedorov"
+    },
+    {
+      "id": "media-real-photo-29415136-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "When was Karpovka River Embankment 06 captured according to its EXIF DateTimeOriginal?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Karpovka_River_Embankment_06.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2013-07-19 15:29:41",
+            "sha256": "9a7afbfc4e7155ff1d2ae3d9c48131eb5a25792d40cfe224c557d4f3946e0855"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2013-07-19 15:29:41 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Alex 'Florstein' Fedorov"
+    },
+    {
+      "id": "media-real-photo-50398887-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Locate the original filename for View from Skaftafell National Park July 2014 number 4.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 51,
+            "text": "View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+            "sha256": "74b019bb6c7e1289eae21461ea0aea49668e1b4b1b5916c5aaaddb6c24e5544f"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is View_from_Skaftafell_National_Park_July_2014_-4.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Martin Falbisoner"
+    },
+    {
+      "id": "media-real-photo-50398887-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What camera-original EXIF capture time belongs to the Skaftafell National Park July 2014 number 4 photo?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2014-07-21 12:28:33",
+            "sha256": "2e0ed0ed0c557143d48edc0b943800805952e93e173e3905764f82c906984486"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2014-07-21 12:28:33 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Martin Falbisoner"
+    },
+    {
+      "id": "media-real-photo-94585934-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Which photograph's original filename contains Wrocław and MuzeumNarodowe?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 26,
+            "text": "Wrocław_MuzeumNarodowe.jpg",
+            "sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Wrocław_MuzeumNarodowe.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Marek Śliwecki"
+    },
+    {
+      "id": "media-real-photo-94585934-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What is the EXIF DateTimeOriginal for the Wrocław MuzeumNarodowe photograph?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2020-02-08 21:58:41",
+            "sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2020-02-08 21:58:41 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Marek Śliwecki"
+    },
+    {
+      "id": "media-real-photo-37196673-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Find the original filename of the Museo marítimo Ósvör photograph with identifier DD 066.",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 79,
+            "text": "Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+            "sha256": "9ccfeb7f07d2586ddc269072cfc57203ee698d81db4dd9a4766c1585308b95e3"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Diego Delso"
+    },
+    {
+      "id": "media-real-photo-37196673-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What camera-original capture timestamp is in EXIF for the Museo marítimo Ósvör DD 066 photograph?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2014-08-15 11:46:31",
+            "sha256": "24f15aafe62519c83edcb35e6296a27f28a756644069f151248b90213a4b1dfb"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2014-08-15 11:46:31 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Diego Delso"
+    },
+    {
+      "id": "media-real-photo-141842609-filename",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata",
+        "filename"
+      ],
+      "q": "Which photo's original filename mentions gray and orange clouds, boats, and Pakse Laos?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "original-basename",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 101,
+            "text": "Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+            "sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d"
+          },
+          "storage_field": "basename"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "The original published filename is Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "commons:photographer:Basile Morin"
+    },
+    {
+      "id": "media-real-photo-141842609-taken",
+      "primary_class": "media-text",
+      "tags": [
+        "real",
+        "metadata"
+      ],
+      "q": "What EXIF DateTimeOriginal belongs to the Pakse Laos photo whose filename mentions sunset and moored boats?",
+      "expect": [
+        {
+          "evidence_id": "e1",
+          "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+          "kind": "image",
+          "grade": 3,
+          "evidence_type": "name_metadata",
+          "view_id": "exif-DateTimeOriginal",
+          "location": null,
+          "span": {
+            "start_char": 0,
+            "end_char": 19,
+            "text": "2023-09-20 17:47:29",
+            "sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615"
+          },
+          "storage_field": "info.taken"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f1",
+          "description": "EXIF DateTimeOriginal is 2023-09-20 17:47:29 in the camera's unspecified local timezone.",
+          "sufficient_evidence": [
+            [
+              "e1"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "exif"
+      ],
+      "source_group": "commons:photographer:Basile Morin"
+    }
+  ]
+}

@@ -1,100 +1,98 @@
 # goldmine
 
-> Ingest anything, search anything. A local-first macOS CLI: point it at folders and URLs,
-> it embeds everything with Google's EmbeddingGemma 2 (768-dim, multimodal) running entirely
-> on your Mac via llama.cpp, and gives you hybrid search that combines meaning with exact
-> matching — plus `goldmine distill`, which condenses the corpus into short, source-backed
-> "golden knowledge" cards.
+A local macOS CLI for indexed documents, source code, PDF pages, OCR and timestamped
+speech transcripts. SQLite holds the source text, lexical indexes and 768-dimensional
+fp16 vectors. You explicitly choose every indexed folder or URL.
 
-goldmine is built on two convictions learned from its predecessor [DigUp](../DigUp): a search
-result you can't trust is worse than no result, and every capability your machine lacks must
-be visible, not silent.
+The default llama backend embeds text. It does **not** search photographs by their
+visual contents; photo names/metadata and actual OCR are separate evidence types.
+Cards contain source excerpts. The optional quality mode is an unvalidated experiment.
 
-**The one rule — the scope invariant:** goldmine only searches folders you add — never your
-whole Mac. `goldmine init` asks you to pick folders explicitly (or creates an empty
-`~/Documents/goldmine/` as the zero-thought option); there is no default sweep of
-`~/Documents`, `~/Downloads`, or `~/Desktop`, the chosen roots are echoed with file/media
-estimates before the first ingest, `status` shows the indexed roots, and config records them
-under `[init] roots`.
+This branch implements the [P0–P2 execution plan](docs/execution-plan/README.md).
+The package stays **0.2.0 development** until the required quality and release checks
+pass. Current capabilities and missing evidence are listed in
+[FEATURE_STATUS](docs/FEATURE_STATUS.md), with implementation evidence in
+[PROGRESS](docs/execution-plan/PROGRESS.md). No public release is configured.
 
-## Quickstart (3 commands)
+## Start with local keyword search
 
-```bash
-python3 -m pip install -e .        # numpy is the only dependency
-goldmine init                      # env check → model → folders → first ingest → demo
-goldmine search "pod eviction memory pressure"
+Python 3.12+; the base package depends only on numpy. From a checkout:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install .
+mkdir -p sample
+printf '中文知识库：退款期限为四十五天。\n' > sample/notes.md
+.venv/bin/goldmine ingest sample --db sample.sqlite --lexical-only
+.venv/bin/goldmine search '退款期限' --db sample.sqlite --lexical --pack
 ```
 
-`init` is a resumable state machine: Ctrl-C any time and re-run `goldmine init` to continue;
-`--restart` starts over. `--yes` runs non-interactively (creates `~/Documents/goldmine/`,
-never sweeps existing folders; pass `--root PATH` to index your own folders instead, and
-`--media` to also install speech transcription + screenshot OCR). Without the model, or
-while the embedding server is broken, everything still works as keyword search:
-`goldmine search <words> --lexical` / `goldmine ingest <folder> --lexical-only`.
+Use `--code` to include source files. `goldmine status --db sample.sqlite --json`
+shows stored capabilities and staleness. `goldmine backup --db sample.sqlite --out
+backup.sqlite` creates a verified backup. `goldmine reindex lexical --db sample.sqlite`
+explicitly rebuilds derived CJK/exact indexes from stored text, with no model or
+source-file reads. Searches and diagnostics open existing indexes read-only.
 
-Daily use: `goldmine ingest <folder or URL>` · `goldmine search <words>` (inline
-`kind:`/`under:`/`after:`/`before:`/`site:` filters, quoted phrases, `--why`) ·
-`goldmine open --hit 1 --query <words>` (audio seek, editor line) · `goldmine status` ·
-`goldmine backup`.
+## Semantic search and optional tools
 
-## Where things live
+Explicitly install the pinned embedding model with `goldmine model install
+embeddinggemma-2-Q8_0`. Supply an existing compatible llama-server through
+`GOLDMINE_LLAMA_SERVER=/absolute/path/llama-server`; the project pins llama.cpp b11461
+and its reviewed patch. [CI and installation](docs/CI.md) describe local artifact
+validation. The native build entry is `python3 scripts/build_native.py --help`.
+A downloaded model alone does not provide the server binary.
 
-| What | Where |
-|---|---|
-| Index | `~/Library/Application Support/goldmine/<name>.sqlite` |
-| Config (incl. `[init] roots`) | `~/.config/goldmine/config.toml` |
-| Models | `~/Library/Application Support/goldmine/models/` (repo dev checkout: `models/`) |
-| Backups | `~/Library/Application Support/goldmine/backups/` |
-| Init progress | `<home>/init_state.json` (deleted when init completes) |
+```sh
+goldmine ingest /chosen/folder --db library.sqlite
+goldmine search 'memory pressure' --db library.sqlite --pack --budget 4000
+goldmine serve --db library.sqlite
+goldmine watch --roots /chosen/folder --db library.sqlite
+```
 
-One SQLite file holds everything — text, FTS5, vectors as 768-dim float16 blobs. An embedding
-fingerprint (model sha256, prompt scheme, pooling, backend) guards it: change the model and
-goldmine refuses to mix vectors, telling you exactly how to reindex. Distill never
-synthesizes prose: every card is a verbatim excerpt from your own files.
+`serve` and `watch` are explicitly started commands. `init` provides resumable setup
+and asks for scope; it never defaults to scanning your whole home directory.
+OCR needs the native Vision helper, PDF extraction needs Poppler, and ASR needs
+ffmpeg, whisper-cli and pinned speech/VAD models. Missing, failed and no-text
+results remain distinguishable in stored evidence status.
 
-## What it can read
+Install `.[mcp]` from a checkout, or the MCP extra of the locally built wheel,
+then run `goldmine mcp --db library.sqlite`. The four read-only tools are search,
+get, context and status. [MCP](docs/MCP.md) documents the exact SDK lock, budgets,
+opaque citations and cancellation behavior.
 
-txt/md/html · docx · rtf/doc/odt (via `textutil`) · PDFs (text layer + OCR for scanned
-pages) · source code with `--code` · .eml/.epub · web pages (bounded crawler, robots.txt) ·
-images (thumbnails + metadata; screenshots/scans via Vision OCR) · audio/video (whisper
-transcription with seekable timestamps, measured ~7.2× realtime). Secrets, minified
-bundles, and archives are never read — they get an explicit `unsupported` row with the
-reason. The full truth table lives in [docs/USER_GUIDE.md](docs/USER_GUIDE.md); `status` and
-`doctor` report it per file, always.
+`--mode quality --multi-query` enables conservative deterministic compound queries.
+`--mode quality --rerank local` additionally requires the separately installed
+`Qwen3-Reranker-0.6B-Q8_0` model. Both default off. Compatibility checks pass;
+quality benefit is **not established**. See [the experiment](docs/RERANK_EXPERIMENT.md).
+The [vector cache](docs/VECTOR_CACHE.md) is separately built and enabled explicitly;
+SQLite remains authoritative and cache defects fall back to it.
 
-## Docs
+## Evidence and validation
 
-| File | Contents |
-|---|---|
-| [docs/USER_GUIDE.md](docs/USER_GUIDE.md) | the plain-language guide: daily use, capability table, measured numbers, troubleshooting |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | components, data flow, schema DDL, fingerprinting, process model, degradation model |
-| [SPEC.md](SPEC.md) | the CLI contract: commands, flags, exit codes, output formats, config, env |
-| [docs/v2/REDESIGN.md](docs/v2/REDESIGN.md) | the v2 plan: roadmap tables, resolved decisions, deferrals |
-| `goldmine help <topic>` | in-product guides: getting-started, ingest, search-syntax, models, media, maintenance, troubleshoot |
+The historical legacy suite has 150 queries, including 145 answerable items and
+5 noise items. On the original production baseline, the 2026-10-21 real-model
+reproduction matched success@5 **0.7862**, success@1 **0.5931**, MRR **0.6835** and
+nDCG@10 **0.6885** exactly. These numbers describe that baseline, not an improvement
+claim for this branch. The independent full-media suite has 169 fixed queries;
+missing EXIF/OCR provenance currently prevents its formal gate.
 
-## Honest status (v2.0)
+The portable product suite requires 420 audited questions. Its current draft has
+28 questions from 12 original MIT sources, with no frozen holdout. The remaining
+392 questions and real PDF/media assets are missing. New independent 80-question
+answer/grading runs and the real 100-document, eight-topic card corpus are also
+missing. No final quality milestone or release candidate is declared.
 
-Measured on the hash-pinned real corpus (`evals/`, n=146 queries, llama backend,
-2026-10-17): hybrid **success@5 0.747**, **MRR 0.646**, success@1 0.562, nDCG@10 0.652 —
-published targets (0.85 / 0.65) not yet met; the regression gate (`evals/baseline.json`,
-−0.02 rule) keeps future changes honest. Token-true chunking made the measured 2670-token
-embed-failure class structurally impossible; ASR runs at 7.2× realtime (a 1 h podcast in
-~8.4 min); scanned-PDF and screenshot text is searchable; ~700 offline tests +
-live suites.
+Run the fixed hermetic profile with:
 
-**Shipped in v2.0** (21 items in `docs/v2/REDESIGN.md` §5): `init` onboarding (resumable,
-`--yes`, scope invariant, TCC pre-warnings), `model` manager (manifest-pinned, resumable,
-sha-verified, live arch probe), ASR + Vision OCR + image thumbnails + .eml/.epub, filters +
-`--why` + «highlighted» snippets + `--format fzf`, ingest ticker/ETA, universal 4-line
-error shape, `goldmine open`, `goldmine backup` + `doctor --deep`, per-file identity +
-staleness visibility, real-corpus eval harness + regression gate, token-true chunking.
+```sh
+python3 scripts/acceptance.py run --profile offline --out reports/execution/offline-001
+```
 
-**Deferred** (see `docs/v2/REDESIGN.md` §5 v2.1/v2.2): `serve` daemon (warm search),
-`find` TUI (killed — revisit with a named user), `reindex plan|run`, distill `--pack`/`--llm`
-(cards v2 themselves SHIPPED in R6 — calibrated τ, admission guard, incremental distill;
-see `docs/v2.1-r6-distill.md`), `watch` mode, video frames, fusion tuning (G1).
+Install test dependencies from `requirements/test.lock` first. Native, real assets,
+optional SDKs and live validation use separate profiles; required skips and missing
+raw evidence do not count as passes. [CI](docs/CI.md) explains local versus hosted
+verification. [COMPARISON](docs/COMPARISON.md) records the reproducible QMD/Recoll work.
 
-Troubleshooting: `goldmine help troubleshoot` — the failures people actually hit, each with
-a copy-pasteable fix. Every failure prints the same 4-line shape (`what / why: / fix: /
-more: goldmine doctor`). The whole test suite runs offline against a deterministic mock
-backend: `python3 -m pytest tests/ -q -m "not live"`.
+Further references: [SPEC](SPEC.md), [architecture](ARCHITECTURE.md),
+[user guide](docs/USER_GUIDE.md), [module map](docs/MODULE_MAP.md),
+[test plan](docs/TEST_PLAN.md), [execution contracts](docs/execution-plan/CONTRACTS.md).

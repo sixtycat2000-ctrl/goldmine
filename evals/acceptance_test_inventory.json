@@ -1,0 +1,5540 @@
+{
+ "schema": 1,
+ "source_commit": "b2d6ec2c4748c00fb96642167c447f9c6323b153",
+ "note": "Collection captured during P0-06 implementation; classifications preserve nodeids. Live and optional capabilities are separate, never skipped into PASS.",
+ "tests": [
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_wording_variation_never_sets_score_variation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_same_answer_bytes_different_grade_is_score_variation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_common_answer_round_shock_cannot_create_false_positive_guarantee",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_score_records_do_not_look_stable[records0]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_score_records_do_not_look_stable[records1]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_score_records_do_not_look_stable[records2]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_score_records_do_not_look_stable[records3]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_score_records_do_not_look_stable[records4]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_or_late_preregistration_rejected[<lambda>0]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_or_late_preregistration_rejected[<lambda>1]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_or_late_preregistration_rejected[<lambda>2]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_or_late_preregistration_rejected[<lambda>3]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_invalid_or_late_preregistration_rejected[<lambda>4]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_changed_preregistration_bytes_cannot_be_ignored",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>0]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>1]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>2]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>3]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>4]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>5]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>6]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>7]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>8]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_malformed_or_misattributed_grade_rejected[<lambda>9]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_fixture_cannot_be_formal_evidence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_atomic_new_baseline_and_historical_bytes_untouched",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_missing_run_never_writes_baseline",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_unknown_location_and_wrong_time_unit_are_rejected",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_calibration.py::test_duplicate_keys_nonfinite_and_request_slot_injection_rejected",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_different_packs_with_fresh_owned_jobs_are_comparable",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_new_pack_cannot_use_old_answer_provenance",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_self_comparison_requires_diagnostic_and_never_release_evidence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_exact_practical_threshold_not_significance_controls_drop[6-0]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_exact_practical_threshold_not_significance_controls_drop[7-1]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_trap_failure_cannot_be_offset_by_perfect_answerable_score",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_missing_one_trap_or_duplicate_question_never_shrinks_denominator",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_wrong_prompt_and_path_traversal_rejected",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_group_bootstrap_handles_shared_source_counterexample",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_group_bootstrap_preserves_query_weight_with_unequal_groups",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_answer_compare.py::test_cli_missing_records_are_machine_readable_missing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_lexical_application_matches_existing_search_and_pack",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_filters_are_already_parsed_and_lexical_never_constructs_backend",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_search_and_status_preserve_content_and_schema",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_missing_read_only_index_does_not_create_parent",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_uri_opens_exact_literal_path[index?literal.sqlite]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_uri_opens_exact_literal_path[index#literal.sqlite]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_uri_opens_exact_literal_path[index%25.sqlite]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_uri_opens_exact_literal_path[\\u4e2d\\u6587 \\u7a7a\\u683c.sqlite]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_read_only_old_schema_never_migrates",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_legacy_cli_search_needs_no_uuid_but_citation_api_does",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_canonical_digest_includes_metadata_and_preserves_key_order_independence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_get_rejects_non_opaque_or_overflow_ids[/etc/passwd]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_get_rejects_non_opaque_or_overflow_ids[https://example.com]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_get_rejects_non_opaque_or_overflow_ids[SELECT * FROM files]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_get_rejects_non_opaque_or_overflow_ids[gm2:a:1:abcd]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_get_rejects_non_opaque_or_overflow_ids[gm1:00000000-0000-0000-0000-000000000000:9223372036854775808:0123456789abcdef]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_metadata_only_and_vector_only_get_do_not_invent_a_body",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_citation_get_and_context_use_stored_text_not_excerpt",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_search_pack_and_citation_share_snapshot_during_concurrent_replace",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_backend_closes_on_fingerprint_failure_and_exception",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_expired_request_never_constructs_backend",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_long_empty_envelope_is_typed_budget_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_application.py::test_full_neighbor_parts_reach_adapter",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_guard_drops_low_mean_p_and_low_yield_segments",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_guard_without_token_probs_is_noop",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_merge_segments_bounds_and_locs",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_merge_respects_max_tokens",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_merge_packs_finer_than_the_old_char_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_resolve_tools_found_via_env",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_resolve_tools_missing_whisper_is_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_resolve_tools_missing_models_is_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_resolve_whisper_cli_order",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_config_asr_keys_parse",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_transcribe_canned_stub",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_transcribe_timeout_raises",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_transcribe_nonzero_rc_raises",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_transcript_segments_with_vectors",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_whisper_missing_falls_back",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_off_keeps_v1_path",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_always_failure_is_failed_row",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_timeout_is_failed_row",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_always_no_speech_is_metadata",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_pipeline_asr_max_minutes_partial",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_asr.py::test_lexical_only_never_runs_asr",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_archive_bytes_must_forever_match_the_original_pin",
+   "profile": "offline",
+   "reason": "Baseline archive immutability under authorized divergence."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_divergence_record_cannot_cover_unknown_inputs",
+   "profile": "offline",
+   "reason": "Divergence registry scope check."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_pinned_inputs_pass_without_any_divergence",
+   "profile": "offline",
+   "reason": "Pinned inputs pass unchanged."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_registered_divergence_passes_and_reports_reason",
+   "profile": "offline",
+   "reason": "Registered divergence passes with reason."
+  },
+  {
+   "nodeid": "tests/test_baseline_divergence.py::test_unregistered_divergence_and_forged_original_are_rejected",
+   "profile": "offline",
+   "reason": "Unregistered/forged divergence rejected."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_gate1_passes_offline[2000]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_gate1_passes_offline[20000]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_gate1b_loads_a_real_store_db[2000]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_gate1b_loads_a_real_store_db[20000]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_gate1b_rebuilds_stale_db",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_bench.py::test_bench_main_gate_exit_code",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_paragraph_boundary_preferred",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_short_text_single_chunk",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_whitespace_fallback_when_no_paragraphs",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_overlap_present_in_fallback",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_max_chunks_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_whitespace_cleaning_matches_digup",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_loc_are_line_numbers",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_chunk_code_line_alignment",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_chunk_code_long_line_own_chunk",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_est_tokens",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_est_tokens_kind_aware",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_effective_chunk_size_kind_aware",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_chunker.py::test_code_stretch_shrinks_under_kind_aware_guard",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_exit_zero_and_json_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_human_summary",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_json_schema",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_dry_run_writes_nothing",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_second_run_counts_unchanged",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_backend_unavailable_exit_4",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_lexical_only_flag_builds_keyword_index",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_failure_exit_5",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_requires_roots",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_phantom_root_exit_5_and_never_persisted",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_mixed_real_and_phantom_roots",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_json_shapes",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_human_shape_and_zero_hit_honesty",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_zero_hits_json_is_empty_array",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_missing_index_exit_4",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_fingerprint_flip_search_exit_3_and_lexical_escape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_kinds_filter",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_status_exit_4_when_missing",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_status_human_and_json",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_backends_lists_known_and_exits_zero",
+   "profile": "native",
+   "reason": "Renamed with the authorized Foresight retirement (backends now llama+mock); same assertion scope."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_backends_json_and_probe_never_spawns_llama",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_doctor_runs_and_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_doctor_human_output_and_fail_exit",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reset_dry_default_lists_without_deleting",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reset_yes_deletes_db_wal_shm",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reset_reindex_rebuilds_from_stored_roots",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_needs_index_and_two_chunks",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_markdown_json_and_out_dir",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_max_chunks_refusal_exit_1",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_code_flag_indexes_code_files",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_version_flag",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_no_command_prints_help_exit_2",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reindex_startup_failure_exit_2_and_index_intact",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_fingerprint_gate_exit_3",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_limit_zero_is_a_valid_answer",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_excerpt_chars_zero_disables_excerpt",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_crawl_bounds_flags_map_to_their_own_defaults",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_encoding_flag_reaches_extractor",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_include_datasets_flag_skips_detection",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_doctor_reports_fts_orphan_rows",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_doctor_v2_install_and_model_rows",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_version_flag_still_works",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_refresh_thin_flag_parses_and_flows",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_search_no_index_human_and_json",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_status_no_index_keeps_data_home",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_ingest_backend_unavailable",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_fingerprint_mismatch",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_backend_startup_failure_exit_2",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_reset_noninteractive",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_distill_needs_two_chunks",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_per_file_failures",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_catch_all_carries_doctor_pointer",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_index_schema_newer",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_sweep_every_render_has_fix",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_tty_ticker_and_preflight",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_ingest_non_tty_has_no_ticker",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_search_format_fzf_columns_and_escaping",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_unknown_backend_is_a_clean_usage_error_on_every_command",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_unknown_backend_usage_error_without_json_goes_to_stderr",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_corrupt_db_file_gets_the_universal_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_corrupt_db_fix_names_the_newest_backup",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_locked_db_error_is_not_index_corrupt",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_json_error_object_reaches_stdout_on_internal_errors",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_json_envelope_on_model_list_backup_backends_version",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_emit_error_no_longer_double_logs",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_reset_reindex_no_index",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_reset_reindex_no_roots",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_bare_model_uses_argparse_json_path",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_error_shape_unknown_help_topic_json",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reset_needs_confirmation_json_reaches_stdout",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_reset_reindex_partial_exit_5_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_status_failures_zero_shows_none",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_zero_flags_are_honored",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_preview_writes_nothing",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_as_and_rerun_views",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_rerun_missing_view_json_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_under_scoping",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_after_scoping_filters_old_files",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_rebuild_note_cleared_by_first_run",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_distill_threshold_semantics_calibrated_vs_manual",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_zero_hits_prints_next_step",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_every_flag_has_help_string",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_cli.py::test_cli_split_import_shape",
+   "profile": "native",
+   "reason": "CLI ingest fixtures include real native media conversion."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_defaults",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_config_file_parsed",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_env_overrides_file",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_flag_applied_after_load",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_unknown_keys_warn_not_crash",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_broken_toml_warns_and_uses_defaults",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_goldmine_config_env",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_resolve_home_creates",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_default_config_path_is_xdg",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_model_configured_flag",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_models_dir_and_llama_home_propagation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_set_config_init_roots_round_trip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_set_config_keys_creates_section_and_typed_values",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_init_section_parsed_with_defaults",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_config.py::test_init_section_rejects_non_string_roots",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_media_queries_schema",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_media_queries_expect_paths_exist_in_fixture",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_fixture_path_list_is_seed_deterministic",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_fixture_containers_and_surrogate_are_deterministic",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_scanned_pdf_pages_have_no_text_layer",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_screenshot_pngs_contain_rendered_text",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_coverage_report_fixture_gate_passes",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_coverage_report_gate_exit_codes",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_coverage_floors_text_only_backend_expectation",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_fixture_version_file_written_and_matches_generator",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_ensure_fresh_fixture_rebuilds_on_mismatch",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_ensure_fresh_fixture_fresh_tree_needs_no_rebuild",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_ensure_fresh_fixture_no_rebuild_fails_loudly",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_coverage.py::test_ensure_fresh_fixture_missing_version_file_is_stale",
+   "profile": "native",
+   "reason": "Corpus builders exercise native media/PDF fixtures."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_bfs_same_host_and_dedupe",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_depth_zero_fetches_seed_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_max_pages_budget",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_per_page_byte_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_non_html_content_type_skipped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_429_backoff_then_success",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_robots_off_flag",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_politeness_delay_between_same_host_fetches",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_off_host_redirect_reported",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_robots_disallow_on_redirect_target",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_cross_port_redirect_skipped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_robots_unreachable_returns_within_timeout",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_pipeline_ingests_url_roots",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_crawl.py::test_pipeline_url_robots_disallow_recorded",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_spawn_sizes_context_for_all_slots",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_effective_chunk_size_ceiling",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_chunker_respects_small_size",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_embedding_error_fails_file_and_run_continues",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_token_true_chunks_skip_the_ctx_guard",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_estimator_chunks_are_still_guarded",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ctx_guard.py::test_tiny_ceiling_guards_even_token_true_chunks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_utf8_bom",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_utf16_le_bom",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_utf16_be_bom",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_utf32_le_bom_wins_over_utf16",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_pure_utf8",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_invalid_utf8_declared_charset_rescues",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_invalid_utf8_no_declaration_lossy",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_decode.py::test_override_wins",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_otsu_on_separable_synthetic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_floor_on_orthogonal_groups",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_ceil_on_all_similar",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_percentile_fallback_via_mode_proximity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_manual_override",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_degenerate_single_bin_and_two_chunks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_negative_cosines_clamp_to_bin_zero",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_stride_sampling_deterministic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_measure_tau_quartiles_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_f7_guard_and_centroid_gate_disagree_on_boundary",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_term_filter_rules",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_cluster_terms_df_gate_and_bigram_replacement",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_cluster_terms_single_member_term_never_minted",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_title_sentence_trim_and_fallback",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_title_trim_words_at_word_boundary",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_medoid_and_coverage_picks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_coverage_stops_at_redundancy",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_fmt_loc_audio_uses_hmmss",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_dedupe_near_dup_greedy_097_unchanged",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_run_distill_full_run_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_run_distill_deterministic_identity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_run_distill_view_id_ignores_tau",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_corpus_hash_embeds_embed_id",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_scope_under_restricts_corpus",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_scope_kinds_restricts_corpus",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_eligibility_rules",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_preview_writes_nothing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_preview_incremental_eligible_carries_inherited_tau_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_preview_first_run_has_no_inherited_tau_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_render_markdown_v2_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_mean_intra_cosine_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_split_triggers_on_loose_cluster_and_accepts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_split_rejects_tight_cluster",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_split_needs_min_twelve",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_split_depth_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_build_cards_v2_with_headers_parent_id_and_ordering",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_header_rendering_groups_children",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_max_chunks_refuses",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_below_two_chunks_refuses",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_new_chunk_joins_and_remainder_founds",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_tombstone_sweep_and_dissolve",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_skips_calibration",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_centroid_recompute_accurate",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_eligibility_triggers_full",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_f7_incremental_guard_consumes_member_vectors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_incremental_idempotent_no_changes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_validate_questions_accepts_the_committed_set",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_validate_questions_requires_evidence_per_fact",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_validate_questions_rejects_trap_flag_mismatch",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_check_facts_present_and_leak_paths",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_check_facts_header_echo_is_never_evidence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_parse_grader_output_valid",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_parse_grader_output_rejects_garbage",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_grader_prompt_slots_and_trap_adjudications",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_binom_tail_ge_known_values",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_derive_threshold_low_waver_keeps_010",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_derive_threshold_raises_when_waver_too_high",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_empty_baseline_refuses",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_fingerprint_invalidation_exit2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_models_invalidation_exit2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_pack_sha_drift_exit2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_answer_drift_over_two_exit2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_gate_two_answer_drifts_allowed_and_atom_wire_trips",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_trap_refusal_rate_reported_not_gating",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_update_baseline_requires_variance",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_answer.py::test_derive_threshold_matches_reviewer_math",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_fixture_shape_and_determinism",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_ari_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_purity_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_main_variant_gates_pass_on_mock",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_hard_variant_differential_is_the_real_gate",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_single_topic_variant_asserts_non_otsu",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_micro_variant_runs_with_honest_stats",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_shuffle_variant_keeps_recovery",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_render_report_mentions_verdicts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_distill.py::test_incremental_variant_gate",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_evaluation_help_without_assets[eval_real]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_evaluation_help_without_assets[eval_answer]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_evaluation_help_without_assets[eval_public]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_evaluation_help_without_assets[eval_distill]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_evaluation_help_without_assets[bench]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_capture_preserves_bytes_and_rejects_nonempty",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_entrypoints.py::test_capture_drift_is_reported_without_rewriting_input",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_all_four_scorer_rows_present",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_hybrid_r5_guardrail_with_mock",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_zero_hit_query_is_honest_empty",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_corpus_shape_deterministic",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_render_table_mentions_all_scorers",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_harness.py::test_clustering_sensitivity_reported",
+   "profile": "native",
+   "reason": "Real multiformat fixture extraction, mock embeddings."
+  },
+  {
+   "nodeid": "tests/test_eval_media_suite.py::test_suite_query_sets_keep_historical_denominators",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_media_suite.py::test_filename_or_tool_presence_is_not_content[asr-audio]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_media_suite.py::test_filename_or_tool_presence_is_not_content[ocr-image]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_media_suite.py::test_filename_or_tool_presence_is_not_content[exif-image]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_media_suite.py::test_stored_transcript_and_ocr_have_independent_checks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_public_manifest_schema_and_licenses",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_public_manifest_pins_are_the_verified_constants",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_public_manifest_vs_file_b7",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_downloads_and_verifies",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_resume_range_honored",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_200_after_range_restarts_from_zero",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_sha_mismatch_deletes_partial_and_fails",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_404_fails_fast_without_backoff",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_backoff_on_500_then_success",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_disk_precheck_blocks_before_network",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_offline_missing_zip_never_touches_network",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_cached_zip_verified_and_mismatch_never_patched",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_doc_md_bytes_and_escaping",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_write_corpus_md_sorted_and_complete",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_load_corpus_sorts_by_id",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_qrels_parsing_grade_range_and_header",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_query_filtering_to_qrel_qids",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_dangling_qrel_stays_in_grades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_fetch_deep_cut_drops_self_then_cuts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_qid_docid_namespace_safety",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_run_arms_fetches_deep_and_drops_self",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_hand_computed_metrics_through_the_loop",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_binary_variant_threshold_flips_success",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_hand_computed_ndcg_graded_trec_convention",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_hand_computed_ndcg_dangling_caps_below_one",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_success_threshold_is_max_grade",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_ndcg_ideal_is_cut_at_ten",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_binom_ci_safe_variant_matches_house_reference",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_headline_cis_public_arguana_scale",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_empty_hits_stay_honest",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_rows_flow_through_eval_real_machinery",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_one_hit_per_doc_invariant_is_enforced",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_render_table_rows_refs_and_footnotes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_baseline_roundtrip_gate_green_then_trips",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_gate_identity_and_backend_mismatch_exit_2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_baseline_provenance_and_identities_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_prepare_marker_and_backend_switch_refusal",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_public.py::test_e2e_mock_twice_identical",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_real_jsonl_validates_against_manifest",
+   "profile": "assets",
+   "reason": "Historical corpus files; explicit asset preparation required."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_query_ids_unique_and_tags_present",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_media_needs_skipping",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_splits_holdout_isolation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_write_splits_is_deterministic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_score_query_success_and_location",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_score_query_pages_containment",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_score_query_noise_and_grades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_binom_ci_reference_point",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_mcnemar_exact_hand_values",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_mock_backend_banner_mechanics_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_gate_green_on_identical_baseline",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_gate_trips_on_artificially_lowered_baseline",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_gate_reports_small_drop_as_noise_not_regression",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_gate_without_per_query_never_trips",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_gate_advisory_metrics_cannot_trip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_end_to_end_mock_subset",
+   "profile": "assets",
+   "reason": "Historical corpus files; explicit asset preparation required."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_flags_expected_path_only_in_the_folded_region",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_duplicate_fold_hides_a_high_scoring_hit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_clear_when_expected_match_is_visible",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_path_fallback_without_hit_records",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_line_in_rendered_metrics",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_eval_real.py::test_fold_audit_rides_the_gate_output_advisory",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_fixture_generator_emits_real_exif",
+   "profile": "offline",
+   "reason": "D4 fixture photos carry genuine EXIF verified end-to-end."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_make_date_and_gps_roundtrip",
+   "profile": "offline",
+   "reason": "Bounded camera/date/GPS roundtrip."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_no_exif_is_absent_and_non_jpeg_never_parsed",
+   "profile": "offline",
+   "reason": "Absent/non-JPEG honesty."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_oversized_make_is_rejected_not_guessed",
+   "profile": "offline",
+   "reason": "Bounded Make rejects oversized values."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_partial_fields_are_independent",
+   "profile": "offline",
+   "reason": "Partial EXIF fields independent."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_charset_declared_meta",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_charset_declared_http_equiv",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_charset_declared_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_html_to_text_strips_script_style_head",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_html_to_text_block_structure",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_html_to_text_numeric_entities",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_html_to_text_malformed_keeps_partial",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_extract_html_file_declared_charset",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_extract_html_file_utf16_bom",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_extract_html_file_encoding_override",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_lowercase_scheme_host",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_drops_fragment",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_drops_default_port",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_resolves_dot_segments",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_dedupe_forms",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_keeps_query",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_html.py::test_canonicalize_empty_path_becomes_root",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_plain_body_headers_into_info",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_rfc2047_subject_decoded",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_html_body_stripped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_attachments_never_extracted_only_counted",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_empty_body_is_empty_text_not_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_epub_spine_order_and_title",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_epub_corrupt_zip_raises_value_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_epub_missing_container_raises",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_epub_entity_refusal_and_size_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_epub_ingest_end_to_end",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_epub_ingest_end_to_end",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_mail.py::test_eml_info_lands_in_file_row",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_extract_pages_roundtrip",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_pdf_info",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_max_pages_cap_marks_partial",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_first_pass_then_steps_reads_all",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_pipeline_thin_page_is_fts_only_no_vector",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_pipeline_scanned_pdf_is_metadata_only",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_pipeline_pdftotext_missing_is_metadata_only",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_pdf.py::test_corrupt_pdf_is_failed_row",
+   "profile": "native",
+   "reason": "Real poppler extraction; tool absence verified separately."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_txt_utf8",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_txt_utf16_bom",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_txt_latin1_lossy",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_txt_encoding_override",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_markdown_title",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_docx",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_docx_corrupt_fails",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_docx_over_declared_size_refused",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_extract_docx_declaring_entities_refused",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_textutil_missing_returns_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_textutil_success",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_textutil_failure_raises",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_extract_text.py::test_textutil_timeout_raises",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_id_stable_across_key_order",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_canonical_is_sorted_no_whitespace",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_build_covers_required_fields",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_build_string_is_not_part_of_fingerprint",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_check_ok_when_ids_match",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_check_names_diff_fields",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_check_backend_family_change_detected",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_check_handles_unparsable_stored_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_fingerprints.py::test_dim_configurable_mock_changes_fingerprint",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_every_topic_renders_nonempty",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_help_without_topic_lists_topics",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_unknown_topic_exits_2_with_list",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_required_topics_present",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_scope_invariant_in_getting_started",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_help.py::test_troubleshoot_mirrors_the_error_table",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_thumbnail_photo_dimensions_and_format",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_thumbnail_screenshot_png",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_thumbnail_downscales_large_source",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_min_side_refusal",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_undecodable_image_raises_runtime_error",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_prepare_image_without_sips_raises_toolerror",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_parse_sips_creation",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_image_dimensions",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_exif_taken_from_real_camera_file",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_image_prep.py::test_thumb_byte_cap_constant",
+   "profile": "native",
+   "reason": "Real sips image preparation and EXIF."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_yes_with_root_ingests_demos_and_records_roots",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_status_shows_indexed_roots",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_yes_without_root_creates_dedicated_folder_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_interactive_folders_b_branch_and_tcc_prewarning",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_interactive_rejects_missing_folder",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_resume_after_interrupt_at_folders",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_restart_discards_saved_progress",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_env_failure_yes_exits_4",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_env_failure_interactive_recheck_then_skip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_model_skip_lexical_interactive",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_model_adopt_via_model_path_flag",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_probe_failure_is_nonfatal_warning",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_media_flag_installs_and_sets_config",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_media_decline_states_the_consequence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_media_skip_is_honest_when_whisper_resolves_anyway",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_media_yes_skip_honest_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_media_skip_keeps_the_metadata_only_copy_without_whisper",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_100gb_guard_refuses_yes_without_confirmation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_100gb_guard_interactive_confirm_accepts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_big_folder_guard_interactive_decline_keeps_asking",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_over_10k_files_warns_but_yes_with_root_proceeds",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_pick_demo_term_prefers_body_words",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_pick_demo_term_empty_index",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_init.py::test_two_goldmine_homes_are_two_independent_inits",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_spawn_embed_dim_and_build_recorded",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_prompt_asymmetry",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_fingerprint_stable_across_two_spawns",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_ingest_and_hybrid_search_top1",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_close_leaves_no_child",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_llama.py::test_live_brew_binary_refused_with_explanation",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_pack.py::test_pack_emit_live_canaries",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_pack.py::test_neighbor_sql_uses_segments_file_index",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_public.py::test_live_scifact_end_to_end",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_public.py::test_live_scifact_double_run_determinism",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_serve.py::test_live_serve_embed_dim_and_status",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_serve.py::test_live_search_via_socket_footer",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_serve.py::test_live_latency_bench_f1",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_serve.py::test_live_sigkill_cold_fallback_and_orphan_sweep",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_watch.py::test_live_watch_drop_becomes_searchable_within_90s",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_watch.py::test_live_watch_sigkill_restart_never_duplicates",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_watch.py::test_live_watch_serve_coexistence",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_live_watch.py::test_live_watch_duty_and_pmset",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_startup_readiness_and_batching",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_deterministic_and_prompt_agnostic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_foreign_server_on_port_is_never_adopted",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_startup_timeout_raises_with_log_tail",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_crash_on_start_raises_backend_startup_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_wrong_dim_refused_at_start",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_request_deadline_raises_embedding_error_with_tail",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_embed_500_retried_once_then_succeeds",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_embed_500_forever_is_embedding_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_close_kills_only_our_child",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_fingerprint_fields_and_model_hash",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_capability_text_only_and_not_supported",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_model_missing_is_startup_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_pinned_model_hash_enforced",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_resolve_server_path_order",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_explicit_missing_server_never_falls_back",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_llama_client.py::test_describe_does_not_spawn_server",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_sniff_media_no_tools_needed",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_ffprobe_duration",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_ffprobe_duration_garbage_is_none",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_single_window_short_clip",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_windows_hop_and_silence_skip",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_all_silent_yields_no_windows",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_duration_cap_bounds_windows",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_no_silence_skip_keeps_all_windows",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_video_soundtrack_uses_audio_path",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_media.py::test_has_audio_stream",
+   "profile": "native",
+   "reason": "Real ffmpeg/ffprobe window generation."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_fresh_store_creates_current_schema_directly",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_newer_schema_refusal_shape_unchanged",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_v1_index_migrates_purely_additively",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_v1_lexical_only_index_backfills_no_embed_ids",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_migration_failure_rolls_back_completely",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_v2_index_migrates_to_v3_partial_indexes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_failed_migration_leaves_no_current_shaped_ddl",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_future_schema_refusal_happens_before_any_ddl",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_migration_survives_sigkill_mid_step",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_pre_migration_snapshot_only_when_large",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_migrated_index_matches_fresh_v2_index_ids",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_migrated_index_rechunks_on_the_next_plain_ingest",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_migrated_index_passes_the_v1_gate_with_same_backend",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_create_backup_verifies_and_prunes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_create_backup_explicit_out_skips_pruning",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_verify_backup_detects_corruption",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_cli_backup_command",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_doctor_deep_rows",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_doctor_deep_flags_staleness_and_cards_drift",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_doctor_deep_without_index_is_a_warn_not_a_crash",
+   "profile": "native",
+   "reason": "Real ffmpeg conversion or doctor native-tool version probe; migrated after hermetic failure, not skipped."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_v3_to_v4_drops_and_recreates_cards",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_migrations.py::test_doctor_surfaces_rebuild_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_manifest_shape_and_urls",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_manifest_vad_bytes_pin_is_the_corrected_value",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_manifest_matches_files_on_disk",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_resolution_order_state_over_models_dir_over_repo",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_models_dir_env_override",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_listing_marks_installed_and_missing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_adopt_registers_without_copying",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_adopt_refuses_non_pinned_content",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_unknown_key_is_usage_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_from_path_registers_no_download",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_already_installed_short_circuits",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_download_file_url_verifies_and_renames",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_download_resumes_from_partial_on_206",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_download_restarts_when_server_ignores_range",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_retries_with_backoff_then_fails",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_dead_pin_fails_immediately_no_backoff[404]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_dead_pin_fails_immediately_no_backoff[410]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_transient_http_errors_still_back_off[429]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_transient_http_errors_still_back_off[500]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_transient_http_errors_still_back_off[503]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_disk_precheck_names_missing_bytes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_install_corrupt_download_fails_verify_no_final_file",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_verify_recomputes_against_pin",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_use_writes_config_model_line",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_use_preserves_other_config_content",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_use_inserts_into_existing_llama_section_without_model",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_use_rejects_non_embedding_roles",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_set_config_llama_model_edge_cases",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_resolve_server_path_home_bin_beats_vendor",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_resolve_model_path_default_chain_home_before_repo",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_list_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_unknown_key_exit_2",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_models_hidden_alias_add_maps_to_install",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_install_from_and_use",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_use_not_installed_exit_1",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_check_with_fake_server",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_model_check_bad_server_exit_4",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_version_full_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_cli_version_full_human",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_model.py::test_models_alias_is_argv_rewrite_and_hidden",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_available_and_handshake",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_unavailable_without_helper",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_recognize_parses_lines_and_filters_confidence",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_recognize_batch_ids_roundtrip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_recognize_empty_input",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_recognize_timeout_raises",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_recognize_helper_crash_raises_unavailable",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_ensure_helper_respects_autocompile_off",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_error_line_becomes_page_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_xattr_screenshot_detection",
+   "profile": "native",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_screenshot_prefix_fallback_still_works",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_xattr_absent_file_prefix_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_ocr.py::test_live_real_helper_handshake_and_ocr",
+   "profile": "live",
+   "reason": "Existing opt-in live test; required live checks retained per task.",
+   "markers": [
+    "live"
+   ]
+  },
+  {
+   "nodeid": "tests/test_open.py::test_kind_for_path_extension_map",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_clock_fmt",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_quicktime_jump_and_ms_math",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_iina_url_scheme",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_unknown_player_falls_back_to_open_with_instruction[org.videolan.vlc]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_unknown_player_falls_back_to_open_with_instruction[None]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_audio_without_loc_is_plain_open",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_pdf_loc_states_page_jump_honestly",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_editor_line_hint",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_code_defaults_to_vi_when_editor_unset",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_plan_doc_uses_editor_only_when_set",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_run_plan_quicktime_success",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_run_plan_quicktime_not_allowed_degrades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_run_plan_editor_missing_degrades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_run_plan_dry_run_spawns_nothing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_run_plan_osascript_timeout_degrades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_path_dry_run_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_hit_re_runs_search",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_hit_out_of_range_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_hit_needs_query",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_missing_path_error_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_nothing_given",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_open.py::test_cmd_open_hit_lexical_degrade_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_fmt_clock",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_fmt_hours",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_ansi_enabled_matrix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_ticker_draws_throttled_single_line",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_ticker_non_ansi_pads_instead_of_escape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_ticker_reports_live_vectors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_ticker_ignores_unparseable_progress",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_scan_root_media_counts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_scan_root_media_cap_and_cap_s",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_scan_root_media_no_probe_leaves_seconds_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_scan_root_media_skips_urls",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_render_root_media_c5_line",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_render_root_media_video_only_and_probe_cap_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_render_root_media_no_media_counts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_asr_estimate_disabled_when_off",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_asr_estimate_disabled_when_whisper_missing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_asr_factor_is_the_measured_constant",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_fzf_lines_columns_and_escaping",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_fzf_lines_empty_excerpt_and_missing_loc_fn",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_output.py::test_fzf_widget_file_exists_and_parses",
+   "profile": "native",
+   "reason": "Real platform/tool execution."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_trim_seam_drops_the_chunker_overlap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_trim_seam_floor_keeps_coincidental_short_matches",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_trim_seam_cap_under_trims_the_hostile_700_char_header",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_merge_parts_adjacency_gated",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_merge_parts_trims_adjacent_seam",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_collect_records_dedups_duplicate_hits_and_counts_them",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_collect_records_folds_hit_already_inside_earlier_record",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_textless_hit_renders_explicit_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_name_hit_gets_no_expansion_and_honest_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_budget_round_trip_and_skip_not_truncate",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_slim_fallback_drops_context_not_text",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_budget_clamps",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_fixpoint_footer_counts_final_bytes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_double_emit_byte_identical",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_no_timestamp_like_strings_in_pack",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_cli_plain_search_output_stable_without_context",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_cli_context_json_and_human_note",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_cli_usage_errors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_cli_pack_happy_path_and_zero_hit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack.py::test_cli_pack_budget_clamp_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack_contract.py::test_empty_pack_with_maximum_query_cannot_exceed_budget[None]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack_contract.py::test_empty_pack_with_maximum_query_cannot_exceed_budget[exact]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pack_contract.py::test_empty_pack_fits_and_counts_whole_envelope",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_capability_matrix_with_mock_backend",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_lexical_only_pipeline",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_no_backend_without_lexical_only_is_refusal",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_unchanged_skip_and_atomic_replace_and_prune",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_reindex_clears_and_rebuilds",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_modify_first_ingested_file_no_fts_orphans",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_delete_last_file_then_add_new_no_fts_orphans",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_second_root_ingest_never_prunes_first_root",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_reindex_failed_startup_keeps_index_intact",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_keyboard_interrupt_during_startup_closes_backend",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_failed_reingest_drops_stale_searchable_text",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_encoding_override_flows_through_pipeline",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_dataset_folders_skipped_by_default_included_on_flag",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_relative_root_then_absolute_is_no_churn",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_dry_run_writes_nothing",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_fingerprint_mismatch_refuses_ingest",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_mixed_vector_and_vectorless_chunks",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_multimodal_mock_indexes_image_content",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_multimodal_mock_audio_windows_with_loc_times",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_multimodal_audio_cap_marks_partial",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_multimodal_all_silent_audio_is_metadata_only",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_multimodal_undecodable_image_is_metadata_only",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_lexical_only_with_multimodal_backend_stays_metadata_only",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_dry_run_previews_media_capability",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_video_soundtrack_windows_from_real_ffmpeg",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_video_without_audio_stream_is_metadata_only",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_screenshot_ocr_under_multimodal_is_fts_only",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_screenshot_ocr_under_text_only_backend_gets_text_vector",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_screenshot_ocr_fts_only_when_text_vector_disabled",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_screenshot_ocr_unavailable_stays_honest",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_text_only_screenshot_upgrades_when_ocr_arrives",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_min_side_refusal_through_pipeline",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_screenshots_share_one_helper_spawn",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_ocr_batch_failure_marks_each_row_off",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_exif_taken_reaches_content_date",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_hybrid_pdf_thin_page_upgraded_by_ocr",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_fully_scanned_pdf_becomes_content_indexed",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_thin_pdf_without_ocr_stays_honest",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_refresh_thin_selectively_redoes_only_thin_files",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_refresh_thin_redoes_scanned_metadata_only_rows",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_g10_stale_extractor_version_redone_by_plain_ingest",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_pipeline.py::test_g10_old_image_version_redone",
+   "profile": "native",
+   "reason": "Mixed ingest fixtures exercise real sips/poppler/ffmpeg."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_nested_deadline_never_extends_parent_and_resets",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_context_deadline_does_not_leak_to_another_thread",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_expired_cold_start_never_spawns",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_remote_deadline_closes_call_without_reconnect_or_cold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_late_remote_error_never_retries_or_hides_timeout[embed]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_late_remote_error_never_retries_or_hides_timeout[count]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_deadline.py::test_actual_llama_http_timeout_does_not_retry",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_file_scoped_body_ids_sql_equivalence",
+   "profile": "offline",
+   "reason": "File-first body_ids SQL result/error equivalence (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_remainder_units_prepared_once_per_clause",
+   "profile": "offline",
+   "reason": "Clause remainder units derived once per clause (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc01_terms_of_runs_once_per_clause",
+   "profile": "offline",
+   "reason": "terms_of runs once per clause across all owner files (SC-01)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc03_fts_projection_memoized_per_snapshot",
+   "profile": "offline",
+   "reason": "FTS projection PRAGMA memoized per connection snapshot (SC-03)."
+  },
+  {
+   "nodeid": "tests/test_request_local_reuse.py::test_sc03_whole_metadata_derived_terms_once_per_distinct_value",
+   "profile": "offline",
+   "reason": "Whole-metadata derived sets computed once per distinct value (SC-03)."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[doc]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[docx]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[eml]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[epub]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[htm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[html]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[markdown]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[md]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[odt]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[rtf]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[text]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_every_digup_doc_extension[txt]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[py]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[rs]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[json]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[csv]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[yaml]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[sql]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_off_by_default[sh]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_with_code_flag[py]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_with_code_flag[rs]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_with_code_flag[json]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_with_code_flag[csv]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_exts_with_code_flag[sh]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_pdf_image_audio_video_exts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_unknown_type_is_reported_by_walker",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[server.pem]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[id_ed25519]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[private.key]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[CERT.p12]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[keystore.jks]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[.env]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[id_rsa]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[secrets.txt]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[credentials.json]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[.netrc]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[.npmrc]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[htpasswd]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secrets[app.mobileprovision]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secret_prefix_semantics",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_secret_word_prefix_needs_a_boundary",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_minified",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_license",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_ts_vs_mpeg_ts_sniff",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_folder_skips",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_project_markers",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_screenshot_prefix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_dataset_folders_heuristic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_code_file_names_defined_and_used",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_archives_are_honestly_unsupported",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_bundle_and_package_directories_skipped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_rules.py::test_eml_epub_classified_as_docs",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zscores_centering_and_std_floor",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zscores_std_floor_constant_scores",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zscores_tiny_group_uses_global_mean",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zscores_single_audio_segment_among_text",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_hybrid_tiny_audio_group_qualifies",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_is_lookup",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_is_lookup_py_version_string_known_gap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_rrf_hand_values",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_terms_stopwords_dedup",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_kind_hints",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_hybrid_hand_computed_score",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_lookup_inverts_weights",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_kind_hint_flat_not_stacked",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_coverage_power_15",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zero_vector_file_qualifies_on_coverage",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_file_collapse_picks_meaning_segment",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_file_collapse_keyword_segment_when_z_below_gate",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_scorers_lexical_semantic_rrf",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_kinds_filter",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_failed_files_never_surface_in_results",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_zero_hits_is_empty_not_error",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_no_backend_hybrid_falls_back_to_coverage",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_stopwords_and_kindwords_frozen_sets",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_vectorized_aggregation_matches_python_loop",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_offline.py::test_vectorized_aggregation_empty_and_single",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_snippet_window_marks_cluster_not_chunk_start",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_snippet_cjk_marks_without_whitespace",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_snippet_missing_body_falls_back_to_stored_excerpt",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_snippet_disabled_by_width_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_snippet_prefix_last_marks_whole_word",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_near_dup_sha_fold_identical_text",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_near_dup_vector_fold_identical_vectors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_near_dup_below_threshold_not_folded",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_weaker_fold_human_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_no_weaker_fold_when_all_strong",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_duplicate_line_in_human_output",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_why_json_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_why_segment_margin_zero_when_spread",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_why_human_line_and_json_flag",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_render_why_line_components",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_z_gate_refuses_midband_candidates_on_noise",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_z_gate_keeps_standouts",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_coverage_quorum_half_anchors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_parse_filters_grammar",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_parse_filters_dates_relative_and_absolute",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_parse_filters_unknown_prefix_and_bad_values_stay_literal",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_parse_filters_case_insensitive_prefixes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_kinds_applied_at_seam",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_kinds_intersect_flag_kinds",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_under_prefix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_under_tilde_expansion",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_dates_coalesce_content_date_then_mtime",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_dates_url_fetched_at",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_site_host",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_quoted_phrase",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_phrase_and_terms_combine",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_filter_zero_candidates_clean_zero_hit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_json_filters_applied_echo",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_cli_zero_candidate_filter_honest_zero_hit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_cli_snippet_render_human_and_raw_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_search_v2_output.py::test_render_hits_stored_excerpt_trim_still_applies",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_ping_round_trip_id_echo",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_info_payload_shape_and_fresh_sha",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_embed_shape_and_l2_norms",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_unknown_op_is_bad_request_and_connection_reusable",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_oversized_line_closes_connection_daemon_survives",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_malformed_json_error_connection_stays_open",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_embed_cap_65_texts_bad_request",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_embed_cap_256kib_text_bad_request",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_embed_cap_ordering_and_line_cap_wall",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_embed_byte_equality_with_cold_incl_cross_batch",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_fingerprint_fields_parity_with_cold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_capability_local_and_not_supported_messages_verbatim",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_max_input_tokens_and_count_tokens_parity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_token_pieces_cut_returns_none_f9",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_describe_stub_f9",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_close_closes_socket_only_daemon_and_child_survive",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_discovery_file_written_with_receipt_fields",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_dead_pid_discovery_cold_silent",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_alive_pid_refused_socket_cold_with_one_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_version_skew_and_proto_skew_cold_with_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_goldmine_serve_env_wins_over_discovery_file",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_stale_files_swept_by_start_never_by_clients",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_socket_dir_wrong_mode_treated_absent",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_model_path_drift_cold_with_drift_line",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_sidecar_sha_mismatch_drift_cold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_second_daemon_already_serving_exit_0",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_sigterm_drains_in_flight_then_cleans",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_sigkill_orphan_swept_by_next_start",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_receipt_sweep_verify_before_kill",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_linger_idle_exit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_linger_refresh_only_on_model_touch_f7",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_guard_warn_sustained_unloads_then_recovers",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_guard_single_warn_no_action",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_guard_critical_sustained_clean_exit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_guard_pressure_nothing_resident_counts_no_unload",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_refusal_reason_names_the_active_hold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_guard_unload_during_delayed_embed_results_intact",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_client_survives_daemon_death_mid_request",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_serve_stop_graceful",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_serve_stop_when_not_running",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_serve_stop_falls_back_to_verified_sigterm",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_serve_status_human_json_and_not_running",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_doctor_rows_absent_stale_running",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_doctor_memory_yielded_row_carries_f4_copy",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_serve_config_section_and_f9_auto_cut",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_no_serve_flag_skips_discovery_entirely",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_fuzz_lite_daemon_survives_and_serves",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_cmd_search_stdout_byte_equal_serve_vs_cold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_serve.py::test_fingerprint_gate_refuses_identically_served_and_cold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_ddl_creates_clean",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_rejects_newer_schema",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_meta_roundtrip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_upsert_file_writes_name_row",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_find_and_unchanged",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_replace_segments_atomic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_fp16_vectors_roundtrip_through_load_vectors",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_delete_file_cascades",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_delete_file_clears_fts_rows",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_prune_under_clears_fts_rows",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_upsert_name_refresh_leaves_no_fts_orphans",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_delete_content_segments_keeps_name_row",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_prune_under",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_fts_ordering_bm25_ascending",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_coverage",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_fts_text_helper",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_counts_grid",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_pending_and_failures",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_cards_roundtrip_v2_save_run",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_load_view_cards_and_latest_run",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_distill_views_upsert_get",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_load_vectors_cache_returns_identical_table",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_load_vectors_cache_invalidates_on_every_segments_write",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_search_results_identical_cached_vs_fresh_store",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_connect_index_factory_pragmas",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_connect_index_ro_never_creates_or_writes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_store_v3_ddl_carries_the_partial_indexes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_store.py::test_upsert_file_updates_sha256_on_conflict",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_exact",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_tolerates_spm_dummy_prefix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_mismatch_returns_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_byte_array_pieces_align",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[hello world-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[hello world-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[hello world-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[ leading space text-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[ leading space text-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[ leading space text-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[emoji \\U0001f680\\U0001f44d family \\U0001f9d1\\u200d\\U0001f469\\u200d\\U0001f467 and \\u4e2dtext-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[emoji \\U0001f680\\U0001f44d family \\U0001f9d1\\u200d\\U0001f469\\u200d\\U0001f467 and \\u4e2dtext-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[emoji \\U0001f680\\U0001f44d family \\U0001f9d1\\u200d\\U0001f469\\u200d\\U0001f467 and \\u4e2dtext-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[combining: caf\\xe9 r\\xe9sum\\xe9 \\u2014 \\xe9lan-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[combining: caf\\xe9 r\\xe9sum\\xe9 \\u2014 \\xe9lan-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[combining: caf\\xe9 r\\xe9sum\\xe9 \\u2014 \\xe9lan-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[mixed \\u4e2d\\u82f1 \\U0001f680 \\xe9\\u2026\\n\\nsecond paragraph\\ttab-spm]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[mixed \\u4e2d\\u82f1 \\U0001f680 \\xe9\\u2026\\n\\nsecond paragraph\\ttab-byte-fallback]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_identical_to_reference[mixed \\u4e2d\\u82f1 \\U0001f680 \\xe9\\u2026\\n\\nsecond paragraph\\ttab-combining]",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_zero_width_pieces_match_reference",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_dummy_prefix_matches_reference",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_piece_char_offsets_linear_on_5mb",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_token_budget_respected_prose",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_paragraph_boundary_preferred_in_token_space",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_cjk_no_whitespace_chunks_fine",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_cjk_prefers_sentence_punctuation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_overlap_in_token_space",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_short_text_single_chunk_tokens",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_max_chunks_cap_tokens",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_code_lines_accumulate_to_token_budget",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_code_overbudget_single_line_hard_cut",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_estimator_fallback_is_v1_equivalent",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_estimator_code_density_shrinks_stretches",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_mock_backend_count_tokens_is_len_quarter",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_effective_token_budget",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_misaligned_pieces_fall_back_to_estimator",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_split_text_by_tokens_pieces_and_estimator",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_ctx_guard_splits_oversized_chunk_instead_of_failing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_chunker_stale_files_redone_by_plain_ingest",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_fresh_ingest_is_unchanged_on_second_run",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_count_tokens_contract_against_fake_server",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_token_pieces_contract_against_fake_server",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_chunker_uses_server_pieces_end_to_end",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_token_chunking.py::test_tokenize_failure_falls_back_to_estimator",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_fp16_roundtrip",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_pack_rejects_wrong_dim",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_unpack_roundtrip_vs_hand_packed",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_excerpt_digup_semantics",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_normalize_text",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_mpeg_ts_heads",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_sniff_image",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_sha256_helpers",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_human_size",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_run_tool_basic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_run_tool_timeout_kills",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_run_tool_output_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_run_tool_missing_binary",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_prose_density_window",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_marks_every_distinct_term",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_no_match_returns_none",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_cjk_needs_no_spaces",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_case_and_accent_fold",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_snippet_prefix_term_marks_whole_word",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_util.py::test_term_matches_word_boundaries_and_offsets",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_legacy_prompts_doc_is_the_document_prompt_verbatim",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_legacy_prompts_doc_accepts_stored_fingerprint_json",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_legacy_prompts_doc_ignores_the_query_slot",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_legacy_prompts_doc_refuses_unparsable_scheme",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_embed_identity_id_each_dimension_changes_the_id",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_embed_identity_id_optional_backend_fields_cover_the_full_identity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_embed_id_from_fingerprint_excludes_preprocessing",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_live_embed_id_equals_fingerprint_derivation",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_prompts_doc_template_matches_the_legacy_d_slot",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_live_embed_id_survives_a_backend_without_a_d_slot",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_ingest_with_a_no_d_slot_backend_records_the_marker_identity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_media_extra_flows_into_the_embed_id",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_extractor_registry_values_match_written_rows",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_current_extractors_includes_tool_families",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_eml_epub_unchanged_on_second_pass",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_ingest_writes_per_file_identity_at_commit",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_lexical_only_ingest_writes_no_embed_identity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_staleness_report_counts_each_dimension",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_staleness_report_oldest_stale_dates_per_dimension",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_status_json_staleness_object",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_v2_identity.py::test_status_human_staleness_and_rerun_hint",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_module_not_shadowed_by_the_function",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_sorted_deterministic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_skips_folders_with_reason",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_hidden_files_classified_hidden_dirs_skipped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_size_cap",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_symlink_policy",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_exclude_globs",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_compute_deletions",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_root_stat_permission_error_is_tcc_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_subdir_scandir_permission_error_is_tcc_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_fifo_with_text_ext_is_skipped_not_read",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_fifo_as_root_is_skipped",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_walk.py::test_walk_end_to_end_ingest_survives_a_fifo",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSnapshotDiff::test_new_changed_gone_classification",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSnapshotDiff::test_unchanged_corpus_is_zero_action_tick",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSnapshotDiff::test_unsupported_files_not_tracked",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestCadence::test_decay_under_fake_clock",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestCadence::test_reset_to_fast_on_change_and_start",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestCadence::test_jitter_bounds_seeded_rng",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestCadence::test_poll_interval_floor_2x_scan_duration",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestCadence::test_settle_debounce_collapses_burst_to_union_pass",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestScopeInvariant::test_no_roots_refusal_exit4",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestScopeInvariant::test_roots_flag_replaces_config_default",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestScopeInvariant::test_roots_session_config_bytes_unchanged",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestScopeInvariant::test_delta_pass_leaves_roots_json_identical",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestScopeInvariant::test_startup_records_roots_once",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassMechanics::test_delta_pass_end_to_end_searchable",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassMechanics::test_second_pass_reports_unchanged",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassMechanics::test_failed_extraction_failed_row_watch_continues",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassMechanics::test_lexical_only_session_backendless",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassMechanics::test_deletion_sweep_prunes_rows",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSweepPolicy::test_sweep_throttled_to_one_per_window",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSweepPolicy::test_idle_full_period_sweep_fires",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSweepPolicy::test_battery_defers_sweep_and_resume",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_pmset_battery_fixture_matrix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_pmset_therm_fixture_matrix",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_probe_cache_30s",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_thermal_hold_pauses_passes_scans_continue",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_battery_batch_boundary_50_51",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_battery_paces_pass_frequency",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_pressure_defers_then_recovers",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_pressure_defer_skipped_for_lexical_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_pressure_sampler_is_serves",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_unparseable_battery_holds_then_releases",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_no_battery_text_is_always_ac",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPowerProbes::test_lpm_read_reported_never_gates",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassRateFloor::test_min_pass_gap_coalesces_churn",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestPassRateFloor::test_gap_allows_burst_coalescing_across_it",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_heartbeat_field_contract",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_heartbeat_state_ingesting_before_pass",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_stale_heartbeat_surfaces",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_status_line_shapes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_second_daemon_already_watching",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_request_stop_cleans_and_releases",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_sigterm_cancels_inflight_pass",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_sigkill_next_start_sweeps_and_completes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_watch_stop_verified_sigterm",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_watch_stop_blind_kill_refused",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_watch_stop_not_running",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_forever_disables_linger",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_linger_exit_after_quiet",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestLifecycle::test_fingerprint_mismatch_exit3",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_status_json_watch_key",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_status_json_watch_running_key",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_doctor_rows",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_running_doctor_row_ok",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_config_watch_section_unknown_warn_and_clamps",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_coexistence_separate_locks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_concurrent_manual_ingest_consistency",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_stdout_empty_stderr_content",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestSurfaces::test_fmt_ago_shapes",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestHostileRoots::test_tcc_notice_surfaces",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestHostileRoots::test_phantom_roots_all_refuse_mixed_warn",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestHostileRoots::test_url_roots_filtered_with_notice",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestDatasetParity::test_delta_pass_excludes_dataset_folder",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestDatasetParity::test_sweep_records_dataset_members_with_parity",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestExceptionsAndPoison::test_poison_not_reattempted_until_changed",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestExceptionsAndPoison::test_backend_startup_failure_keeps_pending",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestExceptionsAndPoison::test_pass_backoff_ladder",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_watch.py::TestExceptionsAndPoison::test_unexpected_error_limit_stops_loudly",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic."
+  }
+ ]
+}

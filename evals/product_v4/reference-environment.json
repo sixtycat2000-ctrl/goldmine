@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "python": "3.12.0",
+  "numpy": "2.5.4",
+  "production_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b",
+  "note": "Pinned preparation environment; reference search has not been run."
+}

@@ -1,0 +1,920 @@
+[
+  {
+    "question_id": "av3-single-001",
+    "evidence_id": "e0",
+    "path": "text/requests/docs/user/authentication.rst",
+    "view_id": "body",
+    "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+    "span_sha256": "5e7f591e33a1b75c1219d0d0973c95dfc74824f16c6c5c8bbceb814f063bf145",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-002",
+    "evidence_id": "e0",
+    "path": "text/click/src/click/parser.py",
+    "view_id": "body",
+    "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+    "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-003",
+    "evidence_id": "e0",
+    "path": "text/requests/src/requests/sessions.py",
+    "view_id": "body",
+    "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+    "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-004",
+    "evidence_id": "e0",
+    "path": "text/click/docs/commands.rst",
+    "view_id": "body",
+    "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+    "span_sha256": "47fbebe3101d24eb3a370dfb2457dd9abf4c447339416a5a8c16b5367ea63d85",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-005",
+    "evidence_id": "e0",
+    "path": "text/requests/docs/user/advanced.rst",
+    "view_id": "body",
+    "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+    "span_sha256": "3d2084c4bd27e476d328922b3848327090f6c91d8da7286b839f93299cae638e",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-006",
+    "evidence_id": "e0",
+    "path": "text/vue-zh/src/guide/components/v-model.md",
+    "view_id": "body",
+    "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+    "span_sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-007",
+    "evidence_id": "e0",
+    "path": "text/vue-zh/src/guide/essentials/conditional.md",
+    "view_id": "body",
+    "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+    "span_sha256": "8e72a25178dc04ce9aa5e7f8d13c760558dc88143f257c3b743bf6544d7bc159",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-008",
+    "evidence_id": "e0",
+    "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "view_id": "body",
+    "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+    "span_sha256": "23d0afb10548de950a62dcf825b7c3f95d3888482ae7c68ecd91c3b69b0334e7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-009",
+    "evidence_id": "e0",
+    "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+    "view_id": "body",
+    "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+    "span_sha256": "4a5ff5fb0d0282e92574c44a4a7c26ce20a711a6e4aa44092645959d0825c094",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-010",
+    "evidence_id": "e0",
+    "path": "text/vue-zh/src/guide/essentials/list.md",
+    "view_id": "body",
+    "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+    "span_sha256": "6b65d2eb3486fb6b9e60c6299179669bc01925252cb54f3a9f2b16c4a6ea84cc",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-011",
+    "evidence_id": "e0",
+    "path": "root/pdf/nist-800-145-excerpt.pdf",
+    "view_id": "p001",
+    "view_sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+    "span_sha256": "bef2da5c888ee79b85ac6e57b31547810dd1f888696147d1c430ad6c32105a78",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-012",
+    "evidence_id": "e0",
+    "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+    "view_id": "p003",
+    "view_sha256": "f150a935c1d02023d691e1ae2852a67a6d2c81891df89a266736fdbee9400dc0",
+    "span_sha256": "7f10483a6c256b331726e36628500bbf35d1db8cc70a9d93903f34bb144a6d2b",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-013",
+    "evidence_id": "e0",
+    "path": "root/pdf/US174465-scan.pdf",
+    "view_id": "p003",
+    "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+    "span_sha256": "9b7137fe7e53724188e2f029e4579437bfe979823dbb58555e0b050b74c09d99",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-014",
+    "evidence_id": "e0",
+    "path": "root/pdf/nist-800-92-excerpt.pdf",
+    "view_id": "p002",
+    "view_sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+    "span_sha256": "a0847e7f61b9f2a9a331871307979e8f688d9b3a9988a2b2adc48ba5647063d0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-015",
+    "evidence_id": "e0",
+    "path": "root/pdf/nist-800-38a-excerpt.pdf",
+    "view_id": "p003",
+    "view_sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+    "span_sha256": "b4d373f0d98d756db3341b8f132a46c83d76e50bbc3a79b15567b02b15b4e786",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-016",
+    "evidence_id": "e1",
+    "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+    "view_id": "exif-DateTimeOriginal",
+    "view_sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+    "span_sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-017",
+    "evidence_id": "e1",
+    "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+    "view_id": "original-basename",
+    "view_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+    "span_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-018",
+    "evidence_id": "e0",
+    "path": "root/screenshots/httpx-timeouts.png",
+    "view_id": "ocr",
+    "view_sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+    "span_sha256": "bc6381c80c32d2e3e4a72a47fda271f66258e6f9abc3df8e260e7e5296c4d2be",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-019",
+    "evidence_id": "e1",
+    "path": "media/asr/2803-161169-0001.flac",
+    "view_id": "official-transcript",
+    "view_sha256": "353723ebe37bf7b7a4cd762bac565d550012561585f597140dac7364cad3e26e",
+    "span_sha256": "4eaa2eeb333c68cb880f334b40700526e9f97e16dd0fbbf2b0b0432780990625",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-single-020",
+    "evidence_id": "e1",
+    "path": "media/asr/3000-15664-0005.flac",
+    "view_id": "official-transcript",
+    "view_sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+    "span_sha256": "f64098ce1f9966591cbf68789b24ed7ece6b99b485c2f96d8df89fc90c01b5c0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-001",
+    "evidence_id": "p1_e1",
+    "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+    "view_id": "original-basename",
+    "view_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+    "span_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-001",
+    "evidence_id": "p2_e1",
+    "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+    "view_id": "exif-DateTimeOriginal",
+    "view_sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+    "span_sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-002",
+    "evidence_id": "p1_e0",
+    "path": "text/click/src/click/parser.py",
+    "view_id": "body",
+    "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+    "span_sha256": "6d891cf88cb23248b6919fc8c03a0a1f2f2f2dec2f50d3cf1def56214193035a",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-002",
+    "evidence_id": "p2_e0",
+    "path": "text/click/src/click/parser.py",
+    "view_id": "body",
+    "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+    "span_sha256": "7b34209e25bed983c2915496571a4efac58bc00d2a1d99265de91d873c039c40",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-003",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/nist-800-92-excerpt.pdf",
+    "view_id": "p001",
+    "view_sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+    "span_sha256": "54e5dd987fc6aeb942bbb99ef66b7c356811e95926e27c98bf79acb63a977041",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-003",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/nist-800-92-excerpt.pdf",
+    "view_id": "p002",
+    "view_sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+    "span_sha256": "a0847e7f61b9f2a9a331871307979e8f688d9b3a9988a2b2adc48ba5647063d0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-004",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/essentials/conditional.md",
+    "view_id": "body",
+    "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+    "span_sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-004",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/essentials/conditional.md",
+    "view_id": "body",
+    "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+    "span_sha256": "5336693a0b97375a42f8c551097fd48a5d078ee6eb10d992f931b177183cb768",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-005",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/components/v-model.md",
+    "view_id": "body",
+    "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+    "span_sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-005",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/components/v-model.md",
+    "view_id": "body",
+    "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+    "span_sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-006",
+    "evidence_id": "p1_e1",
+    "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+    "view_id": "original-basename",
+    "view_sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+    "span_sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-006",
+    "evidence_id": "p2_e1",
+    "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+    "view_id": "exif-DateTimeOriginal",
+    "view_sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+    "span_sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-007",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/US174465-scan.pdf",
+    "view_id": "p003",
+    "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+    "span_sha256": "9b7137fe7e53724188e2f029e4579437bfe979823dbb58555e0b050b74c09d99",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-007",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/US174465-scan.pdf",
+    "view_id": "p003",
+    "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+    "span_sha256": "57324e0d281ffc3dab6e4c54e9fce848cdf4106820bdde4a71f001a8b3af431b",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-008",
+    "evidence_id": "p1_e0",
+    "path": "text/requests/docs/user/authentication.rst",
+    "view_id": "body",
+    "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+    "span_sha256": "5e7f591e33a1b75c1219d0d0973c95dfc74824f16c6c5c8bbceb814f063bf145",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-008",
+    "evidence_id": "p2_e0",
+    "path": "text/requests/docs/user/authentication.rst",
+    "view_id": "body",
+    "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+    "span_sha256": "a12e0ba6e0fb7de8be173f816cce124add7a513f83ebe38a7dfe23f5e6c8ed3f",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-009",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/essentials/forms.md",
+    "view_id": "body",
+    "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+    "span_sha256": "f0d4b0e9e825677f6cec36fef851aec74541ecdd845e816e9c8af832f41bec92",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-009",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/essentials/forms.md",
+    "view_id": "body",
+    "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+    "span_sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-010",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/essentials/list.md",
+    "view_id": "body",
+    "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+    "span_sha256": "2a06c18fd66d750df1cff59aeb5b8187786c272ad2056da6f11758fcdfcb52e7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-010",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/essentials/list.md",
+    "view_id": "body",
+    "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+    "span_sha256": "6b65d2eb3486fb6b9e60c6299179669bc01925252cb54f3a9f2b16c4a6ea84cc",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-011",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+    "view_id": "p001",
+    "view_sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+    "span_sha256": "af6e4626465a1710175057d59ee61d0a196bd6b8cf46cc74a5940baddc8624cb",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-011",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+    "view_id": "p005",
+    "view_sha256": "dc608f481090338e9fce288bb51d4bcb2808674d9c577682d41e3cefacd9630e",
+    "span_sha256": "7e61037f6056643789fde8059534d7fcab0ae057e43fde557826147d488e2d13",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-012",
+    "evidence_id": "p1_e0",
+    "path": "text/click/docs/options.rst",
+    "view_id": "body",
+    "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+    "span_sha256": "ce825be8ddff5529dbb7572fc93afb8f52b600105bae1de54c3e88ea4987e915",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-012",
+    "evidence_id": "p2_e0",
+    "path": "text/click/docs/options.rst",
+    "view_id": "body",
+    "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+    "span_sha256": "cd949e8afe2611671befed6bb67acc1aaa8f1d4d4c4e7ca201dfc2d3fb837891",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-013",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+    "view_id": "body",
+    "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+    "span_sha256": "5c8acdda6932adcd9ad93260c5ea6f554201dfd6ab774672b765dd760c595f96",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-013",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+    "view_id": "body",
+    "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+    "span_sha256": "4a5ff5fb0d0282e92574c44a4a7c26ce20a711a6e4aa44092645959d0825c094",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-014",
+    "evidence_id": "p1_e0",
+    "path": "text/requests/src/requests/sessions.py",
+    "view_id": "body",
+    "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+    "span_sha256": "8d4b3928a3c5dd700a272efd27c54c3ef367868af08b11ffad121ac93154a357",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-014",
+    "evidence_id": "p2_e0",
+    "path": "text/requests/src/requests/sessions.py",
+    "view_id": "body",
+    "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+    "span_sha256": "6341ec0884d4b4344dc55c37e0e5d47e6d3436f244673eae5687b6d3683e40f0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-015",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/nist-800-145-excerpt.pdf",
+    "view_id": "p001",
+    "view_sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+    "span_sha256": "bef2da5c888ee79b85ac6e57b31547810dd1f888696147d1c430ad6c32105a78",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-015",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/nist-800-145-excerpt.pdf",
+    "view_id": "p002",
+    "view_sha256": "79047ce13af4421f2017c00978f6e363dc01ee92b3923d320877ba7bce1902f6",
+    "span_sha256": "3db22881795edd5bc378b6a5b24daf9413a46f78b4f0406ea5bde70097ee5af3",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-016",
+    "evidence_id": "p1_e0",
+    "path": "text/requests/docs/user/advanced.rst",
+    "view_id": "body",
+    "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+    "span_sha256": "7c45d8724f6c1665fc331e5fec22e07c9a03c3348274b32b97a352e487f4ac38",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-016",
+    "evidence_id": "p2_e0",
+    "path": "text/requests/docs/user/advanced.rst",
+    "view_id": "body",
+    "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+    "span_sha256": "38dea2fa1e51ee22616bfc4a761e2cb6282c004da63d2ca3e6fcf26a8f460ce0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-017",
+    "evidence_id": "p1_e0",
+    "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "view_id": "body",
+    "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+    "span_sha256": "23d0afb10548de950a62dcf825b7c3f95d3888482ae7c68ecd91c3b69b0334e7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-017",
+    "evidence_id": "p2_e0",
+    "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "view_id": "body",
+    "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+    "span_sha256": "50ec7e0e6f7713f13bda3ba15bdb8bf50c732039f3d059e210c2940de7291729",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-018",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/nist-800-38a-excerpt.pdf",
+    "view_id": "p003",
+    "view_sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+    "span_sha256": "b4d373f0d98d756db3341b8f132a46c83d76e50bbc3a79b15567b02b15b4e786",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-018",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/nist-800-38a-excerpt.pdf",
+    "view_id": "p004",
+    "view_sha256": "4a7bc3fcf1ddfd34313d10f36798b7bdf0460eb51823c78dd75f5d7a3a82aa36",
+    "span_sha256": "72946b9a3fefc3a7a8e69b5f4a726bb94ffc8320a17aca512cabf022e7d63ec7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-019",
+    "evidence_id": "p1_e0",
+    "path": "root/pdf/US6469-scan.pdf",
+    "view_id": "p002",
+    "view_sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+    "span_sha256": "a8b73974222360efeffdf240ec7189f5ac149ec9b583fa3b3e87792d0082606d",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-019",
+    "evidence_id": "p2_e0",
+    "path": "root/pdf/US6469-scan.pdf",
+    "view_id": "p002",
+    "view_sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+    "span_sha256": "ef935c8666872f3281f73f937e759d577fef6c1e7a1cda0d377ccbbf6211c715",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-020",
+    "evidence_id": "p1_e0",
+    "path": "text/click/docs/commands.rst",
+    "view_id": "body",
+    "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+    "span_sha256": "af60ca030baa729cd897c3370cd259bb3c215a76d1255447b933e20bfaaf29e1",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-multi-020",
+    "evidence_id": "p2_e0",
+    "path": "text/click/docs/commands.rst",
+    "view_id": "body",
+    "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+    "span_sha256": "47fbebe3101d24eb3a370dfb2457dd9abf4c447339416a5a8c16b5367ea63d85",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-001",
+    "evidence_id": "e1",
+    "path": "compound/pip-tools/README.md",
+    "view_id": "original-lines",
+    "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+    "span_sha256": "d838c0f1055ac4664de22422b73f5dd82d08aee20a72f4b0888c4059dba06383",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-001",
+    "evidence_id": "e2",
+    "path": "compound/pip-tools/piptools/scripts/compile.py",
+    "view_id": "original-lines",
+    "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+    "span_sha256": "22569ddc0d48c545d2fe9e282c61a1f0f3b333c61a035b042b955086ed6c01cc",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-002",
+    "evidence_id": "e1",
+    "path": "compound/poetry/docs/managing-environments.md",
+    "view_id": "original-lines",
+    "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "span_sha256": "4d9ec442a8e660c20ead80c62c57a9f646bc7b8a31078cc0af7d68d9eaf7b5d8",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-002",
+    "evidence_id": "e2",
+    "path": "compound/poetry/docs/dependency-specification.md",
+    "view_id": "original-lines",
+    "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+    "span_sha256": "b044078e667068ce0faf3c7d4d9cf35fdcc4051e0f7f184b46e7c05542778b1b",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-003",
+    "evidence_id": "e1",
+    "path": "compound/typer/docs/tutorial/options/help.md",
+    "view_id": "original-lines",
+    "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+    "span_sha256": "aca9a28d39df6018cdff83b7153cf487ed34016a3d17a12a3bdee0ce5c8a1ba1",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-003",
+    "evidence_id": "e2",
+    "path": "compound/typer/docs/tutorial/commands/context.md",
+    "view_id": "original-lines",
+    "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "span_sha256": "1a11f35d4b73d0246217297c34b7980e4026eee3cc19e9518d13aa3fbf40b8d7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-004",
+    "evidence_id": "e1",
+    "path": "compound/uv/docs/guides/projects.md",
+    "view_id": "original-lines",
+    "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+    "span_sha256": "fcfbc45ca74b50a8f1e0ec10cc89a9a5fa3c19b93e5cab3b30931f8fc664f4f1",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-004",
+    "evidence_id": "e2",
+    "path": "compound/uv/docs/guides/tools.md",
+    "view_id": "original-lines",
+    "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+    "span_sha256": "0837b77fe57aa72706cc0f01e80c85378b5852a7d97566f3d25cd0eefd557afc",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-005",
+    "evidence_id": "e1",
+    "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+    "view_id": "original-lines",
+    "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+    "span_sha256": "cc2d029798863bd39bcc73f3fc503fe52413a927d87b5ede3b567421ab81e24a",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-005",
+    "evidence_id": "e2",
+    "path": "compound/pip/docs/html/topics/caching.md",
+    "view_id": "original-lines",
+    "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+    "span_sha256": "f265b9e1582eae7738a7c3fa225c612fc685aecb34dc11afe523253803387824",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-006",
+    "evidence_id": "e1",
+    "path": "compound/httpx/docs/quickstart.md",
+    "view_id": "original-lines",
+    "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+    "span_sha256": "389d482bf3b2df3243f6f9b780df2a057fb0d7ff5550d146090c171d65e891d2",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-006",
+    "evidence_id": "e2",
+    "path": "compound/httpx/docs/advanced/timeouts.md",
+    "view_id": "original-lines",
+    "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+    "span_sha256": "73222ae746efecd529bfe4147a7c8b92af877ab36f5305360e8635ee11d19b6d",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-007",
+    "evidence_id": "e1",
+    "path": "compound/typer/docs/tutorial/options/help.md",
+    "view_id": "original-lines",
+    "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+    "span_sha256": "b43fadce8b8b9820f12aecf9581db45a0611b17f7aa8dfcf848e12153f284c22",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-007",
+    "evidence_id": "e2",
+    "path": "compound/typer/docs/tutorial/commands/context.md",
+    "view_id": "original-lines",
+    "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "span_sha256": "c84ad8ddc7285d069af9c24b02a751c0500cd4e5730a124ec8c70166f4775fb9",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-007",
+    "evidence_id": "e2_scope",
+    "path": "compound/typer/docs/tutorial/commands/context.md",
+    "view_id": "original-lines",
+    "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "span_sha256": "9fedb6d3a547d955dc9f9422eaec22dc04a3d0d8ae60b86e67bb7163572d6df0",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-008",
+    "evidence_id": "e1",
+    "path": "compound/poetry/docs/managing-environments.md",
+    "view_id": "original-lines",
+    "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "span_sha256": "ab8d8a92bca8aa7ab5f2ee342957cded50b9a1e5323f8cb595a17201c7b96444",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-008",
+    "evidence_id": "e2",
+    "path": "compound/poetry/docs/dependency-specification.md",
+    "view_id": "original-lines",
+    "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+    "span_sha256": "ca0566da68bec2728c60c1b0a4db539dee40fd93ebd4761d36ff5b265be1a17e",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-008",
+    "evidence_id": "e1_scope",
+    "path": "compound/poetry/docs/managing-environments.md",
+    "view_id": "original-lines",
+    "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "span_sha256": "057fa0a6cd0b828de1121eb8f8e0caeb59479eed39b29a4fd9bdc481354970ad",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-009",
+    "evidence_id": "e1",
+    "path": "compound/typer/docs/tutorial/options/help.md",
+    "view_id": "original-lines",
+    "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+    "span_sha256": "b646cf9ec75422d06874b8e8ddb9608ca380a61123d7f0563a6930b08ae336a6",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-009",
+    "evidence_id": "e2",
+    "path": "compound/typer/docs/tutorial/commands/context.md",
+    "view_id": "original-lines",
+    "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "span_sha256": "6ffccb75f2d840b37247f6ab4092a6c5dcb55be2b1c6e710e73a949e36d96c0d",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-010",
+    "evidence_id": "e1",
+    "path": "compound/uv/docs/guides/projects.md",
+    "view_id": "original-lines",
+    "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+    "span_sha256": "58f1c9d0b5640fa0f612f23cdb49cb05a2f5ef9a1c9a6d03604cc2154bd8b758",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-010",
+    "evidence_id": "e2",
+    "path": "compound/uv/docs/guides/tools.md",
+    "view_id": "original-lines",
+    "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+    "span_sha256": "8de75bc9b3265cbab01fe03cb0ec5a4821a52ffb55b80afd4ec29f94f9706356",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-011",
+    "evidence_id": "e1",
+    "path": "compound/uv/docs/guides/projects.md",
+    "view_id": "original-lines",
+    "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+    "span_sha256": "e0f5bdb440a2293a0ea4bdae1fa622afce4ce5412be9ffa59c521709a3ca06ac",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-011",
+    "evidence_id": "e2",
+    "path": "compound/uv/docs/guides/tools.md",
+    "view_id": "original-lines",
+    "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+    "span_sha256": "4a653d2714e9b5a84887a07953c3afc7767166b7a0240e7ef5b7ed59c83913e7",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-012",
+    "evidence_id": "e1",
+    "path": "compound/httpx/docs/quickstart.md",
+    "view_id": "original-lines",
+    "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+    "span_sha256": "68af5bbd95179aa0c416c7bf5bb27b8a9922c5e80d48f7caacfe65f653bd904c",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-012",
+    "evidence_id": "e2",
+    "path": "compound/httpx/docs/advanced/timeouts.md",
+    "view_id": "original-lines",
+    "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+    "span_sha256": "76b202f74b3af1b63b21f23ca56e11ad930f94cf74e81ca50642c058584abd2c",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-013",
+    "evidence_id": "e1",
+    "path": "compound/pip-tools/README.md",
+    "view_id": "original-lines",
+    "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+    "span_sha256": "35128f618e21d2628385b83d2cfdc9a2c8363a3917c677ecc95add733395a217",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-013",
+    "evidence_id": "e2",
+    "path": "compound/pip-tools/piptools/scripts/compile.py",
+    "view_id": "original-lines",
+    "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+    "span_sha256": "3f63c0d84d8d8df9a7d399730ee24e6e61331abd602d3ba1f1868cdfb1d0ee49",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-014",
+    "evidence_id": "e1",
+    "path": "compound/poetry/docs/managing-environments.md",
+    "view_id": "original-lines",
+    "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "span_sha256": "4dc8bc7c3cb5f3d08b6ae1d806c341cf5a8c87ad982a4feb9de709e560aff3b3",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-014",
+    "evidence_id": "e2",
+    "path": "compound/poetry/docs/dependency-specification.md",
+    "view_id": "original-lines",
+    "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+    "span_sha256": "d12c47f8c9d4253e867d2889401134d1173259400a31a84eaddf5ffd830b4e63",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-015",
+    "evidence_id": "e1",
+    "path": "compound/typer/docs/tutorial/options/help.md",
+    "view_id": "original-lines",
+    "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+    "span_sha256": "ac6b123c4f2e46b21e9520aeab93365412a70a69fb5f605a6865b0678d63d098",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-015",
+    "evidence_id": "e2",
+    "path": "compound/typer/docs/tutorial/commands/context.md",
+    "view_id": "original-lines",
+    "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "span_sha256": "bc1877a3ae22ac7b0540cd2fc4145137959339216bdd512e8a1b9f94ee53f7b1",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-016",
+    "evidence_id": "e1",
+    "path": "compound/uv/docs/guides/projects.md",
+    "view_id": "original-lines",
+    "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+    "span_sha256": "1ca6dd358c62bb3493a907c0d43a927c75231b5e450178be1966446fbea74584",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-016",
+    "evidence_id": "e2",
+    "path": "compound/uv/docs/guides/tools.md",
+    "view_id": "original-lines",
+    "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+    "span_sha256": "6f3dcdab7b79466eee77f638d2b5260c1c7c0f56e609f359114026561c2be463",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-017",
+    "evidence_id": "e1",
+    "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+    "view_id": "original-lines",
+    "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+    "span_sha256": "29af201f25712882fb7b66f24e534a7f69f20d7ee6208275e7fc21e2061c5f92",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-017",
+    "evidence_id": "e2",
+    "path": "compound/pip/docs/html/topics/caching.md",
+    "view_id": "original-lines",
+    "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+    "span_sha256": "e9686f63579399d1ab454f2bb8cee84f6897452e07754dbbac6c7e2b63d6a743",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-018",
+    "evidence_id": "e1",
+    "path": "compound/httpx/docs/quickstart.md",
+    "view_id": "original-lines",
+    "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+    "span_sha256": "212fefce83e13a3d424d4de6663a16effca2e17869c5c570d6dc9ec745d97be1",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-018",
+    "evidence_id": "e2",
+    "path": "compound/httpx/docs/advanced/timeouts.md",
+    "view_id": "original-lines",
+    "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+    "span_sha256": "8ed71efaef7e9d7e22a69a6d70a6cf3816c3912a5086b56ac7f989d3268119a4",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-019",
+    "evidence_id": "e1",
+    "path": "compound/pip-tools/README.md",
+    "view_id": "original-lines",
+    "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+    "span_sha256": "c2c8095f5b9aadbfed0d340bc0601d544fe6fcca9ba36c4a6c55f1a1992fd202",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-019",
+    "evidence_id": "e2",
+    "path": "compound/pip-tools/piptools/scripts/compile.py",
+    "view_id": "original-lines",
+    "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+    "span_sha256": "3a2b1ab70e022c8b11d0c5c1c38eacfd2b649a2fca68b7a277114c788bfab7ca",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-020",
+    "evidence_id": "e1",
+    "path": "compound/poetry/docs/managing-environments.md",
+    "view_id": "original-lines",
+    "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "span_sha256": "abe9a2f1f85b8a428dc4a528abb0d0690b768e13818a756a8756985285c20d41",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  },
+  {
+    "question_id": "av3-cross-020",
+    "evidence_id": "e2",
+    "path": "compound/poetry/docs/dependency-specification.md",
+    "view_id": "original-lines",
+    "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+    "span_sha256": "32581ec9a7f38b2f1b05348bf5ffb27bd23085965980618e810d6734e6805cbe",
+    "status": "EXACT_SOURCE_SPAN_READBACK"
+  }
+]

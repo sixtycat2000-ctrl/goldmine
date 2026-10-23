@@ -1,13 +1,41 @@
-# goldmine — Module Map (v1 implementation plan)
+# goldmine — Module Map
 
-Single flat package `goldmine/` plus two subpackages. 20 implementation modules (10 top-level,
-5 backends, 5+ingest init… see table), all standard-library + numpy; the only lazy import is
-`grpcio` inside `backends/foresight.py`. Every module lists its public surface and the
+> Implementation update (2026-10-22): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
+## Current boundaries (2026-10-22)
+
+| Owner | Modules and responsibility |
+|---|---|
+| Entry and adapters | `cli.py` dispatch and exit mapping; `commands/{search,ingest,distill,inspection,lifecycle,maintenance,models,opener}.py`; `command_support.py` adapter runtime |
+| Read application | `application.py`, `contracts.py`, `citations.py`, `evidence.py`; one request snapshot for rank/details/pack and stored-evidence reads |
+| Retrieval | `search.py`, `lexical.py`, `lexical_store.py`, `retrieval_{lexical,evidence}.py`, `admission.py`; derived normalization, exact tiers and evidence admission |
+| Source obligations | `query_obligations.py`, `anchor_resolution.py`, `anchor_admission.py`; typed complete anchors, actual stored-source witnesses, same-file lexical remainder and final clause coverage; `legacy_anchors.py` and `metadata_prelookup.py` provide bounded legacy recall and complete metadata eligibility |
+| Optional quality | `query_plan.py`, `quality.py`, `rerank.py`; conservative clauses, bounded fusion and explicitly owned local model |
+| Packs | `pack.py`, `pack_allocation.py`, `retrieval_evidence.py`; stored original text, source-order support, fair bounded allocation, complete-envelope budget and exact-material deduplication |
+| Storage | `store.py`, `storage_connections.py`, `storage_writes.py`, `migrations.py`; read-only URI/snapshots, writer protocol and transactional schema work; `read_source.py` handles declared legacy/current text projections and query capabilities |
+| Derived vector cache | `vector_cache.py`, `_vector_cache_files.py`; explicit immutable generation build, epoch validation and SQLite fallback |
+| Backend lifecycle | `backends/`, `deadline.py`, `http_transport.py`; shared embedding interface, monotonic budget and bounded local HTTP |
+| Ingest evidence | `ingest/{pipeline,extraction,commit,pdf_evidence,metrics}.py` plus format extractors; units, retries, atomic publication and actual-call instrumentation |
+| MCP | `mcp_server.py`, `mcp_contracts.py`; lazy optional SDK and strict transport schemas, sharing Application behavior |
+| Diagnostics | `doctor.py`, `evidence_status.py`; stored capability/staleness and honest tool/evidence states |
+| Validation | `scripts/acceptance_lib/`, `answer_eval/`, `product_eval/`, `search_bench/`, `search_comparison/`, `distill_eval/`; strict raw evidence, separated data and optional/live scopes |
+
+Base runtime remains standard library plus numpy. MCP dependencies
+are optional and locked separately; ordinary help/fast/lexical paths do not import
+the SDK or load the experimental reranker. Setuptools discovers `goldmine*`,
+including the command and ingest subpackages. Current behavior and evidence are
+tracked in [FEATURE_STATUS](FEATURE_STATUS.md) and [PROGRESS](execution-plan/PROGRESS.md).
+
+## Historical v1 design map
+
+The remaining sections preserve the original v1 module proposal and API sketches;
+they are historical design inputs, not the present module count or dependency pin.
+The proposal used a flat package plus two subpackages and twenty implementation
+modules. Every proposed module lists its public surface and the
 requirement it satisfies (R# = DESIGN_DECISIONS §#, V#.# = consultation verdict item).
 
 Packaging (not a module): `pyproject.toml` — setuptools backend,
-`dependencies = ["numpy>=1.26"]`, `optional-dependencies = {foresight = ["grpcio>=1.60",
-"protobuf>=4.25"], dev = ["pytest>=8"]}`, `scripts: goldmine = "goldmine.cli:main"`.
+`dependencies = ["numpy>=1.26"]`, `optional-dependencies = {dev = ["pytest>=8"]}`, `scripts: goldmine = "goldmine.cli:main"`.
 
 Legend: **[v1]** required for the first working release · [stretch] deliberately deferred but
 scaffolded (stub raises/returns honest "not supported").
@@ -40,12 +68,11 @@ Owns: defaults dataclasses, config.toml, env resolution (flag > env > file > def
 ```python
 @dataclass class LlamaCfg:    server: Path; model: Path; ctx: int = 2048; batch: int = 16
                               startup_timeout: float = 120.0; request_timeout: float = 60.0
-@dataclass class ForesightCfg: socket: str = ""; expect_version: str = ""
 @dataclass class IngestCfg:   max_file_mb=200; max_pages=5000; max_chunks=5000
                               audio_max_minutes=120; workers=2; politeness=1.0
 @dataclass class SearchCfg:   limit=20; z_gate=2.0; scorer="hybrid"
 @dataclass class DistillCfg:  threshold=0.70; min_members=3; max_chunks=50000
-@dataclass class Config:      home: Path; backend: str; llama: LlamaCfg; foresight: ForesightCfg
+@dataclass class Config:      home: Path; backend: str; llama: LlamaCfg
                               ingest: IngestCfg; search: SearchCfg; distill: DistillCfg
 def load(config_path: Path | None = None, env: Mapping[str, str] = os.environ) -> Config
 def resolve_home(cfg: Config) -> Path                   # expanduser, mkdir -p
@@ -199,7 +226,7 @@ Satisfies: V4 (algorithm pinned in docstrings; refuses beyond max_chunks).
 def run_checks(cfg: Config, db: Path | None, probe: bool = False) -> list[CheckResult]
 def summary(results: list[CheckResult]) -> dict
 CHECKS: list[Callable[[Config, ...], CheckResult]]   # registry: python, numpy, llama,
-    # foresight, mock, pdftotext, textutil, ffmpeg, whisper[stretch], index, config, disk
+    # mock, pdftotext, textutil, ffmpeg, whisper[stretch], index, config, disk
 ```
 Satisfies: V5f, SPEC §6.
 
@@ -209,7 +236,7 @@ Satisfies: V5f, SPEC §6.
 
 ### `backends/__init__.py` **[v1]**
 ```python
-BACKENDS: dict[str, type[EmbeddingBackend]]          # {"llama":…, "foresight":…, "mock":…}
+BACKENDS: dict[str, type[EmbeddingBackend]]          # {"llama":…, "mock":…}
 def create_backend(cfg: Config, name: str | None = None) -> EmbeddingBackend
 def probe_all(cfg: Config, live: bool = False) -> dict[str, dict]   # for backends/doctor
 ```
@@ -261,20 +288,6 @@ class LlamaServerBackend(EmbeddingBackend):
     def close(self) -> None                      # SIGTERM → 5 s → SIGKILL, OUR Popen only
 ```
 Satisfies: V2 every clause; SPEC §12 runtime facts.
-
-### `backends/foresight.py` **[stretch→v1-experimental]** — lazy grpc import
-```python
-class ForesightBackend(EmbeddingBackend):
-    backend_id = "foresight"; capability = Capability(True, True, True)
-    def __init__(self, cfg: ForesightCfg)
-    def ping(self) -> str                       # RagService.Ping → version (readiness+identity)
-    def embed_texts(self, texts)                # ComputeEmbedding (repeated double) → f32, L2
-    def embed_image(self, path)                 # ComputeImageEmbedding(bytes)
-    def embed_audio_wav(self, wav: bytes)       # ComputeAudioEmbedding(bytes)
-    def fingerprint_fields(self)                # model_id := f"helper@{ping version}"
-```
-Satisfies: V2 "foresight = optional experimental adapter"; proto =
-`research.xeno.labs.foresight.launch_agent.proto` (11 RPCs; we use 4).
 
 ---
 
@@ -370,7 +383,7 @@ def crawl(start_urls: list[str], bounds: CrawlBounds) -> Iterator[CrawledPage | 
     # all bounds enforced before side effects (V5e)
 ```
 
-### `ingest/media.py` **[v1 for metadata; embedding via foresight = stretch]**
+### `ingest/media.py` **[v1 for metadata; embedding via a multimodal backend = stretch]**
 ```python
 def ffprobe_duration(path: Path) -> float | None          # None → metadata_only + detail
 def audio_windows(path: Path, *, window: float = 30.0, hop: float = 25.0,
@@ -400,7 +413,7 @@ tests/test_store.py  test_search_offline.py  test_distill.py  test_crawl_bounds.
 tests/test_llama_client.py   (against fake_llama_server — subprocess+HTTP logic, no binary)
 tests/test_cli.py            end-to-end: ingest/search/distill/status with mock backend
 tests/eval/test_relevance.py R@1/R@5 harness: lexical vs hybrid vs rrf (mock, offline);
-                             GOLDMINE_LIVE=1 adds llama (and foresight if socket up)
+                             GOLDMINE_LIVE=1 adds llama
 ```
 
 ## Build order (suggested passes, each lands green)
@@ -412,4 +425,4 @@ tests/eval/test_relevance.py R@1/R@5 harness: lexical vs hybrid vs rrf (mock, of
 4. `backends/llama` + `fake_llama_server` tests — embeddings online
 5. `extract_pdf` + `crawl` + `doctor`/`backends`/`reset` commands — v1 complete
 6. `distill` — cards
-7. [stretch] `media` windows/frames + `foresight` adapter behind GOLDMINE_LIVE verification
+7. [stretch] `media` windows/frames embedding behind GOLDMINE_LIVE verification

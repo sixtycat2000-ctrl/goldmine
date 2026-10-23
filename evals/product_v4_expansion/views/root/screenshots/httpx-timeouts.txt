@@ -1,0 +1,1 @@
+The default behavior is to raise a TimeoutException after 5 seconds of network inactivity.

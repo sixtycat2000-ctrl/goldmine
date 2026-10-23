@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "state": "FROZEN_INPUTS",
+  "questions": 420,
+  "classes": {
+    "compound": 60,
+    "media-text": 60,
+    "noise": 60,
+    "cjk": 60,
+    "lookup": 60,
+    "semantic": 60,
+    "pdf-page": 60
+  },
+  "sources": 122,
+  "answerable_source_groups": 89,
+  "asset_bytes": 71997334,
+  "folds": {
+    "dev": {
+      "questions": 210,
+      "classes": {
+        "compound": 30,
+        "media-text": 30,
+        "noise": 30,
+        "cjk": 30,
+        "lookup": 30,
+        "semantic": 30,
+        "pdf-page": 30
+      }
+    },
+    "holdout": {
+      "questions": 210,
+      "classes": {
+        "compound": 30,
+        "media-text": 30,
+        "noise": 30,
+        "cjk": 30,
+        "lookup": 30,
+        "semantic": 30,
+        "pdf-page": 30
+      }
+    }
+  },
+  "bundle_identity": {
+    "manifest_sha256": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0",
+    "queries_sha256": "44bea88ae1ffecfd9363eb235a0c8f6c55d9162c77beb6477d5b3cafde5ec947",
+    "corpus_sha256": "88f84af19581bcb6ce1813b7dd40f9d134f8077dfd908ae19aa98826a483d85f",
+    "splits_sha256": "c2685d6a27c23420d51d3567b6388dff0bfa89b9d6dfd60edd344d4dc7b48cc8",
+    "reference_source_commit": "769483752f49fb0bf8241dca778b1895b9a1b70b"
+  },
+  "missing": [],
+  "authors": "AI agents /root, /root/review_ir_statistics, /root/review_architecture; no human review claimed",
+  "relevance_runs_during_curation": 0,
+  "known_pre_freeze_source_discoveries": [
+    "Real JPEG DateTimeOriginal versus modified DateTime disagreement; generic capture metadata fix independently tested.",
+    "Genuine .rst source files unsupported by original production; candidate plaintext support added and original unsupported outcomes remain fixed-denominator misses.",
+    "Historical scanned PDF OCR column-order errors retained in actual OCR outputs; source-verified oracle paragraphs preserve the true facts.",
+    "ASR uppercase/punctuation mismatch and partial literal evidence protocol clarified and adversarially tested before relevance scoring."
+  ],
+  "label_audit_questions": 56,
+  "label_audit_reviewer": "AI agent /root/review_delivery, independent of question authors",
+  "retrieval_quality_claim": false,
+  "post_input_freeze_pre_ranking_materialization": {
+    "policy": "declared-source-kind/v1",
+    "all_screenshot_sources": 20,
+    "candidate_or_reference_rankings_seen": false,
+    "source_bytes_labels_paths_splits_changed": false,
+    "scope": "Declared screenshots; no automatic classification of arbitrary unmarked PNGs claimed.",
+    "prior_byte_only_capability_check": "reports/execution/P0-05/product-expansion-001/reference/capability-preflight.json"
+  }
+}

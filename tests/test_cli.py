@@ -293,11 +293,11 @@ def test_status_human_and_json(tmp_home, db_path, fixture_tree, capsys):
         assert key in counts
 
 
-def test_backends_lists_three_and_exits_zero(tmp_home, capsys):
+def test_backends_lists_known_and_exits_zero(tmp_home, capsys):
     rc = main(["--db", str(tmp_home / "x.sqlite"), "backends"])
     assert rc == 0
     out = capsys.readouterr().out
-    for backend in ("llama", "foresight", "mock"):
+    for backend in ("llama", "mock"):
         assert backend in out
     assert "mock" in out and "available" in out
 
@@ -317,7 +317,7 @@ def test_backends_json_and_probe_never_spawns_llama(tmp_home, capsys, monkeypatc
     rc = main(["backends", "--json"])
     assert rc == 0
     payload = json.loads(capsys.readouterr().out)
-    assert [b["id"] for b in payload["backends"]] == ["foresight", "llama", "mock"]
+    assert [b["id"] for b in payload["backends"]] == ["llama", "mock"]
     assert spawned == []  # static listing only
 
 
@@ -651,7 +651,8 @@ def test_doctor_reports_fts_orphan_rows(tmp_home, db_path, fixture_tree, capsys)
     capsys.readouterr()  # flush the ingest summary
     store = Store(db_path)
     seg_id = store.db.execute("SELECT id FROM segments LIMIT 1").fetchone()[0]
-    store.db.execute("DELETE FROM segments WHERE id = ?", (seg_id,))
+    with store.write_transaction():
+        store.db.execute("DELETE FROM segments WHERE id = ?", (seg_id,))
     store.db.commit()
     store.close()
 
@@ -1119,7 +1120,7 @@ def test_json_envelope_on_model_list_backup_backends_version(
     assert main(["backends", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)
     assert payload["schema"] == "goldmine/1" and payload["command"] == "backends"
-    assert [b["id"] for b in payload["backends"]] == ["foresight", "llama", "mock"]
+    assert [b["id"] for b in payload["backends"]] == ["llama", "mock"]
 
     assert main(["version", "--json"]) == 0
     payload = json.loads(capsys.readouterr().out)

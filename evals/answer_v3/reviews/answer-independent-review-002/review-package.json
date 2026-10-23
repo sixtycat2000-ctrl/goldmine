@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "state": "INDEPENDENT_SOURCE_SEMANTIC_CLOSURE_ACCEPTABLE_DRAFT002",
+  "created_at": "2026-10-21T20:13:56.297267+00:00",
+  "artifacts": [
+    {
+      "path": "evidence-readback.json",
+      "sha256": "51ce7110344ba568f1a97a0befe78d55468a47478c7cbf94159d97ed94154848"
+    },
+    {
+      "path": "finding-closures.json",
+      "sha256": "ffdfc7abde06c2ad31788a9c58691cf365eb75de11c1c31e680fec7e367b6680"
+    },
+    {
+      "path": "multi-disjointness.json",
+      "sha256": "21a7aec341d58c9a03b43402e03ce641ff8529e1dfe0a29fd7ac11dbb3ed5ed7"
+    },
+    {
+      "path": "null-metadata-preservation.json",
+      "sha256": "f57578fe61314460a563e11f1e81661f4206f6b9a1de27f74583028c52fa66c7"
+    },
+    {
+      "path": "question-verdicts.json",
+      "sha256": "cbfcffb876bfa605a383bcd88303e2fef3a16c309789155fd1633791281d8a51"
+    },
+    {
+      "path": "retained-null-location-guard.diff",
+      "sha256": "cc7906413aac7c68d55b1df73c07f1d3f6b10596a83d5ad818e90ed50c1566f7"
+    },
+    {
+      "path": "review.json",
+      "sha256": "283aaa0be2a3a89ee0d7046b35500b1a693fad66f6f32b953ec86f050a036b2b"
+    },
+    {
+      "path": "review.md",
+      "sha256": "a9baef0ee0b651f024f9c9cf5bd7671990e06bdbb442cacddd434e9121af8158"
+    },
+    {
+      "path": "scope-conjunctions.json",
+      "sha256": "cd28cd896e1c0031643fb2d78a2ddc8877a696e114227ea536fc0cf29064667b"
+    },
+    {
+      "path": "source-text-asset-pins.json",
+      "sha256": "4a758e70d85034e6919e4f5657133144b8f04fb244224d6516916b9db5da77bb"
+    },
+    {
+      "path": "source-view-pins.json",
+      "sha256": "2f596c5ea67b8ef61053ffbd22f586acf84a92561c9a9da653e55eb38515dd3d"
+    },
+    {
+      "path": "real-job-readiness.json",
+      "sha256": "3408cdbc62030f8397e19d3f82199f948f81feee215ada67afccbd38d65d9eac"
+    },
+    {
+      "path": "real-job-readiness.md",
+      "sha256": "cb69c53c4c3869471c62c1cc4c5ab0e5154e2efee59648462adae13eb8f431fa"
+    }
+  ],
+  "registration_sha256": "f2130bd7e3279e9d825670f6c20c071231a31e0491b300b001d152c192fb04e3",
+  "questions_sha256": "bb395fa254ec2cb5f7ceb0b5bb504e3f16276ccf453b33e1c6e095349736ef28",
+  "corpus_sha256": "c4fd69eafbd5ecc560c7cc07aee4ea7fcbd210d942e6c5f5a2a99ac0253508f7",
+  "source_data_closure": true,
+  "actual_run_ready": false,
+  "quality_claim": false,
+  "updated_at": "2026-10-21T20:16:42.892645+00:00"
+}

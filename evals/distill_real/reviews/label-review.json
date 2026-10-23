@@ -1,0 +1,4767 @@
+{
+  "schema": 1,
+  "status": "LABEL_REVIEW_ACCEPTED_PENDING_SEPARATE_PROVENANCE_LICENSE_AUDIT",
+  "reviewer": "root independent AI source-label review role; not human professional certification",
+  "started_at": "2026-10-21T19:16:34.472177+00:00",
+  "finished_at": "2026-10-21T19:16:34.580543+00:00",
+  "draft_pins": {
+    "product-sources.draft.json": "2b55708e36a526ad7a6011095347152074be715625310cb72b98d97e33d6f013",
+    "labels.draft.json": "3ba5fe70124d8442529c5aeccb685ecea7acb300c50589e8e204bb5274e36eac",
+    "case-evidence.json": "6408451d460ee441162ce1e4ccd870f3f95492e9d45ca16ba20d8346e6abcae7"
+  },
+  "method": "Independently read all120 per-source original-purpose evidence records; checked source/header/API context where needed; parsed complete four flagged Python originals into AST/API inventories and inspected relevant boundary implementations. This classifies document purpose, not every implementation statement or code security.",
+  "document_count": 120,
+  "splits": {
+    "base": 110,
+    "incremental": 10
+  },
+  "base_primary_source_groups": {
+    "reactive-ui-state": [
+      "source:text/vue-zh/src/guide/components/props.md",
+      "source:text/vue-zh/src/guide/components/v-model.md",
+      "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+      "source:text/vue-zh/src/guide/essentials/conditional.md",
+      "source:text/vue-zh/src/guide/essentials/event-handling.md",
+      "source:text/vue-zh/src/guide/essentials/forms.md",
+      "source:text/vue-zh/src/guide/essentials/list.md",
+      "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md"
+    ],
+    "cli-interfaces": [
+      "source:text/click/docs/arguments.rst",
+      "source:text/click/docs/commands.rst",
+      "source:text/click/docs/options.rst",
+      "source:text/click/src/click/parser.py",
+      "source:text/click/src/click/termui.py",
+      "source:text/click/src/click/types.py",
+      "upstream:rich",
+      "upstream:typer"
+    ],
+    "http-requests": [
+      "source:text/requests/docs/user/authentication.rst",
+      "source:text/requests/docs/user/quickstart.rst",
+      "source:text/requests/src/requests/models.py",
+      "source:text/requests/src/requests/sessions.py",
+      "source:text/requests/src/requests/utils.py",
+      "upstream:fastapi",
+      "upstream:flask",
+      "upstream:httpx"
+    ],
+    "python-environments": [
+      "upstream:conda",
+      "upstream:hatch",
+      "upstream:pdm",
+      "upstream:pip",
+      "upstream:pip-tools",
+      "upstream:pixi",
+      "upstream:poetry",
+      "upstream:uv"
+    ],
+    "python-testing": [
+      "upstream:coveragepy",
+      "upstream:hypothesis",
+      "upstream:nox",
+      "upstream:pytest",
+      "upstream:pytest-asyncio",
+      "upstream:pytest-cov",
+      "upstream:pytest-mock",
+      "upstream:tox"
+    ],
+    "typed-data": [
+      "upstream:attrs",
+      "upstream:cattrs",
+      "upstream:cerberus",
+      "upstream:jsonschema",
+      "upstream:marshmallow",
+      "upstream:msgspec",
+      "upstream:pydantic",
+      "upstream:voluptuous"
+    ],
+    "code-quality": [
+      "upstream:autopep8",
+      "upstream:black",
+      "upstream:flake8",
+      "upstream:isort",
+      "upstream:pycodestyle",
+      "upstream:pylint",
+      "upstream:ruff",
+      "upstream:yapf"
+    ],
+    "cryptographic-security": [
+      "pdf:nist-800-107r1",
+      "pdf:nist-800-22r1a",
+      "pdf:nist-800-38a",
+      "source:text/cpython/Lib/hashlib.py",
+      "source:text/cpython/Lib/ssl.py",
+      "upstream:cryptography",
+      "upstream:openssl",
+      "upstream:pycryptodome"
+    ]
+  },
+  "source_group_limitation": "Existing file-level provenance units are preserved. Vue UI8 groups share1 upstream; CLI8 share3; HTTP8 share4. These are not statistical independence claims. No clustering confidence interval is inferred.",
+  "source_reviews": [
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:fastapi",
+      "asset_sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/fastapi/docs/en/docs/tutorial/background-tasks.md.txt",
+        "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 86
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "You can define background tasks to be run *after* returning a response."
+        },
+        {
+          "line": 5,
+          "text": "This is useful for operations that need to happen after a request, but that the client doesn't really have to be waiting for the operation to complete before receiving the response."
+        },
+        {
+          "line": 10,
+          "text": "    * As connecting to an email server and sending an email tends to be \"slow\" (several seconds), you can return the response right away and send the email notification in the background."
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:fastapi",
+      "asset_sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/fastapi/docs/en/docs/tutorial/middleware.md.txt",
+        "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 95
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# Middleware { #middleware }"
+        },
+        {
+          "line": 3,
+          "text": "You can add middleware to **FastAPI** applications."
+        },
+        {
+          "line": 5,
+          "text": "A \"middleware\" is a function that works with every **request** before it is processed by any specific *path operation*. And also with every **response** before returning it."
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/flask/docs/async-await.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:flask",
+      "asset_sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/flask/docs/async-await.rst.txt",
+        "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 119
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "Using ``async`` and ``await``"
+        },
+        {
+          "line": 8,
+          "text": "Routes, error handlers, before request, after request, and teardown"
+        },
+        {
+          "line": 10,
+          "text": "``async`` extra (``pip install flask[async]``). This allows views to be"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/flask/docs/errorhandling.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:flask",
+      "asset_sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/flask/docs/errorhandling.rst.txt",
+        "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 523
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 10,
+          "text": "-   the client terminated the request early and the application was still"
+        },
+        {
+          "line": 36,
+          "text": "<https://sentry.io/>`_ for dealing with application errors. It's"
+        },
+        {
+          "line": 38,
+          "text": "<https://github.com/getsentry/sentry>`_ and is also available as a `hosted version"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/httpx/docs/advanced/timeouts.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+        "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 71
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "HTTPX is careful to enforce timeouts everywhere by default."
+        },
+        {
+          "line": 3,
+          "text": "The default behavior is to raise a `TimeoutException` after 5 seconds of"
+        },
+        {
+          "line": 6,
+          "text": "## Setting and disabling timeouts"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/httpx/docs/quickstart.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/httpx/docs/quickstart.md.txt",
+        "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 547
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "First, start by importing HTTPX:"
+        },
+        {
+          "line": 12,
+          "text": ">>> r = httpx.get('https://httpbin.org/get')"
+        },
+        {
+          "line": 17,
+          "text": "Similarly, to make an HTTP POST request:"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pip-tools/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:pip-tools",
+      "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pip-tools/README.md.txt",
+        "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 669
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 14,
+          "text": "A set of command line tools to help you keep your `pip`-based packages fresh,"
+        },
+        {
+          "line": 16,
+          "text": "application and its dependencies for production, you want to make sure that"
+        },
+        {
+          "line": 23,
+          "text": "Similar to `pip`, `pip-tools` must be installed in each of your project's"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pip-tools/piptools/scripts/compile.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "cross_topic",
+      "topics": [
+        "python-environments",
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:pip-tools",
+      "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 572
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 12,
+          "text": "from pip._internal.req import InstallRequirement"
+        },
+        {
+          "line": 22,
+          "text": "from ..build import ProjectMetadata, build_project_metadata"
+        },
+        {
+          "line": 23,
+          "text": "from ..cache import DependencyCache"
+        }
+      ],
+      "reason": "Requirements compilation/dependency resolution and a substantive Click command/options/context implementation, not merely one invocation.",
+      "additional_context": {
+        "topics": [
+          "python-environments",
+          "cli-interfaces"
+        ],
+        "reason": "Requirements compilation/dependency resolution and a substantive Click command/options/context implementation, not merely one invocation.",
+        "extra_evidence": [
+          [
+            81,
+            98
+          ],
+          [
+            101,
+            160
+          ]
+        ]
+      }
+    },
+    {
+      "path": "compound/pip/docs/html/topics/caching.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:pip",
+      "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pip/docs/html/topics/caching.md.txt",
+        "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 158
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 27,
+          "text": "network access altogether. If you want a local install solution that"
+        },
+        {
+          "line": 28,
+          "text": "circumvents accessing PyPI, see {ref}`Installing from local packages`."
+        },
+        {
+          "line": 44,
+          "text": "package name, pip will use that wheel instead of rebuilding the project."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:pip",
+      "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+        "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 92
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 4,
+          "text": "Pip can be used to achieve various levels of repeatable environments. This page"
+        },
+        {
+          "line": 7,
+          "text": "## Pinning the package versions"
+        },
+        {
+          "line": 9,
+          "text": "Pinning package versions of your dependencies in the requirements file"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/poetry/docs/dependency-specification.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:poetry",
+      "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 791
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "title: \"Dependency specification\""
+        },
+        {
+          "line": 12,
+          "text": "# Dependency specification"
+        },
+        {
+          "line": 14,
+          "text": "Dependencies for a project can be specified in various forms, which depend on the type"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/poetry/docs/managing-environments.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:poetry",
+      "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 209
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "title: \"Managing environments\""
+        },
+        {
+          "line": 14,
+          "text": "Poetry makes project environment isolation one of its core features."
+        },
+        {
+          "line": 16,
+          "text": "What this means is that it will always work isolated from your global Python installation."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/serialization.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pydantic/docs/concepts/serialization.md.txt",
+        "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 970
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "serialized, and exported in a number of ways. Serialization can be customized for the whole model, or on a per-field"
+        },
+        {
+          "line": 5,
+          "text": "??? abstract \"Serialize versus dump\""
+        },
+        {
+          "line": 6,
+          "text": "    Pydantic uses the terms \"serialize\" and \"dump\" interchangeably. Both refer to the process of converting a model to a"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/strict_mode.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pydantic/docs/concepts/strict_mode.md.txt",
+        "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 181
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "    [`pydantic.types.Strict`][pydantic.types.Strict]<br>"
+        },
+        {
+          "line": 4,
+          "text": "By default, Pydantic will attempt to coerce values to the desired type when possible."
+        },
+        {
+          "line": 5,
+          "text": "For example, you can pass the string `'123'` as the input for the [`int` number type](../api/standard_library_types.md#integers),"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/assert.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pytest/doc/en/how-to/assert.rst.txt",
+        "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 598
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "How to write and report assertions in tests"
+        },
+        {
+          "line": 8,
+          "text": "Asserting with the ``assert`` statement"
+        },
+        {
+          "line": 11,
+          "text": "``pytest`` allows you to use the standard Python ``assert`` for verifying"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/skipping.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/pytest/doc/en/how-to/skipping.rst.txt",
+        "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 431
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "How to use skip and xfail to deal with tests that cannot succeed"
+        },
+        {
+          "line": 8,
+          "text": "You can mark test functions that cannot be run on certain platforms"
+        },
+        {
+          "line": 9,
+          "text": "or that you expect to fail so pytest can deal with them accordingly and"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/rich/docs/source/progress.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/rich/docs/source/progress.rst.txt",
+        "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 298
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 6,
+          "text": "Rich can display continuously updated information regarding the progress of long running tasks / file copies etc. The information displayed is configurable, the default will display a description of the 'task', a progress bar, percentage complete, and estimated time remaining."
+        },
+        {
+          "line": 8,
+          "text": "Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes."
+        },
+        {
+          "line": 10,
+          "text": "To see how the progress display looks, try this from the command line::"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/rich/docs/source/tables.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/rich/docs/source/tables.rst.txt",
+        "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 171
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 4,
+          "text": "Rich's :class:`~rich.table.Table` class offers a variety of ways to render tabular data to the terminal."
+        },
+        {
+          "line": 6,
+          "text": "To render a table, construct a :class:`~rich.table.Table` object, add columns with :meth:`~rich.table.Table.add_column`, and rows with :meth:`~rich.table.Table.add_row` -- then print it to the console."
+        },
+        {
+          "line": 11,
+          "text": "    from rich.table import Table"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/ruff/docs/configuration.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:ruff",
+      "asset_sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/ruff/docs/configuration.md.txt",
+        "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 883
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "Whether you're using Ruff as a linter, formatter, or both, the underlying configuration strategy and"
+        },
+        {
+          "line": 79,
+          "text": "    # Enable auto-formatting of code examples in docstrings. Markdown,"
+        },
+        {
+          "line": 84,
+          "text": "    docstring-code-format = false"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/ruff/docs/formatter.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:ruff",
+      "asset_sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/ruff/docs/formatter.md.txt",
+        "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 672
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "The Ruff formatter is an extremely fast Python code formatter designed as a drop-in replacement for"
+        },
+        {
+          "line": 4,
+          "text": "[Black](https://pypi.org/project/black/), available as part of the `ruff` CLI via `ruff format`."
+        },
+        {
+          "line": 8,
+          "text": "`ruff format` is the primary entrypoint to the formatter. It accepts a list of files or"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/typer/docs/tutorial/commands/context.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:typer",
+      "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+        "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 125
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "When you create a **Typer** application it always has a special, hidden object underneath called the \"Context\"."
+        },
+        {
+          "line": 5,
+          "text": "But you can access the context by declaring a function parameter of type `typer.Context`."
+        },
+        {
+          "line": 7,
+          "text": "You might have read it in [CLI Option Callback and Context](../options/callback-and-context.md)."
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/typer/docs/tutorial/options/help.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:typer",
+      "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+        "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 157
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "You already saw how to add a help text for *CLI arguments* with the `help` parameter."
+        },
+        {
+          "line": 5,
+          "text": "Let's now do the same for *CLI options*:"
+        },
+        {
+          "line": 7,
+          "text": "{* docs_src/options/help/tutorial001_an_py310.py hl[11:12] *}"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/uv/docs/guides/projects.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:uv",
+      "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/uv/docs/guides/projects.md.txt",
+        "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 301
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "title: Working on projects"
+        },
+        {
+          "line": 4,
+          "text": "  A guide to using uv to create and manage Python projects, including adding dependencies, running"
+        },
+        {
+          "line": 10,
+          "text": "uv supports managing Python projects, which define their dependencies in a `pyproject.toml` file."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "compound/uv/docs/guides/tools.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "incremental",
+      "source_group": "upstream:uv",
+      "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/compound/uv/docs/guides/tools.md.txt",
+        "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 313
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 4,
+          "text": "  A guide to using uv to run tools published as Python packages, including one-off invocations with"
+        },
+        {
+          "line": 5,
+          "text": "  uvx, requesting specific tool versions, installing tools, upgrading tools, and more."
+        },
+        {
+          "line": 10,
+          "text": "Many Python packages provide applications that can be used as tools. uv has specialized support for"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/US174465-scan.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:US174465",
+      "asset_sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56",
+      "reviewed_evidence_view": {
+        "id": "p003",
+        "path": "views/root/pdf/US174465-p003.txt",
+        "sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "My present invention consists in the employment of a vibratory or undulatory current of electricity in contradistinction to a merely intermittent or pulsatory current, and of a method of, and apparatus for, producing electrical undulations upon the line-wire."
+        },
+        {
+          "line": 3,
+          "text": "The distinction between an undulatory and a pulsatory current will be understood by considering that electrical pulsations are caused by sudden or instantaneous changes of intensity, and that electrical undulations result from gradual changes of intensity exactly analogous to the changes in the density of air occasioned by simple pendulous vibrations. The electrical movement, like the aërial motion, can be represented by a sinusoidal curve or by the resultant of several sinusoidal curves."
+        },
+        {
+          "line": 5,
+          "text": "The advantages I claim to derive from the use of an undulatory current in place of a merely intermittent one are, first, that a very much larger number of signals can be transmitted simultaneously on the same circuit; second, that a closed circuit and single main battery may be used; third, that communication in both directions is established without the necessity of special induction-coils; fourth, that cable dispatches may be transmitted more rapidly than by means of an intermittent current or by the methods at present in use; for, as it is unnecessary to discharge the cable before a new signal can be made, the lagging of cable-signals is prevented; fifth, and that as the circuit is never broken a spark-arrester becomes unnecessary."
+        }
+      ],
+      "reason": "Historical telephone/electrical undulation patent; no dominant membership in the eight declared software topics.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/US223898-scan.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:US223898",
+      "asset_sha256": "540bd8ee9adfaa493be05f25e22938c10178d9f5175bd2366a71500ad89a28c9",
+      "reviewed_evidence_view": {
+        "id": "p002",
+        "path": "views/root/pdf/US223898-p002.txt",
+        "sha256": "aad807353a9d7a3597cbf7fcc31df0259d8514f73921ba06fd0464a881de6a19",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "The object of this invention is to produce electric lamps giving light by incandescence, which lamps shall have high resistance, so as to allow of the practical subdivision of the electric light."
+        },
+        {
+          "line": 3,
+          "text": "The invention consists in a light-giving body of carbon wire or sheets coiled or arranged in such a manner as to offer great resistance to the passage of the electric current, and at the same time present but a slight surface from which radiation can take place."
+        },
+        {
+          "line": 5,
+          "text": "The invention further consists in placing a burner of great resistance in a nearly-perfect vacuum, to prevent oxidation and injury to the conductor by the atmosphere. The current is conducted into the vacuum-bulb through platina wires sealed into the glass."
+        }
+      ],
+      "reason": "Historical incandescent lamp/carbon conductor patent; no dominant declared-topic membership.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/US6469-scan.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:US6469",
+      "asset_sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4",
+      "reviewed_evidence_view": {
+        "id": "p002",
+        "path": "views/root/pdf/US6469-p002.txt",
+        "sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Be it known that I, Abraham Lincoln, of Springfield, in the County of Sangamon, in the State of Illinois, have invented a new and improved manner of combining adjustable buoyant air chambers with a steamboat or other vessel for the purpose of enabling their draught of water to be readily lessened to enable them to pass over bars, or through shallow water, without discharging their cargoes; and I do hereby declare the following to be a full, clear, and exact description thereof, reference being had to the accompanying drawings making a part of this specification. Similar letters indicate like parts in all the figures."
+        },
+        {
+          "line": 3,
+          "text": "The buoyant chambers A, A, which I employ, are constructed in such a manner that they can be expanded so as to hold a large volume of air when required for use, and can be contracted into a very small space and safely secured as soon as their services can be dispensed with."
+        },
+        {
+          "line": 5,
+          "text": "The top g, and bottom h, of each buoyant chamber, is composed of plank or metal, of suitable strength and stiffness, and the flexible sides and ends of the chambers, are composed of india-rubber cloth, or other suitable water-proof fabric, securely united to the edges and ends of the top and bottom of the chambers."
+        }
+      ],
+      "reason": "Historical adjustable buoyancy chambers/boat patent; no dominant declared-topic membership.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/US821393-scan.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:US821393",
+      "asset_sha256": "e464ce113ceef7f11c18d34f2c5eb8e26acf5176dace9f32b09a393b1e5d6d9a",
+      "reviewed_evidence_view": {
+        "id": "p004",
+        "path": "views/root/pdf/US821393-p004.txt",
+        "sha256": "3a4e08d35976b701d452563fc49d2b7987c9f7a3749bcf6b9486c809915e841d",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "In the accompanying drawings we have shown an apparatus embodying our invention in one form. In this illustrative embodiment the machine is shown as comprising two parallel superposed aeroplanes 1 and 2, and this construction we prefer, although our invention may be embodied in a structure having a single aeroplane. Each aeroplane is of considerably greater width from side to side than from front to rear."
+        },
+        {
+          "line": 3,
+          "text": "Upon this framework the cloth which forms the supporting-surface of the aeroplane is secured, the frame being inclosed in the cloth."
+        }
+      ],
+      "reason": "Historical aeroplane structure/control patent; no dominant declared-topic membership.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "pdf:nist-800-107r1",
+      "asset_sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-107r1-p001.txt",
+        "sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "within the framework of the Cryptographic Algorithm Validation Program (CAVP) and"
+        },
+        {
+          "line": 3,
+          "text": "the Cryptographic Module Validation Program (CMVP). The requirements of this"
+        },
+        {
+          "line": 36,
+          "text": "Hash algorithms specified in FIPS 180-4."
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/nist-800-145-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:nist-800-145",
+      "asset_sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-145-p001.txt",
+        "sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "The NIST Definition of Cloud Computing"
+        },
+        {
+          "line": 5,
+          "text": "Cloud computing is a model for enabling ubiquitous, convenient, on-demand network access to a shared"
+        },
+        {
+          "line": 6,
+          "text": "pool of configurable computing resources (e.g., networks, servers, storage, applications, and services) that"
+        }
+      ],
+      "reason": "Cloud-computing definition/service/deployment models; cloud resources are not Python project environments or reactive UI state.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "pdf:nist-800-22r1a",
+      "asset_sha256": "a1c51685d4622343839f925b902876b8a19597d562d2e1ad42d75532bf6a1e78",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-22r1a-p001.txt",
+        "sha256": "15b8cb1849de98a3449c1c190b6b090bcd5b2592acae227c0475f7f4e3979717",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "A STATISTICAL TEST SUITE FOR RANDOM AND PSEUDORANDOM NUMBER GENERATORS FOR CRYPTOGRAPHIC APPLICATIONS"
+        },
+        {
+          "line": 30,
+          "text": "be expected for a truly random sequence. The test assesses the closeness of the fraction of ones to ½, that"
+        },
+        {
+          "line": 58,
+          "text": "sequence is random, then the plus and minus ones will tend to cancel one another out so that the test"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/nist-800-38a-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "pdf:nist-800-38a",
+      "asset_sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-38a-p001.txt",
+        "sha256": "d524535bc24c44707347fa75f8f787d1342bc5541c86a1be2cd22d7494cc275f",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 4,
+          "text": "For each mode, the encryption process transforms every plaintext data block or segment into a"
+        },
+        {
+          "line": 5,
+          "text": "corresponding ciphertext data block or segment with the same bit length, so that the ciphertext is"
+        },
+        {
+          "line": 6,
+          "text": "a sequence of data blocks or segments. The ciphertext is denoted as follows: for the ECB and"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/nist-800-92-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:nist-800-92",
+      "asset_sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/nist-800-92-p001.txt",
+        "sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "GUIDE TO COMPUTER SECURITY LOG MANAGEMENT"
+        },
+        {
+          "line": 5,
+          "text": "Introduction to Computer Security Log Management"
+        },
+        {
+          "line": 7,
+          "text": "A log is a record of the events occurring within an organization’s systems and networks. Logs are"
+        }
+      ],
+      "reason": "Operational computer-security log management; security vocabulary alone is insufficient for the narrow cryptographic-primitives/TLS topic.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/pillow-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:pillow",
+      "asset_sha256": "f86baf6c0a9f408249580c5e15c3e1ca836ec30f2979b492ae1c7e55a262fefb",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/pillow-p001.txt",
+        "sha256": "8a61d8f3bbd7ace864ade0dba14b6bfc2f707ff4226a450e2f21fb204614eb99",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Pillow (PIL Fork), Release 13.0.0"
+        },
+        {
+          "line": 4,
+          "text": "The Python Imaging Library is ideal for image archival and batch processing applications. You can use the library to"
+        },
+        {
+          "line": 5,
+          "text": "create thumbnails, convert between file formats, print images, etc."
+        }
+      ],
+      "reason": "Image archival, conversion and processing; no declared image-processing topic.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/pytest-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "99e0ae5c50b3638346d89d129efcbf13e99be4ba17d49fd2605ff6ca5ab86dc4",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/pytest-p001.txt",
+        "sha256": "60aa331fc05470e2e0821772be7f5949d3c703662da35049da35b718330543e3",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "pytest Documentation, Release 9.1"
+        },
+        {
+          "line": 11,
+          "text": "______________________________ test_function _______________________________"
+        },
+        {
+          "line": 22,
+          "text": "test_assert1.py:6: AssertionError"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/pdf/sphinx-excerpt.pdf",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "pdf:sphinx",
+      "asset_sha256": "e1d98d0f2848f4bd3763b15ae5bbdaa805db256f81ac1fdce88a97997a67b8bb",
+      "reviewed_evidence_view": {
+        "id": "p001",
+        "path": "views/root/pdf/sphinx-p001.txt",
+        "sha256": "ce44010744c7857cecfec006d3c6de071137fd72480b45e47c064d8a1f2162e2",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Sphinx Documentation, Release 9.3.0"
+        },
+        {
+          "line": 4,
+          "text": "Now that you have added some files and content, let’s make a first build of the docs. A build is started with the"
+        },
+        {
+          "line": 6,
+          "text": "$ sphinx-build -M html sourcedir outputdir"
+        }
+      ],
+      "reason": "Documentation authoring/building; a sphinx-build invocation alone is not CLI interface design or parsing.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/httpx-connect-timeout.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "c7bbed6aaa17ca1aba98550a545a8372fb5b1a16400dc1412601ee5c4426d15e",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-connect-timeout.txt",
+        "sha256": "abf998ef591ba6354aca7b098ab89afaf24b0061ad8103fa9a488d1b01a6dcf8",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "The connect timeout specifies the maximum amount of time to wait until a socket connection to the requested host is established. If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised."
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/httpx-http2.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "bb7b594a13f845a65c7b318434a4a378527639e297bb9b59ecc58c5e475d2328",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-http2.txt",
+        "sha256": "f7bc8dcb36d9cb1e136ac55b3c542d64d52ba54c1390ce8714674b321cf879ec",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time. It is possible that a future version of httpx may enable HTTP/2 support by default."
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/httpx-limits.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "2a5d656d5b5235998edfa778ca0f59b1b5665d71eea4a693cdec144f4836d0d2",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-limits.txt",
+        "sha256": "3a7566274663d22ce3e953087324a6c2cdbf72670af89e5698b333e52ce7d19f",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "max_connections, maximum number of allowable connections, or None for no limits. (Default 100)"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/httpx-timeouts.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "upstream:httpx",
+      "asset_sha256": "9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/httpx-timeouts.txt",
+        "sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "The default behavior is to raise a TimeoutException after 5 seconds of network inactivity."
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pydantic-fields.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "959fcbc6f3065fb6a72aa92f25de930e8de4cc1f079f5f5e4623db27eaf03ddd",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-fields.txt",
+        "sha256": "e624c996d8a769b4497e72e76672f90ace2f4c5d1c842ccee3ca6931b0adb86d",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Even though name is assigned a value, it is still required and has no default value. If you want to emphasize on the fact that a value must be provided, you can use the ellipsis:"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pydantic-python-dump.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "3698d5117d840ae93221a902710119f1c5eb509bb63dd1e0f70cf7143971984f",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-python-dump.txt",
+        "sha256": "e3e8a002d683d40305334ba01aebb724f78de17c42640977bd35e0d0dfaa2781",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "When using the Python mode, Pydantic models (and model-like types such as dataclasses) will be (recursively) converted to dictionaries. This is achievable by using the model_dump() method:"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pydantic-strict.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "6f89841ed1bd2eff0f1ba992822fb14409a0216e4a31be92d985bdee14ad5bc4",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-strict.txt",
+        "sha256": "e6710e10f5175d0f30117d701e7b07c0f366dbd266a91788e627f7c1413432bf",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "To better support this use case, Pydantic provides a “strict mode”. When strict mode is enabled, Pydantic will be much less lenient when coercing data, and will instead error if the data is not of the correct type."
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pydantic-unions.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:pydantic",
+      "asset_sha256": "4fac024192bae598bd4ccd5bdcf0b1a086a55713ffbb970b217b08fd8f38b131",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pydantic-unions.txt",
+        "sha256": "001e8485f727ebe2f33d67b33fcc43784819775fc202df7507a751678a27ba2f",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Because this mode often leads to unexpected validation results, it is not the default in Pydantic >=2, instead union_mode='smart' is the default."
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pytest-capture.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "a3cf23973a46aaa9d46209adf8719c3c9472ad5866f5d0b37fcda533924d6fc1",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-capture.txt",
+        "sha256": "044a54b06c1deb02dccfdbd5f61ec18d56f59d787ddab7441e33ed976bc572a4",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "By default capturing is done by intercepting writes to low level file descriptors. This allows capturing output from simple print statements as well as output from a subprocess started by a test."
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pytest-monkeypatch.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "550019956f595ec6becd0900306691ce955fc2951fb1697253dc164798e475df",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-monkeypatch.txt",
+        "sha256": "4f62407831abfe3638703192f7b17dee0af837a81c303aea02536dd6c1228bf2",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Sometimes tests need to invoke functionality which depends on global settings or which invokes code which cannot be easily tested such as network access. The monkeypatch fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing."
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/pytest-tmp.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest",
+      "asset_sha256": "a087468d6f2177d1a48923d468a7a91bd46b58cea8318b2f1dd700ca610adb0b",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/pytest-tmp.txt",
+        "sha256": "9bf8ba455c05093fc4588baf82251ba79b18b68828905064673cd5499620ecab",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "tmp_path is a pathlib.Path object. Here is an example test usage:"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/rich-markup.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "14305e8b7321d4e5e5d2668281fbf92743d8ea894bfcb1b59bdbdba0aaec8cee",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-markup.txt",
+        "sha256": "cda05ca1a4379994324a4f94f02c75cbd01fc867b88c747c09748e8539f80f44",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "If you don’t close a style, it will apply until the end of the string. Which is sometimes convenient if you want to style a single line. For example:"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/rich-progress.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "59d3f90a130f374641455a6678aa7ff342114cb168b5108e85cee7e437714e9a",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-progress.txt",
+        "sha256": "2dca4067aaff769f09e638804dcbb706d125bf1fd4fb8a897cd096397163415b",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes."
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/rich-styles.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "b7a24412f7d1584124e12e5c6a4fdf9b0928ee18e6d50286a46643ae386e8c5d",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-styles.txt",
+        "sha256": "22bbaf51d9ecac433a71117e72ecd65ffbde028a5f2a032750749087de6f5865",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "You may also use the color’s number (an integer between 0 and 255) with the syntax \"color(<number>)\". The following will give the equivalent output:"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/rich-tables.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:rich",
+      "asset_sha256": "568fa7d3e41184707ec398ea8c084616c059927fb0ebd21c29ced91662d3980a",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/rich-tables.txt",
+        "sha256": "b5d5a440c39561712ac0337334fa390028e7af9985bb8497008d9dd73f12f5c2",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "To render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console."
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/typer-context.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:typer",
+      "asset_sha256": "3dc701b0e837f986fd21e44fa35be50306eae6839ae273816baa544a9c12b3d7",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/typer-context.txt",
+        "sha256": "0d13ed7c90809184781a606464db27aefb84ce9d31b19b582d846e38eba2a8c9",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context."
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/typer-help-panels.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "upstream:typer",
+      "asset_sha256": "e7a94df03bc1cca62245652840c8abce40c1f8c2ef4ece0da238628bf8504c21",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/typer-help-panels.txt",
+        "sha256": "55dce3ed1f2ca76ade5aa61957e6e5e7f1e699ffce0a70d4653f922a81439452",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Using Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/uv-environments.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:uv",
+      "asset_sha256": "4ea93a67cd13dc389a24458354cbdf77c0f83f63bf3eba49eac6a2f5c3757fea",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-environments.txt",
+        "sha256": "dd756d9cd2603f4426b428e7ac50e8f6fc373a43877ad78e4ecdf50149f95304",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "A virtual environment is a lightweight way to isolate packages from a Python installation's environment. Unlike pip, uv requires using a virtual environment by default."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/uv-projects.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:uv",
+      "asset_sha256": "7a3cea1f2e74379887f369d67f26a49084e89862e10a9769ae0ff9f0b8021f34",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-projects.txt",
+        "sha256": "17ad5269ade51f43d8ed6c9f76d2e7d9af5fa6ac46218125b7ac546bd01867c3",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "A project consists of a few important parts that work together and allow uv to manage your project. In addition to the files created by uv init, uv will create a virtual environment and uv.lock file in the root of your project the first time you run a project command, i.e., uv run, uv sync, or uv lock."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "root/screenshots/uv-tools.png",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:uv",
+      "asset_sha256": "050d825a2d0bacc5d91468766ca12b92d558d460c8ac64cd136783a5d5f4f12d",
+      "reviewed_evidence_view": {
+        "id": "ocr",
+        "path": "views/root/screenshots/uv-tools.txt",
+        "sha256": "4bacc835e806514ec80c53f602dc3fb85ff4324ff8f85b04ea9fc051ee9ada22",
+        "evidence_type": "ocr_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 11
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "The uvx command invokes a tool without installing it."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/docs/arguments.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/docs/arguments.rst",
+      "asset_sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/docs/arguments.rst.txt",
+        "sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 263
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 8,
+          "text": "Arguments work similarly to :ref:`options <options>` but are positional."
+        },
+        {
+          "line": 9,
+          "text": "They also only support a subset of the features of options due to their"
+        },
+        {
+          "line": 10,
+          "text": "syntactical nature. Click will also not attempt to document arguments for"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/docs/commands.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/docs/commands.rst",
+      "asset_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/docs/commands.rst.txt",
+        "sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 571
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 7,
+          "text": "command line utilities.  This is implemented through the :class:`Command`"
+        },
+        {
+          "line": 8,
+          "text": "and :class:`Group` (actually :class:`MultiCommand`)."
+        },
+        {
+          "line": 13,
+          "text": "For a regular command, the callback is executed whenever the command runs."
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/docs/options.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/docs/options.rst",
+      "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/docs/options.rst.txt",
+        "sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 935
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 8,
+          "text": "Adding options to commands can be accomplished by the :func:`option`"
+        },
+        {
+          "line": 9,
+          "text": "decorator.  Since options can come in various different versions, there"
+        },
+        {
+          "line": 10,
+          "text": "are a ton of parameters to configure their behavior. Options in click are"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/src/click/parser.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/src/click/parser.py",
+      "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/src/click/parser.py.txt",
+        "sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 529
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 29,
+          "text": "from .exceptions import BadArgumentUsage"
+        },
+        {
+          "line": 30,
+          "text": "from .exceptions import BadOptionUsage"
+        },
+        {
+          "line": 31,
+          "text": "from .exceptions import NoSuchOption"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/src/click/termui.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/src/click/termui.py",
+      "asset_sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/src/click/termui.py.txt",
+        "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 784
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 20,
+          "text": "    from ._termui_impl import ProgressBar"
+        },
+        {
+          "line": 60,
+          "text": "    default: t.Optional[t.Any] = None,"
+        },
+        {
+          "line": 62,
+          "text": "    type: t.Optional[ParamType] = None,"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/click/src/click/types.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "split": "base",
+      "source_group": "source:text/click/src/click/types.py",
+      "asset_sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/click/src/click/types.py.txt",
+        "sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1089
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 18,
+          "text": "    from .core import Context"
+        },
+        {
+          "line": 25,
+          "text": "    from the command line or Python into the correct type."
+        },
+        {
+          "line": 37,
+          "text": "        arguments are ``None``. This can occur when converting prompt"
+        }
+      ],
+      "reason": "Argument/option processing, command context, help, or terminal presentation is the source's dominant purpose; incidental use of a CLI elsewhere does not suffice.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/base64.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/base64.py",
+      "asset_sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/base64.py.txt",
+        "sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 586
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "\"\"\"Base16, Base32, Base64 (RFC 3548), Base85 and Ascii85 data encodings\"\"\""
+        },
+        {
+          "line": 5,
+          "text": "# Modified 04-Oct-1995 by Jack Jansen to use binascii module"
+        },
+        {
+          "line": 6,
+          "text": "# Modified 30-Dec-2003 by Barry Warsaw to add full RFC 3548 support"
+        }
+      ],
+      "reason": "Dominant binary-to-text alphabet encoding. Validation flags and security defaults do not turn encoding into cryptography or typed schema/object serialization.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/codecs.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/codecs.py",
+      "asset_sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/codecs.py.txt",
+        "sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1129
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "\"\"\" codecs -- Python Codec Registry, API and helpers."
+        },
+        {
+          "line": 4,
+          "text": "Written by Marc-Andre Lemburg (mal@lemburg.com)."
+        },
+        {
+          "line": 6,
+          "text": "(c) Copyright CNRI, All Rights Reserved. NO WARRANTY."
+        }
+      ],
+      "reason": "Codec registry, character/stream encoding interfaces; outside the narrower typed-schema/object-serialization topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/ctypes/__init__.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/ctypes/__init__.py",
+      "asset_sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ctypes/__init__.py.txt",
+        "sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 579
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "\"\"\"create and manipulate C data types in Python\"\"\""
+        },
+        {
+          "line": 3,
+          "text": "import os as _os, sys as _sys"
+        },
+        {
+          "line": 8,
+          "text": "from _ctypes import Union, Structure, Array"
+        }
+      ],
+      "reason": "C foreign-function interface and C memory/types; not generic typed data schema validation/structured serialization.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/email/base64mime.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/email/base64mime.py",
+      "asset_sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/email/base64mime.py.txt",
+        "sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 115
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# Copyright (C) 2002-2007 Python Software Foundation"
+        },
+        {
+          "line": 2,
+          "text": "# Author: Ben Gertzfield"
+        },
+        {
+          "line": 3,
+          "text": "# Contact: email-sig@python.org"
+        }
+      ],
+      "reason": "MIME Base64 transfer encoding; email encoding is not substantive HTTP lifecycle or typed schema processing.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/hashlib.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/hashlib.py",
+      "asset_sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/hashlib.py.txt",
+        "sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 253
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "__doc__ = \"\"\"hashlib module - A common interface to many hash functions."
+        },
+        {
+          "line": 7,
+          "text": "new(name, data=b'', **kwargs) - returns a new hash object implementing the"
+        },
+        {
+          "line": 8,
+          "text": "                                given hash function; initializing the hash"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/ipaddress.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/ipaddress.py",
+      "asset_sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ipaddress.py.txt",
+        "sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2380
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# Copyright 2007 Google Inc."
+        },
+        {
+          "line": 2,
+          "text": "#  Licensed to PSF under a Contributor Agreement."
+        },
+        {
+          "line": 4,
+          "text": "\"\"\"A fast, lightweight IPv4/IPv6 manipulation library in Python."
+        }
+      ],
+      "reason": "Dominant specialized IPv4/IPv6 address/network arithmetic and representation. Input parsing/checks are substantive but do not make this a generic schema-validation library or HTTP request implementation.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/random.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/random.py",
+      "asset_sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/random.py.txt",
+        "sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 996
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "\"\"\"Random variable generators."
+        },
+        {
+          "line": 5,
+          "text": "           uniform bytes (values between 0 and 255)"
+        },
+        {
+          "line": 15,
+          "text": "           pick weighted random sample"
+        }
+      ],
+      "reason": "Dominant statistical PRNG/distribution/sampling implementation; SystemRandom is a real bounded exception, not the module's dominant purpose. This is deliberately hard adjacent noise, not a claim of no crypto-related content.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/ssl.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/ssl.py",
+      "asset_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/ssl.py.txt",
+        "sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1476
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# Wrapper module for _ssl, providing some additional facilities"
+        },
+        {
+          "line": 4,
+          "text": "\"\"\"This module provides some more Pythonic support for SSL."
+        },
+        {
+          "line": 8,
+          "text": "  SSLSocket -- subtype of socket.socket which does SSL over the socket"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/uuid.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/uuid.py",
+      "asset_sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/uuid.py.txt",
+        "sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 793
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "r\"\"\"UUID objects (universally unique identifiers) according to RFC 4122."
+        },
+        {
+          "line": 3,
+          "text": "This module provides immutable UUID objects (class UUID) and the functions"
+        },
+        {
+          "line": 4,
+          "text": "uuid1(), uuid3(), uuid4(), uuid5() for generating version 1, 3, 4, and 5"
+        }
+      ],
+      "reason": "Dominant UUID generation/representation; namespace hashes and os.urandom are implementation dependencies. uuid3 explicitly sets usedforsecurity=False. Not a cryptographic-primitives API.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Lib/xmlrpc/client.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "cross_topic",
+      "topics": [
+        "http-requests",
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "source:text/cpython/Lib/xmlrpc/client.py",
+      "asset_sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/xmlrpc/client.py.txt",
+        "sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1529
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "# XML-RPC CLIENT LIBRARY"
+        },
+        {
+          "line": 5,
+          "text": "# an XML-RPC client interface for Python."
+        },
+        {
+          "line": 7,
+          "text": "# the marshalling and response parser code can also be used to"
+        }
+      ],
+      "reason": "Substantive HTTP/S transport plus typed XML-RPC marshalling/unmarshalling; both are major parts of this implementation.",
+      "additional_context": {
+        "topics": [
+          "http-requests",
+          "typed-data"
+        ],
+        "reason": "Substantive HTTP/S transport plus typed XML-RPC marshalling/unmarshalling; both are major parts of this implementation.",
+        "extra_symbols": [
+          "Marshaller",
+          "Unmarshaller",
+          "Transport",
+          "SafeTransport",
+          "ServerProxy"
+        ]
+      }
+    },
+    {
+      "path": "text/cpython/Lib/zipfile/__init__.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "incremental",
+      "source_group": "source:text/cpython/Lib/zipfile/__init__.py",
+      "asset_sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Lib/zipfile/__init__.py.txt",
+        "sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2314
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "Read and write ZIP files."
+        },
+        {
+          "line": 4,
+          "text": "XXX references to utf-8 need further investigation."
+        },
+        {
+          "line": 18,
+          "text": "    import zlib # We may need its compression method"
+        }
+      ],
+      "reason": "ZIP archive reading/writing/compression; incidental CLI/input checks do not establish a dominant declared topic. Reserved incremental document.",
+      "additional_context": null
+    },
+    {
+      "path": "text/cpython/Modules/zlibmodule.c",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/cpython/Modules/zlibmodule.c",
+      "asset_sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/cpython/Modules/zlibmodule.c.txt",
+        "sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2140
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "/* zlibmodule.c -- gzip-compatible data compression */"
+        },
+        {
+          "line": 2,
+          "text": "/* See http://zlib.net/ */"
+        },
+        {
+          "line": 4,
+          "text": "/* Windows users:  read Python's PCbuild\\readme.txt */"
+        }
+      ],
+      "reason": "Compression binding implementation; compression is outside the eight declared topics.",
+      "additional_context": null
+    },
+    {
+      "path": "text/requests/docs/user/advanced.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "cross_topic",
+      "topics": [
+        "http-requests",
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/docs/user/advanced.rst",
+      "asset_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/docs/user/advanced.rst.txt",
+        "sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1141
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 6,
+          "text": "This document covers some of Requests more advanced features."
+        },
+        {
+          "line": 13,
+          "text": "The Session object allows you to persist certain parameters across"
+        },
+        {
+          "line": 14,
+          "text": "requests. It also persists cookies across all requests made from the"
+        }
+      ],
+      "reason": "Sessions/prepared HTTP requests and substantive TLS certificate verification/client certificate material; security is demonstrated by a full section.",
+      "additional_context": {
+        "topics": [
+          "http-requests",
+          "cryptographic-security"
+        ],
+        "reason": "Sessions/prepared HTTP requests and substantive TLS certificate verification/client certificate material; security is demonstrated by a full section.",
+        "extra_evidence": [
+          [
+            211,
+            270
+          ]
+        ]
+      }
+    },
+    {
+      "path": "text/requests/docs/user/authentication.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/docs/user/authentication.rst",
+      "asset_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/docs/user/authentication.rst.txt",
+        "sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 145
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 6,
+          "text": "This document discusses using various kinds of authentication with Requests."
+        },
+        {
+          "line": 9,
+          "text": "Below, we outline various forms of authentication available in Requests, from"
+        },
+        {
+          "line": 16,
+          "text": "Many web services that require authentication accept HTTP Basic Auth. This is"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "text/requests/docs/user/quickstart.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/docs/user/quickstart.rst",
+      "asset_sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/docs/user/quickstart.rst.txt",
+        "sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 570
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 6,
+          "text": ".. module:: requests.models"
+        },
+        {
+          "line": 13,
+          "text": "* Requests is :ref:`installed <install>`"
+        },
+        {
+          "line": 14,
+          "text": "* Requests is :ref:`up-to-date <updates>`"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "text/requests/src/requests/models.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/src/requests/models.py",
+      "asset_sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/src/requests/models.py.txt",
+        "sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1037
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "This module contains the primary objects that power Requests."
+        },
+        {
+          "line": 12,
+          "text": "# such as in Embedded Python. See https://github.com/psf/requests/issues/3578."
+        },
+        {
+          "line": 23,
+          "text": "from urllib3.fields import RequestField"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "text/requests/src/requests/sessions.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/src/requests/sessions.py",
+      "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/src/requests/sessions.py.txt",
+        "sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 831
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "This module provides a Session object to manage and persist settings across"
+        },
+        {
+          "line": 6,
+          "text": "requests (cookies, auth, proxies)."
+        },
+        {
+          "line": 15,
+          "text": "from .adapters import HTTPAdapter"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "text/requests/src/requests/utils.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "http-requests"
+      ],
+      "split": "base",
+      "source_group": "source:text/requests/src/requests/utils.py",
+      "asset_sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/requests/src/requests/utils.py.txt",
+        "sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1096
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "This module provides utility functions that are used within Requests"
+        },
+        {
+          "line": 42,
+          "text": "from .compat import parse_http_list as _parse_list_header"
+        },
+        {
+          "line": 65,
+          "text": "DEFAULT_PORTS = {\"http\": 80, \"https\": 443}"
+        }
+      ],
+      "reason": "The original source substantively covers HTTP client/server request-response processing, sessions, errors, middleware or timeout/transport configuration.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vite-ja/guide/env-and-mode.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/vite-ja/guide/env-and-mode.md",
+      "asset_sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vite-ja/guide/env-and-mode.md.txt",
+        "sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 235
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "Vite は特定の定数を特別な `import.meta.env` オブジェクトの下で公開します。この定数は開発中はグローバル変数として定義され、ビルド時にはツリーシェイキングを効果的に行うために静的に置き換えられます。"
+        },
+        {
+          "line": 8,
+          "text": "if (import.meta.env.DEV) {"
+        },
+        {
+          "line": 9,
+          "text": "  // この中のコードは本番ビルドでツリーシェイキングされます"
+        }
+      ],
+      "reason": "Japanese bundler build modes/environment substitution; this is not Python package environments or reactive component state/bindings.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vite-ko/guide/assets.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "noise",
+      "topics": [],
+      "split": "base",
+      "source_group": "source:text/vite-ko/guide/assets.md",
+      "asset_sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vite-ko/guide/assets.md.txt",
+        "sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 177
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 에셋 가져오기 {#static-asset-handling}"
+        },
+        {
+          "line": 3,
+          "text": "- 관련 항목: [Public Base Path](./build#public-base-path)"
+        },
+        {
+          "line": 4,
+          "text": "- 관련 항목: [`assetsInclude` 설정 옵션](/config/shared-options.md#assetsinclude)"
+        }
+      ],
+      "reason": "Korean bundler static asset importing/URLs; no dominant reactive-state or other declared-topic membership.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/components/props.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/components/props.md",
+      "asset_sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/components/props.md.txt",
+        "sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 786
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "> 此章节假设你已经看过了[组件基础](/guide/essentials/component-basics)。若你还不了解组件是什么，请先阅读该章节。"
+        },
+        {
+          "line": 11,
+          "text": "一个组件需要显式声明它所接受的 props，这样 Vue 才能知道外部传入的哪些是 props，哪些是透传 attribute (关于透传 attribute，我们会在[专门的章节](/guide/components/attrs)中讨论)。"
+        },
+        {
+          "line": 15,
+          "text": "在使用 `<script setup>` 的单文件组件中，props 可以使用 `defineProps()` 宏来声明："
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/components/v-model.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+      "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+        "sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 610
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 组件 v-model {#component-v-model}"
+        },
+        {
+          "line": 9,
+          "text": "`v-model` 可以在组件上使用以实现双向绑定。"
+        },
+        {
+          "line": 36,
+          "text": "`defineModel()` 返回的值是一个 ref。它可以像其他 ref 一样被访问以及修改，不过它能起到在父组件和当前变量之间的双向绑定的作用："
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+      "asset_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+        "sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 352
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# Class 与 Style 绑定 {#class-and-style-bindings}"
+        },
+        {
+          "line": 3,
+          "text": "数据绑定的一个常见需求场景是操纵元素的 CSS class 列表和内联样式。因为 `class` 和 `style` 都是 attribute，我们可以和其他 attribute 一样使用 `v-bind` 将它们和动态的字符串绑定。但是，在处理比较复杂的绑定时，通过拼接生成字符串是麻烦且易出错的。因此，Vue 专门为 `class` 和 `style` 的 `v-bind` 用法提供了特殊的功能增强。除了字符串外，表达式的值也可以是对象或数组。"
+        },
+        {
+          "line": 5,
+          "text": "## 绑定 HTML class {#binding-html-classes}"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/computed.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "incremental",
+      "source_group": "source:text/vue-zh/src/guide/essentials/computed.md",
+      "asset_sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/computed.md.txt",
+        "sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 383
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 计算属性 {#computed-properties}"
+        },
+        {
+          "line": 4,
+          "text": "  <VueSchoolLink href=\"https://vueschool.io/lessons/computed-properties-in-vue-3\" title=\"免费的 Vue.js 计算属性课程\"/>"
+        },
+        {
+          "line": 8,
+          "text": "  <VueSchoolLink href=\"https://vueschool.io/lessons/vue-fundamentals-capi-computed-properties-in-vue-with-the-composition-api\" title=\"免费的 Vue.js 计算属性课程\"/>"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/conditional.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+      "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+        "sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 109
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 条件渲染 {#conditional-rendering}"
+        },
+        {
+          "line": 10,
+          "text": "`v-if` 指令用于条件性地渲染一块内容。这块内容只会在指令的表达式返回真值时才被渲染。"
+        },
+        {
+          "line": 69,
+          "text": "因为 `v-if` 是一个指令，他必须依附于某个元素。但如果我们想要切换不止一个元素呢？在这种情况下我们可以在一个 `<template>` 元素上使用 `v-if`，这只是一个不可见的包装器元素，最后渲染的结果并不会包含这个 `<template>` 元素。"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/event-handling.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/event-handling.md",
+      "asset_sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/event-handling.md.txt",
+        "sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 353
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 事件处理 {#event-handling}"
+        },
+        {
+          "line": 3,
+          "text": "## 监听事件 {#listening-to-events}"
+        },
+        {
+          "line": 5,
+          "text": "我们可以使用 `v-on` 指令 (简写为 `@`) 来监听 DOM 事件，并在事件触发时执行对应的 JavaScript。用法：`v-on:click=\"handler\"` 或 `@click=\"handler\"`。"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/forms.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+      "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+        "sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 468
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 22,
+          "text": "# 表单输入绑定 {#form-input-bindings}"
+        },
+        {
+          "line": 24,
+          "text": "在前端处理表单时，我们常常需要将表单输入框的内容同步给 JavaScript 中相应的变量。手动连接值绑定和更改事件监听器可能会很麻烦："
+        },
+        {
+          "line": 38,
+          "text": "另外，`v-model` 还可以用于各种不同类型的输入，`<textarea>`、`<select>` 元素。它会根据所使用的元素自动使用对应的 DOM 属性和事件组合："
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/list.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+      "asset_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/list.md.txt",
+        "sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 432
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# 列表渲染 {#list-rendering}"
+        },
+        {
+          "line": 5,
+          "text": "我们可以使用 `v-for` 指令基于一个数组来渲染一个列表。`v-for` 指令的值需要使用 `item in items` 形式的特殊语法，其中 `items` 是源数据的数组，而 `item` 是迭代项的**别名**："
+        },
+        {
+          "line": 134,
+          "text": "const myObject = reactive({"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "base",
+      "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+      "asset_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+        "sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 598
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "# 响应式基础 {#reactivity-fundamentals}"
+        },
+        {
+          "line": 13,
+          "text": "## 声明响应式状态 \\* {#declaring-reactive-state}"
+        },
+        {
+          "line": 15,
+          "text": "选用选项式 API 时，会用 `data` 选项来声明组件的响应式状态。此选项的值应为返回一个对象的函数。Vue 将在创建新组件实例的时候调用此函数，并将函数返回的对象用响应式系统进行包装。此对象的所有顶层属性都会被代理到组件实例 (即方法和生命周期钩子中的 `this`) 上。"
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/watchers.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "split": "incremental",
+      "source_group": "source:text/vue-zh/src/guide/essentials/watchers.md",
+      "asset_sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd",
+      "reviewed_evidence_view": {
+        "id": "body",
+        "path": "views/text/vue-zh/src/guide/essentials/watchers.md.txt",
+        "sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 672
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "计算属性允许我们声明性地计算衍生值。然而在有些情况下，我们需要在状态变化时执行一些“副作用”：例如更改 DOM，或是根据异步操作的结果去修改另一处的状态。"
+        },
+        {
+          "line": 9,
+          "text": "在选项式 API 中，我们可以使用 [`watch` 选项](/api/options-state#watch)在每次响应式属性发生变化时触发一个函数。"
+        },
+        {
+          "line": 72,
+          "text": "在组合式 API 中，我们可以使用 [`watch` 函数](/api/reactivity-core#watch)在每次响应式状态发生变化时触发回调函数："
+        }
+      ],
+      "reason": "Vue component/state bindings, rendering, events, props or reactive derived state; the reviewed original Chinese content directly implements/explains this topic.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/hypothesis/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:hypothesis",
+      "asset_sha256": "bdea363861e973606d7728f0b7b893e0eb3efa2b3d8afa21a139d3ec8e80c003",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/hypothesis/README.md.txt",
+        "sha256": "bdea363861e973606d7728f0b7b893e0eb3efa2b3d8afa21a139d3ec8e80c003",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 47
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 7,
+          "text": "* [Website](https://hypothesis.works/)"
+        },
+        {
+          "line": 8,
+          "text": "* [Documentation](https://hypothesis.readthedocs.io/en/latest/)"
+        },
+        {
+          "line": 9,
+          "text": "* [Source code](https://github.com/hypothesisWorks/hypothesis/)"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pycryptodome/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "upstream:pycryptodome",
+      "asset_sha256": "b131e3fdbcc66c9f7f1f88ca183f5668c79ed2ce42d36bdb7ad04af6610bf3f5",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pycryptodome/README.rst.txt",
+        "sha256": "b131e3fdbcc66c9f7f1f88ca183f5668c79ed2ce42d36bdb7ad04af6610bf3f5",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 107
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 10,
+          "text": "PyCryptodome is a self-contained Python package of low-level"
+        },
+        {
+          "line": 11,
+          "text": "cryptographic primitives: one ``pip install``, no system libraries,"
+        },
+        {
+          "line": 18,
+          "text": "    pip install pycryptodome"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/flake8/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:flake8",
+      "asset_sha256": "03dcfce5ca0e3840b0b005825a623fe51b024c437c91527ee83f4ed3c55caaff",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/flake8/README.rst.txt",
+        "sha256": "03dcfce5ca0e3840b0b005825a623fe51b024c437c91527ee83f4ed3c55caaff",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 90
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 36,
+          "text": "- extendable through ``flake8.extension`` and ``flake8.formatting`` entry"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/isort/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:isort",
+      "asset_sha256": "7852f345c3d0b69d477795b1ff5e74649c813f1f1fae64a42ccd178e051092bd",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/isort/README.md.txt",
+        "sha256": "7852f345c3d0b69d477795b1ff5e74649c813f1f1fae64a42ccd178e051092bd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 331
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 28,
+          "text": "supports formatting Python 2 code too."
+        },
+        {
+          "line": 159,
+          "text": "indent property with the following accepted formats:"
+        },
+        {
+          "line": 174,
+          "text": "For the import styles that use parentheses, you can control whether or"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pycodestyle/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:pycodestyle",
+      "asset_sha256": "36b98a13fff708a31cf52f640e43d64665ad939ae4aaa952e185567a5e1fb20a",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pycodestyle/README.rst.txt",
+        "sha256": "36b98a13fff708a31cf52f640e43d64665ad939ae4aaa952e185567a5e1fb20a",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 104
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "pycodestyle (formerly called pep8) - Python style guide checker"
+        },
+        {
+          "line": 20,
+          "text": "pycodestyle is a tool to check your Python code against some of the style"
+        },
+        {
+          "line": 27,
+          "text": "    This package used to be called ``pep8`` but was renamed to ``pycodestyle``"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/voluptuous/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:voluptuous",
+      "asset_sha256": "9543865b7bc638f74031fbfe4a49e3af66d6fec7aa3282a18775b88bf330cd5a",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/voluptuous/README.md.txt",
+        "sha256": "9543865b7bc638f74031fbfe4a49e3af66d6fec7aa3282a18775b88bf330cd5a",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 846
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 10,
+          "text": "# Voluptuous is a Python data validation library"
+        },
+        {
+          "line": 19,
+          "text": "Voluptuous, *despite* the name, is a Python data validation library. It"
+        },
+        {
+          "line": 20,
+          "text": "is primarily intended for validating data coming into Python as JSON,"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/conda/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:conda",
+      "asset_sha256": "c7bb6b818678a51527d40b6b5fcc188b9fa4e4f8e8fa12e8240a94a161ba34dd",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/conda/README.md.txt",
+        "sha256": "c7bb6b818678a51527d40b6b5fcc188b9fa4e4f8e8fa12e8240a94a161ba34dd",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 163
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 25,
+          "text": "Conda is a cross-platform, language-agnostic binary package manager. It is a"
+        },
+        {
+          "line": 26,
+          "text": "package manager used in conda distributions like [Miniforge](https://github.com/conda-forge/miniforge)"
+        },
+        {
+          "line": 28,
+          "text": "used for other systems as well. Conda makes environments first-class"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/coveragepy/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:coveragepy",
+      "asset_sha256": "5cab5796437e0f38e5b8e069cebf3f60b86437ca5a06f37f0868c7eabad07021",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/coveragepy/README.rst.txt",
+        "sha256": "5cab5796437e0f38e5b8e069cebf3f60b86437ca5a06f37f0868c7eabad07021",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 146
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": ".. For details: https://github.com/coveragepy/coveragepy/blob/main/NOTICE.txt"
+        },
+        {
+          "line": 8,
+          "text": "Code coverage measurement for Python."
+        },
+        {
+          "line": 20,
+          "text": "Coverage.py measures code coverage, typically during test execution. It uses"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/yapf/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:yapf",
+      "asset_sha256": "95797e48711bbd42ff5e05d745f8e50f0812d0e885a8f239e88f25ed1fbdeef3",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/yapf/README.md.txt",
+        "sha256": "95797e48711bbd42ff5e05d745f8e50f0812d0e885a8f239e88f25ed1fbdeef3",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1071
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 13,
+          "text": "YAPF is a Python formatter based on [`clang-format`](https://clang.llvm.org/docs/ClangFormat.html)"
+        },
+        {
+          "line": 15,
+          "text": "calculates the best formatting that conforms to the configured style. It takes"
+        },
+        {
+          "line": 19,
+          "text": "programmer would write if they were following the style guide."
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/autopep8/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:autopep8",
+      "asset_sha256": "321dfa44d37b3a34df3d1852270159eca2c57f57b349bfd6178d66b4d5ac291a",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/autopep8/README.rst.txt",
+        "sha256": "321dfa44d37b3a34df3d1852270159eca2c57f57b349bfd6178d66b4d5ac291a",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 443
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 17,
+          "text": "autopep8 automatically formats Python code to conform to the `PEP 8`_ style"
+        },
+        {
+          "line": 18,
+          "text": "guide. It uses the pycodestyle_ utility to determine what parts of the code"
+        },
+        {
+          "line": 19,
+          "text": "needs to be formatted. autopep8 is capable of fixing most of the formatting"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/marshmallow/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:marshmallow",
+      "asset_sha256": "0a84219a9afcfa5574ab25db324207b3462bf3d5071d273df4d920cdd619c49a",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/marshmallow/README.rst.txt",
+        "sha256": "0a84219a9afcfa5574ab25db324207b3462bf3d5071d273df4d920cdd619c49a",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 161
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 2,
+          "text": "marshmallow: simplified object serialization"
+        },
+        {
+          "line": 25,
+          "text": "**marshmallow** is an ORM/ODM/framework-agnostic library for converting complex datatypes, such as objects, to and from native Python datatypes."
+        },
+        {
+          "line": 32,
+          "text": "    from marshmallow import Schema, fields"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/msgspec/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:msgspec",
+      "asset_sha256": "b485d9bde3febcf8b1e2ae5f0a2674e29e8c37fd4b344f2ce3a580de88099b05",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/msgspec/README.md.txt",
+        "sha256": "b485d9bde3febcf8b1e2ae5f0a2674e29e8c37fd4b344f2ce3a580de88099b05",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 114
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 22,
+          "text": "`msgspec` is a *fast* serialization and validation library, with builtin"
+        },
+        {
+          "line": 31,
+          "text": "- 🎉 **Support for a wide variety of Python types**. Additional types may be"
+        },
+        {
+          "line": 35,
+          "text": "- 🔍 **Zero-cost schema validation** using familiar Python type annotations. In"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/openssl/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "upstream:openssl",
+      "asset_sha256": "da295b86474c5804922b526afd88505bd20bacc567a885d603e5a89915365687",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/openssl/README.md.txt",
+        "sha256": "da295b86474c5804922b526afd88505bd20bacc567a885d603e5a89915365687",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 265
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "Welcome to the OpenSSL Project"
+        },
+        {
+          "line": 13,
+          "text": "OpenSSL is a robust, commercial-grade, full-featured Open Source Toolkit"
+        },
+        {
+          "line": 14,
+          "text": "for the Transport Layer Security (TLS, formerly SSL), Datagram TLS (DTLS), and QUIC protocols."
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pdm/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:pdm",
+      "asset_sha256": "c1dba09fbd9ab8219e43374e72d2caa0d90a7316fd18127a98a7968c28b56a49",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pdm/README.md.txt",
+        "sha256": "c1dba09fbd9ab8219e43374e72d2caa0d90a7316fd18127a98a7968c28b56a49",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 169
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 7,
+          "text": "A modern Python package and dependency manager supporting the latest PEP standards."
+        },
+        {
+          "line": 32,
+          "text": "PDM is meant to be a next-generation package manager."
+        },
+        {
+          "line": 34,
+          "text": "with `Pipenv` or `Poetry` and don't want to introduce another package manager,"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pixi/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:pixi",
+      "asset_sha256": "6041af483cedd39f9ad98614bf03bc9a87ee441494845425937a98478e01663c",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pixi/README.md.txt",
+        "sha256": "6041af483cedd39f9ad98614bf03bc9a87ee441494845425937a98478e01663c",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 387
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 26,
+          "text": "# Pixi: Package Management Made Easy"
+        },
+        {
+          "line": 30,
+          "text": "`pixi` is a cross-platform, multi-language package manager and workflow tool built on the foundation of the conda ecosystem. It provides developers with an exceptional experience similar to popular package managers like [`cargo`](https://doc.rust-lang.org/cargo/) or [`npm`](https://docs.npmjs.com), but for any language."
+        },
+        {
+          "line": 38,
+          "text": "- Supports **multiple languages** including Python, C++, and R using Conda packages. You can find available packages on [prefix.dev](https://prefix.dev)."
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/black/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:black",
+      "asset_sha256": "e49e9c7f0a9094ebb45de2f058060ab213a85cd57849d2fd759f26ed58c73fc5",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/black/README.md.txt",
+        "sha256": "e49e9c7f0a9094ebb45de2f058060ab213a85cd57849d2fd759f26ed58c73fc5",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 231
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 3,
+          "text": "<h2 align=\"center\">The Uncompromising Code Formatter</h2>"
+        },
+        {
+          "line": 19,
+          "text": "_Black_ is the uncompromising Python code formatter. By using it, you agree to cede"
+        },
+        {
+          "line": 20,
+          "text": "control over minutiae of hand-formatting. In return, _Black_ gives you speed,"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/cryptography/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "split": "base",
+      "source_group": "upstream:cryptography",
+      "asset_sha256": "20d84538828a10f0d908bd6c2e6fbd005c7313ed198c7ee82e70e75200db503b",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/cryptography/README.rst.txt",
+        "sha256": "20d84538828a10f0d908bd6c2e6fbd005c7313ed198c7ee82e70e75200db503b",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 67
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 15,
+          "text": "``cryptography`` is a package which provides cryptographic recipes and"
+        },
+        {
+          "line": 16,
+          "text": "primitives to Python developers. Our goal is for it to be your \"cryptographic"
+        },
+        {
+          "line": 19,
+          "text": "``cryptography`` includes both high level recipes and low level interfaces to"
+        }
+      ],
+      "reason": "The original source covers cryptographic hashes/primitives, encryption modes, TLS, or tests explicitly intended for cryptographic generators; it is not a broad all-security/all-randomness topic.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/cerberus/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:cerberus",
+      "asset_sha256": "d5731cc5dfffc3f23203540b79c6aace7d67791b4aa37456fb255a270daf9df3",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/cerberus/README.rst.txt",
+        "sha256": "d5731cc5dfffc3f23203540b79c6aace7d67791b4aa37456fb255a270daf9df3",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 106
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "Cerberus is a lightweight and extensible data validation library for Python."
+        },
+        {
+          "line": 9,
+          "text": "    >>> v = Validator({'name': {'type': 'string'}})"
+        },
+        {
+          "line": 10,
+          "text": "    >>> v.validate({'name': 'john doe'})"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pylint/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "code-quality"
+      ],
+      "split": "base",
+      "source_group": "upstream:pylint",
+      "asset_sha256": "0555955f72d9c851adb68e29707c08bea0ad124b4a3189c138253c5785531b37",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pylint/README.rst.txt",
+        "sha256": "0555955f72d9c851adb68e29707c08bea0ad124b4a3189c138253c5785531b37",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 225
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 47,
+          "text": "Pylint is a `static code analyser`_ for Python 2 or 3. The latest version supports Python"
+        },
+        {
+          "line": 52,
+          "text": "Pylint analyses your code without actually running it. It checks for errors, enforces a"
+        },
+        {
+          "line": 63,
+          "text": "For command line use, pylint is installed with::"
+        }
+      ],
+      "reason": "The original source's dominant purpose is linting, static source analysis, style checks, import organization or source formatting.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/hatch/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-environments"
+      ],
+      "split": "base",
+      "source_group": "upstream:hatch",
+      "asset_sha256": "cb063661396f4171a6f749a8f4c8efdd9f0b788611fc3c7e282d2dd50d586e18",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/hatch/README.md.txt",
+        "sha256": "cb063661396f4171a6f749a8f4c8efdd9f0b788611fc3c7e282d2dd50d586e18",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 41
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 18,
+          "text": "Hatch is a modern, extensible Python project manager."
+        },
+        {
+          "line": 23,
+          "text": "- Robust [environment management](https://hatch.pypa.io/latest/environment/) with support for custom scripts and UV"
+        },
+        {
+          "line": 30,
+          "text": "- Best practice [project generation](https://hatch.pypa.io/latest/config/project-templates/)"
+        }
+      ],
+      "reason": "The original source covers package dependencies, reproducible installation, project/tool environments or package management; conda/pixi include Python but are not Python-only products.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pytest-asyncio/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest-asyncio",
+      "asset_sha256": "5ae457208df1fcbc82cc2793236e853053875f10fa021409915546389d705b01",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pytest-asyncio/README.rst.txt",
+        "sha256": "5ae457208df1fcbc82cc2793236e853053875f10fa021409915546389d705b01",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 60
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 17,
+          "text": "`pytest-asyncio <https://pytest-asyncio.readthedocs.io/en/stable/>`_ is a `pytest <https://docs.pytest.org/en/latest/contents.html>`_ plugin. It facilitates testing of code that uses the `asyncio <https://docs.python.org/3/library/asyncio.html>`_ library."
+        },
+        {
+          "line": 19,
+          "text": "Specifically, pytest-asyncio provides support for coroutines as test functions. This allows users to *await* code inside their tests. For example, the following code is executed as a test item by pytest:"
+        },
+        {
+          "line": 24,
+          "text": "    async def test_some_asyncio_code():"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pytest-cov/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest-cov",
+      "asset_sha256": "54c13760f541d24f939ac88d2b011a78c7e9b919aa9a0e1015f955235ab6cd33",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pytest-cov/README.rst.txt",
+        "sha256": "54c13760f541d24f939ac88d2b011a78c7e9b919aa9a0e1015f955235ab6cd33",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 163
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 47,
+          "text": "This plugin provides coverage functionality as a pytest plugin. Compared to just using ``coverage run`` this plugin does some extras:"
+        },
+        {
+          "line": 49,
+          "text": "* Automatic erasing and combination of .coverage files and default reporting."
+        },
+        {
+          "line": 50,
+          "text": "* Support for detailed coverage contexts (add ``--cov-context=test`` to have the full test name including parametrization as the context)."
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/pytest-mock/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:pytest-mock",
+      "asset_sha256": "9548e72b99d295f0dbe242f5f6cfb29aee432f406b957f950a2749b77881ca4e",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/pytest-mock/README.rst.txt",
+        "sha256": "9548e72b99d295f0dbe242f5f6cfb29aee432f406b957f950a2749b77881ca4e",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 69
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 5,
+          "text": "This plugin provides a ``mocker`` fixture which is a thin-wrapper around the patching API"
+        },
+        {
+          "line": 6,
+          "text": "provided by the `mock package <http://pypi.python.org/pypi/mock>`_:"
+        },
+        {
+          "line": 18,
+          "text": "    def test_unix_fs(mocker):"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/attrs/src/attr/validators.py",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:attrs",
+      "asset_sha256": "04df88cefdc8a7176b800c5d35df3bcae0a43d9c303362fc15b783cef53517c5",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/attrs/src/attr/validators.py.txt",
+        "sha256": "04df88cefdc8a7176b800c5d35df3bcae0a43d9c303362fc15b783cef53517c5",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 766
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 4,
+          "text": "Commonly useful validators."
+        },
+        {
+          "line": 13,
+          "text": "from ._config import get_run_validators, set_run_validators"
+        },
+        {
+          "line": 14,
+          "text": "from ._make import _AndValidator, and_, attrib, attrs"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/cattrs/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:cattrs",
+      "asset_sha256": "d7e1ebd5bc85ef7ede6a05a3422006bad2a45bffdbc615d9053039b1e6e410f7",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/cattrs/README.md.txt",
+        "sha256": "d7e1ebd5bc85ef7ede6a05a3422006bad2a45bffdbc615d9053039b1e6e410f7",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 115
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 1,
+          "text": "# *cattrs*: Flexible Object Serialization and Validation"
+        },
+        {
+          "line": 3,
+          "text": "*Because validation belongs to the edges.*"
+        },
+        {
+          "line": 16,
+          "text": "**cattrs** is a Swiss Army knife for (un)structuring and validating data in Python."
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/jsonschema/README.rst",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "typed-data"
+      ],
+      "split": "base",
+      "source_group": "upstream:jsonschema",
+      "asset_sha256": "525b3ff99da439e506f2fdac622a35e3083db7f0398864e978d00104f889a898",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/jsonschema/README.rst.txt",
+        "sha256": "525b3ff99da439e506f2fdac622a35e3083db7f0398864e978d00104f889a898",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 139
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 32,
+          "text": "``jsonschema`` is an implementation of the `JSON Schema <https://json-schema.org>`_ specification for Python."
+        },
+        {
+          "line": 36,
+          "text": "    >>> from jsonschema import validate"
+        },
+        {
+          "line": 38,
+          "text": "    >>> # A sample schema, like what we'd get from json.load()"
+        }
+      ],
+      "reason": "The original source covers schema/type validation, coercion, or structured object serialization. This does not include every binary encoding or every function that validates inputs.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/tox/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:tox",
+      "asset_sha256": "43f378c53af8d945d4b06726789058a0cb808d70266c5c0f32b08aa007eb1511",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/tox/README.md.txt",
+        "sha256": "43f378c53af8d945d4b06726789058a0cb808d70266c5c0f32b08aa007eb1511",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 23
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 9,
+          "text": "`tox` aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing"
+        },
+        {
+          "line": 10,
+          "text": "and release process of Python software (alongside [pytest](https://docs.pytest.org/en/latest/) and"
+        },
+        {
+          "line": 13,
+          "text": "tox is a generic virtual environment management and test command line tool you can use for:"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    },
+    {
+      "path": "supplemental/nox/README.md",
+      "verdict": "ACCEPT_LABEL",
+      "role": "topic",
+      "topics": [
+        "python-testing"
+      ],
+      "split": "base",
+      "source_group": "upstream:nox",
+      "asset_sha256": "3f118d5e8d37280cd0e85cea6c8de531b726fb0f0cc249f6d70fac0f6379f081",
+      "reviewed_evidence_view": {
+        "id": "original-lines",
+        "path": "views/supplemental/nox/README.md.txt",
+        "sha256": "3f118d5e8d37280cd0e85cea6c8de531b726fb0f0cc249f6d70fac0f6379f081",
+        "evidence_type": "content_text",
+        "location": {
+          "unit": "line",
+          "start": 1,
+          "end": 100
+        },
+        "storage_field": null,
+        "normalization": "nfc-lf-v1"
+      },
+      "reviewed_source_lines": [
+        {
+          "line": 15,
+          "text": "*Flexible test automation with Python*"
+        },
+        {
+          "line": 23,
+          "text": "`nox` is a command-line tool that automates testing in multiple Python environments, similar to [tox][]. Unlike tox, Nox uses a standard Python file for configuration:"
+        },
+        {
+          "line": 30,
+          "text": "def tests(session: nox.Session) -> None:"
+        }
+      ],
+      "reason": "The original source covers assertions, test execution/fixtures, mocking, property or async tests, coverage, or test-environment orchestration.",
+      "additional_context": null
+    }
+  ],
+  "special_cases": {
+    "duplicate": {
+      "verdict": "ACCEPT_CONTAINED_SOURCE_DUPLICATE",
+      "evidence_id": "rich-progress-rendered-duplicate",
+      "matching_chars": 184,
+      "reason": "The entire real screenshot's canonical paragraph is already present verbatim in the original progress document. Both actual pre-existing assets share a group. No copied filler was added. This tests contained duplicate information, not byte-identical full files or a measured dedup success."
+    },
+    "paraphrase": {
+      "verdict": "ACCEPT_NATURAL_CONCEPTUAL_PARAPHRASE",
+      "evidence_id": "tox-nox-multienvironment-test-automation",
+      "reason": "Tox and Nox independently word the same multi-environment Python test-automation objective; Nox explicitly cites tox. The proposition is shared, without asserting API equivalence."
+    },
+    "multilingual": {
+      "verdict": "ACCEPT_ORIGINAL_LANGUAGES",
+      "languages": [
+        "en",
+        "zh",
+        "ja",
+        "ko"
+      ],
+      "limitation": "Chinese topic sources are predominantly one Vue upstream; Japanese/Korean are hard noise. This corpus cannot establish broad cross-language clustering generalization."
+    }
+  },
+  "boundary_inventory": "boundary-inventory.json",
+  "indexes_models_tokenizers_clusters_run": false,
+  "product_questions_folds_holdout_read": false,
+  "frozen_by_this_review": false,
+  "quality_or_release_claim": false,
+  "next": "Separate provenance/license reviewer must close findings before root adopts a new frozen manifest/label identity. Later use actual source-bound llama base/+10 indexes and unchanged real gates.",
+  "boundary_inventory_sha256": "14a1745963668bb4f5546e20aeda68af39b26cb313520589a6800ed0fb7fafe5"
+}

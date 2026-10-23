@@ -1,0 +1,3526 @@
+[
+  {
+    "id": "av3-single-001",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-semantic-041"
+    ],
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Credentials tuple is explicitly equivalent to the HTTPBasicAuth example; the question does not ask for literal credentials.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/requests/docs/user/authentication.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-001",
+        "evidence_id": "e0",
+        "source_path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/authentication.rst.txt",
+        "asset_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "span_sha256": "5e7f591e33a1b75c1219d0d0973c95dfc74824f16c6c5c8bbceb814f063bf145",
+        "span_start_char": 959,
+        "span_end_char": 1065,
+        "line_start_within_view": 32,
+        "line_end_within_view": 33,
+        "source_location": {
+          "unit": "line",
+          "start": 32,
+          "end": 33
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-002",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-semantic-029"
+    ],
+    "source_group": "source:text/click/src/click/parser.py",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-002"
+    ],
+    "semantic_review_note": "Suffix insertion is present, but the exact marked code omits value extraction and the actual loop break; IR-002 applies.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/click/src/click/parser.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-002",
+        "evidence_id": "e0",
+        "source_path": "text/click/src/click/parser.py",
+        "view_id": "body",
+        "view_path": "views/text/click/src/click/parser.py.txt",
+        "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "span_sha256": "5caa89b04bc5c053ba96c9db10e5d8e565a39cf0b8ed269b609656c8f625899e",
+        "span_start_char": 15611,
+        "span_end_char": 15710,
+        "line_start_within_view": 440,
+        "line_end_within_view": 442,
+        "source_location": {
+          "unit": "line",
+          "start": 440,
+          "end": 442
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-003",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-semantic-001"
+    ],
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [
+      "IR-A02"
+    ],
+    "semantic_review_note": "The None-valued merged-entry deletion fact is supported; preceding request-overrides-session lines are an optional context improvement.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/requests/src/requests/sessions.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-003",
+        "evidence_id": "e0",
+        "source_path": "text/requests/src/requests/sessions.py",
+        "view_id": "body",
+        "view_path": "views/text/requests/src/requests/sessions.py.txt",
+        "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "span_sha256": "c23770f52bf2e6768f6c0b89ac4e4f338e229a5ea3dcc29557e1dc9f53712f13",
+        "span_start_char": 2178,
+        "span_end_char": 2417,
+        "line_start_within_view": 82,
+        "line_end_within_view": 86,
+        "source_location": {
+          "unit": "line",
+          "start": 82,
+          "end": 86
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-004",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-semantic-059"
+    ],
+    "source_group": "source:text/click/docs/commands.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Only the final chained command may have an nargs=-1 argument; the qualifier is retained.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/click/docs/commands.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-004",
+        "evidence_id": "e0",
+        "source_path": "text/click/docs/commands.rst",
+        "view_id": "body",
+        "view_path": "views/text/click/docs/commands.rst.txt",
+        "asset_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "span_sha256": "47fbebe3101d24eb3a370dfb2457dd9abf4c447339416a5a8c16b5367ea63d85",
+        "span_start_char": 9653,
+        "span_end_char": 9760,
+        "line_start_within_view": 316,
+        "line_end_within_view": 317,
+        "source_location": {
+          "unit": "line",
+          "start": 316,
+          "end": 317
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-005",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-semantic-039"
+    ],
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "A two-element timeout tuple is shown for separate connect/read limits; no total-duration guarantee is asserted.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/requests/docs/user/advanced.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-005",
+        "evidence_id": "e0",
+        "source_path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/advanced.rst.txt",
+        "asset_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "span_sha256": "3d2084c4bd27e476d328922b3848327090f6c91d8da7286b839f93299cae638e",
+        "span_start_char": 40656,
+        "span_end_char": 40869,
+        "line_start_within_view": 1114,
+        "line_end_within_view": 1117,
+        "source_location": {
+          "unit": "line",
+          "start": 1114,
+          "end": 1117
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-006",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-cjk-046"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [
+      "IR-A01"
+    ],
+    "semantic_review_note": "defineModel returns a ref and synchronizes parent/current values. 引用 is a reasonable paraphrase; IR-A01 recommends preserving the exact identifier.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/vue-zh/src/guide/components/v-model.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-006",
+        "evidence_id": "e0",
+        "source_path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+        "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "span_sha256": "b726bf15274667a7cc3e9b2cda94b97d28989e23f7d661287d99af49c757124d",
+        "span_start_char": 686,
+        "span_end_char": 761,
+        "line_start_within_view": 36,
+        "line_end_within_view": 36,
+        "source_location": {
+          "unit": "line",
+          "start": 36,
+          "end": 36
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-007",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-cjk-020"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "v-else must follow v-if or v-else-if; the required fact retains the adjacency condition.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/conditional.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-007",
+        "evidence_id": "e0",
+        "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+        "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "span_sha256": "8e72a25178dc04ce9aa5e7f8d13c760558dc88143f257c3b743bf6544d7bc159",
+        "span_start_char": 1236,
+        "span_end_char": 1294,
+        "line_start_within_view": 44,
+        "line_end_within_view": 44,
+        "source_location": {
+          "unit": "line",
+          "start": 44,
+          "end": 44
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-008",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-cjk-001"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Default deep reactivity detects nested-object or array changes; the default qualifier is retained.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-008",
+        "evidence_id": "e0",
+        "source_path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+        "asset_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "span_sha256": "23d0afb10548de950a62dcf825b7c3f95d3888482ae7c68ecd91c3b69b0334e7",
+        "span_start_char": 6232,
+        "span_end_char": 6282,
+        "line_start_within_view": 278,
+        "line_end_within_view": 278,
+        "source_location": {
+          "unit": "line",
+          "start": 278,
+          "end": 278
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-009",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-cjk-013"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The component author selects the receiving root; $attrs is the mechanism shown. The fact answers the where/designation request.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/class-and-style.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-009",
+        "evidence_id": "e0",
+        "source_path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+        "asset_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "span_sha256": "4a5ff5fb0d0282e92574c44a4a7c26ce20a711a6e4aa44092645959d0825c094",
+        "span_start_char": 3536,
+        "span_end_char": 3601,
+        "line_start_within_view": 225,
+        "line_end_within_view": 225,
+        "source_location": {
+          "unit": "line",
+          "start": 225,
+          "end": 225
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-010",
+    "class": "single",
+    "original_dev_question_ids": [
+      "text-cjk-023"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Object keys are rejected; primitive string/number examples are retained.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/list.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-010",
+        "evidence_id": "e0",
+        "source_path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/list.md.txt",
+        "asset_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "span_sha256": "6b65d2eb3486fb6b9e60c6299179669bc01925252cb54f3a9f2b16c4a6ea84cc",
+        "span_start_char": 6238,
+        "span_end_char": 6299,
+        "line_start_within_view": 278,
+        "line_end_within_view": 278,
+        "source_location": {
+          "unit": "line",
+          "start": 278,
+          "end": 278
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-011",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01"
+    ],
+    "source_group": "pdf:nist-800-145",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The exact counts are five essential characteristics, three service models, and four deployment models, on asset page1.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/pdf/nist-800-145-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-011",
+        "evidence_id": "e0",
+        "source_path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p001",
+        "view_path": "views/root/pdf/nist-800-145-p001.txt",
+        "asset_sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b",
+        "view_sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+        "span_sha256": "bef2da5c888ee79b85ac6e57b31547810dd1f888696147d1c430ad6c32105a78",
+        "span_start_char": 358,
+        "span_end_char": 471,
+        "line_start_within_view": 8,
+        "line_end_within_view": 9,
+        "source_location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-012",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-03"
+    ],
+    "source_group": "pdf:nist-800-107r1",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The source explicitly retains the leftmost96 and discards the rightmost160 of SHA-256 output, on asset page3.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/pdf/nist-800-107r1-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-012",
+        "evidence_id": "e0",
+        "source_path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/nist-800-107r1-p003.txt",
+        "asset_sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b",
+        "view_sha256": "f150a935c1d02023d691e1ae2852a67a6d2c81891df89a266736fdbee9400dc0",
+        "span_sha256": "7f10483a6c256b331726e36628500bbf35d1db8cc70a9d93903f34bb144a6d2b",
+        "span_start_char": 1685,
+        "span_end_char": 1866,
+        "line_start_within_view": 30,
+        "line_end_within_view": 32,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-013",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-pdf-US174465-02"
+    ],
+    "source_group": "pdf:US174465",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Visible Bell patent page3 distinguishes sudden/instantaneous pulsations from gradual undulations; polarity/negation is preserved.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/pdf/US174465-scan.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-013",
+        "evidence_id": "e0",
+        "source_path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/US174465-p003.txt",
+        "asset_sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56",
+        "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+        "span_sha256": "9b7137fe7e53724188e2f029e4579437bfe979823dbb58555e0b050b74c09d99",
+        "span_start_char": 362,
+        "span_end_char": 516,
+        "line_start_within_view": 3,
+        "line_end_within_view": 3,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-014",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "source_group": "pdf:nist-800-92",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Rotation is described on schedule or at a size threshold; it is typical practice, not a mandatory universal trigger.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/pdf/nist-800-92-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-014",
+        "evidence_id": "e0",
+        "source_path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p002",
+        "view_path": "views/root/pdf/nist-800-92-p002.txt",
+        "asset_sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9",
+        "view_sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+        "span_sha256": "a0847e7f61b9f2a9a331871307979e8f688d9b3a9988a2b2adc48ba5647063d0",
+        "span_start_char": 1823,
+        "span_end_char": 2067,
+        "line_start_within_view": 43,
+        "line_end_within_view": 45,
+        "source_location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-015",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03"
+    ],
+    "source_group": "pdf:nist-800-38a",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "CTR decryption invokes the forward cipher and XORs output with ciphertext; the marked passage directly states both.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/pdf/nist-800-38a-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-015",
+        "evidence_id": "e0",
+        "source_path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/nist-800-38a-p003.txt",
+        "asset_sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b",
+        "view_sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+        "span_sha256": "b4d373f0d98d756db3341b8f132a46c83d76e50bbc3a79b15567b02b15b4e786",
+        "span_start_char": 1790,
+        "span_end_char": 1995,
+        "line_start_within_view": 46,
+        "line_end_within_view": 48,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-016",
+    "class": "single",
+    "original_dev_question_ids": [
+      "media-real-photo-101198740-taken"
+    ],
+    "source_group": "commons:photographer:Alexey V. Kurochkin",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "JPEG APP1 DateTimeOriginal confirms 2018-08-04 13:04:46. No timezone offset tag was found; no timezone conversion is justified.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-016",
+        "evidence_id": "e1",
+        "source_path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+        "view_id": "exif-DateTimeOriginal",
+        "view_path": "views/media/photos/101198740-DateTimeOriginal.txt",
+        "asset_sha256": "1d63c0c11cfc45546e801cc0f9a4f1351550edd1d556d720cddb9326de9b62d3",
+        "view_sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+        "span_sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+        "span_start_char": 0,
+        "span_end_char": 19,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-017",
+    "class": "single",
+    "original_dev_question_ids": [
+      "media-real-photo-94585934-filename"
+    ],
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The preserved actual basename is Wrocław_MuzeumNarodowe.jpg; this is filename metadata, not inferred scene content.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "media/photos/Wrocław_MuzeumNarodowe.jpg"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-017",
+        "evidence_id": "e1",
+        "source_path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "original-basename",
+        "view_path": "views/media/photos/94585934-basename.txt",
+        "asset_sha256": "e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0",
+        "view_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+        "span_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+        "span_start_char": 0,
+        "span_end_char": 26,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-018",
+    "class": "single",
+    "original_dev_question_ids": [
+      "v4x-ocr-01"
+    ],
+    "source_group": "upstream:httpx",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The visible HTTPX screenshot says5seconds of network inactivity; this is not a total request deadline.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "root/screenshots/httpx-timeouts.png"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-018",
+        "evidence_id": "e0",
+        "source_path": "root/screenshots/httpx-timeouts.png",
+        "view_id": "ocr",
+        "view_path": "views/root/screenshots/httpx-timeouts.txt",
+        "asset_sha256": "9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5",
+        "view_sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+        "span_sha256": "bc6381c80c32d2e3e4a72a47fda271f66258e6f9abc3df8e260e7e5296c4d2be",
+        "span_start_char": 0,
+        "span_end_char": 90,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-019",
+    "class": "single",
+    "original_dev_question_ids": [
+      "media-real-asr-2803-161169-0001"
+    ],
+    "source_group": "librispeech:book:5792",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The official transcript says birds answered the music of fountains. Whole-utterance location is valid and no word-level timestamp is claimed.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "media/asr/2803-161169-0001.flac"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-019",
+        "evidence_id": "e1",
+        "source_path": "media/asr/2803-161169-0001.flac",
+        "view_id": "official-transcript",
+        "view_path": "views/media/asr/2803-161169-0001.txt",
+        "asset_sha256": "30b7ed1189ca2268621364aa629da6748ac4f941adbd3704b21b3dfc6105b5b1",
+        "view_sha256": "353723ebe37bf7b7a4cd762bac565d550012561585f597140dac7364cad3e26e",
+        "span_sha256": "4eaa2eeb333c68cb880f334b40700526e9f97e16dd0fbbf2b0b0432780990625",
+        "span_start_char": 52,
+        "span_end_char": 119,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": {
+          "unit": "second",
+          "start": 0,
+          "end": 9.495
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-single-020",
+    "class": "single",
+    "original_dev_question_ids": [
+      "media-real-asr-3000-15664-0005"
+    ],
+    "source_group": "librispeech:book:326",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-008"
+    ],
+    "semantic_review_note": "The full official transcript supports the blanket/firewood causal answer, but the marked substring omits that causal link; IR-008 applies.",
+    "required_fact_count": 1,
+    "source_paths": [
+      "media/asr/3000-15664-0005.flac"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-single-020",
+        "evidence_id": "e1",
+        "source_path": "media/asr/3000-15664-0005.flac",
+        "view_id": "official-transcript",
+        "view_path": "views/media/asr/3000-15664-0005.txt",
+        "asset_sha256": "22ae23cb7d7437d9916911660709a0a2baaf9180562d88f471ceb0ac102b6c2f",
+        "view_sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+        "span_sha256": "28d10925ac9bcb21c9131f0f9a886743c471cbd3d64adc6478466e2817a05268",
+        "span_start_char": 92,
+        "span_end_char": 129,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": {
+          "unit": "second",
+          "start": 0,
+          "end": 8.46
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-001",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "media-real-photo-94585934-filename",
+      "media-real-photo-94585934-taken"
+    ],
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Original filename and EXIF capture time are two distinct metadata facts, in different views of one unchanged photo; exact date/time confirmed from APP1.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "media/photos/Wrocław_MuzeumNarodowe.jpg"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-001",
+        "evidence_id": "p1_e1",
+        "source_path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "original-basename",
+        "view_path": "views/media/photos/94585934-basename.txt",
+        "asset_sha256": "e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0",
+        "view_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+        "span_sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+        "span_start_char": 0,
+        "span_end_char": 26,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-001",
+        "evidence_id": "p2_e1",
+        "source_path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "exif-DateTimeOriginal",
+        "view_path": "views/media/photos/94585934-DateTimeOriginal.txt",
+        "asset_sha256": "e424abbd06e1688c602854512c83f1327b21c4b5cb392879865af001993a40b0",
+        "view_sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+        "span_sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+        "span_start_char": 0,
+        "span_end_char": 19,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-002",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-028",
+      "text-semantic-029"
+    ],
+    "source_group": "source:text/click/src/click/parser.py",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-002"
+    ],
+    "semantic_review_note": "Unregistered long options raise NoSuchOption with close-match suggestions; the second original task reuses the short-option span needing IR-002.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/click/src/click/parser.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-002",
+        "evidence_id": "p1_e0",
+        "source_path": "text/click/src/click/parser.py",
+        "view_id": "body",
+        "view_path": "views/text/click/src/click/parser.py.txt",
+        "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "span_sha256": "6d891cf88cb23248b6919fc8c03a0a1f2f2f2dec2f50d3cf1def56214193035a",
+        "span_start_char": 13962,
+        "span_end_char": 14188,
+        "line_start_within_view": 394,
+        "line_end_within_view": 398,
+        "source_location": {
+          "unit": "line",
+          "start": 394,
+          "end": 398
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-002",
+        "evidence_id": "p2_e0",
+        "source_path": "text/click/src/click/parser.py",
+        "view_id": "body",
+        "view_path": "views/text/click/src/click/parser.py.txt",
+        "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "view_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+        "span_sha256": "5caa89b04bc5c053ba96c9db10e5d8e565a39cf0b8ed269b609656c8f625899e",
+        "span_start_char": 15611,
+        "span_end_char": 15710,
+        "line_start_within_view": 440,
+        "line_end_within_view": 442,
+        "source_location": {
+          "unit": "line",
+          "start": 440,
+          "end": 442
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-003",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-92-01",
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "source_group": "pdf:nist-800-92",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Log versus log-entry definition and schedule/size rotation triggers are distinct facts on different pages.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/nist-800-92-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-003",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p001",
+        "view_path": "views/root/pdf/nist-800-92-p001.txt",
+        "asset_sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9",
+        "view_sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+        "span_sha256": "54e5dd987fc6aeb942bbb99ef66b7c356811e95926e27c98bf79acb63a977041",
+        "span_start_char": 97,
+        "span_end_char": 325,
+        "line_start_within_view": 7,
+        "line_end_within_view": 9,
+        "source_location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-003",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p002",
+        "view_path": "views/root/pdf/nist-800-92-p002.txt",
+        "asset_sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9",
+        "view_sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+        "span_sha256": "a0847e7f61b9f2a9a331871307979e8f688d9b3a9988a2b2adc48ba5647063d0",
+        "span_start_char": 1823,
+        "span_end_char": 2067,
+        "line_start_within_view": 43,
+        "line_end_within_view": 45,
+        "source_location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-004",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-017",
+      "text-cjk-018"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-003"
+    ],
+    "semantic_review_note": "v-show display toggling and lazy v-if creation are distinct facts; IR-003 requires display in the first answer target.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/conditional.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-004",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+        "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "span_sha256": "c6951cbc1fa7a20f430b9f7b0f726de6be23fc05deaec8c5a6b3a1da814a7c06",
+        "span_start_char": 2070,
+        "span_end_char": 2141,
+        "line_start_within_view": 89,
+        "line_end_within_view": 89,
+        "source_location": {
+          "unit": "line",
+          "start": 89,
+          "end": 89
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-004",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+        "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "view_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+        "span_sha256": "5336693a0b97375a42f8c551097fd48a5d078ee6eb10d992f931b177183cb768",
+        "span_start_char": 2295,
+        "span_end_char": 2364,
+        "line_start_within_view": 97,
+        "line_end_within_view": 97,
+        "source_location": {
+          "unit": "line",
+          "start": 97,
+          "end": 97
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-005",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-047",
+      "text-cjk-048"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-004",
+      "IR-005"
+    ],
+    "semantic_review_note": "The two original requests are preserved. IR-004 requires the undefined-parent/default-child causal explanation; IR-005 requires title and update:title names.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/components/v-model.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-005",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+        "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "span_sha256": "c2bfd8fbd3ec308aacca81f9d4813aa62b533c5321cf6b25a8b3c6d52342d92a",
+        "span_start_char": 2372,
+        "span_end_char": 2499,
+        "line_start_within_view": 100,
+        "line_end_within_view": 100,
+        "source_location": {
+          "unit": "line",
+          "start": 100,
+          "end": 100
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-005",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/components/v-model.md.txt",
+        "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "view_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+        "span_sha256": "bcede8f22026589c7ac812e2d877a09ad496ab7090e7a0d6f6ade6458056afd6",
+        "span_start_char": 6340,
+        "span_end_char": 6445,
+        "line_start_within_view": 265,
+        "line_end_within_view": 265,
+        "source_location": {
+          "unit": "line",
+          "start": 265,
+          "end": 265
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-006",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "media-real-photo-141842609-filename",
+      "media-real-photo-141842609-taken"
+    ],
+    "source_group": "commons:photographer:Basile Morin",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The actual published filename and 2023-09-20 17:47:29 capture time are distinct; header-only APP1 read confirms the time and no timezone offset.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-006",
+        "evidence_id": "p1_e1",
+        "source_path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "view_id": "original-basename",
+        "view_path": "views/media/photos/141842609-basename.txt",
+        "asset_sha256": "e948acc88c936e5db30b9b021dfbe17ce2ee55cc1cb9b2613f2b17e2f1333c94",
+        "view_sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+        "span_sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+        "span_start_char": 0,
+        "span_end_char": 101,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-006",
+        "evidence_id": "p2_e1",
+        "source_path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "view_id": "exif-DateTimeOriginal",
+        "view_path": "views/media/photos/141842609-DateTimeOriginal.txt",
+        "asset_sha256": "e948acc88c936e5db30b9b021dfbe17ce2ee55cc1cb9b2613f2b17e2f1333c94",
+        "view_sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+        "span_sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+        "span_start_char": 0,
+        "span_end_char": 19,
+        "line_start_within_view": 1,
+        "line_end_within_view": 1,
+        "source_location": null,
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-007",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-US174465-02",
+      "v4x-pdf-US174465-05"
+    ],
+    "source_group": "pdf:US174465",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Bell intensity-change distinction and never-broken-circuit reason are separate disjoint passages on visible patent page3.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/US174465-scan.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-007",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/US174465-p003.txt",
+        "asset_sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56",
+        "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+        "span_sha256": "9b7137fe7e53724188e2f029e4579437bfe979823dbb58555e0b050b74c09d99",
+        "span_start_char": 362,
+        "span_end_char": 516,
+        "line_start_within_view": 3,
+        "line_end_within_view": 3,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-007",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/US174465-p003.txt",
+        "asset_sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56",
+        "view_sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+        "span_sha256": "57324e0d281ffc3dab6e4c54e9fce848cdf4106820bdde4a71f001a8b3af431b",
+        "span_start_char": 1432,
+        "span_end_char": 1499,
+        "line_start_within_view": 5,
+        "line_end_within_view": 5,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-008",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-041",
+      "text-semantic-043"
+    ],
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "The tuple-equivalence statement and HTTPDigestAuth example are separate facts; the source uses built-in digest authentication.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/requests/docs/user/authentication.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-008",
+        "evidence_id": "p1_e0",
+        "source_path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/authentication.rst.txt",
+        "asset_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "span_sha256": "5e7f591e33a1b75c1219d0d0973c95dfc74824f16c6c5c8bbceb814f063bf145",
+        "span_start_char": 959,
+        "span_end_char": 1065,
+        "line_start_within_view": 32,
+        "line_end_within_view": 33,
+        "source_location": {
+          "unit": "line",
+          "start": 32,
+          "end": 33
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-008",
+        "evidence_id": "p2_e0",
+        "source_path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/authentication.rst.txt",
+        "asset_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "view_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+        "span_sha256": "a12e0ba6e0fb7de8be173f816cce124add7a513f83ebe38a7dfe23f5e6c8ed3f",
+        "span_start_char": 1634,
+        "span_end_char": 1800,
+        "line_start_within_view": 54,
+        "line_end_within_view": 56,
+        "source_location": {
+          "unit": "line",
+          "start": 54,
+          "end": 56
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-009",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-029",
+      "text-cjk-030"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-006"
+    ],
+    "semantic_review_note": "Empty numeric input yields an empty string rather than zero. The trimming evidence names .trim, which IR-006 requires in its fact.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/forms.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-009",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+        "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "span_sha256": "f0d4b0e9e825677f6cec36fef851aec74541ecdd845e816e9c8af832f41bec92",
+        "span_start_char": 13901,
+        "span_end_char": 13971,
+        "line_start_within_view": 452,
+        "line_end_within_view": 452,
+        "source_location": {
+          "unit": "line",
+          "start": 452,
+          "end": 452
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-009",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/forms.md.txt",
+        "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "view_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+        "span_sha256": "53aa12a2ba48a7c54beeeffb42de0d0a152bc448280e74f93df6bc0f8f167005",
+        "span_start_char": 14152,
+        "span_end_char": 14207,
+        "line_start_within_view": 458,
+        "line_end_within_view": 458,
+        "source_location": {
+          "unit": "line",
+          "start": 458,
+          "end": 458
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-010",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-021",
+      "text-cjk-023"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Integer v-for ranges run1...n; object list keys are prohibited. These are disjoint facts in the list guide.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/list.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-010",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/list.md.txt",
+        "asset_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "span_sha256": "2a06c18fd66d750df1cff59aeb5b8187786c272ad2056da6f11758fcdfcb52e7",
+        "span_start_char": 4322,
+        "span_end_char": 4375,
+        "line_start_within_view": 195,
+        "line_end_within_view": 195,
+        "source_location": {
+          "unit": "line",
+          "start": 195,
+          "end": 195
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-010",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/list.md.txt",
+        "asset_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "view_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+        "span_sha256": "6b65d2eb3486fb6b9e60c6299179669bc01925252cb54f3a9f2b16c4a6ea84cc",
+        "span_start_char": 6238,
+        "span_end_char": 6299,
+        "line_start_within_view": 278,
+        "line_end_within_view": 278,
+        "source_location": {
+          "unit": "line",
+          "start": 278,
+          "end": 278
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-011",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-01",
+      "v4x-pdf-nist-800-107r1-05"
+    ],
+    "source_group": "pdf:nist-800-107r1",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Collision means different messages with the same digest; successful HMAC verification does not completely guarantee authenticity. The negation is retained.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/nist-800-107r1-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-011",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p001",
+        "view_path": "views/root/pdf/nist-800-107r1-p001.txt",
+        "asset_sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b",
+        "view_sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+        "span_sha256": "af6e4626465a1710175057d59ee61d0a196bd6b8cf46cc74a5940baddc8624cb",
+        "span_start_char": 1683,
+        "span_end_char": 1753,
+        "line_start_within_view": 57,
+        "line_end_within_view": 58,
+        "source_location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-011",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p005",
+        "view_path": "views/root/pdf/nist-800-107r1-p005.txt",
+        "asset_sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b",
+        "view_sha256": "dc608f481090338e9fce288bb51d4bcb2808674d9c577682d41e3cefacd9630e",
+        "span_sha256": "7e61037f6056643789fde8059534d7fcab0ae057e43fde557826147d488e2d13",
+        "span_start_char": 34,
+        "span_end_char": 302,
+        "line_start_within_view": 2,
+        "line_end_within_view": 5,
+        "source_location": {
+          "unit": "page",
+          "start": 5,
+          "end": 5
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-012",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-053",
+      "text-semantic-054"
+    ],
+    "source_group": "source:text/click/docs/options.rst",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-001"
+    ],
+    "semantic_review_note": "The callable-default recommendation is supported. The first subquestion requires count=True and an expanded source span under IR-001.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/click/docs/options.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-012",
+        "evidence_id": "p1_e0",
+        "source_path": "text/click/docs/options.rst",
+        "view_id": "body",
+        "view_path": "views/text/click/docs/options.rst.txt",
+        "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "span_sha256": "5e5a27b9487207ae59192772f3f9cbe18058b82359e2b7651206b343e792c341",
+        "span_start_char": 6411,
+        "span_end_char": 6464,
+        "line_start_within_view": 230,
+        "line_end_within_view": 231,
+        "source_location": {
+          "unit": "line",
+          "start": 230,
+          "end": 231
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-012",
+        "evidence_id": "p2_e0",
+        "source_path": "text/click/docs/options.rst",
+        "view_id": "body",
+        "view_path": "views/text/click/docs/options.rst.txt",
+        "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "view_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+        "span_sha256": "cd949e8afe2611671befed6bb67acc1aaa8f1d4d4c4e7ca201dfc2d3fb837891",
+        "span_start_char": 13386,
+        "span_end_char": 13575,
+        "line_start_within_view": 505,
+        "line_end_within_view": 507,
+        "source_location": {
+          "unit": "line",
+          "start": 505,
+          "end": 507
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-013",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-011",
+      "text-cjk-013"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Object/array binding syntax and explicit multi-root class receiver selection are distinct source facts.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/class-and-style.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-013",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+        "asset_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "span_sha256": "5c8acdda6932adcd9ad93260c5ea6f554201dfd6ab774672b765dd760c595f96",
+        "span_start_char": 251,
+        "span_end_char": 273,
+        "line_start_within_view": 3,
+        "line_end_within_view": 3,
+        "source_location": {
+          "unit": "line",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-013",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+        "asset_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "view_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+        "span_sha256": "4a5ff5fb0d0282e92574c44a4a7c26ce20a711a6e4aa44092645959d0825c094",
+        "span_start_char": 3536,
+        "span_end_char": 3601,
+        "line_start_within_view": 225,
+        "line_end_within_view": 225,
+        "source_location": {
+          "unit": "line",
+          "start": 225,
+          "end": 225
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-014",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-001",
+      "text-semantic-003"
+    ],
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-007",
+      "IR-A02"
+    ],
+    "semantic_review_note": "None-valued merged keys are deleted. The auth upgrade fact is correct in the full source, but current evidence omits hostname/port/return logic; IR-007 applies.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/requests/src/requests/sessions.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-014",
+        "evidence_id": "p1_e0",
+        "source_path": "text/requests/src/requests/sessions.py",
+        "view_id": "body",
+        "view_path": "views/text/requests/src/requests/sessions.py.txt",
+        "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "span_sha256": "c23770f52bf2e6768f6c0b89ac4e4f338e229a5ea3dcc29557e1dc9f53712f13",
+        "span_start_char": 2178,
+        "span_end_char": 2417,
+        "line_start_within_view": 82,
+        "line_end_within_view": 86,
+        "source_location": {
+          "unit": "line",
+          "start": 82,
+          "end": 86
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-014",
+        "evidence_id": "p2_e0",
+        "source_path": "text/requests/src/requests/sessions.py",
+        "view_id": "body",
+        "view_path": "views/text/requests/src/requests/sessions.py.txt",
+        "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "span_sha256": "0811f0de9d9861cd95a9e8b16854b6a5cfe50053deb44fcb08dcf23c8f24640a",
+        "span_start_char": 4440,
+        "span_end_char": 4525,
+        "line_start_within_view": 133,
+        "line_end_within_view": 134,
+        "source_location": {
+          "unit": "line",
+          "start": 133,
+          "end": 134
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-015",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01",
+      "v4x-pdf-nist-800-145-05"
+    ],
+    "source_group": "pdf:nist-800-145",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "5/3/4 cloud-model counts and the hybrid-cloud portability-technology definition are distinct source facts on different pages.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/nist-800-145-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-015",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p001",
+        "view_path": "views/root/pdf/nist-800-145-p001.txt",
+        "asset_sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b",
+        "view_sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+        "span_sha256": "bef2da5c888ee79b85ac6e57b31547810dd1f888696147d1c430ad6c32105a78",
+        "span_start_char": 358,
+        "span_end_char": 471,
+        "line_start_within_view": 8,
+        "line_end_within_view": 9,
+        "source_location": {
+          "unit": "page",
+          "start": 1,
+          "end": 1
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-015",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p002",
+        "view_path": "views/root/pdf/nist-800-145-p002.txt",
+        "asset_sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b",
+        "view_sha256": "79047ce13af4421f2017c00978f6e363dc01ee92b3923d320877ba7bce1902f6",
+        "span_sha256": "3db22881795edd5bc378b6a5b24daf9413a46f78b4f0406ea5bde70097ee5af3",
+        "span_start_char": 1832,
+        "span_end_char": 2163,
+        "line_start_within_view": 24,
+        "line_end_within_view": 27,
+        "source_location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-016",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-037",
+      "text-semantic-040"
+    ],
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Session.prepare_request preserves session state; per-IP sequential connect attempts can multiply elapsed wait. No aggregate timeout bound is invented.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/requests/docs/user/advanced.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-016",
+        "evidence_id": "p1_e0",
+        "source_path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/advanced.rst.txt",
+        "asset_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "span_sha256": "7c45d8724f6c1665fc331e5fec22e07c9a03c3348274b32b97a352e487f4ac38",
+        "span_start_char": 5695,
+        "span_end_char": 6039,
+        "line_start_within_view": 160,
+        "line_end_within_view": 165,
+        "source_location": {
+          "unit": "line",
+          "start": 160,
+          "end": 165
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-016",
+        "evidence_id": "p2_e0",
+        "source_path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body",
+        "view_path": "views/text/requests/docs/user/advanced.rst.txt",
+        "asset_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "view_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+        "span_sha256": "38dea2fa1e51ee22616bfc4a761e2cb6282c004da63d2ca3e6fcf26a8f460ce0",
+        "span_start_char": 41105,
+        "span_end_char": 41339,
+        "line_start_within_view": 1127,
+        "line_end_within_view": 1129,
+        "source_location": {
+          "unit": "line",
+          "start": 1127,
+          "end": 1129
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-017",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-cjk-001",
+      "text-cjk-003"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Default deep detection and the requirement to mutate the reactive proxy rather than the raw object are distinct facts.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-017",
+        "evidence_id": "p1_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+        "asset_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "span_sha256": "23d0afb10548de950a62dcf825b7c3f95d3888482ae7c68ecd91c3b69b0334e7",
+        "span_start_char": 6232,
+        "span_end_char": 6282,
+        "line_start_within_view": 278,
+        "line_end_within_view": 278,
+        "source_location": {
+          "unit": "line",
+          "start": 278,
+          "end": 278
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-017",
+        "evidence_id": "p2_e0",
+        "source_path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+        "asset_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "view_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+        "span_sha256": "50ec7e0e6f7713f13bda3ba15bdb8bf50c732039f3d059e210c2940de7291729",
+        "span_start_char": 9008,
+        "span_end_char": 9073,
+        "line_start_within_view": 409,
+        "line_end_within_view": 409,
+        "source_location": {
+          "unit": "line",
+          "start": 409,
+          "end": 409
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-018",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03",
+      "v4x-pdf-nist-800-38a-04"
+    ],
+    "source_group": "pdf:nist-800-38a",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "CTR uses forward cipher plus XOR for decryption, and uniqueness spans every plaintext block across all messages under a key; the cross-message qualifier is retained.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/nist-800-38a-excerpt.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-018",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p003",
+        "view_path": "views/root/pdf/nist-800-38a-p003.txt",
+        "asset_sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b",
+        "view_sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+        "span_sha256": "b4d373f0d98d756db3341b8f132a46c83d76e50bbc3a79b15567b02b15b4e786",
+        "span_start_char": 1790,
+        "span_end_char": 1995,
+        "line_start_within_view": 46,
+        "line_end_within_view": 48,
+        "source_location": {
+          "unit": "page",
+          "start": 3,
+          "end": 3
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-018",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p004",
+        "view_path": "views/root/pdf/nist-800-38a-p004.txt",
+        "asset_sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b",
+        "view_sha256": "4a7bc3fcf1ddfd34313d10f36798b7bdf0460eb51823c78dd75f5d7a3a82aa36",
+        "span_sha256": "72946b9a3fefc3a7a8e69b5f4a726bb94ffc8320a17aca512cabf022e7d63ec7",
+        "span_start_char": 41,
+        "span_end_char": 194,
+        "line_start_within_view": 2,
+        "line_end_within_view": 3,
+        "source_location": {
+          "unit": "page",
+          "start": 4,
+          "end": 4
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-019",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "v4x-pdf-US6469-02",
+      "v4x-pdf-US6469-03"
+    ],
+    "source_group": "pdf:US6469",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Visible Lincoln page2 supports contraction/stowage and india-rubber cloth or another suitable waterproof fabric, retaining the material alternative.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "root/pdf/US6469-scan.pdf"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-019",
+        "evidence_id": "p1_e0",
+        "source_path": "root/pdf/US6469-scan.pdf",
+        "view_id": "p002",
+        "view_path": "views/root/pdf/US6469-p002.txt",
+        "asset_sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4",
+        "view_sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+        "span_sha256": "a8b73974222360efeffdf240ec7189f5ac149ec9b583fa3b3e87792d0082606d",
+        "span_start_char": 791,
+        "span_end_char": 899,
+        "line_start_within_view": 3,
+        "line_end_within_view": 3,
+        "source_location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-019",
+        "evidence_id": "p2_e0",
+        "source_path": "root/pdf/US6469-scan.pdf",
+        "view_id": "p002",
+        "view_path": "views/root/pdf/US6469-p002.txt",
+        "asset_sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4",
+        "view_sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+        "span_sha256": "ef935c8666872f3281f73f937e759d577fef6c1e7a1cda0d377ccbbf6211c715",
+        "span_start_char": 1023,
+        "span_end_char": 1140,
+        "line_start_within_view": 5,
+        "line_end_within_view": 5,
+        "source_location": {
+          "unit": "page",
+          "start": 2,
+          "end": 2
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-multi-020",
+    "class": "multi",
+    "original_dev_question_ids": [
+      "text-semantic-057",
+      "text-semantic-059"
+    ],
+    "source_group": "source:text/click/docs/commands.rst",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Command-local parameters must be after that command and before later names; only the final chained command may use nargs=-1. Both restrictions are supported.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "text/click/docs/commands.rst"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-multi-020",
+        "evidence_id": "p1_e0",
+        "source_path": "text/click/docs/commands.rst",
+        "view_id": "body",
+        "view_path": "views/text/click/docs/commands.rst.txt",
+        "asset_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "span_sha256": "af60ca030baa729cd897c3370cd259bb3c215a76d1255447b933e20bfaaf29e1",
+        "span_start_char": 1363,
+        "span_end_char": 1499,
+        "line_start_within_view": 46,
+        "line_end_within_view": 47,
+        "source_location": {
+          "unit": "line",
+          "start": 46,
+          "end": 47
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-multi-020",
+        "evidence_id": "p2_e0",
+        "source_path": "text/click/docs/commands.rst",
+        "view_id": "body",
+        "view_path": "views/text/click/docs/commands.rst.txt",
+        "asset_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "view_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+        "span_sha256": "47fbebe3101d24eb3a370dfb2457dd9abf4c447339416a5a8c16b5367ea63d85",
+        "span_start_char": 9653,
+        "span_end_char": 9760,
+        "line_start_within_view": 316,
+        "line_end_within_view": 317,
+        "source_location": {
+          "unit": "line",
+          "start": 316,
+          "end": 317
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-001",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-01"
+    ],
+    "source_group": "upstream:pip-tools",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "README environment-marker rationale and code default-input tuple priority are both supported. The source loop confirms the tuple is checked in order.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip-tools/README.md",
+      "compound/pip-tools/piptools/scripts/compile.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-001",
+        "evidence_id": "e1",
+        "source_path": "compound/pip-tools/README.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/README.md.txt",
+        "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "span_sha256": "d838c0f1055ac4664de22422b73f5dd82d08aee20a72f4b0888c4059dba06383",
+        "span_start_char": 1748,
+        "span_end_char": 1971,
+        "line_start_within_view": 46,
+        "line_end_within_view": 49,
+        "source_location": {
+          "unit": "line",
+          "start": 46,
+          "end": 49
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-001",
+        "evidence_id": "e2",
+        "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "span_sha256": "22569ddc0d48c545d2fe9e282c61a1f0f3b333c61a035b042b955086ed6c01cc",
+        "span_start_char": 1040,
+        "span_end_char": 1150,
+        "line_start_within_view": 40,
+        "line_end_within_view": 45,
+        "source_location": {
+          "unit": "line",
+          "start": 40,
+          "end": 45
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-002",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-poetry-02"
+    ],
+    "source_group": "upstream:poetry",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Absolute interpreter path via poetry env use and Git rev commit pinning are supported in the two different guides.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/poetry/docs/dependency-specification.md",
+      "compound/poetry/docs/managing-environments.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-002",
+        "evidence_id": "e1",
+        "source_path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "span_sha256": "4d9ec442a8e660c20ead80c62c57a9f646bc7b8a31078cc0af7d68d9eaf7b5d8",
+        "span_start_char": 1955,
+        "span_end_char": 1990,
+        "line_start_within_view": 57,
+        "line_end_within_view": 57,
+        "source_location": {
+          "unit": "line",
+          "start": 57,
+          "end": 57
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-002",
+        "evidence_id": "e2",
+        "source_path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "span_sha256": "b044078e667068ce0faf3c7d4d9cf35fdcc4051e0f7f184b46e7c05542778b1b",
+        "span_start_char": 9262,
+        "span_end_char": 9372,
+        "line_start_within_view": 309,
+        "line_end_within_view": 310,
+        "source_location": {
+          "unit": "line",
+          "start": 309,
+          "end": 310
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-003",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-typer-01"
+    ],
+    "source_group": "upstream:typer",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "typer.Option(help=...) inside Annotated and typer.Context function-parameter injection are distinct supported facts.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/typer/docs/tutorial/commands/context.md",
+      "compound/typer/docs/tutorial/options/help.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-003",
+        "evidence_id": "e1",
+        "source_path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+        "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "span_sha256": "aca9a28d39df6018cdff83b7153cf487ed34016a3d17a12a3bdee0ce5c8a1ba1",
+        "span_start_char": 368,
+        "span_end_char": 450,
+        "line_start_within_view": 14,
+        "line_end_within_view": 14,
+        "source_location": {
+          "unit": "line",
+          "start": 14,
+          "end": 14
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-003",
+        "evidence_id": "e2",
+        "source_path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+        "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "span_sha256": "1a11f35d4b73d0246217297c34b7980e4026eee3cc19e9518d13aa3fbf40b8d7",
+        "span_start_char": 134,
+        "span_end_char": 223,
+        "line_start_within_view": 5,
+        "line_end_within_view": 5,
+        "source_location": {
+          "unit": "line",
+          "start": 5,
+          "end": 5
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-004",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-uv-02"
+    ],
+    "source_group": "upstream:uv",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "uv.lock pins exact resolved versions for reproducibility; installed tools do not make modules available in the current project environment.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/uv/docs/guides/projects.md",
+      "compound/uv/docs/guides/tools.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-004",
+        "evidence_id": "e1",
+        "source_path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/projects.md.txt",
+        "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "span_sha256": "fcfbc45ca74b50a8f1e0ec10cc89a9a5fa3c19b93e5cab3b30931f8fc664f4f1",
+        "span_start_char": 3394,
+        "span_end_char": 3612,
+        "line_start_within_view": 129,
+        "line_end_within_view": 131,
+        "source_location": {
+          "unit": "line",
+          "start": 129,
+          "end": 131
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-004",
+        "evidence_id": "e2",
+        "source_path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/tools.md.txt",
+        "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "span_sha256": "0837b77fe57aa72706cc0f01e80c85378b5852a7d97566f3d25cd0eefd557afc",
+        "span_start_char": 4459,
+        "span_end_char": 4565,
+        "line_start_within_view": 185,
+        "line_end_within_view": 186,
+        "source_location": {
+          "unit": "line",
+          "start": 185,
+          "end": 186
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-005",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-01"
+    ],
+    "source_group": "upstream:pip",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "pip freeze captures top-level/transitive pins; HTTP response caching minimizes rather than eliminates network access.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip/docs/html/topics/caching.md",
+      "compound/pip/docs/html/topics/repeatable-installs.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-005",
+        "evidence_id": "e1",
+        "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+        "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "span_sha256": "cc2d029798863bd39bcc73f3fc503fe52413a927d87b5ede3b567421ab81e24a",
+        "span_start_char": 543,
+        "span_end_char": 735,
+        "line_start_within_view": 22,
+        "line_end_within_view": 24,
+        "source_location": {
+          "unit": "line",
+          "start": 22,
+          "end": 24
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-005",
+        "evidence_id": "e2",
+        "source_path": "compound/pip/docs/html/topics/caching.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+        "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "span_sha256": "f265b9e1582eae7738a7c3fa225c612fc685aecb34dc11afe523253803387824",
+        "span_start_char": 800,
+        "span_end_char": 902,
+        "line_start_within_view": 26,
+        "line_end_within_view": 27,
+        "source_location": {
+          "unit": "line",
+          "start": 26,
+          "end": 27
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-006",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-httpx-04"
+    ],
+    "source_group": "upstream:httpx",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "HTTPStatusError on raise_for_status for non2xx and PoolTimeout on acquisition timeout are supported and distinguish HTTP errors from transport/pool waiting.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/httpx/docs/advanced/timeouts.md",
+      "compound/httpx/docs/quickstart.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-006",
+        "evidence_id": "e1",
+        "source_path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/quickstart.md.txt",
+        "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "span_sha256": "389d482bf3b2df3243f6f9b780df2a057fb0d7ff5550d146090c171d65e891d2",
+        "span_start_char": 13399,
+        "span_end_char": 13516,
+        "line_start_within_view": 511,
+        "line_end_within_view": 511,
+        "source_location": {
+          "unit": "line",
+          "start": 511,
+          "end": 511
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-006",
+        "evidence_id": "e2",
+        "source_path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+        "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "span_sha256": "73222ae746efecd529bfe4147a7c8b92af877ab36f5305360e8635ee11d19b6d",
+        "span_start_char": 2228,
+        "span_end_char": 2331,
+        "line_start_within_view": 58,
+        "line_end_within_view": 59,
+        "source_location": {
+          "unit": "line",
+          "start": 58,
+          "end": 59
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-007",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-02"
+    ],
+    "source_group": "upstream:pip-tools",
+    "verdict": "CROSS_FILE_NECESSITY_RESOLUTION_REQUIRED",
+    "finding_ids": [
+      "IR-011"
+    ],
+    "semantic_review_note": "Both stated facts are source-correct, but compile.py substantially supports both halves; resolve the strict cross-file necessity issue IR-011.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip-tools/README.md",
+      "compound/pip-tools/piptools/scripts/compile.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-007",
+        "evidence_id": "e1",
+        "source_path": "compound/pip-tools/README.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/README.md.txt",
+        "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "span_sha256": "0743977f38937bb9e9c909970df7c2fe6bc8852f81e6f887cd793836b7570322",
+        "span_start_char": 7283,
+        "span_end_char": 7526,
+        "line_start_within_view": 236,
+        "line_end_within_view": 239,
+        "source_location": {
+          "unit": "line",
+          "start": 236,
+          "end": 239
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-007",
+        "evidence_id": "e2",
+        "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "span_sha256": "6f5b2544ea3d97d583526731d152980627792cd413e55674da6cbd2e325a5e4d",
+        "span_start_char": 7581,
+        "span_end_char": 7772,
+        "line_start_within_view": 264,
+        "line_end_within_view": 267,
+        "source_location": {
+          "unit": "line",
+          "start": 264,
+          "end": 267
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-008",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-poetry-05"
+    ],
+    "source_group": "upstream:poetry",
+    "verdict": "REVISION_REQUIRED",
+    "finding_ids": [
+      "IR-009"
+    ],
+    "semantic_review_note": "poetry env remove --all and caret boundary are supported. The question needs the current-project qualifier under IR-009.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/poetry/docs/dependency-specification.md",
+      "compound/poetry/docs/managing-environments.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-008",
+        "evidence_id": "e1",
+        "source_path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "span_sha256": "d06cbde64a629c4c3545785c7c207642e690a075883048b0d24577f792e5a5f5",
+        "span_start_char": 5160,
+        "span_end_char": 5183,
+        "line_start_within_view": 197,
+        "line_end_within_view": 197,
+        "source_location": {
+          "unit": "line",
+          "start": 197,
+          "end": 197
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-008",
+        "evidence_id": "e2",
+        "source_path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "span_sha256": "ca0566da68bec2728c60c1b0a4db539dee40fd93ebd4761d36ff5b265be1a17e",
+        "span_start_char": 4538,
+        "span_end_char": 4666,
+        "line_start_within_view": 150,
+        "line_end_within_view": 150,
+        "source_location": {
+          "unit": "line",
+          "start": 150,
+          "end": 150
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-009",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-typer-03"
+    ],
+    "source_group": "upstream:typer",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "show_default=False and ctx.invoked_subcommand is None are supported; None indicates direct callback invocation.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/typer/docs/tutorial/commands/context.md",
+      "compound/typer/docs/tutorial/options/help.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-009",
+        "evidence_id": "e1",
+        "source_path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+        "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "span_sha256": "b646cf9ec75422d06874b8e8ddb9608ca380a61123d7f0563a6930b08ae336a6",
+        "span_start_char": 4532,
+        "span_end_char": 4624,
+        "line_start_within_view": 103,
+        "line_end_within_view": 103,
+        "source_location": {
+          "unit": "line",
+          "start": 103,
+          "end": 103
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-009",
+        "evidence_id": "e2",
+        "source_path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+        "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "span_sha256": "6ffccb75f2d840b37247f6ab4092a6c5dcb55be2b1c6e710e73a949e36d96c0d",
+        "span_start_char": 1895,
+        "span_end_char": 2068,
+        "line_start_within_view": 73,
+        "line_end_within_view": 75,
+        "source_location": {
+          "unit": "line",
+          "start": 73,
+          "end": 75
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-010",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-uv-05"
+    ],
+    "source_group": "upstream:uv",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "uv build defaults to dist/, and uvx --with mkdocs-material mkdocs adds the package for that tool invocation. The source example invokes --help.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/uv/docs/guides/projects.md",
+      "compound/uv/docs/guides/tools.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-010",
+        "evidence_id": "e1",
+        "source_path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/projects.md.txt",
+        "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "span_sha256": "58f1c9d0b5640fa0f612f23cdb49cb05a2f5ef9a1c9a6d03604cc2154bd8b758",
+        "span_start_char": 7369,
+        "span_end_char": 7497,
+        "line_start_within_view": 282,
+        "line_end_within_view": 283,
+        "source_location": {
+          "unit": "line",
+          "start": 282,
+          "end": 283
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-010",
+        "evidence_id": "e2",
+        "source_path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/tools.md.txt",
+        "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "span_sha256": "8de75bc9b3265cbab01fe03cb0ec5a4821a52ffb55b80afd4ec29f94f9706356",
+        "span_start_char": 3701,
+        "span_end_char": 3741,
+        "line_start_within_view": 156,
+        "line_end_within_view": 156,
+        "source_location": {
+          "unit": "line",
+          "start": 156,
+          "end": 156
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-011",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-02"
+    ],
+    "source_group": "upstream:pip",
+    "verdict": "CROSS_FILE_NECESSITY_RESOLUTION_REQUIRED",
+    "finding_ids": [
+      "IR-010"
+    ],
+    "semantic_review_note": "Both answer facts are correct, but caching.md already shows == in a pinned-package example as well as pip cache dir; resolve IR-010 before strict two-file claims.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip/docs/html/topics/caching.md",
+      "compound/pip/docs/html/topics/repeatable-installs.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-011",
+        "evidence_id": "e1",
+        "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+        "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "span_sha256": "b8f8da8b1e6887ec67404969d5778c903135c49de40112e52b8e1c595fee5447",
+        "span_start_char": 447,
+        "span_end_char": 537,
+        "line_start_within_view": 18,
+        "line_end_within_view": 19,
+        "source_location": {
+          "unit": "line",
+          "start": 18,
+          "end": 19
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-011",
+        "evidence_id": "e2",
+        "source_path": "compound/pip/docs/html/topics/caching.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+        "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "span_sha256": "80c74a9f4bdc4ca0647d3320e819330c1d7b0574bfb99be28106013fc7ef56cf",
+        "span_start_char": 2422,
+        "span_end_char": 2517,
+        "line_start_within_view": 73,
+        "line_end_within_view": 73,
+        "source_location": {
+          "unit": "line",
+          "start": 73,
+          "end": 73
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-012",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-httpx-01"
+    ],
+    "source_group": "upstream:httpx",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "params attaches URL query parameters, and connect controls socket-connection establishment. Each half is explicit in its paired file.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/httpx/docs/advanced/timeouts.md",
+      "compound/httpx/docs/quickstart.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-012",
+        "evidence_id": "e1",
+        "source_path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/quickstart.md.txt",
+        "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "span_sha256": "68af5bbd95179aa0c416c7bf5bb27b8a9922c5e80d48f7caacfe65f653bd904c",
+        "span_start_char": 655,
+        "span_end_char": 728,
+        "line_start_within_view": 34,
+        "line_end_within_view": 34,
+        "source_location": {
+          "unit": "line",
+          "start": 34,
+          "end": 34
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-012",
+        "evidence_id": "e2",
+        "source_path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+        "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "span_sha256": "76b202f74b3af1b63b21f23ca56e11ad930f94cf74e81ca50642c058584abd2c",
+        "span_start_char": 1416,
+        "span_end_char": 1548,
+        "line_start_within_view": 48,
+        "line_end_within_view": 49,
+        "source_location": {
+          "unit": "line",
+          "start": 48,
+          "end": 49
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-013",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-05"
+    ],
+    "source_group": "upstream:pip-tools",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "Both requirement files should be committed for reproducibility; preserve fallback returns the LF newline string, not the literal characters backslash and n.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip-tools/README.md",
+      "compound/pip-tools/piptools/scripts/compile.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-013",
+        "evidence_id": "e1",
+        "source_path": "compound/pip-tools/README.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/README.md.txt",
+        "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "span_sha256": "35128f618e21d2628385b83d2cfdc9a2c8363a3917c677ecc95add733395a217",
+        "span_start_char": 15490,
+        "span_end_char": 15686,
+        "line_start_within_view": 503,
+        "line_end_within_view": 505,
+        "source_location": {
+          "unit": "line",
+          "start": 503,
+          "end": 505
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-013",
+        "evidence_id": "e2",
+        "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "span_sha256": "3f63c0d84d8d8df9a7d399730ee24e6e61331abd602d3ba1f1868cdfb1d0ee49",
+        "span_start_char": 2090,
+        "span_end_char": 2214,
+        "line_start_within_view": 73,
+        "line_end_within_view": 78,
+        "source_location": {
+          "unit": "line",
+          "start": 73,
+          "end": 78
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-014",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-poetry-03"
+    ],
+    "source_group": "upstream:poetry",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "env activate prints a command that can be evaluated in the current shell; develop=true enables editable local directory dependencies.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/poetry/docs/dependency-specification.md",
+      "compound/poetry/docs/managing-environments.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-014",
+        "evidence_id": "e1",
+        "source_path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "span_sha256": "4dc8bc7c3cb5f3d08b6ae1d806c341cf5a8c87ad982a4feb9de709e560aff3b3",
+        "span_start_char": 2572,
+        "span_end_char": 2834,
+        "line_start_within_view": 85,
+        "line_end_within_view": 87,
+        "source_location": {
+          "unit": "line",
+          "start": 85,
+          "end": 87
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-014",
+        "evidence_id": "e2",
+        "source_path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "span_sha256": "d12c47f8c9d4253e867d2889401134d1173259400a31a84eaddf5ffd830b4e63",
+        "span_start_char": 12915,
+        "span_end_char": 13019,
+        "line_start_within_view": 430,
+        "line_end_within_view": 430,
+        "source_location": {
+          "unit": "line",
+          "start": 430,
+          "end": 430
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-015",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-typer-02"
+    ],
+    "source_group": "upstream:typer",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "rich_help_panel selects the named panel, and invoke_without_command=True allows callback execution without a subcommand.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/typer/docs/tutorial/commands/context.md",
+      "compound/typer/docs/tutorial/options/help.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-015",
+        "evidence_id": "e1",
+        "source_path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/options/help.md.txt",
+        "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "view_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+        "span_sha256": "ac6b123c4f2e46b21e9520aeab93365412a70a69fb5f605a6865b0678d63d098",
+        "span_start_char": 1446,
+        "span_end_char": 1558,
+        "line_start_within_view": 57,
+        "line_end_within_view": 57,
+        "source_location": {
+          "unit": "line",
+          "start": 57,
+          "end": 57
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-015",
+        "evidence_id": "e2",
+        "source_path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/typer/docs/tutorial/commands/context.md.txt",
+        "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "view_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+        "span_sha256": "bc1877a3ae22ac7b0540cd2fc4145137959339216bdd512e8a1b9f94ee53f7b1",
+        "span_start_char": 1254,
+        "span_end_char": 1340,
+        "line_start_within_view": 45,
+        "line_end_within_view": 45,
+        "source_location": {
+          "unit": "line",
+          "start": 45,
+          "end": 45
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-016",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-uv-03"
+    ],
+    "source_group": "upstream:uv",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "uv add -r requirements.txt -c constraints.txt imports constrained requirements, and uvx --from httpie http resolves the differing package/command name.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/uv/docs/guides/projects.md",
+      "compound/uv/docs/guides/tools.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-016",
+        "evidence_id": "e1",
+        "source_path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/projects.md.txt",
+        "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "view_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+        "span_sha256": "1ca6dd358c62bb3493a907c0d43a927c75231b5e450178be1966446fbea74584",
+        "span_start_char": 4415,
+        "span_end_char": 4460,
+        "line_start_within_view": 161,
+        "line_end_within_view": 161,
+        "source_location": {
+          "unit": "line",
+          "start": 161,
+          "end": 161
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-016",
+        "evidence_id": "e2",
+        "source_path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/tools.md.txt",
+        "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "span_sha256": "6f3dcdab7b79466eee77f638d2b5260c1c7c0f56e609f359114026561c2be463",
+        "span_start_char": 1971,
+        "span_end_char": 1993,
+        "line_start_within_view": 72,
+        "line_end_within_view": 72,
+        "source_location": {
+          "unit": "line",
+          "start": 72,
+          "end": 72
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-017",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-05"
+    ],
+    "source_group": "upstream:pip",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "--no-deps limits dependency additions, and pip cache purge clears both wheel and HTTP caches; both qualifiers are retained.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip/docs/html/topics/caching.md",
+      "compound/pip/docs/html/topics/repeatable-installs.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-017",
+        "evidence_id": "e1",
+        "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+        "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "view_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+        "span_sha256": "29af201f25712882fb7b66f24e534a7f69f20d7ee6208275e7fc21e2061c5f92",
+        "span_start_char": 736,
+        "span_end_char": 898,
+        "line_start_within_view": 24,
+        "line_end_within_view": 26,
+        "source_location": {
+          "unit": "line",
+          "start": 24,
+          "end": 26
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-017",
+        "evidence_id": "e2",
+        "source_path": "compound/pip/docs/html/topics/caching.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip/docs/html/topics/caching.md.txt",
+        "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "view_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+        "span_sha256": "e9686f63579399d1ab454f2bb8cee84f6897452e07754dbbac6c7e2b63d6a743",
+        "span_start_char": 4479,
+        "span_end_char": 4551,
+        "line_start_within_view": 144,
+        "line_end_within_view": 144,
+        "source_location": {
+          "unit": "line",
+          "start": 144,
+          "end": 144
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-018",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-httpx-03"
+    ],
+    "source_group": "upstream:httpx",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "content= accepts bytes or a byte-yielding generator; write timeout applies to sending a chunk rather than total-request duration.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/httpx/docs/advanced/timeouts.md",
+      "compound/httpx/docs/quickstart.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-018",
+        "evidence_id": "e1",
+        "source_path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/quickstart.md.txt",
+        "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "view_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+        "span_sha256": "212fefce83e13a3d424d4de6663a16effca2e17869c5c570d6dc9ec745d97be1",
+        "span_start_char": 5710,
+        "span_end_char": 5840,
+        "line_start_within_view": 253,
+        "line_end_within_view": 254,
+        "source_location": {
+          "unit": "line",
+          "start": 253,
+          "end": 254
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-018",
+        "evidence_id": "e2",
+        "source_path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/httpx/docs/advanced/timeouts.md.txt",
+        "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "view_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+        "span_sha256": "8ed71efaef7e9d7e22a69a6d70a6cf3816c3912a5086b56ac7f989d3268119a4",
+        "span_start_char": 1883,
+        "span_end_char": 2018,
+        "line_start_within_view": 54,
+        "line_end_within_view": 55,
+        "source_location": {
+          "unit": "line",
+          "start": 54,
+          "end": 55
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-019",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-03"
+    ],
+    "source_group": "upstream:pip-tools",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "pip-sync avoids upgrading/uninstalling setuptools,pip,pip-tools; max_rounds is forwarded to resolver.resolve(max_rounds=max_rounds).",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/pip-tools/README.md",
+      "compound/pip-tools/piptools/scripts/compile.py"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-019",
+        "evidence_id": "e1",
+        "source_path": "compound/pip-tools/README.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/README.md.txt",
+        "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "view_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+        "span_sha256": "c2c8095f5b9aadbfed0d340bc0601d544fe6fcca9ba36c4a6c55f1a1992fd202",
+        "span_start_char": 15237,
+        "span_end_char": 15342,
+        "line_start_within_view": 497,
+        "line_end_within_view": 498,
+        "source_location": {
+          "unit": "line",
+          "start": 497,
+          "end": 498
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-019",
+        "evidence_id": "e2",
+        "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines",
+        "view_path": "views/compound/pip-tools/piptools/scripts/compile.py.txt",
+        "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "view_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+        "span_sha256": "3a2b1ab70e022c8b11d0c5c1c38eacfd2b649a2fca68b7a277114c788bfab7ca",
+        "span_start_char": 16771,
+        "span_end_char": 16820,
+        "line_start_within_view": 506,
+        "line_end_within_view": 506,
+        "source_location": {
+          "unit": "line",
+          "start": 506,
+          "end": 506
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-cross-020",
+    "class": "cross",
+    "original_dev_question_ids": [
+      "compound-real-poetry-04"
+    ],
+    "source_group": "upstream:poetry",
+    "verdict": "SOURCE_LABEL_ACCEPTABLE",
+    "finding_ids": [],
+    "semantic_review_note": "poetry env info --executable reports the interpreter, while tool.poetry.dependencies enriches locking when project.dependencies supplies build metadata.",
+    "required_fact_count": 2,
+    "source_paths": [
+      "compound/poetry/docs/dependency-specification.md",
+      "compound/poetry/docs/managing-environments.md"
+    ],
+    "all_required_facts_considered": true,
+    "evidence": [
+      {
+        "question_id": "av3-cross-020",
+        "evidence_id": "e1",
+        "source_path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/managing-environments.md.txt",
+        "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "view_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+        "span_sha256": "abe9a2f1f85b8a428dc4a528abb0d0690b768e13818a756a8756985285c20d41",
+        "span_start_char": 4255,
+        "span_end_char": 4283,
+        "line_start_within_view": 152,
+        "line_end_within_view": 152,
+        "source_location": {
+          "unit": "line",
+          "start": 152,
+          "end": 152
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      },
+      {
+        "question_id": "av3-cross-020",
+        "evidence_id": "e2",
+        "source_path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines",
+        "view_path": "views/compound/poetry/docs/dependency-specification.md.txt",
+        "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "view_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+        "span_sha256": "32581ec9a7f38b2f1b05348bf5ffb27bd23085965980618e810d6734e6805cbe",
+        "span_start_char": 1477,
+        "span_end_char": 1659,
+        "line_start_within_view": 58,
+        "line_end_within_view": 59,
+        "source_location": {
+          "unit": "line",
+          "start": 58,
+          "end": 59
+        },
+        "exact_span_and_hash": true,
+        "location_consistent": true
+      }
+    ]
+  },
+  {
+    "id": "av3-trap-001",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-009"
+    ],
+    "source_group": "noise:noise-random_terms-009",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No identified bridge engineering, completion, or acceptance-load record exists in the122-source public corpus. Landscape/river filenames do not establish a bridge load.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-002",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-010"
+    ],
+    "source_group": "noise:noise-near_topic-010",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The named backup payload is absent from assets and all views; zlib checksum code defines an algorithm but cannot determine a CRC for missing bytes.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-003",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-017"
+    ],
+    "source_group": "noise:noise-conflict_id-017",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "Frozen sessions.py defines the two-setting merge_setting helper, not merge_setting_all or three-way precedence.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-004",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-004"
+    ],
+    "source_group": "noise:noise-random_terms-004",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No school observatory maintenance record, hinge specification, or replacement-parts inventory is present.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-005",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-006"
+    ],
+    "source_group": "noise:noise-near_topic-006",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The Vue computed guide supplies generic author/books/name examples. No SearchPanel company component or actual dependency graph is supplied.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-006",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-004"
+    ],
+    "source_group": "noise:noise-conflict_id-004",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The frozen TLSVersion class ends its concrete protocol members at TLSv1_3. No TLSv1_9 member or its certificate guarantees are defined.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-007",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-006"
+    ],
+    "source_group": "noise:noise-random_terms-006",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No Harbor Chamber Orchestra concert/programme/performance record is supplied. All20 official ASR transcripts were read and do not report this event.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-008",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-018"
+    ],
+    "source_group": "noise:noise-near_topic-018",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "uv guides describe workflows and isolated environments, not a private production lock-run trace or yesterday first-contact mirror.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-009",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-020"
+    ],
+    "source_group": "noise:noise-conflict_id-020",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The frozen ssl.py defines create_default_context without the _v2 suffix. Context construction does not supply the requested retry schedule.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-010",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-003"
+    ],
+    "source_group": "noise:noise-random_terms-003",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No M240681 race registration or runner split-timing record is present.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-011",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-007"
+    ],
+    "source_group": "noise:noise-near_topic-007",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The Vite guide gives .env.staging containing VITE_APP_TITLE=My App(staging), not an actual deployment-domain setting for the user project.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-012",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-016"
+    ],
+    "source_group": "noise:noise-conflict_id-016",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "Frozen sessions.py defines resolve_redirects, not resolve_redirects_v4. A real method cannot establish a nonexistent versioned method default.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-013",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-014"
+    ],
+    "source_group": "noise:noise-random_terms-014",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No KX-472 registration service history, sail-repair invoice, or named sailmaker record is supplied.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-014",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-003"
+    ],
+    "source_group": "noise:noise-near_topic-003",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "Click confirmation/Abort behavior is source code and examples; no last-week import-command telemetry or cancellation counts are present.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-015",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-009"
+    ],
+    "source_group": "noise:noise-conflict_id-009",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The frozen ctypes initializer selects fixed widths through c_int64/c_uint64. No c_int128 selection rule is defined.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-016",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-013"
+    ],
+    "source_group": "noise:noise-random_terms-013",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No museum relocation insurance policy or antique-map crate valuation is supplied. Photo filenames/EXIF cannot establish insurance amount.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-017",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-017"
+    ],
+    "source_group": "noise:noise-near_topic-017",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "Rich table/progress guides and screenshots describe rendering. No terminal-specific framewise GPU-power measurements exist.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-018",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-conflict_id-005"
+    ],
+    "source_group": "noise:noise-conflict_id-005",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "The frozen uuid implementation defines uuid1/3/4/5. No uuid9 namespace algorithm or collision guarantee is provided.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-019",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-random_terms-011"
+    ],
+    "source_group": "noise:noise-random_terms-011",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "No personal instrument check-in or storage-locker assignment is present; public photo/media assets do not identify the user instrument.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  },
+  {
+    "id": "av3-trap-020",
+    "class": "trap",
+    "original_dev_question_ids": [
+      "noise-near_topic-002"
+    ],
+    "source_group": "noise:noise-near_topic-002",
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "finding_ids": [],
+    "semantic_review_note": "Requests TLS guidance and examples provide no checkout-service incident log from11August2025 and no observed incident certificate fingerprint.",
+    "required_fact_count": 0,
+    "source_paths": [],
+    "all_required_facts_considered": true,
+    "evidence": []
+  }
+]

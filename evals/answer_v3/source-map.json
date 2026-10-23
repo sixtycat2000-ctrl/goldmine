@@ -1,0 +1,1600 @@
+[
+  {
+    "id": "av3-single-001",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-semantic-041"
+    ],
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-semantic-041",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-002",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-semantic-029"
+    ],
+    "source_group": "source:text/click/src/click/parser.py",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-semantic-029",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/src/click/parser.py",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-single-003",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-semantic-001"
+    ],
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-semantic-001",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/src/requests/sessions.py",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-single-004",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-semantic-059"
+    ],
+    "source_group": "source:text/click/docs/commands.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-semantic-059",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/docs/commands.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-005",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-semantic-039"
+    ],
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-semantic-039",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-006",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-cjk-046"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-cjk-046",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-single-007",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-cjk-020"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-cjk-020",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-008",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-cjk-001"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-cjk-001",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-009",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-cjk-013"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-cjk-013",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-010",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "text-cjk-023"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "text-cjk-023",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-011",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01"
+    ],
+    "source_group": "pdf:nist-800-145",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-pdf-nist-800-145-01",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p001"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-012",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-03"
+    ],
+    "source_group": "pdf:nist-800-107r1",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-pdf-nist-800-107r1-03",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p003"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-013",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-US174465-02"
+    ],
+    "source_group": "pdf:US174465",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-pdf-US174465-02",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-014",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "source_group": "pdf:nist-800-92",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-pdf-nist-800-92-02",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p002"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-015",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03"
+    ],
+    "source_group": "pdf:nist-800-38a",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-pdf-nist-800-38a-03",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p003"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-016",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "media-real-photo-101198740-taken"
+    ],
+    "source_group": "commons:photographer:Alexey V. Kurochkin",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "media-real-photo-101198740-taken",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+        "view_id": "exif-DateTimeOriginal"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-017",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "media-real-photo-94585934-filename"
+    ],
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "media-real-photo-94585934-filename",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "original-basename"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-018",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "v4x-ocr-01"
+    ],
+    "source_group": "upstream:httpx",
+    "evidence_views": [
+      {
+        "evidence_id": "e0",
+        "upstream_question_id": "v4x-ocr-01",
+        "upstream_evidence_id": "e0",
+        "path": "root/screenshots/httpx-timeouts.png",
+        "view_id": "ocr"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-019",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "media-real-asr-2803-161169-0001"
+    ],
+    "source_group": "librispeech:book:5792",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "media-real-asr-2803-161169-0001",
+        "upstream_evidence_id": "e1",
+        "path": "media/asr/2803-161169-0001.flac",
+        "view_id": "official-transcript"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-single-020",
+    "class": "single",
+    "upstream_dev_question_ids": [
+      "media-real-asr-3000-15664-0005"
+    ],
+    "source_group": "librispeech:book:326",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "media-real-asr-3000-15664-0005",
+        "upstream_evidence_id": "e1",
+        "path": "media/asr/3000-15664-0005.flac",
+        "view_id": "official-transcript"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-001",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "media-real-photo-94585934-filename",
+      "media-real-photo-94585934-taken"
+    ],
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e1",
+        "upstream_question_id": "media-real-photo-94585934-filename",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "original-basename"
+      },
+      {
+        "evidence_id": "p2_e1",
+        "upstream_question_id": "media-real-photo-94585934-taken",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+        "view_id": "exif-DateTimeOriginal"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-002",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-028",
+      "text-semantic-029"
+    ],
+    "source_group": "source:text/click/src/click/parser.py",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-028",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/src/click/parser.py",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-029",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/src/click/parser.py",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-003",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-92-01",
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "source_group": "pdf:nist-800-92",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-92-01",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p001"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-92-02",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-92-excerpt.pdf",
+        "view_id": "p002"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-004",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-017",
+      "text-cjk-018"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-017",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-018",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/conditional.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-005",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-047",
+      "text-cjk-048"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-047",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-048",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/components/v-model.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-006",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "media-real-photo-141842609-filename",
+      "media-real-photo-141842609-taken"
+    ],
+    "source_group": "commons:photographer:Basile Morin",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e1",
+        "upstream_question_id": "media-real-photo-141842609-filename",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "view_id": "original-basename"
+      },
+      {
+        "evidence_id": "p2_e1",
+        "upstream_question_id": "media-real-photo-141842609-taken",
+        "upstream_evidence_id": "e1",
+        "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+        "view_id": "exif-DateTimeOriginal"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-007",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-US174465-02",
+      "v4x-pdf-US174465-05"
+    ],
+    "source_group": "pdf:US174465",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-US174465-02",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-US174465-05",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/US174465-scan.pdf",
+        "view_id": "p003"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-008",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-041",
+      "text-semantic-043"
+    ],
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-041",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-043",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/authentication.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-009",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-029",
+      "text-cjk-030"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-029",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/forms.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-030",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/forms.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-010",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-021",
+      "text-cjk-023"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-021",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-023",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/list.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-011",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-01",
+      "v4x-pdf-nist-800-107r1-05"
+    ],
+    "source_group": "pdf:nist-800-107r1",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-107r1-01",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p001"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-107r1-05",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+        "view_id": "p005"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-012",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-053",
+      "text-semantic-054"
+    ],
+    "source_group": "source:text/click/docs/options.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-053",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/docs/options.rst",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-054",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/docs/options.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-013",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-011",
+      "text-cjk-013"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-011",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-013",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-014",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-001",
+      "text-semantic-003"
+    ],
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-001",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/src/requests/sessions.py",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-003",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/src/requests/sessions.py",
+        "view_id": "body"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-multi-015",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01",
+      "v4x-pdf-nist-800-145-05"
+    ],
+    "source_group": "pdf:nist-800-145",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-145-01",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p001"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-145-05",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-145-excerpt.pdf",
+        "view_id": "p002"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-016",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-037",
+      "text-semantic-040"
+    ],
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-037",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-040",
+        "upstream_evidence_id": "e0",
+        "path": "text/requests/docs/user/advanced.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-017",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-cjk-001",
+      "text-cjk-003"
+    ],
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-cjk-001",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-cjk-003",
+        "upstream_evidence_id": "e0",
+        "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-018",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03",
+      "v4x-pdf-nist-800-38a-04"
+    ],
+    "source_group": "pdf:nist-800-38a",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-38a-03",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p003"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-nist-800-38a-04",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/nist-800-38a-excerpt.pdf",
+        "view_id": "p004"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-019",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "v4x-pdf-US6469-02",
+      "v4x-pdf-US6469-03"
+    ],
+    "source_group": "pdf:US6469",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "v4x-pdf-US6469-02",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/US6469-scan.pdf",
+        "view_id": "p002"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "v4x-pdf-US6469-03",
+        "upstream_evidence_id": "e0",
+        "path": "root/pdf/US6469-scan.pdf",
+        "view_id": "p002"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-multi-020",
+    "class": "multi",
+    "upstream_dev_question_ids": [
+      "text-semantic-057",
+      "text-semantic-059"
+    ],
+    "source_group": "source:text/click/docs/commands.rst",
+    "evidence_views": [
+      {
+        "evidence_id": "p1_e0",
+        "upstream_question_id": "text-semantic-057",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/docs/commands.rst",
+        "view_id": "body"
+      },
+      {
+        "evidence_id": "p2_e0",
+        "upstream_question_id": "text-semantic-059",
+        "upstream_evidence_id": "e0",
+        "path": "text/click/docs/commands.rst",
+        "view_id": "body"
+      }
+    ],
+    "composition": "numbered unchanged source requests"
+  },
+  {
+    "id": "av3-cross-001",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-pip-tools-01"
+    ],
+    "source_group": "upstream:pip-tools",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-pip-tools-01",
+        "upstream_evidence_id": "e1",
+        "path": "compound/pip-tools/README.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-pip-tools-01",
+        "upstream_evidence_id": "e2",
+        "path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-002",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-poetry-02"
+    ],
+    "source_group": "upstream:poetry",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-poetry-02",
+        "upstream_evidence_id": "e1",
+        "path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-poetry-02",
+        "upstream_evidence_id": "e2",
+        "path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-003",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-typer-01"
+    ],
+    "source_group": "upstream:typer",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-typer-01",
+        "upstream_evidence_id": "e1",
+        "path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-typer-01",
+        "upstream_evidence_id": "e2",
+        "path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-004",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-uv-02"
+    ],
+    "source_group": "upstream:uv",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-uv-02",
+        "upstream_evidence_id": "e1",
+        "path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-uv-02",
+        "upstream_evidence_id": "e2",
+        "path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-005",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-pip-01"
+    ],
+    "source_group": "upstream:pip",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-pip-01",
+        "upstream_evidence_id": "e1",
+        "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-pip-01",
+        "upstream_evidence_id": "e2",
+        "path": "compound/pip/docs/html/topics/caching.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-006",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-httpx-04"
+    ],
+    "source_group": "upstream:httpx",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-httpx-04",
+        "upstream_evidence_id": "e1",
+        "path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-httpx-04",
+        "upstream_evidence_id": "e2",
+        "path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-007",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-typer-05"
+    ],
+    "source_group": "upstream:typer",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-typer-05",
+        "upstream_evidence_id": "e1",
+        "path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-typer-05",
+        "upstream_evidence_id": "e2",
+        "path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2_scope",
+        "upstream_question_id": "compound-real-typer-05",
+        "upstream_evidence_id": null,
+        "path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines",
+        "annotation_origin": "New exact contextual source span required by RES-02"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json",
+    "replaces_original_dev_question_id": "compound-real-pip-tools-02"
+  },
+  {
+    "id": "av3-cross-008",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-poetry-05"
+    ],
+    "source_group": "upstream:poetry",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-poetry-05",
+        "upstream_evidence_id": "e1",
+        "path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-poetry-05",
+        "upstream_evidence_id": "e2",
+        "path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e1_scope",
+        "upstream_question_id": "compound-real-poetry-05",
+        "upstream_evidence_id": null,
+        "path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines",
+        "annotation_origin": "New exact contextual source span required by IR-009"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json"
+  },
+  {
+    "id": "av3-cross-009",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-typer-03"
+    ],
+    "source_group": "upstream:typer",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-typer-03",
+        "upstream_evidence_id": "e1",
+        "path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-typer-03",
+        "upstream_evidence_id": "e2",
+        "path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-010",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-uv-05"
+    ],
+    "source_group": "upstream:uv",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-uv-05",
+        "upstream_evidence_id": "e1",
+        "path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-uv-05",
+        "upstream_evidence_id": "e2",
+        "path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-011",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-uv-04"
+    ],
+    "source_group": "upstream:uv",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-uv-04",
+        "upstream_evidence_id": "e1",
+        "path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-uv-04",
+        "upstream_evidence_id": "e2",
+        "path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "Explicit source-review amended development task; see amendment-lineage.json",
+    "replaces_original_dev_question_id": "compound-real-pip-02"
+  },
+  {
+    "id": "av3-cross-012",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-httpx-01"
+    ],
+    "source_group": "upstream:httpx",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-httpx-01",
+        "upstream_evidence_id": "e1",
+        "path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-httpx-01",
+        "upstream_evidence_id": "e2",
+        "path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-013",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-pip-tools-05"
+    ],
+    "source_group": "upstream:pip-tools",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-pip-tools-05",
+        "upstream_evidence_id": "e1",
+        "path": "compound/pip-tools/README.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-pip-tools-05",
+        "upstream_evidence_id": "e2",
+        "path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-014",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-poetry-03"
+    ],
+    "source_group": "upstream:poetry",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-poetry-03",
+        "upstream_evidence_id": "e1",
+        "path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-poetry-03",
+        "upstream_evidence_id": "e2",
+        "path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-015",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-typer-02"
+    ],
+    "source_group": "upstream:typer",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-typer-02",
+        "upstream_evidence_id": "e1",
+        "path": "compound/typer/docs/tutorial/options/help.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-typer-02",
+        "upstream_evidence_id": "e2",
+        "path": "compound/typer/docs/tutorial/commands/context.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-016",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-uv-03"
+    ],
+    "source_group": "upstream:uv",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-uv-03",
+        "upstream_evidence_id": "e1",
+        "path": "compound/uv/docs/guides/projects.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-uv-03",
+        "upstream_evidence_id": "e2",
+        "path": "compound/uv/docs/guides/tools.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-017",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-pip-05"
+    ],
+    "source_group": "upstream:pip",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-pip-05",
+        "upstream_evidence_id": "e1",
+        "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-pip-05",
+        "upstream_evidence_id": "e2",
+        "path": "compound/pip/docs/html/topics/caching.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-018",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-httpx-03"
+    ],
+    "source_group": "upstream:httpx",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-httpx-03",
+        "upstream_evidence_id": "e1",
+        "path": "compound/httpx/docs/quickstart.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-httpx-03",
+        "upstream_evidence_id": "e2",
+        "path": "compound/httpx/docs/advanced/timeouts.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-019",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-pip-tools-03"
+    ],
+    "source_group": "upstream:pip-tools",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-pip-tools-03",
+        "upstream_evidence_id": "e1",
+        "path": "compound/pip-tools/README.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-pip-tools-03",
+        "upstream_evidence_id": "e2",
+        "path": "compound/pip-tools/piptools/scripts/compile.py",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-cross-020",
+    "class": "cross",
+    "upstream_dev_question_ids": [
+      "compound-real-poetry-04"
+    ],
+    "source_group": "upstream:poetry",
+    "evidence_views": [
+      {
+        "evidence_id": "e1",
+        "upstream_question_id": "compound-real-poetry-04",
+        "upstream_evidence_id": "e1",
+        "path": "compound/poetry/docs/managing-environments.md",
+        "view_id": "original-lines"
+      },
+      {
+        "evidence_id": "e2",
+        "upstream_question_id": "compound-real-poetry-04",
+        "upstream_evidence_id": "e2",
+        "path": "compound/poetry/docs/dependency-specification.md",
+        "view_id": "original-lines"
+      }
+    ],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-001",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-009"
+    ],
+    "source_group": "noise:noise-random_terms-009",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-002",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-010"
+    ],
+    "source_group": "noise:noise-near_topic-010",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-003",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-017"
+    ],
+    "source_group": "noise:noise-conflict_id-017",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-004",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-004"
+    ],
+    "source_group": "noise:noise-random_terms-004",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-005",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-006"
+    ],
+    "source_group": "noise:noise-near_topic-006",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-006",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-004"
+    ],
+    "source_group": "noise:noise-conflict_id-004",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-007",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-006"
+    ],
+    "source_group": "noise:noise-random_terms-006",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-008",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-018"
+    ],
+    "source_group": "noise:noise-near_topic-018",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-009",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-020"
+    ],
+    "source_group": "noise:noise-conflict_id-020",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-010",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-003"
+    ],
+    "source_group": "noise:noise-random_terms-003",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-011",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-007"
+    ],
+    "source_group": "noise:noise-near_topic-007",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-012",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-016"
+    ],
+    "source_group": "noise:noise-conflict_id-016",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-013",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-014"
+    ],
+    "source_group": "noise:noise-random_terms-014",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-014",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-003"
+    ],
+    "source_group": "noise:noise-near_topic-003",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-015",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-009"
+    ],
+    "source_group": "noise:noise-conflict_id-009",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-016",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-013"
+    ],
+    "source_group": "noise:noise-random_terms-013",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-017",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-017"
+    ],
+    "source_group": "noise:noise-near_topic-017",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-018",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-conflict_id-005"
+    ],
+    "source_group": "noise:noise-conflict_id-005",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-019",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-random_terms-011"
+    ],
+    "source_group": "noise:noise-random_terms-011",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  },
+  {
+    "id": "av3-trap-020",
+    "class": "trap",
+    "upstream_dev_question_ids": [
+      "noise-near_topic-002"
+    ],
+    "source_group": "noise:noise-near_topic-002",
+    "evidence_views": [],
+    "composition": "unchanged source question"
+  }
+]

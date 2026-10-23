@@ -1,4 +1,4 @@
-"""Text extraction: txt/md decoding, docx via stdlib zip+xml, rtf/doc/odt via textutil.
+"""Text extraction: txt/rst/md decoding, docx via stdlib zip+xml, rtf/doc/odt via textutil.
 
 BOM-aware decoding ladder (V5b, D5b):
   --encoding override -> BOM (utf-8-sig / utf-16 / utf-32) -> utf-8 strict ->

@@ -47,6 +47,29 @@ def test_extract_txt_encoding_override(tmp_path):
     assert ex.detail is None
 
 
+def test_rst_pipeline_preserves_real_lines_and_is_searchable_without_code_flag(tmp_path):
+    from contextlib import closing
+    from goldmine.backends.mock import MockBackend
+    from goldmine.config import Config
+    from goldmine.ingest import IngestPipeline
+    from goldmine.search import Searcher
+    from goldmine.store import Store
+
+    path = tmp_path / "guide.rst"
+    text = "Deployment guide\n================\n\nThe fixture cobalt-meridian option retains the original source.\n"
+    path.write_text(text)
+    with closing(Store(tmp_path / "index.sqlite")) as store:
+        pipeline = IngestPipeline(Config(home=str(tmp_path / "home")), store, MockBackend(), lexical_only=True)
+        report = pipeline.run([str(path)], code=False)
+        record = store.find_by_path(str(path))
+        assert report.content_indexed == 1 and record.kind == "doc" and record.extractor_version == "txt-stdlib.v1"
+        hits = Searcher(store, None).search("cobalt-meridian", scorer="lexical")
+        assert hits and hits[0].path == str(path)
+        assert "cobalt-meridian" in store.segment_text(hits[0].segment_id)
+        assert hits[0].loc <= 4 <= hits[0].loc_end
+        assert path.read_text() == text
+
+
 def test_extract_markdown_title(tmp_path):
     p = tmp_path / "guide.md"
     p.write_text("# The Title\n\nbody text\n", encoding="utf-8")

@@ -1,0 +1,1 @@
+Because this mode often leads to unexpected validation results, it is not the default in Pydantic >=2, instead union_mode='smart' is the default.

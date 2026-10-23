@@ -57,15 +57,17 @@ def _synthetic(rows: int, seed: int = 1234):
     """100k-style workload: fp16 vectors, ~8 segments per file, shuffled row
     order (rows come from SQLite ordered by segment id, files interleaved)."""
     rng = np.random.default_rng(seed)
-    vecs = rng.standard_normal((rows, 768)).astype(np.float16)
+    vecs = np.empty((rows, 768), dtype=np.float16)
+    for start in range(0, rows, BLOCK):
+        block = rng.standard_normal((min(BLOCK, rows - start), 768), dtype=np.float32)
+        vecs[start:start + len(block)] = block.astype(np.float16)
     n_files = max(1, rows // 8)
-    file_ids = np.repeat(np.arange(n_files, dtype=np.int64), 8)[:rows]
+    file_ids = np.arange(rows, dtype=np.int64) % n_files
     rng.shuffle(file_ids)  # exercise the stable groupby sort
     seg_ids = np.arange(rows, dtype=np.int64)
-    mods = np.array(
-        ["text"] * (rows - rows // 10) + ["image"] * (rows // 20) + ["audio"] * (rows // 20),
-        dtype=object,
-    )
+    mods = np.full(rows, "text", dtype=object)
+    mods[:rows // 20] = "image"
+    mods[rows // 20:rows // 10] = "audio"
     rng.shuffle(mods)
     q = rng.standard_normal(768).astype(np.float32)
     q /= float(np.linalg.norm(q))
@@ -135,33 +137,27 @@ def build_vector_db(rows: int, db_path: Path) -> None:
         dtype=object,
     )
     rng.shuffle(mods)
-    vecs = rng.standard_normal((rows, 768)).astype(np.float16)
     try:
-        store.db.executemany(
-            "INSERT INTO files(id, path, kind, size, state, capability, "
-            "extractor_version, chunker_version, embed_id, indexed_at) "
-            "VALUES(?, ?, 'doc', 1, 'done', 'content_indexed', 'txt-stdlib.v1', "
-            "'chunk.v1', NULL, 0.0)",
-            ((i, f"/bench/f{i % 97}/file{i}.txt") for i in range(n_files)),
-        )
-        def seg_rows():
-            for i in range(rows):
-                yield (
-                    n_files + i,                       # id: leave room above file ids
-                    i % n_files,                       # file
-                    "chunk",
-                    str(mods[i]),
-                    float(i),
-                    None,
-                    None,
-                    vecs[i].tobytes(),
-                )
-        store.db.executemany(
-            "INSERT INTO segments(id, file, kind, modality, loc, loc_end, excerpt, vec) "
-            "VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-            seg_rows(),
-        )
-        store.db.commit()
+        with store.write_transaction():
+            store.db.executemany(
+                "INSERT INTO files(id, path, kind, size, state, capability, "
+                "extractor_version, chunker_version, embed_id, indexed_at) "
+                "VALUES(?, ?, 'doc', 1, 'done', 'content_indexed', 'txt-stdlib.v1', "
+                "'chunk.v1', NULL, 0.0)",
+                ((i, f"/bench/f{i % 97}/file{i}.txt") for i in range(n_files)),
+            )
+            def seg_rows():
+                for start in range(0, rows, BLOCK):
+                    block = rng.standard_normal((min(BLOCK, rows - start), 768), dtype=np.float32).astype(np.float16)
+                    for offset, vec in enumerate(block):
+                        i = start + offset
+                        yield (n_files + i, i % n_files, "chunk", str(mods[i]),
+                               float(i), None, None, vec.tobytes())
+            store.db.executemany(
+                "INSERT INTO segments(id, file, kind, modality, loc, loc_end, excerpt, vec) "
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+                seg_rows(),
+            )
     finally:
         store.close()
 

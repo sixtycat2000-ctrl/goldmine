@@ -95,16 +95,21 @@ def test_image_dimensions(tmp_path):
 
 
 def test_exif_taken_from_real_camera_file():
-    """A real EXIF-carrying HEIC from the system: sips creation parses to a
-    plausible date (skipped when the wallpaper is absent — version-dependent)."""
-    target = Path("/System/Library/Desktop Pictures/Mac Blue.heic")
-    if not target.is_file():
-        pytest.skip("no system HEIC with EXIF on this machine")
+    """Portable generated HEIC with real EXIF; no OS wallpaper dependency."""
+    target = Path(__file__).parent / "fixtures_data/exif-date.heic"
     taken = media.exif_taken(target)
     assert taken is not None
     iso, epoch = taken
-    assert iso.startswith("20") and len(iso) == 19
-    assert 946684800 < epoch < 4102444800  # 2000..2100
+    assert iso == "2024-05-17 09:30:00"
+    assert 946684800 < epoch < 4102444800
+
+
+def test_imageio_heic_capture_with_literal_quoted_unicode_path(tmp_path):
+    target = tmp_path / "literal ' `echo ignored` 中文.heic"
+    original = (Path(__file__).parent / "fixtures_data/exif-date.heic").read_bytes()
+    target.write_bytes(original)
+    assert media.exif_taken(target)[0] == "2024-05-17 09:30:00"
+    assert target.read_bytes() == original
 
 
 def test_thumb_byte_cap_constant():

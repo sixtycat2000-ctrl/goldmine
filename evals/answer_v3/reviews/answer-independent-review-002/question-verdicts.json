@@ -1,0 +1,1170 @@
+[
+  {
+    "id": "av3-single-001",
+    "class": "single",
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "original_dev_question_ids": [
+      "text-semantic-041"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Credentials tuple is explicitly equivalent to the HTTPBasicAuth example; the question does not ask for literal credentials.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-002",
+    "class": "single",
+    "source_group": "source:text/click/src/click/parser.py",
+    "original_dev_question_ids": [
+      "text-semantic-029"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Expanded code proves takes_value/value extraction and actual loop break.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": [
+      "IR-002"
+    ]
+  },
+  {
+    "id": "av3-single-003",
+    "class": "single",
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "original_dev_question_ids": [
+      "text-semantic-001"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Request-overrides-session merge context now precedes None-key deletion.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": [
+      "IR-A02"
+    ]
+  },
+  {
+    "id": "av3-single-004",
+    "class": "single",
+    "source_group": "source:text/click/docs/commands.rst",
+    "original_dev_question_ids": [
+      "text-semantic-059"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Only the final chained command may have an nargs=-1 argument; the qualifier is retained.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-005",
+    "class": "single",
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "original_dev_question_ids": [
+      "text-semantic-039"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "A two-element timeout tuple is shown for separate connect/read limits; no total-duration guarantee is asserted.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-006",
+    "class": "single",
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "original_dev_question_ids": [
+      "text-cjk-046"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Target explicitly names ref and parent/current two-way binding.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": [
+      "IR-A01"
+    ]
+  },
+  {
+    "id": "av3-single-007",
+    "class": "single",
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "original_dev_question_ids": [
+      "text-cjk-020"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "v-else must follow v-if or v-else-if; the required fact retains the adjacency condition.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-008",
+    "class": "single",
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "original_dev_question_ids": [
+      "text-cjk-001"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Default deep reactivity detects nested-object or array changes; the default qualifier is retained.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-009",
+    "class": "single",
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "original_dev_question_ids": [
+      "text-cjk-013"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The component author selects the receiving root; $attrs is the mechanism shown. The fact answers the where/designation request.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-010",
+    "class": "single",
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "original_dev_question_ids": [
+      "text-cjk-023"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Object keys are rejected; primitive string/number examples are retained.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-011",
+    "class": "single",
+    "source_group": "pdf:nist-800-145",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The exact counts are five essential characteristics, three service models, and four deployment models, on asset page1.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-012",
+    "class": "single",
+    "source_group": "pdf:nist-800-107r1",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The source explicitly retains the leftmost96 and discards the rightmost160 of SHA-256 output, on asset page3.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-013",
+    "class": "single",
+    "source_group": "pdf:US174465",
+    "original_dev_question_ids": [
+      "v4x-pdf-US174465-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Visible Bell patent page3 distinguishes sudden/instantaneous pulsations from gradual undulations; polarity/negation is preserved.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-014",
+    "class": "single",
+    "source_group": "pdf:nist-800-92",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Rotation is described on schedule or at a size threshold; it is typical practice, not a mandatory universal trigger.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-015",
+    "class": "single",
+    "source_group": "pdf:nist-800-38a",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "CTR decryption invokes the forward cipher and XORs output with ciphertext; the marked passage directly states both.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-016",
+    "class": "single",
+    "source_group": "commons:photographer:Alexey V. Kurochkin",
+    "original_dev_question_ids": [
+      "media-real-photo-101198740-taken"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "JPEG APP1 DateTimeOriginal confirms 2018-08-04 13:04:46. No timezone offset tag was found; no timezone conversion is justified.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-017",
+    "class": "single",
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "original_dev_question_ids": [
+      "media-real-photo-94585934-filename"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The preserved actual basename is Wrocław_MuzeumNarodowe.jpg; this is filename metadata, not inferred scene content.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-018",
+    "class": "single",
+    "source_group": "upstream:httpx",
+    "original_dev_question_ids": [
+      "v4x-ocr-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The visible HTTPX screenshot says5seconds of network inactivity; this is not a total request deadline.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-019",
+    "class": "single",
+    "source_group": "librispeech:book:5792",
+    "original_dev_question_ids": [
+      "media-real-asr-2803-161169-0001"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The official transcript says birds answered the music of fountains. Whole-utterance location is valid and no word-level timestamp is claimed.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-single-020",
+    "class": "single",
+    "source_group": "librispeech:book:326",
+    "original_dev_question_ids": [
+      "media-real-asr-3000-15664-0005"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Full official utterance now proves the blanket/firewood causal relation, with unchanged whole-utterance timing.",
+    "fact_count": 1,
+    "evidence_count": 1,
+    "closure_finding_ids": [
+      "IR-008"
+    ]
+  },
+  {
+    "id": "av3-multi-001",
+    "class": "multi",
+    "source_group": "commons:photographer:Marek Śliwecki",
+    "original_dev_question_ids": [
+      "media-real-photo-94585934-filename",
+      "media-real-photo-94585934-taken"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Original filename and EXIF capture time are two distinct metadata facts, in different views of one unchanged photo; exact date/time confirmed from APP1.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-002",
+    "class": "multi",
+    "source_group": "source:text/click/src/click/parser.py",
+    "original_dev_question_ids": [
+      "text-semantic-028",
+      "text-semantic-029"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Both original requests preserved; the short-value span now proves the actual control flow.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-002"
+    ]
+  },
+  {
+    "id": "av3-multi-003",
+    "class": "multi",
+    "source_group": "pdf:nist-800-92",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-92-01",
+      "v4x-pdf-nist-800-92-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Log versus log-entry definition and schedule/size rotation triggers are distinct facts on different pages.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-004",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/essentials/conditional.md",
+    "original_dev_question_ids": [
+      "text-cjk-017",
+      "text-cjk-018"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "display is explicit in the target; lazy v-if remains separately proved.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-003"
+    ]
+  },
+  {
+    "id": "av3-multi-005",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/components/v-model.md",
+    "original_dev_question_ids": [
+      "text-cjk-047",
+      "text-cjk-048"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Targets now explain undefined-parent/default-child mismatch and require title/update:title.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-004",
+      "IR-005"
+    ]
+  },
+  {
+    "id": "av3-multi-006",
+    "class": "multi",
+    "source_group": "commons:photographer:Basile Morin",
+    "original_dev_question_ids": [
+      "media-real-photo-141842609-filename",
+      "media-real-photo-141842609-taken"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The actual published filename and 2023-09-20 17:47:29 capture time are distinct; header-only APP1 read confirms the time and no timezone offset.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-007",
+    "class": "multi",
+    "source_group": "pdf:US174465",
+    "original_dev_question_ids": [
+      "v4x-pdf-US174465-02",
+      "v4x-pdf-US174465-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Bell intensity-change distinction and never-broken-circuit reason are separate disjoint passages on visible patent page3.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-008",
+    "class": "multi",
+    "source_group": "source:text/requests/docs/user/authentication.rst",
+    "original_dev_question_ids": [
+      "text-semantic-041",
+      "text-semantic-043"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "The tuple-equivalence statement and HTTPDigestAuth example are separate facts; the source uses built-in digest authentication.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-009",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/essentials/forms.md",
+    "original_dev_question_ids": [
+      "text-cjk-029",
+      "text-cjk-030"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": ".trim is explicitly required; empty numeric input remains an empty string.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-006"
+    ]
+  },
+  {
+    "id": "av3-multi-010",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/essentials/list.md",
+    "original_dev_question_ids": [
+      "text-cjk-021",
+      "text-cjk-023"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Integer v-for ranges run1...n; object list keys are prohibited. These are disjoint facts in the list guide.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-011",
+    "class": "multi",
+    "source_group": "pdf:nist-800-107r1",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-107r1-01",
+      "v4x-pdf-nist-800-107r1-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Collision means different messages with the same digest; successful HMAC verification does not completely guarantee authenticity. The negation is retained.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-012",
+    "class": "multi",
+    "source_group": "source:text/click/docs/options.rst",
+    "original_dev_question_ids": [
+      "text-semantic-053",
+      "text-semantic-054"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "count=True is explicit in both target and decorator evidence.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-001"
+    ]
+  },
+  {
+    "id": "av3-multi-013",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/essentials/class-and-style.md",
+    "original_dev_question_ids": [
+      "text-cjk-011",
+      "text-cjk-013"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Object/array binding syntax and explicit multi-root class receiver selection are distinct source facts.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-014",
+    "class": "multi",
+    "source_group": "source:text/requests/src/requests/sessions.py",
+    "original_dev_question_ids": [
+      "text-semantic-001",
+      "text-semantic-003"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Merge override/deletion and same-host standard-port auth retention now have complete context.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-007",
+      "IR-A02"
+    ]
+  },
+  {
+    "id": "av3-multi-015",
+    "class": "multi",
+    "source_group": "pdf:nist-800-145",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-145-01",
+      "v4x-pdf-nist-800-145-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "5/3/4 cloud-model counts and the hybrid-cloud portability-technology definition are distinct source facts on different pages.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-016",
+    "class": "multi",
+    "source_group": "source:text/requests/docs/user/advanced.rst",
+    "original_dev_question_ids": [
+      "text-semantic-037",
+      "text-semantic-040"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Session.prepare_request preserves session state; per-IP sequential connect attempts can multiply elapsed wait. No aggregate timeout bound is invented.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-017",
+    "class": "multi",
+    "source_group": "source:text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "original_dev_question_ids": [
+      "text-cjk-001",
+      "text-cjk-003"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Default deep detection and the requirement to mutate the reactive proxy rather than the raw object are distinct facts.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-018",
+    "class": "multi",
+    "source_group": "pdf:nist-800-38a",
+    "original_dev_question_ids": [
+      "v4x-pdf-nist-800-38a-03",
+      "v4x-pdf-nist-800-38a-04"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "CTR uses forward cipher plus XOR for decryption, and uniqueness spans every plaintext block across all messages under a key; the cross-message qualifier is retained.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-019",
+    "class": "multi",
+    "source_group": "pdf:US6469",
+    "original_dev_question_ids": [
+      "v4x-pdf-US6469-02",
+      "v4x-pdf-US6469-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Visible Lincoln page2 supports contraction/stowage and india-rubber cloth or another suitable waterproof fabric, retaining the material alternative.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-multi-020",
+    "class": "multi",
+    "source_group": "source:text/click/docs/commands.rst",
+    "original_dev_question_ids": [
+      "text-semantic-057",
+      "text-semantic-059"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Command-local parameters must be after that command and before later names; only the final chained command may use nargs=-1. Both restrictions are supported.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-001",
+    "class": "cross",
+    "source_group": "upstream:pip-tools",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "README environment-marker rationale and code default-input tuple priority are both supported. The source loop confirms the tuple is checked in order.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-002",
+    "class": "cross",
+    "source_group": "upstream:poetry",
+    "original_dev_question_ids": [
+      "compound-real-poetry-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Absolute interpreter path via poetry env use and Git rev commit pinning are supported in the two different guides.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-003",
+    "class": "cross",
+    "source_group": "upstream:typer",
+    "original_dev_question_ids": [
+      "compound-real-typer-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "typer.Option(help=...) inside Annotated and typer.Context function-parameter injection are distinct supported facts.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-004",
+    "class": "cross",
+    "source_group": "upstream:uv",
+    "original_dev_question_ids": [
+      "compound-real-uv-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "uv.lock pins exact resolved versions for reproducibility; installed tools do not make modules available in the current project environment.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-005",
+    "class": "cross",
+    "source_group": "upstream:pip",
+    "original_dev_question_ids": [
+      "compound-real-pip-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "pip freeze captures top-level/transitive pins; HTTP response caching minimizes rather than eliminates network access.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-006",
+    "class": "cross",
+    "source_group": "upstream:httpx",
+    "original_dev_question_ids": [
+      "compound-real-httpx-04"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "HTTPStatusError on raise_for_status for non2xx and PoolTimeout on acquisition timeout are supported and distinguish HTTP errors from transport/pool waiting.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-007",
+    "class": "cross",
+    "source_group": "upstream:typer",
+    "original_dev_question_ids": [
+      "compound-real-typer-05"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Typer Options-panel fact requires help.md; default no-command help requires context.md. Callback/subcommand scope is explicit and conjunctively evidenced.",
+    "fact_count": 2,
+    "evidence_count": 3,
+    "closure_finding_ids": [
+      "IR-011"
+    ]
+  },
+  {
+    "id": "av3-cross-008",
+    "class": "cross",
+    "source_group": "upstream:poetry",
+    "original_dev_question_ids": [
+      "compound-real-poetry-05"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Current-project scope is explicit and conjunctively bound with removal command; caret boundary remains a distinct second-file fact.",
+    "fact_count": 2,
+    "evidence_count": 3,
+    "closure_finding_ids": [
+      "IR-009"
+    ]
+  },
+  {
+    "id": "av3-cross-009",
+    "class": "cross",
+    "source_group": "upstream:typer",
+    "original_dev_question_ids": [
+      "compound-real-typer-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "show_default=False and ctx.invoked_subcommand is None are supported; None indicates direct callback invocation.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-010",
+    "class": "cross",
+    "source_group": "upstream:uv",
+    "original_dev_question_ids": [
+      "compound-real-uv-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "uv build defaults to dist/, and uvx --with mkdocs-material mkdocs adds the package for that tool invocation. The source example invokes --help.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-011",
+    "class": "cross",
+    "source_group": "upstream:uv",
+    "original_dev_question_ids": [
+      "compound-real-uv-04"
+    ],
+    "changed_from_draft001": true,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "uv project single-package update/latest-compatible attempt and tool-constraint preservation require the two distinct guides.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": [
+      "IR-010"
+    ]
+  },
+  {
+    "id": "av3-cross-012",
+    "class": "cross",
+    "source_group": "upstream:httpx",
+    "original_dev_question_ids": [
+      "compound-real-httpx-01"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "params attaches URL query parameters, and connect controls socket-connection establishment. Each half is explicit in its paired file.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-013",
+    "class": "cross",
+    "source_group": "upstream:pip-tools",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "Both requirement files should be committed for reproducibility; preserve fallback returns the LF newline string, not the literal characters backslash and n.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-014",
+    "class": "cross",
+    "source_group": "upstream:poetry",
+    "original_dev_question_ids": [
+      "compound-real-poetry-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "env activate prints a command that can be evaluated in the current shell; develop=true enables editable local directory dependencies.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-015",
+    "class": "cross",
+    "source_group": "upstream:typer",
+    "original_dev_question_ids": [
+      "compound-real-typer-02"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "rich_help_panel selects the named panel, and invoke_without_command=True allows callback execution without a subcommand.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-016",
+    "class": "cross",
+    "source_group": "upstream:uv",
+    "original_dev_question_ids": [
+      "compound-real-uv-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "uv add -r requirements.txt -c constraints.txt imports constrained requirements, and uvx --from httpie http resolves the differing package/command name.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-017",
+    "class": "cross",
+    "source_group": "upstream:pip",
+    "original_dev_question_ids": [
+      "compound-real-pip-05"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "--no-deps limits dependency additions, and pip cache purge clears both wheel and HTTP caches; both qualifiers are retained.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-018",
+    "class": "cross",
+    "source_group": "upstream:httpx",
+    "original_dev_question_ids": [
+      "compound-real-httpx-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "content= accepts bytes or a byte-yielding generator; write timeout applies to sending a chunk rather than total-request duration.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-019",
+    "class": "cross",
+    "source_group": "upstream:pip-tools",
+    "original_dev_question_ids": [
+      "compound-real-pip-tools-03"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "pip-sync avoids upgrading/uninstalling setuptools,pip,pip-tools; max_rounds is forwarded to resolver.resolve(max_rounds=max_rounds).",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-cross-020",
+    "class": "cross",
+    "source_group": "upstream:poetry",
+    "original_dev_question_ids": [
+      "compound-real-poetry-04"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "SOURCE_SEMANTICS_ACCEPTABLE",
+    "semantic_closure_note": "poetry env info --executable reports the interpreter, while tool.poetry.dependencies enriches locking when project.dependencies supplies build metadata.",
+    "fact_count": 2,
+    "evidence_count": 2,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-001",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-009",
+    "original_dev_question_ids": [
+      "noise-random_terms-009"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No identified bridge engineering, completion, or acceptance-load record exists in the122-source public corpus. Landscape/river filenames do not establish a bridge load.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-002",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-010",
+    "original_dev_question_ids": [
+      "noise-near_topic-010"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The named backup payload is absent from assets and all views; zlib checksum code defines an algorithm but cannot determine a CRC for missing bytes.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-003",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-017",
+    "original_dev_question_ids": [
+      "noise-conflict_id-017"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "Frozen sessions.py defines the two-setting merge_setting helper, not merge_setting_all or three-way precedence.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-004",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-004",
+    "original_dev_question_ids": [
+      "noise-random_terms-004"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No school observatory maintenance record, hinge specification, or replacement-parts inventory is present.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-005",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-006",
+    "original_dev_question_ids": [
+      "noise-near_topic-006"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The Vue computed guide supplies generic author/books/name examples. No SearchPanel company component or actual dependency graph is supplied.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-006",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-004",
+    "original_dev_question_ids": [
+      "noise-conflict_id-004"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The frozen TLSVersion class ends its concrete protocol members at TLSv1_3. No TLSv1_9 member or its certificate guarantees are defined.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-007",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-006",
+    "original_dev_question_ids": [
+      "noise-random_terms-006"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No Harbor Chamber Orchestra concert/programme/performance record is supplied. All20 official ASR transcripts were read and do not report this event.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-008",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-018",
+    "original_dev_question_ids": [
+      "noise-near_topic-018"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "uv guides describe workflows and isolated environments, not a private production lock-run trace or yesterday first-contact mirror.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-009",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-020",
+    "original_dev_question_ids": [
+      "noise-conflict_id-020"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The frozen ssl.py defines create_default_context without the _v2 suffix. Context construction does not supply the requested retry schedule.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-010",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-003",
+    "original_dev_question_ids": [
+      "noise-random_terms-003"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No M240681 race registration or runner split-timing record is present.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-011",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-007",
+    "original_dev_question_ids": [
+      "noise-near_topic-007"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The Vite guide gives .env.staging containing VITE_APP_TITLE=My App(staging), not an actual deployment-domain setting for the user project.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-012",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-016",
+    "original_dev_question_ids": [
+      "noise-conflict_id-016"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "Frozen sessions.py defines resolve_redirects, not resolve_redirects_v4. A real method cannot establish a nonexistent versioned method default.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-013",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-014",
+    "original_dev_question_ids": [
+      "noise-random_terms-014"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No KX-472 registration service history, sail-repair invoice, or named sailmaker record is supplied.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-014",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-003",
+    "original_dev_question_ids": [
+      "noise-near_topic-003"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "Click confirmation/Abort behavior is source code and examples; no last-week import-command telemetry or cancellation counts are present.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-015",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-009",
+    "original_dev_question_ids": [
+      "noise-conflict_id-009"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The frozen ctypes initializer selects fixed widths through c_int64/c_uint64. No c_int128 selection rule is defined.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-016",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-013",
+    "original_dev_question_ids": [
+      "noise-random_terms-013"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No museum relocation insurance policy or antique-map crate valuation is supplied. Photo filenames/EXIF cannot establish insurance amount.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-017",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-017",
+    "original_dev_question_ids": [
+      "noise-near_topic-017"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "Rich table/progress guides and screenshots describe rendering. No terminal-specific framewise GPU-power measurements exist.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-018",
+    "class": "trap",
+    "source_group": "noise:noise-conflict_id-005",
+    "original_dev_question_ids": [
+      "noise-conflict_id-005"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "The frozen uuid implementation defines uuid1/3/4/5. No uuid9 namespace algorithm or collision guarantee is provided.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-019",
+    "class": "trap",
+    "source_group": "noise:noise-random_terms-011",
+    "original_dev_question_ids": [
+      "noise-random_terms-011"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "No personal instrument check-in or storage-locker assignment is present; public photo/media assets do not identify the user instrument.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  },
+  {
+    "id": "av3-trap-020",
+    "class": "trap",
+    "source_group": "noise:noise-near_topic-002",
+    "original_dev_question_ids": [
+      "noise-near_topic-002"
+    ],
+    "changed_from_draft001": false,
+    "verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "semantic_closure_note": "Requests TLS guidance and examples provide no checkout-service incident log from11August2025 and no observed incident certificate fingerprint.",
+    "fact_count": 0,
+    "evidence_count": 0,
+    "closure_finding_ids": []
+  }
+]

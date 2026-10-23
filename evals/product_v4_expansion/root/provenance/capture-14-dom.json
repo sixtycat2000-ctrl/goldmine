@@ -1,0 +1,70 @@
+{
+  "url": "https://docs.astral.sh/uv/guides/tools/#running-tools",
+  "title": "Using tools | uv",
+  "text": "Skip to content\nuv\nUsing tools\nInitializing search\n uv\nuv\nIntroduction\nGetting started\nGetting started\nInstallation\nFirst steps\nFeatures\nGetting help\nGuides\nGuides\nInstalling Python\nRunning scripts\nUsing tools\nWorking on projects\nPublishing packages\nMigration\nMigration\nFrom pip to a uv project\nIntegrations\nIntegrations\nDocker\nJupyter\nmarimo\nGitHub Actions\nGitLab CI/CD\nPre-commit\nPyTorch\nFastAPI\nBazel\nAzure Artifacts\nGoogle Artifact Registry\nAWS CodeArtifact\nJFrog Artifactory\nRenovate\nDependabot\nAWS Lambda\nCoiled\nConcepts\nConcepts\nProjects\nProjects\nStructure and files\nCreating projects\nManaging dependencies\nRunning commands\nLocking and syncing\nConfiguring projects\nBuilding distributions\nExporting lockfiles\nUsing workspaces\nTools\nPython versions\nConfiguration files\nPackage indexes\nResolution\nBuild backend\nAuthentication\nAuthentication\nThe auth CLI\nHTTP credentials\nGit credentials\nTLS certificates\nThird-party services\nCaching\nPreview features\nThe pip interface\nThe pip interface\nUsing environments\nManaging packages\nInspecting environments\nDeclaring dependencies\nLocking environments\nCompatibility with pip\nReference\nReference\nCommands\nSettings\nEnvironment variables\nStorage\nInstaller options\nTroubleshooting\nTroubleshooting\nBuild failures\nReproducible examples\nContributing\nInternals\nInternals\nResolver\nWorkspace Metadata\nBenchmarks\nPolicies\nPolicies\nVersioning\nPlatform support\nPython support\nRust support\nLicense\nTable of contents\nRunning tools\nCommands with different package names\nRequesting specific versions\nRequesting extras\nRequesting different sources\nCommands with plugins\nInstalling tools\nUpgrading tools\nRequesting Python versions\nLegacy Windows Scripts\nNext steps\nGuides\nUsing tools\n\nMany Python packages provide applications that can be used as tools. uv has specialized support for easily invoking and installing tools.\n\nRunning tools\n\nThe uvx command invokes a tool without installing it.\n\nFor example, to run ruff:\n\n$ uvx ruff\n\n\nNote\n\nThis is exactly equivalent to:\n\n$ uv tool run ruff\n\n\nuvx is provided as an alias for convenience.\n\nArguments can be provided after the tool name:\n\n$ uvx pycowsay hello from uv\n\n  -------------\n< hello from uv >\n  -------------\n   \\   ^__^\n    \\  (oo)\\_______\n       (__)\\       )\\/\\\n           ||----w |\n           ||     ||\n\n\nTools are installed into temporary, isolated environments when using uvx.\n\nNote\n\nIf you are running a tool in a project and the tool requires that your project is installed, e.g., when using pytest or mypy, you'll want to use uv run instead of uvx. Otherwise, the tool will be run in a virtual environment that is isolated from your project.\n\nIf your project has a flat structure, e.g., instead of using a src directory for modules, the project itself does not need to be installed and uvx is fine. In this case, using uv run is only beneficial if you want to pin the version of the tool in the project's dependencies.\n\nCommands with different package names\n\nWhen uvx ruff is invoked, uv installs the ruff package which provides the ruff command. However, sometimes the package and command names differ.\n\nThe --from option can be used to invoke a command from a specific package, e.g., http which is provided by httpie:\n\n$ uvx --from httpie http\n\nRequesting specific versions\n\nTo run a tool at a specific version, use command@<version>:\n\n$ uvx ruff@0.3.0 check\n\n\nTo run a tool at the latest version, use command@latest:\n\n$ uvx ruff@latest check\n\n\nThe --from option can also be used to specify package versions, as above:\n\n$ uvx --from 'ruff==0.3.0' ruff check\n\n\nOr, to constrain to a range of versions:\n\n$ uvx --from 'ruff>0.2.0,<0.3.0' ruff check\n\n\nNote the @ syntax cannot be used for anything other than an exact version.\n\nRequesting extras\n\nThe --from option can be used to run a tool with extras:\n\n$ uvx --from 'mypy[faster-cache,reports]' mypy --xml-report mypy_report\n\n\nThis can also be combined with version selection:\n\n$ uvx --from 'mypy[faster-cache,reports]==1.13.0' mypy --xml-report mypy_report\n\nRequesting different sources\n\nThe --from option can also be used to install from alternative sources.\n\nFor example, to pull from git:\n\n$ uvx --from git+https://github.com/httpie/cli httpie\n\n\nYou can also pull the latest commit from a specific named branch:\n\n$ uvx --from git+https://github.com/httpie/cli@master httpie\n\n\nOr pull a specific tag:\n\n$ uvx --from git+https://github.com/httpie/cli@3.2.4 httpie\n\n\nOr even a specific commit:\n\n$ uvx --from git+https://github.com/httpie/cli@2843b87 httpie\n\n\nOr with Git LFS support:\n\n$ uvx --lfs --from git+https://github.com/astral-sh/lfs-cowsay lfs-cowsay\n\nCommands with plugins\n\nAdditional dependencies can be included, e.g., to include mkdocs-material when running mkdocs:\n\n$ uvx --with mkdocs-material mkdocs --help\n\nInstalling tools\n\nIf a tool is used often, it is useful to install it to a persistent environment and add it to the PATH instead of invoking uvx repeatedly.\n\nTip\n\nuvx is a convenient alias for uv tool run. All of the other commands for interacting with tools require the full uv tool prefix.\n\nTo install ruff:\n\n$ uv tool install ruff\n\n\nWhen a tool is installed, its executables are placed in a bin directory in the PATH which allows the tool to be run without uv. If it's not on the PATH, a warning will be displayed and uv tool update-shell can be used to add it to the PATH.\n\nAfter installing ruff, it should be available:\n\n$ ruff --version\n\n\nUnlike uv pip install, installing a tool does not make its modules available in the current environment. For example, the following command will fail:\n\n$ python -c \"import ruff\"\n\n\nThis isolation is important for reducing interactions and conflicts between dependencies of tools, scripts, and projects.\n\nUnlike uvx, uv tool install operates on a package and will install all executables provided by the tool.\n\nFor example, the following will install the http, https, and httpie executables:\n\n$ uv tool install httpie\n\n\nAdditionally, package versions can be included without --from:\n\n$ uv tool install 'httpie>0.1.0'\n\n\nAnd, similarly, for package sources:\n\n$ uv tool install git+https://github.com/httpie/cli\n\n\nOr package sources with Git LFS:\n\n$ uv tool install --lfs git+https://github.com/astral-sh/lfs-cowsay\n\n\nAs with uvx, installations can include additional packages:\n\n$ uv tool install mkdocs --with mkdocs-material\n\n\nMultiple related executables can be installed together in the same tool environment, using the --with-executables-from flag. For example, the following will install the executables from ansible, plus those provided by ansible-core and ansible-lint:\n\n$ uv tool install --with-executables-from ansible-core,ansible-lint ansible\n\nUpgrading tools\n\nTo upgrade a tool, use uv tool upgrade:\n\n$ uv tool upgrade ruff\n\n\nTool upgrades will respect the version constraints provided when installing the tool. For example, uv tool install ruff >=0.3,<0.4 followed by uv tool upgrade ruff will upgrade Ruff to the latest version in the range >=0.3,<0.4.\n\nTo instead replace the version constraints, re-install the tool with uv tool install:\n\n$ uv tool install ruff>=0.4\n\n\nTo instead upgrade all tools:\n\n$ uv tool upgrade --all\n\nRequesting Python versions\n\nBy default, uv will use your default Python interpreter (the first it finds) when running, installing, or upgrading tools. You can specify the Python interpreter to use with the --python option.\n\nFor example, to request a specific Python version when running a tool:\n\n$ uvx --python 3.10 ruff\n\n\nOr, when installing a tool:\n\n$ uv tool install --python 3.10 ruff\n\n\nOr, when upgrading a tool:\n\n$ uv tool upgrade --python 3.10 ruff\n\n\nFor more details on requesting Python versions, see the Python version concept page.\n\nLegacy Windows Scripts\n\nTools also support running legacy setuptools scripts. These scripts are available via $(uv tool dir)\\<tool-name>\\Scripts when installed.\n\nCurrently only legacy scripts with the .ps1, .cmd, and .bat extensions are supported.\n\nFor example, to run a Command Prompt script:\n\n$ uv tool run --from nuitka==2.6.7 nuitka.cmd --version\n\n\nIn addition, you don't need to specify the extension. uvx will automatically look for files ending in .ps1, .cmd, and .bat in that order of execution on your behalf.\n\n$ uv tool run --from nuitka==2.6.7 nuitka --version\n\nNext steps\n\nTo learn more about managing tools with uv, see the Tools concept page and the command reference.\n\nOr, read on to learn how to work on projects.\n\n Back to top\nPrevious\nRunning scripts\nNext\nWorking on projects\nMade with Material for MkDocs",
+  "headings": [
+    {
+      "id": "using-tools",
+      "parent_id": "",
+      "text": "Using tools"
+    },
+    {
+      "id": "running-tools",
+      "parent_id": "",
+      "text": "Running tools"
+    },
+    {
+      "id": "commands-with-different-package-names",
+      "parent_id": "",
+      "text": "Commands with different package names"
+    },
+    {
+      "id": "requesting-specific-versions",
+      "parent_id": "",
+      "text": "Requesting specific versions"
+    },
+    {
+      "id": "requesting-extras",
+      "parent_id": "",
+      "text": "Requesting extras"
+    },
+    {
+      "id": "requesting-different-sources",
+      "parent_id": "",
+      "text": "Requesting different sources"
+    },
+    {
+      "id": "commands-with-plugins",
+      "parent_id": "",
+      "text": "Commands with plugins"
+    },
+    {
+      "id": "installing-tools",
+      "parent_id": "",
+      "text": "Installing tools"
+    },
+    {
+      "id": "upgrading-tools",
+      "parent_id": "",
+      "text": "Upgrading tools"
+    },
+    {
+      "id": "requesting-python-versions",
+      "parent_id": "",
+      "text": "Requesting Python versions"
+    },
+    {
+      "id": "legacy-windows-scripts",
+      "parent_id": "",
+      "text": "Legacy Windows Scripts"
+    },
+    {
+      "id": "next-steps",
+      "parent_id": "",
+      "text": "Next steps"
+    }
+  ],
+  "scrollY": 243.5,
+  "width": 1200,
+  "height": 839
+}

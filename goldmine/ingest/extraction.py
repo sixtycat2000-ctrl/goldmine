@@ -51,6 +51,7 @@ class _Piece:
     vec_ok: bool
     kind: str = "chunk"                 # chunk | page (thin PDF page)
     excerpt_override: str | None = None  # None -> util.excerpt(chunk.text)
+    location_unit: str = "line"          # page/second survive ctx-guard resplits
 
 
 @dataclass
@@ -93,6 +94,7 @@ class _OcrRequest:
     done: threading.Event = field(default_factory=threading.Event)
     page: "ocr_mod.OcrPage | None" = None   # helper answer (may carry .error)
     failed: str | None = None               # batch-level unavailability/timeout
+    failed_status: str = "off"
 
 
 #: Screenshot batch gather (02 F7): the drain window closes after this much
@@ -186,21 +188,28 @@ class ExtractMixin:
         # included). Raw-audio windows remain only for non-speech or when
         # whisper is missing/failing (ingest.asr = auto|always|off).
         asr_outcome = self._try_asr(cand, cap)
+        asr_info = dict(asr_outcome.info or {}) if asr_outcome is not None else {}
         if asr_outcome is not None:
-            return asr_outcome
+            mode = str(getattr(self.cfg.ingest, "asr", "auto") or "auto")
+            if asr_outcome.capability != "metadata_only" or mode == "always":
+                return asr_outcome
+            if cap is None or not cap.audio:
+                asr_outcome.detail = "backend lacks audio embedding; " + (asr_outcome.detail or "ASR unavailable")
+                return asr_outcome
 
         if cap is None or not cap.audio:
             return _Outcome(capability="metadata_only", detail="backend lacks audio embedding")
         if media.ffprobe_path() is None:
-            return _Outcome(capability="metadata_only", detail="ffprobe not found")
+            return _Outcome(capability="metadata_only", detail="ffprobe not found", info=asr_info)
         duration = media.ffprobe_duration(path)
         if duration is None:
             return _Outcome(
                 capability="metadata_only",
                 detail="ffprobe could not read duration",
+                info=asr_info,
             )
         if kind == "video" and media.has_audio_stream(path) is False:
-            return _Outcome(capability="metadata_only", detail="no audio stream")
+            return _Outcome(capability="metadata_only", detail="no audio stream", info=asr_info)
 
         max_minutes = float(self.cfg.ingest.audio_max_minutes)
         try:
@@ -219,11 +228,11 @@ class ExtractMixin:
                     for piece in pieces
                 ]
         except ToolError:
-            return _Outcome(capability="metadata_only", detail="ffmpeg not found")
+            return _Outcome(capability="metadata_only", detail="ffmpeg not found", info=asr_info)
         # per-window ffmpeg failures/timeout are extraction errors => failed row
         # (let RuntimeError propagate into _extract's handler above)
 
-        info: dict = {"duration": round(duration, 3), "windows": len(segs)}
+        info: dict = {**asr_info, "duration": round(duration, 3), "windows": len(segs)}
         partial = duration > max_minutes * 60.0
         if partial:
             info["read_end"] = max_minutes * 60.0
@@ -264,22 +273,17 @@ class ExtractMixin:
         from . import asr as asr_mod
 
         if asr_mod.resolve_tools(self.cfg) is None:
-            if mode == "always":
-                return _Outcome(
-                    capability="metadata_only",
-                    detail=(
-                        "ASR unavailable (whisper-cli or models missing) — "
-                        "`goldmine model install whisper-large-v3-turbo-q5_0 "
-                        "silero-vad-v5.1.2`"
-                    ),
-                )
-            return None  # auto: raw windows (multimodal) / metadata (text-only)
+            return _Outcome(
+                capability="metadata_only", info={"asr_status": "unavailable"},
+                detail=("ASR unavailable (whisper-cli or models missing) — "
+                        "`goldmine model install whisper-large-v3-turbo-q5_0 silero-vad-v5.1.2`"),
+            )
         try:
+            self._metrics.call("asr_calls")
             result = asr_mod.transcribe(cand.path, self.cfg)
         except asr_mod.AsrError as exc:
-            if mode == "always":
-                return _Outcome(capability="failed", detail=f"asr failed: {exc}")
-            return None  # auto: honest fallback; raw windows still index it
+            return _Outcome(capability="failed" if mode == "always" else "metadata_only",
+                            detail=f"asr failed: {exc}", info={"asr_status": "error"})
 
         info: dict = {}
         if result.duration_s is not None:
@@ -292,18 +296,15 @@ class ExtractMixin:
             info["read_end"] = result.read_end
 
         if not result.segments:
-            if mode == "always":
-                return _Outcome(
-                    capability="metadata_only", detail="no speech detected (ASR)",
-                    info=info or None,
-                )
-            return None  # auto: probably music -> raw-audio embedding path
+            info["asr_status"] = "no_speech"
+            return _Outcome(capability="metadata_only", detail="no speech detected (ASR)", info=info)
 
         pieces = [
             _Piece(
                 Chunk(seg.text, seg.start_s, seg.end_s),
                 _has_words(seg.text),
                 kind="audio",
+                location_unit="second",
             )
             for seg in result.segments
         ]
@@ -318,9 +319,10 @@ class ExtractMixin:
                 return _Outcome(
                     capability="metadata_only",
                     detail="no speech detected (yield < 20 chars/min)",
-                    info=info or None,
+                    info={**info, "asr_status": "low_yield"},
                 )
         info["asr_segments"] = len(result.segments)
+        info["asr_status"] = "complete"
         return _Outcome(
             capability="content_indexed",
             info=info,
@@ -343,11 +345,30 @@ class ExtractMixin:
             `ocr` seg (FTS text; text-vector only under a text-only backend)."""
         path = cand.path
         is_shot = rules.is_screenshot(path)
-        info: dict = {"screenshot": True} if is_shot else {}
+        metadata = media.exif_capture(path)
+        taken = metadata.taken
+        info: dict = {"exif_version": media.EXIF_METADATA_VERSION, "exif_reader": metadata.reader,
+                      "exif_status": metadata.status,
+                      "taken": taken[0] if taken else None}
+        # Bounded camera/GPS live next to the date so text-only backends
+        # (which never reach prepare_image) still store them (D4 revision).
+        from .exif import camera_and_position
+
+        camera = camera_and_position(path)
+        if camera.make is not None:
+            info["camera_make"] = camera.make
+        if camera.gps is not None:
+            info["gps"] = camera.gps
+        if is_shot:
+            info["screenshot"] = True
+        if taken:
+            info["taken_source"] = "Exif.DateTimeOriginal"
+        content_date: float | None = taken[1] if taken else None
         detail: str | None = None
 
+        ocr_details: dict = {}
         ocr_text, ocr_ms, ocr_status = (
-            self._ocr_screenshot(path) if is_shot else (None, None, "skipped")
+            self._ocr_screenshot(path, details=ocr_details) if is_shot else (None, None, "skipped")
         )
         if ocr_text is not None:
             info["ocr_chars"] = len(ocr_text)
@@ -359,23 +380,34 @@ class ExtractMixin:
             # marker: a later ingest with OCR available re-does this row once
             # (_needs_ocr_redo); "no text"/ocr_chars never re-do.
             info["ocr"] = "unavailable"
+        if is_shot:
+            info["ocr_status"] = {
+                "ok": "complete", "no-text": "no_text", "off": "unavailable",
+                "low-confidence": "low_confidence", "error": "error",
+            }[ocr_status]
+            if ocr_status in ("error", "low-confidence"):
+                info["ocr"] = "error" if ocr_status == "error" else "low confidence"
+            if ocr_status == "off":
+                info["ocr_reason"] = ocr_details.get("reason") or self._ocr_unavailable_reason or "helper unavailable"
+            elif "reason" in ocr_details:
+                info["ocr_reason"] = ocr_details["reason"]
 
         want_image_vec = cap is not None and cap.image and not self.lexical_only
         segs: list[_MediaSeg] = []
-        content_date: float | None = None
         extractor = "image-sips.v2"
 
         if want_image_vec:
             # full v2 prep: EXIF + thumbnail + minSide/cap refusals
             try:
                 prep = media.prepare_image(
-                    path, self._media_tmp_dir(), screenshot=is_shot,
+                    path, self._media_tmp_dir(), screenshot=is_shot, metadata=metadata,
                 )
             except ToolError:
                 return _Outcome(
                     capability="metadata_only",
                     detail="sips not found (image thumbnails)",
                     info=info,
+                    content_date=content_date,
                 )
             except RuntimeError as exc:
                 # sips cannot decode (rc != 0, e.g. "Error 13"): honest
@@ -388,15 +420,23 @@ class ExtractMixin:
                         info=info,
                         extractor_version="image-sips-ocr.v2",
                         media_segs=segs,
+                        content_date=content_date,
                     )
                 return _Outcome(
                     capability="metadata_only",
                     detail=f"sips could not decode: {str(exc)[:120]}",
                     info=info,
+                    content_date=content_date,
                 )
             if prep.taken_epoch is not None:
                 content_date = prep.taken_epoch
                 info["taken"] = prep.taken
+                info["taken_source"] = "Exif.DateTimeOriginal"
+                info["exif_status"] = "complete"
+            if prep.camera_make is not None:
+                info["camera_make"] = prep.camera_make
+            if prep.gps is not None:
+                info["gps"] = prep.gps
             if prep.refused is not None:
                 if ocr_text:
                     # the pixels are un-embeddable (minSide / pathological
@@ -419,13 +459,6 @@ class ExtractMixin:
                 )
             segs.append(_MediaSeg(kind="image", path=prep.path, excerpt=path.name))
             info["thumb"] = f"{prep.width}x{prep.height}"
-        elif media.sips_path() is not None:
-            # no image vector wanted, but EXIF is backend-independent metadata
-            taken = media.exif_taken(path)
-            if taken is not None:
-                content_date = taken[1]
-                info["taken"] = taken[0]
-
         if ocr_text:
             segs.append(self._ocr_seg(path, ocr_text, cap))
             extractor = "image-sips-ocr.v2"
@@ -454,7 +487,7 @@ class ExtractMixin:
         """The screenshot OCR segment policy (02 §5.2/A5): FTS text always;
         a TEXT vector only when the backend cannot embed the image itself
         (llama) and ingest.ocr_text_vector is on. Where an image vector
-        exists (foresight/multimodal) the words stay keyword-only — DigUp
+        exists (multimodal backends) the words stay keyword-only — DigUp
         measured a text vector making screenshots outrank better matches."""
         embed_text = (
             (cap is None or not cap.image)
@@ -463,6 +496,8 @@ class ExtractMixin:
         )
         return _MediaSeg(
             kind="ocr",
+            loc=1,
+            loc_end=max(1, len(ocr_text.splitlines())),
             excerpt=excerpt(ocr_text),
             text_for_fts=ocr_text,
             embed_text=embed_text,
@@ -485,7 +520,7 @@ class ExtractMixin:
                                 else f"unavailable ({self._ocr_unavailable_reason})")
         return self._ocr_ready
 
-    def _ocr_screenshot(self, path: Path) -> tuple[str | None, float | None, str]:
+    def _ocr_screenshot(self, path: Path, *, details=None) -> tuple[str | None, float | None, str]:
         """OCR one screenshot -> (text, ms, status). status: "ok" (text may
         still be None), "no-text" (ran, nothing readable), "off" (helper
         unavailable/disabled), "error" (per-image failure — never a failed
@@ -497,7 +532,9 @@ class ExtractMixin:
         ~100 MB Vision hosts). Per-image errors stay isolated: the helper
         answers per image even in a batch, and a batch-level failure marks
         every member "off" (which the redo marker machinery can recover)."""
+        details = {} if details is None else details
         if not self._ocr_probe():
+            details["reason"] = self._ocr_unavailable_reason or "helper unavailable"
             return None, None, "off"
         req = _OcrRequest(path)
         with self._ocr_batch_lock:
@@ -521,18 +558,24 @@ class ExtractMixin:
         if not req.done.is_set():
             logger.warning("ocr: batch leader lost before %s was answered",
                            path.name)
-            return None, None, "off"
+            details["reason"] = "OCR batch leader lost before answer"
+            return None, None, "error"
         if req.failed is not None:
-            return None, None, "off"
+            details["reason"] = req.failed[:512]
+            return None, None, req.failed_status
         page = req.page
         if page is None:
+            details["reason"] = "OCR helper produced no answer for this image"
             return None, None, "error"  # helper produced no answer for this id
         if page.error is not None:
             logger.debug("ocr: %s on %s", page.error, path.name)
+            details["reason"] = str(page.error)[:512]
             return None, page.ms, "error"
         text = page.text()
         if text.strip():
             return text, page.ms, "ok"
+        if any(line.text.strip() for line in page.lines):
+            return None, page.ms, "low-confidence"
         return None, page.ms, "no-text"
 
     def _drain_ocr_batch(self) -> None:
@@ -552,6 +595,8 @@ class ExtractMixin:
                         return
                 logger.debug("ocr: draining batch of %d", len(batch))
                 try:
+                    self._metrics.call("ocr_calls")
+                    self._metrics.call("ocr_inputs", len(batch))
                     results = ocr_mod.recognize(
                         [r.path for r in batch], self.cfg,
                     )
@@ -560,6 +605,7 @@ class ExtractMixin:
                                    len(batch), exc)
                     for r in batch:
                         r.failed = str(exc)
+                        r.failed_status = "error" if isinstance(exc, ocr_mod.OcrTimeout) else "off"
                         r.done.set()
                     continue  # later arrivals still deserve their own try
                 for i, r in enumerate(batch):
@@ -587,26 +633,32 @@ class ExtractMixin:
             elif time.monotonic() - quiet_since >= _OCR_BATCH_GATHER_S:
                 return
 
-    def _ocr_pages(self, path: Path, pages: list[int], tmp: Path) -> dict[int, tuple[str, float | None]]:
+    def _ocr_pages(self, path: Path, pages: list[int], tmp: Path, *, states=None) -> dict[int, tuple[str, float | None]]:
         """Thin-page OCR batch (02 §5.2 Scope B): render each page via
         pdftoppm (150 dpi, 1400 px — DigUp renderPixels), OCR all renders in
         ONE helper spawn, return {page: (text, ms)}. Empty on any
         unavailability (never a failed file)."""
+        states = {} if states is None else states
+        states.update({page: "unavailable" for page in pages})
         if not pages or not self._ocr_probe():
             return {}
         if extract_pdf.pdftoppm_path() is None:
             return {}
         renders: dict[int, Path] = {}
-        try:
-            for page_no in pages:
+        for page_no in pages:
+            try:
                 renders[page_no] = extract_pdf.render_page_png(
                     path, page_no, tmp / f"page-{page_no}",
                 )
-        except (ToolError, RuntimeError) as exc:
-            logger.warning("ocr: page render failed for %s: %s", path.name, exc)
+            except (ToolError, RuntimeError) as exc:
+                states[page_no] = "error"
+                logger.warning("ocr: page %s render failed for %s: %s", page_no, path.name, exc)
+        if not renders:
             return {}
         try:
             ordered = sorted(renders)
+            self._metrics.call("ocr_calls")
+            self._metrics.call("ocr_inputs", len(ordered))
             results = ocr_mod.recognize(
                 [renders[p] for p in ordered], self.cfg,
             )
@@ -617,19 +669,24 @@ class ExtractMixin:
         for idx, page_no in enumerate(ordered):
             page = results.get(str(idx))
             if page is None or page.error:
+                states[page_no] = "error"
                 continue
             text = page.text()
             if text.strip():
+                states[page_no] = "complete"
                 out[page_no] = (text, page.ms)
+            else:
+                states[page_no] = "low_confidence" if any(line.text.strip() for line in page.lines) else "no_text"
         return out
 
     def _media_tmp_dir(self) -> Path:
         """Scratch dir owned by the run: thumbnails must survive from worker
         extraction into main-thread commit (one wave later)."""
-        if self._media_tmp is None:
-            self._media_tmp = tempfile.TemporaryDirectory(
-                prefix="goldmine-media-tmp-"
-            )
+        with self._media_tmp_lock:
+            if self._media_tmp is None:
+                self._media_tmp = tempfile.TemporaryDirectory(
+                    prefix="goldmine-media-tmp-"
+                )
         return Path(self._media_tmp.name)
 
     def _close_media_tmp(self) -> None:
@@ -638,7 +695,7 @@ class ExtractMixin:
             self._media_tmp = None
 
     def _extract_doc(self, path, ext, override, max_chunks, kind: str = "doc") -> _Outcome:
-        if ext in ("txt", "text"):
+        if ext in ("txt", "text", "rst"):
             ex = extract_txt(path, override)
         elif ext in ("md", "markdown"):
             ex = extract_markdown(path, override)
@@ -682,107 +739,6 @@ class ExtractMixin:
         )
 
     def _extract_pdf(self, path, max_chunks) -> _Outcome:
-        """pdftotext extraction (agent B, build pass 5) + the v2 thin-page OCR
-        upgrade (02 §5.2 Scope B): pages with < 200 chars (including empty
-        scanned pages) are rendered via pdftoppm and OCR'd when the helper is
-        available; upgraded pages become normal text chunks (FTS + vector
-        under BOTH backends — the vector is the page text's). Pages that stay
-        thin keep the honest FTS-only no-vector row; a PDF with no text layer
-        at all becomes content_indexed once every page OCRs."""
-        try:
-            result = extract_pdf.extract_pages(path, max_pages=self.cfg.ingest.max_pages)
-        except ToolError:
-            return _Outcome(
-                capability="metadata_only",
-                detail="pdftotext not found",
-            )
-        except RuntimeError as exc:
-            return _Outcome(capability="failed", detail=str(exc))
+        from .pdf_evidence import extract_pdf_outcome
 
-        # candidates for OCR: every page below the thin threshold, INCLUDING
-        # empty ones (a scanned page extracts as ""), capped like text reads.
-        ocr_candidates = [
-            number for number, text in result.pages
-            if len(text.strip()) < extract_pdf.THIN_PAGE_CHARS
-        ]
-        ocr_texts: dict[int, str] = {}
-        if ocr_candidates and self._ocr_probe():
-            with tempfile.TemporaryDirectory(prefix="goldmine-pdfocr-") as td:
-                ocr_texts = {
-                    page: text
-                    for page, (text, _ms) in self._ocr_pages(
-                        path, ocr_candidates, Path(td)
-                    ).items()
-                }
-
-        pieces: list[_Piece] = []
-        thin_pages: list[int] = []
-        ocr_pages: list[int] = []
-        for number, text in result.pages:
-            stripped = text.strip()
-            if len(stripped) < extract_pdf.THIN_PAGE_CHARS:
-                upgraded = ocr_texts.get(number, "").strip()
-                if len(upgraded) >= extract_pdf.THIN_PAGE_CHARS:
-                    # OCR recovered a full page: normal chunks, vector-eligible
-                    ocr_pages.append(number)
-                    for chunk in self._chunk_text(upgraded, "pdf", max_chunks):
-                        pieces.append(_Piece(chunk, _has_words(chunk.text)))
-                    continue
-                if not stripped and not upgraded:
-                    continue  # nothing at all on this page (v1 behavior)
-                # honest thin page: whatever text exists, FTS-only, no vector
-                thin_pages.append(number)
-                pieces.append(_Piece(
-                    Chunk("\n".join(t for t in (stripped, upgraded) if t),
-                          number, number), False,
-                    kind="page", excerpt_override="",
-                ))
-                continue
-            for chunk in self._chunk_text(stripped, "pdf", max_chunks):
-                pieces.append(_Piece(chunk, _has_words(chunk.text)))
-
-        info: dict = {"pages": result.total}
-        if result.truncated:
-            info["partial"] = True
-            info["read_to"] = result.read_to
-            info["read_end"] = result.read_end
-        if ocr_pages:
-            info["ocr_pages"] = ocr_pages
-        if thin_pages:
-            info["thin_text"] = True
-            info["thin_pages"] = thin_pages
-
-        tool_version = result.tool_version
-        if ocr_pages:
-            # records the OCR pass so the G10 staleness / --refresh-thin
-            # machinery can find and re-do these rows (02 §5.2)
-            tool_version = tool_version.replace(
-                "pdftotext@", "pdftotext+visionocr@", 1
-            )
-            detail = f"ocr: {len(ocr_pages)} page(s)"
-            if thin_pages:
-                detail += f"; thin-text: {len(thin_pages)} page(s) need OCR (scanned)"
-        elif thin_pages:
-            detail = f"thin-text: {len(thin_pages)} page(s) need OCR (scanned)"
-        else:
-            detail = None
-
-        if not pieces:
-            return _Outcome(
-                capability="metadata_only",
-                detail=(
-                    "page needs OCR (scanned)" if result.pages else "no text extracted"
-                ),
-                info=info,
-                extractor_version=tool_version,
-                title=result.title,
-            )
-        return _Outcome(
-            capability="content_indexed",
-            detail=detail,
-            info=info,
-            extractor_version=tool_version,
-            title=result.title,
-            chunks=pieces,
-            partial=result.truncated,
-        )
+        return extract_pdf_outcome(self, path, max_chunks)

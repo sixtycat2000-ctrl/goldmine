@@ -1,7 +1,7 @@
 """Media probes: ffprobe metadata + ffmpeg audio window extraction.
 
 v1 scope (build pass 7): audio windows are the ONLY media embedding path, and
-only via the foresight/mock backends (llama /v1/embeddings is text-only).
+only via media-capable backends (llama /v1/embeddings is text-only).
 - audio: 16 kHz mono PCM16 WAV windows, 30 s window / 25 s hop (5 s overlap —
   DigUp audioWindow: the model ignores anything longer), silent windows
   (RMS < 0.003 ≈ −50 dBFS) skipped, duration capped by cfg.ingest.audio_max_minutes.
@@ -24,6 +24,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ..util import ToolError
+from .exif import METADATA_VERSION as EXIF_METADATA_VERSION
 
 logger = logging.getLogger("goldmine.media")
 
@@ -35,7 +36,7 @@ HOP_S = 25.0
 SILENCE_RMS = 0.003        # ≈ −50 dBFS (DigUp)
 FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 
-#: Recorded in the media-capable backends' fingerprints (foresight; the mock's
+#: Recorded in the media-capable backends' fingerprints (the mock's
 #: multimodal flag keeps its own "bytes.v1"): these windowing/gate parameters
 #: define the bytes the model actually sees, so changing any of them must force
 #: a reindex. Media vectors take NO prompt (D7: media unprompted) — this field
@@ -255,11 +256,6 @@ IMAGE_THUMB_MIN_SIDE = 256        # DigUp minImageSide (Extractors.swift:43)
 IMAGE_THUMB_MAX_BYTES = 8 << 20
 IMAGE_SIPS_TIMEOUT_S = 60.0
 
-#: sips -g creation returns "YYYY:MM:DD HH:MM:SS" (EXIF DateTimeOriginal,
-#: Apple's colons are not a typo) or "<nil>" when absent [measured].
-_SIPS_DATE_FMT = "%Y:%m:%d %H:%M:%S"
-
-
 def sips_path() -> str | None:
     return shutil.which("sips")
 
@@ -273,6 +269,8 @@ class ImagePrep:
     height: int = 0
     taken: str | None = None        # EXIF creation date, ISO "YYYY-MM-DD HH:MM:SS"
     taken_epoch: float | None = None
+    camera_make: str | None = None  # bounded IFD0 Make (2026-10-23 D4 revision)
+    gps: str | None = None          # bounded GPS IFD, "dd.dddd H, dd.dddd H"
     refused: str | None = None      # machine-stable refusal reason, or None
 
 
@@ -321,31 +319,34 @@ def image_dimensions(path: Path) -> tuple[int, int] | None:
 
 
 def parse_sips_creation(value: str | None) -> tuple[str, float] | None:
-    """"2024:05:17 09:30:00" -> ("2024-05-17 09:30:00", epoch-local).
-    None/`<nil>`/unparsable -> None (local time — EXIF has no zone; the
-    corpus is the photographer's machine)."""
-    import time as _time
+    """Legacy string parser only; sips creation does not establish capture time."""
+    from .exif import parse_capture_time
 
-    if not value or value.strip() in ("", "<nil>"):
-        return None
-    try:
-        st = _time.strptime(value.strip(), _SIPS_DATE_FMT)
-    except ValueError:
-        return None
-    epoch = _time.mktime(st)
-    iso = f"{st.tm_year:04d}-{st.tm_mon:02d}-{st.tm_mday:02d} " \
-          f"{st.tm_hour:02d}:{st.tm_min:02d}:{st.tm_sec:02d}"
-    return iso, epoch
+    return parse_capture_time(value.strip() if isinstance(value, str) else value)
 
 
 def exif_taken(path: Path) -> tuple[str, float] | None:
-    """(iso, epoch) from `sips -g creation` (EXIF DateTimeOriginal), or None
-    when the image carries no date."""
-    try:
-        props = _sips_properties(path, ["creation"])
-    except (ToolError, RuntimeError):
-        return None
-    return parse_sips_creation(props.get("creation"))
+    """Actual DateTimeOriginal; JPEG uses bounded TIFF parsing, others ImageIO.
+
+    IFD0 modified DateTime and sips creation never substitute for capture time.
+    Explicit offsets affect epoch only; the ISO string stays camera wall clock.
+    Missing zone retains the documented host-local epoch convention.
+    """
+    from .exif import taken
+
+    return taken(path)
+
+
+def exif_reader(path: Path) -> str | None:
+    from .exif import reader
+
+    return reader(path)
+
+
+def exif_capture(path: Path):
+    from .exif import capture
+
+    return capture(path)
 
 
 def thumbnail_image(
@@ -375,7 +376,7 @@ def thumbnail_image(
     return out
 
 
-def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False) -> ImagePrep:
+def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False, metadata=None) -> ImagePrep:
     """One image through the v2 pipeline (02 §5.4): EXIF date first (recorded
     even on refusal), then the thumbnail, then minSide + post-thumb byte cap.
 
@@ -384,9 +385,15 @@ def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False) -> ImagePr
       "thumbnail exceeds 8 MB after resize"   — pathological encode
     Raises ToolError when sips is absent (caller: honest metadata_only) and
     RuntimeError when the file cannot be decoded at all."""
-    taken = exif_taken(path)
+    taken = metadata.taken if metadata is not None else exif_taken(path)
     prep = ImagePrep(taken=taken[0] if taken else None,
                      taken_epoch=taken[1] if taken else None)
+    # The retry object only caches the DATE attempt; camera/GPS are separate
+    # bounded reads and always attempted for JPEGs.
+    from .exif import camera_and_position
+
+    camera = camera_and_position(path)
+    prep.camera_make, prep.gps = camera.make, camera.gps
     import uuid
 
     token = uuid.uuid4().hex[:10]

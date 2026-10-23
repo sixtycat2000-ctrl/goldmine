@@ -3,8 +3,9 @@
 docs/v2/01-search-relevance.md §5.1, docs/v2/REDESIGN.md §1.1-1.2).
 
 Runs the hand-labeled queries in evals/real.jsonl (+ the merged
-evals/media_queries.jsonl set, whose needs:asr/ocr/exif tags are SKIPPED
-until those pipelines land) against the eval index built by
+evals/media_queries.jsonl set). The default legacy suite preserves the frozen
+needs exclusions; --suite full-media includes every query and verifies actual
+stored ASR/OCR/EXIF evidence before any inference against the eval index built by
 scripts/build_eval_corpus.py.
 
 Metrics (B12/A4 naming — success@5, NOT R@5):
@@ -140,7 +141,7 @@ def should_skip(query: dict, include_needs: set[str] | None = None) -> bool:
     blocked = needs & SKIPPED_NEEDS
     if not blocked:
         return False
-    return not (include_needs and blocked & set(include_needs))
+    return not blocked.issubset(set(include_needs or []))
 
 
 def eligible_queries(queries: list[dict], include_needs=None) -> list[dict]:
@@ -371,81 +372,9 @@ def per_tag(rows: list[dict]) -> dict[str, dict]:
 
 # ---------------------------------------------------------------- statistics
 
-def _binom_tail_le(k: int, n: int, p: float) -> float:
-    """P(X <= k) for X ~ Binomial(n, p) — iterative pmf, no scipy."""
-    if k < 0:
-        return 0.0
-    if k >= n:
-        return 1.0
-    if p <= 0.0:
-        return 1.0
-    if p >= 1.0:
-        return 0.0
-    q = 1.0 - p
-    pmf = q ** n
-    total = pmf
-    for i in range(1, k + 1):
-        pmf *= (n - i + 1) / i * (p / q)
-        total += pmf
-    return min(total, 1.0)
-
-
-def _solve_decreasing(f, target: float) -> float:
-    """x in [0, 1] with decreasing f(x) == target (bisection, 1e-12 closed)."""
-    lo, hi = 0.0, 1.0
-    for _ in range(200):
-        mid = (lo + hi) / 2
-        if f(mid) > target:
-            lo = mid
-        else:
-            hi = mid
-    return (lo + hi) / 2
-
-
-def binom_ci(k: int, n: int, conf: float = 0.95) -> tuple[float, float]:
-    """Exact Clopper-Pearson CI for a binomial proportion (scipy-free):
-    lower solves P(X <= k-1 | lo) = (1-conf)/2, upper solves
-    P(X <= k | hi) = (1-conf)/2. Reference point (n=146, k=109):
-    [0.668, 0.815]."""
-    alpha = 1.0 - conf
-    if n <= 0:
-        return (0.0, 1.0)
-    lo = 0.0 if k <= 0 else _solve_decreasing(
-        lambda p: _binom_tail_le(k - 1, n, p), 1 - alpha / 2)
-    hi = 1.0 if k >= n else _solve_decreasing(
-        lambda p: _binom_tail_le(k, n, p), alpha / 2)
-    return (lo, hi)
-
-
-def mcnemar_exact(b: int, c: int) -> float:
-    """Two-sided exact McNemar p on the discordant pair counts (b = pairs the
-    current run gained, c = pairs it lost): p = 2 * P(Binom(b+c, 0.5) <=
-    min(b, c)), clipped to 1. 7 same-direction flips out of 7 discordant
-    pairs -> p = 0.0156 (one-sided 0.0078)."""
-    n = b + c
-    if n == 0:
-        return 1.0
-    tail = sum(math.comb(n, i) for i in range(min(b, c) + 1)) / 2 ** n
-    return min(1.0, 2.0 * tail)
-
-
-# ---------------------------------------------------------------- bootstrap
-
-def bootstrap_ci(values: list[float], seed: int = BOOTSTRAP_SEED,
-                 reps: int = BOOTSTRAP_REPS) -> tuple[float, float]:
-    """95% percentile CI of the mean (seeded — deterministic)."""
-    if not values:
-        return (0.0, 0.0)
-    rng = random.Random(seed)
-    n = len(values)
-    means = []
-    for _ in range(reps):
-        sample = [values[rng.randrange(n)] for _ in range(n)]
-        means.append(sum(sample) / n)
-    means.sort()
-    lo = means[int(0.025 * reps)]
-    hi = means[min(reps - 1, int(0.975 * reps))]
-    return lo, hi
+from eval_legacy_statistics import (  # compatibility exports for existing harness clients
+    _binom_tail_le, _solve_decreasing, binom_ci, mcnemar_exact, bootstrap_ci,
+)
 
 
 def compare_to_baseline(current: dict, per_query: dict, baseline: dict) -> dict:
@@ -533,14 +462,15 @@ def run_eval(db: Path, backend_name: str, queries: list[dict],
              verbose: bool = False) -> list[dict]:
     cfg = Config(home=str(db.parent / ".evalhome"))
     cfg.backend = backend_name
-    store = Store(db)
+    store = Store(db, ro=True)
     backend = create_backend(cfg, backend_name)
     rows: list[dict] = []
     try:
         searcher = Searcher(store, backend)
         for q in queries:  # already sorted by id
             kinds = set(q["kinds"]) if q.get("kinds") else None
-            hits = searcher.search(q["q"], limit=10, scorer=scorer, kinds=kinds)
+            with store.read_snapshot():
+                hits = searcher.search(q["q"], limit=10, scorer=scorer, kinds=kinds)
             rows.append({"query": q, "metrics": score_query(q, hits, fixture_root),
                          "hit_paths": [h.path for h in hits],
                          "hits": [{"path": h.path, "score": h.score,
@@ -711,7 +641,7 @@ def render(rows: list[dict], current: dict, tags: dict, *, split: str,
 def render_claims(current: dict, db: Path) -> str:
     """The three falsifiable v2.0 claims (REDESIGN §1.1), status where
     computable from this run."""
-    store = Store(db)
+    store = Store(db, ro=True)
     try:
         failed = store.db.execute(
             "SELECT COUNT(*) FROM files WHERE state = 'failed'"
@@ -804,6 +734,8 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--db", default=str(EVALS_DIR / "eval.sqlite"))
     parser.add_argument("--backend", default="mock", help="mock | llama")
+    parser.add_argument("--suite", choices=["legacy", "full-media"], default="legacy",
+                        help="legacy keeps the frozen 150-query denominator; full-media requires all 169")
     parser.add_argument("--manifest", default=str(MANIFEST_JSON))
     parser.add_argument("--fixture-root", default=None)
     parser.add_argument("--split", default="all",
@@ -820,7 +752,7 @@ def main(argv: list[str] | None = None) -> int:
                              "metric trips (exit 1) only when its drop is "
                              "both beyond -0.02 AND significant — s@5/s@1 "
                              "exact McNemar p<0.05, MRR/nDCG paired bootstrap "
-                             "95% CI; lookup/zero-hit are advisory (cannot "
+                             "95%% CI; lookup/zero-hit are advisory (cannot "
                              "trip). Also re-verifies the corpus on disk "
                              "(manifest hashes + fixture) before comparing")
     parser.add_argument(
@@ -828,7 +760,7 @@ def main(argv: list[str] | None = None) -> int:
         help="report whether any expected path falls ONLY in the human fold "
              "region (duplicates + score < 0.5x top) — default ON, ADVISORY: "
              "counts and lists, gates nothing (--no-fold-audit silences)")
-    parser.add_argument("--baseline", default=str(BASELINE_JSON))
+    parser.add_argument("--baseline", default=None)
     parser.add_argument("--update-baseline", action="store_true")
     parser.add_argument("--yes", action="store_true",
                         help="required with --update-baseline")
@@ -838,11 +770,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
+    from eval_media_suite import SUITE_IDS, inspect_index
+    suite_id = SUITE_IDS[args.suite]
+    args.baseline = args.baseline or str(BASELINE_JSON if args.suite == "legacy"
+                                         else EVALS_DIR / "media_full_baseline.json")
+    if args.suite == "full-media" and args.split != "all":
+        parser.error("full-media uses all 169 queries; --split must be all")
+
     manifest = json.loads(Path(args.manifest).read_text())
     fixture_root = Path(args.fixture_root or manifest["fixture"]["root"])
 
     queries = sorted(eligible_queries(load_queries(),
-                                      include_needs=set(args.include_needs)),
+                                      include_needs=SKIPPED_NEEDS if args.suite == "full-media"
+                                      else set(args.include_needs)),
                      key=lambda q: q["id"])
 
     problems = validate(queries, manifest, fixture_root)
@@ -870,7 +810,14 @@ def main(argv: list[str] | None = None) -> int:
     if not db.is_file():
         print(f"no eval index at {db} — run scripts/build_eval_corpus.py first",
               file=sys.stderr)
-        return 4
+        return 2
+
+    preflight = inspect_index(db, queries, fixture_root)
+    if args.suite == "full-media" and preflight["missing"]:
+        result = {"suite_id": suite_id, "status": "MISSING", **preflight,
+                  "repair": "Run scripts/build_eval_corpus.py --backend llama explicitly after preparing the missing source metadata/tools."}
+        print(json.dumps(result, indent=1, ensure_ascii=False))
+        return 2
 
     splits = json.loads(SPLITS_JSON.read_text()) if SPLITS_JSON.is_file() else None
     queries = select_split(queries, args.split, splits)
@@ -883,7 +830,8 @@ def main(argv: list[str] | None = None) -> int:
     audit = fold_audit(rows, fixture_root) if args.fold_audit else None
 
     if args.json:
-        out = {"split": args.split, "backend": args.backend,
+        out = {"split": args.split, "backend": args.backend, "suite_id": suite_id,
+               "preflight": preflight,
                "corpus_version": manifest["corpus_version"], "metrics": current,
                "per_tag": tags,
                **({"fold_audit": audit} if audit is not None else {}),
@@ -908,6 +856,8 @@ def main(argv: list[str] | None = None) -> int:
         import build_eval_corpus as bec  # corpus sha helper (same directory)
         baseline = {
             "schema": 1,
+            "suite_id": suite_id,
+            "preflight": preflight,
             "backend": args.backend,
             "scorer": args.scorer,
             "date": _dt.datetime.now().strftime("%Y-%m-%d"),
@@ -950,6 +900,9 @@ def main(argv: list[str] | None = None) -> int:
                   "first", file=sys.stderr)
             return 2
         baseline = json.loads(baseline_path.read_text())
+        if baseline.get("suite_id", "legacy.v3") != suite_id:
+            print("baseline suite identity differs; legacy and full-media cannot be compared", file=sys.stderr)
+            return 2
         if baseline.get("corpus_version") != manifest["corpus_version"]:
             print(f"baseline corpus_version {baseline.get('corpus_version')} != "
                   f"manifest {manifest['corpus_version']} — old baselines are "

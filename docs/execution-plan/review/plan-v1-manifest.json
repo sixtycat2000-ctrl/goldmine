@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "plan_version": "2026-10-21.1",
+  "files": {
+    "ACCEPTANCE.md": "9eed15b51c51b2c014c2fc5f457ac3671b6a9cd0bc44dfe17bd16a23f61abfee",
+    "AGENT_PROMPT.md": "f7e287447ed2327abfab8f30dc59bab99ff6f7a3469d570b9ef13ee7aceb8bbe",
+    "CONTRACTS.md": "c36aaaa1777b247b45807f1b7358ec954c052d06454bf25ea88ccc2f92629130",
+    "P0.md": "4d3548877b696c18fd00f13489883c99a9e23fccee0e9131e1fffdc2d438718a",
+    "P1.md": "f7273907e492ce543be2f86a5d2959ab0c22049300adf02f18413dbf4e3c3251",
+    "P2.md": "a16313f7eab371efc145fe9db71b14307acf8f16b1ccc254c11ec5585866353c",
+    "README.md": "eddaecc26a491af0ac5dd03b6510ee8449646d95ee228f5448da00ad5b530663",
+    "baseline-20261021.json": "7272cdd0ee587a9302c0804eab9b7d5c07f00662f02b52efaa0cdf1b385c9774",
+    "inputs.example.json": "2b4489a46223dd297e433c0e9672e064a7a0407162c9d7109bf01c2eea6c85b3",
+    "tasks.json": "391aa4c474ece5f125862a961308211afc2af84c677ae8511e962145bf5aaf28"
+  }
+}

@@ -1,0 +1,1321 @@
+{
+  "schema": 1,
+  "suite_id": "distill.real.v1",
+  "state": "FROZEN",
+  "evidence_mode": "real",
+  "frozen_at": "2026-10-21T19:23:52.461890+00:00",
+  "labeling_protocol": "independent-before-clustering",
+  "reviewers": [
+    "root AI independent source-label reviewer",
+    "review_ir_statistics AI provenance and license-completeness reviewer"
+  ],
+  "product_manifest": {
+    "manifest_path": "product-sources.json",
+    "sha256": "d484bbb8ab2b922e5659bf50f4bc29ea41e31d1325e8517720a3cb17e2d7d01f"
+  },
+  "topics": [
+    "reactive-ui-state",
+    "cli-interfaces",
+    "http-requests",
+    "python-environments",
+    "python-testing",
+    "typed-data",
+    "code-quality",
+    "cryptographic-security"
+  ],
+  "documents": [
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/flask/docs/async-await.rst",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/flask/docs/errorhandling.rst",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/httpx/docs/advanced/timeouts.md",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/httpx/docs/quickstart.md",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pip-tools/README.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pip-tools/piptools/scripts/compile.py",
+      "topics": [
+        "python-environments",
+        "cli-interfaces"
+      ],
+      "role": "cross_topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pip/docs/html/topics/caching.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pip/docs/html/topics/repeatable-installs.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/poetry/docs/dependency-specification.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/poetry/docs/managing-environments.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/serialization.md",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pydantic/docs/concepts/strict_mode.md",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/assert.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/pytest/doc/en/how-to/skipping.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/rich/docs/source/progress.rst",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en",
+        "duplicate",
+        "duplicate:contained-original-excerpt"
+      ]
+    },
+    {
+      "path": "compound/rich/docs/source/tables.rst",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/ruff/docs/configuration.md",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/ruff/docs/formatter.md",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/typer/docs/tutorial/commands/context.md",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/typer/docs/tutorial/options/help.md",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/uv/docs/guides/projects.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "compound/uv/docs/guides/tools.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/US174465-scan.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/US223898-scan.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/US6469-scan.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/US821393-scan.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-145-excerpt.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-38a-excerpt.pdf",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-92-excerpt.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/pillow-excerpt.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/pytest-excerpt.pdf",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/pdf/sphinx-excerpt.pdf",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-connect-timeout.png",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-http2.png",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-limits.png",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-timeouts.png",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-fields.png",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-python-dump.png",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-strict.png",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-unions.png",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-capture.png",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-monkeypatch.png",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-tmp.png",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-markup.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-progress.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en",
+        "duplicate",
+        "duplicate:contained-original-excerpt"
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-styles.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-tables.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/typer-context.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/typer-help-panels.png",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-environments.png",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-projects.png",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-tools.png",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/docs/arguments.rst",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/docs/commands.rst",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/docs/options.rst",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/src/click/parser.py",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/src/click/termui.py",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/click/src/click/types.py",
+      "topics": [
+        "cli-interfaces"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/base64.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/codecs.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/ctypes/__init__.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/email/base64mime.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/hashlib.py",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/ipaddress.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/random.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/ssl.py",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/uuid.py",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/xmlrpc/client.py",
+      "topics": [
+        "http-requests",
+        "typed-data"
+      ],
+      "role": "cross_topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Lib/zipfile/__init__.py",
+      "topics": [],
+      "role": "noise",
+      "split": "incremental",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/cpython/Modules/zlibmodule.c",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/docs/user/advanced.rst",
+      "topics": [
+        "http-requests",
+        "cryptographic-security"
+      ],
+      "role": "cross_topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/docs/user/authentication.rst",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/docs/user/quickstart.rst",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/src/requests/models.py",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/src/requests/sessions.py",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/requests/src/requests/utils.py",
+      "topics": [
+        "http-requests"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "text/vite-ja/guide/env-and-mode.md",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:ja"
+      ]
+    },
+    {
+      "path": "text/vite-ko/guide/assets.md",
+      "topics": [],
+      "role": "noise",
+      "split": "base",
+      "case_tags": [
+        "language:ko"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/components/props.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/components/v-model.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/computed.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/conditional.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/event-handling.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/forms.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/list.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "text/vue-zh/src/guide/essentials/watchers.md",
+      "topics": [
+        "reactive-ui-state"
+      ],
+      "role": "topic",
+      "split": "incremental",
+      "case_tags": [
+        "language:zh"
+      ]
+    },
+    {
+      "path": "supplemental/hypothesis/README.md",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pycryptodome/README.rst",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/flake8/README.rst",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/isort/README.md",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pycodestyle/README.rst",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/voluptuous/README.md",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/conda/README.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/coveragepy/README.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/yapf/README.md",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/autopep8/README.rst",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/marshmallow/README.rst",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/msgspec/README.md",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/openssl/README.md",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pdm/README.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pixi/README.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/black/README.md",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/cryptography/README.rst",
+      "topics": [
+        "cryptographic-security"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/cerberus/README.rst",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pylint/README.rst",
+      "topics": [
+        "code-quality"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/hatch/README.md",
+      "topics": [
+        "python-environments"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pytest-asyncio/README.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pytest-cov/README.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/pytest-mock/README.rst",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/attrs/src/attr/validators.py",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/cattrs/README.md",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/jsonschema/README.rst",
+      "topics": [
+        "typed-data"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en"
+      ]
+    },
+    {
+      "path": "supplemental/tox/README.md",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en",
+        "paraphrase",
+        "paraphrase:shared-test-automation-concept"
+      ]
+    },
+    {
+      "path": "supplemental/nox/README.md",
+      "topics": [
+        "python-testing"
+      ],
+      "role": "topic",
+      "split": "base",
+      "case_tags": [
+        "language:en",
+        "paraphrase",
+        "paraphrase:shared-test-automation-concept"
+      ]
+    }
+  ]
+}

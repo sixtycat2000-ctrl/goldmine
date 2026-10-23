@@ -1,0 +1,1 @@
+If you don’t close a style, it will apply until the end of the string. Which is sometimes convenient if you want to style a single line. For example:

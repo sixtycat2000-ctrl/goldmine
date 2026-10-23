@@ -1,0 +1,46 @@
+Sphinx Documentation, Release 9.3.0
+
+Added in version 5.2.
+Options for source files
+exclude_patterns
+Type
+Sequence[str]
+Default
+()
+A list of glob-style patterns that should be excluded when looking for source files. They are matched against
+the source file names relative to the source directory, using slashes as directory separators on all platforms.
+exclude_patterns has priority over include_patterns.
+Example patterns:
+• 'library/xml.rst' – ignores the library/xml.rst file
+• 'library/xml' – ignores the library/xml directory
+• 'library/xml*' – ignores all files and directories starting with library/xml
+• '**/.git' – ignores all .git directories
+• 'Thumbs.db' – ignores all Thumbs.db files
+exclude_patterns is also consulted when looking for static files in html_static_path and
+html_extra_path .
+Added in version 1.0.
+include_patterns
+Type
+Sequence[str]
+Default
+('**',)
+A list of glob-style patterns that are used to find source files. They are matched against the source file names
+relative to the source directory, using slashes as directory separators on all platforms. By default, all files are
+recursively included from the source directory. exclude_patterns has priority over include_patterns.
+Example patterns:
+• '**' – all files in the source directory and subdirectories, recursively
+• 'library/xml' – just the library/xml directory
+• 'library/xml*' – all files and directories starting with library/xml
+• '**/doc' – all doc directories (this might be useful if documentation is co-located with source files)
+Added in version 5.1.
+master_doc
+root_doc
+Type
+str
+Default
+'index'
+
+4.4. Configuration
+
+97
+

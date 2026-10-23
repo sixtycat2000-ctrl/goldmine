@@ -1,0 +1,49 @@
+=={{int:filedesc}}==
+{{Information
+|description=
+{{ru|1=Вид на морской музей Оусвёр (Ósvör), в посёлке [[:ru:Болунгарвик|Болунгарвик]], регионе [[:ru:Вестфирдир|Вестфирдир]], Исландия. Музей состоит из рыбацких домов XIXв., домов для засолки и сушки рыбы и типичной рыбацкой лодки того времени.}}
+{{es|1=Vista del [[:es:museo marítimo|museo marítimo]] Ósvör, situado en la localidad de [[:es:Bolungarvík|Bolungarvík]], Vestfirðir, Islandia. El museo lo componen una base doble de pesca del siglo XIX, una cabaña de salado, un área de secado y un típico barco pesquero de la época.}}
+{{en|1=View of the Ósvör [[:en:maritime museum|maritime museum]], located in the village of [[:en:Bolungarvík|Bolungarvík]], Vestfirðir, Iceland. The museum consists of a double 19th century fishing base, a salt hut, a fish drying area, a drying hut and a typical fishing boat of that time.}}
+{{pt|1=Vista do Museu Marítimo Ósvör localizado no vilarejo de [[:pt:Bolungarvík|Bolungarvík]], [[:pt:Vestfirðir|Fiordes do Oeste]], [[:pt:Islândia|Islândia]]. O museu é composto de uma base dupla de pesca do século XIX, uma cabana para salgar, uma área para a secagem do peixe e um barco de pesca típico da época.}}
+{{bs|Pogled na [[:en:maritime museum|pomorski muzej]] Ósvör, smješten u selu [[:en:Bolungarvík|Bolungarvík]], Vestfirðir, Island. Muzej se sastoji iz dvije ribarske baze iz 19. vijeka, sušionice ribe, i drugih pratećih objekata i ribarskih brodića iz tog vremena.}}
+{{cs|Pohled na námořní muzeum Ósvör ve vesnici [[:cs:Bolungarvík|Bolungarvík]] na poloostrově Vestfirðir, {{w|Island||cs}}. Základem muzea je rybářská základna z 19. století, sklad soli, plocha na sušení ryb a  typické rybářské čluny z tehdejší doby.}}
+{{hu|Ósvör, egy 19. századi halászfalut bemutató szabadtéri múzeum látképe (Bolungarvík, [[:hu:Vestfirðir|Vestfirðir]], [[:hu:Izland|Izland]])}}
+{{it|Vista del museo marittimo Ósvör nel villaggio di [[:it:Bolungarvík|Bolungarvík]] in [[:it:Islanda|Islanda]]. Il museo consiste di una doppia base di pesca del XIX secolo, una capanna per la salatura, una zona di essiccazione del pesce e una tipica barca da pesca dell'epoca.}}
+{{ko|아이슬란드 [[:ko:베스트피르디르|베스트피르디르]] [[:ko:볼룽가르비크|볼룽가르비크]] 마을에 위치한 오스뵈르 [[:ko:해양박물관|해양박물관]]의 풍경. 이 박물관은 두 채의 19세기 어업 기지, 소금 창고, 생선 건조 영역, 건조 창고와 전형적인 그 시기의 낚싯배로 구성되어 있다.}}
+{{nl|Een maritiem museum in het [[:nl:IJsland|IJslandse]] stadje [[:nl:Bolungarvík|Bolungarvík]].}}
+|date={{Taken on|2014-08-15 11:46:31|location=Iceland}}
+|source={{own}}
+|author={{Creator:Diego Delso}}
+|permission=
+|other versions=
+}}
+{{Assessments|featured=1}}
+{{picture of the day|year=2015|month=09|day=05}}
+
+=={{int:license-header}}==
+{{User:Poco a poco/credit|license version=4.0}}
+{{Cc-by-sa-4.0|attribution=Diego Delso}}
+
+[[Category:Images of Iceland by User:Poco a poco]]
+[[Category:Images by User:Poco a poco]]
+[[Category:Ósvör]]
+[[Category:Quality images of Iceland by User:Poco a poco]]
+[[Category:Quality images of buildings in Iceland]]
+[[Category:Quality images by User:Poco a poco]]
+[[Category:Featured pictures of Iceland by User:Poco a poco]]
+[[Category:Featured pictures of architecture in Iceland]]
+[[Category:Featured pictures of landscapes]]
+[[Category:Featured pictures on Commons by User:Poco a poco]]
+[[Category:Featured pictures of buildings by User:Poco a poco]]
+[[Category:Featured pictures by User:Poco a poco]]
+{{QualityImage}}
+[[Category:Museums photographed in 2014]]
+[[Category:2014 in Vestfirðir]]
+[[Category:Bolungarvík]]
+[[Category:Ernir (Bolungarvík)]]
+[[Category:Road 61 (Iceland)]]
+[[Category:Images by User:Poco a poco taken in 2014]]
+[[Category:Salt in Iceland]]
+[[Category:Quality images of Vestfirðir]]
+[[Category:Wooden boats in Iceland]]
+[[Category:Featured pictures of landscapes in Iceland]]

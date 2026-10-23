@@ -38,7 +38,6 @@ def tmp_home(monkeypatch, tmp_path):
     monkeypatch.delenv("GOLDMINE_LOG_LEVEL", raising=False)
     monkeypatch.delenv("GOLDMINE_MODEL", raising=False)
     monkeypatch.delenv("GOLDMINE_LLAMA_SERVER", raising=False)
-    monkeypatch.delenv("GOLDMINE_FORESIGHT_SOCKET", raising=False)
     # v2 OCR: no stray helper override, and NEVER autocompile the real Swift
     # helper inside offline tests (ocr tests point GOLDMINE_OCR_HELPER at a
     # stub explicitly).

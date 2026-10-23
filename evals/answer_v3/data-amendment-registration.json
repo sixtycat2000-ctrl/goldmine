@@ -1,0 +1,110 @@
+{
+  "schema": 1,
+  "state": "FROZEN_DATA_AMENDMENT_ONLY_BEFORE_ANY_REAL_V3_JOBS",
+  "created_at": "2026-10-21T20:03:30.523643+00:00",
+  "prior_draft": {
+    "data-selection-registration.json": "f3b3211cc1feb0335135c2a4ce6c8e5b31a26886411b09e0d8b211880f90ea81",
+    "questions.draft.jsonl": "5a47e2360a35d936754b79e654194c5bbeaeca2d9ca7ec1535561d375c2e49ab",
+    "corpus.draft.json": "f0948825f6448baa73e1764f5526b894d73bd21b06c644fecfc164ecfed749c0",
+    "source-map.json": "ba72c3e548e567aea62e9b00d1fdf816c6fb361f8e2060b71bd65361e0eec47f",
+    "development-questions.jsonl": "635e232c3082eb11c1ac9f2d7097971d1fd373eecaf59b2d8616b9fae04b9933",
+    "curate.py": "f15d99254554dc557e5fe0a0635510e04ce321be031bc089c7dde2a2842d0770"
+  },
+  "independent_review": {
+    "review-package.json": "1c0fd766c384b2159bda5787280ecacee4e5041948f522f18408c307fb378117",
+    "corrections.json": "a97ce649073c5da98ee5fb8e9de344c563a5757af7febaac1b9a78609a4e8cb1",
+    "reserve-cross-review.json": "ffeb0b376c84be82d0466a8feda728e4958b5abfd05263fdc3d2a4590a7d44e3",
+    "cross-eligibility-disposition-addendum.json": "473e11395f606ddd9888b9095711bdaa026d0cbb55e9b29f05c95f91366de177",
+    "trap-independent-audit.json": "f10f72ba2c3e1a31758b66bded80a0c7c5915c9c4e8b461011b0b1279b10dd42"
+  },
+  "reason": "Independent source review found incomplete answer targets/evidence, one question scope overclaim and two tasks answerable from one source. Original420 labels, draft001 and all historical results remain immutable.",
+  "fixed_counts": {
+    "single": 20,
+    "multi": 20,
+    "cross": 20,
+    "trap": 20
+  },
+  "amendments": {
+    "required": [
+      "IR-001",
+      "IR-002",
+      "IR-003",
+      "IR-004",
+      "IR-005",
+      "IR-006",
+      "IR-007",
+      "IR-008",
+      "IR-009"
+    ],
+    "advisory_context_tightening": [
+      "IR-A01",
+      "IR-A02"
+    ],
+    "poetry_scope": "Limit av3-cross-008 to environments associated with the current project; require both project-scope context and the removal command as evidence for f1.",
+    "strict_cross": "Retain independent semantic two-file necessity, beyond the original mechanical two-path test. Preserve18 eligible existing cross tasks; replace only the2 rejected slots.",
+    "reserve_amendments": {
+      "compound-real-typer-05": "RES-02 scope and contextual evidence",
+      "compound-real-uv-04": "RES-03 complete command evidence and latest-compatible attempt qualifier"
+    }
+  },
+  "replacement_rule": "Use the unchanged seed20261022 cross group-round-robin/member order over the original30 development compound pool. Exclude the3 source-rejected originals; scan unused source-eligible reserves in that order, including source-required amendments; fill rejected existing slots in ascending slot order. No alternate salt or selection score.",
+  "ordered_cross_pool": [
+    "compound-real-pip-tools-01",
+    "compound-real-poetry-02",
+    "compound-real-typer-01",
+    "compound-real-uv-02",
+    "compound-real-pip-01",
+    "compound-real-httpx-04",
+    "compound-real-pip-tools-02",
+    "compound-real-poetry-05",
+    "compound-real-typer-03",
+    "compound-real-uv-05",
+    "compound-real-pip-02",
+    "compound-real-httpx-01",
+    "compound-real-pip-tools-05",
+    "compound-real-poetry-03",
+    "compound-real-typer-02",
+    "compound-real-uv-03",
+    "compound-real-pip-05",
+    "compound-real-httpx-03",
+    "compound-real-pip-tools-03",
+    "compound-real-poetry-04",
+    "compound-real-typer-05",
+    "compound-real-uv-04",
+    "compound-real-pip-03",
+    "compound-real-httpx-02",
+    "compound-real-pip-tools-04",
+    "compound-real-poetry-01",
+    "compound-real-typer-04",
+    "compound-real-uv-01",
+    "compound-real-pip-04",
+    "compound-real-httpx-05"
+  ],
+  "excluded_strict_cross": [
+    "compound-real-pip-02",
+    "compound-real-pip-tools-02",
+    "compound-real-pip-tools-04"
+  ],
+  "slot_replacements": [
+    {
+      "slot": "av3-cross-007",
+      "old_original": "compound-real-pip-tools-02",
+      "new_original": "compound-real-typer-05"
+    },
+    {
+      "slot": "av3-cross-011",
+      "old_original": "compound-real-pip-02",
+      "new_original": "compound-real-uv-04"
+    }
+  ],
+  "full_model_settings_run_preregistration": "MISSING",
+  "original420_mutation": false,
+  "quality_results_used": false,
+  "answer_or_judge_jobs": 0,
+  "holdout_exposure": 0,
+  "limitations": [
+    "This is a disclosed pre-run selection/annotation amendment, not a faithful unmodified copy of the first80 draft.",
+    "Tasks share upstream facts/groups and do not constitute80 independent source draws.",
+    "Independent semantic closure and final data freeze are still required before genuine jobs."
+  ]
+}

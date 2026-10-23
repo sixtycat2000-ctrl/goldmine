@@ -1,0 +1,190 @@
+{
+  "schema": 1,
+  "purpose": "Disclose concurrent lightweight source-review commands. No capacity DB/model/index/retrieval access.",
+  "initial_source_check_command_timing": {
+    "exact_utc_start_end_logged": false,
+    "known_output_mtimes_utc": {
+      "US6469-p002.png": "2026-10-21T19:43:09.311702+00:00",
+      "US174465-p003.png": "2026-10-21T19:43:08.823747+00:00",
+      "direct-asset-checks.json": "2026-10-21T19:43:09.313387+00:00"
+    },
+    "note": "The first direct-asset command performed19single-page pdftotext reads (17digital PDF view pages and2scan pages),2single-page1700px Poppler renders, and selected-header reads/hash checks. Exact original command interval was not emitted; do not infer a precise interval from file mtimes. Source hashes/render artifacts pin what was inspected."
+  },
+  "timestamped_digital_pdf_readback_repeat": [
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "1",
+        "-l",
+        "1",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-145-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.770211+00:00",
+      "utc_end": "2026-10-21T19:52:13.822092+00:00",
+      "wall_seconds": 0.05145004182122648,
+      "extracted_characters": 3690,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "3",
+        "-l",
+        "3",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-107r1-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.822182+00:00",
+      "utc_end": "2026-10-21T19:52:13.835420+00:00",
+      "wall_seconds": 0.013260541949421167,
+      "extracted_characters": 2809,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "2",
+        "-l",
+        "2",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-92-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.835511+00:00",
+      "utc_end": "2026-10-21T19:52:13.848288+00:00",
+      "wall_seconds": 0.012800666969269514,
+      "extracted_characters": 3531,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "3",
+        "-l",
+        "3",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-38a-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.848369+00:00",
+      "utc_end": "2026-10-21T19:52:13.860435+00:00",
+      "wall_seconds": 0.012090417090803385,
+      "extracted_characters": 2654,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "1",
+        "-l",
+        "1",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-92-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.860516+00:00",
+      "utc_end": "2026-10-21T19:52:13.872005+00:00",
+      "wall_seconds": 0.011509833158925176,
+      "extracted_characters": 3993,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "1",
+        "-l",
+        "1",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-107r1-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.872098+00:00",
+      "utc_end": "2026-10-21T19:52:13.883768+00:00",
+      "wall_seconds": 0.011691417079418898,
+      "extracted_characters": 1901,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "5",
+        "-l",
+        "5",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-107r1-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.883842+00:00",
+      "utc_end": "2026-10-21T19:52:13.896003+00:00",
+      "wall_seconds": 0.012183291837573051,
+      "extracted_characters": 2683,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "2",
+        "-l",
+        "2",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-145-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.896089+00:00",
+      "utc_end": "2026-10-21T19:52:13.907377+00:00",
+      "wall_seconds": 0.01130891707725823,
+      "extracted_characters": 2315,
+      "network": false,
+      "model_tokenizer_or_index": false
+    },
+    {
+      "operation": "pdftotext_digital_pdf_source_readback",
+      "command_argv": [
+        "pdftotext",
+        "-f",
+        "4",
+        "-l",
+        "4",
+        "evals/product_v4_expansion/assets/root/pdf/nist-800-38a-excerpt.pdf",
+        "-"
+      ],
+      "utc_start": "2026-10-21T19:52:13.907452+00:00",
+      "utc_end": "2026-10-21T19:52:13.919074+00:00",
+      "wall_seconds": 0.011639999924227595,
+      "extracted_characters": 2720,
+      "network": false,
+      "model_tokenizer_or_index": false
+    }
+  ],
+  "timestamped_visual_source_readback_repeat": {
+    "operation": "view_image_visual_source_readback_repeat",
+    "utc_start": "2026-10-21T19:52:30.672Z",
+    "utc_end": "2026-10-21T19:52:30.689Z",
+    "tool": "view_image",
+    "paths": [
+      "/Users/yul/git/goldmine/reports/execution/P0-03/answer-independent-review-001/source-checks/US174465-p003.png",
+      "/Users/yul/git/goldmine/reports/execution/P0-03/answer-independent-review-001/source-checks/US6469-p002.png",
+      "/Users/yul/git/goldmine/evals/product_v4_expansion/assets/root/screenshots/httpx-timeouts.png"
+    ],
+    "success": true,
+    "note": "Read-only visual-source checks; existing two scan PNGs reused, no PDF re-render."
+  }
+}

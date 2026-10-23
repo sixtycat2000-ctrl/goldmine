@@ -1,0 +1,345 @@
+[
+  {
+    "id": "nist-800-145",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "nist-800-145",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf",
+      "bytes": 85781,
+      "sha256": "7b0c1a9fdfc67218b8ba2098f448c100c27070db91736b3c87fed63bfa21d418",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/nist-800-145.pdf"
+    },
+    "asset": "assets/root/pdf/nist-800-145-excerpt.pdf",
+    "sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b",
+    "original_page_numbers": [
+      6,
+      7
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/nist-800-145.pdf",
+      "sha256": "7b0c1a9fdfc67218b8ba2098f448c100c27070db91736b3c87fed63bfa21d418"
+    }
+  },
+  {
+    "id": "nist-800-92",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "nist-800-92",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-92.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-92.pdf",
+      "bytes": 1759842,
+      "sha256": "466c3ab1580bc3b2e25d11bbd4b2ac92fd1762b3c5b10596924981bc1b9e61e1",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/nist-800-92.pdf"
+    },
+    "asset": "assets/root/pdf/nist-800-92-excerpt.pdf",
+    "sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9",
+    "original_page_numbers": [
+      15,
+      29,
+      30,
+      31,
+      37
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/nist-800-92.pdf",
+      "sha256": "466c3ab1580bc3b2e25d11bbd4b2ac92fd1762b3c5b10596924981bc1b9e61e1"
+    }
+  },
+  {
+    "id": "nist-800-22r1a",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "nist-800-22r1a",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-22r1a.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-22r1a.pdf",
+      "bytes": 7583475,
+      "sha256": "38aba1b34a7fa52c440790d6e0cabf498e4b525177b3b6cebb399ab8ccf031d2",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/nist-800-22r1a.pdf"
+    },
+    "asset": "assets/root/pdf/nist-800-22r1a-excerpt.pdf",
+    "sha256": "a1c51685d4622343839f925b902876b8a19597d562d2e1ad42d75532bf6a1e78",
+    "original_page_numbers": [
+      24,
+      26,
+      29,
+      32,
+      42
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/nist-800-22r1a.pdf",
+      "sha256": "38aba1b34a7fa52c440790d6e0cabf498e4b525177b3b6cebb399ab8ccf031d2"
+    }
+  },
+  {
+    "id": "nist-800-38a",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "nist-800-38a",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf",
+      "bytes": 378266,
+      "sha256": "66821162de1e7130c5fb5eedb22140d8d6d013ec51af4550bb095c2a9481a00e",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/nist-800-38a.pdf"
+    },
+    "asset": "assets/root/pdf/nist-800-38a-excerpt.pdf",
+    "sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b",
+    "original_page_numbers": [
+      15,
+      16,
+      22,
+      25,
+      28
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/nist-800-38a.pdf",
+      "sha256": "66821162de1e7130c5fb5eedb22140d8d6d013ec51af4550bb095c2a9481a00e"
+    }
+  },
+  {
+    "id": "nist-800-107r1",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "nist-800-107r1",
+      "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-107r1.pdf",
+      "resolved_url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-107r1.pdf",
+      "bytes": 232710,
+      "sha256": "2b691bd8895cbc6793e442b1e5a45398f5ca777edc2a79072469ad05405b093b",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/nist-800-107r1.pdf"
+    },
+    "asset": "assets/root/pdf/nist-800-107r1-excerpt.pdf",
+    "sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b",
+    "original_page_numbers": [
+      6,
+      8,
+      12,
+      16,
+      18
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/nist-800-107r1.pdf",
+      "sha256": "2b691bd8895cbc6793e442b1e5a45398f5ca777edc2a79072469ad05405b093b"
+    }
+  },
+  {
+    "id": "pytest",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "pytest",
+      "url": "https://docs.pytest.org/_/downloads/en/stable/pdf/",
+      "resolved_url": "https://docs.pytest.org/_/downloads/en/stable/pdf/",
+      "bytes": 2252454,
+      "sha256": "5e37842ec0c2072dd14eebfec85c38ca2f09927960c1f227731e88b5439b47ba",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/pytest.pdf"
+    },
+    "asset": "assets/root/pdf/pytest-excerpt.pdf",
+    "sha256": "99e0ae5c50b3638346d89d129efcbf13e99be4ba17d49fd2605ff6ca5ab86dc4",
+    "original_page_numbers": [
+      17,
+      64,
+      65,
+      88,
+      94
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/pytest.pdf",
+      "sha256": "5e37842ec0c2072dd14eebfec85c38ca2f09927960c1f227731e88b5439b47ba"
+    }
+  },
+  {
+    "id": "sphinx",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "sphinx",
+      "url": "https://www.sphinx-doc.org/_/downloads/en/master/pdf/",
+      "resolved_url": "https://www.sphinx-doc.org/_/downloads/en/master/pdf/",
+      "bytes": 3228782,
+      "sha256": "ddfcebde79b567adff0c69b9e16fc78a67edc9ba9ca245d2da32654ba52d0be3",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/sphinx.pdf"
+    },
+    "asset": "assets/root/pdf/sphinx-excerpt.pdf",
+    "sha256": "e1d98d0f2848f4bd3763b15ae5bbdaa805db256f81ac1fdce88a97997a67b8bb",
+    "original_page_numbers": [
+      21,
+      102,
+      109,
+      119,
+      229
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/sphinx.pdf",
+      "sha256": "ddfcebde79b567adff0c69b9e16fc78a67edc9ba9ca245d2da32654ba52d0be3"
+    }
+  },
+  {
+    "id": "pillow",
+    "kind": "text_excerpt",
+    "original": {
+      "id": "pillow",
+      "url": "https://pillow.readthedocs.io/_/downloads/en/stable/pdf/",
+      "resolved_url": "https://pillow.readthedocs.io/_/downloads/en/stable/pdf/",
+      "bytes": 1470840,
+      "sha256": "5aa33331c6ac405b8423474e80fbd1a6a09dfbe6a74df40ddd1e818e9a541cab",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/pillow.pdf"
+    },
+    "asset": "assets/root/pdf/pillow-excerpt.pdf",
+    "sha256": "f86baf6c0a9f408249580c5e15c3e1ca836ec30f2979b492ae1c7e55a262fefb",
+    "original_page_numbers": [
+      16,
+      18,
+      30,
+      72,
+      155
+    ],
+    "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/pillow.pdf",
+      "sha256": "5aa33331c6ac405b8423474e80fbd1a6a09dfbe6a74df40ddd1e818e9a541cab"
+    }
+  },
+  {
+    "id": "US6469",
+    "kind": "real_scan_repackage",
+    "original": {
+      "id": "US6469",
+      "url": "https://patentimages.storage.googleapis.com/92/64/49/fe49e21fbf8f09/US6469.pdf",
+      "resolved_url": "https://patentimages.storage.googleapis.com/92/64/49/fe49e21fbf8f09/US6469.pdf",
+      "bytes": 293207,
+      "sha256": "525d530d1d80f7c95d0c1dcdbd925215b7e39a3c471a33ed6ceaf3f183c8a315",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/US6469.pdf"
+    },
+    "asset": "assets/root/pdf/US6469-scan.pdf",
+    "sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4",
+    "original_page_numbers": [
+      1,
+      2,
+      3
+    ],
+    "original_and_repackaged_rgb_pixel_sha256": [
+      "29477db787e13eeff45d01f912b59b076b79fab9f65c6d4c8229051e10929477",
+      "f47cf45205f1c615cb1b5ae22e37020d6cc9cda61d6766b225c5433b44e81b1d",
+      "62dd4200b95cee01b0732916f8b0537a71702f61042d986909ebeffaf557c4a8"
+    ],
+    "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/US6469.pdf",
+      "sha256": "525d530d1d80f7c95d0c1dcdbd925215b7e39a3c471a33ed6ceaf3f183c8a315"
+    }
+  },
+  {
+    "id": "US174465",
+    "kind": "real_scan_repackage",
+    "original": {
+      "id": "US174465",
+      "url": "https://patentimages.storage.googleapis.com/10/ab/a3/b4f5c6e5826640/US174465.pdf",
+      "resolved_url": "https://patentimages.storage.googleapis.com/10/ab/a3/b4f5c6e5826640/US174465.pdf",
+      "bytes": 565802,
+      "sha256": "300bb898a4981877b8901e78fcbd89e3b6fd571c59e4dcadb9c6feee0334aa8e",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/US174465.pdf"
+    },
+    "asset": "assets/root/pdf/US174465-scan.pdf",
+    "sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56",
+    "original_page_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "original_and_repackaged_rgb_pixel_sha256": [
+      "76a2766588db2f01c3725c8fdb2e5e14aad7257ca045e00330eeca495b5e9331",
+      "66bd23997382827d8941ff4da78f44a56e1d2eecb39a27d34c0d0c7e7faaad7b",
+      "45f5cdbe7a34a1f974d80b908e4a335e5d37bc31cdf3491cdd5ed3e1e5ffd1b4",
+      "6795867ccf6ab1f2173944d04276c1b9c6a3778f8528d5c19e2ebbbafdf160f3",
+      "feabfb5fe34ddf919126948f78dac91dd3a4fd66b0df5526a442035656ea9a15",
+      "e157363cce399ef2f8050701a861d3467a83c281484ba34ec19a6b0060889dd6"
+    ],
+    "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/US174465.pdf",
+      "sha256": "300bb898a4981877b8901e78fcbd89e3b6fd571c59e4dcadb9c6feee0334aa8e"
+    }
+  },
+  {
+    "id": "US223898",
+    "kind": "real_scan_repackage",
+    "original": {
+      "id": "US223898",
+      "url": "https://patentimages.storage.googleapis.com/d4/9b/62/aac68f7e65536c/US223898.pdf",
+      "resolved_url": "https://patentimages.storage.googleapis.com/d4/9b/62/aac68f7e65536c/US223898.pdf",
+      "bytes": 321048,
+      "sha256": "e6f4d7747a8af8451d81aa3d5fe564aed5c8091091cb408c752b8a3cd7c28764",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/US223898.pdf"
+    },
+    "asset": "assets/root/pdf/US223898-scan.pdf",
+    "sha256": "540bd8ee9adfaa493be05f25e22938c10178d9f5175bd2366a71500ad89a28c9",
+    "original_page_numbers": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "original_and_repackaged_rgb_pixel_sha256": [
+      "3baa96aebedb890facb6f4d2754cc170d68538d479029dbd73da529524b9a443",
+      "06f9913bce40a57f236467e2d14d766b0385ca3a2ee1aef2bf38092fbe31c5ed",
+      "f862a73cee9bbd68e9fbfc7a393b4cafb7c0dec781dd4aead6e047dd1e78351e",
+      "7ac500ee344b443295ff652051ab42a5c7758499ffc1a9396335245c69a49590"
+    ],
+    "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/US223898.pdf",
+      "sha256": "e6f4d7747a8af8451d81aa3d5fe564aed5c8091091cb408c752b8a3cd7c28764"
+    }
+  },
+  {
+    "id": "US821393",
+    "kind": "real_scan_repackage",
+    "original": {
+      "id": "US821393",
+      "url": "https://patentimages.storage.googleapis.com/1c/17/b5/e1f4968143a568/US821393.pdf",
+      "resolved_url": "https://patentimages.storage.googleapis.com/1c/17/b5/e1f4968143a568/US821393.pdf",
+      "bytes": 1273313,
+      "sha256": "e37dbdd4f20f566057b2f28860525861f90a92f5aa02e28d395bfc59eb5f05d8",
+      "path": "/Users/yul/git/goldmine/reports/execution/P0-05/expansion-source-cache/pdfs/US821393.pdf"
+    },
+    "asset": "assets/root/pdf/US821393-scan.pdf",
+    "sha256": "e464ce113ceef7f11c18d34f2c5eb8e26acf5176dace9f32b09a393b1e5d6d9a",
+    "original_page_numbers": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "original_and_repackaged_rgb_pixel_sha256": [
+      "cc0169d3edb4cf01235c25ea8bbfbce279bae59c95133794a2c0470692f8ba61",
+      "116bcf4a59f5580b5fd65d862c8eae302615cb149db88a6eff408b07931fc978",
+      "1a55896be8b5814b17b0a5a43bc1d5c2fdfb410d2037295a02d4ac8413e4bfcf",
+      "55ee0f6af56b226acfd631377de493c533ddd06ec5a12116848461817500708b",
+      "738b1bd83c925d48031c22837e3a73e501566933366e4d6f022335bcd3684e52",
+      "f56048b675ee58fb49fe4604a12191431a979eb79a0b56fbfe7bc54d54829d01",
+      "3e7134711b94e213a01371f77e3180d07faabaff1e306bc130474ce63d841573",
+      "dcd1db75c93bae435e0d9212d7cf600f9a4e7558420015b9ed78788b3acab6ca",
+      "23c7b3e94741d62a25c082d4e9c7aaf08365af47aeb0952cdd1c03be5948cf06",
+      "7892265b74c918bc375316a14d6823a170af86e35bec607eaa271887958e41d0"
+    ],
+    "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added.",
+    "original_archive": {
+      "path": "provenance/original-pdfs/US821393.pdf",
+      "sha256": "e37dbdd4f20f566057b2f28860525861f90a92f5aa02e28d395bfc59eb5f05d8"
+    }
+  }
+]

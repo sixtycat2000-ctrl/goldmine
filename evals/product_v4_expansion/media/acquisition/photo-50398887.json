@@ -1,0 +1,28 @@
+{
+  "pageid": 50398887,
+  "title": "File:View from Skaftafell National Park July 2014 -4.jpg",
+  "artist": "Martin Falbisoner",
+  "url": "https://upload.wikimedia.org/wikipedia/commons/c/ce/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+  "permalink": "https://commons.wikimedia.org/w/index.php?oldid=1281702224",
+  "page_revision": 1281702224,
+  "upload_timestamp": "2016-09-22T15:13:49Z",
+  "published_sha1": "03b64650370e229d33aa65ebf663c0288fc26f15",
+  "sha256": "6fed7c900176310f4f6d402c218afc647391797097c7a4f4c1949ce3f6f0feb1",
+  "bytes": 6324306,
+  "basename": "View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+  "asset": "assets/media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+  "license_file": "licenses/media/commons-50398887.txt",
+  "taken": "2014-07-21 12:28:33",
+  "exif_DateTimeOriginal": "2014:07:21 12:28:33",
+  "original_jpeg_exif_dates": {
+    "DateTime": "2016:07:30 10:39:46",
+    "DateTimeOriginal": "2014:07:21 12:28:33",
+    "DateTimeDigitized": "2014:07:21 12:28:33"
+  },
+  "production_sips_taken": "2016-07-30 10:39:46",
+  "production_taken_matches_DateTimeOriginal": false,
+  "sips_stdout": "/Users/yul/git/goldmine/evals/product_v4_expansion/media/assets/media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg\n  creation: 2016:07:30 10:39:46\n",
+  "capture_timezone": "unspecified in stored info.taken",
+  "license": "CC-BY-SA-4.0",
+  "original_bytes_changed": false
+}

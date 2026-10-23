@@ -1,0 +1,1852 @@
+{
+  "schema": 1,
+  "status": "COMPLETE_INVENTORY_PENDING_SOURCE_REASON_REVIEW",
+  "checked_at": "2026-10-21T16:59:46.920893+00:00",
+  "curator": "OpenAI Codex AI curator; no human review claimed",
+  "method": "Literal discriminator search in every registered source view plus explicit source-first scope reasons. No hit-count rule proves absence.",
+  "rank_exposure": "NONE",
+  "manifest_inputs": [
+    {
+      "path": "/Users/yul/git/goldmine/evals/product_v4_expansion/manifest.json",
+      "sha256": "73ad4f1442228e7f9a9e3352504d35bab43fbb5d85c6a432f248af6adb5b19b7"
+    }
+  ],
+  "noise_shard_sha256": "6c7ca1345855160f1b8d0c57cc2c1cf8ac3b4c5d4d67b2f4e2e6e729ad23da2d",
+  "source_files": 122,
+  "source_views": 175,
+  "inventory_sha256": "1e7fd8c14273ecbe709a6ed622642c575e1a86831e2f581b7ae9489750f30637",
+  "inventory": [
+    {
+      "source": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+      "view_id": "original-lines",
+      "sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/fastapi/docs/en/docs/tutorial/background-tasks.md.txt",
+      "characters": 4786
+    },
+    {
+      "source": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+      "view_id": "original-lines",
+      "sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/fastapi/docs/en/docs/tutorial/middleware.md.txt",
+      "characters": 3940
+    },
+    {
+      "source": "compound/flask/docs/async-await.rst",
+      "view_id": "original-lines",
+      "sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/flask/docs/async-await.rst.txt",
+      "characters": 4709
+    },
+    {
+      "source": "compound/flask/docs/errorhandling.rst",
+      "view_id": "original-lines",
+      "sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/flask/docs/errorhandling.rst.txt",
+      "characters": 18374
+    },
+    {
+      "source": "compound/httpx/docs/advanced/timeouts.md",
+      "view_id": "original-lines",
+      "sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/httpx/docs/advanced/timeouts.md.txt",
+      "characters": 2763
+    },
+    {
+      "source": "compound/httpx/docs/quickstart.md",
+      "view_id": "original-lines",
+      "sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/httpx/docs/quickstart.md.txt",
+      "characters": 14700
+    },
+    {
+      "source": "compound/pip-tools/README.md",
+      "view_id": "original-lines",
+      "sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pip-tools/README.md.txt",
+      "characters": 22808
+    },
+    {
+      "source": "compound/pip-tools/piptools/scripts/compile.py",
+      "view_id": "original-lines",
+      "sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pip-tools/piptools/scripts/compile.py.txt",
+      "characters": 18896
+    },
+    {
+      "source": "compound/pip/docs/html/topics/caching.md",
+      "view_id": "original-lines",
+      "sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pip/docs/html/topics/caching.md.txt",
+      "characters": 5114
+    },
+    {
+      "source": "compound/pip/docs/html/topics/repeatable-installs.md",
+      "view_id": "original-lines",
+      "sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pip/docs/html/topics/repeatable-installs.md.txt",
+      "characters": 3514
+    },
+    {
+      "source": "compound/poetry/docs/dependency-specification.md",
+      "view_id": "original-lines",
+      "sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/poetry/docs/dependency-specification.md.txt",
+      "characters": 23532
+    },
+    {
+      "source": "compound/poetry/docs/managing-environments.md",
+      "view_id": "original-lines",
+      "sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/poetry/docs/managing-environments.md.txt",
+      "characters": 5503
+    },
+    {
+      "source": "compound/pydantic/docs/concepts/serialization.md",
+      "view_id": "original-lines",
+      "sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pydantic/docs/concepts/serialization.md.txt",
+      "characters": 33174
+    },
+    {
+      "source": "compound/pydantic/docs/concepts/strict_mode.md",
+      "view_id": "original-lines",
+      "sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pydantic/docs/concepts/strict_mode.md.txt",
+      "characters": 6307
+    },
+    {
+      "source": "compound/pytest/doc/en/how-to/assert.rst",
+      "view_id": "original-lines",
+      "sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pytest/doc/en/how-to/assert.rst.txt",
+      "characters": 19934
+    },
+    {
+      "source": "compound/pytest/doc/en/how-to/skipping.rst",
+      "view_id": "original-lines",
+      "sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/pytest/doc/en/how-to/skipping.rst.txt",
+      "characters": 12278
+    },
+    {
+      "source": "compound/rich/docs/source/progress.rst",
+      "view_id": "original-lines",
+      "sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/rich/docs/source/progress.rst.txt",
+      "characters": 15295
+    },
+    {
+      "source": "compound/rich/docs/source/tables.rst",
+      "view_id": "original-lines",
+      "sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/rich/docs/source/tables.rst.txt",
+      "characters": 8961
+    },
+    {
+      "source": "compound/ruff/docs/configuration.md",
+      "view_id": "original-lines",
+      "sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/ruff/docs/configuration.md.txt",
+      "characters": 31720
+    },
+    {
+      "source": "compound/ruff/docs/formatter.md",
+      "view_id": "original-lines",
+      "sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/ruff/docs/formatter.md.txt",
+      "characters": 23135
+    },
+    {
+      "source": "compound/typer/docs/tutorial/commands/context.md",
+      "view_id": "original-lines",
+      "sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/typer/docs/tutorial/commands/context.md.txt",
+      "characters": 3152
+    },
+    {
+      "source": "compound/typer/docs/tutorial/options/help.md",
+      "view_id": "original-lines",
+      "sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/typer/docs/tutorial/options/help.md.txt",
+      "characters": 5705
+    },
+    {
+      "source": "compound/uv/docs/guides/projects.md",
+      "view_id": "original-lines",
+      "sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/uv/docs/guides/projects.md.txt",
+      "characters": 7978
+    },
+    {
+      "source": "compound/uv/docs/guides/tools.md",
+      "view_id": "original-lines",
+      "sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/compound/uv/docs/guides/tools.md.txt",
+      "characters": 7996
+    },
+    {
+      "source": "media/asr/1462-170138-0006.flac",
+      "view_id": "official-transcript",
+      "sha256": "730246dbfa953e00a7c7fb43f83938212c954b62f9e591a3bb21fd3a21be675a",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/1462-170138-0006.txt",
+      "characters": 141
+    },
+    {
+      "source": "media/asr/2035-147960-0002.flac",
+      "view_id": "official-transcript",
+      "sha256": "3d3c951c7857f8c3b83c36cace0857ad60a7644d78949b87c3e115207efb7a9b",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/2035-147960-0002.txt",
+      "characters": 139
+    },
+    {
+      "source": "media/asr/2078-142845-0013.flac",
+      "view_id": "official-transcript",
+      "sha256": "3752ee6ee2b9d79214956c2b0a0904197fd3449a364afbe51582cb8f32d7be52",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/2078-142845-0013.txt",
+      "characters": 122
+    },
+    {
+      "source": "media/asr/2412-153954-0003.flac",
+      "view_id": "official-transcript",
+      "sha256": "f60aa83f2fc3eb3dfcb2aaac672d88d53492105a56c8e5a9e0cc124742ac6dc3",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/2412-153954-0003.txt",
+      "characters": 151
+    },
+    {
+      "source": "media/asr/2428-83705-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "e625209f50e651d2da6d1903cc37e8e866657cad1367c816fd96f1a8db563916",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/2428-83705-0001.txt",
+      "characters": 107
+    },
+    {
+      "source": "media/asr/251-136532-0000.flac",
+      "view_id": "official-transcript",
+      "sha256": "5a9b4becbf95938970f38c0d622800543c7c051a4978d667f34ec9493cd99131",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/251-136532-0000.txt",
+      "characters": 126
+    },
+    {
+      "source": "media/asr/2803-161169-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "353723ebe37bf7b7a4cd762bac565d550012561585f597140dac7364cad3e26e",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/2803-161169-0001.txt",
+      "characters": 120
+    },
+    {
+      "source": "media/asr/3000-15664-0005.flac",
+      "view_id": "official-transcript",
+      "sha256": "15c10eaf459c11b24b2c6c561bf32dd60bc35bcf5a99d4ad0029d37f035bcdd0",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/3000-15664-0005.txt",
+      "characters": 130
+    },
+    {
+      "source": "media/asr/3170-137482-0006.flac",
+      "view_id": "official-transcript",
+      "sha256": "87fb37a76058c3441caadcd8e3518bed5c690087b3dec2ada452fc303c9b4f44",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/3170-137482-0006.txt",
+      "characters": 115
+    },
+    {
+      "source": "media/asr/3536-8226-0000.flac",
+      "view_id": "official-transcript",
+      "sha256": "fae09390243d3e4e3aae9aae1780fc6a0facac5e96182c8abdd541c1d8a71f8b",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/3536-8226-0000.txt",
+      "characters": 200
+    },
+    {
+      "source": "media/asr/3752-4943-0000.flac",
+      "view_id": "official-transcript",
+      "sha256": "21e8afa8646cdbf120701bcb9bbcb5ba9ead68136eb69b6742118ee6fc77f425",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/3752-4943-0000.txt",
+      "characters": 137
+    },
+    {
+      "source": "media/asr/5338-284437-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "b0b8d4fb299d32d9ff3403f6015d087e870aa3680320c9c70dff8ec6f4362aab",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/5338-284437-0001.txt",
+      "characters": 133
+    },
+    {
+      "source": "media/asr/5895-34629-0007.flac",
+      "view_id": "official-transcript",
+      "sha256": "4c3845b42b4407bb9156e5cd21b40fe44551fa20c743b394053f2293329d534b",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/5895-34629-0007.txt",
+      "characters": 118
+    },
+    {
+      "source": "media/asr/6295-244435-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "d51963808526485f311536790e30b392568f64e97a1bb45bd53c750154687b36",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/6295-244435-0001.txt",
+      "characters": 114
+    },
+    {
+      "source": "media/asr/6313-66125-0011.flac",
+      "view_id": "official-transcript",
+      "sha256": "6152e54a11121ad6af0e4b248d9892c4301f4d2d1c56501cafef689a17dfb195",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/6313-66125-0011.txt",
+      "characters": 98
+    },
+    {
+      "source": "media/asr/6319-57405-0000.flac",
+      "view_id": "official-transcript",
+      "sha256": "a3d1a3db3e52979f982901ec5b4b8c45a4fa1aeffa9d3a5e58aae667b2a8cae7",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/6319-57405-0000.txt",
+      "characters": 91
+    },
+    {
+      "source": "media/asr/6345-93302-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "7f8b845f44fd84ca16c8999d79abe5088ec1774f1a108257597122451d1ab65a",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/6345-93302-0001.txt",
+      "characters": 155
+    },
+    {
+      "source": "media/asr/652-130726-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "16e4a89553398dc552671726c29dd17f7b6651c95c57ec01cbe331ce458b3f8b",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/652-130726-0001.txt",
+      "characters": 193
+    },
+    {
+      "source": "media/asr/7976-110124-0001.flac",
+      "view_id": "official-transcript",
+      "sha256": "7158c002c5c50d05e5a1889cb801aaed192476983718a038cb441f122b27d4ee",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/7976-110124-0001.txt",
+      "characters": 109
+    },
+    {
+      "source": "media/asr/8297-275156-0006.flac",
+      "view_id": "official-transcript",
+      "sha256": "9162a7c51c43a05f37acf48394c7946e6fd8161726e3a4204544bba8ae4fbeaf",
+      "evidence_type": "asr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/asr/8297-275156-0006.txt",
+      "characters": 88
+    },
+    {
+      "source": "media/photos/Karpovka_River_Embankment_06.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "9a7afbfc4e7155ff1d2ae3d9c48131eb5a25792d40cfe224c557d4f3946e0855",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/29415136-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Karpovka_River_Embankment_06.jpg",
+      "view_id": "original-basename",
+      "sha256": "b872cd91e75d68e8c27b3f99cfb241b19b5709dd97a7c63aa88d473420af9992",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/29415136-basename.txt",
+      "characters": 32
+    },
+    {
+      "source": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "b503b09d143b3bc0d17ccb77b3b47a0ef27a904d33b4a3c708966803a7a3cf98",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/73462291-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Large_cloud_over_Mexican_landscape.jpg",
+      "view_id": "original-basename",
+      "sha256": "912420f5108060ab6b4d6d19f921b459d21e6b88d1b0b60d2b78248904affbe4",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/73462291-basename.txt",
+      "characters": 38
+    },
+    {
+      "source": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "24f15aafe62519c83edcb35e6296a27f28a756644069f151248b90213a4b1dfb",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/37196673-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Museo_marítimo_Ósvör,_Bolungarvík,_Vestfirðir,_Islandia,_2014-08-15,_DD_066.JPG",
+      "view_id": "original-basename",
+      "sha256": "9ccfeb7f07d2586ddc269072cfc57203ee698d81db4dd9a4766c1585308b95e3",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/37196673-basename.txt",
+      "characters": 79
+    },
+    {
+      "source": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "0b2579b30a5d1062b5892c9e2b8dfb3dc7ce673e8dbd3d283ea44ec231ed915c",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/56412240-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/River_Narmada_from_Maheshwar_Fort.jpg",
+      "view_id": "original-basename",
+      "sha256": "02547b32afeb45db7e50dec829549fcee6e22443a77c0b53bd02fc5370be2c8f",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/56412240-basename.txt",
+      "characters": 37
+    },
+    {
+      "source": "media/photos/Saraor_river_05.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "153cd67c0aaa77aa5c3404cdb7718aba1ceef958f3b60c2890f03ed765233bbf",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/149464642-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Saraor_river_05.jpg",
+      "view_id": "original-basename",
+      "sha256": "c5bb22a1d961e2b5b635fbc20c9ca83ee25c60b36c1170532748196782a051cc",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/149464642-basename.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "ec82f3b434b6bf63963e7cee364c5d9a7d06e775bafdd4b9f1aaef9f8eae029a",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/101198740-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+      "view_id": "original-basename",
+      "sha256": "2ec7a655cb108cfda107f24c583376286c1dca015e971ffd98ea6d229f4e8fa8",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/101198740-basename.txt",
+      "characters": 72
+    },
+    {
+      "source": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "2e0ed0ed0c557143d48edc0b943800805952e93e173e3905764f82c906984486",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/50398887-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/View_from_Skaftafell_National_Park_July_2014_-4.jpg",
+      "view_id": "original-basename",
+      "sha256": "74b019bb6c7e1289eae21461ea0aea49668e1b4b1b5916c5aaaddb6c24e5544f",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/50398887-basename.txt",
+      "characters": 51
+    },
+    {
+      "source": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "210777758f03508af0aa7de6e518f653e8913b1a47bebc1c98ebde733bc89615",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/141842609-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+      "view_id": "original-basename",
+      "sha256": "7e0c880c13a582654ea3521595c23d5367a59e7feed272cabc8b52465557862d",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/141842609-basename.txt",
+      "characters": 101
+    },
+    {
+      "source": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "f00ffa1d6512bd01961dceeb04be2aa848901a826f13e7018fcd9e7a35141617",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/94585934-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+      "view_id": "original-basename",
+      "sha256": "818540b1ac8cdab041ddb6ea5e7183064b2bc0b4697afb1a5ea3e33d757b7a66",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/94585934-basename.txt",
+      "characters": 26
+    },
+    {
+      "source": "media/photos/Yoneshiro_River_201911.jpg",
+      "view_id": "exif-DateTimeOriginal",
+      "sha256": "2918c2c053c4789ff3ac62dcbe971b5f4c0f255f25ce55ccae992589467c4ce1",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/97646961-DateTimeOriginal.txt",
+      "characters": 19
+    },
+    {
+      "source": "media/photos/Yoneshiro_River_201911.jpg",
+      "view_id": "original-basename",
+      "sha256": "3ecd39c80378caa1de1b042b996f4e43ef9fe66d3b8c0854cea12b42d2663e74",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/media/photos/97646961-basename.txt",
+      "characters": 26
+    },
+    {
+      "source": "root/pdf/US174465-scan.pdf",
+      "view_id": "p003",
+      "sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US174465-p003.txt",
+      "characters": 1501
+    },
+    {
+      "source": "root/pdf/US223898-scan.pdf",
+      "view_id": "p002",
+      "sha256": "aad807353a9d7a3597cbf7fcc31df0259d8514f73921ba06fd0464a881de6a19",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US223898-p002.txt",
+      "characters": 719
+    },
+    {
+      "source": "root/pdf/US223898-scan.pdf",
+      "view_id": "p003",
+      "sha256": "83904694d6d11d927547fa68b6266d32884535a361410b349baa7366d82aa19f",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US223898-p003.txt",
+      "characters": 307
+    },
+    {
+      "source": "root/pdf/US6469-scan.pdf",
+      "view_id": "p002",
+      "sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US6469-p002.txt",
+      "characters": 1977
+    },
+    {
+      "source": "root/pdf/US821393-scan.pdf",
+      "view_id": "p004",
+      "sha256": "3a4e08d35976b701d452563fc49d2b7987c9f7a3749bcf6b9486c809915e841d",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US821393-p004.txt",
+      "characters": 543
+    },
+    {
+      "source": "root/pdf/US821393-scan.pdf",
+      "view_id": "p006",
+      "sha256": "c114fc35092179dea02b670760dad7ab6063899db8d301762576e5f673304ad3",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/US821393-p006.txt",
+      "characters": 531
+    },
+    {
+      "source": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-107r1-p001.txt",
+      "characters": 1900
+    },
+    {
+      "source": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "4df0d69ac7824f860617352994b09bbf5371595b3a19e23c9ed4ff14945e4b4d",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-107r1-p002.txt",
+      "characters": 2307
+    },
+    {
+      "source": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "f150a935c1d02023d691e1ae2852a67a6d2c81891df89a266736fdbee9400dc0",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-107r1-p003.txt",
+      "characters": 2808
+    },
+    {
+      "source": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "8ea71ce9ef36c6a4da12871392f4efafbdaee89030704659404285eef85fb8ab",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-107r1-p004.txt",
+      "characters": 2862
+    },
+    {
+      "source": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "dc608f481090338e9fce288bb51d4bcb2808674d9c577682d41e3cefacd9630e",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-107r1-p005.txt",
+      "characters": 2682
+    },
+    {
+      "source": "root/pdf/nist-800-145-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-145-p001.txt",
+      "characters": 3689
+    },
+    {
+      "source": "root/pdf/nist-800-145-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "79047ce13af4421f2017c00978f6e363dc01ee92b3923d320877ba7bce1902f6",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-145-p002.txt",
+      "characters": 2314
+    },
+    {
+      "source": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "15b8cb1849de98a3449c1c190b6b090bcd5b2592acae227c0475f7f4e3979717",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-22r1a-p001.txt",
+      "characters": 2706
+    },
+    {
+      "source": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "2e9d01539c35ced37e00becf029d383665c02dd2fc06f867c1dfac73d0d70cc1",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-22r1a-p002.txt",
+      "characters": 1759
+    },
+    {
+      "source": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "b1e5023c68bd45662ad2adc28017408b991ceebc4aa998e247c5870dc3bc2486",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-22r1a-p003.txt",
+      "characters": 2274
+    },
+    {
+      "source": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "b79728a831a8414ee2f8531cd0da0685bdac74b4b33ae7365cdd247b900c63dd",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-22r1a-p004.txt",
+      "characters": 1975
+    },
+    {
+      "source": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "482d2cb43258c50792f43e68d9d6b964dd71d02e93a30b560bba7884c044e761",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-22r1a-p005.txt",
+      "characters": 1935
+    },
+    {
+      "source": "root/pdf/nist-800-38a-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "d524535bc24c44707347fa75f8f787d1342bc5541c86a1be2cd22d7494cc275f",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-38a-p001.txt",
+      "characters": 2014
+    },
+    {
+      "source": "root/pdf/nist-800-38a-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "20a9be07fb872618587c0f3c983c729cda021a8aaf4a994d02f7b3b215cc2689",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-38a-p002.txt",
+      "characters": 1373
+    },
+    {
+      "source": "root/pdf/nist-800-38a-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-38a-p003.txt",
+      "characters": 2653
+    },
+    {
+      "source": "root/pdf/nist-800-38a-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "4a7bc3fcf1ddfd34313d10f36798b7bdf0460eb51823c78dd75f5d7a3a82aa36",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-38a-p004.txt",
+      "characters": 2719
+    },
+    {
+      "source": "root/pdf/nist-800-38a-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "6d632796ec10d687d076ac89533e49d89087101010fbe7939dbaa5221bba4360",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-38a-p005.txt",
+      "characters": 3500
+    },
+    {
+      "source": "root/pdf/nist-800-92-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-92-p001.txt",
+      "characters": 3992
+    },
+    {
+      "source": "root/pdf/nist-800-92-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-92-p002.txt",
+      "characters": 3530
+    },
+    {
+      "source": "root/pdf/nist-800-92-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "3f7f0bdfb7fb2bbbb7dd4d1a5a34d3ed386f23580634870a00f6d8894cc7cbaf",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-92-p003.txt",
+      "characters": 4407
+    },
+    {
+      "source": "root/pdf/nist-800-92-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "eac74d6b5555ae5a38f8103ed780fa0de50b3209cb393b33807d512313ba32ac",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-92-p004.txt",
+      "characters": 3645
+    },
+    {
+      "source": "root/pdf/nist-800-92-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "deae5fa69ad24ddc15adefe5018aeede26f3a35ac567afc3d25a4a0cd1fbf046",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/nist-800-92-p005.txt",
+      "characters": 4192
+    },
+    {
+      "source": "root/pdf/pillow-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "8a61d8f3bbd7ace864ade0dba14b6bfc2f707ff4226a450e2f21fb204614eb99",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pillow-p001.txt",
+      "characters": 2528
+    },
+    {
+      "source": "root/pdf/pillow-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "5e12796faa5721df7e2c7033ab67fd2faa4d75464fa9c35260f6c8e2169ed348",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pillow-p002.txt",
+      "characters": 1591
+    },
+    {
+      "source": "root/pdf/pillow-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "2d73a30da34e7bbd049a1c83111804c5f53c7797d470431efd5338c1c7424afd",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pillow-p003.txt",
+      "characters": 1896
+    },
+    {
+      "source": "root/pdf/pillow-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "498b9301f2d0966ff7e31155fdf416f623ac7b5a2ad32db2c6a09273c082dc2c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pillow-p004.txt",
+      "characters": 2120
+    },
+    {
+      "source": "root/pdf/pillow-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "aaac53fcd48dd2780fea91d4decbac6c368c15b53bfc72e29387968e9e69ff82",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pillow-p005.txt",
+      "characters": 1798
+    },
+    {
+      "source": "root/pdf/pytest-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "60aa331fc05470e2e0821772be7f5949d3c703662da35049da35b718330543e3",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pytest-p001.txt",
+      "characters": 1814
+    },
+    {
+      "source": "root/pdf/pytest-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "d33b6e75cb887c3755dd73a9fc6a8a7d2a071ce4436f1159dd5794525fcaa7f4",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pytest-p002.txt",
+      "characters": 2186
+    },
+    {
+      "source": "root/pdf/pytest-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "4c57825a778d95db8e7f0833b21dcd7a2be2fa2141364a2dd133c03c78c4f1d7",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pytest-p003.txt",
+      "characters": 3038
+    },
+    {
+      "source": "root/pdf/pytest-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "fa4626b5634680ed282bab60563e0584357abc70b0295e7dfd52fa8d4f177545",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pytest-p004.txt",
+      "characters": 2492
+    },
+    {
+      "source": "root/pdf/pytest-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "972fc79192273ab65655671d13073be4f0e739028b4c6e7a3d7268bd0f0df870",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/pytest-p005.txt",
+      "characters": 1868
+    },
+    {
+      "source": "root/pdf/sphinx-excerpt.pdf",
+      "view_id": "p001",
+      "sha256": "ce44010744c7857cecfec006d3c6de071137fd72480b45e47c064d8a1f2162e2",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/sphinx-p001.txt",
+      "characters": 2219
+    },
+    {
+      "source": "root/pdf/sphinx-excerpt.pdf",
+      "view_id": "p002",
+      "sha256": "aa5aaa4975af26a341089575c1b824e2776eebacb8ca58db08dbd0490ab5c764",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/sphinx-p002.txt",
+      "characters": 1172
+    },
+    {
+      "source": "root/pdf/sphinx-excerpt.pdf",
+      "view_id": "p003",
+      "sha256": "b469eab576f3aeb3a4e74da22989fee512c169ae95292c2cd62db8800e4c325f",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/sphinx-p003.txt",
+      "characters": 1618
+    },
+    {
+      "source": "root/pdf/sphinx-excerpt.pdf",
+      "view_id": "p004",
+      "sha256": "0c8b9a637742e369e38ce21157c161e06e9e5f28480c840250f326da53eac960",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/sphinx-p004.txt",
+      "characters": 1672
+    },
+    {
+      "source": "root/pdf/sphinx-excerpt.pdf",
+      "view_id": "p005",
+      "sha256": "9812ec380ad8877856ba9c83a512054160efd00a6bb51104fe77f476ca18c50f",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/pdf/sphinx-p005.txt",
+      "characters": 1761
+    },
+    {
+      "source": "root/screenshots/httpx-connect-timeout.png",
+      "view_id": "ocr",
+      "sha256": "abf998ef591ba6354aca7b098ab89afaf24b0061ad8103fa9a488d1b01a6dcf8",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/httpx-connect-timeout.txt",
+      "characters": 221
+    },
+    {
+      "source": "root/screenshots/httpx-http2.png",
+      "view_id": "ocr",
+      "sha256": "f7bc8dcb36d9cb1e136ac55b3c542d64d52ba54c1390ce8714674b321cf879ec",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/httpx-http2.txt",
+      "characters": 314
+    },
+    {
+      "source": "root/screenshots/httpx-limits.png",
+      "view_id": "ocr",
+      "sha256": "3a7566274663d22ce3e953087324a6c2cdbf72670af89e5698b333e52ce7d19f",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/httpx-limits.txt",
+      "characters": 95
+    },
+    {
+      "source": "root/screenshots/httpx-timeouts.png",
+      "view_id": "ocr",
+      "sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/httpx-timeouts.txt",
+      "characters": 91
+    },
+    {
+      "source": "root/screenshots/pydantic-fields.png",
+      "view_id": "ocr",
+      "sha256": "e624c996d8a769b4497e72e76672f90ace2f4c5d1c842ccee3ca6931b0adb86d",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pydantic-fields.txt",
+      "characters": 179
+    },
+    {
+      "source": "root/screenshots/pydantic-python-dump.png",
+      "view_id": "ocr",
+      "sha256": "e3e8a002d683d40305334ba01aebb724f78de17c42640977bd35e0d0dfaa2781",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pydantic-python-dump.txt",
+      "characters": 189
+    },
+    {
+      "source": "root/screenshots/pydantic-strict.png",
+      "view_id": "ocr",
+      "sha256": "e6710e10f5175d0f30117d701e7b07c0f366dbd266a91788e627f7c1413432bf",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pydantic-strict.txt",
+      "characters": 215
+    },
+    {
+      "source": "root/screenshots/pydantic-unions.png",
+      "view_id": "ocr",
+      "sha256": "001e8485f727ebe2f33d67b33fcc43784819775fc202df7507a751678a27ba2f",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pydantic-unions.txt",
+      "characters": 146
+    },
+    {
+      "source": "root/screenshots/pytest-capture.png",
+      "view_id": "ocr",
+      "sha256": "044a54b06c1deb02dccfdbd5f61ec18d56f59d787ddab7441e33ed976bc572a4",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pytest-capture.txt",
+      "characters": 196
+    },
+    {
+      "source": "root/screenshots/pytest-monkeypatch.png",
+      "view_id": "ocr",
+      "sha256": "4f62407831abfe3638703192f7b17dee0af837a81c303aea02536dd6c1228bf2",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pytest-monkeypatch.txt",
+      "characters": 301
+    },
+    {
+      "source": "root/screenshots/pytest-tmp.png",
+      "view_id": "ocr",
+      "sha256": "9bf8ba455c05093fc4588baf82251ba79b18b68828905064673cd5499620ecab",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/pytest-tmp.txt",
+      "characters": 66
+    },
+    {
+      "source": "root/screenshots/rich-markup.png",
+      "view_id": "ocr",
+      "sha256": "cda05ca1a4379994324a4f94f02c75cbd01fc867b88c747c09748e8539f80f44",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/rich-markup.txt",
+      "characters": 150
+    },
+    {
+      "source": "root/screenshots/rich-progress.png",
+      "view_id": "ocr",
+      "sha256": "2dca4067aaff769f09e638804dcbb706d125bf1fd4fb8a897cd096397163415b",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/rich-progress.txt",
+      "characters": 185
+    },
+    {
+      "source": "root/screenshots/rich-styles.png",
+      "view_id": "ocr",
+      "sha256": "22bbaf51d9ecac433a71117e72ecd65ffbde028a5f2a032750749087de6f5865",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/rich-styles.txt",
+      "characters": 149
+    },
+    {
+      "source": "root/screenshots/rich-tables.png",
+      "view_id": "ocr",
+      "sha256": "b5d5a440c39561712ac0337334fa390028e7af9985bb8497008d9dd73f12f5c2",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/rich-tables.txt",
+      "characters": 132
+    },
+    {
+      "source": "root/screenshots/typer-context.png",
+      "view_id": "ocr",
+      "sha256": "0d13ed7c90809184781a606464db27aefb84ce9d31b19b582d846e38eba2a8c9",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/typer-context.txt",
+      "characters": 140
+    },
+    {
+      "source": "root/screenshots/typer-help-panels.png",
+      "view_id": "ocr",
+      "sha256": "55dce3ed1f2ca76ade5aa61957e6e5e7f1e699ffce0a70d4653f922a81439452",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/typer-help-panels.txt",
+      "characters": 109
+    },
+    {
+      "source": "root/screenshots/uv-environments.png",
+      "view_id": "ocr",
+      "sha256": "dd756d9cd2603f4426b428e7ac50e8f6fc373a43877ad78e4ecdf50149f95304",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/uv-environments.txt",
+      "characters": 169
+    },
+    {
+      "source": "root/screenshots/uv-projects.png",
+      "view_id": "ocr",
+      "sha256": "17ad5269ade51f43d8ed6c9f76d2e7d9af5fa6ac46218125b7ac546bd01867c3",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/uv-projects.txt",
+      "characters": 304
+    },
+    {
+      "source": "root/screenshots/uv-tools.png",
+      "view_id": "ocr",
+      "sha256": "4bacc835e806514ec80c53f602dc3fb85ff4324ff8f85b04ea9fc051ee9ada22",
+      "evidence_type": "ocr_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/root/screenshots/uv-tools.txt",
+      "characters": 191
+    },
+    {
+      "source": "text/click/docs/arguments.rst",
+      "view_id": "body",
+      "sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/docs/arguments.rst.txt",
+      "characters": 8397
+    },
+    {
+      "source": "text/click/docs/commands.rst",
+      "view_id": "body",
+      "sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/docs/commands.rst.txt",
+      "characters": 18928
+    },
+    {
+      "source": "text/click/docs/options.rst",
+      "view_id": "body",
+      "sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/docs/options.rst.txt",
+      "characters": 26719
+    },
+    {
+      "source": "text/click/src/click/parser.py",
+      "view_id": "body",
+      "sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/src/click/parser.py.txt",
+      "characters": 19067
+    },
+    {
+      "source": "text/click/src/click/termui.py",
+      "view_id": "body",
+      "sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/src/click/termui.py.txt",
+      "characters": 28324
+    },
+    {
+      "source": "text/click/src/click/types.py",
+      "view_id": "body",
+      "sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/click/src/click/types.py.txt",
+      "characters": 36391
+    },
+    {
+      "source": "text/cpython/Lib/base64.py",
+      "view_id": "basename",
+      "sha256": "721b4d4ec3040040878ec0a306a13e8bb7f1ffe0c87101fdb08e21afa013d8f9",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/base64.py.basename.txt",
+      "characters": 9
+    },
+    {
+      "source": "text/cpython/Lib/base64.py",
+      "view_id": "body",
+      "sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/base64.py.txt",
+      "characters": 20635
+    },
+    {
+      "source": "text/cpython/Lib/codecs.py",
+      "view_id": "basename",
+      "sha256": "5d430081548ac75c3e9b59dc7d34f70408dcd7a60d14c191cbe5537a17bc21bc",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/codecs.py.basename.txt",
+      "characters": 9
+    },
+    {
+      "source": "text/cpython/Lib/codecs.py",
+      "view_id": "body",
+      "sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/codecs.py.txt",
+      "characters": 36870
+    },
+    {
+      "source": "text/cpython/Lib/ctypes/__init__.py",
+      "view_id": "basename",
+      "sha256": "8e2c1f727276d30ced72fa67cb848772a9802162bec39b42a8df5359fd063a4c",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ctypes/__init__.py.basename.txt",
+      "characters": 11
+    },
+    {
+      "source": "text/cpython/Lib/ctypes/__init__.py",
+      "view_id": "body",
+      "sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ctypes/__init__.py.txt",
+      "characters": 18210
+    },
+    {
+      "source": "text/cpython/Lib/email/base64mime.py",
+      "view_id": "basename",
+      "sha256": "ab15a63a8a1e11d2f9668a328bc0bdb2eadc579d87ba1e8e1950ffc583a566ef",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/email/base64mime.py.basename.txt",
+      "characters": 13
+    },
+    {
+      "source": "text/cpython/Lib/email/base64mime.py",
+      "view_id": "body",
+      "sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/email/base64mime.py.txt",
+      "characters": 3551
+    },
+    {
+      "source": "text/cpython/Lib/hashlib.py",
+      "view_id": "basename",
+      "sha256": "7d2bfccfa3f7a7cc1c0f7f734079e543ea45d21fb7665deb50a428323183a65d",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/hashlib.py.basename.txt",
+      "characters": 10
+    },
+    {
+      "source": "text/cpython/Lib/hashlib.py",
+      "view_id": "body",
+      "sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/hashlib.py.txt",
+      "characters": 9349
+    },
+    {
+      "source": "text/cpython/Lib/ipaddress.py",
+      "view_id": "basename",
+      "sha256": "4387a1ca314ac70236a172863df7f256450ce220dd70a987daed2e2cf68ad6e2",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ipaddress.py.basename.txt",
+      "characters": 12
+    },
+    {
+      "source": "text/cpython/Lib/ipaddress.py",
+      "view_id": "body",
+      "sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ipaddress.py.txt",
+      "characters": 79124
+    },
+    {
+      "source": "text/cpython/Lib/random.py",
+      "view_id": "basename",
+      "sha256": "646c8ebdfb1a7730f7a73093eb92b071ed90bcc88ef97583c7b52795a1ab929e",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/random.py.basename.txt",
+      "characters": 9
+    },
+    {
+      "source": "text/cpython/Lib/random.py",
+      "view_id": "body",
+      "sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/random.py.txt",
+      "characters": 34682
+    },
+    {
+      "source": "text/cpython/Lib/ssl.py",
+      "view_id": "basename",
+      "sha256": "555870b8a0d8d235f2e57dbb168819d86521fdadfd7878f068746a1ad086d6b5",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ssl.py.basename.txt",
+      "characters": 6
+    },
+    {
+      "source": "text/cpython/Lib/ssl.py",
+      "view_id": "body",
+      "sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/ssl.py.txt",
+      "characters": 50904
+    },
+    {
+      "source": "text/cpython/Lib/uuid.py",
+      "view_id": "basename",
+      "sha256": "c0fcd2be5e3268f28825a52001d35a54290ea22f0dd844a71bc32d78a4cd3a23",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/uuid.py.basename.txt",
+      "characters": 7
+    },
+    {
+      "source": "text/cpython/Lib/uuid.py",
+      "view_id": "body",
+      "sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/uuid.py.txt",
+      "characters": 29656
+    },
+    {
+      "source": "text/cpython/Lib/xmlrpc/client.py",
+      "view_id": "basename",
+      "sha256": "1ebfaf6cb3592166b73835fa82333cb7109e7c624865c0039a7b22ff34aa27fa",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/xmlrpc/client.py.basename.txt",
+      "characters": 9
+    },
+    {
+      "source": "text/cpython/Lib/xmlrpc/client.py",
+      "view_id": "body",
+      "sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/xmlrpc/client.py.txt",
+      "characters": 49331
+    },
+    {
+      "source": "text/cpython/Lib/zipfile/__init__.py",
+      "view_id": "basename",
+      "sha256": "8e2c1f727276d30ced72fa67cb848772a9802162bec39b42a8df5359fd063a4c",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/zipfile/__init__.py.basename.txt",
+      "characters": 11
+    },
+    {
+      "source": "text/cpython/Lib/zipfile/__init__.py",
+      "view_id": "body",
+      "sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Lib/zipfile/__init__.py.txt",
+      "characters": 87706
+    },
+    {
+      "source": "text/cpython/Modules/zlibmodule.c",
+      "view_id": "basename",
+      "sha256": "cfd93d1e4738511d3a86906abf5fe513e2c01d1823ef4ef48726120ed653ceac",
+      "evidence_type": "name_metadata",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Modules/zlibmodule.c.basename.txt",
+      "characters": 12
+    },
+    {
+      "source": "text/cpython/Modules/zlibmodule.c",
+      "view_id": "body",
+      "sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/cpython/Modules/zlibmodule.c.txt",
+      "characters": 64697
+    },
+    {
+      "source": "text/requests/docs/user/advanced.rst",
+      "view_id": "body",
+      "sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/docs/user/advanced.rst.txt",
+      "characters": 42061
+    },
+    {
+      "source": "text/requests/docs/user/authentication.rst",
+      "view_id": "body",
+      "sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/docs/user/authentication.rst.txt",
+      "characters": 5400
+    },
+    {
+      "source": "text/requests/docs/user/quickstart.rst",
+      "view_id": "body",
+      "sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/docs/user/quickstart.rst.txt",
+      "characters": 19016
+    },
+    {
+      "source": "text/requests/src/requests/models.py",
+      "view_id": "body",
+      "sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/src/requests/models.py.txt",
+      "characters": 35418
+    },
+    {
+      "source": "text/requests/src/requests/sessions.py",
+      "view_id": "body",
+      "sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/src/requests/sessions.py.txt",
+      "characters": 30495
+    },
+    {
+      "source": "text/requests/src/requests/utils.py",
+      "view_id": "body",
+      "sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/requests/src/requests/utils.py.txt",
+      "characters": 33619
+    },
+    {
+      "source": "text/vite-ja/guide/env-and-mode.md",
+      "view_id": "body",
+      "sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vite-ja/guide/env-and-mode.md.txt",
+      "characters": 8085
+    },
+    {
+      "source": "text/vite-ko/guide/assets.md",
+      "view_id": "body",
+      "sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vite-ko/guide/assets.md.txt",
+      "characters": 5100
+    },
+    {
+      "source": "text/vue-zh/src/guide/components/props.md",
+      "view_id": "body",
+      "sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/components/props.md.txt",
+      "characters": 14742
+    },
+    {
+      "source": "text/vue-zh/src/guide/components/v-model.md",
+      "view_id": "body",
+      "sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/components/v-model.md.txt",
+      "characters": 16479
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/class-and-style.md",
+      "view_id": "body",
+      "sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/class-and-style.md.txt",
+      "characters": 5764
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/computed.md",
+      "view_id": "body",
+      "sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/computed.md.txt",
+      "characters": 8177
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/conditional.md",
+      "view_id": "body",
+      "sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/conditional.md.txt",
+      "characters": 2766
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/event-handling.md",
+      "view_id": "body",
+      "sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/event-handling.md.txt",
+      "characters": 8454
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/forms.md",
+      "view_id": "body",
+      "sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/forms.md.txt",
+      "characters": 14482
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/list.md",
+      "view_id": "body",
+      "sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/list.md.txt",
+      "characters": 10601
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+      "view_id": "body",
+      "sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/reactivity-fundamentals.md.txt",
+      "characters": 12812
+    },
+    {
+      "source": "text/vue-zh/src/guide/essentials/watchers.md",
+      "view_id": "body",
+      "sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd",
+      "evidence_type": "content_text",
+      "view_file": "/Users/yul/git/goldmine/evals/product_v4_expansion/views/text/vue-zh/src/guide/essentials/watchers.md.txt",
+      "characters": 13144
+    }
+  ],
+  "reviews": [
+    {
+      "id": "noise-near_topic-001",
+      "subtype": "near_topic",
+      "question_sha256": "33ee512cfbbea9fb7a62c1653b2954bdf8b310f493be5bf5c601b2367c9e8ca5",
+      "source_first_absence_reason": "The actual Requests guides explain pooling and streaming, but contain no such 300000-request memory benchmark or hardware measurement.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-002",
+      "subtype": "near_topic",
+      "question_sha256": "7a30efe09dbbbeed7f850fba96e931632a07794b8c0f307bf38169500415bf89",
+      "source_first_absence_reason": "TLS verification guidance does not contain the caller’s service incident log or observed certificate fingerprint.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-003",
+      "subtype": "near_topic",
+      "question_sha256": "171e1030966878b6b5e5fdaa247f0f1099025f0802486bc509cd4de2c2515fbb",
+      "source_first_absence_reason": "Click confirmation and abort behavior is documented; no user telemetry or last-week execution counts are part of the corpus.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-004",
+      "subtype": "near_topic",
+      "question_sha256": "5c107a046eb2719a5a6ca4f5248ac7da9801af3dbd8bebb5ac3dd1f1d8a871fc",
+      "source_first_absence_reason": "Click environment-variable resolution examples provide no warehouse deployment configuration or yesterday’s environment value.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-005",
+      "subtype": "near_topic",
+      "question_sha256": "f9138b0fb0ee937fd452ed4522da2e6046235948156d47c955f076f501f3f551",
+      "source_first_absence_reason": "Vue reactivity documentation explains dependency behavior, not measurements from an unspecified order-page deployment.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-006",
+      "subtype": "near_topic",
+      "question_sha256": "95bec183bc441945f52f98abb9791aa551dbbbd156f8ecd77da1cfdcbbc6bc37",
+      "source_first_absence_reason": "The Vue computed guide has generic book and name examples; the company SearchPanel component source and dependency graph are absent.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-007",
+      "subtype": "near_topic",
+      "question_sha256": "d687ba442829532f7244bdcea7f0765bbd2da7204622c749b75debd06d2a0924",
+      "source_first_absence_reason": "The Japanese Vite guide demonstrates an app title in a sample staging file; it does not include the user project’s actual deployment domain.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-008",
+      "subtype": "near_topic",
+      "question_sha256": "751e68e0d0f8b42f7ef8d90c0143076794ccc5bf5f19f2a736693645e95e576e",
+      "source_first_absence_reason": "The Korean Vite guide uses a shader filename as a raw-import example; the shader bytes and deployment checksum are absent.",
+      "literal_discriminator_hits": [
+        {
+          "discriminator": "shader.glsl",
+          "source": "text/vite-ko/guide/assets.md",
+          "view_id": "body",
+          "literal_matches": 1,
+          "casefolded_contexts": [
+            "셋은 문자열 형태로 가져와지게 됩니다.\n\n```js twoslash\nimport 'vite/client'\n// ---cut---\nimport shaderstring from './shader.glsl?raw'\n```\n\n### 스크립트를 worker로 가져오기 {#importing-script-as-a-worker}\n\n스크립트는 웹 워커로 가져올 수 있는데, 이 때는 `?worker` 접미사를 이용합니다.\n\n```js twoslash\nimport "
+          ]
+        }
+      ]
+    },
+    {
+      "id": "noise-near_topic-009",
+      "subtype": "near_topic",
+      "question_sha256": "e57c503ba1c1d34caafdea5e1dc668b36aaa96fc302401cedaab5cfe1fdcb839",
+      "source_first_absence_reason": "Hash constructor code and hashing guidance provide no per-algorithm throughput benchmark on that hardware.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-010",
+      "subtype": "near_topic",
+      "question_sha256": "7795221fc47ec34bc55c79dc6848c96eb403d60410bd31945205ca8872299c2e",
+      "source_first_absence_reason": "The zlib source defines checksum algorithms but the named backup bytes are not a corpus asset.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-011",
+      "subtype": "near_topic",
+      "question_sha256": "64d63931394ea4b5f8eb8dd0f3eb485207656425475d6759860f06a8f57f9985",
+      "source_first_absence_reason": "UUID code describes hardware-address discovery, not the actual hardware address of an unspecified production host.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-012",
+      "subtype": "near_topic",
+      "question_sha256": "fb449658cbe5f66dbd659c57dd744cb55ec363e7facf2c71ef85764ed8797aa9",
+      "source_first_absence_reason": "The zipfile implementation contains no such archive or its member directory; generic ZIP capability does not supply the requested contents.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-013",
+      "subtype": "near_topic",
+      "question_sha256": "c29f46f6f707c3ad792f77b7e3350799be408edda18521fd8553a9c0b807a685",
+      "source_first_absence_reason": "The foreign-function wrapper source does not include the named shared library, symbol table, or runtime address space.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-014",
+      "subtype": "near_topic",
+      "question_sha256": "099351b86b3b54158f81932bc5eb1311908e8c8638ba919b730764d025832ae1",
+      "source_first_absence_reason": "Random generator algorithms do not recover a particular worker’s missing seed, generator state, or execution log.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-015",
+      "subtype": "near_topic",
+      "question_sha256": "58348bdd4a703a9bd13bdff3b662199759eff11a3f208fbe369574d3f81cf593",
+      "source_first_absence_reason": "The HTTPX quickstart and timeout documentation contain no benchmark results for the user gateway.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-016",
+      "subtype": "near_topic",
+      "question_sha256": "48a3194b33e6c815563c39600562c220f2e242246f63eba6cc4ff9edcdd641c8",
+      "source_first_absence_reason": "Strict-mode and serialization guides do not contain a billing dataset or the application validation-error log.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-017",
+      "subtype": "near_topic",
+      "question_sha256": "4daddd779cdfb7a8ce19d5fcf88db2474ac2ec631bb605a1d584983cd4b6ab1c",
+      "source_first_absence_reason": "Rich table and progress documentation have rendering examples, not frame-by-frame hardware power measurements.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-018",
+      "subtype": "near_topic",
+      "question_sha256": "2cf52f898217aaa779f15f544b13a363e4c61a5aba03e4fdd3b3e0f5e1d4b93e",
+      "source_first_absence_reason": "The uv project/tool guides document commands but no private production network trace or execution history.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-019",
+      "subtype": "near_topic",
+      "question_sha256": "869d6cd35ba6286589e2687da3865bd0e4e4f368361a0c0df18be66d18198a3e",
+      "source_first_absence_reason": "NIST SP 800-92 gives general log-management guidance; the company’s quarterly audit findings are not included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-near_topic-020",
+      "subtype": "near_topic",
+      "question_sha256": "1f31fbf8c36e6245584d9634b803594d74d79cc4109c5bc84bcd2fdad1e7ba16",
+      "source_first_absence_reason": "The actual historical telegraphy patent describes apparatus and claims, not Bell’s purchase invoice or prototype material cost.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-001",
+      "subtype": "random_terms",
+      "question_sha256": "112e0963f2c113cd9dbe0a10fbcd00b33efc4538135ca236c61946252928465a",
+      "source_first_absence_reason": "The corpus has no future railway platform assignment or station operating schedule.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-002",
+      "subtype": "random_terms",
+      "question_sha256": "4dd72a555f006643de4c1b2be75b92bbd5a5e8600d258d505efe0b9ed893715d",
+      "source_first_absence_reason": "No greenhouse monitoring records or soil measurements are included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-003",
+      "subtype": "random_terms",
+      "question_sha256": "2c1b611f986846d261590c4dd622d92e4061a137e8228b943590bf576d599ff4",
+      "source_first_absence_reason": "No race registration database or runner split timing is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-004",
+      "subtype": "random_terms",
+      "question_sha256": "186576d167c7952dcabaf3de23933aef219971d36d3a34636a6f833e77b8d0a8",
+      "source_first_absence_reason": "No school observatory equipment inventory, hinge specification or maintenance record is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-005",
+      "subtype": "random_terms",
+      "question_sha256": "fea5820512b61cee5d8be09ae09ef28e9ffc2a022a7989bf24f6a7b843d61f7d",
+      "source_first_absence_reason": "No pottery firing batch record or glaze colorimetry results are included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-006",
+      "subtype": "random_terms",
+      "question_sha256": "ebc1a20626da901a3ae002471af60cfbd2e7ea395fd761cd4e533200e6a6fed6",
+      "source_first_absence_reason": "No record of that concert, programme or encore performance is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-007",
+      "subtype": "random_terms",
+      "question_sha256": "b7ef893872f13fedd6c64f8f9537c72ee4d162a424626ab7af16e05b4c771e02",
+      "source_first_absence_reason": "No forthcoming Tokyo workshop notice or materials-fee schedule is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-008",
+      "subtype": "random_terms",
+      "question_sha256": "5bff88351e43d8a2fe7dc9ea60f11464fb1040eb2d5928592c62112a026ab9c0",
+      "source_first_absence_reason": "No Busan library class registration notice or future class capacity is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-009",
+      "subtype": "random_terms",
+      "question_sha256": "a3c64a33101218d1e80c75fa946fe121909312069ef8df01e300a2f29be124ec",
+      "source_first_absence_reason": "No identified coastal cycle-bridge completion or acceptance load report is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-010",
+      "subtype": "random_terms",
+      "question_sha256": "2cc3e4eb5b1b003888e494bd3efba50888228ecb10981c88390034a7e7f4749f",
+      "source_first_absence_reason": "No bakery supplier traceability record or May flour delivery invoice is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-011",
+      "subtype": "random_terms",
+      "question_sha256": "59e6a2a3e5d24e71e295cd3d965b3a20fde8a13c3fc424b0d3c2aa31caafe3e2",
+      "source_first_absence_reason": "No personal instrument check-in or storage-locker assignment exists in the corpus.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-012",
+      "subtype": "random_terms",
+      "question_sha256": "e67176f58d6c80a13fe62e3a11f9509ea405a9043b9f2852a25418e8a9524fa6",
+      "source_first_absence_reason": "No drone qualification test or measured battery-capacity record is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-013",
+      "subtype": "random_terms",
+      "question_sha256": "905bb1ebb47abcefa08cab4372e783d7448dda130685e8199ec01aa6374e2c35",
+      "source_first_absence_reason": "Photo names and camera timestamps do not provide a museum relocation insurance policy.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-014",
+      "subtype": "random_terms",
+      "question_sha256": "b9e73c0503d39b345e33e19687f6027c5e01ad50da4b0dec6f012d5820b073d3",
+      "source_first_absence_reason": "No boat maintenance invoice, registration service history or sail repair record is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-015",
+      "subtype": "random_terms",
+      "question_sha256": "0f15202c4c9ac24ba6bec071b6aa3f912bc556feaeec615e387e0986bb3ee860",
+      "source_first_absence_reason": "No identified trail nest-monitoring log or egg count is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-016",
+      "subtype": "random_terms",
+      "question_sha256": "618ffb18a0f5a61d742d288ec4b4e956c8b15294e5930d7862c37a54876f1b0e",
+      "source_first_absence_reason": "No cafe service trace or coffee roasting batch curve is present.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-017",
+      "subtype": "random_terms",
+      "question_sha256": "4b022be819b5a7c4fe9fd4641a37cc25e7bd04778d7db31c6b184651f8dd9029",
+      "source_first_absence_reason": "No community choir rehearsal-room rental agreement is a corpus source.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-018",
+      "subtype": "random_terms",
+      "question_sha256": "b851d42b5755c8dcbcbacd477478e8d0eb15ff2fefeebea4a1dda6eecdd17b2e",
+      "source_first_absence_reason": "No tide-gauge asset register or dated maintenance visit record is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-019",
+      "subtype": "random_terms",
+      "question_sha256": "7dfc2690f8d33a89054197b299dfe5b37bc1c96ac23c5519bd5076ac6b56394a",
+      "source_first_absence_reason": "No bonsai show entry record or irrigation volume log is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-random_terms-020",
+      "subtype": "random_terms",
+      "question_sha256": "27ca12126e041aa2b0509eb9aa10c35292bd5af1eaae1a263a4e214780b047d9",
+      "source_first_absence_reason": "No orchard shipping ledger, pallet weighbridge reading or packing-shed record is included.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-001",
+      "subtype": "conflict_id",
+      "question_sha256": "1c72f85a50722ce5b814426883f18e58512f7ca69c5e8fe1fe19605ac61e2f9e",
+      "source_first_absence_reason": "Mutates the genuine hashlib.sha3_512 algorithm name into an unlisted sha3_1024; the requested constructor is not defined.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-002",
+      "subtype": "conflict_id",
+      "question_sha256": "fd0bdfda74904170035de608c51aa0eade885770e598895c5b2f479829acfe42",
+      "source_first_absence_reason": "Changes the genuine b64encode name to nonexistent b128encode; another encoding API is not evidence for this one.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-003",
+      "subtype": "conflict_id",
+      "question_sha256": "49cc0ee5dc44e21ab4bedc05b95aca7bbcccc1355f4285d5c32f87f06002afc2",
+      "source_first_absence_reason": "Changes the genuine IPv6Address class to an undefined IPv8Address; IPv6 rules cannot answer a request for that class.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-004",
+      "subtype": "conflict_id",
+      "question_sha256": "3683aae96cfac0b5fb5d80d5f53188ee4354e150431a6876e76315d23b271921",
+      "source_first_absence_reason": "Changes the actual TLSv1_3 enum member to an unsupported TLSv1_9 name, with no such guarantees in the source.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-005",
+      "subtype": "conflict_id",
+      "question_sha256": "2e016c491e9decfb097aa57ee6194d1c6653105c7d00f7f25bd8acc881f1cf8e",
+      "source_first_absence_reason": "The pinned implementation defines versions one, three, four and five; uuid9 and its requested guarantee are absent.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-006",
+      "subtype": "conflict_id",
+      "question_sha256": "eaa63c44929d40a77de380b42cbd7843626822deed235e830024df226da9e475",
+      "source_first_absence_reason": "Mutates the genuine ZIP64_LIMIT constant into absent ZIP128_LIMIT; the defined ZIP64 value must not be substituted.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-007",
+      "subtype": "conflict_id",
+      "question_sha256": "b7ef8326aa27f22a279669b017a066e0d516b45491160d5e5b8fafca79252a73",
+      "source_first_absence_reason": "Changes the genuine crc32 entry point to undefined crc64; the requested polynomial is not described.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-008",
+      "subtype": "conflict_id",
+      "question_sha256": "026597a37f771aa3a384b0560736be27ccfda7dee85ec713aa9a4ee9f94cd81a",
+      "source_first_absence_reason": "Mutates the genuine BOM_UTF32_BE name into an undefined UTF-64 byte-order-mark constant.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-009",
+      "subtype": "conflict_id",
+      "question_sha256": "1ce0ab46dad3702ab0a91258feba99307875b1369effd28fe7d849aaa52369b3",
+      "source_first_absence_reason": "Changes the documented specifically-sized c_int64 type to c_int128; no such selection is defined in the pinned initializer.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-010",
+      "subtype": "conflict_id",
+      "question_sha256": "793f535a9dbf9bbdf472d74b62c42f65c39bedd6829324f52c3472b887d00fe8",
+      "source_first_absence_reason": "The source explains seed versions one and two, not a version-nine repeatability contract; permissive runtime code is not a documented guarantee.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-011",
+      "subtype": "conflict_id",
+      "question_sha256": "44dc4eef8996c222a6111665935774574ce6efef5aa63e3eb41c41d3a3f24282",
+      "source_first_absence_reason": "Mutates the genuine defineModel macro name into defineModels, which is not defined by the included Vue page.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-012",
+      "subtype": "conflict_id",
+      "question_sha256": "e86d30b4242c236618d3be62308de69fad6af137767f2786e9dadc1e4a056536",
+      "source_first_absence_reason": "Adds an undefined afterWait member to watchEffect; the actual synchronous dependency rule is not evidence for this API.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-013",
+      "subtype": "conflict_id",
+      "question_sha256": "f5ef0cd0cf233552df6fd296ed48e9f2ad3f9ef02977238970d766b2ec05d8fc",
+      "source_first_absence_reason": "Changes genuine confirm to undefined confirm_once; no cross-process persistence behavior is documented.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-014",
+      "subtype": "conflict_id",
+      "question_sha256": "b3b0c999163bb0b3b9546d6b2a1a2583376090d9f68268a94b4618421d9c8fbc",
+      "source_first_absence_reason": "Changes the genuine Choice type into absent ChoiceMap; the existing choice-list implementation cannot supply mapping validation rules.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-015",
+      "subtype": "conflict_id",
+      "question_sha256": "c397a770cb476d9ce4d1f31b7e790aca6fc70b68031fcfa877efa93a36b658ae",
+      "source_first_absence_reason": "Changes genuine singular prepare_request to prepare_requests and assumes unsupported batch-send semantics.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-016",
+      "subtype": "conflict_id",
+      "question_sha256": "27147bb58527b337b5cae6b98865c32add10cd23c2755fa3039117e516b263c4",
+      "source_first_absence_reason": "Adds a version suffix to the actual resolve_redirects method; that versioned method has no definition or default policy.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-017",
+      "subtype": "conflict_id",
+      "question_sha256": "14c8d61052a502ed022e3518058bd0d9b0ed49a7e1da00931eaa605ef32a4ae5",
+      "source_first_absence_reason": "Extends the genuine merge_setting helper name into absent merge_setting_all with unsupported three-way configuration semantics.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-018",
+      "subtype": "conflict_id",
+      "question_sha256": "e9cab59857fa4baf86121005227d39305be582e4a4e040bb7c6b3f2e38cdeb72",
+      "source_first_absence_reason": "Invents a clamp_open method from the actual FloatRange clamp behavior; no rounding mode for that method exists in the source.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-019",
+      "subtype": "conflict_id",
+      "question_sha256": "812c4270b011ff6449f47d3c2b317a7b78bcfe51d3987048cba8916feb8bde84",
+      "source_first_absence_reason": "Changes the genuine built-in environment object access into an absent claimed built-in constant; no object value is supplied.",
+      "literal_discriminator_hits": []
+    },
+    {
+      "id": "noise-conflict_id-020",
+      "subtype": "conflict_id",
+      "question_sha256": "e7e6a020715092b2cb9f5b806ceb8b9ac2be1e1ba40b18bcb2b73cb882226e95",
+      "source_first_absence_reason": "Mutates the actual create_default_context function name to a versioned variant and assumes retry behavior absent from TLS-context construction.",
+      "literal_discriminator_hits": []
+    }
+  ]
+}

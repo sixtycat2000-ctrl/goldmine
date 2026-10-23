@@ -75,11 +75,11 @@ def test_pack_emit_live_canaries():
         for q in qs:
             text, meta, _ = ea.build_question_pack(
                 store, backend, q, ea.PACK_SETTINGS)
-            if q["id"] in first:
-                assert text == first[q["id"]], f"{q['id']}: double emit differs"
-            else:
-                first[q["id"]] = text
+            again, _, _ = ea.build_question_pack(store, backend, q, ea.PACK_SETTINGS)
+            assert text == again, f"{q['id']}: double emit differs"
+            first[q["id"]] = text
             assert meta["used_tokens"] <= ea.PACK_SETTINGS["budget"], q["id"]
+            assert backend.count_tokens([text])[0] == meta["used_tokens"]
             assert meta["token_mode"] == "tokenize"
         assert "DEFAULT_TOKEN_OVERLAP = 48" in first["ans-001"]
         assert "reached 2670 tokens against the 2048" in first["ans-011"]
@@ -97,7 +97,7 @@ def test_neighbor_sql_uses_segments_file_index():
         pytest.skip("eval index missing — run scripts/build_eval_corpus.py")
     from goldmine.pack import NeighborIndex
 
-    store = Store(DB)
+    store = Store(DB, ro=True)
     try:
         fid = store.db.execute("SELECT id FROM files LIMIT 1").fetchone()[0]
         sql = NeighborIndex._SQL
@@ -106,4 +106,52 @@ def test_neighbor_sql_uses_segments_file_index():
                 "EXPLAIN QUERY PLAN " + sql, (fid,)).fetchall())
         assert "segments_file" in plan
     finally:
+        store.close()
+
+
+@_skip_binary
+@_skip_model
+def test_real_tokenizer_matrix_and_all_emitted_opaque_ids(tmp_path):
+    """Actual model counts, independent of the incomplete answer-quality suite."""
+    import re
+    from goldmine.citations import read_evidence, resolve_citation
+    from goldmine.pack import BudgetTooSmall, PackSettings, build_pack_from_hits
+    from goldmine.search import Searcher
+    from goldmine.store import FileRec, SegmentRec
+
+    store, backend = Store(tmp_path / "matrix.sqlite"), _backend()
+    try:
+        bodies = ["fixture 中文退款期限为四十五天。\n" * 12,
+                  "fixture | item | value |\n| copper | 431 |\n" * 12,
+                  "fixture\ndef compute(x):\n    return x * 431\n" * 12,
+                  "fixture large indivisible source " * 2000]
+        for index, body in enumerate(bodies):
+            fid = store.upsert_file(FileRec(path=f"/nonexistent/{index}/" + "长路径/" * 25 + "evidence.md",
+                                            state="done", capability="content_indexed"))
+            store.replace_segments(fid, [SegmentRec(kind="chunk", modality="none", loc=1, loc_end=30,
+                                                   text_for_fts=body)])
+        hits = Searcher(store, None).search("fixture", scorer="lexical", why=True)
+        assert len(hits) == 4
+        for budget in (512, 1000, 4000, 32768):
+            for context in (0, 1, 3):
+                settings = PackSettings(query="fixture", scorer="lexical", budget=budget, context=context, why=True)
+                text, meta = build_pack_from_hits(store, backend, settings, hits,
+                    citation_id_of=lambda sid: read_evidence(store, sid).citation.citation_id)
+                assert meta["token_mode"] == "tokenize"
+                assert backend.count_tokens([text])[0] == meta["used_tokens"] <= budget
+                repeated, _ = build_pack_from_hits(store, backend, settings, hits,
+                    citation_id_of=lambda sid: read_evidence(store, sid).citation.citation_id)
+                assert repeated == text
+                for cid in re.findall(r"gm1:[0-9a-f-]{36}:[1-9][0-9]*:[0-9a-f]{16}", text):
+                    assert resolve_citation(store, cid).text in text
+        # Empty material still measures the entire long-query envelope.
+        try:
+            text, meta = build_pack_from_hits(store, backend,
+                    PackSettings(query="中文" * 1365, budget=512), [])
+        except BudgetTooSmall:
+            pass
+        else:
+            assert backend.count_tokens([text])[0] == meta["used_tokens"] <= 512
+    finally:
+        backend.close()
         store.close()

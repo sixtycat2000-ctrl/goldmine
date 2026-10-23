@@ -1,0 +1,30 @@
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=Ship ''Felicità'' on Moskva River near Moscow Kremlin. The photo was taken from another ship.}}
+{{ru|1=Корабль "Феличита" на Москве реке неподалеку от Московского кремля. Фотография сделана с другого корабля.}}
+|date=2018-08-04 13:04:46
+|source={{own}}
+|author=[[User:LexKurochkin|Alexey V. Kurochkin]]
+|permission=
+|other versions=
+}}
+{{Location|55.749049|37.630804}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+
+[[Category:Passenger ships on the Moskva River in Moscow]]
+[[Category:Photographs by Alexey V. Kurochkin]]
+[[Category:Taken with Pentax K-70]]
+[[Category:Taken with SMC Pentax-DA* 55mm F1.4 SDM]]
+[[Category:Russia photographs taken on 2018-08-04]]
+[[Category:August 2018 in Moscow]]
+[[Category:Quality images by Alexey V. Kurochkin]]
+[[Category:Quality images of ships in Moscow]]
+[[Category:Felicità (ship, 2013)]]
+[[Category:Valued images by Alexey V. Kurochkin]]
+[[Category:Quality images of Russia by User:LexKurochkin]]
+[[Category:Valued images of Moscow]]
+{{QualityImage}}
+{{VI|{{c|Felicità (ship, 2013)}}|00:19, 20 March 2021 (UTC)|
+subpage=Ship Felicità on Moskva River near Moscow Kremlin 2018 Aug 04 (3551).jpg}}

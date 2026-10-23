@@ -1,0 +1,1 @@
+To better support this use case, Pydantic provides a “strict mode”. When strict mode is enabled, Pydantic will be much less lenient when coercing data, and will instead error if the data is not of the correct type.

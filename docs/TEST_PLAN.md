@@ -1,7 +1,9 @@
 # goldmine — Test Plan
 
+> Implementation update (2026-10-21): see [the current feature status](FEATURE_STATUS.md) and the [P0–P2 execution record](execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 Principle: **offline-first**. The default `pytest` run needs no network, no llama-server, no
-model files, no ForesightHelper — everything goes through the deterministic `mock` backend.
+model files — everything goes through the deterministic `mock` backend.
 Live tests exist as a separate, explicitly-gated tier. `GOLDMINE_HOME`/`GOLDMINE_CONFIG` are
 redirected to tmp paths in every tier so tests never touch real user data.
 
@@ -13,7 +15,7 @@ redirected to tmp paths in every tier so tests never touch real user data.
 |---|---|---|---|---|
 | 1 | unit | none (default) | pure functions: rules, decode, chunker, z-scores, RRF, TF-IDF, clustering determinism, fingerprints, fp16 round-trip | numpy, pytest |
 | 2 | integration (offline) | none (default) | Store+Pipeline+Searcher+Distill end-to-end on fixture corpora with `MockBackend`; `backends/llama.py` client logic against `tests/fake_llama_server.py`; crawl bounds against a local `http.server` fixture | numpy, pytest |
-| 3 | live | `GOLDMINE_LIVE=1` | real `llama-server` spawn + real embeddings (dim=768 asserted); ForesightHelper socket tests **only if** `$TMPDIR/foresight_helper.sock` exists (auto-skip with reason otherwise); real pdftotext/ffmpeg round-trips | brew llama.cpp, model GGUFs, poppler, ffmpeg |
+| 3 | live | `GOLDMINE_LIVE=1` | real `llama-server` spawn + real embeddings (dim=768 asserted); real pdftotext/ffmpeg round-trips | brew llama.cpp, model GGUFs, poppler, ffmpeg |
 
 Tier 3 marker: `@pytest.mark.live` registered in `conftest.py`;
 `pytest -m "not live"` is the CI default; `GOLDMINE_LIVE=1 pytest -m live` runs tier 3.
@@ -158,8 +160,6 @@ raw-text vector, cosine < 0.999). Auto-skips if the binary/model are absent.
 - `test_live_llama.py`: real spawn (health ≤ 120 s), one text batch embed, build string
   recorded, fingerprint stable across two spawns, close() leaves no `llama-server` child
   (assert via Popen.poll()).
-- `test_live_foresight.py`: skipped unless the socket exists; `Ping` returns a version;
-  text/image/audio embedding dims == 768; marked experimental.
 - `test_live_tools.py`: real `pdftotext` on tiny.pdf (exact known sentence), real ffmpeg on
   sine.wav (1 window, ~30 s cap not hit), video frames on a 3 s generated color video
   (ffmpeg-generated fixture), each skipping with fix hints if tools absent.
@@ -182,6 +182,6 @@ raw-text vector, cosine < 0.999). Auto-skips if the binary/model are absent.
 8. Interrupting ingest (SIGINT in test via cancel flag) exits 130, leaves a consistent DB
    (pending rows), and a resumed run completes without duplicates.
 9. `goldmine doctor` on this Mac (live) reports: llama OK, mock OK, poppler OK, ffmpeg OK,
-   foresight per socket state, index state honest — no check invents success.
+   index state honest — no check invents success.
 10. Docs stay true: any behavior change in implementation updates SPEC.md in the same commit
     (checklist item for the implementer, enforced by review).

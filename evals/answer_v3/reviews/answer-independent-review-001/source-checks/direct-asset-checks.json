@@ -1,0 +1,208 @@
+[
+  {
+    "path": "media/asr/2803-161169-0001.flac",
+    "kind": "audio",
+    "asset_sha_verified": true
+  },
+  {
+    "path": "media/asr/3000-15664-0005.flac",
+    "kind": "audio",
+    "asset_sha_verified": true
+  },
+  {
+    "path": "media/photos/Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+    "kind": "image",
+    "app1_exif_tags": {
+      "0x9003": "2018:08:04 13:04:46"
+    },
+    "basename": "Ship_Felicità_on_Moskva_River_near_Moscow_Kremlin_2018_Aug_04_(3551).jpg",
+    "asset_sha_verified": false,
+    "note": "Header-only EXIF read; entire JPEG not hashed to keep IO small."
+  },
+  {
+    "path": "media/photos/Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+    "kind": "image",
+    "app1_exif_tags": {
+      "0x9003": "2023:09:20 17:47:29"
+    },
+    "basename": "Water_reflection_of_sunset_with_gray_and_orange_clouds_and_boats_moored_to_the_bank_in_Pakse_Laos.jpg",
+    "asset_sha_verified": false,
+    "note": "Header-only EXIF read; entire JPEG not hashed to keep IO small."
+  },
+  {
+    "path": "media/photos/Wrocław_MuzeumNarodowe.jpg",
+    "kind": "image",
+    "app1_exif_tags": {
+      "0x9003": "2020:02:08 21:58:41"
+    },
+    "basename": "Wrocław_MuzeumNarodowe.jpg",
+    "asset_sha_verified": false,
+    "note": "Header-only EXIF read; entire JPEG not hashed to keep IO small."
+  },
+  {
+    "path": "root/pdf/US174465-scan.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-single-013",
+        "evidence": "e0",
+        "page": 3,
+        "span_in_poppler_text": false,
+        "pdf_text_chars": 1
+      },
+      {
+        "question": "av3-multi-007",
+        "evidence": "p1_e0",
+        "page": 3,
+        "span_in_poppler_text": false,
+        "pdf_text_chars": 1
+      },
+      {
+        "question": "av3-multi-007",
+        "evidence": "p2_e0",
+        "page": 3,
+        "span_in_poppler_text": false,
+        "pdf_text_chars": 1
+      }
+    ]
+  },
+  {
+    "path": "root/pdf/US6469-scan.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-multi-019",
+        "evidence": "p1_e0",
+        "page": 2,
+        "span_in_poppler_text": false,
+        "pdf_text_chars": 1
+      },
+      {
+        "question": "av3-multi-019",
+        "evidence": "p2_e0",
+        "page": 2,
+        "span_in_poppler_text": false,
+        "pdf_text_chars": 1
+      }
+    ]
+  },
+  {
+    "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-multi-011",
+        "evidence": "p1_e0",
+        "page": 1,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 1901
+      },
+      {
+        "question": "av3-single-012",
+        "evidence": "e0",
+        "page": 3,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2809
+      },
+      {
+        "question": "av3-multi-011",
+        "evidence": "p2_e0",
+        "page": 5,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2683
+      }
+    ]
+  },
+  {
+    "path": "root/pdf/nist-800-145-excerpt.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-single-011",
+        "evidence": "e0",
+        "page": 1,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 3690
+      },
+      {
+        "question": "av3-multi-015",
+        "evidence": "p1_e0",
+        "page": 1,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 3690
+      },
+      {
+        "question": "av3-multi-015",
+        "evidence": "p2_e0",
+        "page": 2,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2315
+      }
+    ]
+  },
+  {
+    "path": "root/pdf/nist-800-38a-excerpt.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-single-015",
+        "evidence": "e0",
+        "page": 3,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2654
+      },
+      {
+        "question": "av3-multi-018",
+        "evidence": "p1_e0",
+        "page": 3,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2654
+      },
+      {
+        "question": "av3-multi-018",
+        "evidence": "p2_e0",
+        "page": 4,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 2720
+      }
+    ]
+  },
+  {
+    "path": "root/pdf/nist-800-92-excerpt.pdf",
+    "kind": "pdf",
+    "asset_sha_verified": true,
+    "entries": [
+      {
+        "question": "av3-multi-003",
+        "evidence": "p1_e0",
+        "page": 1,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 3993
+      },
+      {
+        "question": "av3-single-014",
+        "evidence": "e0",
+        "page": 2,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 3531
+      },
+      {
+        "question": "av3-multi-003",
+        "evidence": "p2_e0",
+        "page": 2,
+        "span_in_poppler_text": true,
+        "pdf_text_chars": 3531
+      }
+    ]
+  },
+  {
+    "path": "root/screenshots/httpx-timeouts.png",
+    "kind": "screenshot",
+    "asset_sha_verified": true
+  }
+]

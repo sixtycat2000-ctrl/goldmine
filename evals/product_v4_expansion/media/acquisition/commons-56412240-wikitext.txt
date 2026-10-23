@@ -1,0 +1,25 @@
+=={{Assessment}}==
+{{Assessments|featured=1}}
+{{POTD bnwiki|date=৩ এপ্রিল ২০১৭}}
+
+=={{int:filedesc}}==
+{{Information
+|description={{en|1=A view of the river Narmada from Maheshwar fort.}}
+|date=2016-12-23 15:59:38
+|source={{own}}
+|author=[[User:Sumitsurai|Sumit Surai]]
+|permission=
+|other versions=
+}}
+
+=={{int:license-header}}==
+{{self|cc-by-sa-4.0}}
+{{QualityImage}}
+
+[[Category:Narmada River in Madhya Pradesh]]
+[[Category:Ahilya Fort]]
+[[Category:Madhya Pradesh (Photographs by Sumit Surai)]]
+[[Category:Featured pictures of Madhya Pradesh]]
+[[Category:Quality Images of India by Sumit Surai]]
+[[Category:* Featured Pictures by Sumit Surai]]
+[[Category:* Picture of the Day by Sumit Surai]]

@@ -1,0 +1,41 @@
+Sphinx Documentation, Release 9.3.0
+
+Added in version 1.8.
+Changed in version 3.5: Support the priority attribute
+html_js_files
+Type
+Sequence[str | tuple[str, dict[str, str]]]
+Default
+[]
+A list of JavaScript files. The entry must be a filename string or a tuple containing the filename string and the
+attributes dictionary. The filename must be relative to the html_static_path , or a full URI with scheme like
+'https://example.org/script.js'. The attributes dictionary is used for the <script> tag’s attributes.
+Example:
+html_js_files = [
+'script.js',
+'https://example.com/scripts/custom.js',
+('custom.js', {'async': 'async'}),
+]
+As a special attribute, priority can be set as an integer to load the JavaScript file at an earlier or later step. For
+more information, refer to Sphinx.add_js_file().
+Added in version 1.8.
+Changed in version 3.5: Support the priority attribute
+html_static_path
+Type
+list[str]
+Default
+[]
+A list of paths that contain custom static files (such as style sheets or script files). Relative paths are taken as
+relative to the configuration directory. They are copied to the output’s _static directory after the theme’s static
+files, so a file named default.css will overwrite the theme’s default.css.
+As these files are not meant to be built, they are automatically excluded from source files.
+ò Note
+For security reasons, dotfiles under html_static_path will not be copied. If you would like to copy them
+intentionally, explicitly add each file to this setting:
+html_static_path = ['_static', '_static/.htaccess']
+An alternative approach is to use html_extra_path , which allows copying dotfiles under the directories.
+
+4.4. Configuration
+
+107
+

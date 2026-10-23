@@ -1,0 +1,27 @@
+{
+  "url": "https://typer.tiangolo.com/tutorial/options/help/",
+  "title": "CLI Options with Help - Typer",
+  "text": "CLI Options with Help¶\n\nYou already saw how to add a help text for CLI arguments with the help parameter.\n\nLet's now do the same for CLI options:\n\nPython 3.10+\nfrom typing import Annotated\n\n\n\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef main(\n\n    name: str,\n\n    lastname: Annotated[str, typer.Option(help=\"Last name of person to greet.\")] = \"\",\n\n    formal: Annotated[bool, typer.Option(help=\"Say hi formally.\")] = False,\n\n):\n\n    \"\"\"\n\n    Say hi to 'name', optionally with a --lastname.\n\n\n\n    If --formal is used, say hi very formally.\n\n    \"\"\"\n\n    if formal:\n\n        print(f\"Good day Ms. {name} {lastname}.\")\n\n    else:\n\n        print(f\"Hello {name} {lastname}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n🤓 Other versions and variants\n\nThe same way as with typer.Argument(), we can put typer.Option() inside of Annotated.\n\nWe can then pass the help keyword parameter:\n\nlastname: Annotated[str, typer.Option(help=\"this option does this and that\")] = \"\"\n\n\n...to create the help for that CLI option.\n\nThe same way as with typer.Argument(), Typer also supports the old style using the function parameter default value:\n\nlastname: str = typer.Option(default=\"\", help=\"this option does this and that\")\n\n\nCopy that example from above to a file main.py.\n\nTest it:\n\nCLI Options help panels¶\n\nThe same as with CLI arguments, you can put the help for some CLI options in different panels to be shown with the --help option.\n\nUsing Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:\n\nPython 3.10+\nfrom typing import Annotated\n\n\n\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef main(\n\n    name: str,\n\n    lastname: Annotated[str, typer.Option(help=\"Last name of person to greet.\")] = \"\",\n\n    formal: Annotated[\n\n        bool,\n\n        typer.Option(\n\n            help=\"Say hi formally.\", rich_help_panel=\"Customization and Utils\"\n\n        ),\n\n    ] = False,\n\n    debug: Annotated[\n\n        bool,\n\n        typer.Option(\n\n            help=\"Enable debugging.\", rich_help_panel=\"Customization and Utils\"\n\n        ),\n\n    ] = False,\n\n):\n\n    \"\"\"\n\n    Say hi to 'name', optionally with a --lastname.\n\n\n\n    If --formal is used, say hi very formally.\n\n    \"\"\"\n\n    if formal:\n\n        print(f\"Good day Ms. {name} {lastname}.\")\n\n    else:\n\n        print(f\"Hello {name} {lastname}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n🤓 Other versions and variants\n\nNow, when you check the --help option, you will see a default panel named \"Options\" for the CLI options that don't have a custom rich_help_panel.\n\nAnd below you will see other panels for the CLI options that have a custom panel set in the rich_help_panel parameter:\n\nHere we have a custom CLI options panel named \"Customization and Utils\".\n\nHelp with style using Rich¶\n\nIn a future section you will see how to use custom markup in the help for CLI options when reading about Commands - Command Help.\n\nIf you are in a hurry you can jump there, but otherwise, it would be better to continue reading here and following the tutorial in order.\n\nHide default from help¶\n\nYou can tell Typer to not show the default value in the help text with show_default=False:\n\nPython 3.10+\nfrom typing import Annotated\n\n\n\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef main(fullname: Annotated[str, typer.Option(show_default=False)] = \"Wade Wilson\"):\n\n    print(f\"Hello {fullname}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n🤓 Other versions and variants\n\nAnd it will no longer show the default value in the help text:\n\nCustom default string¶\n\nYou can use the same show_default to pass a custom string (instead of a bool) to customize the default value to be shown in the help text:\n\nPython 3.10+\nfrom typing import Annotated\n\n\n\nimport typer\n\n\n\napp = typer.Typer()\n\n\n\n\n\n@app.command()\n\ndef main(\n\n    fullname: Annotated[\n\n        str, typer.Option(show_default=\"Deadpoolio the amazing's name\")\n\n    ] = \"Wade Wilson\",\n\n):\n\n    print(f\"Hello {fullname}\")\n\n\n\n\n\nif __name__ == \"__main__\":\n\n    app()\n\n🤓 Other versions and variants\n\nAnd it will be used in the help text:",
+  "headings": [
+    {
+      "id": "cli-options-with-help",
+      "text": "CLI Options with Help¶"
+    },
+    {
+      "id": "cli-options-help-panels",
+      "text": "CLI Options help panels¶"
+    },
+    {
+      "id": "help-with-style-using-rich",
+      "text": "Help with style using Rich¶"
+    },
+    {
+      "id": "hide-default-from-help",
+      "text": "Hide default from help¶"
+    },
+    {
+      "id": "custom-default-string",
+      "text": "Custom default string¶"
+    }
+  ]
+}

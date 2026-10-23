@@ -51,12 +51,6 @@ class ModelsCfg:
 
 
 @dataclass
-class ForesightCfg:
-    socket: str = ""
-    expect_version: str = ""
-
-
-@dataclass
 class IngestCfg:
     max_file_mb: int = 200
     max_pages: int = 5000
@@ -127,17 +121,33 @@ class ServeCfg:
 
 
 @dataclass
+class WatchCfg:
+    """[watch] — the folder auto-follow daemon (R9, docs/v2.1-r9-watch.md §6.2
+    as amended by review R-F1). Interval overrides only — the daemon's holds,
+    scope and lifecycle are flags/runtime, never config."""
+
+    interval_fast: int = 5        # detection floor after a change or at start
+    interval_slow: int = 120      # quiet-corpus cadence (decay x2, capped here)
+    settle_s: float = 2.0         # debounce before an ingest pass
+    linger: int = 300             # quiet seconds before exit 0 (--forever disables)
+    battery_max_batch: int = 50   # max changed files per delta pass on battery
+    full_period_s: int = 21600    # idle self-heal sweep (deletions + same-mtime)
+    min_pass_gap_s: float = 25.0  # R-F1a: floor between embed-bearing passes
+    battery_pass_gap_s: float = 120.0  # R-F1c: minimum embed-pass gap on battery
+
+
+@dataclass
 class Config:
     home: Path = Path("~/Library/Application Support/goldmine")
     backend: str = "llama"
     llama: LlamaCfg = field(default_factory=LlamaCfg)
-    foresight: ForesightCfg = field(default_factory=ForesightCfg)
     models: ModelsCfg = field(default_factory=ModelsCfg)
     ingest: IngestCfg = field(default_factory=IngestCfg)
     ocr: OcrCfg = field(default_factory=OcrCfg)
     search: SearchCfg = field(default_factory=SearchCfg)
     distill: DistillCfg = field(default_factory=DistillCfg)
     serve: ServeCfg = field(default_factory=ServeCfg)
+    watch: WatchCfg = field(default_factory=WatchCfg)
     init: InitCfg = field(default_factory=InitCfg)
 
 
@@ -211,12 +221,6 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
         if "dir" in data:
             cfg.models.dir = Path(str(data["dir"]))
         unknown(section, data, {"dir"})
-    elif section == "foresight":
-        if "socket" in data:
-            cfg.foresight.socket = str(data["socket"])
-        if "expect_version" in data:
-            cfg.foresight.expect_version = str(data["expect_version"])
-        unknown(section, data, {"socket", "expect_version"})
     elif section == "ingest":
         for key in ("max_file_mb", "max_pages", "max_chunks", "workers"):
             if key in data and (v := _coerce_int(data[key])) is not None:
@@ -273,6 +277,18 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
         if "socket" in data:
             cfg.serve.socket = str(data["socket"])
         unknown(section, data, set(ServeCfg.__dataclass_fields__))
+    elif section == "watch":
+        # R9 [watch] (§6.2 as amended by review R-F1): interval overrides only.
+        for key in ("interval_fast", "interval_slow", "battery_max_batch",
+                    "full_period_s"):
+            if key in data and (v := _coerce_int(data[key])) is not None:
+                setattr(cfg.watch, key, v)
+        if "linger" in data and (v := _coerce_int(data["linger"])) is not None:
+            cfg.watch.linger = v
+        for key in ("settle_s", "min_pass_gap_s", "battery_pass_gap_s"):
+            if key in data and (v := _coerce_float(data[key])) is not None:
+                setattr(cfg.watch, key, v)
+        unknown(section, data, set(WatchCfg.__dataclass_fields__))
     elif section == "init":
         if "roots" in data:
             vals = data["roots"]
@@ -414,8 +430,6 @@ def load(config_path: Path | None = None, env: Mapping[str, str] = os.environ) -
         cfg.llama.model_configured = True
     if v := env.get("GOLDMINE_MODELS"):
         cfg.models.dir = Path(v)
-    if v := env.get("GOLDMINE_FORESIGHT_SOCKET"):
-        cfg.foresight.socket = v
     # R8 serve (D7): the explicit-daemon-socket override; read ONLY here (the
     # cli.py:198-208-era rule that env reads belong to config.load — the env
     # block now lives at these lines, which is the F10 citation refresh)

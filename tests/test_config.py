@@ -64,8 +64,8 @@ min_members = 5
 def test_env_overrides_file(tmp_path):
     toml = tmp_path / "config.toml"
     toml.write_text('[backend]\ndefault = "mock"\n', encoding="utf-8")
-    cfg = load(config_path=toml, env={"GOLDMINE_BACKEND": "foresight"})
-    assert cfg.backend == "foresight"  # env beats file
+    cfg = load(config_path=toml, env={"GOLDMINE_BACKEND": "llama"})
+    assert cfg.backend == "llama"  # env beats file
 
     cfg = load(
         config_path=toml,

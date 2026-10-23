@@ -133,10 +133,10 @@ def test_prompts_doc_template_matches_the_legacy_d_slot():
 
 
 class _NoDSlotBackend(MockBackend):
-    """A foresight-shaped stub: its `prompts` fingerprint value has NO d='…'
-    slot (the helper frames text internally), so any live derivation that
-    parses the legacy scheme raises ValueError (v2 review F1 — this class of
-    backend used to kill every foresight ingest)."""
+    """A stub whose `prompts` fingerprint value has NO d='…' slot (a
+    helper-style backend that frames text internally), so any live derivation
+    that parses the legacy scheme raises ValueError (v2 review F1 — this
+    class of backend used to kill every ingest)."""
 
     backend_id = "stub-no-d-slot"
     prompts_doc_template = "helper-internal (client sends framed text verbatim)"
@@ -171,7 +171,7 @@ def test_live_embed_id_survives_a_backend_without_a_d_slot():
 
 
 def test_ingest_with_a_no_d_slot_backend_records_the_marker_identity(tmp_path):
-    """F1 end-to-end: a full pipeline ingest with the foresight-shaped stub
+    """F1 end-to-end: a full pipeline ingest with the no-d-slot stub
     succeeds (it used to die in live_embed_id before any file was committed),
     and meta/files carry the marker-based embed identity."""
     db = tmp_path / "idx.sqlite"
@@ -414,21 +414,25 @@ def test_staleness_report_counts_each_dimension(tmp_path, corpus):
     try:
         # tamper one row per dimension
         content = str(corpus / "notes.txt")
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v0' WHERE path = ?", (content,)
-        )
-        store.db.execute(
-            "UPDATE files SET extractor_version = 'txt-stdlib.v0' WHERE path = ?",
-            (content,),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v0' WHERE path = ?", (content,)
+            )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET extractor_version = 'txt-stdlib.v0' WHERE path = ?",
+                (content,),
+            )
         digits = str(corpus / "digits.txt")
-        store.db.execute(
-            "UPDATE files SET embed_id = 'deadbeef' WHERE path = ?", (digits,)
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET embed_id = 'deadbeef' WHERE path = ?", (digits,)
+            )
         store.db.commit()
         # digits.txt has no vectors: a bogus embed_id on a vectorless file is
         # invisible by design — put the stale embed on the vec-bearing row
-        store.db.execute("UPDATE files SET embed_id = NULL WHERE path = ?", (content,))
+        with store.write_transaction():
+            store.db.execute("UPDATE files SET embed_id = NULL WHERE path = ?", (content,))
         store.db.commit()
 
         report = fingerprints.staleness_report(store, live)
@@ -459,14 +463,16 @@ def test_staleness_report_oldest_stale_dates_per_dimension(tmp_path, corpus):
     try:
         # notes.txt goes stale in chunker + embed at t_old;
         # digits.txt goes stale in extractor only, at t_mid
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v0', embed_id = NULL, "
-            "indexed_at = ? WHERE path = ?", (t_old, str(corpus / "notes.txt")),
-        )
-        store.db.execute(
-            "UPDATE files SET extractor_version = 'txt-stdlib.v0', indexed_at = ? "
-            "WHERE path = ?", (t_mid, str(corpus / "digits.txt")),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v0', embed_id = NULL, "
+                "indexed_at = ? WHERE path = ?", (t_old, str(corpus / "notes.txt")),
+            )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET extractor_version = 'txt-stdlib.v0', indexed_at = ? "
+                "WHERE path = ?", (t_mid, str(corpus / "digits.txt")),
+            )
         store.db.commit()
 
         report = fingerprints.staleness_report(store, live)
@@ -476,11 +482,12 @@ def test_staleness_report_oldest_stale_dates_per_dimension(tmp_path, corpus):
         assert report["oldest_stale_indexed_at"] == t_old
 
         # freshen everything: the dates honestly disappear
-        store.db.execute(
-            "UPDATE files SET chunker_version = ?, embed_id = ?, "
-            "extractor_version = 'txt-stdlib.v1'",
-            (CHUNKER_VERSION, live),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = ?, embed_id = ?, "
+                "extractor_version = 'txt-stdlib.v1'",
+                (CHUNKER_VERSION, live),
+            )
         store.db.commit()
         clean = fingerprints.staleness_report(store, live)
         assert clean["stale_files"] == 0
@@ -527,11 +534,12 @@ def test_status_human_staleness_and_rerun_hint(tmp_home, tmp_path, corpus, capsy
     store = Store(db)
     try:
         t_old = 1750000000.0  # 2025-06-15 epoch — the "since" date source
-        store.db.execute(
-            "UPDATE files SET chunker_version = 'chunk.v0', indexed_at = ? "
-            "WHERE capability = 'content_indexed'",
-            (t_old,),
-        )
+        with store.write_transaction():
+            store.db.execute(
+                "UPDATE files SET chunker_version = 'chunk.v0', indexed_at = ? "
+                "WHERE capability = 'content_indexed'",
+                (t_old,),
+            )
         store.db.commit()
     finally:
         store.close()

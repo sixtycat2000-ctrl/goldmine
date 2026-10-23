@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "search_behavior_version": "search.v3-evidence-control",
+  "registered_on": "2026-10-21",
+  "status": "FAIL",
+  "selected": null,
+  "default": "control",
+  "missing": [],
+  "candidates": [
+    {
+      "id": "control",
+      "z_gate": 3.0,
+      "coverage_quorum": 0.5,
+      "semantic_segment_margin": null,
+      "new_parameters": 0
+    },
+    {
+      "id": "higher_z",
+      "z_gate": 3.5,
+      "coverage_quorum": 0.5,
+      "semantic_segment_margin": null,
+      "new_parameters": 0
+    },
+    {
+      "id": "within_file_margin",
+      "z_gate": 3.0,
+      "coverage_quorum": 0.5,
+      "semantic_segment_margin": 0.25,
+      "new_parameters": 1
+    }
+  ],
+  "selection": {
+    "split": "train",
+    "train_alias": "product.v4 grouped dev fold, per the registered evaluator contract",
+    "gates": "evals/acceptance_targets.json:product; every answerable stratum and noise gate must pass before objective comparison",
+    "objective_order": [
+      "success@5 descending",
+      "MRR descending",
+      "new_parameters ascending",
+      "candidate registration order ascending"
+    ],
+    "if_none_qualifies": "FAIL; retain control, do not add a fourth candidate or lower a target",
+    "semantic_segment_margin_definition": "best versus next vector z within the same file; singleton files have no extra margin restriction",
+    "dev_confirmation": "confirm the selected frozen candidate once; no further parameter search",
+    "holdout": "reserved for the final combined jointrelease; never used to select parameters"
+  },
+  "input_bundle": {
+    "path": "evals/product_v4_expansion/manifest.json",
+    "sha256": "b8351272194fed76e438d30d452a3fff9393f99a7e5b1264f710490cc65677b0"
+  },
+  "failed": [
+    "All three preregistered dev candidates failed11 fixed quality checks; no candidate selected.",
+    "Noise correct-empty control5/30, higher_z10/30, within_file_margin8/30; target27/30."
+  ],
+  "selection_evidence": {
+    "path": "reports/execution/P0-05/product-expansion-001/dev-selection-final.json",
+    "sha256": "ecb32ce18cc4381995ecaf59dd55c4dcaa561fdabe5693c0cceeddeaabef6b2b",
+    "split": "dev",
+    "questions": 210,
+    "answerable": 180,
+    "noise": 30,
+    "holdout_exposures": 0
+  }
+}

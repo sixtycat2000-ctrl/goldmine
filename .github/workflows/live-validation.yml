@@ -1,0 +1,23 @@
+name: live-validation
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  reference:
+    # This job requires an explicitly configured reference host and local inputs.
+    runs-on: [self-hosted, macOS, ARM64, goldmine-reference]
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Strict prepared-host validation
+        env:
+          INPUTS: ${{ vars.GOLDMINE_VALIDATION_INPUTS }}
+        run: |
+          test -n "$INPUTS" && test -f "$INPUTS" || exit 2
+          python3 scripts/ci_validation.py --profile live --inputs "$INPUTS" --out reports/ci/live
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: live-validation
+          path: reports/ci/live

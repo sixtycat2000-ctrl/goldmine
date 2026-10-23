@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "state": "DRAFT",
+  "independent_review": "PENDING",
+  "multilingual": {
+    "languages": [
+      "en",
+      "ja",
+      "ko",
+      "zh"
+    ],
+    "basis": "Original published English/Chinese/Japanese/Korean source bytes; no generated translations."
+  },
+  "duplicate_cases": [
+    {
+      "id": "rich-progress-rendered-duplicate",
+      "paths": [
+        "compound/rich/docs/source/progress.rst",
+        "root/screenshots/rich-progress.png"
+      ],
+      "source_group": "upstream:rich",
+      "kind": "actual contained-text duplicate in an existing browser screenshot and original document, not full-file byte identity",
+      "matching_text": "Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes.",
+      "matching_text_sha256": "dc2972c3d995d21a44ed427a100b87d206ed890d7f0fa3fdde360f84d4f302d6",
+      "document_char_span": [
+        329,
+        513
+      ],
+      "document_line": 8,
+      "screenshot_view_coverage": 1.0,
+      "new_independent_group_count": 0,
+      "copies_created_to_fill_counts": false
+    }
+  ],
+  "paraphrase_cases": [
+    {
+      "id": "tox-nox-multienvironment-test-automation",
+      "paths": [
+        "supplemental/tox/README.md",
+        "supplemental/nox/README.md"
+      ],
+      "kind": "independently worded shared technical concept; not identical API/constant behavior",
+      "shared_proposition": "automating Python tests across multiple environments",
+      "evidence": [
+        {
+          "path": "supplemental/tox/README.md",
+          "line_start": 9,
+          "line_end": 18,
+          "quote": "`tox` aims to automate and standardize testing in Python. It is part of a larger vision of easing the packaging, testing\nand release process of Python software (alongside [pytest](https://docs.pytest.org/en/latest/) and\n[devpi](https://www.devpi.net)).\n\ntox is a generic virtual environment management and test command line tool you can use for:\n\n- checking your package builds and installs correctly under different environments (such as different Python\n  implementations, versions or installation dependencies),\n- running your tests in each of the environments with the test tool of choice,\n- acting as a frontend to continuous integration servers, greatly reducing boilerplate and merging CI and shell-based"
+        },
+        {
+          "path": "supplemental/nox/README.md",
+          "line_start": 23,
+          "line_end": 23,
+          "quote": "`nox` is a command-line tool that automates testing in multiple Python environments, similar to [tox][]. Unlike tox, Nox uses a standard Python file for configuration:"
+        }
+      ],
+      "review_limit": "Independent reviewer must confirm this naturally occurring conceptual paraphrase case is sufficient; no model similarity score has been observed."
+    }
+  ],
+  "full_file_identical_duplicates": [],
+  "limitation": "Duplicate coverage deliberately uses a genuine existing rendered excerpt. It does not claim two complete files have identical bytes or that distill deduplication has passed."
+}

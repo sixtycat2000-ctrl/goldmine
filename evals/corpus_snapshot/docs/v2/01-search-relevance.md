@@ -147,12 +147,11 @@ accuracy gate is the regression rule against `baseline.json`.
 ### 5.1 Real evaluation harness (`evals/`, v2.0, effort L)
 
 **Corpus.** Three real sources, materialized by `scripts/build_eval_corpus.py` into a
-gitignored work dir; the *manifest and labels are committed, the bytes are not* (foresight-rea
-contains decompiled third-party code — it must never be committed into goldmine):
+gitignored work dir; the *manifest and labels are committed, the bytes are not* (third-party
+reference sources must never be committed into goldmine):
 
 1. **Code + docs**: `~/git/DigUp` sources and `~/git/goldmine` itself (118 files / 953
-   segments for the two combined — 04 §3.3:108), plus `~/git/mac/work/foresight-rea`
-   (214 files: 69 dart, 29 c, 25 json, 22 md, 16 cc, 11 py, 9 cpp — probed 2026-10-16).
+   segments for the two combined — 04 §3.3:108).
 2. **Fixture PDFs**: 6–10 deterministic generated PDFs (DigUp `make_docs.swift` pattern,
    `make-testbed.sh:27`) committed under `evals/corpus-pdfs/` — multi-page, known sentences
    per page, one with a rare lookup token per page. Plus 2–3 real local PDFs *if* the
@@ -524,7 +523,7 @@ riding along or following on its own bump.
 1. **Label circularity.** One maintainer authors labels *and* judges tuned weights. Guard:
    the held-out split is frozen before tuning starts; a re-label pass is scheduled ~6 months
    in (06 §1's rater pattern); noise queries and location checks are mechanical, not taste.
-2. **Corpus drift.** DigUp/goldmine/foresight-rea evolve; hash-pinned manifest makes drift
+2. **Corpus drift.** DigUp/goldmine evolve; hash-pinned manifest makes drift
    loud (builder fails), and `corpus_version` invalidates baselines instead of mixing them.
    Open: how often to deliberately bump (default: only when labels are reviewed).
 3. **Small-corpus overfit.** ~120 queries is enough to catch regressions, thin for setting
@@ -545,6 +544,3 @@ riding along or following on its own bump.
    shift slightly (more, smaller chunks); re-run `bench_search.py` after item 4 lands. The
    one-reindex coordination across 01+02 must be announced in the exit-3 message as a single
    action, not two.
-9. **foresight-rea bytes stay local-only** (decompiled third-party code); the eval harness
-   must never copy them into the repo or test fixtures — manifest references, materialized
-   work dir, gitignored.

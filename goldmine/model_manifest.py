@@ -27,7 +27,7 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class ModelFile:
     key: str            # manifest name used by `goldmine model <cmd> <key>`
-    role: str           # embedding | mmproj | asr | vad | ocr | server
+    role: str           # embedding | mmproj | asr | vad | reranker | ocr | server
     repo: str           # huggingface repo (org/name)
     revision: str       # immutable HF revision (commit sha) or branch
     name: str           # filename inside the repo / install dir
@@ -76,10 +76,22 @@ MANIFEST: list[ModelFile] = [
         sha256="29940d98d42b91fbd05ce489f3ecf7c72f0a42f027e4875919a28fb4c04ea2cf",
         subdir="whisper",
     ),
+    ModelFile(
+        # Qwen3 rank-head GGUF, verified against pinned b11461 /v1/rerank.
+        # This head-aware conversion is distinct from ordinary causal GGUFs.
+        key="Qwen3-Reranker-0.6B-Q8_0", role="reranker",
+        repo="gorse-io/Qwen3-Reranker-0.6B-GGUF",
+        revision="257c2d8ebe01523d5a93bd9eab2698b9c7f95ee1",
+        name="Qwen3-Reranker-0.6B-Q8_0.gguf",
+        bytes=639_153_376,
+        sha256="a4e436162177a8b147940cd40fc952ca42ce91d39b0ca3247fa94770a4cb9990",
+        subdir="reranker",
+    ),
 ]
 
 #: The default embedding model (`model use`, default resolution order).
 DEFAULT_EMBEDDING_KEY = "embeddinggemma-2-Q8_0"
+DEFAULT_RERANKER_KEY = "Qwen3-Reranker-0.6B-Q8_0"
 
 _BY_KEY = {entry.key: entry for entry in MANIFEST}
 

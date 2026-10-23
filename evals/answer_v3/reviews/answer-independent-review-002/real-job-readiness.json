@@ -1,0 +1,253 @@
+{
+  "schema": 1,
+  "state": "SOURCE_READINESS_GAPS_IDENTIFIED_NO_IMPLEMENTATION_OR_JOBS",
+  "created_at": "2026-10-21T20:16:42.891548+00:00",
+  "source_only": true,
+  "answer80_source_data_ready": true,
+  "v3_read_validate_compare_implemented": true,
+  "v3_real_job_preparation_already_executable_end_to_end": false,
+  "reason": "Reusable material builders and strict disk-reader/template helpers exist, but the old emit/grade/collect CLI remains legacy. The reviewed actual-pack grader contract is unapplied and full actual model/settings/prompt registration remains missing.",
+  "source_pins": {
+    "scripts/eval_answer.py": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+    "scripts/answer_eval/cli.py": "338983142547cf41bb64fe469965939b006ed9f2b1b3dc5f7ba7432a82464805",
+    "scripts/answer_eval/protocol.py": "1fb52d24f6927564675291c880239484ad61643699393004b409171a183be1b4",
+    "scripts/answer_eval/workflow.py": "a8e1e7684508253940dcc7f37f81fc4cb150f2c8de10e71c0e9a148db184073a",
+    "scripts/answer_eval/README.md": "c6350bf74e94808affc7820e4feb35e69d067d4c7b38b2f68a382008da002584",
+    "scripts/acceptance_lib/ir_checks.py": "918163d16edde1536ed8448438e3860ab278d44099b7ad6aee8ca6f9d4d7cb15",
+    "goldmine/pack.py": "347b954e487c8fe8ee956fcce3a07b6edc403a6ae9a59eaa72f505d9ba09dff0",
+    "reports/execution/P0-03/grader-pack-context-proposal-001/implementation.patch": "1cdda213ef25f7b108c492231d5b96f99505aa440b7c1ef08f0066f54336047a",
+    "reports/execution/P0-03/grader-pack-context-proposal-001/manifest.json": "cd5c75a4f30efc6ca8edfc713d92d20641da3d1afddb1c2049d84a6045589e5c"
+  },
+  "function_locations": [
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "validate_questions",
+      "start_line": 115,
+      "end_line": 159,
+      "first_line": "def validate_questions(qs: list[dict]) -> list[str]:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "search_one",
+      "start_line": 175,
+      "end_line": 188,
+      "first_line": "def search_one(store, backend, question: dict, settings: dict):"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "build_question_pack",
+      "start_line": 191,
+      "end_line": 207,
+      "first_line": "def build_question_pack(store, backend, question: dict, settings: dict):"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "render_list_arm",
+      "start_line": 210,
+      "end_line": 225,
+      "first_line": "def render_list_arm(hits) -> str:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "emit",
+      "start_line": 236,
+      "end_line": 285,
+      "first_line": "def emit(args) -> int:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "build_grader_prompt",
+      "start_line": 361,
+      "end_line": 372,
+      "first_line": "def build_grader_prompt(q: dict, answer_text: str, template: str) -> str:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "grade_jobs",
+      "start_line": 375,
+      "end_line": 399,
+      "first_line": "def grade_jobs(args) -> int:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "collect",
+      "start_line": 430,
+      "end_line": 478,
+      "first_line": "def collect(args) -> int:"
+    },
+    {
+      "path": "scripts/eval_answer.py",
+      "sha256": "94e1e1fe55f281b80ed5c17383595a4fafc1968c95dac3300d993bc90ebdba97",
+      "function": "main",
+      "start_line": 605,
+      "end_line": 696,
+      "first_line": "def main(argv: list[str] | None = None) -> int:"
+    },
+    {
+      "path": "scripts/answer_eval/protocol.py",
+      "sha256": "1fb52d24f6927564675291c880239484ad61643699393004b409171a183be1b4",
+      "function": "answer_request",
+      "start_line": 239,
+      "end_line": 244,
+      "first_line": "def answer_request(template: str, question: dict, pack: str) -> str:"
+    },
+    {
+      "path": "scripts/answer_eval/protocol.py",
+      "sha256": "1fb52d24f6927564675291c880239484ad61643699393004b409171a183be1b4",
+      "function": "grader_request",
+      "start_line": 247,
+      "end_line": 253,
+      "first_line": "def grader_request(template: str, question: dict, answer: str) -> str:"
+    },
+    {
+      "path": "scripts/answer_eval/protocol.py",
+      "sha256": "1fb52d24f6927564675291c880239484ad61643699393004b409171a183be1b4",
+      "function": "_load_preregistration",
+      "start_line": 279,
+      "end_line": 306,
+      "first_line": "def _load_preregistration(root, m, started):"
+    },
+    {
+      "path": "scripts/answer_eval/protocol.py",
+      "sha256": "1fb52d24f6927564675291c880239484ad61643699393004b409171a183be1b4",
+      "function": "load_run",
+      "start_line": 309,
+      "end_line": 459,
+      "first_line": "def load_run(path: str | Path, *, allow_fixture: bool = False) -> AnswerRun:"
+    },
+    {
+      "path": "scripts/answer_eval/workflow.py",
+      "sha256": "a8e1e7684508253940dcc7f37f81fc4cb150f2c8de10e71c0e9a148db184073a",
+      "function": "compare_runs",
+      "start_line": 69,
+      "end_line": 128,
+      "first_line": "def compare_runs(base_path: str | Path, candidate_path: str | Path, *,"
+    },
+    {
+      "path": "scripts/answer_eval/workflow.py",
+      "sha256": "a8e1e7684508253940dcc7f37f81fc4cb150f2c8de10e71c0e9a148db184073a",
+      "function": "write_baseline",
+      "start_line": 141,
+      "end_line": 177,
+      "first_line": "def write_baseline(run_path: str | Path, output: str | Path, *, yes: bool = False) -> dict:"
+    },
+    {
+      "path": "scripts/answer_eval/workflow.py",
+      "sha256": "a8e1e7684508253940dcc7f37f81fc4cb150f2c8de10e71c0e9a148db184073a",
+      "function": "gate_baseline",
+      "start_line": 180,
+      "end_line": 200,
+      "first_line": "def gate_baseline(baseline: str | Path, candidate_path: str | Path, *,"
+    },
+    {
+      "path": "scripts/answer_eval/cli.py",
+      "sha256": "338983142547cf41bb64fe469965939b006ed9f2b1b3dc5f7ba7432a82464805",
+      "function": "main",
+      "start_line": 43,
+      "end_line": 62,
+      "first_line": "def main(argv=None):"
+    }
+  ],
+  "reviewed_unapplied_patch_sha256": "1cdda213ef25f7b108c492231d5b96f99505aa440b7c1ef08f0066f54336047a",
+  "data_pins": {
+    "data-amendment-registration.json": "f2130bd7e3279e9d825670f6c20c071231a31e0491b300b001d152c192fb04e3",
+    "questions.draft.jsonl": "bb395fa254ec2cb5f7ceb0b5bb504e3f16276ccf453b33e1c6e095349736ef28",
+    "corpus.draft.json": "c4fd69eafbd5ecc560c7cc07aee4ea7fcbd210d942e6c5f5a2a99ac0253508f7"
+  },
+  "gaps": [
+    {
+      "id": "READY-01",
+      "kind": "unapplied_reviewed_contract",
+      "gap": "Actual frozen protocol.py still has the old3argument/3slot grader_request. The independently reviewed four-slot material-binding patch is not applied to actual source.",
+      "source": "scripts/answer_eval/protocol.py:247; reviewed proposal patch1cdda213ef25f7b108c492231d5b96f99505aa440b7c1ef08f0066f54336047a",
+      "next_bounded_action": "After the source freeze permits changes, apply the exact reviewed patch and pin evaluator/source bytes before real run preparation. No actual source change is made by this report."
+    },
+    {
+      "id": "READY-02",
+      "kind": "legacy_emitter",
+      "gap": "eval_answer.py --emit loads fixed evals/answer/questions.jsonl, validates exactly20ans-* questions and old trap/must_facts/evidence/sources/nice_facts fields. --out does not change that question input. It cannot emit the audited80source-labelled v3 set.",
+      "source": "scripts/eval_answer.py:116-165,253-304",
+      "next_bounded_action": "A bounded v3 preparation adapter must accept the explicitly pinned80question/corpus files and use existing material-building primitives, without converting labels to legacy regex checks or touching historical outputs."
+    },
+    {
+      "id": "READY-03",
+      "kind": "legacy_grading_and_collection",
+      "gap": "--grade renders legacy QUESTION/GRADER_NOTE/CHECKS/ANSWER, carries no actual pack, skips missing answers, and writes legacy run metadata. --grade --collect writes qid/checks/reason-style grades rather than complete v3 sidecars, rounds, fact/evidence results, model SHA/settings, request/pack identities and true execution receipts.",
+      "source": "scripts/eval_answer.py:351-399,429-482",
+      "next_bounded_action": "Use the reviewed protocol.grader_request(template,q,answer,pack), retain raw outputs/actual receipts, and build exact v3 records. Do not use old --grade or relabel old grades as v3."
+    },
+    {
+      "id": "READY-04",
+      "kind": "three_arm_preparation_not_implemented",
+      "gap": "v3 CLI supports validate,compare,baseline; the evaluator compares2complete independent runs at a time. There is no actual80-question3arm material/job orchestrator or real-job receipt importer. The fixture writer is synthetic even when exercising the real-reader branch.",
+      "source": "scripts/answer_eval/cli.py:43-63; scripts/answer_eval/workflow.py:70-132; tests/answer_eval_fixtures.py (already source-reviewed)",
+      "next_bounded_action": "Prepare3independent existing-schema run directories, store every arm material under packs/<qid>.md, and compare reference LIST->reference PACK plus reference PACK->candidate PACK using existing two-run comparisons. Preserve mandatory3arm identities externally/in existing run_id and variables.pack fields; do not add unknown run schema fields."
+    },
+    {
+      "id": "READY-05",
+      "kind": "prompts_and_prior_registration_missing",
+      "gap": "Data-only selection/amendment registration is source-closed. Full frozen answerer/grader prompt bytes, actual local answerer/judge identities and model SHAs, exact settings, actual tokenizer identity/mode, and complete pre-run registration are not yet supplied. A renderer contract is not a fully authored grading rubric.",
+      "source": "draft002 data-amendment-registration.json full_model_settings_run_preregistration=MISSING; scripts/answer_eval/protocol.py:279-309",
+      "next_bounded_action": "Await user-supplied existing local model/endpoint or genuine completed-job information. Do not use the legacy DEFAULT_MODEL_ID, fixture identities, embeddingGemma, or reranker as an answerer/judge; do not download an answer engine."
+    },
+    {
+      "id": "READY-06",
+      "kind": "execution_authenticity_and_formal_capture",
+      "gap": "Hashes, IDs and timestamps check consistency but cannot independently prove an actual model call. Formal acceptance additionally requires source/code and raw comparison-command receipt identities; the low-level run reader accepting an object is not enough.",
+      "source": "scripts/answer_eval/workflow.py:70-132,140-177; scripts/acceptance_lib/ir_checks.py:305-360",
+      "next_bounded_action": "Keep actual registered local execution receipts/raw outputs as immutable run artifacts, use unique actual per-completion IDs, pin full code identity {git_commit,source_sha256,files}, and capture complete non-diagnostic compare receipts after all jobs finish."
+    }
+  ],
+  "precise_existing_protocol_reuse_recipe": [
+    {
+      "step": 1,
+      "action": "Pin exactly the source-closed draft002 questions/corpus/source-map/amendment and frozen122asset corpus. Material indexes must contain actual source assets/production extraction only; labels/oracle views must not become indexed material. Use isolated registered run/index paths, never a capacity DB or historical answer output path."
+    },
+    {
+      "step": 2,
+      "action": "Freeze one common answerer template with exactly <question text verbatim> and <pack file contents verbatim>; freeze one common judge template with exactly <QUESTION>,<FACTS_JSON>,<PACK>,<ANSWER>. The judge rubric must require source-grounded facts, all AND/OR evidence clauses, correct0/1/2 scoring and trap refusal/fabrication behavior. Use identical template bytes across3arms and all rounds; expose no expected facts to answerer requests."
+    },
+    {
+      "step": 3,
+      "action": "Prepare reference LIST and reference PACK from the same reference search hits per question. search_one/build_question_pack already accept question[\"q\"] and build_question_pack returns pack_text,meta,list_text. render_list_arm gives numbered240-character excerpts without expansion/budget; build_pack_from_hits supplies the pack variant. Prepare candidate PACK with the registered candidate material pipeline. Preserve full ranking/chunker/embedding/lexical/reranker/pack/code settings and material hashes; do not tune or filter questions based on retrieval or model success."
+    },
+    {
+      "step": 4,
+      "action": "Use3fresh run directories named for reference LIST,reference PACK,candidate PACK; all use existing v3 packs/<qid>.md regardless of representation, copied identical pinned questions/corpus/preregistration/prompt bytes, unique run_id, and existing variables for actual source/material identities. A single shared full preregistration must precede all three actual runs and bind model/settings/tokenizer/prompt/question/corpus/group identities and fixed practical/trap/bootstrap settings. No fixture writer, unknown extra schema fields, generated placeholder model hashes or legacy records."
+    },
+    {
+      "step": 5,
+      "action": "For every question in every arm, save2exact answer_request outputs and obtain2genuine independent answer completions. Save answer text plus exact v3 sidecars from actual receipts. For each answer, render the owned pack with grader_request and run2genuine independent judge completions; save fact_results with evidence IDs, refusal/fabrication flags, score, exact prompt/answer/pack/model/settings hashes and actual unique execution IDs. Raw outputs/engine receipts may be retained as additional immutable files, without pretending the reader authenticates them."
+    },
+    {
+      "step": 6,
+      "action": "After complete real jobs only: validate each run without --diagnostic, then invoke existing --compare reference_LIST reference_PACK --json and --compare reference_PACK candidate_PACK --json with actual command capture/provenance. Existing source acceptance checks consume the reference PACK/candidate PACK comparison; preserve the mandatory reference LIST comparison separately. Record a new immutable v3 reference PACK receipt if authorized; never overwrite a historical baseline."
+    }
+  ],
+  "required_real_completion_counts_if_all3arms_have80tasks": {
+    "arms": 3,
+    "questions_per_arm": 80,
+    "answer_rounds": 2,
+    "judge_rounds_per_answer": 2,
+    "answer_completions": 480,
+    "judge_completions": 960,
+    "total_actual_completions": 1440
+  },
+  "model_identity_state": "MISSING pending user existing-model/endpoint/completed-job response",
+  "not_performed": [
+    "No source or protocol change",
+    "No model discovery/network calls/downloads",
+    "No retrieval/index/model/tokenizer job",
+    "No capacity DB access",
+    "No synthetic record promoted to real evidence",
+    "No quality/pass claim"
+  ]
+}

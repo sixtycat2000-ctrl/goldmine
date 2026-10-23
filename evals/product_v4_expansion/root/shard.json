@@ -1,0 +1,5177 @@
+{
+  "sources": [
+    {
+      "path": "root/pdf/nist-800-145-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/nist-800-145-excerpt.pdf",
+        "sha256": "7f2f2ec9932d82de0a0637d9fc98c246e552be107ec91534f0cde89388b07c4b"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:nist-800-145",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-145.pdf",
+          "revision": "sha256:7b0c1a9fdfc67218b8ba2098f448c100c27070db91736b3c87fed63bfa21d418"
+        },
+        "license": "NIST Technical Series public-service worldwide reprint/derivative permission; attribution retained",
+        "license_file": {
+          "path": "licenses/root/NIST-publications.txt",
+          "sha256": "63ef3acc36bc5a74193b193ef741ee511032c90a0d37197da0b7f8a9ffa45b42"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=7b0c1a9fdfc67218b8ba2098f448c100c27070db91736b3c87fed63bfa21d418; asset-to-original page map=[6, 7]. Republished courtesy of the National Institute of Standards and Technology. Full original attribution in licenses/root/ATTRIBUTION.md."
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/nist-800-145-p001.txt",
+          "sha256": "a2d324624e477a4197b1b336072b30ae2d289f68c0295bfe79e3e0284b02a03b",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/nist-800-145-p002.txt",
+          "sha256": "79047ce13af4421f2017c00978f6e363dc01ee92b3923d320877ba7bce1902f6",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-92-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/nist-800-92-excerpt.pdf",
+        "sha256": "d04b85860418b23d2f3d53087770b5e466a7e1afa48204ae1df4167d2b8e4eb9"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:nist-800-92",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-92.pdf",
+          "revision": "sha256:466c3ab1580bc3b2e25d11bbd4b2ac92fd1762b3c5b10596924981bc1b9e61e1"
+        },
+        "license": "NIST Technical Series public-service worldwide reprint/derivative permission; attribution retained",
+        "license_file": {
+          "path": "licenses/root/NIST-publications.txt",
+          "sha256": "63ef3acc36bc5a74193b193ef741ee511032c90a0d37197da0b7f8a9ffa45b42"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=466c3ab1580bc3b2e25d11bbd4b2ac92fd1762b3c5b10596924981bc1b9e61e1; asset-to-original page map=[15, 29, 30, 31, 37]. Republished courtesy of the National Institute of Standards and Technology. Full original attribution in licenses/root/ATTRIBUTION.md."
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/nist-800-92-p001.txt",
+          "sha256": "f1e0785c9805ee5d1169ab208e2bf5b68e656aaa5e21f6697e366240e9f1b19c",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/nist-800-92-p002.txt",
+          "sha256": "94cef1145c1aea3d88ab7130abe9d2f2e8ad55ea262f11d28048f97c90ace062",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/nist-800-92-p003.txt",
+          "sha256": "3f7f0bdfb7fb2bbbb7dd4d1a5a34d3ed386f23580634870a00f6d8894cc7cbaf",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/nist-800-92-p004.txt",
+          "sha256": "eac74d6b5555ae5a38f8103ed780fa0de50b3209cb393b33807d512313ba32ac",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/nist-800-92-p005.txt",
+          "sha256": "deae5fa69ad24ddc15adefe5018aeede26f3a35ac567afc3d25a4a0cd1fbf046",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/nist-800-22r1a-excerpt.pdf",
+        "sha256": "a1c51685d4622343839f925b902876b8a19597d562d2e1ad42d75532bf6a1e78"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:nist-800-22r1a",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-22r1a.pdf",
+          "revision": "sha256:38aba1b34a7fa52c440790d6e0cabf498e4b525177b3b6cebb399ab8ccf031d2"
+        },
+        "license": "NIST Technical Series public-service worldwide reprint/derivative permission; attribution retained",
+        "license_file": {
+          "path": "licenses/root/NIST-publications.txt",
+          "sha256": "63ef3acc36bc5a74193b193ef741ee511032c90a0d37197da0b7f8a9ffa45b42"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=38aba1b34a7fa52c440790d6e0cabf498e4b525177b3b6cebb399ab8ccf031d2; asset-to-original page map=[24, 26, 29, 32, 42]. Republished courtesy of the National Institute of Standards and Technology. Full original attribution in licenses/root/ATTRIBUTION.md."
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/nist-800-22r1a-p001.txt",
+          "sha256": "15b8cb1849de98a3449c1c190b6b090bcd5b2592acae227c0475f7f4e3979717",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/nist-800-22r1a-p002.txt",
+          "sha256": "2e9d01539c35ced37e00becf029d383665c02dd2fc06f867c1dfac73d0d70cc1",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/nist-800-22r1a-p003.txt",
+          "sha256": "b1e5023c68bd45662ad2adc28017408b991ceebc4aa998e247c5870dc3bc2486",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/nist-800-22r1a-p004.txt",
+          "sha256": "b79728a831a8414ee2f8531cd0da0685bdac74b4b33ae7365cdd247b900c63dd",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/nist-800-22r1a-p005.txt",
+          "sha256": "482d2cb43258c50792f43e68d9d6b964dd71d02e93a30b560bba7884c044e761",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-38a-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/nist-800-38a-excerpt.pdf",
+        "sha256": "6baf3df0f6cc3c84e3ad2e647ec09dc7782b13cc4fb357a0961008854805631b"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:nist-800-38a",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38a.pdf",
+          "revision": "sha256:66821162de1e7130c5fb5eedb22140d8d6d013ec51af4550bb095c2a9481a00e"
+        },
+        "license": "NIST Technical Series public-service worldwide reprint/derivative permission; attribution retained",
+        "license_file": {
+          "path": "licenses/root/NIST-publications.txt",
+          "sha256": "63ef3acc36bc5a74193b193ef741ee511032c90a0d37197da0b7f8a9ffa45b42"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=66821162de1e7130c5fb5eedb22140d8d6d013ec51af4550bb095c2a9481a00e; asset-to-original page map=[15, 16, 22, 25, 28]. Republished courtesy of the National Institute of Standards and Technology. Full original attribution in licenses/root/ATTRIBUTION.md."
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/nist-800-38a-p001.txt",
+          "sha256": "d524535bc24c44707347fa75f8f787d1342bc5541c86a1be2cd22d7494cc275f",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/nist-800-38a-p002.txt",
+          "sha256": "20a9be07fb872618587c0f3c983c729cda021a8aaf4a994d02f7b3b215cc2689",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/nist-800-38a-p003.txt",
+          "sha256": "e1bbd4f61b00064829b2433932b3d185b1a565a8996a45249eadff9309817354",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/nist-800-38a-p004.txt",
+          "sha256": "4a7bc3fcf1ddfd34313d10f36798b7bdf0460eb51823c78dd75f5d7a3a82aa36",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/nist-800-38a-p005.txt",
+          "sha256": "6d632796ec10d687d076ac89533e49d89087101010fbe7939dbaa5221bba4360",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/nist-800-107r1-excerpt.pdf",
+        "sha256": "34743d1909278bb7ff5b55fc484192659f4f66722dfa20028658664b398f8a1b"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:nist-800-107r1",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-107r1.pdf",
+          "revision": "sha256:2b691bd8895cbc6793e442b1e5a45398f5ca777edc2a79072469ad05405b093b"
+        },
+        "license": "NIST Technical Series public-service worldwide reprint/derivative permission; attribution retained",
+        "license_file": {
+          "path": "licenses/root/NIST-publications.txt",
+          "sha256": "63ef3acc36bc5a74193b193ef741ee511032c90a0d37197da0b7f8a9ffa45b42"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=2b691bd8895cbc6793e442b1e5a45398f5ca777edc2a79072469ad05405b093b; asset-to-original page map=[6, 8, 12, 16, 18]. Republished courtesy of the National Institute of Standards and Technology. Full original attribution in licenses/root/ATTRIBUTION.md."
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/nist-800-107r1-p001.txt",
+          "sha256": "90f4267c136aae70c9ba1e13133a8d60e1089ef35f14cc4ed0f12dd2f978187d",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/nist-800-107r1-p002.txt",
+          "sha256": "4df0d69ac7824f860617352994b09bbf5371595b3a19e23c9ed4ff14945e4b4d",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/nist-800-107r1-p003.txt",
+          "sha256": "f150a935c1d02023d691e1ae2852a67a6d2c81891df89a266736fdbee9400dc0",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/nist-800-107r1-p004.txt",
+          "sha256": "8ea71ce9ef36c6a4da12871392f4efafbdaee89030704659404285eef85fb8ab",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/nist-800-107r1-p005.txt",
+          "sha256": "dc608f481090338e9fce288bb51d4bcb2808674d9c577682d41e3cefacd9630e",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/pytest-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/pytest-excerpt.pdf",
+        "sha256": "99e0ae5c50b3638346d89d129efcbf13e99be4ba17d49fd2605ff6ca5ab86dc4"
+      },
+      "kind": "pdf",
+      "source_group": "upstream:pytest",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pytest.org/_/downloads/en/stable/pdf/",
+          "revision": "sha256:5e37842ec0c2072dd14eebfec85c38ca2f09927960c1f227731e88b5439b47ba"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pytest-LICENSE.txt",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=5e37842ec0c2072dd14eebfec85c38ca2f09927960c1f227731e88b5439b47ba; asset-to-original page map=[17, 64, 65, 88, 94]"
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/pytest-p001.txt",
+          "sha256": "60aa331fc05470e2e0821772be7f5949d3c703662da35049da35b718330543e3",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/pytest-p002.txt",
+          "sha256": "d33b6e75cb887c3755dd73a9fc6a8a7d2a071ce4436f1159dd5794525fcaa7f4",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/pytest-p003.txt",
+          "sha256": "4c57825a778d95db8e7f0833b21dcd7a2be2fa2141364a2dd133c03c78c4f1d7",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/pytest-p004.txt",
+          "sha256": "fa4626b5634680ed282bab60563e0584357abc70b0295e7dfd52fa8d4f177545",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/pytest-p005.txt",
+          "sha256": "972fc79192273ab65655671d13073be4f0e739028b4c6e7a3d7268bd0f0df870",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/sphinx-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/sphinx-excerpt.pdf",
+        "sha256": "e1d98d0f2848f4bd3763b15ae5bbdaa805db256f81ac1fdce88a97997a67b8bb"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:sphinx",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://www.sphinx-doc.org/_/downloads/en/master/pdf/",
+          "revision": "sha256:ddfcebde79b567adff0c69b9e16fc78a67edc9ba9ca245d2da32654ba52d0be3"
+        },
+        "license": "BSD-2-Clause",
+        "license_file": {
+          "path": "licenses/root/sphinx-LICENSE.txt",
+          "sha256": "802b61d8e268d296d5569de4eb4f5852373e51250100bd5a4087040c4d886de2"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=ddfcebde79b567adff0c69b9e16fc78a67edc9ba9ca245d2da32654ba52d0be3; asset-to-original page map=[21, 102, 109, 119, 229]"
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/sphinx-p001.txt",
+          "sha256": "ce44010744c7857cecfec006d3c6de071137fd72480b45e47c064d8a1f2162e2",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/sphinx-p002.txt",
+          "sha256": "aa5aaa4975af26a341089575c1b824e2776eebacb8ca58db08dbd0490ab5c764",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/sphinx-p003.txt",
+          "sha256": "b469eab576f3aeb3a4e74da22989fee512c169ae95292c2cd62db8800e4c325f",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/sphinx-p004.txt",
+          "sha256": "0c8b9a637742e369e38ce21157c161e06e9e5f28480c840250f326da53eac960",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/sphinx-p005.txt",
+          "sha256": "9812ec380ad8877856ba9c83a512054160efd00a6bb51104fe77f476ca18c50f",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/pillow-excerpt.pdf",
+      "asset": {
+        "path": "assets/root/pdf/pillow-excerpt.pdf",
+        "sha256": "f86baf6c0a9f408249580c5e15c3e1ca836ec30f2979b492ae1c7e55a262fefb"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:pillow",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://pillow.readthedocs.io/_/downloads/en/stable/pdf/",
+          "revision": "sha256:5aa33331c6ac405b8423474e80fbd1a6a09dfbe6a74df40ddd1e818e9a541cab"
+        },
+        "license": "MIT-CMU",
+        "license_file": {
+          "path": "licenses/root/pillow-LICENSE.txt",
+          "sha256": "15181e7363dca9aed78b79bebebc7fde7f1814b8bd311ea3b87ae8ccadfc185b"
+        },
+        "generation": "Unmodified page objects extracted from the publisher PDF; no rasterization, new text, or source alteration. Asset page numbers follow the listed original-page map. Original SHA256=5aa33331c6ac405b8423474e80fbd1a6a09dfbe6a74df40ddd1e818e9a541cab; asset-to-original page map=[16, 18, 30, 72, 155]"
+      },
+      "views": [
+        {
+          "id": "p001",
+          "path": "views/root/pdf/pillow-p001.txt",
+          "sha256": "8a61d8f3bbd7ace864ade0dba14b6bfc2f707ff4226a450e2f21fb204614eb99",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p002",
+          "path": "views/root/pdf/pillow-p002.txt",
+          "sha256": "5e12796faa5721df7e2c7033ab67fd2faa4d75464fa9c35260f6c8e2169ed348",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/pillow-p003.txt",
+          "sha256": "2d73a30da34e7bbd049a1c83111804c5f53c7797d470431efd5338c1c7424afd",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p004",
+          "path": "views/root/pdf/pillow-p004.txt",
+          "sha256": "498b9301f2d0966ff7e31155fdf416f623ac7b5a2ad32db2c6a09273c082dc2c",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p005",
+          "path": "views/root/pdf/pillow-p005.txt",
+          "sha256": "aaac53fcd48dd2780fea91d4decbac6c368c15b53bfc72e29387968e9e69ff82",
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/US6469-scan.pdf",
+      "asset": {
+        "path": "assets/root/pdf/US6469-scan.pdf",
+        "sha256": "7e1a9ba937d8e00f902f97f58e9c9fcc227fde87ad824604842db5ca94d1f3a4"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:US6469",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://patentimages.storage.googleapis.com/92/64/49/fe49e21fbf8f09/US6469.pdf",
+          "revision": "sha256:525d530d1d80f7c95d0c1dcdbd925215b7e39a3c471a33ed6ceaf3f183c8a315"
+        },
+        "license": "Public-domain original historical patent publication; faithful raster digitization",
+        "license_file": {
+          "path": "licenses/root/historical-patents-public-domain.txt",
+          "sha256": "818240a0fc85563eeb5bdce7b8c41ba9b0f22dcc8d5c013f14ccde374fb3e3ae"
+        },
+        "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added. Original SHA256=525d530d1d80f7c95d0c1dcdbd925215b7e39a3c471a33ed6ceaf3f183c8a315; asset-to-original page map=[1, 2, 3]"
+      },
+      "views": [
+        {
+          "id": "p002",
+          "path": "views/root/pdf/US6469-p002.txt",
+          "sha256": "9e82e8b090b107e8afa23c9c32fffc84c8f6d8f9a5fa17943ada9a891f3ef330",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/US174465-scan.pdf",
+      "asset": {
+        "path": "assets/root/pdf/US174465-scan.pdf",
+        "sha256": "cda076e395781626e3b164e122e550af650fb7a86d41836ef1181320575c6b56"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:US174465",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://patentimages.storage.googleapis.com/10/ab/a3/b4f5c6e5826640/US174465.pdf",
+          "revision": "sha256:300bb898a4981877b8901e78fcbd89e3b6fd571c59e4dcadb9c6feee0334aa8e"
+        },
+        "license": "Public-domain original historical patent publication; faithful raster digitization",
+        "license_file": {
+          "path": "licenses/root/historical-patents-public-domain.txt",
+          "sha256": "818240a0fc85563eeb5bdce7b8c41ba9b0f22dcc8d5c013f14ccde374fb3e3ae"
+        },
+        "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added. Original SHA256=300bb898a4981877b8901e78fcbd89e3b6fd571c59e4dcadb9c6feee0334aa8e; asset-to-original page map=[1, 2, 3, 4, 5, 6]"
+      },
+      "views": [
+        {
+          "id": "p003",
+          "path": "views/root/pdf/US174465-p003.txt",
+          "sha256": "33ea1df68b3cfd5de6812181ed32b613e3aee7940fffdaaf7f8869545546ce47",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/US223898-scan.pdf",
+      "asset": {
+        "path": "assets/root/pdf/US223898-scan.pdf",
+        "sha256": "540bd8ee9adfaa493be05f25e22938c10178d9f5175bd2366a71500ad89a28c9"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:US223898",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://patentimages.storage.googleapis.com/d4/9b/62/aac68f7e65536c/US223898.pdf",
+          "revision": "sha256:e6f4d7747a8af8451d81aa3d5fe564aed5c8091091cb408c752b8a3cd7c28764"
+        },
+        "license": "Public-domain original historical patent publication; faithful raster digitization",
+        "license_file": {
+          "path": "licenses/root/historical-patents-public-domain.txt",
+          "sha256": "818240a0fc85563eeb5bdce7b8c41ba9b0f22dcc8d5c013f14ccde374fb3e3ae"
+        },
+        "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added. Original SHA256=e6f4d7747a8af8451d81aa3d5fe564aed5c8091091cb408c752b8a3cd7c28764; asset-to-original page map=[1, 2, 3, 4]"
+      },
+      "views": [
+        {
+          "id": "p002",
+          "path": "views/root/pdf/US223898-p002.txt",
+          "sha256": "aad807353a9d7a3597cbf7fcc31df0259d8514f73921ba06fd0464a881de6a19",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p003",
+          "path": "views/root/pdf/US223898-p003.txt",
+          "sha256": "83904694d6d11d927547fa68b6266d32884535a361410b349baa7366d82aa19f",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/pdf/US821393-scan.pdf",
+      "asset": {
+        "path": "assets/root/pdf/US821393-scan.pdf",
+        "sha256": "e464ce113ceef7f11c18d34f2c5eb8e26acf5176dace9f32b09a393b1e5d6d9a"
+      },
+      "kind": "pdf",
+      "source_group": "pdf:US821393",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://patentimages.storage.googleapis.com/1c/17/b5/e1f4968143a568/US821393.pdf",
+          "revision": "sha256:e37dbdd4f20f566057b2f28860525861f90a92f5aa02e28d395bfc59eb5f05d8"
+        },
+        "license": "Public-domain original historical patent publication; faithful raster digitization",
+        "license_file": {
+          "path": "licenses/root/historical-patents-public-domain.txt",
+          "sha256": "818240a0fc85563eeb5bdce7b8c41ba9b0f22dcc8d5c013f14ccde374fb3e3ae"
+        },
+        "generation": "Real historical scanned raster pages repackaged losslessly, retaining identical decoded RGB pixels and page sizes. The publisher's inaccurate hidden OCR text layer is omitted to require actual OCR. No page was created from a born-digital text source; no text or pixels were added. Original SHA256=e37dbdd4f20f566057b2f28860525861f90a92f5aa02e28d395bfc59eb5f05d8; asset-to-original page map=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]"
+      },
+      "views": [
+        {
+          "id": "p004",
+          "path": "views/root/pdf/US821393-p004.txt",
+          "sha256": "3a4e08d35976b701d452563fc49d2b7987c9f7a3749bcf6b9486c809915e841d",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        },
+        {
+          "id": "p006",
+          "path": "views/root/pdf/US821393-p006.txt",
+          "sha256": "c114fc35092179dea02b670760dad7ab6063899db8d301762576e5f673304ad3",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 6,
+            "end": 6
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-timeouts.png",
+      "asset": {
+        "path": "assets/root/screenshots/httpx-timeouts.png",
+        "sha256": "9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:httpx",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://www.python-httpx.org/advanced/timeouts/",
+          "revision": "capture-sha256:9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/root/httpx-LICENSE.txt",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/httpx-timeouts.txt",
+          "sha256": "55defdb0a574d434c1134568d7b9312f8fad099f838fc20f27ca9e6731ba3b87",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-connect-timeout.png",
+      "asset": {
+        "path": "assets/root/screenshots/httpx-connect-timeout.png",
+        "sha256": "c7bbed6aaa17ca1aba98550a545a8372fb5b1a16400dc1412601ee5c4426d15e"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:httpx",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://www.python-httpx.org/advanced/timeouts/#fine-tuning-the-configuration",
+          "revision": "capture-sha256:c7bbed6aaa17ca1aba98550a545a8372fb5b1a16400dc1412601ee5c4426d15e"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/root/httpx-LICENSE.txt",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/httpx-connect-timeout.txt",
+          "sha256": "abf998ef591ba6354aca7b098ab89afaf24b0061ad8103fa9a488d1b01a6dcf8",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-limits.png",
+      "asset": {
+        "path": "assets/root/screenshots/httpx-limits.png",
+        "sha256": "2a5d656d5b5235998edfa778ca0f59b1b5665d71eea4a693cdec144f4836d0d2"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:httpx",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://www.python-httpx.org/advanced/resource-limits/",
+          "revision": "capture-sha256:2a5d656d5b5235998edfa778ca0f59b1b5665d71eea4a693cdec144f4836d0d2"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/root/httpx-LICENSE.txt",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/httpx-limits.txt",
+          "sha256": "3a7566274663d22ce3e953087324a6c2cdbf72670af89e5698b333e52ce7d19f",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/httpx-http2.png",
+      "asset": {
+        "path": "assets/root/screenshots/httpx-http2.png",
+        "sha256": "bb7b594a13f845a65c7b318434a4a378527639e297bb9b59ecc58c5e475d2328"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:httpx",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://www.python-httpx.org/http2/#enabling-http2",
+          "revision": "capture-sha256:bb7b594a13f845a65c7b318434a4a378527639e297bb9b59ecc58c5e475d2328"
+        },
+        "license": "BSD-3-Clause",
+        "license_file": {
+          "path": "licenses/root/httpx-LICENSE.txt",
+          "sha256": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/httpx-http2.txt",
+          "sha256": "f7bc8dcb36d9cb1e136ac55b3c542d64d52ba54c1390ce8714674b321cf879ec",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-strict.png",
+      "asset": {
+        "path": "assets/root/screenshots/pydantic-strict.png",
+        "sha256": "6f89841ed1bd2eff0f1ba992822fb14409a0216e4a31be92d985bdee14ad5bc4"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pydantic",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pydantic.dev/latest/concepts/strict_mode/",
+          "revision": "capture-sha256:6f89841ed1bd2eff0f1ba992822fb14409a0216e4a31be92d985bdee14ad5bc4"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pydantic-LICENSE.txt",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pydantic-strict.txt",
+          "sha256": "e6710e10f5175d0f30117d701e7b07c0f366dbd266a91788e627f7c1413432bf",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-fields.png",
+      "asset": {
+        "path": "assets/root/screenshots/pydantic-fields.png",
+        "sha256": "959fcbc6f3065fb6a72aa92f25de930e8de4cc1f079f5f5e4623db27eaf03ddd"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pydantic",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pydantic.dev/latest/concepts/fields/",
+          "revision": "capture-sha256:959fcbc6f3065fb6a72aa92f25de930e8de4cc1f079f5f5e4623db27eaf03ddd"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pydantic-LICENSE.txt",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pydantic-fields.txt",
+          "sha256": "e624c996d8a769b4497e72e76672f90ace2f4c5d1c842ccee3ca6931b0adb86d",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-python-dump.png",
+      "asset": {
+        "path": "assets/root/screenshots/pydantic-python-dump.png",
+        "sha256": "3698d5117d840ae93221a902710119f1c5eb509bb63dd1e0f70cf7143971984f"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pydantic",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pydantic.dev/latest/concepts/serialization/#python-mode",
+          "revision": "capture-sha256:3698d5117d840ae93221a902710119f1c5eb509bb63dd1e0f70cf7143971984f"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pydantic-LICENSE.txt",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pydantic-python-dump.txt",
+          "sha256": "e3e8a002d683d40305334ba01aebb724f78de17c42640977bd35e0d0dfaa2781",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pydantic-unions.png",
+      "asset": {
+        "path": "assets/root/screenshots/pydantic-unions.png",
+        "sha256": "4fac024192bae598bd4ccd5bdcf0b1a086a55713ffbb970b217b08fd8f38b131"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pydantic",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pydantic.dev/latest/concepts/unions/#left-to-right-mode",
+          "revision": "capture-sha256:4fac024192bae598bd4ccd5bdcf0b1a086a55713ffbb970b217b08fd8f38b131"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pydantic-LICENSE.txt",
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pydantic-unions.txt",
+          "sha256": "001e8485f727ebe2f33d67b33fcc43784819775fc202df7507a751678a27ba2f",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-markup.png",
+      "asset": {
+        "path": "assets/root/screenshots/rich-markup.png",
+        "sha256": "14305e8b7321d4e5e5d2668281fbf92743d8ea894bfcb1b59bdbdba0aaec8cee"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:rich",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://rich.readthedocs.io/en/stable/markup.html#syntax",
+          "revision": "capture-sha256:14305e8b7321d4e5e5d2668281fbf92743d8ea894bfcb1b59bdbdba0aaec8cee"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/rich-LICENSE.txt",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/rich-markup.txt",
+          "sha256": "cda05ca1a4379994324a4f94f02c75cbd01fc867b88c747c09748e8539f80f44",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-styles.png",
+      "asset": {
+        "path": "assets/root/screenshots/rich-styles.png",
+        "sha256": "b7a24412f7d1584124e12e5c6a4fdf9b0928ee18e6d50286a46643ae386e8c5d"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:rich",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://rich.readthedocs.io/en/stable/style.html#defining-styles",
+          "revision": "capture-sha256:b7a24412f7d1584124e12e5c6a4fdf9b0928ee18e6d50286a46643ae386e8c5d"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/rich-LICENSE.txt",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/rich-styles.txt",
+          "sha256": "22bbaf51d9ecac433a71117e72ecd65ffbde028a5f2a032750749087de6f5865",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-tables.png",
+      "asset": {
+        "path": "assets/root/screenshots/rich-tables.png",
+        "sha256": "568fa7d3e41184707ec398ea8c084616c059927fb0ebd21c29ced91662d3980a"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:rich",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://rich.readthedocs.io/en/stable/tables.html",
+          "revision": "capture-sha256:568fa7d3e41184707ec398ea8c084616c059927fb0ebd21c29ced91662d3980a"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/rich-LICENSE.txt",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/rich-tables.txt",
+          "sha256": "b5d5a440c39561712ac0337334fa390028e7af9985bb8497008d9dd73f12f5c2",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/rich-progress.png",
+      "asset": {
+        "path": "assets/root/screenshots/rich-progress.png",
+        "sha256": "59d3f90a130f374641455a6678aa7ff342114cb168b5108e85cee7e437714e9a"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:rich",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://rich.readthedocs.io/en/stable/progress.html",
+          "revision": "capture-sha256:59d3f90a130f374641455a6678aa7ff342114cb168b5108e85cee7e437714e9a"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/rich-LICENSE.txt",
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/rich-progress.txt",
+          "sha256": "2dca4067aaff769f09e638804dcbb706d125bf1fd4fb8a897cd096397163415b",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-projects.png",
+      "asset": {
+        "path": "assets/root/screenshots/uv-projects.png",
+        "sha256": "7a3cea1f2e74379887f369d67f26a49084e89862e10a9769ae0ff9f0b8021f34"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:uv",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.astral.sh/uv/guides/projects/#project-structure",
+          "revision": "capture-sha256:7a3cea1f2e74379887f369d67f26a49084e89862e10a9769ae0ff9f0b8021f34"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/uv-LICENSE.txt",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/uv-projects.txt",
+          "sha256": "17ad5269ade51f43d8ed6c9f76d2e7d9af5fa6ac46218125b7ac546bd01867c3",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-tools.png",
+      "asset": {
+        "path": "assets/root/screenshots/uv-tools.png",
+        "sha256": "050d825a2d0bacc5d91468766ca12b92d558d460c8ac64cd136783a5d5f4f12d"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:uv",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.astral.sh/uv/guides/tools/#running-tools",
+          "revision": "capture-sha256:050d825a2d0bacc5d91468766ca12b92d558d460c8ac64cd136783a5d5f4f12d"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/uv-LICENSE.txt",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/uv-tools.txt",
+          "sha256": "4bacc835e806514ec80c53f602dc3fb85ff4324ff8f85b04ea9fc051ee9ada22",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 11
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/uv-environments.png",
+      "asset": {
+        "path": "assets/root/screenshots/uv-environments.png",
+        "sha256": "4ea93a67cd13dc389a24458354cbdf77c0f83f63bf3eba49eac6a2f5c3757fea"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:uv",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.astral.sh/uv/pip/environments/#using-python-environments",
+          "revision": "capture-sha256:4ea93a67cd13dc389a24458354cbdf77c0f83f63bf3eba49eac6a2f5c3757fea"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/uv-LICENSE.txt",
+          "sha256": "860e3d7a86b84e6a7012c7a635fc64df475cebc6cce34dfeb73a5982ec58176c"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/uv-environments.txt",
+          "sha256": "dd756d9cd2603f4426b428e7ac50e8f6fc373a43877ad78e4ecdf50149f95304",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/typer-help-panels.png",
+      "asset": {
+        "path": "assets/root/screenshots/typer-help-panels.png",
+        "sha256": "e7a94df03bc1cca62245652840c8abce40c1f8c2ef4ece0da238628bf8504c21"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:typer",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://typer.tiangolo.com/tutorial/options/help/#cli-options-help-panels",
+          "revision": "capture-sha256:e7a94df03bc1cca62245652840c8abce40c1f8c2ef4ece0da238628bf8504c21"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/typer-LICENSE.txt",
+          "sha256": "58992cebcf8dfb6e40c4e2112ed12126c243666dca3912a3d78b7ecac4859d49"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/typer-help-panels.txt",
+          "sha256": "55dce3ed1f2ca76ade5aa61957e6e5e7f1e699ffce0a70d4653f922a81439452",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/typer-context.png",
+      "asset": {
+        "path": "assets/root/screenshots/typer-context.png",
+        "sha256": "3dc701b0e837f986fd21e44fa35be50306eae6839ae273816baa544a9c12b3d7"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:typer",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://typer.tiangolo.com/tutorial/commands/context/",
+          "revision": "capture-sha256:3dc701b0e837f986fd21e44fa35be50306eae6839ae273816baa544a9c12b3d7"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/typer-LICENSE.txt",
+          "sha256": "58992cebcf8dfb6e40c4e2112ed12126c243666dca3912a3d78b7ecac4859d49"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/typer-context.txt",
+          "sha256": "0d13ed7c90809184781a606464db27aefb84ce9d31b19b582d846e38eba2a8c9",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-monkeypatch.png",
+      "asset": {
+        "path": "assets/root/screenshots/pytest-monkeypatch.png",
+        "sha256": "550019956f595ec6becd0900306691ce955fc2951fb1697253dc164798e475df"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pytest",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pytest.org/en/stable/how-to/monkeypatch.html",
+          "revision": "capture-sha256:550019956f595ec6becd0900306691ce955fc2951fb1697253dc164798e475df"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pytest-LICENSE.txt",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pytest-monkeypatch.txt",
+          "sha256": "4f62407831abfe3638703192f7b17dee0af837a81c303aea02536dd6c1228bf2",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-capture.png",
+      "asset": {
+        "path": "assets/root/screenshots/pytest-capture.png",
+        "sha256": "a3cf23973a46aaa9d46209adf8719c3c9472ad5866f5d0b37fcda533924d6fc1"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pytest",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pytest.org/en/stable/how-to/capture-stdout-stderr.html",
+          "revision": "capture-sha256:a3cf23973a46aaa9d46209adf8719c3c9472ad5866f5d0b37fcda533924d6fc1"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pytest-LICENSE.txt",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pytest-capture.txt",
+          "sha256": "044a54b06c1deb02dccfdbd5f61ec18d56f59d787ddab7441e33ed976bc572a4",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    },
+    {
+      "path": "root/screenshots/pytest-tmp.png",
+      "asset": {
+        "path": "assets/root/screenshots/pytest-tmp.png",
+        "sha256": "a087468d6f2177d1a48923d468a7a91bd46b58cea8318b2f1dd700ca610adb0b"
+      },
+      "kind": "screenshot",
+      "source_group": "upstream:pytest",
+      "parents": [],
+      "provenance": {
+        "type": "real",
+        "origin": {
+          "kind": "url",
+          "url": "https://docs.pytest.org/en/stable/how-to/tmp_path.html",
+          "revision": "capture-sha256:a087468d6f2177d1a48923d468a7a91bd46b58cea8318b2f1dd700ca610adb0b"
+        },
+        "license": "MIT",
+        "license_file": {
+          "path": "licenses/root/pytest-LICENSE.txt",
+          "sha256": "ca836a5f9ecca3b2f350230faa20a48fb8b145653b5568d784862df864706b9b"
+        },
+        "generation": "Unmodified browser viewport screenshot of the publisher's real documentation. Question/truth chosen from the DOM before standalone OCR. DOM capture and source-verification notes retained under provenance/. Source text is not rendered from generated questions. No ranking was run during curation."
+      },
+      "views": [
+        {
+          "id": "ocr",
+          "path": "views/root/screenshots/pytest-tmp.txt",
+          "sha256": "9bf8ba455c05093fc4588baf82251ba79b18b68828905064673cd5499620ecab",
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "storage_field": null,
+          "normalization": "nfc-lf-v1"
+        }
+      ]
+    }
+  ],
+  "queries": [
+    {
+      "id": "v4x-pdf-nist-800-145-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "In the 2011 NIST cloud definition, how many essential characteristics, service models, and deployment models are there?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-145-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 358,
+            "end_char": 471,
+            "text": "This cloud model is composed of five essential characteristics, three service models, and four deployment\nmodels.",
+            "sha256": "bef2da5c888ee79b85ac6e57b31547810dd1f888696147d1c430ad6c32105a78"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: This cloud model is composed of five essential characteristics, three service models, and four deployment models.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-145"
+    },
+    {
+      "id": "v4x-pdf-nist-800-145-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How much location control does the customer normally have when a cloud provider pools resources?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-145-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1177,
+            "end_char": 1435,
+            "text": "There is a sense of location\nindependence in that the customer generally has no control or knowledge over the exact\nlocation of the provided resources but may be able to specify location at a higher level of\nabstraction (e.g., country, state, or datacenter).",
+            "sha256": "93cc565a7302dd830ceb2b89dd1f05d3f114387bea9e15d52ff6a47b63cd278f"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: There is a sense of location independence in that the customer generally has no control or knowledge over the exact location of the provided resources but may be able to specify location at a higher level of abstraction (e.g., country, state, or datacenter).",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-145"
+    },
+    {
+      "id": "v4x-pdf-nist-800-145-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What makes on-demand cloud self-service independent of a provider's support staff?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-145-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 523,
+            "end_char": 713,
+            "text": "A consumer can unilaterally provision computing capabilities, such as\nserver time and network storage, as needed automatically without requiring human\ninteraction with each service provider.",
+            "sha256": "23e6045155cd2c58dcdec7bf1636ce255884c370ff4f67b451d9c740119867f6"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: A consumer can unilaterally provision computing capabilities, such as server time and network storage, as needed automatically without requiring human interaction with each service provider.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-145"
+    },
+    {
+      "id": "v4x-pdf-nist-800-145-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which parts of an IaaS deployment can a consumer control according to the NIST definition?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-145-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 613,
+            "end_char": 849,
+            "text": "The consumer does not manage or control the underlying cloud\ninfrastructure but has control over operating systems, storage, and deployed applications;\nand possibly limited control of select networking components (e.g., host firewalls).",
+            "sha256": "7d8b6049faa23886614a3e1f2ddffb103a43566e0518e336866ec7731ed19855"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The consumer does not manage or control the underlying cloud infrastructure but has control over operating systems, storage, and deployed applications; and possibly limited control of select networking components (e.g., host firewalls).",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-145"
+    },
+    {
+      "id": "v4x-pdf-nist-800-145-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What connects the otherwise distinct infrastructures that make up a hybrid cloud?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-145-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1832,
+            "end_char": 2163,
+            "text": "Hybrid cloud. The cloud infrastructure is a composition of two or more distinct cloud\ninfrastructures (private, community, or public) that remain unique entities, but are bound\ntogether by standardized or proprietary technology that enables data and application\nportability (e.g., cloud bursting for load balancing between clouds).",
+            "sha256": "3db22881795edd5bc378b6a5b24daf9413a46f78b4f0406ea5bde70097ee5af3"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Hybrid cloud. The cloud infrastructure is a composition of two or more distinct cloud infrastructures (private, community, or public) that remain unique entities, but are bound together by standardized or proprietary technology that enables data and application portability (e.g., cloud bursting for load balancing between clouds).",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-145"
+    },
+    {
+      "id": "v4x-pdf-nist-800-92-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What distinguishes an individual log entry from a log in the 2006 NIST guide?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-92-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 97,
+            "end_char": 325,
+            "text": "A log is a record of the events occurring within an organization’s systems and networks. Logs are\ncomposed of log entries; each entry contains information related to a specific event that has occurred\nwithin a system or network.",
+            "sha256": "54e5dd987fc6aeb942bbb99ef66b7c356811e95926e27c98bf79acb63a977041"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: A log is a record of the events occurring within an organization’s systems and networks. Logs are composed of log entries; each entry contains information related to a specific event that has occurred within a system or network.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-92"
+    },
+    {
+      "id": "v4x-pdf-nist-800-92-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Under what conditions does the logging guide say to rotate a log file?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-92-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1823,
+            "end_char": 2067,
+            "text": "Log rotation is closing a log file and opening a new log file when the first file is considered to\nbe complete. Log rotation is typically performed according to a schedule (e.g., hourly, daily,\nweekly) or when a log file reaches a certain size.",
+            "sha256": "a0847e7f61b9f2a9a331871307979e8f688d9b3a9988a2b2adc48ba5647063d0"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Log rotation is closing a log file and opening a new log file when the first file is considered to be complete. Log rotation is typically performed according to a schedule (e.g., hourly, daily, weekly) or when a log file reaches a certain size.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-92"
+    },
+    {
+      "id": "v4x-pdf-nist-800-92-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What must be calculated and kept securely to detect later changes to archived logs?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-92-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 1836,
+            "end_char": 2009,
+            "text": "Log file integrity checking involves calculating a message digest for each file and storing the\nmessage digest securely to ensure that changes to archived logs are detected.",
+            "sha256": "543aa206789127f2cbd714461a4d504e6c67bcd7eeec36643c87561e2c5d709f"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Log file integrity checking involves calculating a message digest for each file and storing the message digest securely to ensure that changes to archived logs are detected.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-92"
+    },
+    {
+      "id": "v4x-pdf-nist-800-92-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which syslog message attribute is called a facility in the 2006 NIST logging guide?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-92-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 2975,
+            "end_char": 3141,
+            "text": "Message type, known as a facility. Examples of facilities include kernel messages, mail system\nmessages, authorization messages, printer messages, and audit messages.",
+            "sha256": "9f6ce866c14f31020913c1517e1e6a059bc74f59d8df0ef12776d8e62f27b028"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Message type, known as a facility. Examples of facilities include kernel messages, mail system messages, authorization messages, printer messages, and audit messages.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-92"
+    },
+    {
+      "id": "v4x-pdf-nist-800-92-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What do the three tiers of a typical log management system do?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-92-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 1712,
+            "end_char": 2031,
+            "text": "The\nfirst tier encompasses the hosts that generate the original log data. The second tier includes centralized\nlog servers, which perform consolidation and data storage. The third tier contains consoles that are used\nto monitor and review log data, and optionally may also be used to manage the log servers and clients.",
+            "sha256": "f79b5dfbc6b7e72786b4af3af5e9c8aaaca97e1b4f2b20e11eb859dacd814125"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The first tier encompasses the hosts that generate the original log data. The second tier includes centralized log servers, which perform consolidation and data storage. The third tier contains consoles that are used to monitor and review log data, and optionally may also be used to manage the log servers and clients.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-92"
+    },
+    {
+      "id": "v4x-pdf-nist-800-22r1a-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What balance does the monobit test expect in a random bit sequence?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1184,
+            "end_char": 1352,
+            "text": "The purpose of this test\nis to determine whether the number of ones and zeros in a sequence are approximately the same as would\nbe expected for a truly random sequence.",
+            "sha256": "b0b1df4090485f966538c1d13da28c78f099f1968ebe76fa37fd732807b9d312"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The purpose of this test is to determine whether the number of ones and zeros in a sequence are approximately the same as would be expected for a truly random sequence.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-22r1a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-22r1a-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What does the block-frequency test become when its block size is one bit?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 394,
+            "end_char": 476,
+            "text": "For block size M=1, this test degenerates to test 1, the Frequency (Monobit)\ntest.",
+            "sha256": "732e14f3e926e121c12156dc419d372c72001b267183691e62dcca55a3b3acd4"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: For block size M=1, this test degenerates to test 1, the Frequency (Monobit) test.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-22r1a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-22r1a-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Why does NIST's longest-run test only need to test runs of ones?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 2033,
+            "end_char": 2250,
+            "text": "Note that an irregularity in\nthe expected length of the longest run of ones implies that there is also an irregularity in the expected\nlength of the longest run of zeroes. Therefore, only a test for ones is necessary.",
+            "sha256": "29ecf25099d66802afecffc5ff5b22c14b63b84103df457b95f0ac841069b929"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Note that an irregularity in the expected length of the longest run of ones implies that there is also an irregularity in the expected length of the longest run of zeroes. Therefore, only a test for ones is necessary.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-22r1a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-22r1a-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What kind of dependence is the binary matrix rank test intended to reveal?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 535,
+            "end_char": 649,
+            "text": "The purpose of this test is\nto check for linear dependence among fixed length substrings of the original sequence.",
+            "sha256": "830b4dc2838773923e7b32fc9d3aad55990afa3674822ec34ed3224ac597d671"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The purpose of this test is to check for linear dependence among fixed length substrings of the original sequence.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-22r1a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-22r1a-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How does Maurer's universal test use compressibility to identify a non-random sequence?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-22r1a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 305,
+            "end_char": 500,
+            "text": "The purpose of the test is to detect whether or not the sequence can be\nsignificantly compressed without loss of information. A significantly compressible sequence is\nconsidered to be non-random.",
+            "sha256": "040f94cc5e4c91d5fd46f2cd27e6da6414f84a2178608745098717ea2bb7f9ad"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The purpose of the test is to detect whether or not the sequence can be significantly compressed without loss of information. A significantly compressible sequence is considered to be non-random.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-22r1a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-38a-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How do the initialization-vector requirements differ for CBC/CFB and OFB in SP 800-38A?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-38a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1015,
+            "end_char": 1255,
+            "text": "The IV need not be secret; however, for the CBC and CFB modes, the IV for any particular\nexecution of the encryption process must be unpredictable, and, for the OFB mode, unique IVs\nmust be used for each execution of the encryption process.",
+            "sha256": "59b66132f190cbdd34e5783cb168d6f35ee45bea8a9c5dea836135752d1ace02"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The IV need not be secret; however, for the CBC and CFB modes, the IV for any particular execution of the encryption process must be unpredictable, and, for the OFB mode, unique IVs must be used for each execution of the encryption process.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-38a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-38a-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Can ECB's individual block cipher calculations be performed concurrently?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-38a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1148,
+            "end_char": 1277,
+            "text": "In ECB encryption and ECB decryption, multiple forward cipher functions and inverse cipher\nfunctions can be computed in parallel.",
+            "sha256": "e2576320fe717a12e260f153e4338dc4f8cc8e2abd6b32d113751a4042f62dae"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: In ECB encryption and ECB decryption, multiple forward cipher functions and inverse cipher functions can be computed in parallel.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-38a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-38a-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Does CTR decryption call the forward or inverse cipher, and how does it recover plaintext?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-38a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 1790,
+            "end_char": 1995,
+            "text": "In CTR decryption, the forward cipher function is invoked on each counter block, and the\nresulting output blocks are exclusive-ORed with the corresponding ciphertext blocks to recover\nthe plaintext blocks.",
+            "sha256": "b4d373f0d98d756db3341b8f132a46c83d76e50bbc3a79b15567b02b15b4e786"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: In CTR decryption, the forward cipher function is invoked on each counter block, and the resulting output blocks are exclusive-ORed with the corresponding ciphertext blocks to recover the plaintext blocks.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-38a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-38a-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How broadly must counter-block uniqueness hold when using CTR under one key?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-38a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 41,
+            "end_char": 194,
+            "text": "The specification of the CTR mode requires a unique counter block for each plaintext block that\nis ever encrypted under a given key, across all messages.",
+            "sha256": "72946b9a3fefc3a7a8e69b5f4a726bb94ffc8320a17aca512cabf022e7d63ec7"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The specification of the CTR mode requires a unique counter block for each plaintext block that is ever encrypted under a given key, across all messages.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-38a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-38a-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Where do a ciphertext block's bit errors propagate in the next block of CBC decryption?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-38a-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 1155,
+            "end_char": 1360,
+            "text": "In the CBC mode, any bit positions that contain bit errors in a\nciphertext block will also contain bit errors in the decryption of the succeeding ciphertext block;\nthe other bit positions are not affected.",
+            "sha256": "009b05536ffca598685cbbabc2a151ee4211ace154a1f7368f725b48197035f3"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: In the CBC mode, any bit positions that contain bit errors in a ciphertext block will also contain bit errors in the decryption of the succeeding ciphertext block; the other bit positions are not affected.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-38a"
+    },
+    {
+      "id": "v4x-pdf-nist-800-107r1-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What event is called a hash collision in SP 800-107 Revision 1?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1683,
+            "end_char": 1753,
+            "text": "An event in which two different messages have the same\nmessage digest.",
+            "sha256": "af6e4626465a1710175057d59ee61d0a196bd6b8cf46cc74a5940baddc8624cb"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: An event in which two different messages have the same message digest.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-107r1"
+    },
+    {
+      "id": "v4x-pdf-nist-800-107r1-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What guessing probability defines an unbiased random bit in the hash recommendation?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 450,
+            "end_char": 611,
+            "text": "A bit for which an attacker has exactly a 50% probability of\nsuccess of guessing the value of the bit as either a zero or one. It\nis also called an unbiased bit.",
+            "sha256": "e5cf87a7b9b61562a3621270343ed152972eab2ec6f0aa05a1477dc4eed3c76e"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: A bit for which an attacker has exactly a 50% probability of success of guessing the value of the bit as either a zero or one. It is also called an unbiased bit.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-107r1"
+    },
+    {
+      "id": "v4x-pdf-nist-800-107r1-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "When shortening a hash to 96 bits, which end of the SHA-256 digest does NIST's example retain?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 1685,
+            "end_char": 1866,
+            "text": "The leftmost 96 bits of the 256-bit\nmessage digest generated by SHA-256 are selected as the truncated message\ndigest, and the rightmost 160 bits of the message digest are discarded.",
+            "sha256": "7f10483a6c256b331726e36628500bbf35d1db8cc70a9d93903f34bb144a6d2b"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The leftmost 96 bits of the 256-bit message digest generated by SHA-256 are selected as the truncated message digest, and the rightmost 160 bits of the message digest are discarded.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-107r1"
+    },
+    {
+      "id": "v4x-pdf-nist-800-107r1-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Who has to share the secret key used to generate and verify an HMAC tag?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 1379,
+            "end_char": 1616,
+            "text": "The HMAC\nalgorithm requires the use of a secret key that is shared between the entity that generates\nthe HMAC output (e.g., a message sender), and the entity (or entities) that need to verify\nthe transmitted MacTag (message receiver(s)).",
+            "sha256": "0714feb89722b3f7b3c64a2b5c5d5315a536bd30b2db7e59aea8053d3f291d11"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The HMAC algorithm requires the use of a secret key that is shared between the entity that generates the HMAC output (e.g., a message sender), and the entity (or entities) that need to verify the transmitted MacTag (message receiver(s)).",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-107r1"
+    },
+    {
+      "id": "v4x-pdf-nist-800-107r1-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Does a matching HMAC tag completely rule out a successful forgery in the 2012 recommendation?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/nist-800-107r1-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 34,
+            "end_char": 302,
+            "text": "The successful verification of a MacTag does not completely guarantee that the\naccompanying text is authentic; there is a slight chance that an adversary with no\nknowledge of the HMAC key, K, can present a (MacTag, text) pair that will pass the\nverification procedure.",
+            "sha256": "7e61037f6056643789fde8059534d7fcab0ae057e43fde557826147d488e2d13"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The successful verification of a MacTag does not completely guarantee that the accompanying text is authentic; there is a slight chance that an adversary with no knowledge of the HMAC key, K, can present a (MacTag, text) pair that will pass the verification procedure.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:nist-800-107r1"
+    },
+    {
+      "id": "v4x-pdf-pytest-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which container types can pytest.approx compare besides individual numbers in the 9.1 manual?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pytest-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1607,
+            "end_char": 1724,
+            "text": "pytest.approx works with scalars, lists, dictionaries, and NumPy arrays. It also supports comparisons involving NaNs.",
+            "sha256": "7786f4e06ba61f75b973f7cdd75c9ea498aa5a5746c8cc97cb02dff50294bfdc"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: pytest.approx works with scalars, lists, dictionaries, and NumPy arrays. It also supports comparisons involving NaNs.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-pdf-pytest-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How many previous temporary test directories does pytest keep by default, and which settings change that?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pytest-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1747,
+            "end_char": 1899,
+            "text": "By default, the last 3 temporary directories are kept, but this behavior can\nbe configured with tmp_path_retention_count and tmp_path_retention_policy .",
+            "sha256": "cd43e7396e8836306b57f6b65fecb71671ce7c2ed5b6ca700e7adfca62623a17"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: By default, the last 3 temporary directories are kept, but this behavior can be configured with tmp_path_retention_count and tmp_path_retention_policy .",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-pdf-pytest-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "When are changes made with pytest's monkeypatch fixture automatically undone?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pytest-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 1264,
+            "end_char": 1356,
+            "text": "All modifications will be undone after the requesting test function or fixture has finished.",
+            "sha256": "0348effb9a1a863f8db1ef4b9f89188c7c3cec67ffb7494b7238b88c9138cec1"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: All modifications will be undone after the requesting test function or fixture has finished.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-pdf-pytest-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Does calling capsys.readouterr stop further capture of the test's output?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pytest-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 578,
+            "end_char": 662,
+            "text": "The readouterr() call snapshots the output so far - and capturing will be continued.",
+            "sha256": "3f36c87cff765913b97427b669b1ee3912437d3d19f3707e0ab582f712e6ce57"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The readouterr() call snapshots the output so far - and capturing will be continued.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-pdf-pytest-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How does the recwarn fixture prevent a warning check from leaking global state into later tests?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pytest-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 931,
+            "end_char": 1055,
+            "text": "The recwarn fixture automatically ensures to reset the warnings filter at the end of the test, so no global state is leaked.",
+            "sha256": "fb578212842dc5a298043251bbd614d9c815cb5a3d8357c8b1ea9adfd77dc1d6"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The recwarn fixture automatically ensures to reset the warnings filter at the end of the test, so no global state is leaked.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-pdf-sphinx-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which Sphinx make target both builds LaTeX and invokes the PDF toolchain?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/sphinx-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1157,
+            "end_char": 1243,
+            "text": "make latexpdf runs the LaTeX builder and readily invokes the pdfTeX toolchain for you.",
+            "sha256": "c2422389d4ed3ba8b394527c2bb0309b7cabc7995893961f94c3aae588a028c9"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: make latexpdf runs the LaTeX builder and readily invokes the pdfTeX toolchain for you.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:sphinx"
+    },
+    {
+      "id": "v4x-pdf-sphinx-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which Sphinx translation setting includes source locations in message catalogs, and is it enabled by default?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/sphinx-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 37,
+            "end_char": 157,
+            "text": "gettext_location\nType\nbool\nDefault\nTrue\nIf True, Sphinx generates location information for messages in message catalogs.",
+            "sha256": "b06e79ff5f2f793161cd0894b1b9bb1364e28bda889c14f89170c591fd52465d"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: gettext_location Type bool Default True If True, Sphinx generates location information for messages in message catalogs.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:sphinx"
+    },
+    {
+      "id": "v4x-pdf-sphinx-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which Sphinx source pattern wins if a file matches both an inclusion and an exclusion?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/sphinx-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 131,
+            "end_char": 405,
+            "text": "A list of glob-style patterns that should be excluded when looking for source files. They are matched against\nthe source file names relative to the source directory, using slashes as directory separators on all platforms.\nexclude_patterns has priority over include_patterns.",
+            "sha256": "141d06f523180b2e8406cafc565c577c7db3143db6a007de90ace19f7c7919dd"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: A list of glob-style patterns that should be excluded when looking for source files. They are matched against the source file names relative to the source directory, using slashes as directory separators on all platforms. exclude_patterns has priority over include_patterns.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:sphinx"
+    },
+    {
+      "id": "v4x-pdf-sphinx-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "How can a Sphinx project deliberately copy a dotfile from its static directory?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/sphinx-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 1327,
+            "end_char": 1488,
+            "text": "For security reasons, dotfiles under html_static_path will not be copied. If you would like to copy them\nintentionally, explicitly add each file to this setting:",
+            "sha256": "acbab37be395e32c6accda0e919caa25d1b6d2a737f229e6314917ff21a670b8"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: For security reasons, dotfiles under html_static_path will not be copied. If you would like to copy them intentionally, explicitly add each file to this setting:",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:sphinx"
+    },
+    {
+      "id": "v4x-pdf-sphinx-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "For missing Django dependencies during a Sphinx autodoc build, must every submodule be listed for mocking?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/sphinx-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 594,
+            "end_char": 770,
+            "text": "You may only specify the root package of the dependencies\nthemselves and omit the sub-modules:\nautodoc_mock_imports = ['django']\nWill mock all imports under the django package.",
+            "sha256": "db2585746f79fcbcfb6314905cb0d947b620506aef67b85098cfc53499704663"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: You may only specify the root package of the dependencies themselves and omit the sub-modules: autodoc_mock_imports = ['django'] Will mock all imports under the django package.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:sphinx"
+    },
+    {
+      "id": "v4x-pdf-pillow-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "What does a Pillow image's size tuple represent?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pillow-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 1944,
+            "end_char": 2016,
+            "text": "The\nsize attribute is a 2-tuple containing width and height (in pixels).",
+            "sha256": "4016fbc6f549e6049580e654997836a4192e591d39d1c3685d7395ded4bf5901"
+          },
+          "view_id": "p001"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The size attribute is a 2-tuple containing width and height (in pixels).",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:pillow"
+    },
+    {
+      "id": "v4x-pdf-pillow-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Why is Pillow's Image.open normally fast even when an image file is large?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pillow-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 336,
+            "end_char": 551,
+            "text": "When you open a\nfile, the file header is read to determine the file format and extract things like mode, size, and other properties required\nto decode the file, but the rest of the file is not processed until later.",
+            "sha256": "3b50c63a2060fa783c67acafeceb79aacc68e07f79ad5b6a2a417d86f387c19b"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: When you open a file, the file header is read to determine the file format and extract things like mode, size, and other properties required to decode the file, but the rest of the file is not processed until later.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:pillow"
+    },
+    {
+      "id": "v4x-pdf-pillow-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "Which operations support Pillow's Lanczos resampling filter?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pillow-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 755,
+            "end_char": 988,
+            "text": "Resampling.LANCZOS\nCalculate the output pixel value using a high-quality Lanczos filter (a truncated sinc) on all pixels that may\ncontribute to the output value. This filter can only be used with the resize() and thumbnail() methods.",
+            "sha256": "d8af62798214021657ce989156bf53ade22dadcfac473aa8270b8ed42446a525"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Resampling.LANCZOS Calculate the output pixel value using a high-quality Lanczos filter (a truncated sinc) on all pixels that may contribute to the output value. This filter can only be used with the resize() and thumbnail() methods.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:pillow"
+    },
+    {
+      "id": "v4x-pdf-pillow-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "At what pixel count does Pillow raise DecompressionBombError rather than just a warning?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pillow-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 1119,
+            "end_char": 1236,
+            "text": "If the number of pixels is greater than twice MAX_IMAGE_PIXELS, then a DecompressionBombError will\nbe raised instead.",
+            "sha256": "0ed01cc9f00c92af56d1e62f2e3fb106687ce1d04610f346ad6d43d2f6735956"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: If the number of pixels is greater than twice MAX_IMAGE_PIXELS, then a DecompressionBombError will be raised instead.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:pillow"
+    },
+    {
+      "id": "v4x-pdf-pillow-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "text_pdf",
+        "real"
+      ],
+      "q": "After applying an EXIF Orientation transform, what does ImageOps.exif_transpose do with that orientation metadata?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/pillow-excerpt.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "content_text",
+          "location": {
+            "unit": "page",
+            "start": 5,
+            "end": 5
+          },
+          "span": {
+            "start_char": 665,
+            "end_char": 785,
+            "text": "If an image has an EXIF Orientation tag, other than 1, transpose the image accordingly, and remove the orientation\ndata.",
+            "sha256": "02cceabbd60abb4f01f05ba16e22623b1541ba349db73ccf54ef666621650d07"
+          },
+          "view_id": "p005"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: If an image has an EXIF Orientation tag, other than 1, transpose the image accordingly, and remove the orientation data.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [],
+      "source_group": "pdf:pillow"
+    },
+    {
+      "id": "v4x-pdf-US6469-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What does Lincoln's buoyancy invention let a vessel cross without unloading its cargo?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US6469-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 298,
+            "end_char": 391,
+            "text": "to enable them to pass over bars, or through shallow water, without discharging their cargoes",
+            "sha256": "776e32d338d9faa0ab29de0f85bec92b9bc21bc8c88a8b6cca83ce838f0dcae7"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: to enable them to pass over bars, or through shallow water, without discharging their cargoes",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US6469"
+    },
+    {
+      "id": "v4x-pdf-US6469-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "How are Lincoln's buoyant chambers stowed when they are no longer needed?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US6469-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 791,
+            "end_char": 899,
+            "text": "can be contracted into a very small space and safely secured as soon as their services can be dispensed with",
+            "sha256": "a8b73974222360efeffdf240ec7189f5ac149ec9b583fa3b3e87792d0082606d"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: can be contracted into a very small space and safely secured as soon as their services can be dispensed with",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US6469"
+    },
+    {
+      "id": "v4x-pdf-US6469-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What flexible material forms the sides and ends of the chambers in Lincoln's patent?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US6469-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1023,
+            "end_char": 1140,
+            "text": "the flexible sides and ends of the chambers, are composed of india-rubber cloth, or other suitable water-proof fabric",
+            "sha256": "ef935c8666872f3281f73f937e759d577fef6c1e7a1cda0d377ccbbf6211c715"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: the flexible sides and ends of the chambers, are composed of india-rubber cloth, or other suitable water-proof fabric",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US6469"
+    },
+    {
+      "id": "v4x-pdf-US6469-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "How does reversing the main shaft affect the buoyant chambers?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US6469-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1470,
+            "end_char": 1582,
+            "text": "by turning the shaft in an opposite direction, the chambers will be contracted into the position shown in Fig. 2",
+            "sha256": "0528f8d8579b061ebdcc0d3e5a4281212f06b484863795b58c568e9dcba67299"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: by turning the shaft in an opposite direction, the chambers will be contracted into the position shown in Fig. 2",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US6469"
+    },
+    {
+      "id": "v4x-pdf-US6469-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What adjustment governs how deeply Lincoln's buoyant chambers are immersed?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US6469-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 1871,
+            "end_char": 1976,
+            "text": "By varying the length of the check ropes, the depth of immersion of the buoyant chambers can be governed.",
+            "sha256": "e772430c145851d9dcdc963f2b11255ff869793962506a5adcf1734851a56493"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: By varying the length of the check ropes, the depth of immersion of the buoyant chambers can be governed.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US6469"
+    },
+    {
+      "id": "v4x-pdf-US174465-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What kind of electric current does Bell's new telegraphy method use instead of a merely pulsating current?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US174465-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 166,
+            "text": "My present invention consists in the employment of a vibratory or undulatory current of electricity in contradistinction to a merely intermittent or pulsatory current",
+            "sha256": "9a472dfa2afcd686a8f8080a7440cd1f87111f533047bccf43cf1ce6e5f8f3d9"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: My present invention consists in the employment of a vibratory or undulatory current of electricity in contradistinction to a merely intermittent or pulsatory current",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US174465"
+    },
+    {
+      "id": "v4x-pdf-US174465-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "How does the change in electrical intensity distinguish Bell's undulations from pulsations?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US174465-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 362,
+            "end_char": 516,
+            "text": "electrical pulsations are caused by sudden or instantaneous changes of intensity, and that electrical undulations result from gradual changes of intensity",
+            "sha256": "9b7137fe7e53724188e2f029e4579437bfe979823dbb58555e0b050b74c09d99"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: electrical pulsations are caused by sudden or instantaneous changes of intensity, and that electrical undulations result from gradual changes of intensity",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US174465"
+    },
+    {
+      "id": "v4x-pdf-US174465-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What mathematical curve can represent the electrical movement described in Bell's patent?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US174465-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 664,
+            "end_char": 753,
+            "text": "can be represented by a sinusoidal curve or by the resultant of several sinusoidal curves",
+            "sha256": "eca6601284e08c083d3025d5e82ba325d9027294207a2b108398dd0571f7c7e3"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: can be represented by a sinusoidal curve or by the resultant of several sinusoidal curves",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US174465"
+    },
+    {
+      "id": "v4x-pdf-US174465-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What circuit and battery arrangement does Bell list as the second advantage of undulatory current?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US174465-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 987,
+            "end_char": 1039,
+            "text": "a closed circuit and single main battery may be used",
+            "sha256": "69c62ee533a2b4d8ef113d93bc1c80bfe332eed3647576553916bd491fa1c15a"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: a closed circuit and single main battery may be used",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US174465"
+    },
+    {
+      "id": "v4x-pdf-US174465-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "Why does Bell say a spark-arrester is unnecessary in his circuit?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US174465-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 1432,
+            "end_char": 1499,
+            "text": "as the circuit is never broken a spark-arrester becomes unnecessary",
+            "sha256": "57324e0d281ffc3dab6e4c54e9fce848cdf4106820bdde4a71f001a8b3af431b"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: as the circuit is never broken a spark-arrester becomes unnecessary",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US174465"
+    },
+    {
+      "id": "v4x-pdf-US223898-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "Why does Edison want his incandescent lamps to have high resistance?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US223898-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 89,
+            "end_char": 194,
+            "text": "which lamps shall have high resistance, so as to allow of the practical subdivision of the electric light",
+            "sha256": "029a027316d1cd944c82929ac03b9c41daa843b791b2f9200d5cd4a7fdc499f3"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: which lamps shall have high resistance, so as to allow of the practical subdivision of the electric light",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US223898"
+    },
+    {
+      "id": "v4x-pdf-US223898-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What form and material does Edison specify for the light-giving body?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US223898-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 223,
+            "end_char": 371,
+            "text": "a light-giving body of carbon wire or sheets coiled or arranged in such a manner as to offer great resistance to the passage of the electric current",
+            "sha256": "be2b808139b5179c45623b2ce2e7d44afb17c22bd530d01a972fcf0b3f357c27"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: a light-giving body of carbon wire or sheets coiled or arranged in such a manner as to offer great resistance to the passage of the electric current",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US223898"
+    },
+    {
+      "id": "v4x-pdf-US223898-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What atmosphere protects Edison's high-resistance burner from oxidation?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US223898-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 503,
+            "end_char": 626,
+            "text": "a burner of great resistance in a nearly-perfect vacuum, to prevent oxidation and injury to the conductor by the atmosphere",
+            "sha256": "24db409c866bacb2216ad5fab6011e1be40433c5ed709107a5755af7d43545fb"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: a burner of great resistance in a nearly-perfect vacuum, to prevent oxidation and injury to the conductor by the atmosphere",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US223898"
+    },
+    {
+      "id": "v4x-pdf-US223898-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "How are the electrical leads brought through the glass vacuum bulb in Edison's description?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US223898-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 2,
+            "end": 2
+          },
+          "span": {
+            "start_char": 628,
+            "end_char": 718,
+            "text": "The current is conducted into the vacuum-bulb through platina wires sealed into the glass.",
+            "sha256": "115cbf5509b26793d10a55e7e92ef975b01104dc18fddbceaa54a4bc20b58c96"
+          },
+          "view_id": "p002"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The current is conducted into the vacuum-bulb through platina wires sealed into the glass.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US223898"
+    },
+    {
+      "id": "v4x-pdf-US223898-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "Why can Edison's design use fine platinum lead wires without cracking the sealed bulb?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US223898-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 3,
+            "end": 3
+          },
+          "span": {
+            "start_char": 126,
+            "end_char": 225,
+            "text": "a small resistance compared to the burner, and hence will not heat and crack the sealed vacuum-bulb",
+            "sha256": "c4744660543d1dd7d7e2f77bcc86ceabdb322857343923388ddab39e816d019c"
+          },
+          "view_id": "p003"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: a small resistance compared to the burner, and hence will not heat and crack the sealed vacuum-bulb",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US223898"
+    },
+    {
+      "id": "v4x-pdf-US821393-01",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "Does the Wright patent require two stacked aeroplanes, or can its invention use one?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US821393-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 208,
+            "end_char": 316,
+            "text": "this construction we prefer, although our invention may be embodied in a structure having a single aeroplane",
+            "sha256": "0bf581176c089cf439feef32dfb95cd955a5ec21789bdec2cd0d350160aab3b3"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: this construction we prefer, although our invention may be embodied in a structure having a single aeroplane",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US821393"
+    },
+    {
+      "id": "v4x-pdf-US821393-02",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "How does the width of each Wright aeroplane compare with its front-to-rear dimension?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US821393-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 318,
+            "end_char": 408,
+            "text": "Each aeroplane is of considerably greater width from side to side than from front to rear.",
+            "sha256": "9206ae1d336e2bfc029bc2f47ce09dbb5f57f6de3be11fb35675fdb7b5547a22"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Each aeroplane is of considerably greater width from side to side than from front to rear.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US821393"
+    },
+    {
+      "id": "v4x-pdf-US821393-03",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What material covers the frame to form a Wright aeroplane's supporting surface?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US821393-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 4,
+            "end": 4
+          },
+          "span": {
+            "start_char": 410,
+            "end_char": 502,
+            "text": "Upon this framework the cloth which forms the supporting-surface of the aeroplane is secured",
+            "sha256": "e94516d935b73565f6e4e7baa65325e9ffb9eb4b6eb1579563ec67b12d23aff2"
+          },
+          "view_id": "p004"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Upon this framework the cloth which forms the supporting-surface of the aeroplane is secured",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US821393"
+    },
+    {
+      "id": "v4x-pdf-US821393-04",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "What shape does twisting the Wright aeroplane's lateral margins give its surface?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US821393-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 6,
+            "end": 6
+          },
+          "span": {
+            "start_char": 314,
+            "end_char": 380,
+            "text": "so that each aeroplane-surface is given a helicoidal warp or twist",
+            "sha256": "4cbdfd9c108f7a7054fd637f66a1f2592673396e07989d2e0ef9fdf2d4465b30"
+          },
+          "view_id": "p006"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: so that each aeroplane-surface is given a helicoidal warp or twist",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US821393"
+    },
+    {
+      "id": "v4x-pdf-US821393-05",
+      "primary_class": "pdf-page",
+      "tags": [
+        "scanned_pdf",
+        "real"
+      ],
+      "q": "About which axis is the Wright machine's vertical rudder or tail 22 allowed to turn?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/pdf/US821393-scan.pdf",
+          "kind": "pdf",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "page",
+            "start": 6,
+            "end": 6
+          },
+          "span": {
+            "start_char": 453,
+            "end_char": 529,
+            "text": "a vertical rudder or tail 22, so supported as to turn around a vertical axis",
+            "sha256": "802d4186d72ef47aeb0ab73a4e1e44a5f47d9432f96376ef583ea90ebfcfeb08"
+          },
+          "view_id": "p006"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: a vertical rudder or tail 22, so supported as to turn around a vertical axis",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "pdf:US821393"
+    },
+    {
+      "id": "v4x-ocr-01",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "How long does HTTPX allow network inactivity before its default timeout?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/httpx-timeouts.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 90,
+            "text": "The default behavior is to raise a TimeoutException after 5 seconds of network inactivity.",
+            "sha256": "bc6381c80c32d2e3e4a72a47fda271f66258e6f9abc3df8e260e7e5296c4d2be"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The default behavior is to raise a TimeoutException after 5 seconds of network inactivity.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "v4x-ocr-02",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Which exception signals that HTTPX could not establish a socket connection within its configured time limit?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/httpx-connect-timeout.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 129,
+            "end_char": 220,
+            "text": "If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised.",
+            "sha256": "da87b22d9bd5bd948d1e8d2879fd2059098d25ea7b37143d1e287747e6902c73"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: If HTTPX is unable to connect within this time frame, a ConnectTimeout exception is raised.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "v4x-ocr-03",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "What default maximum number of connections does the HTTPX resource-limits guide specify?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/httpx-limits.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 94,
+            "text": "max_connections, maximum number of allowable connections, or None for no limits. (Default 100)",
+            "sha256": "ac5257cb20e6df47ae411657f648fe2d8a8dc86c94f94c8a32af39eee7ca6841"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: max_connections, maximum number of allowable connections, or None for no limits. (Default 100)",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "v4x-ocr-04",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "In the captured HTTPX guide, is HTTP/2 enabled automatically, and why?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/httpx-http2.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 229,
+            "text": "When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time.",
+            "sha256": "770094ed4899c70bc318eee93e5f4ecd4b67aefd237397722d263378f45f856c"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: When using the httpx client, HTTP/2 support is not enabled by default, because HTTP/1.1 is a mature, battle-hardened transport layer, and our HTTP/1.1 implementation may be considered the more robust option at this point in time.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:httpx"
+    },
+    {
+      "id": "v4x-ocr-05",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "How does Pydantic strict mode handle input whose type is wrong instead of coercing it?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pydantic-strict.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 68,
+            "end_char": 214,
+            "text": "When strict mode is enabled, Pydantic will be much less lenient when coercing data, and will instead error if the data is not of the correct type.",
+            "sha256": "b3ba7e4e50eca3485ebb0e1c38f68c7ebeed09bda295631c0a6a8319203a36fc"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: When strict mode is enabled, Pydantic will be much less lenient when coercing data, and will instead error if the data is not of the correct type.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "v4x-ocr-06",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Does assigning Field(frozen=True) to name make that Pydantic field optional in the shown example?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pydantic-fields.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 84,
+            "text": "Even though name is assigned a value, it is still required and has no default value.",
+            "sha256": "f08bee2297df86abb9bbd36ee7b99107202fa70f291b5df7f5707f0bebe32159"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Even though name is assigned a value, it is still required and has no default value.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "v4x-ocr-07",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "What does Pydantic's Python serialization mode recursively turn models and model-like types into?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pydantic-python-dump.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 135,
+            "text": "When using the Python mode, Pydantic models (and model-like types such as dataclasses) will be (recursively) converted to dictionaries.",
+            "sha256": "ba98e5f794db0bf200970294a14d8625d3a835e39a634bf318c18b241e1aa14f"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: When using the Python mode, Pydantic models (and model-like types such as dataclasses) will be (recursively) converted to dictionaries.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "v4x-ocr-08",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Which union validation mode is the default in Pydantic 2 rather than left-to-right mode?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pydantic-unions.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 145,
+            "text": "Because this mode often leads to unexpected validation results, it is not the default in Pydantic >=2, instead union_mode='smart' is the default.",
+            "sha256": "55d45e2750c15ab025703c90344f237d8ce12f5f803e8c5012278bb7de863da4"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Because this mode often leads to unexpected validation results, it is not the default in Pydantic >=2, instead union_mode='smart' is the default.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pydantic"
+    },
+    {
+      "id": "v4x-ocr-09",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "If a Rich markup style is left unclosed, how far does it continue?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/rich-markup.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 70,
+            "text": "If you don’t close a style, it will apply until the end of the string.",
+            "sha256": "f48de2c3e655460feb886fa2220be7d459c39dff0c54570afb2d09451f4401e5"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: If you don’t close a style, it will apply until the end of the string.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "v4x-ocr-10",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Which syntax does Rich use for a numbered palette color, and what range of numbers is allowed?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/rich-styles.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 101,
+            "text": "You may also use the color’s number (an integer between 0 and 255) with the syntax \"color(<number>)\".",
+            "sha256": "5c7b34d4940e9eb8bef9492541f51f118809848ca83b5abb3276993e30ed3149"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: You may also use the color’s number (an integer between 0 and 255) with the syntax \"color(<number>)\".",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "v4x-ocr-11",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "After constructing a Rich Table, which methods add its columns and rows before it is printed?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/rich-tables.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 131,
+            "text": "To render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console.",
+            "sha256": "374b5e35ea64585d6d1e36ffdb4a429d00086cbe1008399da37ed561877c69ea"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: To render a table, construct a Table object, add columns with add_column(), and rows with add_row() – then print it to the console.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "v4x-ocr-12",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Can Rich show separate progress bars for concurrent tasks running in threads or processes?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/rich-progress.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 184,
+            "text": "Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes.",
+            "sha256": "dc2972c3d995d21a44ed427a100b87d206ed890d7f0fa3fdde360f84d4f302d6"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Rich progress display supports multiple tasks, each with a bar and progress information. You can use this to track concurrent tasks where the work is happening in threads or processes.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:rich"
+    },
+    {
+      "id": "v4x-ocr-13",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "When does uv first create a project's virtual environment and lockfile?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/uv-projects.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 100,
+            "end_char": 303,
+            "text": "In addition to the files created by uv init, uv will create a virtual environment and uv.lock file in the root of your project the first time you run a project command, i.e., uv run, uv sync, or uv lock.",
+            "sha256": "53cb2714113f9adf12915219a77d65e022368015ece55c389a7ae64aaf0b9e90"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: In addition to the files created by uv init, uv will create a virtual environment and uv.lock file in the root of your project the first time you run a project command, i.e., uv run, uv sync, or uv lock.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "v4x-ocr-14",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "What longer command is shown as the exact equivalent of uvx ruff?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/uv-tools.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 9,
+            "end": 9
+          },
+          "span": {
+            "start_char": 128,
+            "end_char": 144,
+            "text": "uv tool run ruff",
+            "sha256": "66abeb5b5f976ed1c9dc82e91862e331bc3e510f3c376838abb28f40d451a110"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: uv tool run ruff",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "v4x-ocr-15",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Does uv require a virtual environment by default, according to its environments guide?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/uv-environments.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 105,
+            "end_char": 168,
+            "text": "Unlike pip, uv requires using a virtual environment by default.",
+            "sha256": "08be535aea49e76969c4bacd9b7c48caa0c962dbabd9853a8b99994c76bd0a01"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Unlike pip, uv requires using a virtual environment by default.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:uv"
+    },
+    {
+      "id": "v4x-ocr-16",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Which Typer option parameter places CLI help text into a named Rich panel?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/typer-help-panels.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 108,
+            "text": "Using Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:",
+            "sha256": "95df328727455e5cadb38b8a3273e319c4289999681fde9c805589bf4b74efa7"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: Using Rich, you can set the rich_help_panel parameter to the name of the panel you want for each CLI option:",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "v4x-ocr-17",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "How can a Typer command or main callback obtain the hidden Context object?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/typer-context.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 139,
+            "text": "The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context.",
+            "sha256": "df6670acbece5806aee9c00ca71aa06e1623300978ea3d15c1980b01a3a09028"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The same way, in commands or in the main Typer callback you can access the context by declaring a function parameter of type typer.Context.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:typer"
+    },
+    {
+      "id": "v4x-ocr-18",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Which kinds of settings does pytest's monkeypatch fixture let a test safely change?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pytest-monkeypatch.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 154,
+            "end_char": 300,
+            "text": "The monkeypatch fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing.",
+            "sha256": "3f80fcd281bf1c31c8f885ed1e1b4e5a45a2715543bee93a1dcbe240e24749b6"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: The monkeypatch fixture helps you to safely set/delete an attribute, dictionary item or environment variable, or to modify sys.path for importing.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-ocr-19",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "Why can pytest's default capture also intercept output from a subprocess launched by a test?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pytest-capture.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 195,
+            "text": "By default capturing is done by intercepting writes to low level file descriptors. This allows capturing output from simple print statements as well as output from a subprocess started by a test.",
+            "sha256": "67a58896064ccb9a2e68212068366b885e9dd45dbbdbc3cffe294119b72dd1da"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: By default capturing is done by intercepting writes to low level file descriptors. This allows capturing output from simple print statements as well as output from a subprocess started by a test.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pytest"
+    },
+    {
+      "id": "v4x-ocr-20",
+      "primary_class": "media-text",
+      "tags": [
+        "ocr",
+        "real"
+      ],
+      "q": "What object type does pytest supply through tmp_path?",
+      "expect": [
+        {
+          "evidence_id": "e0",
+          "path": "root/screenshots/pytest-tmp.png",
+          "kind": "screenshot",
+          "grade": 3,
+          "evidence_type": "ocr_text",
+          "location": {
+            "unit": "line",
+            "start": 1,
+            "end": 1
+          },
+          "span": {
+            "start_char": 0,
+            "end_char": 34,
+            "text": "tmp_path is a pathlib.Path object.",
+            "sha256": "8aba96723e5650717788f50b838d38e3ff36cf7246110a0531a8000e80853398"
+          },
+          "view_id": "ocr"
+        }
+      ],
+      "required_facts": [
+        {
+          "fact_id": "f0",
+          "description": "The cited source states: tmp_path is a pathlib.Path object.",
+          "sufficient_evidence": [
+            [
+              "e0"
+            ]
+          ]
+        }
+      ],
+      "needs": [
+        "ocr"
+      ],
+      "source_group": "upstream:pytest"
+    }
+  ]
+}

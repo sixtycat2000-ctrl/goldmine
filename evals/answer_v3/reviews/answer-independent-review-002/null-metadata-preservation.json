@@ -1,0 +1,38 @@
+[
+  {
+    "question_id": "av3-single-016",
+    "evidence_id": "e1",
+    "storage_field": "info.taken",
+    "original_null_preserved": true
+  },
+  {
+    "question_id": "av3-single-017",
+    "evidence_id": "e1",
+    "storage_field": "basename",
+    "original_null_preserved": true
+  },
+  {
+    "question_id": "av3-multi-001",
+    "evidence_id": "p1_e1",
+    "storage_field": "basename",
+    "original_null_preserved": true
+  },
+  {
+    "question_id": "av3-multi-001",
+    "evidence_id": "p2_e1",
+    "storage_field": "info.taken",
+    "original_null_preserved": true
+  },
+  {
+    "question_id": "av3-multi-006",
+    "evidence_id": "p1_e1",
+    "storage_field": "basename",
+    "original_null_preserved": true
+  },
+  {
+    "question_id": "av3-multi-006",
+    "evidence_id": "p2_e1",
+    "storage_field": "info.taken",
+    "original_null_preserved": true
+  }
+]

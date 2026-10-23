@@ -1,17 +1,61 @@
 # goldmine — Architecture
 
+> Implementation update (2026-10-21): see [the current feature status](docs/FEATURE_STATUS.md) and the [P0–P2 execution record](docs/execution-plan/PROGRESS.md). Older design and benchmark sections below retain their historical scope; they are not final candidate verification.
+
 > "Ingest anything, search anything." A local-first macOS CLI that ingests files and web links,
-> embeds them with EmbeddingGemma 2 (768-dim, multimodal) running locally, searches them with
+> embeds stored text with the local EmbeddingGemma 2 llama backend (768 dimensions), searches it with
 > hybrid semantic + exact-match scoring, and distills the corpus into source-backed "golden
 > knowledge" cards.
 >
-> Status: **design** (this document). No implementation yet.
+> Status: **0.2.0 development implementation**. Current boundaries are below;
+> the numbered v1 design sections remain historical context.
 > Companion docs: [SPEC.md](SPEC.md) (CLI contract), [docs/MODULE_MAP.md](docs/MODULE_MAP.md),
 > [docs/DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md), [docs/TEST_PLAN.md](docs/TEST_PLAN.md).
 
 ---
 
-## 1. Component diagram
+## Current request boundaries (2026-10-22)
+
+CLI command adapters and the optional stdio MCP adapter call `Application` with
+typed contracts. A request owns one read-only Store connection/transaction and
+one monotonic deadline. Ranking, original evidence, supporting/neighbor citations
+and final packing use that same snapshot. The adapters serialize results; they
+do not independently rerun retrieval or read source files. The MCP SDK is an
+explicit optional dependency, and model operations are serialized with two
+bounded waiters.
+
+`query_obligations.py`, `anchor_resolution.py` and `anchor_admission.py` enforce
+complete typed source anchors and same-file lexical remainder evidence. The
+closed compare/two-clause grammar records actual owners, and final result limits
+must preserve every required clause. Whole metadata matches identify a file;
+they do not supply body evidence or a body location. The structural registration
+is `anchor.v1-lexical`; semantic remainder is off and its product quality remains
+unvalidated. Existing request deadlines cover bounded source verification.
+
+Supported schema4 reads validate stored originals with the historical NFC rule;
+schema5/6 retain NFKC+casefold validation. A shared read projection also supports
+the declared body-only schema4 variant without creating views or changing bytes.
+Legacy anchor recall is bounded and explicitly incomplete; lexical reindex remains
+an explicit operation. Complete metadata-field eligibility runs before the optional
+candidate limit on every supported format. The 2000-source limit concerns distinct
+returned/materialized source rows; indexed SQL may inspect additional metadata
+under the same request deadline. Modern missing derived tables and selected corrupt
+pointers remain errors.
+
+Mutations use the registered writer transaction. Explicit lexical reindex upgrades
+derived schema fields, while persistent old-writer guards reject the whole stale
+transaction. Vector-cache generations are explicitly built/enabled derivatives;
+epoch/identity defects fall back to the authoritative SQLite rows. Ingest publishes
+new text, vectors and completed file state together. Search excludes pending files.
+
+`serve` and `watch` are explicitly started daemons with their existing guard and
+ownership rules. Temporary request backends and optional rerankers close on errors,
+deadline, cancellation and termination; clients do not kill shared serve. Local
+HTTP applies the remaining total budget to every socket step, including slow
+headers and body. [The module map](docs/MODULE_MAP.md) identifies the implemented
+owners; [execution contracts](docs/execution-plan/CONTRACTS.md) define exact limits.
+
+## 1. Historical v1 component diagram
 
 ```
                  goldmine — one OS process per command (no daemon of our own)
@@ -36,21 +80,20 @@
 │                                                                                    │
 │  ┌──────────────────────── backends (EmbeddingBackend ABC) ────────────────────┐  │
 │  │  llama.py     subprocess llama-server + stdlib HTTP  (text only)            │  │
-│  │  foresight.py gRPC over UDS to ForesightHelper       (text+image+audio)     │  │
 │  │  mock.py      deterministic hash embeddings, in-process (text+image+audio)  │  │
-│  └───────────────┬──────────────────────────────┬─────────────────────┬────────┘  │
-│                  ▼                              ▼                     │           │
-│          llama-server (child)            ForesightHelper          in-process     │
-│          127.0.0.1:<ephemeral>          (external, shared,        deterministic   │
-│          owned by this process,         $TMPDIR socket,           hash vectors    │
-│          killed at exit                 NOT owned by us)                          │
+│  └───────────────┬─────────────────────────────────────────────────────────────┘  │
+│                  ▼                                                    │           │
+│          llama-server (child)                                   in-process     │
+│          127.0.0.1:<ephemeral>                                  deterministic   │
+│          owned by this process,                                 hash vectors    │
+│          killed at exit                                                          │
 │                                                                                    │
 │  store.py — SQLite (WAL, single writer)                                           │
 │  meta │ files │ segments (768×fp16 BLOBs) │ fts5 │ cards │ card_chunks            │
 └───────────────────────────────────────────────────────────────────────────────────┘
    Optional external tools, probed at runtime and never required for the command to
    exit honestly: pdftotext (poppler), textutil (macOS built-in), ffmpeg/ffprobe,
-   whisper-cli + model (stretch ASR hook), llama-server binary, ForesightHelper socket.
+   whisper-cli + model (stretch ASR hook), llama-server binary.
 ```
 
 Design invariant: **the store is the only shared state**. Extraction never writes to the DB;
@@ -78,20 +121,20 @@ extractor dispatch (by kind)
    │  pdf     → pdftotext per page batch, max_pages cap      [extract_pdf]
    │  code    → decode, line-aligned stretches               [chunker.chunk_code]
    │  audio   → ffmpeg 16 kHz mono windows 30 s / hop 25 s   [media]   (embeddable only
-   │  video   → ffmpeg frames every 3 s, aHash ≤ 4-bit dedup [media]    via foresight/mock)
-   │  image   → (metadata only in v1 llama backend)                     [media sniff only]
+   │  video   → ffmpeg frames every 3 s, aHash ≤ 4-bit dedup [media]    via a multimodal
+   │  image   → (metadata only in v1 llama backend)             backend)  [media sniff]
    ▼
 chunker.py ── Chunk(text, loc, loc_end, kind)   (≤ ~1800 chars ≈ 450 tokens, paragraph bounds)
    ▼
 embed: backend.embed_texts(batch of 16) ── fingerprint gate ──► llama-server HTTP
-   ▼                                                            (or foresight/mock)
+   ▼                                                            (or mock)
 store.replace_segments(file_id, segments)   ← ONE transaction per file:
    name row + chunks/pages/frames + fts rows + fp16 vec BLOBs
    files row ← state, capability, detail, info, sha256, extractor_version, indexed_at
 ```
 
 Per-file outcomes are always recorded (verdict 5a): `content_indexed`, `metadata_only`,
-`unsupported`, `failed` — see [SPEC.md § Capability matrix](SPEC.md#7-capability-matrix).
+`unsupported`, `failed` — see [SPEC.md § Capability matrix](SPEC.md#15-capability-matrix-normative-definitions--verdict-5a).
 Deletions (files under a root that vanished) are pruned and reported. Re-ingest of a changed
 file (sha256 mismatch) does **atomic segment replacement**: extract → embed → single
 transaction that deletes the old segments and inserts the new ones.
@@ -175,7 +218,7 @@ markdown to stdout / --out FILE / --json
 
 ```python
 class EmbeddingBackend(ABC):
-    backend_id: str                        # "llama" | "foresight" | "mock"
+    backend_id: str                        # "llama" | "mock"
     def capability(self) -> Capability     # dataclass(text: bool, image: bool, audio: bool)
     def fingerprint_fields(self) -> dict   # model id, sha256, dim, prompts, pooling, norm
     def embed_texts(self, texts: list[str]) -> list[np.ndarray]      # 768-dim, L2-normalized
@@ -190,14 +233,6 @@ class EmbeddingBackend(ABC):
   `/v1/embeddings` is **text-only**: images/audio are metadata-only under this backend.
   Client re-normalizes (L2) defensively; pooling is whatever the GGUF metadata selects
   and is recorded verbatim in the fingerprint.
-* **`foresight` (optional experimental)** — gRPC over Unix socket to the live ForesightHelper
-  (`research.xeno.labs.foresight.launch_agent.proto/RagService`), RPCs `ComputeEmbedding`
-  (text → `repeated double`), `ComputeImageEmbedding(bytes)`, `ComputeAudioEmbedding(bytes)`,
-  `Ping`. Requires the `foresight` extra (`grpcio`, `protobuf`). We are a client of a helper we
-  do not own: no lifecycle management, socket path from config/env, `Ping` for readiness.
-  **Refuses to run against a helper whose `Ping().version` changed since the index was
-  fingerprinted** (recorded in fingerprint fields), because we cannot see the helper's model
-  files to hash them — version string is the only identity we have.
 * **`mock` (offline tests)** — deterministic bag-of-token hashing via `blake2b` (NOT Python
   `hash()`, which is salted per process), 768-dim, L2-normalized; image/audio hashed from
   content bytes. Deterministic across runs and machines, so the whole suite runs offline and
@@ -234,8 +269,6 @@ reindex; never silently switch backends within one index.
   build forces pointless full reindexes on every `brew upgrade` that doesn't change outputs.
   Mitigation: `doctor` WARNs and `status` surfaces a `build_changed` notice when the recorded
   build differs from the installed one, recommending reindex without forcing it.
-* Foresight's fingerprint uses `backend: "foresight"` + helper `Ping().version` in the
-  `model_id` slot (we cannot hash the helper's model files); any version change ⇒ reindex.
 * Files record `extractor_version` (per-file; e.g. `pdftotext@24.08`, `textutil@macOS26.5`,
   `docx-stdlib.v1`). A `doctor`/`status` notice lists counts of files whose extractor version
   differs from current — the user can `goldmine ingest --reindex` to refresh.
@@ -375,7 +408,7 @@ fp16 packing happens in the embedding step (numpy `astype(float16).tobytes()`).
    close the socket (SIGINT path), child killed in `finally`.
 6. **Shutdown**: SIGTERM to the child we spawned, wait ≤ 5 s, SIGKILL. **Only processes we
    spawned** (Popen handles we hold) — never `pkill`/name-matching, so a user-run llama-server
-   or the ForesightHelper is never touched.
+   is never touched.
 
 ### 7.3 Signals
 

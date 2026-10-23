@@ -183,6 +183,101 @@ def write_png(path: Path, rgb: np.ndarray) -> None:
     path.write_bytes(encode_png(rgb))
 
 
+# ----------------------------------------------------------------- exif jpeg
+
+def encode_exif_tiff(make: str, date_original: str, offset: str,
+                      lat_deg: tuple[int, int, int], lat_ref: str,
+                      lon_deg: tuple[int, int, int], lon_ref: str) -> bytes:
+    """Little-endian TIFF payload with IFD0(Make, ExifIFD, GPSIFD),
+    ExifIFD(DateTimeOriginal, OffsetTimeOriginal), GPSIFD(refs + 3 rationals).
+    Deterministic layout: IFD0 @8, GPS @G, Exif @X, strings/rationals after.
+    The camera fields are REAL stored metadata this fixture now genuinely
+    carries (2026-10-23 protocol revision D4); the product reads them with
+    its bounded two-IFD parser."""
+    def ascii_bytes(value: str) -> bytes:
+        raw = value.encode("ascii") + b"\x00"
+        return raw + b"\x00" * ((4 - len(raw) % 4) % 4)
+
+    ifd0_count, gps_count, exif_count = 3, 4, 2
+    ifd0_off = 8
+    gps_off = ifd0_off + 2 + 12 * ifd0_count + 4
+    exif_off = gps_off + 2 + 12 * gps_count + 4
+    data_off = exif_off + 2 + 12 * exif_count + 4
+    make_raw = ascii_bytes(make)
+    date_raw = ascii_bytes(date_original)
+    off_raw = ascii_bytes(offset)
+    latr_raw = b"".join(struct.pack("<II", n, 1) for n in lat_deg)
+    lonr_raw = b"".join(struct.pack("<II", n, 1) for n in lon_deg)
+    make_off = data_off
+    date_off = make_off + len(make_raw)
+    off_off = date_off + len(date_raw)
+    latr_off = off_off + len(off_raw)
+    lonr_off = latr_off + len(latr_raw)
+    payload = bytearray(b"II\x2a\x00" + struct.pack("<I", ifd0_off))
+
+    def entry(tag, kind, size, value_bytes_or_offset, inline_offset):
+        # EXIF sizes: kind 2 ASCII size IS the byte length; kind 4 LONG size is
+        # a count (1 -> the four value bytes inline); kind 5 RATIONAL count 3
+        # is always external. Pointers are LONG(1) values, never offsets-to-offset.
+        out = struct.pack("<HHI", tag, kind, size)
+        if (kind == 2 and size <= 4) or (kind in (3, 4) and size == 1):
+            out += value_bytes_or_offset[:4] + b"\x00" * (4 - min(len(value_bytes_or_offset), 4))
+        else:
+            out += struct.pack("<I", inline_offset)
+        return out
+
+    payload += struct.pack("<H", ifd0_count)
+    payload += entry(0x010F, 2, len(make.encode("ascii")) + 1, b"", make_off)   # Make
+    payload += entry(0x8769, 4, 1, struct.pack("<I", exif_off), 0)               # ExifIFD pointer
+    payload += entry(0x8825, 4, 1, struct.pack("<I", gps_off), 0)                # GPSIFD pointer
+    payload += struct.pack("<I", 0)
+    payload += struct.pack("<H", gps_count)
+    payload += entry(0x0001, 2, 2, ascii_bytes(lat_ref)[:4], 0)                  # GPSLatitudeRef
+    payload += entry(0x0002, 5, 3, b"", latr_off)                                # GPSLatitude
+    payload += entry(0x0003, 2, 2, ascii_bytes(lon_ref)[:4], 0)                  # GPSLongitudeRef
+    payload += entry(0x0004, 5, 3, b"", lonr_off)                                # GPSLongitude
+    payload += struct.pack("<I", 0)
+    payload += struct.pack("<H", exif_count)
+    payload += entry(0x9003, 2, len(date_original) + 1, b"", date_off)           # DateTimeOriginal
+    payload += entry(0x9011, 2, len(offset) + 1, b"", off_off)                   # OffsetTimeOriginal
+    payload += struct.pack("<I", 0)
+    payload += make_raw + date_raw + off_raw + latr_raw + lonr_raw
+    return bytes(payload)
+
+
+def write_exif_jpeg(path: Path, rgb: np.ndarray, exif_tiff: bytes) -> None:
+    """Deterministic pixels -> sips baseline JPEG -> EXIF APP1 spliced after SOI.
+    Requires the native sips tool (recorded with requires='sips' in the manifest)."""
+    png_tmp = path.with_suffix(".src.png")
+    write_png(png_tmp, rgb)
+    argv = ["/usr/bin/sips", "-s", "format", "jpeg", "-s", "formatOptions", "90%",
+            str(png_tmp), "--out", str(path)]
+    result = subprocess.run(argv, capture_output=True, text=True)
+    png_tmp.unlink()
+    if result.returncode != 0 or not path.is_file():
+        raise RuntimeError(f"sips jpeg conversion failed: {result.stderr[:120]}")
+    jpeg = path.read_bytes()
+    # sips emits its own EXIF/XMP APP1; a second Exif block is an ambiguity
+    # this product's bounded reader correctly rejects. Keep every sips
+    # segment EXCEPT APP1, then splice exactly one Exif APP1 right after SOI.
+    kept, i = bytearray(), 2
+    while i + 4 <= len(jpeg):
+        assert jpeg[i] == 0xFF, "malformed sips jpeg"
+        marker = jpeg[i + 1]
+        if marker in (0xD8, 0x01) or 0xD0 <= marker <= 0xD7:
+            kept += jpeg[i:i + 2]; i += 2; continue
+        if marker in (0xD9, 0xDA):
+            kept += jpeg[i:]; break
+        size = int.from_bytes(jpeg[i + 2:i + 4], "big")
+        if marker != 0xE1:
+            kept += jpeg[i:i + 2 + size]
+        i += 2 + size
+    else:
+        raise RuntimeError("sips jpeg had no scan terminator")
+    app1 = b"Exif\x00\x00" + exif_tiff
+    path.write_bytes(jpeg[:2] + b"\xff\xe1" + struct.pack(">H", len(app1) + 2) + app1 + bytes(kept))
+
+
 # ----------------------------------------------------------------- pdf raster
 
 def make_pdf_pages(path: Path, pages: list[tuple[str, object]]) -> None:
@@ -647,14 +742,29 @@ eight seconds near Cassiopeia.</p>
     # v2 note (B5): photos must clear the DigUp minImageSide 256 floor — a
     # 240px photo is refused BY DESIGN now, which would tank the image:photo
     # coverage floor for a policy reason, not a pipeline bug.
+    # 2026-10-23 protocol revision D4 (user decision "重新做呀"): the two
+    # photos are real JPEGs whose EXIF genuinely carries DateTimeOriginal,
+    # camera Make and GPS coordinates. The audit-documented random-pixel PNGs
+    # with no metadata chunks are retired; labels below state the exact
+    # stored values so questions media-037..040 ask about REAL stored data.
     photo_rgb = rng.integers(0, 256, size=(256, 320, 3), dtype=np.uint8)
-    write_png(photos / "photo-harbor-bridge.png", photo_rgb)
-    record("images/photos/photo-harbor-bridge.png", "image")
-    write_png(
-        photos / "photo-lighthouse.png",
-        rng.integers(0, 256, size=(256, 320, 3), dtype=np.uint8),
+    write_exif_jpeg(
+        photos / "photo-harbor-bridge.jpg", photo_rgb,
+        encode_exif_tiff("Fujifilm", "2026:10:14 16:42:11", "+08:00",
+                         (34, 41, 12), "N", (135, 28, 47), "E"),
     )
-    record("images/photos/photo-lighthouse.png", "image")
+    record("images/photos/photo-harbor-bridge.jpg", "image", requires="sips")
+    files[-1]["exif"] = {"make": "Fujifilm", "taken": "2026-10-14 16:42:11 +08:00",
+                         "gps": "34.6867 N, 135.4797 E"}
+    write_exif_jpeg(
+        photos / "photo-lighthouse.jpg",
+        rng.integers(0, 256, size=(256, 320, 3), dtype=np.uint8),
+        encode_exif_tiff("Canon", "2026:10:14 09:26:03", "+08:00",
+                         (35, 18, 33), "N", (139, 47, 12), "E"),
+    )
+    record("images/photos/photo-lighthouse.jpg", "image", requires="sips")
+    files[-1]["exif"] = {"make": "Canon", "taken": "2026-10-14 09:26:03 +08:00",
+                         "gps": "35.3092 N, 139.7867 E"}
 
     # -- audio / video ------------------------------------------------------
     audio = out / "audio"

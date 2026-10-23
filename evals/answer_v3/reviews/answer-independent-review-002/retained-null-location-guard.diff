@@ -1,0 +1,11 @@
+--- failed-attempt-001/curate.py
++++ successful/curate.py
+@@ -136,7 +136,7 @@
+             assert sha(p) == v["sha256"]
+             text = p.read_text(); assert text[s["start_char"]:s["end_char"]] == s["text"]
+             assert hashlib.sha256(s["text"].encode()).hexdigest() == s["sha256"]
+-            if e["location"]["unit"] == "line":
++            if e["location"] is not None and e["location"]["unit"] == "line":
+                 assert text[:s["start_char"]].count("\n") + 1 == e["location"]["start"]
+                 assert text[:s["end_char"]].count("\n") + 1 == e["location"]["end"]
+             readback.append({"question_id": q["id"], "evidence_id": e["evidence_id"], "path": e["path"],

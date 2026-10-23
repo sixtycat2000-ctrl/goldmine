@@ -1,0 +1,511 @@
+[
+  {
+    "id": "av3-trap-001",
+    "original_dev_id": "noise-random_terms-009",
+    "question": "海边自行车道那座新桥的竣工验收荷载是多少？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No identified bridge engineering, completion, or acceptance-load record exists in the122-source public corpus. Landscape/river filenames do not establish a bridge load.",
+    "all175_view_discriminator_results": {
+      "竣工验收荷载": [],
+      "自行车道": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-002",
+    "original_dev_id": "noise-near_topic-010",
+    "question": "What is the CRC-32 of the original payload in backup_2025_09_17.bin?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The named backup payload is absent from assets and all views; zlib checksum code defines an algorithm but cannot determine a CRC for missing bytes.",
+    "all175_view_discriminator_results": {
+      "backup_2025_09_17.bin": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/cpython/Modules/zlibmodule.c",
+        "asset_path": "assets/text/cpython/Modules/zlibmodule.c",
+        "asset_sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+        "view_id": "body",
+        "view_path": "views/text/cpython/Modules/zlibmodule.c.txt",
+        "view_sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+        "start_char": 56596,
+        "end_char": 57009,
+        "line_start": 1869,
+        "line_end": 1883,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 2140
+        },
+        "text": "zlib.crc32 -> unsigned_int\n\n    data: Py_buffer\n    value: unsigned_int(bitwise=True) = 0\n        Starting value of the checksum.\n    /\n\nCompute a CRC-32 checksum of data.\n\nThe returned checksum is an integer.\n[clinic start generated code]*/\n\nstatic unsigned int\nzlib_crc32_impl(PyObject *module, Py_buffer *data, unsigned int value)\n/*[clinic end generated code: output=b217562e4fe6d6a6 input=1229cb2fb5ea948a]*/",
+        "sha256": "499d9ca101958f9c99d8806c06bf1a01dfe5d8af6baceaf234dec66591ba466c"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-003",
+    "original_dev_id": "noise-conflict_id-017",
+    "question": "requests.merge_setting_all 合并三个会话配置时，空值的优先级是什么？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "Frozen sessions.py defines the two-setting merge_setting helper, not merge_setting_all or three-way precedence.",
+    "all175_view_discriminator_results": {
+      "merge_setting_all": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/requests/src/requests/sessions.py",
+        "asset_path": "assets/text/requests/src/requests/sessions.py",
+        "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "view_id": "body",
+        "view_path": "views/text/requests/src/requests/sessions.py.txt",
+        "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "start_char": 1413,
+        "end_char": 2417,
+        "line_start": 61,
+        "line_end": 86,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 831
+        },
+        "text": "def merge_setting(request_setting, session_setting, dict_class=OrderedDict):\n    \"\"\"Determines appropriate setting for a given request, taking into account\n    the explicit setting on that request, and the setting in the session. If a\n    setting is a dictionary, they will be merged together using `dict_class`\n    \"\"\"\n\n    if session_setting is None:\n        return request_setting\n\n    if request_setting is None:\n        return session_setting\n\n    # Bypass if not a dictionary (e.g. verify)\n    if not (\n        isinstance(session_setting, Mapping) and isinstance(request_setting, Mapping)\n    ):\n        return request_setting\n\n    merged_setting = dict_class(to_key_val_list(session_setting))\n    merged_setting.update(to_key_val_list(request_setting))\n\n    # Remove keys that are set to None. Extract keys first to avoid altering\n    # the dictionary during iteration.\n    none_keys = [k for (k, v) in merged_setting.items() if v is None]\n    for key in none_keys:\n        del merged_setting[key]",
+        "sha256": "6130b97585cc76adb150dfa13af2f42147de35acb6a123a6d038b2c8fed0081e"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-004",
+    "original_dev_id": "noise-random_terms-004",
+    "question": "Find the replacement part number for the cracked hinge on the school observatory dome.",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No school observatory maintenance record, hinge specification, or replacement-parts inventory is present.",
+    "all175_view_discriminator_results": {
+      "school observatory dome": [],
+      "cracked hinge": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-005",
+    "original_dev_id": "noise-near_topic-006",
+    "question": "给出公司 SearchPanel 组件里所有计算属性的实际依赖关系图。",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The Vue computed guide supplies generic author/books/name examples. No SearchPanel company component or actual dependency graph is supplied.",
+    "all175_view_discriminator_results": {
+      "SearchPanel": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/vue-zh/src/guide/essentials/computed.md",
+        "asset_path": "assets/text/vue-zh/src/guide/essentials/computed.md",
+        "asset_sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+        "view_id": "body",
+        "view_path": "views/text/vue-zh/src/guide/essentials/computed.md.txt",
+        "view_sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+        "start_char": 394,
+        "end_char": 735,
+        "line_start": 13,
+        "line_end": 32,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 383
+        },
+        "text": "模板中的表达式虽然方便，但也只能用来做简单的操作。如果在模板中写太多逻辑，会让模板变得臃肿，难以维护。比如说，我们有这样一个包含嵌套数组的对象：\n\n<div class=\"options-api\">\n\n```js\nexport default {\n  data() {\n    return {\n      author: {\n        name: 'John Doe',\n        books: [\n          'Vue 2 - Advanced Guide',\n          'Vue 3 - Basic Guide',\n          'Vue 4 - The Mystery'\n        ]\n      }\n    }\n  }\n}\n```",
+        "sha256": "c7bc61e64d65f829dbc7cd73bfa41f56f96b5d4992d18e02a4d282ea4ce23e7e"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-006",
+    "original_dev_id": "noise-conflict_id-004",
+    "question": "What certificate verification guarantees are specified for ssl.TLSVersion.TLSv1_9?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The frozen TLSVersion class ends its concrete protocol members at TLSv1_3. No TLSv1_9 member or its certificate guarantees are defined.",
+    "all175_view_discriminator_results": {
+      "TLSv1_9": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/cpython/Lib/ssl.py",
+        "asset_path": "assets/text/cpython/Lib/ssl.py",
+        "asset_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "view_id": "body",
+        "view_path": "views/text/cpython/Lib/ssl.py.txt",
+        "view_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "start_char": 4789,
+        "end_char": 5093,
+        "line_start": 159,
+        "line_end": 167,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1476
+        },
+        "text": "@_simple_enum(_IntEnum)\nclass TLSVersion:\n    MINIMUM_SUPPORTED = _ssl.PROTO_MINIMUM_SUPPORTED\n    SSLv3 = _ssl.PROTO_SSLv3\n    TLSv1 = _ssl.PROTO_TLSv1\n    TLSv1_1 = _ssl.PROTO_TLSv1_1\n    TLSv1_2 = _ssl.PROTO_TLSv1_2\n    TLSv1_3 = _ssl.PROTO_TLSv1_3\n    MAXIMUM_SUPPORTED = _ssl.PROTO_MAXIMUM_SUPPORTED",
+        "sha256": "29fa7279218b409460d60fc3c2417a88225638f71696e27ff9408677aa467891"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-007",
+    "original_dev_id": "noise-random_terms-006",
+    "question": "Which conductor led the second encore at the Harbor Chamber Orchestra’s spring benefit?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No Harbor Chamber Orchestra concert/programme/performance record is supplied. All20 official ASR transcripts were read and do not report this event.",
+    "all175_view_discriminator_results": {
+      "Harbor Chamber Orchestra": [],
+      "second encore": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-008",
+    "original_dev_id": "noise-near_topic-018",
+    "question": "Which private package mirror did yesterday’s uv production lock operation contact first?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "uv guides describe workflows and isolated environments, not a private production lock-run trace or yesterday first-contact mirror.",
+    "all175_view_discriminator_results": {
+      "yesterday": [],
+      "private package mirror": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "compound/uv/docs/guides/tools.md",
+        "asset_path": "assets/compound/uv/docs/guides/tools.md",
+        "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "view_id": "original-lines",
+        "view_path": "views/compound/uv/docs/guides/tools.md.txt",
+        "view_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+        "start_char": 901,
+        "end_char": 1341,
+        "line_start": 49,
+        "line_end": 56,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 313
+        },
+        "text": "Tools are installed into temporary, isolated environments when using `uvx`.\n\n!!! note\n\n    If you are running a tool in a [_project_](../concepts/projects/index.md) and the tool requires that\n    your project is installed, e.g., when using `pytest` or `mypy`, you'll want to use\n    [`uv run`](./projects.md#running-commands) instead of `uvx`. Otherwise, the tool will be run in\n    a virtual environment that is isolated from your project.",
+        "sha256": "5cf22b6b047521fa0619ff6b42a9d88c70262bf4e6d48abfc456f8b7b46518af"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": true
+  },
+  {
+    "id": "av3-trap-009",
+    "original_dev_id": "noise-conflict_id-020",
+    "question": "Which retry schedule is guaranteed by ssl.create_default_context_v2?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The frozen ssl.py defines create_default_context without the _v2 suffix. Context construction does not supply the requested retry schedule.",
+    "all175_view_discriminator_results": {
+      "create_default_context_v2": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/cpython/Lib/ssl.py",
+        "asset_path": "assets/text/cpython/Lib/ssl.py",
+        "asset_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "view_id": "body",
+        "view_path": "views/text/cpython/Lib/ssl.py.txt",
+        "view_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+        "start_char": 21612,
+        "end_char": 22224,
+        "line_start": 682,
+        "line_end": 695,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 1476
+        },
+        "text": "def create_default_context(purpose=Purpose.SERVER_AUTH, *, cafile=None,\n                           capath=None, cadata=None):\n    \"\"\"Create a SSLContext object with default settings.\n\n    NOTE: The protocol and settings may change anytime without prior\n          deprecation. The values represent a fair balance between maximum\n          compatibility and security.\n    \"\"\"\n    if not isinstance(purpose, _ASN1Object):\n        raise TypeError(purpose)\n\n    # SSLContext sets OP_NO_SSLv2, OP_NO_SSLv3, OP_NO_COMPRESSION,\n    # OP_CIPHER_SERVER_PREFERENCE, OP_SINGLE_DH_USE and OP_SINGLE_ECDH_USE\n    # by default.",
+        "sha256": "ddf48218506e265d9a22c52a6f7ae8a338e74ef8279807dabb103be2cb6e11ed"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-010",
+    "original_dev_id": "noise-random_terms-003",
+    "question": "马拉松报名编号 M240681 对应的选手最后一公里用了多久？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No M240681 race registration or runner split-timing record is present.",
+    "all175_view_discriminator_results": {
+      "M240681": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-011",
+    "original_dev_id": "noise-near_topic-007",
+    "question": "このプロジェクトの .env.staging に保存された配信先ドメインは何ですか？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The Vite guide gives .env.staging containing VITE_APP_TITLE=My App(staging), not an actual deployment-domain setting for the user project.",
+    "all175_view_discriminator_results": {
+      "配信先ドメイン": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/vite-ja/guide/env-and-mode.md",
+        "asset_path": "assets/text/vite-ja/guide/env-and-mode.md",
+        "asset_sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+        "view_id": "body",
+        "view_path": "views/text/vite-ja/guide/env-and-mode.md.txt",
+        "view_sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+        "start_char": 6102,
+        "end_char": 6226,
+        "line_start": 188,
+        "line_end": 197,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 235
+        },
+        "text": "\n```bash\nvite build --mode staging\n```\n\nまた、`.env.staging` ファイルを作成します:\n\n```[.env.staging]\nVITE_APP_TITLE=My App (staging)\n```",
+        "sha256": "d30f7a1caf8f236509796275049f4ea2109b06fe398ac11b25514b275e9c60f8"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-012",
+    "original_dev_id": "noise-conflict_id-016",
+    "question": "Which redirect policy is selected by Session.resolve_redirects_v4 by default?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "Frozen sessions.py defines resolve_redirects, not resolve_redirects_v4. A real method cannot establish a nonexistent versioned method default.",
+    "all175_view_discriminator_results": {
+      "resolve_redirects_v4": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/requests/src/requests/sessions.py",
+        "asset_path": "assets/text/requests/src/requests/sessions.py",
+        "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "view_id": "body",
+        "view_path": "views/text/requests/src/requests/sessions.py.txt",
+        "view_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+        "start_char": 5465,
+        "end_char": 5694,
+        "line_start": 159,
+        "line_end": 169,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 831
+        },
+        "text": "    def resolve_redirects(\n        self,\n        resp,\n        req,\n        stream=False,\n        timeout=None,\n        verify=True,\n        cert=None,\n        proxies=None,\n        yield_requests=False,\n        **adapter_kwargs,",
+        "sha256": "b5305c96a3e6e05e935645768b7816dcdd0a0aee5c97370cbca9a2a00a0ad2a5"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-013",
+    "original_dev_id": "noise-random_terms-014",
+    "question": "Which sailmaker repaired the torn spinnaker on boat registration KX-472?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No KX-472 registration service history, sail-repair invoice, or named sailmaker record is supplied.",
+    "all175_view_discriminator_results": {
+      "KX-472": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-014",
+    "original_dev_id": "noise-near_topic-003",
+    "question": "上周运行 Click 导入命令时，一共有多少用户在确认提示处选择了取消？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "Click confirmation/Abort behavior is source code and examples; no last-week import-command telemetry or cancellation counts are present.",
+    "all175_view_discriminator_results": {
+      "上周": [],
+      "多少用户": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/click/src/click/termui.py",
+        "asset_path": "assets/text/click/src/click/termui.py",
+        "asset_sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+        "view_id": "body",
+        "view_path": "views/text/click/src/click/termui.py.txt",
+        "view_sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+        "start_char": 6341,
+        "end_char": 6806,
+        "line_start": 198,
+        "line_end": 207,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 784
+        },
+        "text": "    \"\"\"Prompts for confirmation (yes/no question).\n\n    If the user aborts the input by sending a interrupt signal this\n    function will catch it and raise a :exc:`Abort` exception.\n\n    :param text: the question to ask.\n    :param default: The default value to use when no input is given. If\n        ``None``, repeat until input is given.\n    :param abort: if this is set to `True` a negative answer aborts the\n                  exception by raising :exc:`Abort`.",
+        "sha256": "85048bb24fed8ca808189b7c35e7ab0e00e9cd2e2fcad11c72da3d2ec6f2b580"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-015",
+    "original_dev_id": "noise-conflict_id-009",
+    "question": "ctypes.c_int128 在这个版本里怎样选择底层的原生整数类型？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The frozen ctypes initializer selects fixed widths through c_int64/c_uint64. No c_int128 selection rule is defined.",
+    "all175_view_discriminator_results": {
+      "c_int128": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/cpython/Lib/ctypes/__init__.py",
+        "asset_path": "assets/text/cpython/Lib/ctypes/__init__.py",
+        "asset_sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+        "view_id": "body",
+        "view_path": "views/text/cpython/Lib/ctypes/__init__.py.txt",
+        "view_sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+        "start_char": 17618,
+        "end_char": 18022,
+        "line_start": 560,
+        "line_end": 570,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 579
+        },
+        "text": "c_int8 = c_byte\nc_uint8 = c_ubyte\nfor kind in [c_short, c_int, c_long, c_longlong]:\n    if sizeof(kind) == 2: c_int16 = kind\n    elif sizeof(kind) == 4: c_int32 = kind\n    elif sizeof(kind) == 8: c_int64 = kind\nfor kind in [c_ushort, c_uint, c_ulong, c_ulonglong]:\n    if sizeof(kind) == 2: c_uint16 = kind\n    elif sizeof(kind) == 4: c_uint32 = kind\n    elif sizeof(kind) == 8: c_uint64 = kind\ndel(kind)",
+        "sha256": "c119558468eda5e34d6d577980ca7b4ed400d3cfc68c733673361265ef6cbaad"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-016",
+    "original_dev_id": "noise-random_terms-013",
+    "question": "那只装有古地图的木箱在博物馆搬迁时投保了多少钱？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No museum relocation insurance policy or antique-map crate valuation is supplied. Photo filenames/EXIF cannot establish insurance amount.",
+    "all175_view_discriminator_results": {
+      "古地图": [],
+      "投保": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-017",
+    "original_dev_id": "noise-near_topic-017",
+    "question": "Rich 在这台终端绘制库存表格时，每一帧的显卡功耗测量值是多少？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "Rich table/progress guides and screenshots describe rendering. No terminal-specific framewise GPU-power measurements exist.",
+    "all175_view_discriminator_results": {
+      "显卡功耗": [],
+      "库存表格": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "compound/rich/docs/source/tables.rst",
+        "asset_path": "assets/compound/rich/docs/source/tables.rst",
+        "asset_sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+        "view_id": "original-lines",
+        "view_path": "views/compound/rich/docs/source/tables.rst.txt",
+        "view_sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+        "start_char": 324,
+        "end_char": 989,
+        "line_start": 8,
+        "line_end": 22,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 171
+        },
+        "text": "Here's an example::\n\n    from rich.console import Console\n    from rich.table import Table\n\n    table = Table(title=\"Star Wars Movies\")\n\n    table.add_column(\"Released\", justify=\"right\", style=\"cyan\", no_wrap=True)\n    table.add_column(\"Title\", style=\"magenta\")\n    table.add_column(\"Box Office\", justify=\"right\", style=\"green\")\n\n    table.add_row(\"Dec 20, 2019\", \"Star Wars: The Rise of Skywalker\", \"$952,110,690\")\n    table.add_row(\"May 25, 2018\", \"Solo: A Star Wars Story\", \"$393,151,347\")\n    table.add_row(\"Dec 15, 2017\", \"Star Wars Ep. V111: The Last Jedi\", \"$1,332,539,889\")\n    table.add_row(\"Dec 16, 2016\", \"Rogue One: A Star Wars Story\", \"$1,332,439,889\")",
+        "sha256": "6bf8e067c03c9b304e4bb5bd1d5b83c2a7942e157884a0a9c18885905bb5103d"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-018",
+    "original_dev_id": "noise-conflict_id-005",
+    "question": "请给出 uuid.uuid9 的命名空间散列算法和碰撞上限。",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "The frozen uuid implementation defines uuid1/3/4/5. No uuid9 namespace algorithm or collision guarantee is provided.",
+    "all175_view_discriminator_results": {
+      "uuid9": []
+    },
+    "related_source_context": [
+      {
+        "source_path": "text/cpython/Lib/uuid.py",
+        "asset_path": "assets/text/cpython/Lib/uuid.py",
+        "asset_sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+        "view_id": "body",
+        "view_path": "views/text/cpython/Lib/uuid.py.txt",
+        "view_sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+        "start_char": 0,
+        "end_char": 471,
+        "line_start": 1,
+        "line_end": 9,
+        "source_location": {
+          "unit": "line",
+          "start": 1,
+          "end": 793
+        },
+        "text": "r\"\"\"UUID objects (universally unique identifiers) according to RFC 4122.\n\nThis module provides immutable UUID objects (class UUID) and the functions\nuuid1(), uuid3(), uuid4(), uuid5() for generating version 1, 3, 4, and 5\nUUIDs as specified in RFC 4122.\n\nIf all you want is a unique ID, you should probably call uuid1() or uuid4().\nNote that uuid1() may compromise privacy since it creates a UUID containing\nthe computer's network address.  uuid4() creates a random UUID.",
+        "sha256": "8a8b0569784ff2c6081bb325dc889a9e967bbb4c6346696ac57e55f352b0b51b"
+      }
+    ],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-019",
+    "original_dev_id": "noise-random_terms-011",
+    "question": "我寄存的银色中提琴目前放在哪个储物柜？",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "No personal instrument check-in or storage-locker assignment is present; public photo/media assets do not identify the user instrument.",
+    "all175_view_discriminator_results": {
+      "银色中提琴": [],
+      "储物柜": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  },
+  {
+    "id": "av3-trap-020",
+    "original_dev_id": "noise-near_topic-002",
+    "question": "Which certificate fingerprint did our checkout service see during its Requests TLS failure on 11 August 2025?",
+    "independent_verdict": "NO_SUPPORTED_ANSWER_IN_SUPPLIED_CORPUS",
+    "reason": "Requests TLS guidance and examples provide no checkout-service incident log from11August2025 and no observed incident certificate fingerprint.",
+    "all175_view_discriminator_results": {
+      "checkout service": [],
+      "11 August 2025": []
+    },
+    "related_source_context": [],
+    "absence_basis": "Source inventory/scope and relevant actual source inspection, supplemented by all-view discriminator search; absence of literal terms alone is not treated as proof.",
+    "prior_independent_fixed_sample_review_present": false
+  }
+]

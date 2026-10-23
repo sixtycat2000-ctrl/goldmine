@@ -1,0 +1,134 @@
+{
+  "status": "ACQUISITION_DEFECTS_IDENTIFIED_BEFORE_LABELING",
+  "invalid_capture_ids": [
+    "02",
+    "07",
+    "08",
+    "13",
+    "16"
+  ],
+  "all_initial_captures": [
+    {
+      "id": "01",
+      "asset": "assets/root/screenshots/httpx-timeouts.png",
+      "asset_sha256": "9308d0b1cb96823ced5d1381c9f56a3fcd38ab9649923ea030a3063da91943e5",
+      "native_ocr_blocks": 18
+    },
+    {
+      "id": "02",
+      "asset": "assets/root/screenshots/httpx-connect-timeout.png",
+      "asset_sha256": "911ba344e8e9494ce7696a1d9124c30cd32243b720266c0d39a307460e8cf827",
+      "native_ocr_blocks": 0
+    },
+    {
+      "id": "03",
+      "asset": "assets/root/screenshots/httpx-limits.png",
+      "asset_sha256": "2a5d656d5b5235998edfa778ca0f59b1b5665d71eea4a693cdec144f4836d0d2",
+      "native_ocr_blocks": 8
+    },
+    {
+      "id": "04",
+      "asset": "assets/root/screenshots/httpx-http2.png",
+      "asset_sha256": "bb7b594a13f845a65c7b318434a4a378527639e297bb9b59ecc58c5e475d2328",
+      "native_ocr_blocks": 11
+    },
+    {
+      "id": "05",
+      "asset": "assets/root/screenshots/pydantic-strict.png",
+      "asset_sha256": "6f89841ed1bd2eff0f1ba992822fb14409a0216e4a31be92d985bdee14ad5bc4",
+      "native_ocr_blocks": 18
+    },
+    {
+      "id": "06",
+      "asset": "assets/root/screenshots/pydantic-fields.png",
+      "asset_sha256": "959fcbc6f3065fb6a72aa92f25de930e8de4cc1f079f5f5e4623db27eaf03ddd",
+      "native_ocr_blocks": 16
+    },
+    {
+      "id": "07",
+      "asset": "assets/root/screenshots/pydantic-python-dump.png",
+      "asset_sha256": "5df3e8dea436c98f05e891ff04e89fe23a60c91f25e7b3dcd40ff3f5df2c1478",
+      "native_ocr_blocks": 4
+    },
+    {
+      "id": "08",
+      "asset": "assets/root/screenshots/pydantic-unions.png",
+      "asset_sha256": "16c608e3b771702e5adb0fd66d4704451ffb56adb9b5a8f844a5e29b729acc84",
+      "native_ocr_blocks": 0
+    },
+    {
+      "id": "09",
+      "asset": "assets/root/screenshots/rich-markup.png",
+      "asset_sha256": "14305e8b7321d4e5e5d2668281fbf92743d8ea894bfcb1b59bdbdba0aaec8cee",
+      "native_ocr_blocks": 10
+    },
+    {
+      "id": "10",
+      "asset": "assets/root/screenshots/rich-styles.png",
+      "asset_sha256": "b7a24412f7d1584124e12e5c6a4fdf9b0928ee18e6d50286a46643ae386e8c5d",
+      "native_ocr_blocks": 12
+    },
+    {
+      "id": "11",
+      "asset": "assets/root/screenshots/rich-tables.png",
+      "asset_sha256": "568fa7d3e41184707ec398ea8c084616c059927fb0ebd21c29ced91662d3980a",
+      "native_ocr_blocks": 25
+    },
+    {
+      "id": "12",
+      "asset": "assets/root/screenshots/rich-progress.png",
+      "asset_sha256": "59d3f90a130f374641455a6678aa7ff342114cb168b5108e85cee7e437714e9a",
+      "native_ocr_blocks": 17
+    },
+    {
+      "id": "13",
+      "asset": "assets/root/screenshots/uv-projects.png",
+      "asset_sha256": "3af75aa2d3726abab498a7a876c1a8a90035e269a459eb05c3aaa9e937f943de",
+      "native_ocr_blocks": 0
+    },
+    {
+      "id": "14",
+      "asset": "assets/root/screenshots/uv-tools.png",
+      "asset_sha256": "050d825a2d0bacc5d91468766ca12b92d558d460c8ac64cd136783a5d5f4f12d",
+      "native_ocr_blocks": 15
+    },
+    {
+      "id": "15",
+      "asset": "assets/root/screenshots/uv-environments.png",
+      "asset_sha256": "4ea93a67cd13dc389a24458354cbdf77c0f83f63bf3eba49eac6a2f5c3757fea",
+      "native_ocr_blocks": 17
+    },
+    {
+      "id": "16",
+      "asset": "assets/root/screenshots/typer-help-panels.png",
+      "asset_sha256": "3b3bb09d8159b0358c65a19611da9be15e609f3b86e0a88308ec887641f1cb78",
+      "native_ocr_blocks": 0
+    },
+    {
+      "id": "17",
+      "asset": "assets/root/screenshots/typer-context.png",
+      "asset_sha256": "3dc701b0e837f986fd21e44fa35be50306eae6839ae273816baa544a9c12b3d7",
+      "native_ocr_blocks": 15
+    },
+    {
+      "id": "18",
+      "asset": "assets/root/screenshots/pytest-monkeypatch.png",
+      "asset_sha256": "550019956f595ec6becd0900306691ce955fc2951fb1697253dc164798e475df",
+      "native_ocr_blocks": 23
+    },
+    {
+      "id": "19",
+      "asset": "assets/root/screenshots/pytest-capture.png",
+      "asset_sha256": "a3cf23973a46aaa9d46209adf8719c3c9472ad5866f5d0b37fcda533924d6fc1",
+      "native_ocr_blocks": 20
+    },
+    {
+      "id": "20",
+      "asset": "assets/root/screenshots/pytest-tmp.png",
+      "asset_sha256": "a087468d6f2177d1a48923d468a7a91bd46b58cea8318b2f1dd700ca610adb0b",
+      "native_ocr_blocks": 26
+    }
+  ],
+  "raw_ocr_sha256": "6cbd94fcb7c73cb057af0268a1942345d65d53782a4d438a0684d31dfd0460f8",
+  "method": "view_image original pixels; target absent in blank captures, despite preexisting DOM receipt. Requested recapture of same source/questions, not recognition-based case selection."
+}

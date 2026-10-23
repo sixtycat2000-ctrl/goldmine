@@ -1,0 +1,302 @@
+[
+  {
+    "source_path": "compound/fastapi/docs/en/docs/tutorial/background-tasks.md",
+    "asset_sha256": "7a34e7a4a7bd2cb9e0b465588b77cf007b0a5c8bdcf7530ff3619ff6b3642468",
+    "verified": true
+  },
+  {
+    "source_path": "compound/fastapi/docs/en/docs/tutorial/middleware.md",
+    "asset_sha256": "58cb232d288a5bdfa6f91680f6615520748884e17463059a1f28e78273563c39",
+    "verified": true
+  },
+  {
+    "source_path": "compound/flask/docs/async-await.rst",
+    "asset_sha256": "3bd27302f2664390c705b0f72bc4f84787bb7011ef81a298d65caf2e2789af29",
+    "verified": true
+  },
+  {
+    "source_path": "compound/flask/docs/errorhandling.rst",
+    "asset_sha256": "6bdb91785ba1cc5e70a6a12bfddd3035d63ab89a6ddef10746cfa61246bdb034",
+    "verified": true
+  },
+  {
+    "source_path": "compound/httpx/docs/advanced/timeouts.md",
+    "asset_sha256": "48959a587ecc6430f9051ab1b1c76fcebc3f3e95ec01199281aab813a2dcfaa1",
+    "verified": true
+  },
+  {
+    "source_path": "compound/httpx/docs/quickstart.md",
+    "asset_sha256": "c911c7def119041a4ad2b436548eacc00a825ee5cb5c234b85a8e04c8da64811",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pip-tools/README.md",
+    "asset_sha256": "3cc6f4f4bee7ef2b87f11a274728cf02744e65c41cbe9dc19fc5c5fdacbf31ea",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pip-tools/piptools/scripts/compile.py",
+    "asset_sha256": "674585adbb50d5298a05e9a918fafa46c6e02ebf3a405c5ad7b2c929fd0fb9d9",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pip/docs/html/topics/caching.md",
+    "asset_sha256": "92b8dfa54cd11f8c62381038455995a0c6c324c64254b9e52c795952b5cf5241",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pip/docs/html/topics/repeatable-installs.md",
+    "asset_sha256": "d79209cdae8317b863ab680adbbde78dbbe7d5f25616a17929309d786988ecbf",
+    "verified": true
+  },
+  {
+    "source_path": "compound/poetry/docs/dependency-specification.md",
+    "asset_sha256": "92cef58e1599af6197fb9e4d3219ed14513319844bbaa04e1c29ac6574e9210c",
+    "verified": true
+  },
+  {
+    "source_path": "compound/poetry/docs/managing-environments.md",
+    "asset_sha256": "c0421f9ca65f7b85d0100252f40f29ed3fd92d4acf559b5be7f26f4146c1753d",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pydantic/docs/concepts/serialization.md",
+    "asset_sha256": "4b58dd2e8a62bb123f0e4c253fb8630ba67edcd38821dfca09a1d03a47beac26",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pydantic/docs/concepts/strict_mode.md",
+    "asset_sha256": "ba862d10c09759f6f339856a03167c3efb0b1555d55078df330b41068891f9c1",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pytest/doc/en/how-to/assert.rst",
+    "asset_sha256": "55a78e4ca71dedc852c0fdeb665ed1db0fcc54df464639ec3db5e671a98a7a7d",
+    "verified": true
+  },
+  {
+    "source_path": "compound/pytest/doc/en/how-to/skipping.rst",
+    "asset_sha256": "aac05454235c0559e0c1f77a2508ce33c306cdac30aaa5ae757be0100c303460",
+    "verified": true
+  },
+  {
+    "source_path": "compound/rich/docs/source/progress.rst",
+    "asset_sha256": "c12056ccb02e0d9ed4c0ca47f8c04e27ad49f7dc4d07483df62f007766e198ef",
+    "verified": true
+  },
+  {
+    "source_path": "compound/rich/docs/source/tables.rst",
+    "asset_sha256": "cdd0f1fdf7375bbd0eefb509b83495b04d85f132a9a9a45b97820e628e45af1c",
+    "verified": true
+  },
+  {
+    "source_path": "compound/ruff/docs/configuration.md",
+    "asset_sha256": "03985b7ec257611355dcb1367572d3c074784a71e2fa17d0537b333b4a9e5656",
+    "verified": true
+  },
+  {
+    "source_path": "compound/ruff/docs/formatter.md",
+    "asset_sha256": "d77ffd667927842edff319a2ca721afb5e0dc6e82f271ac8fa95bb98c755bdfc",
+    "verified": true
+  },
+  {
+    "source_path": "compound/typer/docs/tutorial/commands/context.md",
+    "asset_sha256": "a67f8b16a06fc969999e678622be8b2448c259f8adcca27fe8d9ee934059b3d1",
+    "verified": true
+  },
+  {
+    "source_path": "compound/typer/docs/tutorial/options/help.md",
+    "asset_sha256": "f08528637cf6a2c26c4bb5692e157c17b4bfc02504b5b4f08cf9e80eeefb1135",
+    "verified": true
+  },
+  {
+    "source_path": "compound/uv/docs/guides/projects.md",
+    "asset_sha256": "702a8a52db943ad82b77df2809b6125d721b04fbbf391f51e6b653f71c30fffb",
+    "verified": true
+  },
+  {
+    "source_path": "compound/uv/docs/guides/tools.md",
+    "asset_sha256": "a32cdb0fa876aec3fafc34ae66ea5bf58f546f44da0048e0baf2eebc50f59237",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/docs/arguments.rst",
+    "asset_sha256": "c33578cff3d3ea4bebfa4881e7d12ed82d8002f0c101034fdc085b5b56b34455",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/docs/commands.rst",
+    "asset_sha256": "676a5df286a93d5a47adb5cd13941a82ad5d1faf879f85a3f632135ea1749bb8",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/docs/options.rst",
+    "asset_sha256": "6ef07a7fd827f7918533855a78d4d83ea0c46e25f9487e25bc55c2071ef91747",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/src/click/parser.py",
+    "asset_sha256": "2cac98404f592e3e4a8080d792b7131d045722081fa22bd7d78fd45489f9e980",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/src/click/termui.py",
+    "asset_sha256": "1fb43c16998f7a5849da8bce85f09186332d0a93728c55ebc8030b64e0eab1d7",
+    "verified": true
+  },
+  {
+    "source_path": "text/click/src/click/types.py",
+    "asset_sha256": "4d9bf3de12af073b5ff87a5ad9e9ce98fe1ece748f2f38a38e28396ffd173311",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/base64.py",
+    "asset_sha256": "8d1f608dbf030d11d6ec4df9e4c55b73fb68cdfbd9f53a7c91684a93b55564b5",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/codecs.py",
+    "asset_sha256": "7b7839e53a77961153240aecfe11edc8054d05b1dedd83894450dae21ec05785",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/ctypes/__init__.py",
+    "asset_sha256": "e0db1242e78267cba0124ee9fe5963b72d1c8a1832bb51a88abcf012a9cbce76",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/email/base64mime.py",
+    "asset_sha256": "e2b4b87a5f42a8c5780e343f675513bbcc6abdd23fa14f8f1a7d4f7d72304770",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/hashlib.py",
+    "asset_sha256": "6dbdebf270868b391080e21dc9687eddfaf321c965ad979f68d3f5c423c613ab",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/ipaddress.py",
+    "asset_sha256": "4a1e3e176e2d88ec7d767bcd0af7d1c953de47387ba2e42fba2e188882d06064",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/random.py",
+    "asset_sha256": "0693d4ded36916f5b07d6c395cc331dbf1011bb70e90daaa29eaa32490a09425",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/ssl.py",
+    "asset_sha256": "039a0e3f1782e14824b1624c7ffefc2de31714b4a9994424be45a4271966097c",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/uuid.py",
+    "asset_sha256": "fe357bff7241e9fd6f86ee81567fd20aeec2e17460428ea9b7924bebf57301fc",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/xmlrpc/client.py",
+    "asset_sha256": "c77e7072ab9aaab6c6f16f89f2e7d528183b816df5d9f80e490f773ab45fe238",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Lib/zipfile/__init__.py",
+    "asset_sha256": "eb37f9fb0bb23795bbb6a310530a99e5a99dff5acc78e6f2cc17fbefc8d7a311",
+    "verified": true
+  },
+  {
+    "source_path": "text/cpython/Modules/zlibmodule.c",
+    "asset_sha256": "b6e1d12e2c12077110ce417a3a967dff52251caf6a9b8163004178993d6b6b74",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/docs/user/advanced.rst",
+    "asset_sha256": "8fcb54b1f76f1df0b2e7465c17297f31da30459790fdacdb074de6dbfe41a718",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/docs/user/authentication.rst",
+    "asset_sha256": "cf7f9d1159c02747f64009c629ac546cd7332b8eba5a0712230022b132d85194",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/docs/user/quickstart.rst",
+    "asset_sha256": "e2be6bd4a434b69e0c23c4ca5bcc12a2c7785ffd3b9eadd747ca98caea666bfd",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/src/requests/models.py",
+    "asset_sha256": "938daba17cc2f2efce6a000f422f54e0c91f3bb8b8af615d6aabccaacb4f7a17",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/src/requests/sessions.py",
+    "asset_sha256": "ca44c8f145864a5b4e7c7d3b1caa25947ee44c11b0e168620556901a67244f0e",
+    "verified": true
+  },
+  {
+    "source_path": "text/requests/src/requests/utils.py",
+    "asset_sha256": "1e2402e8dabf0dade4b5a32217342487e7429378901c7284b184b990373ef02c",
+    "verified": true
+  },
+  {
+    "source_path": "text/vite-ja/guide/env-and-mode.md",
+    "asset_sha256": "303f23281c600374019c7f82557f04fab6ad82ccc373a5231ae06e9fba5653d2",
+    "verified": true
+  },
+  {
+    "source_path": "text/vite-ko/guide/assets.md",
+    "asset_sha256": "e1dc0eb0efcb3b45078ca32df7fcad25e01a04fdca38e4087787c6f1ef36069b",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/components/props.md",
+    "asset_sha256": "761b1efcbbe84975510b88b0f53dec64b3e0d9d2f034987e89c4a670e60f414b",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/components/v-model.md",
+    "asset_sha256": "d2948333f1ea797face148baacac67763492afb1ef46cf0f3dd994a60cd11d8c",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/class-and-style.md",
+    "asset_sha256": "347f2fbc43774386187772e332591839a6e5e52ef76a0fccb151ecf596e8cbf7",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/computed.md",
+    "asset_sha256": "52a4897eadde66867ba3618821b7b0bb3cf3b3aca3a233b9c58602c58624f861",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/conditional.md",
+    "asset_sha256": "973f3d7ed061582a2adcf2783c4c49c02a069f9eb304fabb34d44e3beb162ddd",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/event-handling.md",
+    "asset_sha256": "3a83f45b7a3f3fc351221ccf68560c3e6b2a776f91fffb24008e16b134b701b7",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/forms.md",
+    "asset_sha256": "70dbf762d7ac67b59366ee997343cfa00907b8b5e8aba3bc49693e80a833e832",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/list.md",
+    "asset_sha256": "11fa9beb6216617d5221253337403ae91d3df58bdd572435b75f188cefeeeb36",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/reactivity-fundamentals.md",
+    "asset_sha256": "34ad3944ca8584ac9f82adf96607139b57b7817652e24bf44c1098c18db3cb3b",
+    "verified": true
+  },
+  {
+    "source_path": "text/vue-zh/src/guide/essentials/watchers.md",
+    "asset_sha256": "f3d51fd4654637d254e2f35b572048541de164d001799587a683998f0be283cd",
+    "verified": true
+  }
+]

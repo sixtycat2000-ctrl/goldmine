@@ -79,12 +79,6 @@ Root causes, in code:
   directories (duplicates, odd formats); our distill fixture gets the same treatment
   (planted dups, cross-topic memo docs); (c) the determinism ethos — same inputs, byte
   -identical outputs, no RNG (v1 already normative on this; v2 must not regress).
-- **Foresight context retrieve** (`~/git/mac/work/foresight-rea/app-src/docs/rpc-contracts.md`,
-  RetrieveContext row): retrieved context is a flat, ordered list of
-  `chunks[]{text, relevance_score, document_id, mime_type}` with `max_results` and
-  `min_similarity_score` knobs — plain fields, no prose wrapper, truncation knob explicit.
-  Our `--pack` (§4.6) copies this shape: flat card/excerpt records, one line of metadata
-  each, explicit budget knob, nothing the consuming LLM has to parse cleverly.
 - **General IR practice**: Otsu thresholding on the pairwise-similarity histogram for τ
   calibration; average-link admission as the cheap guard against single-linkage chaining;
   k-center (farthest-point) selection for coverage excerpts; medoid as the order
