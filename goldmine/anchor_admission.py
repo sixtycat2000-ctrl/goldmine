@@ -234,10 +234,12 @@ def resolve_obligations(store, query, phrases, allowed, terms_of, *, inspected=(
                 plan = QueryPlan((), (Clause(0, (), "", tuple(phrases)),), tuple(phrases), plan.pure_text)
                 resolver.read(inspected, preread=True)
                 decision = _owners(plan, resolver, terms_of)
-        elif plan.reason == "anchor_scope_ambiguous" and len(plan.clauses) == 1 and \
+        elif plan.reason == "anchor_scope_ambiguous" and not phrases and \
                 all(clause_intent(c, terms_of) == "C-NL" for c in plan.clauses):
-            # Design §C-3: prose with >=2 semicolons or an unbalanced backtick
-            # is one natural-language clause, not a scope refusal.
+            # Design §C-3/§2.3: prose structure never refuses by itself. This
+            # covers both the >=2-semicolon single clause and the one-semicolon
+            # split whose sibling clause is anchorless (no phrases involved);
+            # phrases-plus-split (C1-33) and the compare grammar stay pinned.
             plan = replace(plan, reason=None)
             resolver.read(inspected, preread=True)
             decision = _owners(plan, resolver, terms_of)
