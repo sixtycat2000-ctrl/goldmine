@@ -7,6 +7,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -33,14 +34,20 @@ def changed(path, raw):
 class SourceViews(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        if sys.platform != "darwin":
+            raise unittest.SkipTest(
+                "synthetic capture fixtures materialize macOS screen-capture metadata")
         parent = os.environ.get("SOURCE_VIEW_MECHANICAL_ARTIFACTS")
         cls.temporary = None if parent else tempfile.TemporaryDirectory(prefix="comparison-source-mechanics-")
         cls.root = (Path(parent) if parent else Path(cls.temporary.name)).resolve()
         cls.root.mkdir(parents=True, exist_ok=True)
         cls.base = make_fixture(cls.root / "base")
-        cls.out = cls.base["root"] / "owned '空 格-$(literal)"
+        cls.out = cls.base["root"] / "owned '空 格-$(literal)'"
         cls.native_context = synthetic_native_policy()
         cls.flags = cls.native_context.__enter__()
+        # A setUpClass failure must never leak the global materialize/read_flag
+        # patches into later test modules; class cleanups run even then.
+        cls.addClassCleanup(cls.native_context.__exit__, None, None, None)
         original = Path.open
         cls.opened = []
         def guarded(path, *args, **kwargs):
@@ -50,14 +57,10 @@ class SourceViews(unittest.TestCase):
             return original(path, *args, **kwargs)
         cls.guard = patch.object(Path, "open", guarded)
         cls.guard.start()
-        cls.report = capture_sources(cls.base["bundle"], cls.base["pin"], cls.base["config"], cls.out, cls.base["root"], fixture=True)
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.guard.stop()
-        cls.native_context.__exit__(None, None, None)
+        cls.addClassCleanup(cls.guard.stop)
         if cls.temporary:
-            cls.temporary.cleanup()
+            cls.addClassCleanup(cls.temporary.cleanup)
+        cls.report = capture_sources(cls.base["bundle"], cls.base["pin"], cls.base["config"], cls.out, cls.base["root"], fixture=True)
 
     def verify(self, fixture=None, output=None):
         f = fixture or self.base

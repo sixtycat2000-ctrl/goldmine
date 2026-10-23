@@ -1311,7 +1311,16 @@ def test_fuzz_lite_daemon_survives_and_serves(daemon_box):
             sock.close()
         except OSError:
             pass  # a refused/-reset connection must not matter either
-    resp = raw_roundtrip(sock_path, {"op": "ping"})
+    for _ in range(40):
+        try:
+            resp = raw_roundtrip(sock_path, {"op": "ping"})
+            break
+        except BlockingIOError:
+            # Linux connect() returns EAGAIN while the accept backlog drains
+            # the fuzz burst; the daemon itself keeps serving.
+            time.sleep(0.05)
+    else:
+        raise
     assert resp["ok"] is True
     embed = raw_roundtrip(sock_path, {"op": "embed", "texts": ["post-fuzz"]},
                           timeout=30)

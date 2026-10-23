@@ -248,6 +248,8 @@ def test_failure_and_interrupt_raw_commands_remain_in_registry(owner):
         corrupted.call("synthetic-failure", argv)
 
 
+@pytest.mark.skipif(sys.platform != "darwin",
+                    reason="fixture export binds the Darwin ps/lsof resource-observer identity")
 def test_actual_fixture_export_fixed_missing_matrix_and_disk_replay(owner):
     fixture = data(owner / "fixture")
     with synthetic_native_policy():

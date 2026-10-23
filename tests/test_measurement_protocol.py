@@ -2,6 +2,7 @@
 from copy import deepcopy
 import json
 from pathlib import Path
+import sys
 from types import SimpleNamespace
 
 import pytest
@@ -10,6 +11,10 @@ from answer_eval.protocol import EvaluationError, sha256_file
 from search_comparison.measurements import packet as compiler, registered, storage
 from search_comparison.measurements import _dependency_worker as missing_role
 from measurement_executor_fixtures import fake_plan, marker
+
+pytestmark = pytest.mark.skipif(
+    sys.platform != "darwin",
+    reason="measurement packets bind the Darwin ps/lsof resource-observer identity")
 
 
 def compilable(root):

@@ -19,6 +19,9 @@ def test_live_ci_needs_existing_inputs_and_creates_no_green_report(tmp_path, cap
 
 @pytest.mark.parametrize(("status", "code"), [("FAIL", 1), ("MISSING", 2)])
 def test_ci_does_not_coerce_failed_or_incomplete_checks_to_zero(tmp_path, monkeypatch, status, code):
+    # Hosted runners strip GOLDMINE_* from the pytest subprocess while leaving
+    # GITHUB_ACTIONS set; the nested call must not divert into hosted validation.
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
     monkeypatch.setattr(ci_validation, "run", lambda *args, **kw: {"status": status})
     monkeypatch.setattr(ci_validation, "validate", lambda *args: {})
     assert ci_validation.main(["--profile", "base", "--out", str(tmp_path / "ci")]) == code

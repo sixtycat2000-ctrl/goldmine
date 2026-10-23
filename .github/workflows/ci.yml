@@ -23,7 +23,10 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          # acceptance tests git-archive pinned historical revisions
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8646c4678c61a1 # v6
         with:
           python-version: ${{ matrix.python }}
           cache: pip
@@ -50,7 +53,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8646c4678c61a1 # v6
         with:
           python-version: '3.12'
       - run: test "$(uname -m)" = arm64
@@ -75,7 +80,9 @@ jobs:
         extra: [mcp]
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8646c4678c61a1 # v6
         with:
           python-version: '3.12'
       - name: Install locked optional environment
@@ -100,7 +107,9 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8646c4678c61a1 # v6
         with:
           python-version: '3.12'
       - run: python -m pip install -r requirements/build.lock

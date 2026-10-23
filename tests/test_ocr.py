@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+import sys
 
 import pytest
 from conftest import FAKE_OCR_TEXT, write_fake_ocr_helper
@@ -119,6 +120,8 @@ def test_error_line_becomes_page_error(cfg, tmp_home, monkeypatch, tmp_path):
 # ---------------------------------------------------- xattr screenshot detect
 
 
+@pytest.mark.skipif(sys.platform != "darwin",
+                    reason="the com.apple screen-capture xattr is macOS-only")
 def test_xattr_screenshot_detection(tmp_path):
     shot = tmp_path / "vacation-photo.png"      # non-screenshot NAME
     shot.write_bytes(b"x")

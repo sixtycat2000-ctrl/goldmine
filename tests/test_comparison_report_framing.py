@@ -3,6 +3,7 @@ from copy import deepcopy
 import importlib.util
 import json
 from pathlib import Path
+import sys
 
 import pytest
 
@@ -226,6 +227,8 @@ def test_root_administration_limit_does_not_hide_derived_cell_accounting(tmp_pat
     assert framing.load(owner/'report.json')==result
 
 
+@pytest.mark.skipif(sys.platform != "darwin",
+                    reason="capture replay binds the Darwin ps/lsof resource-observer identity")
 def test_existing_strict_capture_verifier_keeps_logical_api_and_starts_no_child_on_replay(tmp_path,monkeypatch):
     from comparison_engine_fixtures import data,missing_plan
     from comparison_source_fixtures import synthetic_native_policy

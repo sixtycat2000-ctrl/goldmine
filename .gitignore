@@ -16,16 +16,11 @@ vendor/
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
-x
-x-shm
-x-wal
 
 # release-build staging + eval scratch
 dist/
 .evalhome/
 eval.sqlite*
-*.bak
 
 # Rebuildable execution evidence (commit compact summaries, not raw private inputs)
 reports/execution/**
-!reports/execution/README.md
