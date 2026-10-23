@@ -269,6 +269,8 @@ class ImagePrep:
     height: int = 0
     taken: str | None = None        # EXIF creation date, ISO "YYYY-MM-DD HH:MM:SS"
     taken_epoch: float | None = None
+    camera_make: str | None = None  # bounded IFD0 Make (2026-10-23 D4 revision)
+    gps: str | None = None          # bounded GPS IFD, "dd.dddd H, dd.dddd H"
     refused: str | None = None      # machine-stable refusal reason, or None
 
 
@@ -386,6 +388,11 @@ def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False, metadata=N
     taken = metadata.taken if metadata is not None else exif_taken(path)
     prep = ImagePrep(taken=taken[0] if taken else None,
                      taken_epoch=taken[1] if taken else None)
+    if metadata is None:
+        from .exif import camera_and_position
+
+        camera = camera_and_position(path)
+        prep.camera_make, prep.gps = camera.make, camera.gps
     import uuid
 
     token = uuid.uuid4().hex[:10]

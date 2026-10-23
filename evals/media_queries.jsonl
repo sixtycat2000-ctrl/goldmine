@@ -28,16 +28,16 @@
 {"id": "media-028", "q": "externally managed environment", "expect": [{"path": "images/screenshots/Screenshot 2026-10-11 at 09.15.42.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
 {"id": "media-029", "q": "upload failed", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
 {"id": "media-030", "q": "retry token RT-9042", "expect": [{"path": "images/screenshots/Screenshot 2026-10-12 at 14.02.11.png", "grade": 3}], "tag": "screenshot", "needs": ["ocr"]}
-{"id": "media-031", "q": "photo harbor bridge", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
-{"id": "media-032", "q": "photo lighthouse", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
-{"id": "media-033", "q": "harbor bridge photo images", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
-{"id": "media-034", "q": "lighthouse photo images photos", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
-{"id": "media-035", "q": "bridge photo png", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image"}
-{"id": "media-036", "q": "lighthouse png images", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image"}
-{"id": "media-037", "q": "lighthouse photo taken October 2026", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
-{"id": "media-038", "q": "harbor bridge photo camera", "expect": [{"path": "images/photos/photo-harbor-bridge.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
-{"id": "media-039", "q": "photos taken on 2026-10-14", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}, {"path": "images/photos/photo-harbor-bridge.png", "grade": 2}], "tag": "image", "needs": ["exif"]}
-{"id": "media-040", "q": "lighthouse photo GPS coordinates", "expect": [{"path": "images/photos/photo-lighthouse.png", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-031", "q": "photo harbor bridge", "expect": [{"path": "images/photos/photo-harbor-bridge.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-032", "q": "photo lighthouse", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-033", "q": "harbor bridge photo images", "expect": [{"path": "images/photos/photo-harbor-bridge.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-034", "q": "lighthouse photo images photos", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-035", "q": "bridge photo png", "expect": [{"path": "images/photos/photo-harbor-bridge.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-036", "q": "lighthouse png images", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}], "tag": "image"}
+{"id": "media-037", "q": "lighthouse photo taken October 2026", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-038", "q": "harbor bridge photo camera", "expect": [{"path": "images/photos/photo-harbor-bridge.jpg", "grade": 3}], "tag": "image", "needs": ["exif"]}
+{"id": "media-039", "q": "photos taken on 2026-10-14", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}, {"path": "images/photos/photo-harbor-bridge.jpg", "grade": 2}], "tag": "image", "needs": ["exif"]}
+{"id": "media-040", "q": "lighthouse photo GPS coordinates", "expect": [{"path": "images/photos/photo-lighthouse.jpg", "grade": 3}], "tag": "image", "needs": ["exif"]}
 {"id": "media-041", "q": "breakwater repair estimate 48000 EUR", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}
 {"id": "media-042", "q": "ferry wake limits tightened May", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}
 {"id": "media-043", "q": "harbor chart hybrid pdf", "expect": [{"path": "pdf/atlas-hybrid.pdf", "grade": 3}], "tag": "pdf-scanned"}

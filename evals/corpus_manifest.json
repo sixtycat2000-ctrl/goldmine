@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "corpus_version": "v4-2026-10-23-post-foresight",
+ "corpus_version": "v5-2026-10-23-exif-photos",
  "created": "2026-10-18",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
@@ -15,7 +15,7 @@
   "seed": 20261016,
   "version": {
    "version": 1,
-   "generator_sha256": "c2408e2ca71e6ed0b38e3bed2e517144d926506c1fc11d0d8ab20bd61f948c7d",
+   "generator_sha256": "a4a8a8a33622dbb9530108ef1afd92972fbc36b4174f6b848f7aa247cf6884a0",
    "files": 31
   },
   "files": [
@@ -122,16 +122,16 @@
     "sha256": "404e2a20efb34d9f7e5aafea25055b693d0d07c49c98de318c1f1c9e4e3e24ef"
    },
    {
-    "path": "images/photos/photo-harbor-bridge.png",
+    "path": "images/photos/photo-harbor-bridge.jpg",
     "kind": "image",
-    "bytes": 246159,
-    "sha256": "547ff86d49d48cf7f617bbbda3cb53240cb9890b336e7f447b7feb4c91a80613"
+    "bytes": 98848,
+    "requires": "sips"
    },
    {
-    "path": "images/photos/photo-lighthouse.png",
+    "path": "images/photos/photo-lighthouse.jpg",
     "kind": "image",
-    "bytes": 246159,
-    "sha256": "30b6c93f91e6e2613a644e1b2a51479416a287ef3679641d5feb82c11c0b7827"
+    "bytes": 99008,
+    "requires": "sips"
    },
    {
     "path": "audio/tone-diagnostic-35s.wav",
@@ -142,7 +142,7 @@
    {
     "path": "audio/logbook-speech-5min.wav",
     "kind": "audio",
-    "bytes": 7120340,
+    "bytes": 7121036,
     "requires": "say",
     "speech_surrogate_sha256": "f2f6d70767436d6c3e1fc7c8162e5fff1ea9acd8df76a56533338b5fb531facd"
    },
@@ -607,8 +607,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/media.py",
    "source": "goldmine",
-   "bytes": 15061,
-   "sha256": "2961b8231d4dbfc35ae67586818b0b3332e433a386dfd5ac3fe79a29108e8363",
+   "bytes": 15396,
+   "sha256": "2812107da82a7be2be6407765ad3b86ddf751a7feadf454df9f4c0bd39c7856e",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/media.py"
   },
   {
@@ -645,6 +645,6 @@
   "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket — its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
   "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index — they quote the noise-query strings (self-leak, F6)",
-  "v4 2026-10-23: user-authorized Foresight retirement removed the foresight-rea root and its 41 pinned files; goldmine-self snapshot re-synced to the post-retirement source. Deliberate version bump per this manifest's own refresh protocol; corpus identity change is honest."
+  "v5 2026-10-23 (user decision D4): the two coverage-fixture photos regenerated as JPEGs genuinely carrying EXIF DateTimeOriginal/Make/GPS (labels stated in the generator); product gained bounded camera/GPS readers; affected media-037..040 expect paths re-registered."
  ]
 }

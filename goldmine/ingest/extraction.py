@@ -424,6 +424,10 @@ class ExtractMixin:
                 info["taken"] = prep.taken
                 info["taken_source"] = "Exif.DateTimeOriginal"
                 info["exif_status"] = "complete"
+            if prep.camera_make is not None:
+                info["camera_make"] = prep.camera_make
+            if prep.gps is not None:
+                info["gps"] = prep.gps
             if prep.refused is not None:
                 if ocr_text:
                     # the pixels are un-embeddable (minSide / pathological

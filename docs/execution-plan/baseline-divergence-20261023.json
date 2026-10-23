@@ -6,8 +6,8 @@
  "files": {
   "evals/corpus_manifest.json": {
    "original_sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534",
-   "current_sha256": "cc26f487ab3d4c5f62e2662e3f0182a1eb5f17090d54a080bdcf4dca73854b8b",
-   "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version bumped to v4-2026-10-23-post-foresight (manifest's own refresh protocol)"
+   "current_sha256": "00aac5d4686d87681312906d0900dcdd006aae18e6a04ae485e4d23028996f37",
+   "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version v4 (foresight removal), then v5 2026-10-23 (user decision D4: fixture photos regenerated as JPEGs with genuine EXIF date/Make/GPS; affected media-037..040 re-registered)"
   },
   "evals/real.jsonl": {
    "original_sha256": "850c430f10e270e20c74b85ce919807f664b854ed4b84bc8e8bc7f3cbd24448a",

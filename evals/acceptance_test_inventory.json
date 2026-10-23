@@ -2024,6 +2024,31 @@
    "reason": "Hermetic fixture logic."
   },
   {
+   "nodeid": "tests/test_exif_camera_gps.py::test_fixture_generator_emits_real_exif",
+   "profile": "offline",
+   "reason": "D4 fixture photos carry genuine EXIF verified end-to-end."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_make_date_and_gps_roundtrip",
+   "profile": "offline",
+   "reason": "Bounded camera/date/GPS roundtrip."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_no_exif_is_absent_and_non_jpeg_never_parsed",
+   "profile": "offline",
+   "reason": "Absent/non-JPEG honesty."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_oversized_make_is_rejected_not_guessed",
+   "profile": "offline",
+   "reason": "Bounded Make rejects oversized values."
+  },
+  {
+   "nodeid": "tests/test_exif_camera_gps.py::test_partial_fields_are_independent",
+   "profile": "offline",
+   "reason": "Partial EXIF fields independent."
+  },
+  {
    "nodeid": "tests/test_extract_html.py::test_charset_declared_meta",
    "profile": "offline",
    "reason": "Hermetic fixture logic."

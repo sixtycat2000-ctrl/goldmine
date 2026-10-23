@@ -49,6 +49,18 @@ class CaptureResult:
     status: str  # complete | absent | unsupported | unavailable | error
 
 
+@dataclass(frozen=True)
+class CameraPosition:
+    """Bounded IFD0 Make + GPS IFD read; camera fields may be partially absent."""
+
+    make: str | None
+    gps: str | None
+    reader: str | None
+    status: str  # complete | absent | error
+
+MAX_EXIF_ASCII = 64  # camera make bound, bytes including the terminator
+
+
 def parse_capture_time(value, offset=None):
     if not isinstance(value, str) or not re.fullmatch(r"\d{4}:\d{2}:\d{2} \d{2}:\d{2}:\d{2}", value):
         return None
@@ -64,6 +76,106 @@ def parse_capture_time(value, offset=None):
         return (stamp.strftime("%Y-%m-%d %H:%M:%S"), epoch) if math.isfinite(epoch) else None
     except (ValueError, OverflowError, OSError):
         return None
+
+
+def _tiff_camera_gps(payload):
+    """Read IFD0 Make and the GPS IFD only, under the same bounded rules.
+
+    Never follows thumbnail chains or any IFD beyond the two pointers this
+    product's contracts name (ExifIFD for capture time, GPSIFD for position).
+    Returns None on any bound/shape violation instead of guessing."""
+    if len(payload) < 8 or payload[:2] not in (b"II", b"MM"):
+        return None
+    endian = "<" if payload[:2] == b"II" else ">"
+
+    def number(offset, fmt):
+        width = struct.calcsize(fmt)
+        if offset < 0 or offset + width > len(payload):
+            raise ValueError("Exif offset outside APP1 payload")
+        return struct.unpack_from(endian + fmt, payload, offset)[0]
+
+    def directory(offset):
+        count = number(offset, "H")
+        if count > MAX_IFD_ENTRIES or offset < 8 or offset + 2 + 12 * count + 4 > len(payload):
+            raise ValueError("Exif directory count/trailer exceeds bounded payload")
+        entries = {}
+        for index in range(count):
+            start = offset + 2 + index * 12
+            tag, kind, size = number(start, "H"), number(start + 2, "H"), number(start + 4, "I")
+            if tag in entries:
+                raise ValueError("ambiguous duplicate Exif tag")
+            entries[tag] = (kind, size, start + 8)
+        return entries
+
+    def ascii_value(entry, expected_size):
+        kind, size, offset = entry
+        if kind != 2 or size != expected_size:
+            raise ValueError("Exif ASCII must have its bounded type/size")
+        start = offset if size <= 4 else number(offset, "I")
+        if start < 8 or start + size > len(payload):
+            raise ValueError("Exif ASCII points outside APP1")
+        raw = payload[start:start + size]
+        if raw[-1:] != b"\0" or b"\0" in raw[:-1]:
+            raise ValueError("Exif ASCII is not terminated exactly once")
+        return raw[:-1].decode("ascii")
+
+    try:
+        if number(2, "H") != 42:
+            return None
+        first = directory(number(4, "I"))
+        make = None
+        if 0x010F in first:
+            kind, size, _ = first[0x010F]
+            if kind != 2 or not 1 <= size <= MAX_EXIF_ASCII:
+                raise ValueError("camera Make exceeds its bounded ASCII size")
+            value = ascii_value(first[0x010F], size)
+            if value.isprintable():
+                make = value
+        gps = None
+        pointer = first.get(0x8825)
+        if pointer is not None and pointer[:2] == (4, 1):
+            entries = directory(number(pointer[2], "I"))
+            required = (0x0001, 0x0002, 0x0003, 0x0004)
+            if all(tag in entries for tag in required):
+                lat_ref = ascii_value(entries[0x0001], 2)
+                lon_ref = ascii_value(entries[0x0003], 2)
+                if lat_ref not in ("N", "S") or lon_ref not in ("E", "W"):
+                    raise ValueError("GPS hemisphere refs must be single ASCII letters")
+                def dms(tag):
+                    kind, size, offset = entries[tag]
+                    if kind != 5 or size != 3:
+                        raise ValueError("GPS coordinate must be three RATIONALs")
+                    start = number(offset, "I")
+                    if start < 8 or start + 24 > len(payload):
+                        raise ValueError("GPS RATIONALs point outside APP1")
+                    values = [number(start + 8 * i, "I") / number(start + 8 * i + 4, "I")
+                              for i in range(3)]
+                    if any(d == 0 for d in values[1:]) or not all(0 <= v < 180 for v in values):
+                        raise ValueError("GPS components out of range")
+                    return values[0] + values[1] / 60 + values[2] / 3600
+                lat, lon = dms(0x0002), dms(0x0004)
+                if lat > 90 or lon >= 180:
+                    raise ValueError("GPS degrees out of range")
+                gps = f"{lat:.4f} {lat_ref}, {lon:.4f} {lon_ref}"
+        return {"Make": make, "GPS": gps}
+    except (ValueError, ZeroDivisionError, UnicodeError, struct.error):
+        return None
+
+
+def camera_and_position(path: Path):
+    """Bounded JPEG-only reader for camera Make and GPS coordinates."""
+    try:
+        with Path(path).open("rb") as stream:
+            if stream.read(2) != b"\xff\xd8":
+                return CameraPosition(None, None, None, "absent")
+            metadata = _jpeg_capture(stream)
+    except OSError:
+        return CameraPosition(None, None, None, "error")
+    fields = metadata or {}
+    make = fields.get("Make")
+    gps = fields.get("GPS")
+    status = "complete" if (make or gps) else "absent"
+    return CameraPosition(make, gps, "jpeg-exif", status)
 
 
 def _tiff_capture(payload):
@@ -156,7 +268,9 @@ def _jpeg_capture(stream):
         if marker == b"\xe1" and payload.startswith(b"Exif\0\0"):
             if found:
                 return None  # Duplicate/ambiguous Exif blocks are not a date.
-            found, metadata = True, _tiff_capture(payload[6:])
+            found = True
+            body = payload[6:]
+            metadata = {**(_tiff_capture(body) or {}), **(_tiff_camera_gps(body) or {})}
     return None
 
 
@@ -190,9 +304,9 @@ def capture(path: Path):
             metadata = _jpeg_capture(stream) if jpeg else None
         if not jpeg:
             return _imageio_capture(Path(path))
-        if metadata is None:
+        if not metadata:
             return CaptureResult(None, "jpeg-exif", "absent")
-        value = parse_capture_time(metadata["DateTimeOriginal"], metadata["OffsetTimeOriginal"])
+        value = parse_capture_time(metadata.get("DateTimeOriginal"), metadata.get("OffsetTimeOriginal"))
         return CaptureResult(value, "jpeg-exif", "complete" if value else "unsupported")
     except OSError:
         return CaptureResult(None, None, "error")
