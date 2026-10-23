@@ -1,33 +1,72 @@
 {
-  "algorithm_version": "anchor.v1-lexical",
+  "algorithm_version": "anchor.v2-intent",
   "design": {
-    "independent_closure_sha256": "809ea1ff168fd9fadb37584c5acb383b025225e6e849d621f85437fde53e3e13",
-    "path": "reports/execution/P1-06/anchor-remainder-design-002",
-    "sha256": "884f795ed51b87574f678367108e100c24aa1bf8fd4a8a1024383814747b0ae3"
+    "path": "reports/execution/P0-05/c1-quality-repair-design-001/DESIGN-v2.md",
+    "review_path": "reports/execution/P0-05/c1-quality-repair-review-001/REVIEW.md",
+    "verdict": "ADOPT-WITH-CHANGES; all seven blocking changes folded into v2"
   },
   "future_comparison": {
-    "candidate": "one full210 dev/default replay after independent exact implementation review and fresh source freeze",
-    "control": "prospective product-current-004, regardless of its result",
+    "candidate": "fixed-41 replay, product-current dev rerun and public-current-008 per the frozen preregistration",
+    "control": "public-current-007 measurement and the 7694837 reference arm",
     "holdout_opened": false
   },
+  "history": [
+    {
+      "algorithm_version": "anchor.v1-lexical",
+      "design": {
+        "independent_closure_sha256": "809ea1ff168fd9fadb37584c5acb383b025225e6e849d621f85437fde53e3e13",
+        "path": "reports/execution/P1-06/anchor-remainder-design-002",
+        "sha256": "884f795ed51b87574f678367108e100c24aa1bf8fd4a8a1024383814747b0ae3"
+      },
+      "future_comparison": {
+        "candidate": "one full210 dev/default replay after independent exact implementation review and fresh source freeze",
+        "control": "prospective product-current-004, regardless of its result",
+        "holdout_opened": false
+      },
+      "limitations": [
+        "literal remainder only; semantic paraphrases may be refused",
+        "unanchored private observations and random queries remain uncalibrated",
+        "safe alias grammar deliberately refuses lowercase/mixed/numeric-leading/underscore aliases",
+        "no prediction of quality gate attainment"
+      ],
+      "models_prompts_extra_embeddings": false,
+      "noise_target": 0.9,
+      "noise_target_attainment_claim": false,
+      "parameter_registration": {
+        "historical_search_behavior_version": "search.v3-evidence-control",
+        "path": "evals/search_parameters.json",
+        "sha256": "8e86962b5819b9af7459659712817e1608b9b31b1411d0fd1ada6c053d8c3375",
+        "unchanged_numeric_controls": true
+      },
+      "quality_results": null,
+      "schema": 1,
+      "search_behavior_version": "search.v4-anchor-contract",
+      "semantic_remainder": "not_implemented",
+      "status": "UNVALIDATED",
+      "work_bounds": {
+        "distinct_mandatory_anchors": 32,
+        "inspected_source_rows": 2000
+      }
+    }
+  ],
   "limitations": [
-    "literal remainder only; semantic paraphrases may be refused",
-    "unanchored private observations and random queries remain uncalibrated",
-    "safe alias grammar deliberately refuses lowercase/mixed/numeric-leading/underscore aliases",
+    "literal remainder only; semantic paraphrases demote to ordinary admission rather than refusing",
+    "quoted/structural code shapes obligate; unquoted numbers, codes, ordinals and quantities are ambient in natural-language clauses",
+    "ambient anchors are never bound; disclosed as raws/counts only",
     "no prediction of quality gate attainment"
   ],
   "models_prompts_extra_embeddings": false,
   "noise_target": 0.9,
   "noise_target_attainment_claim": false,
   "parameter_registration": {
-    "historical_search_behavior_version": "search.v3-evidence-control",
+    "historical_search_behavior_version": "search.v4-anchor-contract",
     "path": "evals/search_parameters.json",
     "sha256": "8e86962b5819b9af7459659712817e1608b9b31b1411d0fd1ada6c053d8c3375",
     "unchanged_numeric_controls": true
   },
   "quality_results": null,
   "schema": 1,
-  "search_behavior_version": "search.v4-anchor-contract",
+  "search_behavior_version": "search.v5-anchor-intent",
   "semantic_remainder": "not_implemented",
   "status": "UNVALIDATED",
   "work_bounds": {

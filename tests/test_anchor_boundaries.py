@@ -80,19 +80,52 @@ def test_comparison_grammar_is_closed_and_chinese_shared_scope_is_real(index):
     add(index, "MN-42 保留天数17", path="/owned/a.txt")
     add(index, "QV-86 保留天数29", path="/owned/b.txt")
     assert len(search(index, "比较 MN-42 与 QV-86 在 保留天数")) == 2
-    assert search(index, "MN-42 和 QV-86 保留天数") == []
+    # anchor.v2-intent: ambient _CODE anchors in prose are ordinary terms, so
+    # the non-compare conjunction now admits both files via quorum (7694837).
+    assert len(search(index, "MN-42 和 QV-86 保留天数")) == 2
+    # The grammar stays closed for structural identities: "和" never splits
+    # scopes — one clause stays soft while the compare grammar constrains.
+    add(index, "MN_42 保留天数17", path="/owned/c.txt")
+    add(index, "QV_86 保留天数29", path="/owned/d.txt")
+    soft = search(index, "MN_42 和 QV_86 保留天数")
+    # anchor.v2-intent: no single file owns both identities, so the one clause
+    # demotes to soft (anchor_sibling_absent) instead of refusing.
+    assert {"/owned/c.txt", "/owned/d.txt"} <= {h.path for h in soft}
+    assert all("anchor_contract" not in h.why for h in soft)
+    assert {h.why["anchor_contract_soft"]["soft_clauses"][0]["reason"] for h in soft} == {"anchor_sibling_absent"}
+    split = search(index, "比较 MN_42 与 QV_86 在 保留天数")
+    assert {tuple(proof(h)["clauses"]) for h in split} == {(0,), (1,)}
 
 
 def test_shared_compare_identity_is_not_silently_discarded(index):
     add(index, "MN-42 RET-12 retention days", path="/owned/a.txt")
     add(index, "QV-86 retention days", path="/owned/b.txt")
-    assert search(index, "compare MN-42 and QV-86 on RET-12 retention days") == []
+    # anchor.v2-intent: ambient _CODE anchors in prose lose the per-operand
+    # shared-identity veto; both files return via ordinary admission (7694837).
+    compare = "compare MN-42 and QV-86 on RET-12 retention days"
+    assert {h.path for h in search(index, compare)} == {"/owned/a.txt", "/owned/b.txt"}
+    # The shared compare identity still binds each returned owner for
+    # structural code shapes: the operand without it is demoted, not returned.
+    add(index, "MN_42 RET_12 retention days", path="/owned/c.txt")
+    add(index, "QV_86 retention days", path="/owned/d.txt")
+    strict = "compare MN_42 and QV_86 on RET_12 retention days"
+    hits = search(index, strict)
+    assert {h.path for h in hits} == {"/owned/c.txt"}
+    assert hits[0].why["anchor_contract_soft"]["soft_clauses"] == [{"clause_id": 1, "reason": "anchor_sibling_absent"}]
 
 
 def test_same_owner_can_truthfully_represent_two_explicit_clauses_at_limit_one(index):
     add(index, "MN-42 charge limit QV-86 retention days")
     hits = search(index, "MN-42 charge limit; QV-86 retention days", limit=1)
-    assert len(hits) == 1 and proof(hits[0])["clauses"] == [0, 1]
+    # anchor.v2-intent: ambient _CODE clauses are soft, so limit truncation
+    # returns the ordinary top-1 without an anchor_contract block (7694837).
+    assert len(hits) == 1 and "anchor_contract" not in hits[0].why
+    assert hits[0].why["anchor_contract_soft"]["soft_clauses"][0]["reason"] == "ambient_only"
+    # One file truthfully representing both explicit clauses is still pinned
+    # by structural identities at limit one.
+    add(index, "MN_42 charge limit QV_86 retention days", path="/owned/strict.txt")
+    hit = search(index, "MN_42 charge limit; QV_86 retention days", limit=1)[0]
+    assert hit.path == "/owned/strict.txt" and proof(hit)["clauses"] == [0, 1]
 
 
 def test_phrase_is_body_proof_in_mixed_request_not_copied_name(index):
@@ -150,7 +183,13 @@ def test_duplicate_obligations_do_not_spend_distinct_anchor_budget(index):
 
 def test_all_same_file_body_witnesses_can_span_rows_but_not_files(index):
     add(index, ["ZT-84 alpha", "beta gamma"])
-    hit = search(index, "ZT-84 alpha beta gamma")[0]
+    # anchor.v2-intent: the ambient _CODE clause is soft; the hit returns via
+    # ordinary admission with soft disclosure instead of witness proofs (7694837).
+    soft = search(index, "ZT-84 alpha beta gamma")
+    assert soft and all("anchor_contract" not in h.why and "anchor_contract_soft" in h.why for h in soft)
+    # The same-file witness span pin survives for structural identities.
+    add(index, ["TX_84 alpha", "beta gamma"], path="/owned/strict.txt")
+    hit = search(index, "TX_84 alpha beta gamma")[0]
     sids = {w["segment_id"] for w in proof(hit)["remainder_witnesses"]}
     assert len(sids) == 2
     assert all(read_evidence(index, sid).citation.path == hit.path for sid in sids)
@@ -280,8 +319,18 @@ def test_quality_final_limit_rechecks_original_owner_without_extra_retrieval(ind
     base = SearchRequest(query="charge limit MN-42; retention days QV-86", lexical_only=True,
                          mode="quality", limit=1, require_citations=True)
     result = app.search(base)
-    assert result.hits == [] and result.settings["anchor_contract"]["reason"] == "anchor_not_in_selected_limit"
+    # anchor.v2-intent: ambient _CODE clauses are soft (empty owners are
+    # skipped by represented), so limit truncation returns the top-1 (7694837).
+    assert len(result.hits) == 1
     assert len(app.search(replace(base, limit=2)).hits) == 2
+    # The final-limit owner recheck still fires for constrained decisions.
+    add(index, "MN_42 charge limit 17", path="/owned/c.txt")
+    add(index, "QV_86 retention days 29", path="/owned/d.txt")
+    strict = SearchRequest(query="charge limit MN_42; retention days QV_86", lexical_only=True,
+                           mode="quality", limit=1, require_citations=True)
+    result = app.search(strict)
+    assert result.hits == [] and result.settings["anchor_contract"]["reason"] == "anchor_not_in_selected_limit"
+    assert len(app.search(replace(strict, limit=2)).hits) == 2
 
 
 def test_multiquery_expansion_cannot_rescue_missing_original_identity(index):
@@ -290,6 +339,15 @@ def test_multiquery_expansion_cannot_rescue_missing_original_identity(index):
     request = SearchRequest(query="compare MN-42 and QV-87 on charge limit", lexical_only=True,
                             mode="quality", multi_query=True, limit=10)
     result = app.search(request)
+    # anchor.v2-intent: the absent QV-87 is an ambient _CODE, not an
+    # obligation, so the query returns via ordinary admission (7694837).
+    assert result.hits
+    # A missing structural identity still refuses the original query even
+    # when multiquery expansion produces rescuing subqueries.
+    add(index, "MN_42 charge limit 17", path="/owned/c.txt")
+    strict = SearchRequest(query="compare MN_42 and QX_87 on charge limit", lexical_only=True,
+                           mode="quality", multi_query=True, limit=10)
+    result = app.search(strict)
     assert result.hits == []
     assert result.settings["anchor_contract"]["reason"] == "anchor_unresolved"
 
@@ -306,9 +364,18 @@ def test_only_supported_clause_bindings_are_associated_with_a_returned_owner(ind
     add(index, "MN-42 charge limit QV-86", path="/owned/a.txt")
     add(index, "QV-86 retention days", path="/owned/b.txt")
     hits = search(index, "MN-42 charge limit; QV-86 retention days")
-    a = next(h for h in hits if h.path == "/owned/a.txt")
-    assert proof(a)["clauses"] == [0]
-    assert all(b["query_term"] == "MN-42" and b["clause_ids"] == [0] for b in proof(a)["bindings"])
+    # anchor.v2-intent: ambient _CODE clauses never bind; the hits carry soft
+    # disclosure with the ambient raws instead of owner proofs (7694837).
+    assert {h.path for h in hits} == {"/owned/a.txt", "/owned/b.txt"}
+    assert all("anchor_contract" not in h.why for h in hits)
+    assert {tuple(h.why["anchor_contract_soft"]["ambient_anchors"]) for h in hits} == {("MN-42", "QV-86")}
+    # The clause-owner binding association pin survives for structural identities.
+    add(index, "MN_42 charge limit QV_86", path="/owned/c.txt")
+    add(index, "QV_86 retention days", path="/owned/d.txt")
+    strict = search(index, "MN_42 charge limit; QV_86 retention days")
+    c = next(h for h in strict if h.path == "/owned/c.txt")
+    assert proof(c)["clauses"] == [0]
+    assert all(b["query_term"] == "MN_42" and b["clause_ids"] == [0] for b in proof(c)["bindings"])
 
 
 def test_normalized_recall_and_original_text_cannot_disagree_on_source_witness(index):
@@ -331,7 +398,10 @@ def test_duplicate_source_occurrences_have_bounded_request_work_and_why(index):
     add(index, ["ZT-84"] * 1000)
     diag = {}
     hit = search(index, " ".join(["ZT-84"] * 40), diagnostics=diag)[0]
-    assert diag["inspected_source_rows"] == 1000
+    # anchor.v2-intent: the lexical pre-read (Resolver.read(preread=True))
+    # fetches and caches the source rows without consuming the obligation
+    # budget, so verifying the already-fetched rows marks none attempted (§C-4).
+    assert diag["inspected_source_rows"] == 0
     assert diag["source_queries"] < 30  # batch rows/cache identical obligations, not1000×40 SQL
     assert len(proof(hit)["bindings"]) == 40
 

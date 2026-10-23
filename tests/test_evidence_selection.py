@@ -110,7 +110,11 @@ def test_empty_body_cannot_displace_quotable_semantic_content(store):
 
 def test_exact_remainder_noise_veto_is_not_removed_by_selection_change(store):
     source(store, texts=["refund AB-12 approved"])
-    assert Searcher(store, None).search("randomzz AB-12", scorer="lexical") == []
+    hits = Searcher(store, None).search("randomzz AB-12", scorer="lexical", why=True)
+    # anchor.v2-intent: ambient _CODE anchors in prose lose the all-words
+    # veto; the anchor file returns via ordinary quorum (7694837 reference).
+    assert hits and hits[0].admission_reason == "lexical_quorum"
+    assert "exact_source" not in hits[0].why and "anchor_contract_soft" in hits[0].why
 
 
 def test_file_admission_order_and_scores_do_not_depend_on_evidence_selector(store, monkeypatch):

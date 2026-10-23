@@ -44,15 +44,17 @@ def all_files(store):
 
 def test_sc01_remainder_units_prepared_once_per_clause(index, monkeypatch):
     """E eligible files must not rebuild the identical clause units E times."""
+    # anchor.v2-intent: ambient _CODE anchors never bind, so the remainder
+    # preparation is reached with a structural identity instead.
     for i in range(12):
-        add(index, f"/docs/owner-{i:02d}.txt", "approved ZT-84 with beacon harbor oversight")
+        add(index, f"/docs/owner-{i:02d}.txt", "approved TX_84 with beacon harbor oversight")
     unit_calls = {"n": 0}
     real_units = anchor_resolution.query_units
     def counted_units(text, terms, phrases):
         unit_calls["n"] += 1
         return real_units(text, terms, phrases)
     monkeypatch.setattr(anchor_resolution, "query_units", counted_units)
-    decision = resolve_obligations(index, "ZT-84 beacon harbor oversight", (), all_files(index), _terms_of)
+    decision = resolve_obligations(index, "TX_84 beacon harbor oversight", (), all_files(index), _terms_of)
     assert decision.owners and not decision.reason
     # one clause → one pure unit preparation, independent of owner count
     assert unit_calls["n"] == 1, unit_calls

@@ -51,7 +51,11 @@ def test_raw_original_beats_separator_alias_in_both_directions(index):
 def test_anchor_does_not_hide_unmatched_query_words(index):
     add(index, "/explicit/source.txt", "refund AB-12 approved")
     assert hits(index, "refund AB-12")
-    assert hits(index, "randomzz AB-12") == []
+    # anchor.v2-intent: an ambient _CODE anchor plus a random word is ordinary
+    # admission now; the file returns with soft disclosure, never exact (7694837).
+    mixed = hits(index, "randomzz AB-12")
+    assert mixed and mixed[0].admission_reason == "lexical_quorum"
+    assert "exact_source" not in mixed[0].why and "anchor_contract_soft" in mixed[0].why
     assert hits(index, "AB123") == []
 
 

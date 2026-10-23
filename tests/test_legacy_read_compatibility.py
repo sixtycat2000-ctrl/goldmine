@@ -90,11 +90,18 @@ def test_pure_actual_metadata_does_not_supply_mixed_body_predicates(tmp_path, ve
 @pytest.mark.parametrize("version", [4, 5])
 def test_real_metadata_owner_has_distinct_actual_body_predicate_witness(tmp_path, version):
     path = build(tmp_path / "index.sqlite", version, [{"title": "ZT-84", "text": "signed harbor receipt"}])
-    hit = search(path, "ZT-84 signed harbor")[0]
+    hits = search(path, "ZT-84 signed harbor")
+    # anchor.v2-intent: the ambient _CODE title identity in prose is soft; the
+    # hit returns via ordinary admission without an owner proof (7694837).
+    assert hits and all("anchor_contract" not in h.why for h in hits)
+    assert all("anchor_contract_soft" in h.why for h in hits)
+    # The distinct title/body witness pin survives for a structural identity.
+    strict = build(tmp_path / "strict.sqlite", version, [{"title": "ZT_84", "text": "signed harbor receipt"}])
+    hit = search(strict, "ZT_84 signed harbor")[0]
     assert hit.segment == "chunk" and hit.loc == 7
     proof = hit.why["anchor_contract"]
     assert proof["bindings"][0]["field"] == "title"
-    with closing(Store(path, ro=True)) as store:
+    with closing(Store(strict, ro=True)) as store:
         assert read_evidence(store, proof["bindings"][0]["segment_id"]).citation.evidence_type == "name_metadata"
         assert all(read_evidence(store, item["segment_id"]).citation.evidence_type == "content"
                    for item in proof["remainder_witnesses"])
@@ -128,9 +135,34 @@ def test_no_other_file_or_copied_name_or_folder_can_supply_remainder(tmp_path, v
         {"path": "/owned/a.txt", "text": "ZT-84 harbor", "folder": "randomzz signed receipt"},
         {"path": "/owned/b.txt", "text": "randomzz signed receipt"},
     ])
-    assert search(path, "ZT-84 randomzz") == []
+    hits = search(path, "ZT-84 randomzz")
+    # anchor.v2-intent: ambient _CODE anchors lose the same-file remainder
+    # veto; the anchor file returns via ordinary quorum (7694837).
+    assert hits and all(h.admission_reason != "verified_exact" for h in hits)
+    assert all("exact_source" not in h.why and "anchor_contract_soft" in h.why for h in hits)
+    # The quoted phrase stays a hard existence obligation and picks its true
+    # owner even when the ambient anchor points elsewhere.
     query, filters = parse_filters('ZT-84 "signed receipt"')
-    assert search(path, query, filters=filters) == []
+    assert {h.path for h in search(path, query, filters=filters)} == {"/owned/b.txt"}
+    # A structural identity keeps the veto as a disclosed soft demote that is
+    # never verified exact, and the phrase cannot be lent to the anchor owner.
+    strict = build(tmp_path / "strict.sqlite", version, [
+        {"path": "/owned/a.txt", "text": "ZT_84 harbor", "folder": "randomzz signed receipt"},
+        {"path": "/owned/b.txt", "text": "randomzz signed receipt"},
+    ])
+    strict_hits = search(strict, "ZT_84 randomzz")
+    # anchor.v2-intent: the veto survives as remainder_soft on the real owner,
+    # never as a verified exact promotion.
+    assert "/owned/a.txt" in {h.path for h in strict_hits}
+    assert all("exact_source" not in h.why for h in strict_hits)
+    assert all(h.why["anchor_contract_soft"]["soft_clauses"] == [{"clause_id": 0, "reason": "remainder_soft"}]
+               for h in strict_hits if h.path == "/owned/a.txt")
+    query, filters = parse_filters('ZT_84 "signed receipt"')
+    strict_phrase = search(strict, query, filters=filters)
+    # anchor.v2-intent: the demoted clause cannot constrain, so the folder
+    # words may surface a ordinarily too — but never as a verified proof.
+    assert "/owned/b.txt" in {h.path for h in strict_phrase}
+    assert all("exact_source" not in h.why and h.admission_reason != "verified_exact" for h in strict_phrase)
 
 
 @pytest.mark.parametrize("version", [4, 5])
@@ -140,10 +172,29 @@ def test_compare_and_semicolon_keep_true_separate_owners_and_limit(tmp_path, ver
         {"path": "/owned/b.txt", "text": "QV-86 harbor charge"},
     ])
     query = "compare MN-42 and QV-86 on harbor charge"
+    # anchor.v2-intent: ambient _CODE compare clauses are soft; ordinary
+    # admission returns both files (7694837 reference).
     assert len(search(path, query, limit=2)) == 2
-    assert search(path, query, limit=1) == []
+    # Soft clauses have empty owners, so the final limit recheck never fires.
+    assert len(search(path, query, limit=1)) == 1
     assert len(search(path, "MN-42 harbor; QV-86 charge")) == 2
-    assert search(path, "MN-42 QV-86 harbor charge") == []
+    assert len(search(path, "MN-42 QV-86 harbor charge")) == 2
+    # The separate-owner and limit pins survive for structural identities.
+    strict = build(tmp_path / "strict.sqlite", version, [
+        {"path": "/owned/a.txt", "text": "MN_42 harbor charge"},
+        {"path": "/owned/b.txt", "text": "QV_86 harbor charge"},
+    ])
+    strict_query = "compare MN_42 and QV_86 on harbor charge"
+    assert len(search(strict, strict_query, limit=2)) == 2
+    assert search(strict, strict_query, limit=1) == []
+    assert len(search(strict, "MN_42 harbor; QV_86 charge")) == 2
+    # anchor.v2-intent: one clause with identities on different files demotes
+    # softly (anchor_sibling_absent) instead of refusing.
+    conjunction = search(strict, "MN_42 QV_86 harbor charge")
+    assert {h.path for h in conjunction} == {"/owned/a.txt", "/owned/b.txt"}
+    assert all("exact_source" not in h.why for h in conjunction)
+    assert all(h.why["anchor_contract_soft"]["soft_clauses"] == [{"clause_id": 0, "reason": "anchor_sibling_absent"}]
+               for h in conjunction)
 
 
 @pytest.mark.parametrize("version", [4, 5])
@@ -292,13 +343,18 @@ def test_missing_hard_identity_cannot_start_vector_or_embedding_rescue(tmp_path,
     from test_search_offline import FixedBackend, evec
     path = build(tmp_path / "index.sqlite", version, [{"text": "ZT-84 harbor"}])
     with closing(Store(path, ro=True)) as store:
+        # anchor.v2-intent: an ambient _CODE miss is ordinary admission, which
+        # legitimately reaches the vector path (7694837 reference).
+        assert Searcher(store, None).search("ZT-840 harbor", scorer="lexical")
         backend = FixedBackend(evec(0))
         patch = monkeypatch.context()
         with patch as guard:
             guard.setattr(store, "load_vectors", lambda: pytest.fail("missing anchor loaded vectors"))
             guard.setattr(backend, "embed_texts", lambda *_: pytest.fail("missing anchor embedded"))
+            # A missing structural identity still refuses before any
+            # vector/embedding work starts.
             for scorer in ("lexical", "hybrid", "semantic", "rrf"):
-                assert Searcher(store, backend).search("ZT-840 harbor", scorer=scorer) == []
+                assert Searcher(store, backend).search("ZT_840 harbor", scorer=scorer) == []
 
 
 @pytest.mark.parametrize("version", [4, 5])

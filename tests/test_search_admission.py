@@ -53,7 +53,11 @@ def test_exact_anchor_and_random_remaining_word_are_not_equivalent(index):
     hit = Searcher(index, None).search("LC-8492", why=True)[0]
     assert hit.admission_reason == hit.why["admission_reason"] == "verified_exact"
     assert hit.why["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION
-    assert Searcher(index, None).search("nonsensezz LC-8492", why=True) == []
+    # anchor.v2-intent: the ambient _CODE anchor in prose no longer vetoes the
+    # random word; the file returns via ordinary quorum with soft disclosure (7694837).
+    mixed = Searcher(index, None).search("nonsensezz LC-8492", why=True)
+    assert mixed and mixed[0].admission_reason == "lexical_quorum"
+    assert "exact_source" not in mixed[0].why and "anchor_contract_soft" in mixed[0].why
 
 
 def test_vectorless_lexical_quorum_and_filtered_empty_results(index):
@@ -97,13 +101,19 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     # Historical numeric trials retain their original v3 bytes/status.
     assert registered["search_behavior_version"] == "search.v3-evidence-control"
     structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
-    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v4-anchor-contract"
-    assert structural["algorithm_version"] == "anchor.v1-lexical"
+    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v5-anchor-intent"
+    assert structural["algorithm_version"] == "anchor.v2-intent"
     assert structural["status"] == "UNVALIDATED" and structural["quality_results"] is None
     assert structural["semantic_remainder"] == "not_implemented"
-    historical = structural["parameter_registration"]
-    assert historical["sha256"] == hashlib.sha256((Path(__file__).parents[1] / historical["path"]).read_bytes()).hexdigest()
-    assert historical["historical_search_behavior_version"] == registered["search_behavior_version"]
+    # The v1 registration is preserved verbatim as immutable history.
+    historical_entry = structural["history"][0]
+    assert historical_entry["algorithm_version"] == "anchor.v1-lexical"
+    assert historical_entry["search_behavior_version"] == "search.v4-anchor-contract"
+    assert historical_entry["parameter_registration"]["sha256"] == \
+        hashlib.sha256((Path(__file__).parents[1] / "evals/search_parameters.json").read_bytes()).hexdigest()
+    registration = structural["parameter_registration"]
+    assert registration["sha256"] == hashlib.sha256((Path(__file__).parents[1] / registration["path"]).read_bytes()).hexdigest()
+    assert registration["historical_search_behavior_version"] == "search.v4-anchor-contract"
     assert not structural["noise_target_attainment_claim"]
     assert 1 <= len(registered["candidates"]) <= 3
     assert registered["default"] == "control"

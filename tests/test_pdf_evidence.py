@@ -11,7 +11,7 @@ from goldmine.ingest.commit import IngestReport
 from goldmine.ingest.extract_pdf import PdfResult
 from goldmine.ingest.extraction import _Piece
 from goldmine.pack import NeighborIndex, PackSettings, build_pack_from_hits
-from goldmine.search import Searcher
+from goldmine.search import Searcher, parse_filters
 from goldmine.store import FileRec, SegmentRec, Store
 from test_search_offline import FixedBackend, evec
 
@@ -65,9 +65,18 @@ def test_body_anchor_wins_over_other_page_semantic_peak(index):
             index.db.execute("UPDATE segments SET vec=?,modality='text' WHERE file=? AND kind!='name'",
                              (evec(1).astype(np.float16).tobytes(), other))
     hit = Searcher(index, FixedBackend(evec(0))).search("harbor 2209", why=True)[0]
-    assert hit.loc == 3 and "2209" in index.segment_text(hit.segment_id)
-    assert hit.why["display_evidence"]["body_query_units"] == 2
-    assert hit.why["display_evidence"]["score_scope"] == "file"
+    # anchor.v2-intent: a bare year-like number is ambient in prose, so the
+    # page-17 semantic peak legitimately wins selection, disclosed softly (7694837).
+    assert hit.loc == 17 and hit.admission_reason != "verified_exact"
+    assert "exact_source" not in hit.why and "anchor_contract_soft" in hit.why
+    # The body-anchor-beats-semantic-peak pin survives for an obligatory
+    # anchor shape: the quoted page-3 literal is selected and verified exact.
+    query, filters = parse_filters('harbor "2209"')
+    exact = Searcher(index, FixedBackend(evec(0))).search(query, filters=filters, why=True)[0]
+    assert exact.loc == 3 and "2209" in index.segment_text(exact.segment_id)
+    assert exact.admission_reason == "verified_exact"
+    assert exact.why["display_evidence"]["body_query_units"] == 2
+    assert exact.why["display_evidence"]["score_scope"] == "file"
 
 
 def test_two_distant_facts_supply_both_real_segments_in_one_record(index):

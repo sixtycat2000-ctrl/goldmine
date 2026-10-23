@@ -506,6 +506,9 @@ class Searcher:
                 hit.why.update(admission_reason=hit.admission_reason, search_behavior_version=SEARCH_BEHAVIOR_VERSION)
                 if anchor.constrained:
                     hit.why["anchor_contract"] = anchor.why(fid)
+                if anchor.soft_clauses:
+                    # Soft clauses never constrain or promote; disclosure only.
+                    hit.why["anchor_contract_soft"] = anchor.soft_why()
                 local_units = lexical.segment_units.get(seg_id, frozenset()) if lexical is not None else frozenset()
                 local_vector = next(((sz, sc) for sid, sz, sc in evidence_vectors.get(fid, []) if sid == seg_id), None)
                 hit.why["display_evidence"] = {

@@ -8,7 +8,7 @@ import unicodedata
 from .deadline import check_deadline
 from .lexical import _is_cjk
 
-ANCHOR_VERSION = "anchor.v1-lexical"
+ANCHOR_VERSION = "anchor.v2-intent"
 MAX_ANCHORS = 32
 MAX_SOURCE_ROWS = 2000
 _CODE = re.compile(r"[A-Z]{2,}-?[0-9]+\Z")
@@ -129,6 +129,57 @@ def identity_shape(raw):
     if any(c in value for c in "_.:/\\") or camel or (letters and digits):
         return True
     return len(value) >= 4 and all(c.isdecimal() for c in value)
+
+
+def _camel_shape(value):
+    return any(a.islower() and b.isupper() and c.islower()
+               for a, b, c in zip(value, value[1:], value[2:]))
+
+
+_PATH_TAIL = re.compile(r"\.[a-z]{1,4}\Z")
+
+
+def path_plausible(raw):
+    """Mechanical path grammar, no dictionaries (anchor-intent design §2.1).
+
+    Rooted or explicitly relative, or the final component carries a
+    non-empty stem plus an ASCII-lowercase 1-4 letter extension tail.
+    Bare separators, numeric and uppercase tails (CBC/CFB, 1/2000,
+    HTTP/2, nmol/liter.) are not path obligations.
+    """
+    value = unicodedata.normalize("NFKC", raw)
+    if not any(c.isalnum() for c in value):
+        return False
+    if value.startswith(("/", "\\")) or value.startswith("./") or value.startswith("../"):
+        return True
+    tail = re.split(r"[/\\]", value)[-1]
+    stem = tail.rsplit(".", 1)[0] if "." in tail else ""
+    return bool(stem) and _PATH_TAIL.search(tail) is not None
+
+
+def anchor_strength(anchor):
+    """Obligatory vs ambient within a natural-language clause (design §2).
+
+    Pure shape classification; clause intent decides whether it applies.
+    Backtick literals and plausible paths obligate; underscore, dotted
+    code-ish, camel and leading-dot/sign identifiers obligate; numbers,
+    _CODE codes, ordinals, quantities, colon words and fractions never do.
+    """
+    if anchor.kind == "literal":
+        return "obligatory"
+    if anchor.kind == "path":
+        return "obligatory" if path_plausible(anchor.raw) else "ambient"
+    value = unicodedata.normalize("NFKC", anchor.raw)
+    if "_" in value or _camel_shape(value):
+        return "obligatory"
+    if value[:1] in ".+-−" and len(value) > 1:
+        return "obligatory"
+    parts = value.split(".")
+    if len(parts) >= 2 and all(p.isidentifier() for p in parts):
+        last = parts[-1]
+        if any(c.isdecimal() for c in last) or "_" in last or _camel_shape(last):
+            return "obligatory"
+    return "ambient"
 
 
 def _anchors(text, component, first_id):

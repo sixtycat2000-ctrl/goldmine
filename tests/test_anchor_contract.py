@@ -105,8 +105,20 @@ def test_C1_08_cjk_adjacent_anchor_raw_offsets_and_remainder(index):
     assert plan_query(query).clauses[0].remainder.strip() == "记录"
     add(index, query)
     hit = search(index, query)[0]
-    assert proof(hit)["remainder_witnesses"][0]["unit"] == "记录"
+    # anchor.v2-intent: the CJK remainder makes the clause C-NL and the
+    # ambient _CODE anchor soft; the hit returns without witness proofs (7694837).
+    assert "anchor_contract" not in hit.why and "anchor_contract_soft" in hit.why
     assert read_evidence(index, hit.segment_id).text == query
+    # The raw-offset and CJK witness pin survives for a structural identity.
+    strict = "记录ZT_84"
+    planned = plan_query(strict)
+    assert strict[planned.anchors[0].start:planned.anchors[0].end] == "ZT_84"
+    assert planned.clauses[0].remainder.strip() == "记录"
+    add(index, strict, path="/owned/underscore.txt")
+    hit = search(index, strict)[0]
+    assert hit.path == "/owned/underscore.txt"
+    assert proof(hit)["remainder_witnesses"][0]["unit"] == "记录"
+    assert read_evidence(index, hit.segment_id).text == strict
 
 
 def test_C1_09_decimal_scripts_are_not_transliterated(index):
@@ -174,13 +186,29 @@ def test_C1_18_pure_title_identity_uses_actual_name_and_null_location(index):
 
 
 def test_C1_19_metadata_cannot_supply_body_predicates(index):
+    # The metadata-never-witnesses-body protection for a structural identity:
+    # the title owner cannot supply the unwitnessed remainder words.
+    add(index, "unrelated prose", title="TX_81")
+    assert search(index, "TX_81 refund policy") == []
+    # anchor.v2-intent: the ambient _CODE title identity in a C-NL clause no
+    # longer vetoes; ordinary admission returns the name-token file softly (7694837).
     add(index, "unrelated prose", path="/owned/refund-policy/TX-81.txt", title="TX-81")
-    assert search(index, "TX-81 refund policy") == []
+    hits = search(index, "TX-81 refund policy")
+    assert {h.path for h in hits} == {"/owned/refund-policy/TX-81.txt"}
+    assert all(h.admission_reason != "verified_exact" and "exact_source" not in h.why for h in hits)
+    assert all("anchor_contract_soft" in h.why for h in hits)
 
 
 def test_C1_20_mixed_metadata_identity_and_predicate_keep_distinct_true_fields(index):
     add(index, "refund policy available", title="TX-81")
     hit = search(index, "TX-81 refund policy")[0]
+    # anchor.v2-intent: ambient _CODE identity + prose is soft; the hit has no
+    # title/body witness proof, only ordinary admission with disclosure (7694837).
+    assert "anchor_contract" not in hit.why and "anchor_contract_soft" in hit.why
+    # The distinct true-fields pin survives for a structural identity.
+    add(index, "refund policy available", path="/owned/underscore.txt", title="TX_81")
+    hit = search(index, "TX_81 refund policy")[0]
+    assert hit.path == "/owned/underscore.txt"
     binding = proof(hit)["bindings"][0]
     assert binding["field"] == "title"
     assert read_evidence(index, binding["segment_id"]).citation.segment_kind == "name"
@@ -211,21 +239,50 @@ def test_C1_23_unrelated_file_cannot_lend_random_remainder_to_real_anchor(index)
     add(index, "randomzz", path="/owned/unrelated.txt", vector=evec(1))
     for i in range(25):
         add(index, "filler", path=f"/fill/{i}.txt", vector=evec(1))
-    assert Searcher(index, FixedBackend(evec(0))).search("randomzz ZT-84") == []
+    hits = Searcher(index, FixedBackend(evec(0))).search("randomzz ZT-84", why=True)
+    # anchor.v2-intent: ambient _CODE anchors in prose are ordinary terms, so
+    # the ZT-84 file returns via ordinary admission with soft disclosure (7694837).
+    assert hits and hits[0].admission_reason != "verified_exact"
+    assert "exact_source" not in hits[0].why and "anchor_contract_soft" in hits[0].why
+    # An unrelated file plus a random word still cannot rescue a structural
+    # identity that is absent from the corpus.
+    assert Searcher(index, FixedBackend(evec(0))).search("randomzz QX_99") == []
 
 
 def test_C1_24_same_identity_files_cannot_pool_half_predicates(index):
     add(index, "ZT-84 alpha", path="/owned/a.txt")
     add(index, "ZT-84 beta", path="/owned/b.txt")
-    assert search(index, "alpha beta ZT-84") == []
+    # anchor.v2-intent: an ambient _CODE identity with prose is ordinary
+    # admission; each half-predicate file returns via quorum (7694837).
+    hits = search(index, "alpha beta ZT-84")
+    assert {h.path for h in hits} == {"/owned/a.txt", "/owned/b.txt"}
+    assert all("anchor_contract_soft" in h.why for h in hits)
+    # The no-pooling protection survives for structural identities as a
+    # disclosed soft demote: the halves may return, never verified exact.
+    add(index, "TX_85 alpha", path="/owned/c.txt")
+    add(index, "TX_85 beta", path="/owned/d.txt")
+    strict = search(index, "alpha beta TX_85")
+    assert {"/owned/c.txt", "/owned/d.txt"} <= {h.path for h in strict}
+    assert all(h.admission_reason != "verified_exact" and "exact_source" not in h.why for h in strict)
+    halves = [h.why["anchor_contract_soft"] for h in strict if h.path in {"/owned/c.txt", "/owned/d.txt"}]
+    assert all(s["soft_clauses"] == [{"clause_id": 0, "reason": "remainder_soft"}] for s in halves)
+    assert all({b["query_term"] for b in s["obligatory_bindings"]} == {"TX_85"} for s in halves)
 
 
 def test_C1_25_explicit_clauses_bind_their_own_distinct_files(index):
     add(index, "MN-42 charge limit 17", path="/owned/a.txt")
     add(index, "QV-86 retention days 29", path="/owned/b.txt")
     hits = search(index, "charge limit MN-42; retention days QV-86")
+    # anchor.v2-intent: ambient _CODE clauses are soft; the files still return
+    # but without per-clause owner proofs (7694837).
     assert {h.path for h in hits} == {"/owned/a.txt", "/owned/b.txt"}
-    assert {tuple(proof(h)["clauses"]) for h in hits} == {(0,), (1,)}
+    assert all("anchor_contract" not in h.why and "anchor_contract_soft" in h.why for h in hits)
+    # The explicit-clause distinct-file pin survives for structural identities.
+    add(index, "MN_42 charge limit 17", path="/owned/c.txt")
+    add(index, "QV_86 retention days 29", path="/owned/d.txt")
+    strict = search(index, "charge limit MN_42; retention days QV_86")
+    assert {h.path for h in strict} == {"/owned/c.txt", "/owned/d.txt"}
+    assert {tuple(proof(h)["clauses"]) for h in strict} == {(0,), (1,)}
 
 
 @pytest.mark.parametrize("query,a,b", [
@@ -237,6 +294,24 @@ def test_C1_25_explicit_clauses_bind_their_own_distinct_files(index):
 def test_cross_file_absence_and_scope_cannot_be_completed_by_global_union(index, query, a, b):
     add(index, a, path="/owned/a.txt")
     add(index, b, path="/owned/b.txt")
+    hits = search(index, query)
+    # anchor.v2-intent: ambient _CODE anchors lose the cross-file union veto;
+    # the corpus files return via ordinary admission (7694837 reference).
+    assert hits and all(h.admission_reason != "verified_exact" for h in hits)
+    assert all("anchor_contract" not in h.why and "anchor_contract_soft" in h.why for h in hits)
+
+
+@pytest.mark.parametrize("query,a,b", [
+    pytest.param("charge limit MN_42; randomzz QX_99", "MN_42 charge limit 17 randomzz", "QV_86 retention days 29", id="C1-26"),
+    pytest.param("charge limit MN_42; retention days QX_87", "MN_42 charge limit 17", "QV_86 retention days 29", id="C1-27"),
+    pytest.param("QX_42 charge limit and QX_86 retention days", "MN_42 charge limit 17", "QV_86 retention days 29", id="C1-28"),
+    pytest.param("compare MN_42 and QX_86 on retention days", "MN_42 retention days 17", "QV_86 charge limit 29", id="C1-30"),
+])
+def test_structural_identity_absence_still_refuses_global_union(index, query, a, b):
+    add(index, a, path="/owned/a.txt")
+    add(index, b, path="/owned/b.txt")
+    # anchor.v2-intent: only the ambient shapes were amended; a structural
+    # identity absent from every clause owner still hard-refuses.
     assert search(index, query) == []
 
 
@@ -279,7 +354,15 @@ def test_C1_35_limit_cannot_silently_drop_one_required_owner(index):
     add(index, "MN-42 charge limit 17", path="/owned/a.txt")
     add(index, "QV-86 retention days 29", path="/owned/b.txt")
     diag = {}
-    assert search(index, "charge limit MN-42; retention days QV-86", limit=1, diagnostics=diag) == []
+    # anchor.v2-intent: ambient _CODE clauses are soft (empty owners are
+    # skipped by represented), so limit one returns the top hit (7694837).
+    hits = search(index, "charge limit MN-42; retention days QV-86", limit=1, diagnostics=diag)
+    assert len(hits) == 1 and diag["reason"] is None
+    # The limit recheck still empties a constrained decision.
+    add(index, "MN_42 charge limit 17", path="/owned/c.txt")
+    add(index, "QV_86 retention days 29", path="/owned/d.txt")
+    diag = {}
+    assert search(index, "charge limit MN_42; retention days QV_86", limit=1, diagnostics=diag) == []
     assert diag["reason"] == "anchor_not_in_selected_limit"
 
 
@@ -302,8 +385,24 @@ def test_C1_36_declared_bounds_and_cancellation_have_no_semantic_fallback(index)
 def test_C1_37_semantic_remainder_is_unimplemented(index):
     add(index, "ZT-84 remove inherited settings", vector=evec(0))
     diag = {}
-    assert Searcher(index, FixedBackend(evec(0))).search("ZT-84 erase inherited options", diagnostics=diag) == []
-    assert diag["reason"] == "remainder_unsupported" and diag["semantic_remainder"] == "not_implemented"
+    hits = Searcher(index, FixedBackend(evec(0))).search("ZT-84 erase inherited options",
+                                                         why=True, diagnostics=diag)
+    # anchor.v2-intent: the ambient _CODE clause is soft; the semantic-standout
+    # hit returns and remainder_unsupported is replaced by soft disclosure (7694837).
+    assert hits and all(h.admission_reason != "verified_exact" for h in hits)
+    assert diag["reason"] is None and diag["semantic_remainder"] == "not_implemented"
+    assert diag["soft_clauses"] == [{"clause_id": 0, "reason": "ambient_only"}]
+    assert diag["ambient_anchors"] == ["ZT-84"]
+    # The semantic remainder stays unimplemented for structural identities
+    # too: the paraphrase is never witnessed, only softly demoted.
+    add(index, "TX_84 remove inherited settings", path="/owned/underscore.txt", vector=evec(0))
+    diag = {}
+    strict = Searcher(index, FixedBackend(evec(0))).search("TX_84 erase inherited options",
+                                                           why=True, diagnostics=diag)
+    assert {h.path for h in strict} == {"/owned/underscore.txt"}
+    assert all(h.admission_reason != "verified_exact" and "exact_source" not in h.why for h in strict)
+    assert diag["soft_clauses"] == [{"clause_id": 0, "reason": "remainder_soft"}]
+    assert diag["semantic_remainder"] == "not_implemented"
 
 
 def test_C1_38_private_unanchored_measurement_keeps_old_uncalibrated_route(index):

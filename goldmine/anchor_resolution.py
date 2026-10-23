@@ -13,7 +13,7 @@ from .legacy_anchors import LegacyCandidates
 from .lexical import (ExactMatch, cjk_runs, fts_quote, grams, identifier_tokens,
                       normalize, path_identifier_tokens, query_units, term_forms, _is_cjk)
 from .query_obligations import (MAX_SOURCE_ROWS, Anchor, compact_alias, lexemes,
-                                literal_equal, typed_normalize)
+                                literal_equal, path_plausible, typed_normalize)
 
 
 class VerificationBound(ValueError):
@@ -71,6 +71,18 @@ def body_surfaces(value):
     return tuple(dict.fromkeys(out))
 
 
+_BRACKETS = "()[]{}（）［］｛｝"
+
+
+def _bracket_stripped(text):
+    start, end = 0, len(text)
+    while start < end and text[start] in _BRACKETS:
+        start += 1
+    while end > start and text[end - 1] in _BRACKETS:
+        end -= 1
+    return text[start:end]
+
+
 def metadata_surfaces(value):
     # Metadata fragments cannot prove a numeric literal after losing part of
     # its actual component. Classify after NFKC, then compare whole real
@@ -85,7 +97,13 @@ def metadata_surfaces(value):
     for raw in path_identifier_tokens(value):
         surface = unicodedata.normalize("NFKC", raw)
         if surface[:1].isdecimal() and typed_normalize(raw) not in numeric_components:
-            continue
+            # A numeric-leading fragment is still a real component when the
+            # stored component differs only by wrapping bracket punctuation
+            # (photo_2018_Aug_04_(3551).jpg -> 3551); signs, decimal points,
+            # commas and letters never bridge that gap.
+            if not any(part != _bracket_stripped(part) and _bracket_stripped(part) == surface
+                       for part in components):
+                continue
         out.append(raw)
     out.extend(components)
     return tuple(dict.fromkeys(out))
@@ -118,6 +136,7 @@ class Resolver:
         self.legacy = None if self.profile.exact else LegacyCandidates(self)
         self.rows: dict[int, SourceRow] = {}
         self.attempted: set[int] = set()
+        self.fetched: set[int] = set()
         self.witnesses: set[int] = set()
         self.queries = 0
 
@@ -126,14 +145,19 @@ class Resolver:
         self.queries += 1
         return self.db.execute(sql, values)
 
-    def read(self, ids):
+    def read(self, ids, *, preread=False):
+        """Fetch source rows once. Preread rows (lexical recall seeds) are
+        cached but do not consume the obligation-verification budget; the
+        bound keeps meaning only for obligation verification."""
         ids = list(dict.fromkeys(ids))
-        missing = sorted(set(ids) - self.attempted)
-        if len(self.attempted) + len(missing) > MAX_SOURCE_ROWS:
+        missing = sorted(set(ids) - self.fetched)
+        if not preread and len(self.attempted) + len(missing) > MAX_SOURCE_ROWS:
             raise VerificationBound("anchor_verification_bound")
         for start in range(0, len(missing), 400):
             batch = missing[start:start + 400]
-            self.attempted.update(batch)
+            if not preread:
+                self.attempted.update(batch)
+            self.fetched.update(batch)
             marks = ",".join("?" for _ in batch)
             text_sql, original_sql = fts_projection(self.db, "t")
             found = self.execute(
@@ -307,6 +331,8 @@ class Resolver:
                     found.append(Binding(anchor.id, row.file, row.id, "body", raw, "raw", 1, anchor.raw))
         if not found and not body_only:
             found = self._qualified(anchor)
+        if not found and not body_only and anchor.kind == "path" and path_plausible(anchor.raw):
+            found = self._path_suffix(anchor)
         # One deterministic witness for each logical source-field binding;
         # repeated occurrences in a long file cannot multiply per-hit why.
         unique = {}
@@ -314,6 +340,43 @@ class Resolver:
             key = (b.anchor_id, b.file_id, b.field, b.match_type)
             unique.setdefault(key, b)
         return list(unique.values())
+
+    def _path_suffix(self, anchor):
+        """Bounded files.path suffix recall for plausible path anchors whose
+        ordinary routes (lookup/recall/qualified) produced nothing. Verified
+        against the same-snapshot stored path at a separator boundary; the
+        tier never outranks an existing whole-path/basename/alias binding."""
+        def escaped(value):
+            # GLOB: '[' opens a class ('[[]' is a literal '['); ']' outside a
+            # class and all other characters are literal.
+            return (value.replace("[", "[[]")
+                    .replace("*", "[*]").replace("?", "[?]"))
+        rows = self.execute(
+            "SELECT id,path FROM files WHERE path GLOB ? ORDER BY id LIMIT ?",
+            ("*" + escaped(anchor.raw), MAX_SOURCE_ROWS + 1),
+        ).fetchall()
+        if len(rows) > MAX_SOURCE_ROWS:
+            raise VerificationBound("anchor_verification_bound")
+        output = []
+        for fid, path in rows:
+            if fid not in self.allowed:
+                continue
+            tails = []
+            remainder = path
+            while "/" in remainder or "\\" in remainder:
+                remainder = re.split(r"[/\\]", remainder, maxsplit=1)[1]
+                tails.append(remainder)
+            tail = next((t for t in tails if literal_equal(anchor.raw, t)), None)
+            if tail is None:
+                continue
+            name = self.execute(
+                "SELECT id FROM segments WHERE file=? AND kind='name' ORDER BY id LIMIT 1",
+                (fid,)).fetchone()
+            if name is None:
+                continue
+            output.append(Binding(anchor.id, fid, name[0], "path", tail,
+                                  "path_suffix", 3, anchor.raw))
+        return output
 
     def _qualified(self, anchor):
         parts = anchor.raw.split(".")
