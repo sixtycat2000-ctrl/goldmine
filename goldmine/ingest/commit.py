@@ -335,6 +335,9 @@ class CommitMixin:
                 float(piece.chunk.loc_end)
                 if piece.chunk.loc_end is not None else None
             )
+            # chunk.v7: the store keeps the verbatim source slice; the cleaned
+            # chunk.text above was only the embedding input.
+            stored = piece.chunk.original if piece.chunk.original is not None else piece.chunk.text
             segs.append(
                 SegmentRec(
                     kind=piece.kind,
@@ -346,7 +349,7 @@ class CommitMixin:
                         if piece.excerpt_override is not None
                         else excerpt(piece.chunk.text)
                     ),
-                    text_for_fts=piece.chunk.text,
+                    text_for_fts=stored,
                     vec=vec,
                 )
             )

@@ -112,7 +112,7 @@ def test_paragraph_byte_pieces_preserve_body_and_locations():
     text = "甲乙\n\n丙丁"
     chunks = run("prose", text, 8)
     assert "".join(chunk.text for chunk in chunks) == "甲乙丙丁"
-    assert [(chunk.loc, chunk.loc_end) for chunk in chunks] == [(1, 3), (3, 3)]
+    assert [(chunk.loc, chunk.loc_end) for chunk in chunks] == [(1, 1), (3, 3)]
     assert all(len(chunk.text.encode("utf-8")) <= chunk.tokens <= 8 for chunk in chunks)
 
 

@@ -110,7 +110,7 @@ def test_normal_and_ocr_chunks_keep_page_numbers_and_global_cap(tmp_path, monkey
     pages = [(3, ("first-page text\n" * 250)), (17, ("second-page material\n" * 250))]
     monkeypatch.setattr(extract_pdf, "extract_pages", lambda *a, **kw: PdfResult(pages=pages, total=20))
     outcome = pipeline._extract_pdf(tmp_path / "source.pdf", 500)
-    assert CHUNKER_VERSION == "chunk.v6-char-tail"
+    assert CHUNKER_VERSION == "chunk.v7-original-text"
     assert len(outcome.chunks) > 2
     assert {piece.chunk.loc for piece in outcome.chunks} == {3, 17}
     assert all(piece.chunk.loc == piece.chunk.loc_end and piece.location_unit == "page" for piece in outcome.chunks)

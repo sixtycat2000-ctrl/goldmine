@@ -40,7 +40,9 @@ def test_paragraph_keeps_first_post_boundary_token(parts, budget):
     assert len(chunks) == 2
     assert compact("".join(c.text for c in chunks)) == compact(text)
     assert all(c.text in text and 0 < c.tokens <= budget for c in chunks)
-    assert [(c.loc, c.loc_end) for c in chunks] == [(1, 3), (3, 3)]
+    # chunk.v7: loc_end is the line of the chunk's last ORIGINAL character,
+    # not the paragraph cut position two newlines later.
+    assert [(c.loc, c.loc_end) for c in chunks] == [(1, 1), (3, 3)]
 
 
 @pytest.mark.parametrize("parts,budget", [
@@ -87,7 +89,7 @@ def test_repeated_paragraphs_finish_at_source_end_and_honor_chunk_cap():
     full = chunk_text_tokens(text, budget_tokens=2, overlap_tokens=0,
                              tokenize=pieces_for(parts), max_chunks=20)
     assert compact("".join(c.text for c in full)) == "AABBCCDD"
-    assert [(c.loc, c.loc_end) for c in full] == [(1, 3), (3, 5), (5, 7), (7, 7)]
+    assert [(c.loc, c.loc_end) for c in full] == [(1, 1), (3, 3), (5, 5), (7, 7)]
     limited = chunk_text_tokens(text, budget_tokens=2, overlap_tokens=0,
                                 tokenize=pieces_for(parts), max_chunks=2)
     assert len(limited) == 2 and limited == full[:2]
@@ -114,7 +116,7 @@ def test_plain_ingest_refreshes_only_stale_content_then_becomes_unchanged(tmp_pa
     from goldmine.ingest import pipeline as pipeline_module
     from goldmine.store import FileRec, SegmentRec, Store
 
-    assert CHUNKER_VERSION == "chunk.v6-char-tail"
+    assert CHUNKER_VERSION == "chunk.v7-original-text"
     corpus = tmp_path / "corpus"
     corpus.mkdir()
     content = corpus / "document.txt"

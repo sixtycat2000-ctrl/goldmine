@@ -57,7 +57,7 @@ _KIND_CHARS_PER_TOKEN = {"code": CODE_CHARS_PER_TOKEN}
 #: chunk semantics actually change; a bump marks existing rows stale for the
 #: next plain ingest run, never a refusal (A2/B11: refusal is reserved for an
 #: incompatible embed identity).
-CHUNKER_VERSION = "chunk.v6-char-tail"
+CHUNKER_VERSION = "chunk.v7-original-text"
 
 #: Callable returning exact token PIECES (as utf-8 bytes, each piece one token,
 #: concatenated ~= the utf-8 text) or None when unavailable -> estimator path.
@@ -85,6 +85,12 @@ class Chunk:
     #: count makes the guard redundant (06-perf F2: effective_token_budget
     #: already reserves framing+slack below the backend ceiling).
     tokens: int | None = None
+    #: The verbatim source slice this chunk was cut from, when the chunker
+    #: cleaned whitespace before cutting (chunk_text_tokens). `text` stays the
+    #: cleaned embedding input; `original` is what the store keeps as the
+    #: as-written segment text, and loc/loc_end then count ORIGINAL lines.
+    #: None when text already is the verbatim slice (code, hand-built, resplit).
+    original: str | None = None
 
 
 def _line_of(text: str, pos: int) -> int:
@@ -93,6 +99,54 @@ def _line_of(text: str, pos: int) -> int:
 
 def _clean(text: str) -> str:
     return _BLANK_RUN.sub("\n\n", _WS_RUN.sub(" ", text)).strip()
+
+
+def _clean_mapped(text: str) -> tuple[str, list[int]]:
+    """`_clean(text)` plus, for every cleaned character, the offset of the
+    original character it stands for; one trailing sentinel offset marks where
+    the stripped tail begins (len(text) when nothing was stripped). A collapsed
+    run maps to the run's first characters, so slicing the original between two
+    cleaned offsets yields the verbatim source including the run."""
+    pieces: list[str] = []
+    offsets: list[int] = []
+    pos = 0
+    for match in _WS_RUN.finditer(text):
+        pieces.append(text[pos:match.start()])
+        offsets.extend(range(pos, match.start()))
+        pieces.append(" ")
+        offsets.append(match.start())
+        pos = match.end()
+    pieces.append(text[pos:])
+    offsets.extend(range(pos, len(text)))
+    spaced = "".join(pieces)
+    pieces, mapped, pos = [], [], 0
+    for match in _BLANK_RUN.finditer(spaced):
+        pieces.append(spaced[pos:match.start()])
+        mapped.extend(offsets[pos:match.start()])
+        pieces.append("\n\n")
+        mapped.append(offsets[match.start()])
+        mapped.append(offsets[match.start() + 1])
+        pos = match.end()
+    pieces.append(spaced[pos:])
+    mapped.extend(offsets[pos:])
+    collapsed = "".join(pieces)
+    lead = len(collapsed) - len(collapsed.lstrip())
+    trail = len(collapsed) - len(collapsed.rstrip())
+    end = len(collapsed) - trail
+    clean = collapsed[lead:end]
+    result = mapped[lead:end]
+    result.append(mapped[end] if trail else len(text))
+    return clean, result
+
+
+def _attach_original(chunks: list[Chunk], spans: list[tuple[int, int]], text: str, offsets: list[int]) -> list[Chunk]:
+    """Rebind cleaned-text chunks to their verbatim source slices and lines."""
+    out = []
+    for chunk, (a, b) in zip(chunks, spans):
+        start, stop = offsets[a], offsets[b]
+        out.append(Chunk(chunk.text, _line_of(text, start), _line_of(text, max(start, stop - 1)),
+                         tokens=chunk.tokens, original=text[start:stop]))
+    return out
 
 
 # --------------------------------------------------------------- token pieces
@@ -251,26 +305,39 @@ def chunk_text_tokens(
     (CJK-aware), then whitespace, all >= half the budget into the window;
     otherwise a hard cut at the token boundary. Paragraph cuts carry no
     overlap; other cuts back up ~`overlap_tokens` tokens. loc/loc_end are
-    1-based line numbers of the chunk in the cleaned text.
+    1-based line numbers of the chunk in the ORIGINAL text and each chunk
+    carries its verbatim `original` slice (chunk.v7); `text` is the cleaned
+    cut that budgets and embeddings are measured on.
     """
-    clean = _clean(text)
+    clean, offsets = _clean_mapped(text)
     if not clean:
         return []
     pieces = tokenize(clean) if tokenize is not None else None
     index = _TokenIndex(clean, pieces) if pieces else None
+    spans: list[tuple[int, int]] = []
     if index is None or not index.ok:
         cpt = _chars_per_token(kind)
-        return chunk_text(
+        chunks = chunk_text(
             clean,
             size=max(1, int(budget_tokens * cpt)),
             overlap=max(1, int(overlap_tokens * cpt)),
             max_chunks=max_chunks,
+            _spans=spans,
         )
-    return _walk_tokens(clean, index, budget_tokens, overlap_tokens, max_chunks)
+    else:
+        chunks = _walk_tokens(clean, index, budget_tokens, overlap_tokens, max_chunks, spans)
+    return _attach_original(chunks, spans, text, offsets)
+
+
+def _stripped_span(clean: str, start: int, end: int) -> tuple[int, int]:
+    """[start, end) narrowed to the `.strip()`ped piece inside it."""
+    piece = clean[start:end]
+    return start + len(piece) - len(piece.lstrip()), end - (len(piece) - len(piece.rstrip()))
 
 
 def _walk_tokens(
     clean: str, index: _TokenIndex, budget: int, overlap: int, max_chunks: int,
+    spans: list[tuple[int, int]] | None = None,
 ) -> list[Chunk]:
     chunks: list[Chunk] = []
     n = len(clean)
@@ -313,6 +380,8 @@ def _walk_tokens(
                       _line_of(clean, cut_char),
                       tokens=cut_tok - start_tok)
             )
+            if spans is not None:
+                spans.append(_stripped_span(clean, index.char_at(start_tok), cut_char))
         if cut_tok >= index.total:
             break
         if paragraph:
@@ -452,7 +521,7 @@ def effective_token_budget(max_input_tokens: int | None) -> int:
 
 def chunk_text(
     text: str, size: int = DEFAULT_SIZE, overlap: int = DEFAULT_OVERLAP,
-    max_chunks: int = DEFAULT_MAX_CHUNKS,
+    max_chunks: int = DEFAULT_MAX_CHUNKS, _spans: list[tuple[int, int]] | None = None,
 ) -> list[Chunk]:
     """~`size`-character chunks with a little overlap, paragraph-aware.
 
@@ -463,6 +532,8 @@ def chunk_text(
     - fallback cut: last whitespace deeper than size/2 in; the next chunk starts
       `overlap` back, advanced to a word boundary
     - loc/loc_end are 1-based line numbers of the chunk in the cleaned text
+    - `_spans` (internal) collects each emitted piece's [start, end) in the
+      cleaned text so chunk_text_tokens can rebind it to the original
     """
     if size < 1:
         raise ValueError("character chunk size must be positive")
@@ -491,6 +562,8 @@ def chunk_text(
             piece = clean[start:cut].strip()
             if piece:
                 chunks.append(Chunk(piece, _line_of(clean, start), _line_of(clean, cut)))
+                if _spans is not None:
+                    _spans.append(_stripped_span(clean, start, cut))
             if paragraph:
                 # cut is > size/2 past start, so this always advances
                 start = min(cut + 2, n)
@@ -506,6 +579,8 @@ def chunk_text(
             piece = clean[start:end].strip()
             if piece:
                 chunks.append(Chunk(piece, _line_of(clean, start), _line_of(clean, end)))
+                if _spans is not None:
+                    _spans.append(_stripped_span(clean, start, end))
             if end >= n:
                 break
             start = end  # A hard window has no preferred boundary; keep its tail.
