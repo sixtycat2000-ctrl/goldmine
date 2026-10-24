@@ -57,6 +57,19 @@ def _goldmine(data, arm, mapping):
     return rows, {"settings": settings, "fallback_reason": fallback, "treatment": treatment}
 
 
+def _numeric(value):
+    # Installed QMD 2.8.3 --format json emits score/line as decimal/integer
+    # JSON strings; numbers stay accepted (quality-harness-fix-001).
+    if type(value) is int or type(value) is float:
+        return value
+    if type(value) is str:
+        try:
+            return float(value) if "." in value or "e" in value.lower() else int(value)
+        except ValueError:
+            return None
+    return None
+
+
 def _qmd(data, index):
     if not isinstance(data, list) or len(data) > 100:
         raise EvaluationError("QMD output must contain at most100 raw rows")
@@ -65,12 +78,13 @@ def _qmd(data, index):
         raise EvaluationError("QMD indexed URI registry collides")
     result = []
     for i, r in enumerate(data, 1):
-        if not isinstance(r, dict) or not {"docid", "score", "file", "title"} <= r.keys() or not _finite(r["score"]) or not isinstance(r["title"], str):
+        if (not isinstance(r, dict) or not {"docid", "score", "file", "title"} <= r.keys()
+                or not _finite(_numeric(r.get("score"))) or not isinstance(r["title"], str)):
             raise EvaluationError("QMD actual formatter fields differ")
         doc = by_uri.get(r["file"])
         if doc is None or r["docid"] != "#" + doc["hash"][:6]:
             raise EvaluationError("QMD native URI/hash does not match actual prepared content")
-        if "line" in r and (type(r["line"]) is not int or r["line"] < 1):
+        if "line" in r and (type(r["line"]) is not int and not (type(r["line"]) is str and r["line"].isdigit() and int(r["line"]) >= 1)):
             raise EvaluationError("QMD snippet line is malformed")
         result.append({"source_path": doc["source_path"], "engine_rank": i, "engine_id": r["docid"], "score": r["score"], "raw": r,
                        "position_status": "NOT_COMPARABLE_UNVERIFIED_ORIGINAL_COORDINATES"})

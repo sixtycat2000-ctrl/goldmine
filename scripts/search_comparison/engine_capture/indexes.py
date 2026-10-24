@@ -43,6 +43,14 @@ def goldmine(values, view):
         result = {}
         for r in files:
             d = expected[r["path"]]
+            if r["capability"] == "unsupported" and r["sha256"] is None and r["size"] == 0 and not r["detail"]:
+                raise EvaluationError("unsupported Goldmine row lost its declared reason")
+            if r["capability"] == "unsupported" and r["sha256"] is None and r["size"] == 0:
+                # Frozen plan measures current admission defaults: production
+                # ingest defaults to code files off, recording them unsupported
+                # ('code or data file') instead of indexing (quality-harness-fix-001).
+                result[d["source_path"]] = {"file": r, "parts": [], "status": "UNSUPPORTED_ADMISSION_DEFAULT"}
+                continue
             if r["sha256"] != d["sha256"]:
                 raise EvaluationError("Goldmine indexed file SHA differs from actual shared input")
             parts = [dict(s) for s in db.execute("SELECT s.id,s.kind,s.modality,s.loc,s.loc_end,s.vec,coalesce(t.original,t.body) AS text FROM segments s LEFT JOIN fts t ON t.rowid=s.id WHERE s.file=? ORDER BY s.id", (r["id"],))]
