@@ -430,10 +430,13 @@ class Resolver:
         return output
 
     def _qualified(self, anchor):
+        """module[.Qualifier...].symbol -> the module's file, when every
+        component after the module is a real stored body surface there. A
+        fabricated tail (TLSv1_9, uuid9) therefore still binds nowhere."""
         parts = anchor.raw.split(".")
-        if len(parts) != 2 or not all(p.isidentifier() for p in parts):
+        if len(parts) < 2 or not all(p.isidentifier() for p in parts):
             return []
-        module, symbol = parts
+        module, *qualifiers, symbol = parts
         names = self.lookup(Anchor(-1, 0, 0, 0, module + ".py"), whole_metadata=True)
         names += self.lookup(Anchor(-1, 0, 0, 0, "__init__.py"), whole_metadata=True)
         owners = {}
@@ -446,6 +449,8 @@ class Resolver:
                 owners.setdefault(b.file_id, b)
         output = []
         for fid, name in sorted(owners.items()):
+            if not all(self._body_surface_present(qualifier, fid) for qualifier in qualifiers):
+                continue
             for row in self.recall(symbol, file_id=fid):
                 for raw in body_surfaces(row.text or ""):
                     if literal_equal(symbol, raw):
@@ -453,6 +458,11 @@ class Resolver:
                                               "qualified_components", 2, anchor.raw,
                                               name.segment_id, name.raw))
         return output
+
+    def _body_surface_present(self, surface, file_id):
+        return any(literal_equal(surface, raw)
+                   for row in self.recall(surface, file_id=file_id)
+                   for raw in body_surfaces(row.text or ""))
 
     def remainder(self, file_id, text, phrases, terms_of, units=None):
         """Every body unit has a same-file real row witness; no name-column support."""
