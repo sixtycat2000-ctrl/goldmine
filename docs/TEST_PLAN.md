@@ -63,9 +63,12 @@ install list. Where a test needs "pdftotext missing", it monkeypatches `shutil.w
   (fake FtsRows with negative bm25 values sort best-first); RRF k=60 reference values.
 - `test_distill.py`: exact-dup removal; near-dup 0.97 greedy; clustering is **byte-stable
   across runs and input-order-independent given the (fid,sid) canonical order** (run twice,
-  compare); centroid = normalized running mean (hand-computed 3-vector case); singleton
+  compare); the v3 core pins `skm_det` determinism (farthest-first, lowest-index ties),
+  the two-orthogonal-group co-association hand case, fine-leader first-wins, the
+  dual-channel remerge guards (co mean/min + geo centroid/min — both directions),
+  the micro fold formula against brute force, and small-n behavior; singleton
   dropping at min_members; refusal beyond max_chunks; TF-IDF hand case; card content
-  (verbatim rep text, citations, term list).
+  (verbatim rep text, citations, term list); chained increments (full→inc→inc).
 - `test_fingerprints.py`: id stability across key order; diff_fields names the changed key;
   build-string change does **not** change the id (D2 refinement pinned by test).
 - `test_util.py`: fp16 pack/unpack round-trip vs hand-packed bytes; excerpt; MPEG-TS heads;
@@ -129,8 +132,10 @@ judgments between scorers are **reported, not asserted** — the harness exists 
 near-dup 0.97 default falsifiable (DESIGN_DECISIONS §11): the distill clustering
 sensitivity run (manual τ ∈ {0.60, 0.70, 0.80} + the calibrated baseline) is a
 `@pytest.mark.eval` test that prints cluster count/purity and always passes unless the
-pipeline errors. τ itself is no longer a default to falsify — v2.1 R6 CALIBRATES it per
-run (docs/v2.1-r6-distill.md); the distill canary (`scripts/eval_distill.py`, wrapped by
+pipeline errors. In v3 τ is the co-association admission constant F=0.45 (`tau_source ∈
+fixed|manual|inherited` — the v2 per-run calibration retired; see
+reports/execution/P2-04/distill-purity-diagnosis-001); the distill canary
+(`scripts/eval_distill.py`, wrapped by
 `tests/test_eval_distill.py`) enforces purity ≥ 0.70 / ARI ≥ 0.50 / recovery ≥ 6-of-8 /
 excerpt fidelity 100% offline on mock, with the F1 `hard` differential (v1 rules FAIL,
 v2 PASS) as the real offline algorithm gate; the `--backend llama` run is the

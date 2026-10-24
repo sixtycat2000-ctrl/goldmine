@@ -62,9 +62,9 @@ CREATE VIRTUAL TABLE IF NOT EXISTS fts USING fts5(
 
 CREATE TABLE IF NOT EXISTS distill_runs(
     id          TEXT PRIMARY KEY,     -- sha256(algo|tau|scope_json|corpus_hash|mode)
-    algo        TEXT NOT NULL,        -- "leader-avglink.v2"
+    algo        TEXT NOT NULL,        -- "ens-coassoc.v3" (v2-era rows keep their historical string)
     tau         REAL NOT NULL,
-    tau_source  TEXT NOT NULL,        -- otsu|floor|ceil|percentile|manual|inherited
+    tau_source  TEXT NOT NULL,        -- fixed|manual|inherited (v3); historical rows may carry otsu/floor/ceil/percentile
     scope_json  TEXT NOT NULL,        -- canonical: {under, kinds, after}
     corpus_hash TEXT NOT NULL,        -- audit identity (D9; never gates reuse, F4)
     mode        TEXT NOT NULL,        -- full|incremental

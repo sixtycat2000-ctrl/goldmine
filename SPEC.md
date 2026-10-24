@@ -412,29 +412,39 @@ goldmine distill [flags]
   --json               JSON cards to stdout instead of markdown
 ```
 
-Algorithm (normative, deterministic — no RNG anywhere; algo string `leader-avglink.v2`):
+Algorithm (normative, deterministic — no RNG anywhere; algo string `ens-coassoc.v3`):
 
 1. Corpus = all vectorized segments in scope, ordered by `(file_id, segment_id)`.
 2. Dedupe: exact duplicates by sha256 of normalized text; then near-duplicates, greedy in
    order, cosine ≥ 0.97 to an already-kept chunk.
-3. **τ calibration** (`measure_tau`): sampled pairwise cosines (all pairs when N ≤ 300, else
-   a 300-row stride gram), 256-bin histogram, Otsu t\* = bin center of argmax between-class
-   variance; hump/valley + mode-proximity fallback to the **P90 percentile** path (real
-   corpora are unimodal and expected to land on `percentile`); clamp [0.55, 0.85].
-   `tau_source ∈ otsu | floor | ceil | percentile | manual | inherited`; τ + source + raw +
-   fallback reason are reported in `--preview` and the output header.
-4. Greedy leader clustering with the **average-link admission guard**: a chunk joins the
-   first cluster (lowest index) where cos-to-centroid ≥ τ **and** mean-cos-to-members =
-   `(S_c·x̂)/n_c` ≥ τ_lo = max(τ−0.10, 0.35); else it founds a new cluster. The guard reads
-   the running member sum, never a centroid shortcut.
-5. Singleton/small-cluster handling: clusters < `min_members` are dropped — never silently
+3. **Centering**: μ = mean of the deduped row-normalized vectors; the centered space is
+   rows renormalized after subtracting μ. (Real corpora are narrow hubs — cross-topic
+   median cosine ~0.6 — and centering restores threshold discriminability.)
+4. **Deterministic ensemble co-association** (96 runs: spaces {centered, raw} × k ∈
+   {20..64 step 4} × farthest-first starts {0..3}; k capped at n/4; above 8000 chunks the
+   tier switches to micro-cell folding with a reduced grid). `co[i,j]` = fraction of runs
+   placing i and j in one cluster. Spherical k-means has zero RNG: farthest-first init,
+   lowest-index ties, farthest-chunk revival of empty clusters.
+5. **τ** is the co-association admission threshold F = 0.45 — an architecture constant,
+   not calibrated per corpus (the v2 pairwise-cosine Otsu/P90 calibration retired after
+   real-corpus diagnosis showed it lands on the within-topic median of a hub distribution;
+   see reports/execution/P2-04/distill-purity-diagnosis-001). `tau_source ∈ fixed | manual
+   | inherited`; the observed co-association distribution (histogram + quartiles) is still
+   reported honestly in `--preview`.
+6. **Fine leader**: a chunk joins the first group whose members' mean co-association to it
+   ≥ τ; else it founds a new group. **Dual-channel remerge**: two groups merge while
+   EITHER (a) mean pair co ≥ 0.22 AND min pair co ≥ 0.10 (average-link merge with a
+   complete-link guard) OR (b) centered-centroid cosine ≥ 0.50 AND min centered pair
+   cosine ≥ 0.20 (repairs same-topic fragments on cleanly separable corpora).
+7. Singleton/small-cluster handling: groups < `min_members` are dropped — never silently
    (the full kept+dropped size histogram is reported in stats and `--preview`).
-6. Card content: **medoid** primary excerpt (min total cosine distance to members; ties →
+8. Card content: **medoid** primary excerpt (min total cosine distance to members; ties →
    lowest segment id) + up to 2 **coverage excerpts** (greedy max-min cosine distance, stop
    below 0.25) + filtered TF-IDF terms (df ≥ 2 distinct members, bigram competition) +
    extractive title (first sentence of the medoid). Citations: up to 10
    `(path, kind, loc, loc_end)` plus distinct-file count. **Never synthesized prose** —
-   extractive only. Cards may carry a parent header row (two-level topics, `parent_id`).
+   extractive only. (Historical header rows from v2-era runs still render; new runs emit
+   active cards only.)
 
 Incremental (per named view, `--as`/`--rerun`): a run is incremental when a previous run for
 the view exists, τ is equal (an explicit `--threshold` must match), the embed_id matches,
@@ -448,7 +458,7 @@ corpus size/hash and scope; then a TOC and the cards:
 ```
 # goldmine cards v2
 
-leader-avglink.v2 · τ=0.7231 (percentile) · 12 cards from 4,231 chunks · corpus d41f2a996b8e
+ens-coassoc.v3 · τ=0.4500 (fixed) · 12 cards from 4,231 chunks · corpus d41f2a996b8e
 
 ## Contents
 

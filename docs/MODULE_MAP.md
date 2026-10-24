@@ -183,29 +183,31 @@ class Searcher:
 Satisfies: V3 all six fixes; SPEC §3 (prompts verbatim, lookup inversion, file-level collapse).
 
 ### `goldmine/distill.py` **[v2 — R6, design of record docs/v2.1-r6-distill.md]**
-Owns: dedupe, τ calibration, guarded clustering, two-level split, cards, incremental runs.
+Owns: dedupe, centering, deterministic ensemble co-association, dual-channel remerge, cards, incremental runs.
 Pure functions over store data; constants are module-level names (not config).
 ```python
 @dataclass class Scope: kinds | under | after          # canonical_json() feeds view/run ids
 @dataclass class TauResult: tau, tau_source, tau_raw, histogram, quartiles, fallback_reason
 @dataclass class Card: title, title_kind, terms, excerpts, members, n_files, parent,
                       status (active|header|dissolved), centroid, chunk_weights, topic_id
-def measure_tau(matrix, *, manual=None) -> TauResult   # D1/D2: stride-sampled pairwise
-                                                       # gram, 256-bin histogram (F6
-                                                       # clamp), Otsu + valley/mode-
-                                                       # proximity fallback → P90, clamp
-                                                       # [0.55, 0.85]; REAL corpora run
-                                                       # 'percentile' (F2a, expected)
-def cluster_v2(items, tau, min_members) -> (kept, hist)# leader + average-link admission
-                                                       # guard (D4): first cluster where
-                                                       # cos-to-centroid >= tau AND
-                                                       # (S_c·x̂)/n_c >= max(tau-0.10, 0.35);
-                                                       # guard reads member sums, never a
-                                                       # centroid shortcut (F7)
-def split_two_level(clusters, tau) -> (leaves, headers)# D5: n >= 12, s̄ < τ−0.12, recursive
-                                                       # leader at τ+0.08, accept when
-                                                       # weighted children s̄ tightens ≥0.05;
-                                                       # internal nodes = header rows
+def skm_det(M, k, start) -> labels                    # deterministic spherical k-means
+                                                       # (farthest-first init, lowest-index
+                                                       # ties, farthest-chunk revival)
+def build_coassociation(mat) -> (co, cmat, mode,       # 96-run ensemble over {centered,
+                            runs, micro_lab)           # raw} spaces; dense tier (n<=8000)
+                                                       # exact chunk-level co; micro tier
+                                                       # folds onto 8·√n cells
+def co_tau_report(co, *, manual) -> TauResult          # tau = F constant (fixed|manual);
+                                                       # histogram+quartiles REPORT the co
+                                                       # distribution, never decide
+def co_leader_fine(co, f) -> groups                    # fine leader: first group whose
+                                                       # mean co >= F (first-wins, D4 order)
+def remerge_dual(co, cmat, groups, ...) -> groups      # dual-channel agglomerative: (a)
+                                                       # mean co >= 0.22 ∧ min co >= 0.10,
+                                                       # or (b) centered-centroid cos >=
+                                                       # 0.50 ∧ min centered pair >= 0.20
+def cluster_leader(items, tau, tau_lo, min_members)    # v2's guarded leader, kept for the
+                                                       # incremental remainder (F8c/d order)
 def run_distill(store, *, scope, threshold=None, min_members,
                 max_chunks, refresh, preview) -> dict  # full OR incremental (§4.3/F8:
                                                        # dissolve → snapshot → assign first

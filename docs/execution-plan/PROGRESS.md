@@ -60,6 +60,15 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 - 最终 C002/兼容源码（`bd46490`）的多 profile CI 与本地 CI 已完成，原始结果为 `P0-06/post-c1-ci-001/results.json` 与 `P2-05/ci-local-current-001/results.json`，全部 PASS、0 skip，465 个代码/配置文件稳定。随后 current005 以全新 122-source native index 完成固定 **210 dev 请求**：严格 success@1 **86→83/180**、success@5 **101→96/180**、全事实 PACK **102→97/180**，noise 正确空 **5→20/30**。PDF success@5 为 **14→10/30**，额外触发 PDF success@1 门槛，严格回放 **FAIL 12、MISSING 0**。与预登记 004 对照的 source-group paired 区间在可答指标上均跨 0，noise 区间为 **+0.3333 至 +0.6667**；这是重复暴露 dev 内的取舍，不能宣称普遍质量提升或发布达标。完整聚合、原始 SHA 与失败门槛见 [current005 摘要](product-dev-post-anchor-20261022.json)。未增加参数候选、挑分重试或打开 holdout，接续游标已推进到新安装与公开集。
 
 
+## 2026-10-25：蒸馏卡片聚类质量修复（ens-coassoc.v3）
+
+- 诊断（`P2-04/distill-purity-diagnosis-001/`，11 轮离线探测，冻结向量上基线逐位复现）：purity 0.191 的根因是四叠加——embedding hub（跨主题中位余弦 0.597、主题质心两两 0.79-0.95）、τ=P90 校准落在 within-topic 中位数（6.2% 跨主题对高于 τ，切割点图全连通）、leader first-wins 链式吸收（1026-chunk 巨卡含全部 110 文档）、D5 的 s̄ 触发器对 hub 失明（且实证 s̄ 与纯度错位，无标签分裂触发器不存在）。chunk 粒度与单一公共分量假说被排除；purity 天花板 0.8227（18 噪声+3 跨主题文档稀释）。
+- 修复：专家子代理设计（`design-proposal.md`）→ 独立对抗评审 REJECT（canary mock 语料击穿 + micro 折叠公式对角错误等，`review-adversarial-001.md`）→ 修订 002 增加双通道重合并（共关联 mean/min 通道 + centered 质心/跨对 min 几何通道，修复可分语料碎片）→ 二轮评审 ADOPT-WITH-CHANGES（`review-adversarial-002.md`，全部必改项落实）→ 预注册冻结（`P2-04/distill-purity-fix-001/preregistration.json`）→ 实现 `goldmine/distill.py` ens-coassoc.v3（确定性 96-run 集成共关联，零 RNG；τ=F=0.45 定值，旧 Otsu/P90 校准退役为报告；稠密/micro 分档；增量改中心化双门并转发 center_mu；D5/s̄ 退役；cards-v2 schema/store 合同零改动）。
+- 双语料试算（`trial_v3.py`+`trial_v3_sweep.json`）：真实冻结语料+canary 全变体联合过关面 36 配置，操作点 F0.45/re0.22/mn0.10/θc0.50/mc0.20。
+- 验收：A1 真实冻结语料指标与试算逐位一致（**purity 0.7030、recovery 6/8、max_share 0.0915**，30 卡）；A2 canary 六变体全 PASS（main/hard/shuffle 8/8、incremental 9/9 走真实增量路径）；A3 test_distill 48/48（退役 9/重写 8/小改 4/新增 11，清单在设计修订），全套 2932 过/27 skip/1 失败——该失败在干净 HEAD worktree 同样复现（native `-I` 子进程 venv 环境问题，预存）；A4 micro 折叠公式暴力对照 err≤1e-9；A5 冒烟：50k 合成（40 主题）→ 40 张纯主题卡/max_share 0.025/97.6s，中等几何（6 可分+2 hub 主题）→ 7 卡/purity 0.875（micro_split_rate 监控值 0.81 记录为与质量脱钩：cell 撕裂不阻碍质心级几何重聚）；A6 完整真实评测（`P2-04/real-current-003/`，全新 native preparation+严格 capture+独立读回）**PASS 13/13 gates**——冻结 preparation 因绑定旧评测代码身份被正确拒绝的第一次尝试留档 `real-current-003-premature-001`。
+- 实现期自抓并修复两缺陷：remerge 全对重扫 O(G³)（评审 N5 成真，中等语料卡死）→ 精确缓存对统计 O(G²)（冻结语料分组逐位不变验证）；micro 档 cell 索引误入 chunk 矩阵（50k 冒烟抓出 68% 巨卡）→ cell 质心矩阵。
+- 未恢复 2 主题（cli 裂 3 纯卡恰差半篇、crypto 支持度 0.67<0.70）与一张 25 文档"Python 工具带"混合卡为已知残余；红线全守（标签/语料不动、无文件名分组、生产零标签读取、无质量重试、冻结向量评测）。
+
 ## 2026-10-23：接续会话——退役后基线、等价修复与新实测
 
 ### 2026-10-23 会话后半程实测结果
