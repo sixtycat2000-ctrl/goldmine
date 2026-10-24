@@ -6,8 +6,8 @@
  "files": {
   "evals/corpus_manifest.json": {
    "original_sha256": "50d09055553822dc5dcf8e2b422a91ba28dda713d7a195ec50a501662bffd534",
-   "current_sha256": "87a569d601b3744b4bb395acae4200670b53ac94db824d8cf5de7bd4c5d8fac0",
-   "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version v4 (foresight removal), then v5 2026-10-23 (user decision D4: fixture photos regenerated as JPEGs with genuine EXIF date/Make/GPS; affected media-037..040 re-registered)"
+   "current_sha256": "29111f86d7d7f407d337ab1335a33a6cff64d4e2f34a953a55df30f4910183b0",
+   "reason": "foresight-rea ingest root and its 41 pinned sources removed; goldmine-self snapshot re-synced; corpus_version v4 (foresight removal), then v5 2026-10-23 (user decision D4: fixture photos regenerated as JPEGs with genuine EXIF date/Make/GPS; affected media-037..040 re-registered), then v6 2026-10-25 (ocr-restore-001: scanned pages of atlas-hybrid.pdf/atlas-scanned.pdf regenerated with receipt/chart-realistic rendered text so Vision OCR completes them and stores ocr_pages; only these two fixture files and the generator hash changed — media queries, labels and denominators untouched)"
   },
   "evals/real.jsonl": {
    "original_sha256": "850c430f10e270e20c74b85ce919807f664b854ed4b84bc8e8bc7f3cbd24448a",

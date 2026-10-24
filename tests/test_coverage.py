@@ -197,6 +197,46 @@ def test_scanned_pdf_pages_have_no_text_layer(fast_fixture):
     assert "SANDBAR" not in hybrid.stdout.upper()  # raster pages carry no text
 
 
+#: per-page query tokens the OCR preflight (media-045..050) must be able to
+#: recover. min_hits=2 marks the load-bearing tokens the design repeats on
+#: two lines — Vision's text detector drops a line now and then
+#: (ocr-restore-001 baseline lost KB-77 and SIGNED BY THE HARBOR OFFICE).
+_PAGE_QUERY_TOKENS = [
+    {"DEPTH 42": 2, "METERS": 1},                    # hybrid page 3  — media-045
+    {"SANDBAR": 2, "KB-77": 2},                      # hybrid page 4  — media-046
+    {"LEVIATHAN PUMP": 2, "4820 EUR": 1},            # scanned page 1 — media-047/049
+    {"VAT 12 PERCENT": 1},                           # scanned page 2 — media-048
+    {"HARBOR OFFICE": 2, "STAMP RECEIVED": 1},       # scanned page 3 — media-050
+]
+
+
+def test_scanned_pages_render_enough_text_for_ocr_provenance():
+    """ocr-restore-001: pdf_evidence only records info.ocr_pages (the stored
+    OCR page provenance the full-media preflight demands) when Vision OCR
+    recovers >= THIN_PAGE_CHARS on a page. The scanned page line sets must
+    therefore carry realistic amounts of text, stay inside the bitmap font's
+    charset, and keep every needs:ocr query token present (fragile tokens on
+    two lines)."""
+    import make_coverage_fixture as mcf
+    from goldmine.ingest.extract_pdf import THIN_PAGE_CHARS
+
+    pages = list(mcf.HYBRID_SCAN_PAGE_LINES) + list(mcf.SCANNED_RECEIPT_PAGE_LINES)
+    assert len(pages) == len(_PAGE_QUERY_TOKENS)
+    for lines in pages:
+        for line in lines:
+            assert set(line) <= set(mcf._FONT) | {" "}, f"charset: {line!r}"
+        rendered = "\n".join(lines)  # what one clean OCR pass can recover
+        assert len(rendered) >= THIN_PAGE_CHARS, (
+            f"page {lines[0]!r}: {len(rendered)} chars < {THIN_PAGE_CHARS} — "
+            "OCR would classify it low_text and drop ocr_pages provenance")
+    for lines, page_tokens in zip(pages, _PAGE_QUERY_TOKENS):
+        upper = [ln.upper() for ln in lines]
+        for token, need in page_tokens.items():
+            hits = sum(token in ln for ln in upper)
+            assert hits >= need, (
+                f"{token!r} appears {hits}x (< {need}) on page {lines[0]!r}")
+
+
 def test_screenshot_pngs_contain_rendered_text(fast_fixture):
     """The screenshot PNGs decode and their text rows are not blank: OCR
     (needs:ocr queries) will have real pixels to read when it lands."""

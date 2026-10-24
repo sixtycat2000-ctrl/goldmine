@@ -124,14 +124,20 @@ _FONT: dict[str, tuple[int, ...]] = {
 _FONT_CHARS = sorted(_FONT)
 
 
-def render_text_rgb(lines: list[str], scale: int = 4, pad: int = 24) -> np.ndarray:
+def render_text_rgb(lines: list[str], scale: int = 4, pad: int = 24,
+                    line_gap_rows: int = 0) -> np.ndarray:
     """Deterministic black-on-white raster of `lines` via the bitmap font.
+
+    `line_gap_rows` adds blank glyph rows between lines (Vision's text
+    detector merges tightly stacked blocky-glyph lines at PDF-render scale —
+    ocr-restore-001; 0 keeps every pre-2026-10-25 caller byte-identical).
 
     v2 note (B5): the canvas is padded to a >= 320px min side — real macOS
     screenshots are far taller than the text they carry, and v2 refuses
     images below DigUp's minImageSide 256 from embedding. A bare text strip
     (764x176) would be refused BY POLICY and tank the coverage floors."""
-    height = pad * 2 + len(lines) * 8 * scale
+    pitch = (8 + line_gap_rows) * scale
+    height = pad * 2 + len(lines) * 8 * scale + max(0, len(lines) - 1) * line_gap_rows * scale
     width = pad * 2 + max(
         (len(line) * 6 - 1) * scale for line in lines
     ) if lines else pad * 2
@@ -154,7 +160,7 @@ def render_text_rgb(lines: list[str], scale: int = 4, pad: int = 24) -> np.ndarr
                             x0 + col * scale: x0 + (col + 1) * scale,
                         ] = 0
             x0 += 6 * scale
-        y0 += 8 * scale
+        y0 += pitch
     return img
 
 
@@ -279,6 +285,74 @@ def write_exif_jpeg(path: Path, rgb: np.ndarray, exif_tiff: bytes) -> None:
 
 
 # ----------------------------------------------------------------- pdf raster
+
+#: Scanned-page line sets (2026-10-25 protocol revision, ocr-restore-001):
+#: real receipts/charts carry well over THIN_PAGE_CHARS=200 characters, and
+#: pdf_evidence only records info.ocr_pages for pages Vision OCR COMPLETES.
+#: The pre-change 3-line pages recovered 34-64 chars -> 'low_text', never
+#: ocr_pages -> the six needs:ocr preflight items (media-045..050) were
+#: MISSING. Eight lines at scale=4 + line_gap_rows=4 recover 233-253 chars
+#: with every query token present (key tokens on two lines: Vision's text
+#: detector drops a token occasionally — repetition is the honest defense).
+#: Charset is limited to the bitmap font (A-Z 0-9 space - . : /).
+HYBRID_SCAN_PAGE_LINES: list[list[str]] = [
+    [  # page 3 — media-045 'harbor chart depth 42 meters'
+        "HARBOR CHART PAGE 3",
+        "DEPTH 42 METERS AT THE BAR",
+        "SOUNDINGS REDUCED TO CHART DATUM",
+        "NORTH CHANNEL DEPTH 42 METERS",
+        "SOUTH CHANNEL DEPTH 38 METERS",
+        "SURVEY MARKER SM-11 REPAIRED",
+        "ANCHORAGE LIMIT 500 METERS FROM THE MOLE",
+        "BEARING 047 DEGREES TO THE PILOT STATION",
+    ],
+    [  # page 4 — media-046 'sandbar marker KB-77'
+        "HARBOR CHART PAGE 4",
+        "SANDBAR MARKER KB-77",
+        "SHOAL WARNING IN FORCE",
+        "LEAST DEPTH 1.8 METERS OVER THE SANDBAR",
+        "KEEP 200 METERS CLEAR OF MARKER KB-77",
+        "MARKER KB-77 LIGHT: YELLOW - VISIBLE 5 MILES",
+        "BAR SHIFTS AFTER WINTER GALES",
+        "RESURVEY DUE BEFORE THE WINTER SEASON",
+    ],
+]
+
+SCANNED_RECEIPT_PAGE_LINES: list[list[str]] = [
+    [  # page 1 — media-047/049 'receipt 9001 total 4820 EUR' / 'leviathan pump order receipt'
+        "RECEIPT 9001",
+        "HARBOR SUPPLY COOPERATIVE - QUAY 7",
+        "DATE 2026-09-29 - ORDER REF LP-2210",
+        "LEVIATHAN PUMP ORDER - MODEL LP-400",
+        "1 X LEVIATHAN PUMP UNIT 4000 EUR",
+        "2 X SPARE IMPELLER SETS 820 EUR",
+        "TOTAL 4820 EUR",
+        "PAID BY BANK TRANSFER - THANK YOU",
+    ],
+    [  # page 2 — media-048 'receipt VAT 12 percent'
+        "RECEIPT 9002",
+        "HARBOR SUPPLY COOPERATIVE - QUAY 7",
+        "DATE 2026-10-02 - ORDER REF HS-0912",
+        "MOORING LINES 40 MM - 3 COILS 900 EUR",
+        "GALVANIZED SHACKLES - 24 PIECES 300 EUR",
+        "NET AMOUNT 1200 EUR",
+        "VAT 12 PERCENT 144 EUR",
+        "TOTAL 1344 EUR - PAYMENT DUE IN 30 DAYS",
+    ],
+    [  # page 3 — media-050 'harbor office stamp received'
+        "RECEIPT 9003",
+        "HARBOR SUPPLY COOPERATIVE - QUAY 7",
+        "DATE 2026-10-16 - ORDER REF HS-1016",
+        "BERTH FEES SEPTEMBER - 3 VESSELS 2400 EUR",
+        "CRANE HIRE - 6 HOURS 600 EUR",
+        "TOTAL 3000 EUR",
+        "SIGNED BY THE HARBOR OFFICE",
+        "HARBOR OFFICE STAMP RECEIVED OCT 16",
+    ],
+]
+
+SCAN_RENDER_KWARGS = {"scale": 4, "line_gap_rows": 4}
+
 
 def make_pdf_pages(path: Path, pages: list[tuple[str, object]]) -> None:
     """Raw PDF builder (conftest.make_pdf shape) whose pages are either
@@ -657,22 +731,16 @@ eight seconds near Cassiopeia.</p>
              "Hybrid chart page two. Ferry wake limits were tightened in May after the "
              "harbormaster measured wave heights at the fuel dock; operators must now "
              "hold eight knots inside the fairway and twelve outside the bar."),
-            ("image", render_text_rgb(
-                ["HARBOR CHART PAGE 3", "DEPTH 42 METERS AT THE BAR", "SURVEY MARKER SM-11"])),
-            ("image", render_text_rgb(
-                ["HARBOR CHART PAGE 4", "SANDBAR MARKER KB-77", "SHOAL WARNING IN FORCE"])),
+            ("image", render_text_rgb(HYBRID_SCAN_PAGE_LINES[0], **SCAN_RENDER_KWARGS)),
+            ("image", render_text_rgb(HYBRID_SCAN_PAGE_LINES[1], **SCAN_RENDER_KWARGS)),
         ],
     )
     record("pdf/atlas-hybrid.pdf", "pdf")
     make_pdf_pages(
         out / "pdf" / "atlas-scanned.pdf",
         [
-            ("image", render_text_rgb(
-                ["RECEIPT 9001", "TOTAL 4820 EUR", "LEVIATHAN PUMP ORDER"])),
-            ("image", render_text_rgb(
-                ["RECEIPT 9002", "VAT 12 PERCENT", "PAYMENT DUE IN 30 DAYS"])),
-            ("image", render_text_rgb(
-                ["RECEIPT 9003", "SIGNED BY THE HARBOR OFFICE", "STAMP RECEIVED OCT 16"])),
+            ("image", render_text_rgb(lines, **SCAN_RENDER_KWARGS))
+            for lines in SCANNED_RECEIPT_PAGE_LINES
         ],
     )
     record("pdf/atlas-scanned.pdf", "pdf")

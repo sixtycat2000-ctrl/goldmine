@@ -1,6 +1,6 @@
 {
  "schema": 1,
- "corpus_version": "v5-2026-10-23-exif-photos",
+ "corpus_version": "v6-2026-10-25-ocr-pages",
  "created": "2026-10-18",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
@@ -15,7 +15,7 @@
   "seed": 20261016,
   "version": {
    "version": 1,
-   "generator_sha256": "a4a8a8a33622dbb9530108ef1afd92972fbc36b4174f6b848f7aa247cf6884a0",
+   "generator_sha256": "ed75150c9c9f0b174fb537442c93327c8a1bee8eb2717a94ca074c901745d313",
    "files": 31
   },
   "files": [
@@ -64,14 +64,14 @@
    {
     "path": "pdf/atlas-hybrid.pdf",
     "kind": "pdf",
-    "bytes": 9638,
-    "sha256": "8cc31bfc6ded37e3df8ceb3676ec698c9f06ea2f82f0a00d94d40c9869dfa4a9"
+    "bytes": 29314,
+    "sha256": "ecd30f160d5bd5b53498dcd3e6196723cd1aefff31090af65422d8937141e4cf"
    },
    {
     "path": "pdf/atlas-scanned.pdf",
     "kind": "pdf",
-    "bytes": 11333,
-    "sha256": "18c62aa59d8e2b0a71568800ce3beb460383f9c3e280cd98e32511605f3e55cc"
+    "bytes": 38324,
+    "sha256": "5746c8048bbca3a6d4bbb6480b1845486757efbee5f02e49ab209049583e6f8e"
    },
    {
     "path": "code/proj/main.py",
@@ -211,11 +211,11 @@
  "sources": {
   "digup": {
    "root": "/Users/yul/git/DigUp",
-   "note": "DigUp Swift app — the fusion/z-score/setsScale provenance goldmine re-implements"
+   "note": "DigUp Swift app \u2014 the fusion/z-score/setsScale provenance goldmine re-implements"
   },
   "goldmine": {
    "root": "/Users/yul/git/goldmine/evals/corpus_snapshot",
-   "note": "goldmine itself (package + docs) — snapshot-pinned bytes (evals/corpus_snapshot/)"
+   "note": "goldmine itself (package + docs) \u2014 snapshot-pinned bytes (evals/corpus_snapshot/)"
   }
  },
  "files": [
@@ -641,9 +641,10 @@
   }
  ],
  "notes": [
-  "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them — refresh the manifest deliberately to move the snapshot",
-  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket — its raw bytes are environment-dependent)",
+  "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
+  "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
-  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index — they quote the noise-query strings (self-leak, F6)"
+  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)",
+  "v6 2026-10-25 (ocr-restore-001, D4-pattern source-data fix): the scanned pages of atlas-hybrid.pdf/atlas-scanned.pdf regenerated with receipt/chart-realistic rendered text (8 lines/page at line_gap_rows=4) so Vision OCR recovers 233-254 chars/page \u2014 pdf_evidence now records info.ocr_pages and the six needs:ocr preflight items (media-045..050) close. Raster pages still carry no text layer; no product code, label or denominator change."
  ]
 }

@@ -206,7 +206,7 @@ QMD 2.8.3 与 Recoll 1.44.2 只装在忽略目录，不改用户索引/全局配
 
 1. **P0-05 / 产品质量**：420 题真实来源、独立标签审计、分割冻结、同源原版/候选索引及真实 dev 参考均完成。三组预登记参数全部真实 FAIL，默认仅 103/180 success@5、5/30 noise 正确空结果；本次 compound pack 从此前候选 5/30 恢复到 6/30，仍低于原版 17/30。质量未达标，不能进入最终 sealed 审计。旧 28 题保留为诊断 seed，holdout 曝光为 0。
 2. **P0-02/03 / P1-10 答案质量**：新 60 可答 +20 trap 的真实独立作答/四评分、校准与候选比较缺失。历史 20 题、fixture/mock 或改名输出不能顶替。
-3. **P0-04 / P1-05 full-media**：固定 169 行的只读预检发现现有库缺实际 EXIF/部分 OCR provenance，严格 exit 2，分母保持 164+5。进一步原字节审计证明两张原始 PNG 没有 EXIF 或文本 metadata，来自随机像素 fixture 生成器；对同一字节重新 ingest 不能真实生成题目要求的拍摄字段。`P0-01/full-media-input-audit-001/audit.json` 保留证据。不能注入答案 metadata、修改旧标签或减分母来伪造通过；真实 420 题是独立新套件。
+3. **P0-04 / P1-05 full-media**：只读预检的 19 项能力缺口已经按"修源数据、不修产品阈值"两次真实归零——v5（用户决策 D4，2026-10-23）把两张随机像素 PNG 重做为真 EXIF JPEG 关闭 13 项；v6（ocr-restore-001，2026-10-25）把 atlas-hybrid/atlas-scanned 扫描页重做为 8 行收据/海图级真实文字量，Vision OCR 每页实读 233-254 字符（≥ THIN_PAGE_CHARS=200），pdf_evidence 真实记录 `ocr_pages`，最后 6 项（media-045..050）关闭，full-media 预检 missing=0（rc=0），且六题全部 success@1=1.0。分母、标签、holdout 与冻结产物未动；分歧记录（D1 册）两次扩展入册。不能注入答案 metadata、修改旧标签或减分母来伪造通过；真实 420 题是独立新套件。原始回执在本地 `P0-04/ocr-restore-001/`（预注册、双端 OCR 探针、逐字节 fixture diff、重建前后索引身份、v6 预检 JSON）。
 4. **P1-06/07/08**：拒收三臂真实 dev A/B 已完成且全部 FAIL，`selected=null`；可选多查询/rerank 的真实收益与完整资源门槛尚未通过，保持默认控制与关闭实验。
 5. **P2-02/03**：`7192395` 的完整 CLI/pack 规模测量已经通过独立回放；后续 pack/SQL 新源码需要新一轮测量。真实媒体增量 benchmark、controlled/real 各 10 分钟 watch churn 和完整生命周期证据仍缺。已有真实模型的局部检查不能顶替这些。
 6. **P2-04 卡片**：120 份真实文档、8 主题的独立来源/标签审查及数据冻结已经完成，严格 native 准备/增量身份/全部 emitted member 来源校验已实现。真实聚类、purity/recovery 和增量运行仍缺；mock hard-variant 结果只验证机制。

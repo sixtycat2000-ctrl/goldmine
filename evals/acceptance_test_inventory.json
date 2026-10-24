@@ -1039,6 +1039,11 @@
    "reason": "Corpus builders exercise native media/PDF fixtures."
   },
   {
+   "nodeid": "tests/test_coverage.py::test_scanned_pages_render_enough_text_for_ocr_provenance",
+   "profile": "native",
+   "reason": "ocr-restore-001: scanned page line sets keep OCR provenance reachable (>= THIN_PAGE_CHARS, font charset, query tokens)."
+  },
+  {
    "nodeid": "tests/test_coverage.py::test_media_queries_expect_paths_exist_in_fixture",
    "profile": "native",
    "reason": "Corpus builders exercise native media/PDF fixtures."
