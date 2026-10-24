@@ -332,7 +332,7 @@ def main(argv=None):
             key = require_api_key(engine)
             prep, run, prepared = study_run(args.study, args.arm)
             j = args.judge_round
-            job = read_json(run / "jobs" / f"{args.question}-{args.answer_round}" + (f"-{j}" if j else "") + ".json")
+            job = read_json(run / "jobs" / (f"{args.question}-{args.answer_round}" + (f"-{j}" if j else "") + ".json"))
             if job != descriptor(run, prepared, args.question, args.answer_round, judge=j):
                 raise EvaluationError("prepared job changed")
             result = execute_job(prep, run, prepared, job, engine, key)
