@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-SEARCH_BEHAVIOR_VERSION = "search.v5-anchor-intent"
+SEARCH_BEHAVIOR_VERSION = "search.v6-quote-provenance"
 
 
 @dataclass(frozen=True)

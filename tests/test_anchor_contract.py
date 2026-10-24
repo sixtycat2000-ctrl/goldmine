@@ -382,7 +382,7 @@ def test_C1_36_declared_bounds_and_cancellation_have_no_semantic_fallback(index)
             search(index, "ZT-84")
 
 
-def test_C1_37_semantic_remainder_is_unimplemented(index):
+def test_C1_37_semantic_remainder_marker_tracks_quote_provenance(index):
     add(index, "ZT-84 remove inherited settings", vector=evec(0))
     diag = {}
     hits = Searcher(index, FixedBackend(evec(0))).search("ZT-84 erase inherited options",
@@ -390,11 +390,12 @@ def test_C1_37_semantic_remainder_is_unimplemented(index):
     # anchor.v2-intent: the ambient _CODE clause is soft; the semantic-standout
     # hit returns and remainder_unsupported is replaced by soft disclosure (7694837).
     assert hits and all(h.admission_reason != "verified_exact" for h in hits)
-    assert diag["reason"] is None and diag["semantic_remainder"] == "not_implemented"
+    assert diag["reason"] is None and diag["semantic_remainder"] == "structural_quote_provenance"
     assert diag["soft_clauses"] == [{"clause_id": 0, "reason": "ambient_only"}]
     assert diag["ambient_anchors"] == ["ZT-84"]
-    # The semantic remainder stays unimplemented for structural identities
-    # too: the paraphrase is never witnessed, only softly demoted.
+    # anchor.v3: the marker is structural_quote_provenance (the mechanical
+    # quote test is implemented); the paraphrase itself is still never
+    # witnessed, only softly demoted.
     add(index, "TX_84 remove inherited settings", path="/owned/underscore.txt", vector=evec(0))
     diag = {}
     strict = Searcher(index, FixedBackend(evec(0))).search("TX_84 erase inherited options",
@@ -402,7 +403,7 @@ def test_C1_37_semantic_remainder_is_unimplemented(index):
     assert {h.path for h in strict} == {"/owned/underscore.txt"}
     assert all(h.admission_reason != "verified_exact" and "exact_source" not in h.why for h in strict)
     assert diag["soft_clauses"] == [{"clause_id": 0, "reason": "remainder_soft"}]
-    assert diag["semantic_remainder"] == "not_implemented"
+    assert diag["semantic_remainder"] == "structural_quote_provenance"
 
 
 def test_C1_38_private_unanchored_measurement_keeps_old_uncalibrated_route(index):

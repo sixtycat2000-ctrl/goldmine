@@ -7,8 +7,10 @@ import unicodedata
 from .anchor_resolution import Binding, Resolver, VerificationBound, literal_occurs, remainder_units
 from .deadline import check_deadline
 from .lexical import cjk_runs
-from .query_obligations import (ANCHOR_VERSION, Anchor, Clause, QueryPlan,
-                                anchor_strength, plan_query)
+from .query_obligations import (ANCHOR_VERSION, QUOTE_PROVENANCE_MIN_RUN,
+                                QUOTE_PROVENANCE_OWNER_CAP, Anchor, Clause,
+                                QueryPlan, anchor_strength, clause_spans,
+                                plan_query, quote_normalize)
 
 
 @dataclass
@@ -45,7 +47,8 @@ class AnchorDecision:
                 "witnesses": sum(len(w) for w in self.witnesses.values()),
                 "soft_clauses": [dict(clause_id=cid, reason=r) for cid, r in self.soft_clauses],
                 "ambient_anchors": list(self.ambient_anchors),
-                "semantic_remainder": "not_implemented", "source_capabilities": self.source_capabilities}
+                "semantic_remainder": "structural_quote_provenance",
+                "source_capabilities": self.source_capabilities}
 
     def why(self, file_id):
         clauses = [i for i, owners in enumerate(self.owners) if owners and file_id in owners]
@@ -114,7 +117,42 @@ def _bind_anchor(anchor, resolver, cache):
     return [replace(b, anchor_id=anchor.id, query_term=anchor.raw) for b in cache[key]]
 
 
-def _owners(plan, resolver, terms_of):
+def _quote_provenance(plan, clause, query, spans, intent, accepted, by_anchor, resolver):
+    """The quote-lookup clause test (quote-provenance-design-001 §2).
+
+    Precondition order is pinned: C-NL intent, >=1 BOUND component-0
+    obligatory anchor, non-empty accepted owners within the owner cap, and
+    available clause spans — then every accepted owner's stored original
+    text must contain the clause-bounded head or tail run verbatim
+    (whitespace-run-normalized, case-sensitive, >= the structural floor).
+    Only a demotion gate: returning False everywhere keeps today's behavior.
+    """
+    if intent != "C-NL" or not accepted or spans is None or len(spans) != len(plan.clauses):
+        return False
+    if not 1 <= len(accepted) <= QUOTE_PROVENANCE_OWNER_CAP:
+        return False
+    cstart, cend = spans[clause.id]
+    obligatory = [a for a in plan.anchors
+                  if a.id in clause.anchor_ids and a.component == 0
+                  and anchor_strength(a) == "obligatory"]
+    if not obligatory or not any(by_anchor.get(a.id) for a in obligatory):
+        return False
+    first_end = min(a.end for a in obligatory)
+    last_start = max(a.start for a in obligatory)
+    head = quote_normalize(query[cstart:first_end])
+    tail = quote_normalize(query[last_start:cend])
+    for fid in sorted(accepted):
+        check_deadline()
+        whole = resolver.quote_corpus(fid)
+        if whole is None:
+            return False
+        if not ((len(head) >= QUOTE_PROVENANCE_MIN_RUN and head in whole)
+                or (len(tail) >= QUOTE_PROVENANCE_MIN_RUN and tail in whole)):
+            return False
+    return True
+
+
+def _owners(plan, query, resolver, terms_of, *, spans=None):
     """Intent-aware obligation resolution (anchor-intent design §C-2).
 
     C-INT clauses keep the exact-lookup contract. In C-NL clauses only
@@ -201,6 +239,17 @@ def _owners(plan, resolver, terms_of):
             soft_bindings.extend(b for b in bindings if b.anchor_id in clause.anchor_ids)
             owners.append(frozenset())
             continue
+        if _quote_provenance(plan, clause, query, spans, intents[clause.id],
+                             accepted, by_anchor, resolver):
+            # The stored owners prove the clause quotes them: the anchors are
+            # provenance markers of the passage, not retrieval discriminators.
+            # Soft semantics only — unconstrained, disclosed, never verified.
+            soft_clauses.append((clause.id, "quote_provenance"))
+            soft_bindings.extend(b for b in bindings if b.anchor_id in clause.anchor_ids)
+            for fid in accepted:
+                witnesses.pop((clause.id, fid), None)
+            owners.append(frozenset())
+            continue
         owners.append(frozenset(accepted))
     bindings = tuple(b for b in bindings if any(owners[c.id] and b.file_id in owners[c.id]
                                                and b.anchor_id in c.anchor_ids
@@ -233,7 +282,9 @@ def resolve_obligations(store, query, phrases, allowed, terms_of, *, inspected=(
                 # ordinary unquoted-word quorum/z admission (no new all-word veto).
                 plan = QueryPlan((), (Clause(0, (), "", tuple(phrases)),), tuple(phrases), plan.pure_text)
                 resolver.read(inspected, preread=True)
-                decision = _owners(plan, resolver, terms_of)
+                # Synthetic anchorless clause: no anchors, so the quote rule is
+                # structurally out (spans deliberately not supplied).
+                decision = _owners(plan, query, resolver, terms_of)
         elif plan.reason == "anchor_scope_ambiguous" and not phrases and \
                 all(clause_intent(c, terms_of) == "C-NL" for c in plan.clauses):
             # Design §C-3/§2.3: prose structure never refuses by itself. This
@@ -242,12 +293,12 @@ def resolve_obligations(store, query, phrases, allowed, terms_of, *, inspected=(
             # phrases-plus-split (C1-33) and the compare grammar stay pinned.
             plan = replace(plan, reason=None)
             resolver.read(inspected, preread=True)
-            decision = _owners(plan, resolver, terms_of)
+            decision = _owners(plan, query, resolver, terms_of, spans=clause_spans(query))
         elif plan.reason:
             decision = AnchorDecision(plan, reason=plan.reason)
         else:
             resolver.read(inspected, preread=True)
-            decision = _owners(plan, resolver, terms_of)
+            decision = _owners(plan, query, resolver, terms_of, spans=clause_spans(query))
     except VerificationBound:
         decision = AnchorDecision(plan, reason="anchor_verification_bound")
     return _finish(decision, resolver)

@@ -8,9 +8,18 @@ import unicodedata
 from .deadline import check_deadline
 from .lexical import _is_cjk
 
-ANCHOR_VERSION = "anchor.v2-intent"
+ANCHOR_VERSION = "anchor.v3-quote-provenance"
 MAX_ANCHORS = 32
 MAX_SOURCE_ROWS = 2000
+# Quote-provenance structure (quote-provenance-design-001 §2.4): a verbatim
+# run must be two-plus sentences of stored prose to prove the clause quotes
+# the file; a full owner page (>= segment cap) is a truncated view and never
+# proves quoting; more accepted owners than the cap are conservatively
+# unchecked (the cap can only prevent a demotion, never cause one).
+QUOTE_PROVENANCE_MIN_RUN = 200
+QUOTE_PROVENANCE_SEGMENT_CAP = 2000
+QUOTE_PROVENANCE_OWNER_CAP = 8
+_WS_RUN = re.compile(r"\s+")
 _CODE = re.compile(r"[A-Z]{2,}-?[0-9]+\Z")
 _NUMBER = re.compile(r"[+\-−]?(?:\d+(?:[.,]\d+)*|\.\d+)", re.UNICODE)
 _COMPARE = (
@@ -106,6 +115,15 @@ def typed_normalize(value):
         previous = end
     output.append(surface[previous:].casefold())
     return "".join(output)
+
+
+def quote_normalize(text):
+    """Collapse whitespace runs only: the verbatim-quote surface (design §2.3).
+
+    Case-sensitive, no NFKC, deliberately not typed_normalize — quote
+    provenance means the corpus stores this very text.
+    """
+    return _WS_RUN.sub(" ", text).strip()
 
 
 def compact_alias(left, right):
@@ -247,6 +265,29 @@ def _semicolon(text):
                 return None, False
             cuts.append(i)
     return (cuts[0] if len(cuts) == 1 else None), bool(cuts or protected)
+
+
+def _clause_cuts(query):
+    """[(start, end), ...] in clause-id order — the grammar's only authority.
+
+    One-semicolon split, else the compare operands, else the whole query.
+    The same spans plan_query's clause() calls occupy; clause_spans exposes
+    them for the quote-provenance rule without persisting anything on the
+    frozen dataclasses (C-INT byte identity).
+    """
+    cut, _ = _semicolon(query)
+    if cut is not None:
+        return [(0, cut), (cut + 1, len(query))]
+    for regex in _COMPARE:
+        found = regex.fullmatch(query)
+        if found:
+            return [found.span("a"), found.span("b")]
+    return [(0, len(query))]
+
+
+def clause_spans(query):
+    """Public pure view of the clause spans (quote-provenance design §2.3)."""
+    return tuple(_clause_cuts(query))
 
 
 def plan_query(query, phrases=()):

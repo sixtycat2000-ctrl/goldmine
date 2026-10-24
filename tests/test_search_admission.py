@@ -101,19 +101,22 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     # Historical numeric trials retain their original v3 bytes/status.
     assert registered["search_behavior_version"] == "search.v3-evidence-control"
     structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
-    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v5-anchor-intent"
-    assert structural["algorithm_version"] == "anchor.v2-intent"
+    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v6-quote-provenance"
+    assert structural["algorithm_version"] == "anchor.v3-quote-provenance"
     assert structural["status"] == "UNVALIDATED" and structural["quality_results"] is None
-    assert structural["semantic_remainder"] == "not_implemented"
-    # The v1 registration is preserved verbatim as immutable history.
-    historical_entry = structural["history"][0]
-    assert historical_entry["algorithm_version"] == "anchor.v1-lexical"
-    assert historical_entry["search_behavior_version"] == "search.v4-anchor-contract"
-    assert historical_entry["parameter_registration"]["sha256"] == \
+    assert structural["semantic_remainder"] == "structural_quote_provenance"
+    # The v1 and v2 registrations are preserved verbatim as immutable history.
+    v1_entry, v2_entry = structural["history"]
+    assert v1_entry["algorithm_version"] == "anchor.v1-lexical"
+    assert v1_entry["search_behavior_version"] == "search.v4-anchor-contract"
+    assert v1_entry["parameter_registration"]["sha256"] == \
         hashlib.sha256((Path(__file__).parents[1] / "evals/search_parameters.json").read_bytes()).hexdigest()
+    assert v2_entry["algorithm_version"] == "anchor.v2-intent"
+    assert v2_entry["search_behavior_version"] == "search.v5-anchor-intent"
+    assert v2_entry["semantic_remainder"] == "not_implemented"
     registration = structural["parameter_registration"]
     assert registration["sha256"] == hashlib.sha256((Path(__file__).parents[1] / registration["path"]).read_bytes()).hexdigest()
-    assert registration["historical_search_behavior_version"] == "search.v4-anchor-contract"
+    assert registration["historical_search_behavior_version"] == "search.v5-anchor-intent"
     assert not structural["noise_target_attainment_claim"]
     assert 1 <= len(registered["candidates"]) <= 3
     assert registered["default"] == "control"

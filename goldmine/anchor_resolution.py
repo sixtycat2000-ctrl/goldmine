@@ -12,8 +12,10 @@ from .metadata_prelookup import decode_info, whole_metadata_predicate
 from .legacy_anchors import LegacyCandidates
 from .lexical import (ExactMatch, cjk_runs, fts_quote, grams, identifier_tokens,
                       normalize, path_identifier_tokens, query_units, term_forms, _is_cjk)
-from .query_obligations import (MAX_SOURCE_ROWS, Anchor, compact_alias, lexemes,
-                                literal_equal, path_plausible, typed_normalize)
+from .query_obligations import (MAX_SOURCE_ROWS, QUOTE_PROVENANCE_SEGMENT_CAP,
+                                Anchor, compact_alias, lexemes,
+                                literal_equal, path_plausible, quote_normalize,
+                                typed_normalize)
 
 
 class VerificationBound(ValueError):
@@ -139,6 +141,7 @@ class Resolver:
         self.fetched: set[int] = set()
         self.witnesses: set[int] = set()
         self.queries = 0
+        self._quote_cache: dict[int, str | None] = {}
 
     def execute(self, sql, values=()):
         check_deadline()
@@ -277,6 +280,25 @@ class Resolver:
                     raise ValueError("anchor lookup pointer does not match its actual stored source")
                 fields.setdefault(sid, set()).add(field)
         return fields
+
+    def quote_corpus(self, file_id):
+        """Whitespace-run-normalized concatenation of one owner file's stored
+        per-segment original texts in segment-id order — the quote-provenance
+        surface. None when the file has at least QUOTE_PROVENANCE_SEGMENT_CAP
+        non-name segments: never prove quoting from a truncated view. Preread
+        semantics (design §2.6): fetched+cached, never attempted, never
+        bound-checked."""
+        if file_id not in self._quote_cache:
+            ids = [r[0] for r in self.execute(
+                "SELECT id FROM segments WHERE file=? AND kind!='name' "
+                "ORDER BY id LIMIT ?", (file_id, QUOTE_PROVENANCE_SEGMENT_CAP)
+            ).fetchall()]
+            text = None
+            if len(ids) < QUOTE_PROVENANCE_SEGMENT_CAP:
+                rows = self.read(ids, preread=True)
+                text = quote_normalize(" ".join(r.text or "" for r in rows))
+            self._quote_cache[file_id] = text
+        return self._quote_cache[file_id]
 
     def body_ids(self, pattern, *, file_id=None, cjk=False):
         table = "fts_cjk" if cjk else "fts"

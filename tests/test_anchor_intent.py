@@ -280,3 +280,189 @@ def test_preread_rows_do_not_consume_the_obligation_budget(index):
         assert resolver.bind(plan_query("ZT-84").anchors[0])
         # Without a preread, the obligation read still marks rows attempted.
         assert len(resolver.attempted) == 1000
+
+
+# --------------------------------------- 9. quote-provenance (anchor.v3)
+
+#: F1/F2/F3/F7/F8/F9/F11 prose: >= 200 normalized chars, only the appended
+#: camel token is identity-shaped, so the clause is C-NL with exactly one
+#: obligatory component-0 anchor.
+_QUOTE_PROSE = (
+    "the shipping manifest records every harbor departure with signed witnesses "
+    "and countersigned receipts so the auditors can reconstruct each voyage "
+    "without trusting the ledger alone and the same rule applies to every port "
+    "office that stores the original stamped pages before the surveyors arrive"
+)
+
+
+def _cint_payload(decision):
+    from dataclasses import asdict
+    return {"plan": asdict(decision.plan),
+            "owners": [sorted(v) for v in decision.owners],
+            "bindings": [asdict(v) for v in decision.bindings],
+            "witnesses": [{"clause_id": c, "file_id": f,
+                           "values": [{"kind": k, "unit": u, "segment_id": s}
+                                      for k, u, s in vals]}
+                          for (c, f), vals in sorted(decision.witnesses.items())],
+            "exact": {str(f): asdict(v) for f, v in sorted(decision.exact.items())},
+            "reason": decision.reason, "inspected_rows": decision.inspected_rows,
+            "queries": decision.queries, "source_capabilities": decision.source_capabilities}
+
+
+def test_F1_quote_head_positive_demotes_to_soft(index):
+    add(index, _QUOTE_PROSE + "\n\tNetFlix streaming note")
+    query = _QUOTE_PROSE + " NetFlix"
+    decision = decide(index, query)
+    assert decision.soft_clauses == ((0, "quote_provenance"),)
+    assert decision.owners == (frozenset(),) and not decision.constrained
+    assert decision.bindings == () and decision.exact == {} and decision.reason is None
+    hits = search(index, query)
+    assert hits and hits[0].admission_reason in ("lexical_quorum", "semantic_standout")
+    soft = hits[0].why["anchor_contract_soft"]
+    assert {"clause_id": 0, "reason": "quote_provenance"} in soft["soft_clauses"]
+    assert any(b["raw"] == "NetFlix" for b in soft["obligatory_bindings"])
+    assert "anchor_contract" not in hits[0].why
+    from goldmine.anchor_admission import guard_composed_hits
+    assert guard_composed_hits(index, decision, hits, final=True) == hits
+
+
+def test_F2_quote_tail_positive_demotes_to_soft(index):
+    query = "NetFlix " + _QUOTE_PROSE.replace("harbor", "harbour")
+    add(index, query)
+    decision = decide(index, query)
+    assert decision.soft_clauses == ((0, "quote_provenance"),)
+    assert decision.owners == (frozenset(),) and not decision.constrained
+
+
+def test_F3_sub200_run_stays_constrained(index):
+    # The whole clause is stored verbatim, but the anchor sits mid-clause, so
+    # neither the head (clause start -> first anchor end) nor the tail (last
+    # anchor start -> clause end) reaches the 200-char floor.
+    mid = len(_QUOTE_PROSE) // 2
+    query = _QUOTE_PROSE[:mid] + " NetFlix " + _QUOTE_PROSE[mid:]
+    add(index, query)
+    decision = decide(index, query)
+    assert decision.soft_clauses == () and decision.constrained
+    assert decision.owners and all(decision.owners)
+    hits = search(index, query)
+    assert hits and hits[0].admission_reason == "verified_exact"
+
+
+def test_F4_unbound_camel_red_line_defineModels_still_refuses(index):
+    add(index, "vue macro documentation without the identifier")
+    decision = decide(index, "explain defineModels lifecycle for vue macros")
+    assert decision.reason == "anchor_unresolved"
+    assert decision.soft_clauses == () and decision.bindings == ()
+    assert search(index, "explain defineModels lifecycle for vue macros") == []
+
+
+def test_F5_unbound_camel_red_line_SearchPanel_cjk_still_refuses(index):
+    add(index, "公司组件的通用说明文档")
+    decision = decide(index, "给出公司 SearchPanel 组件里所有计算属性的实际依赖关系图")
+    assert decision.reason == "anchor_unresolved" and decision.soft_clauses == ()
+    assert search(index, "给出公司 SearchPanel 组件里所有计算属性的实际依赖关系图") == []
+
+
+def test_F6_c_int_fixture_payloads_byte_identical_to_frozen_baseline(index):
+    import json as _json
+    from pathlib import Path as _Path
+    add(index, "ZT-84 signed harbor charge record", path="/owned/zt84.txt")
+    add(index, "key_value_store.sqlite schema note", path="/owned/kv.txt")
+    add(index, "py-1.0.3 wheel listing", path="/owned/wheel.txt")
+    add(index, "LH-2209 flight manifest", path="/owned/lh.txt")
+    add(index, "K7Q2LM activation code", path="/owned/k7.txt")
+    add(index, "TX-81 calibration sheet body", path="/owned/tx81.txt",
+        title="TX-81 calibration sheet")
+    baseline = _json.loads((_Path(__file__).parent / "anchor_intent_cint_baseline.json")
+                           .read_text())
+    for query, expected in baseline.items():
+        got = _cint_payload(decide(index, query))
+        assert _json.dumps(got, sort_keys=True) == _json.dumps(expected, sort_keys=True), query
+
+
+def test_F7_partial_demotion_keeps_surviving_clause_constraint(index):
+    quote_file = add(index, _QUOTE_PROSE + " NetFlix")
+    zone_file = add(index, "BUILD_ZONE summary notes with retention words",
+                    path="/owned/zone.txt")
+    query = _QUOTE_PROSE + " NetFlix ; BUILD_ZONE summary notes"
+    decision = decide(index, query)
+    assert decision.soft_clauses == ((0, "quote_provenance"),)
+    assert decision.owners == (frozenset(), frozenset({zone_file}))
+    assert decision.constrained and decision.allowed == {zone_file}
+    hits = search(index, query)
+    assert hits and {h.path for h in hits} == {"/owned/zone.txt"}
+    assert "anchor_contract" in hits[0].why
+    assert {"clause_id": 0, "reason": "quote_provenance"} in \
+        hits[0].why["anchor_contract_soft"]["soft_clauses"]
+
+
+def test_F8_oversized_owner_page_never_proves_quoting(index):
+    add(index, [_QUOTE_PROSE + " NetFlix"] + ["filler tail words"] * 2000)
+    decision = decide(index, _QUOTE_PROSE + " NetFlix")
+    assert decision.soft_clauses == () and decision.constrained and all(decision.owners)
+
+
+def test_F9_owner_cap_is_conservative_both_ways(index, tmp_path):
+    from goldmine.store import FileRec, SegmentRec, Store
+    def corpus(n):
+        store = Store(tmp_path / f"cap{n}.sqlite")
+        for i in range(n):
+            fid = store.upsert_file(FileRec(path=f"/q/{i}.txt", kind="doc", state="done",
+                                            capability="content_indexed"))
+            store.replace_segments(fid, [
+                SegmentRec(kind="name", modality="none", text_for_fts="owned folder"),
+                SegmentRec(kind="chunk", modality="none", loc=7, loc_end=7,
+                           text_for_fts=_QUOTE_PROSE + " NetFlix", excerpt="x")])
+        return store
+    over = corpus(9)
+    try:
+        decision = decide(over, _QUOTE_PROSE + " NetFlix")
+        assert decision.soft_clauses == () and decision.constrained
+    finally:
+        over.close()
+    within = corpus(8)
+    try:
+        decision = decide(within, _QUOTE_PROSE + " NetFlix")
+        assert decision.soft_clauses == ((0, "quote_provenance"),)
+        assert decision.owners == (frozenset(),) and not decision.constrained
+    finally:
+        within.close()
+
+
+def test_F10_quote_reads_are_preread_semantics_and_visible_in_queries(index, monkeypatch):
+    from goldmine.anchor_resolution import Resolver
+    add(index, _QUOTE_PROSE + " NetFlix")
+    query = _QUOTE_PROSE + " NetFlix"
+    fired = decide(index, query)
+    assert fired.soft_clauses == ((0, "quote_provenance"),)
+    # The quote block's reads are preread-semantics: zeroing quote_corpus
+    # (conservative no-demote, no quote SQL at all) leaves the obligation
+    # accounting identical while strictly lowering the source-query count.
+    monkeypatch.setattr(Resolver, "quote_corpus", lambda self, file_id: None)
+    silenced = decide(index, query)
+    monkeypatch.undo()
+    assert silenced.soft_clauses == () and silenced.constrained
+    assert silenced.inspected_rows == fired.inspected_rows
+    assert silenced.queries < fired.queries
+
+
+def test_F11_case_flipped_stored_head_never_demotes(index):
+    add(index, _QUOTE_PROSE.replace("harbor", "Harbor", 1) + " NetFlix",
+        path="/owned/caseflip.txt")
+    decision = decide(index, _QUOTE_PROSE + " NetFlix")
+    assert decision.soft_clauses == () and decision.constrained and all(decision.owners)
+
+
+def test_F12_phrase_carve_corner_keeps_owners_and_never_demotes(index):
+    body = "the archive stores /owned/quote-path.txt verbatim 宏的说明以及 的内容"
+    cid = add(index, body)
+    from goldmine.search import parse_filters
+    raw = 'defineLater 宏的说明以及 "/owned/quote-path.txt" 的内容'
+    query, filters = parse_filters(raw)
+    allowed = all_files(index)
+    with index.read_snapshot():
+        decision = resolve_obligations(index, query, filters.phrases, allowed, _terms_of)
+    assert decision.reason is None
+    assert decision.owners == (frozenset({cid}),)
+    assert decision.soft_clauses == ()
+    assert decision.constrained and decision.allowed == {cid}

@@ -1,0 +1,912 @@
+{
+ "-.5mA": {
+  "bindings": [],
+  "exact": {},
+  "inspected_rows": 0,
+  "owners": [],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 5,
+     "id": 0,
+     "kind": "identity",
+     "raw": "-.5mA",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "-.5mA",
+   "reason": null
+  },
+  "queries": 3,
+  "reason": "anchor_unresolved",
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ ".5m": {
+  "bindings": [],
+  "exact": {},
+  "inspected_rows": 0,
+  "owners": [],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 3,
+     "id": 0,
+     "kind": "identity",
+     "raw": ".5m",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": ".5m",
+   "reason": null
+  },
+  "queries": 3,
+  "reason": "anchor_unresolved",
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ "/owned/5mA.csv": {
+  "bindings": [],
+  "exact": {},
+  "inspected_rows": 0,
+  "owners": [],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 14,
+     "id": 0,
+     "kind": "path",
+     "raw": "/owned/5mA.csv",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "/owned/5mA.csv",
+   "reason": null
+  },
+  "queries": 4,
+  "reason": "anchor_unresolved",
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ "/owned/kv.txt": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "path",
+    "file_id": 2,
+    "level": 0,
+    "match_type": "raw",
+    "query_term": "/owned/kv.txt",
+    "raw": "/owned/kv.txt",
+    "segment_id": 3
+   }
+  ],
+  "exact": {
+   "2": {
+    "level": 0,
+    "match_type": "raw",
+    "query_term": "/owned/kv.txt",
+    "raw_term": "/owned/kv.txt",
+    "segment_id": 3,
+    "source": "path"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    2
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 13,
+     "id": 0,
+     "kind": "path",
+     "raw": "/owned/kv.txt",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": ""
+    }
+   ],
+   "phrases": [],
+   "pure_text": "/owned/kv.txt",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ "5mA": {
+  "bindings": [],
+  "exact": {},
+  "inspected_rows": 0,
+  "owners": [],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 3,
+     "id": 0,
+     "kind": "identity",
+     "raw": "5mA",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "5mA",
+   "reason": null
+  },
+  "queries": 3,
+  "reason": "anchor_unresolved",
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ "77889900": {
+  "bindings": [],
+  "exact": {},
+  "inspected_rows": 0,
+  "owners": [],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 8,
+     "id": 0,
+     "kind": "identity",
+     "raw": "77889900",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "77889900",
+   "reason": null
+  },
+  "queries": 3,
+  "reason": "anchor_unresolved",
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": []
+ },
+ "K7Q2LM": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 5,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "K7Q2LM",
+    "raw": "K7Q2LM",
+    "segment_id": 10
+   }
+  ],
+  "exact": {
+   "5": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "K7Q2LM",
+    "raw_term": "K7Q2LM",
+    "segment_id": 10,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    5
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 6,
+     "id": 0,
+     "kind": "identity",
+     "raw": "K7Q2LM",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "K7Q2LM",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 5,
+    "values": []
+   }
+  ]
+ },
+ "LH-2209": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 4,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "LH-2209",
+    "raw": "LH-2209",
+    "segment_id": 8
+   }
+  ],
+  "exact": {
+   "4": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "LH-2209",
+    "raw_term": "LH-2209",
+    "segment_id": 8,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    4
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 7,
+     "id": 0,
+     "kind": "identity",
+     "raw": "LH-2209",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "LH-2209",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 4,
+    "values": []
+   }
+  ]
+ },
+ "TX-81": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "title",
+    "file_id": 6,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "TX-81",
+    "raw": "TX-81",
+    "segment_id": 11
+   },
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 6,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "TX-81",
+    "raw": "TX-81",
+    "segment_id": 12
+   }
+  ],
+  "exact": {
+   "6": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "TX-81",
+    "raw_term": "TX-81",
+    "segment_id": 11,
+    "source": "title"
+   }
+  },
+  "inspected_rows": 2,
+  "owners": [
+   [
+    6
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 5,
+     "id": 0,
+     "kind": "identity",
+     "raw": "TX-81",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "TX-81",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 6,
+    "values": []
+   }
+  ]
+ },
+ "ZT-84": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 1,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "ZT-84",
+    "raw": "ZT-84",
+    "segment_id": 2
+   }
+  ],
+  "exact": {
+   "1": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "ZT-84",
+    "raw_term": "ZT-84",
+    "segment_id": 2,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 2,
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 5,
+     "id": 0,
+     "kind": "identity",
+     "raw": "ZT-84",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "ZT-84",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 1,
+    "values": []
+   }
+  ]
+ },
+ "`ZT-84 signed harbor`": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 1,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "ZT-84 signed harbor",
+    "raw": "ZT-84 signed harbor",
+    "segment_id": 2
+   }
+  ],
+  "exact": {
+   "1": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "ZT-84 signed harbor",
+    "raw_term": "ZT-84 signed harbor",
+    "segment_id": 2,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 20,
+     "id": 0,
+     "kind": "literal",
+     "raw": "ZT-84 signed harbor",
+     "start": 1
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "` ` "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "`ZT-84 signed harbor`",
+   "reason": null
+  },
+  "queries": 4,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 1,
+    "values": []
+   }
+  ]
+ },
+ "key_value_store.sqlite": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 2,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "key_value_store.sqlite",
+    "raw": "key_value_store.sqlite",
+    "segment_id": 4
+   }
+  ],
+  "exact": {
+   "2": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "key_value_store.sqlite",
+    "raw_term": "key_value_store.sqlite",
+    "segment_id": 4,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    2
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 22,
+     "id": 0,
+     "kind": "identity",
+     "raw": "key_value_store.sqlite",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "key_value_store.sqlite",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 2,
+    "values": []
+   }
+  ]
+ },
+ "py-1.0.3": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 3,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "py-1.0.3",
+    "raw": "py-1.0.3",
+    "segment_id": 6
+   }
+  ],
+  "exact": {
+   "3": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "py-1.0.3",
+    "raw_term": "py-1.0.3",
+    "segment_id": 6,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 1,
+  "owners": [
+   [
+    3
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 8,
+     "id": 0,
+     "kind": "identity",
+     "raw": "py-1.0.3",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "py-1.0.3",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 3,
+    "values": []
+   }
+  ]
+ },
+ "zt-84": {
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "component_raw": null,
+    "component_segment_id": null,
+    "field": "body",
+    "file_id": 1,
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "zt-84",
+    "raw": "ZT-84",
+    "segment_id": 2
+   }
+  ],
+  "exact": {
+   "1": {
+    "level": 1,
+    "match_type": "raw",
+    "query_term": "zt-84",
+    "raw_term": "ZT-84",
+    "segment_id": 2,
+    "source": "body"
+   }
+  },
+  "inspected_rows": 2,
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "plan": {
+   "anchors": [
+    {
+     "component": 0,
+     "end": 5,
+     "id": 0,
+     "kind": "identity",
+     "raw": "zt-84",
+     "start": 0
+    }
+   ],
+   "clauses": [
+    {
+     "anchor_ids": [
+      0
+     ],
+     "id": 0,
+     "phrases": [],
+     "remainder": "  "
+    }
+   ],
+   "phrases": [],
+   "pure_text": "zt-84",
+   "reason": null
+  },
+  "queries": 5,
+  "reason": null,
+  "source_capabilities": {
+   "adapter_version": "stored-source.v1",
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_column": true,
+   "original_provenance": "stored_original_or_body",
+   "schema_version": 6
+  },
+  "witnesses": [
+   {
+    "clause_id": 0,
+    "file_id": 1,
+    "values": []
+   }
+  ]
+ }
+}
