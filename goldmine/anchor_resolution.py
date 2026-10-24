@@ -22,6 +22,26 @@ class VerificationBound(ValueError):
     """Recall was bounded; never infer absence from a truncated view."""
 
 
+#: Code rows where a bound surface is DEFINED rather than mentioned: a
+#: def/class-style declaration, a (possibly annotated) assignment, or a C
+#: macro, each at a line start. Stdlib modules name every public function in
+#: their header `__all__` list, so without this the exact pointer landed on
+#: the header chunk instead of the definition.
+_DEFINITION_KEYWORDS = r"(?:async\s+def|def|class|function|fn|struct|enum|interface|trait|type)"
+_DEFINITION_SITE = (r"^\s*{kw}\s+{name}\b"
+                    r"|^\s*(?:(?:const|let|var|static|final)\s+)?{name}\s*(?::[^=\n]*)?=(?!=)"
+                    r"|^\s*#\s*define\s+{name}\b")
+
+
+def definition_site(text, surface):
+    """True when `surface`'s last dotted component is defined in `text`."""
+    if not text or not surface:
+        return False
+    name = re.escape(surface.rsplit(".", 1)[-1])
+    pattern = _DEFINITION_SITE.format(kw=_DEFINITION_KEYWORDS, name=name)
+    return re.search(pattern, text, re.MULTILINE) is not None
+
+
 @dataclass(frozen=True)
 class Binding:
     anchor_id: int
@@ -357,11 +377,20 @@ class Resolver:
             found = self._path_suffix(anchor)
         # One deterministic witness for each logical source-field binding;
         # repeated occurrences in a long file cannot multiply per-hit why.
+        # Among a code file's body rows the definition outranks a mention.
         unique = {}
-        for b in sorted(set(found), key=lambda b: (b.level, b.segment_id, b.raw)):
+        for b in sorted(set(found), key=lambda b: (b.level, not self._defines(b), b.segment_id, b.raw)):
             key = (b.anchor_id, b.file_id, b.field, b.match_type)
             unique.setdefault(key, b)
         return list(unique.values())
+
+    def _defines(self, binding):
+        if binding.field != "body":
+            return False
+        row = self.rows.get(binding.segment_id)
+        if row is None or row.file_kind != "code":
+            return False
+        return definition_site(row.text, binding.raw)
 
     def _path_suffix(self, anchor):
         """Bounded files.path suffix recall for plausible path anchors whose
