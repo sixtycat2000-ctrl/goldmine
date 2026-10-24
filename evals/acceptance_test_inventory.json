@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "source_commit": "b2d6ec2c4748c00fb96642167c447f9c6323b153",
- "note": "Collection captured during P0-06 implementation; classifications preserve nodeids. Live and optional capabilities are separate, never skipped into PASS.",
+ "note": "Collection captured during P0-06 implementation; classifications preserve nodeids. Live and optional capabilities are separate, never skipped into PASS. Migration 2026-10-25: 16 distill nodeids retired by b1f4fb9 (measure_tau_*, mean_intra_cosine, split_*, build_cards_v2, header_rendering) removed; their ens-coassoc.v3 replacements registered as offline.",
  "tests": [
   {
    "nodeid": "tests/test_answer_calibration.py::test_wording_variation_never_sets_score_variation",
@@ -1254,51 +1254,6 @@
    "reason": "Hermetic fixture logic."
   },
   {
-   "nodeid": "tests/test_distill.py::test_measure_tau_otsu_on_separable_synthetic",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_floor_on_orthogonal_groups",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_ceil_on_all_similar",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_percentile_fallback_via_mode_proximity",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_manual_override",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_degenerate_single_bin_and_two_chunks",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_negative_cosines_clamp_to_bin_zero",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_stride_sampling_deterministic",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_measure_tau_quartiles_hand_case",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
    "nodeid": "tests/test_distill.py::test_f7_guard_and_centroid_gate_disagree_on_boundary",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
@@ -1400,41 +1355,6 @@
   },
   {
    "nodeid": "tests/test_distill.py::test_render_markdown_v2_shape",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_mean_intra_cosine_hand_case",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_split_triggers_on_loose_cluster_and_accepts",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_split_rejects_tight_cluster",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_split_needs_min_twelve",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_split_depth_cap",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_build_cards_v2_with_headers_parent_id_and_ordering",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_distill.py::test_header_rendering_groups_children",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
   },
@@ -5540,6 +5460,140 @@
    "nodeid": "tests/test_watch.py::TestExceptionsAndPoison::test_unexpected_error_limit_stops_loudly",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_build_cards_ordering_and_active_only",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_co_leader_fine_first_wins",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_co_tau_report_degenerate_two_chunks",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_co_tau_report_fixed_and_manual",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_co_tau_report_quartiles_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_corpus_uses_verbatim_original_after_lexical_normalization",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_dense_coassociation_two_orthogonal_groups",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_ens_coassoc_v3_small_corpus_shape",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_excerpts_traceable_to_stored_segments",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_histogram_of_clamps_out_of_range_values",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_micro_fold_formula_matches_brute_force",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_remerge_co_channel_mean_passes_min_refuses",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_remerge_geo_channel_guard_blocks_ragged_pair",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_remerge_geo_channel_reunites_fragments",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_render_markdown_header_rows_still_render",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_sample_pair_values_stride_sampling_deterministic",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_skm_det_deterministic_and_lowest_index_ties",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  },
+  {
+   "nodeid": "tests/test_distill.py::test_skm_det_farthest_first_hand_case",
+   "profile": "offline",
+   "reason": "Hermetic fixture logic; ens-coassoc.v3 (b1f4fb9) replacement for the retired measure_tau/split/v2-card distill tests."
+  }
+ ],
+ "migrations": [
+  {
+   "date": "2026-10-25",
+   "commit_cause": "b1f4fb9",
+   "removed": [
+    "tests/test_distill.py::test_measure_tau_otsu_on_separable_synthetic",
+    "tests/test_distill.py::test_measure_tau_floor_on_orthogonal_groups",
+    "tests/test_distill.py::test_measure_tau_ceil_on_all_similar",
+    "tests/test_distill.py::test_measure_tau_percentile_fallback_via_mode_proximity",
+    "tests/test_distill.py::test_measure_tau_manual_override",
+    "tests/test_distill.py::test_measure_tau_degenerate_single_bin_and_two_chunks",
+    "tests/test_distill.py::test_measure_tau_negative_cosines_clamp_to_bin_zero",
+    "tests/test_distill.py::test_measure_tau_stride_sampling_deterministic",
+    "tests/test_distill.py::test_measure_tau_quartiles_hand_case",
+    "tests/test_distill.py::test_mean_intra_cosine_hand_case",
+    "tests/test_distill.py::test_split_triggers_on_loose_cluster_and_accepts",
+    "tests/test_distill.py::test_split_rejects_tight_cluster",
+    "tests/test_distill.py::test_split_needs_min_twelve",
+    "tests/test_distill.py::test_split_depth_cap",
+    "tests/test_distill.py::test_build_cards_v2_with_headers_parent_id_and_ordering",
+    "tests/test_distill.py::test_header_rendering_groups_children"
+   ],
+   "added": [
+    "tests/test_distill.py::test_build_cards_ordering_and_active_only",
+    "tests/test_distill.py::test_co_leader_fine_first_wins",
+    "tests/test_distill.py::test_co_tau_report_degenerate_two_chunks",
+    "tests/test_distill.py::test_co_tau_report_fixed_and_manual",
+    "tests/test_distill.py::test_co_tau_report_quartiles_hand_case",
+    "tests/test_distill.py::test_corpus_uses_verbatim_original_after_lexical_normalization",
+    "tests/test_distill.py::test_dense_coassociation_two_orthogonal_groups",
+    "tests/test_distill.py::test_ens_coassoc_v3_small_corpus_shape",
+    "tests/test_distill.py::test_excerpts_traceable_to_stored_segments",
+    "tests/test_distill.py::test_histogram_of_clamps_out_of_range_values",
+    "tests/test_distill.py::test_micro_fold_formula_matches_brute_force",
+    "tests/test_distill.py::test_remerge_co_channel_mean_passes_min_refuses",
+    "tests/test_distill.py::test_remerge_geo_channel_guard_blocks_ragged_pair",
+    "tests/test_distill.py::test_remerge_geo_channel_reunites_fragments",
+    "tests/test_distill.py::test_render_markdown_header_rows_still_render",
+    "tests/test_distill.py::test_sample_pair_values_stride_sampling_deterministic",
+    "tests/test_distill.py::test_skm_det_deterministic_and_lowest_index_ties",
+    "tests/test_distill.py::test_skm_det_farthest_first_hand_case"
+   ]
   }
  ]
 }
