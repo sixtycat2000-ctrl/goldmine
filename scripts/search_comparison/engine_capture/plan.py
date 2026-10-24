@@ -106,8 +106,10 @@ def engine_resources(name, value, *, fixture, require_canary=True, arm=None):
             raise EvaluationError("no provisioned native llama addon in frozen QMD snapshot", status="MISSING")
         fields(value["model_roles"], set(QMD_URIS), "QMD default model families")
         for role, model in value["model_roles"].items():
-            if role not in roles:
-                continue
+            # Every arm resolves and pins all three local model roles: QMD
+            # 2.8.3 stores hf: fallback URIs for any omitted role, which the
+            # frozen plan forbids. The arm's behavioral roles stay recorded in
+            # qmd_roles (quality-harness-fix-001).
             fields(model, {"uri", "revision", "resource"}, "QMD immutable model role")
             if model["uri"] != QMD_URIS[role] or not isinstance(model["revision"], str) or not re.fullmatch(r"[a-f0-9]{40}", model["revision"]):
                 raise EvaluationError("QMD default model family/revision is unresolved", status="MISSING")

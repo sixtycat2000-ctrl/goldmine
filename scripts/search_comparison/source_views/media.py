@@ -32,7 +32,11 @@ def ocr_text(image, commands, name):
                 or not isinstance(block["text"], str) or type(block["confidence"]) not in (int, float)
                 or not math.isfinite(block["confidence"]) or not 0 <= block["confidence"] <= 1
                 or not isinstance(block["box"], list) or len(block["box"]) != 4
-                or any(type(n) not in (int, float) or not math.isfinite(n) or not 0 <= n <= 1 for n in block["box"])):
+                # Apple Vision normalized text boxes can extend marginally
+                # (sub-pixel) outside the image for edge-touching text; 1e-2
+                # still rejects pixel-scale coordinate bugs
+                # (converter-boundary-fix-001 amendment 1).
+                or any(type(n) not in (int, float) or not math.isfinite(n) or not -1e-2 <= n <= 1 + 1e-2 for n in block["box"])):
             raise EvaluationError("OCR block is malformed", status="MISSING")
     # Retain every actual block. No question selection or confidence filtering.
     return "\n".join(block["text"] for block in result["texts"]), result["texts"]
@@ -49,7 +53,7 @@ def convert_audio(asset, commands, limits):
         raise EvaluationError("ffprobe did not establish the full clip duration", status="MISSING") from error
     if generated or expected > limits["max_duration_ms"]:
         raise EvaluationError("clip is unbounded/over declared limit; no prefix cap is allowed", status="MISSING")
-    details = {"full_input": True, "duration_tolerance_ms": 2}
+    details = {"full_input": True, "duration_tolerance_ms": 12}
     try:
         _, decoded, generated = commands.call("audio.decode", "audio-decode", input=asset)
         if set(generated) != {"audio.wav"}:
@@ -74,8 +78,11 @@ def convert_audio(asset, commands, limits):
             if not isinstance(row, dict) or not isinstance(row.get("text"), str) or not isinstance(row.get("offsets"), dict):
                 raise EvaluationError("whisper transcript entry is malformed", status="MISSING")
             start, end = row["offsets"].get("from"), row["offsets"].get("to")
+            # whisper.cpp ceil-rounds the final segment end to its 10ms frame
+            # grid, so a whole-input run legitimately ends up to one frame past
+            # the decoded duration (converter-boundary-fix-001).
             if (type(start) not in (int, float) or type(end) not in (int, float) or not math.isfinite(start)
-                    or not math.isfinite(end) or not 0 <= start <= end <= expected + 2 or start < previous):
+                    or not math.isfinite(end) or not 0 <= start <= end <= expected + 12 or start < previous):
                 raise EvaluationError("whisper segment is outside the full clip or reordered", status="MISSING")
             segments.append({"start_ms": start, "end_ms": end, "text": row["text"]})
             previous = start

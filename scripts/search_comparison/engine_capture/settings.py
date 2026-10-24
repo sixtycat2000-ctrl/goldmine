@@ -60,16 +60,29 @@ def setup(owner, name, paths, view, *, replay=False):
             cfg.mkdir()
         # JSON quoted scalars are a strict subset of YAML scalars. No arbitrary
         # user YAML, hooks, update commands, alternative models or remote URLs.
-        present = [r for r in ("embed", "generate", "rerank") if r in paths]
-        text = "models: {}\n" if not present else "models:\n" + "".join("  " + role + ": " + json.dumps(paths[role]) + "\n" for role in present)
+        # All three pinned local model paths are written for every arm: QMD
+        # 2.8.3 fills any omitted role with its documented hf: default URIs in
+        # the stored config, which the frozen plan forbids as a fetch fallback
+        # (quality-harness-fix-001). Presence does not change arm behavior:
+        # search stays model-free BM25; vsearch uses embed+generate only.
+        text = "models:\n" + "".join("  " + role + ": " + json.dumps(paths[role]) + "\n" for role in ("embed", "generate", "rerank") if role in paths)
+        if not any(role in paths for role in ("embed", "generate", "rerank")):
+            raise EvaluationError("QMD pinned local model roles are unresolved", status="MISSING")
         text_file(cfg / "comparison.yml", text, mutable_after_prepare=True)
         values.update(qmd_index="comparison", qmd_collection="sources", qmd_db=str(owner / "xdg/cache/qmd/comparison.sqlite"))
     else:
         cfg = owner / "recoll-config"
         if not replay:
             cfg.mkdir()
-        text_file(cfg / "recoll.conf", "topdirs = " + json.dumps(view["corpus"], ensure_ascii=False) +
-            "\ndbdir = " + json.dumps(str(owner / "recoll-db")) + "\nloglevel = 2\nindexStoreDocText = 1\npreferStoredTextMimes = *\n")
+        # recoll.conf values are raw scalars: the installed 1.44.2 parser reads
+        # them literally, so a JSON-quoted absolute path is treated as relative
+        # and index creation fails on a quote-containing mkdir (see
+        # recoll-conf-fix-001). Owned paths never contain newlines/quotes.
+        # excludedmimetypes drops the factory-default inode/directory pseudo
+        # documents (recoll-dir-exclusion-fix-001): file retrieval is the
+        # comparison's object and the mapping is frozen to the 122 files.
+        text_file(cfg / "recoll.conf", "topdirs = " + view["corpus"] +
+            "\ndbdir = " + str(owner / "recoll-db") + "\nloglevel = 2\nindexStoreDocText = 1\npreferStoredTextMimes = *\nexcludedmimetypes = inode/directory\n")
         if view["name"] == "common":
             # Shared converted input is plain UTF8, not another Markdown -> HTML
             # conversion. Native view keeps the installed MIME/filter behavior.
