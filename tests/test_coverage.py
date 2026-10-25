@@ -23,6 +23,18 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 QUERIES = REPO_ROOT / "evals" / "media_queries.jsonl"
 
+#: video-eval-001 pinned the clip corpus with ABSOLUTE repo paths (frozen
+#: asset bytes). On any other checkout — CI runners included — those roots do
+#: not exist; rebase them onto THIS repo root instead of failing portability.
+_ORIGINAL_ROOT = "/Users/yul/git/goldmine"
+
+
+def _portable(path: str) -> Path:
+    p = Path(path)
+    if p.is_absolute() and str(p).startswith(_ORIGINAL_ROOT) and not p.is_file():
+        return REPO_ROOT / str(p)[len(_ORIGINAL_ROOT):].lstrip("/")
+    return p
+
 # video-eval-001: +8 keyframe-retrieval questions (tag video, needs frames,
 # absolute clip paths + expect loc — see the schema assertions below)
 TAG_COUNTS = {"text": 10, "audio": 10, "screenshot": 10, "image": 10, "pdf-scanned": 10, "video": 8}
@@ -38,7 +50,7 @@ def fast_fixture(monkeypatch, tmp_path):
 
     monkeypatch.setattr(
         mcf, "speech_wav",
-        lambda path: (mcf.synth_wav(path, 1.0, freqs=(220.0, 330.0)), False)[1],
+        lambda path: (mcf.synth_wav(path, 2.5, freqs=(220.0, 330.0)), False)[1],
     )
     monkeypatch.setattr(mcf, "ffmpeg_mp4", lambda path, seconds: False)
     out = tmp_path / "covfix"
@@ -94,8 +106,9 @@ def test_media_queries_expect_paths_exist_in_fixture(fast_fixture):
         for entry in q["expect"]:
             if Path(entry["path"]).is_absolute():
                 # video-eval-001: clip-corpus expects live in the repo, pinned
-                # by corpus_manifest.json (not the fixture)
-                assert Path(entry["path"]).is_file(), f"{q['id']}: {entry['path']} missing"
+                # by corpus_manifest.json (not the fixture). _portable rebases
+                # the frozen absolute pins onto this checkout for portability.
+                assert _portable(entry["path"]).is_file(), f"{q['id']}: {entry['path']} missing"
                 continue
             assert entry["path"] in known, f"{q['id']}: {entry['path']} not in fixture"
             assert entry["path"] in on_disk, f"{q['id']}: {entry['path']} not on disk"
@@ -106,7 +119,7 @@ def test_fixture_path_list_is_seed_deterministic(monkeypatch, tmp_path):
 
     monkeypatch.setattr(
         mcf, "speech_wav",
-        lambda path: (mcf.synth_wav(path, 1.0, freqs=(220.0, 330.0)), False)[1],
+        lambda path: (mcf.synth_wav(path, 2.5, freqs=(220.0, 330.0)), False)[1],
     )
     monkeypatch.setattr(mcf, "ffmpeg_mp4", lambda path, seconds: False)
     a = mcf.build(tmp_path / "a", force=True)
