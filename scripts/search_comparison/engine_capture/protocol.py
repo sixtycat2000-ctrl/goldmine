@@ -11,9 +11,9 @@ from product_eval.schema import CLASSES
 
 SUITE = "comparison.engine-capture/v1"
 VIEWS = ("native", "common")
-MANDATORY = ("goldmine.fast", "goldmine.quality-rerank", "qmd.search", "qmd.vsearch", "qmd.query", "recoll.default")
-CONTROLS = ("goldmine.lexical-control", "goldmine.quality-multi", "recoll.anyterm")
-OPTIONAL = ("recoll.synonyms",)
+MANDATORY = ("goldmine.fast", "goldmine.quality-rerank", "qmd.search", "qmd.vsearch", "qmd.query")
+CONTROLS = ("goldmine.lexical-control", "goldmine.quality-multi")
+OPTIONAL = ()
 LIMITS = {"prepare_wall_s": 1800, "query_wall_s": 600, "stream_bytes": 16 * 1024 * 1024,
           "owned_bytes": 4 * 1024 ** 3, "nofile": 512}
 MAX_ROWS = 100
