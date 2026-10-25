@@ -74,7 +74,7 @@ the acceptance validator. Nine separately captured real-model tests also passed
 without skips, covering exact text/media reference vectors, lexical backfill,
 search, tokenizer budgets, citations and child cleanup. Local raw receipts and
 the compact summary are in
-[`reports/execution/lifecycle-repair-20261025/verification-summary.json`](../reports/execution/lifecycle-repair-20261025/verification-summary.json).
+`reports/execution/lifecycle-repair-20261025/verification-summary.json` (local evidence tree, not committed).
 These full-profile counts belong to the captured pre-merge source. Subsequent
 main integration preserves the runtime bytes and records its focused checks
 separately in `reports/execution/lifecycle-repair-20261025/merge-integration/`.
