@@ -18,6 +18,7 @@ class DocumentMap:
         self.collection, self.index = collection, index
         self.local = {}
         self.qmd = {}
+        self.directories = set()
         for document in documents:
             path = document["view_path"]
             absolute = (self.root / path).resolve()
@@ -25,6 +26,10 @@ class DocumentMap:
                 raise EvaluationError("duplicate or unsafe comparison document mapping")
             self.local[absolute] = document["source_path"]
             self.qmd[path] = document["source_path"]
+            for parent in absolute.parents:
+                if parent == self.root:
+                    break
+                self.directories.add(parent)
 
     def file_path(self, path):
         if not isinstance(path, str):
@@ -53,6 +58,11 @@ class DocumentMap:
             path = unquote_to_bytes(parsed.path).decode("utf-8")
         except UnicodeError as error:
             raise EvaluationError("Recoll URL is not UTF-8") from error
+        resolved = Path(path).resolve()
+        if resolved in self.directories:
+            # A walked corpus directory is a Recoll inode/directory pseudo-row,
+            # not a file (capture-completion-fix-001).
+            return None
         return self.file_path(path)
 
 

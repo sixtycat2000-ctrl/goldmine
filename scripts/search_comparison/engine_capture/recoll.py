@@ -58,6 +58,14 @@ def parse_metadata(text, mapping):
                 or re.fullmatch(r"[1-9][0-9]*", values["xdocid"]) is None or values["xdocid"] in seen):
             raise EvaluationError("Recoll stored-document type/identity is incomplete")
         seen.add(values["xdocid"])
+        if values["mtype"] == "inode/directory":
+            # Recoll 1.44.2's factory default indexes every walked directory as
+            # an inode/directory pseudo-document. Retained as a declared
+            # non-file row; never part of the frozen 122-file mapping or any
+            # file window (capture-completion-fix-001).
+            result.append({**values, "ipath": values.get("ipath", ""), "ordinal": ordinal,
+                           "source_path": None, "directory": True})
+            continue
         result.append({**values, "ipath": values.get("ipath", ""), "ordinal": ordinal,
                        "source_path": mapping.recoll_url(values["url"])})
     return result
@@ -85,7 +93,8 @@ def coverage(view, metadata, bodies):
     result = {}
     for document in view["documents"]:
         parts = [({**m, "body_sha256": hashlib.sha256(b).hexdigest(), "body_bytes": len(b)})
-                 for m, b in zip(metadata, bodies) if m["source_path"] == document["source_path"]]
+                 for m, b in zip(metadata, bodies)
+                 if b is not None and m["source_path"] == document["source_path"]]
         status = "OBSERVED_INDEXED_TEXT" if any(p["body_bytes"] for p in parts) else "METADATA_ONLY" if parts else "UNINDEXED"
         if view["name"] == "common":
             expected = (Path(view["corpus"]) / document["view_path"]).read_bytes()

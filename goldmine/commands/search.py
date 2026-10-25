@@ -107,6 +107,7 @@ def cmd_search(args: argparse.Namespace) -> int:
             why=why, pack=pack, context=context, budget=budget, lexical_only=lexical,
             mode=_g(args, "mode", "fast"), rerank=_g(args, "rerank", "off"),
             multi_query=bool(_g(args, "multi_query", False)),
+            timeout_s=cfg.search.request_timeout_s,
         )
         started = time.monotonic()
         def reranker():

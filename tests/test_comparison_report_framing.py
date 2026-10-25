@@ -32,7 +32,7 @@ def replace_cell(owner,value,ref,path,shell):
 
 def test_exact_existing19byte_family_exceeds_generic8mib_but_complete18x210_roundtrips(tmp_path):
     root=tmp_path.resolve();legacy=original19byte_lower_bound();path=root/'legacy.json';write_new(path,legacy)
-    assert path.stat().st_size==8388927 and protocol.read.__defaults__==(8*1024*1024,)
+    assert path.stat().st_size==8416647 and protocol.read.__defaults__==(8*1024*1024,)  # +directory_rows meta (capture-completion-fix-001)
     with pytest.raises(EvaluationError) as exc:protocol.read(path)
     assert exc.value.status=='MISSING'
     owner=root/'complete';original=report(owner,n=210,max_windows=True)

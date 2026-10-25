@@ -152,7 +152,9 @@ def recoll(commands, values, view, mapping):
                                                     str(Path(view["corpus"]) / d["view_path"])], phase="audit")
         if raw != b"DENIED_SOURCE_READ\n":
             raise EvaluationError("Recoll audit source-read deny policy is ineffective", status="MISSING")
-    bodies = [stored_body(commands.call("recoll.stored-body", body_argv(values["sandbox"], values["sandbox_profile"], values["recollq"],
+    # Directory pseudo-rows have no stored body; their ordinals stay aligned.
+    bodies = [None if row.get("directory") else
+              stored_body(commands.call("recoll.stored-body", body_argv(values["sandbox"], values["sandbox_profile"], values["recollq"],
                                values["recoll_config_dir"], view["corpus"], row["ordinal"]), phase="audit"), row) for row in metadata]
     sources = recoll_coverage(view, metadata, bodies)
     if inventory(directory) != before:
