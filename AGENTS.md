@@ -56,6 +56,7 @@
 | 锚点命令卡 | [docs/ANCHORS.md](docs/ANCHORS.md) |
 | 提交摘要档案 | [docs/COMMIT_DIGESTS.md](docs/COMMIT_DIGESTS.md) |
 | 轮讲系列 | [1 搜索打分](docs/WALKTHROUGH-search.md) · [2 指纹与身份](docs/WALKTHROUGH-fingerprint.md) · [3 摄取管线](docs/WALKTHROUGH-ingest.md) · [4 诚实契约](docs/WALKTHROUGH-honesty.md) · [5 双常驻进程](docs/WALKTHROUGH-processes.md) |
+| 旅程与技术考古 | [docs/JOURNEY.md](docs/JOURNEY.md)（八幕全程 + 术语逐层挖底词典） |
 
 执行记录：reports/execution/<任务名>/（本地留档、按惯例不入库——回执
 在那里面，摘要在这里）。
