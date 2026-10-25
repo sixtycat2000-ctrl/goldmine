@@ -93,6 +93,7 @@ def create_server(application: Application):
 
 def run_stdio(application: Application) -> None:
     import anyio
+    import os
     import signal
     import sys
     from mcp.server.stdio import stdio_server
@@ -116,4 +117,14 @@ def run_stdio(application: Application) -> None:
                     finally:
                         group.cancel_scope.cancel()
 
-    anyio.run(run)
+    try:
+        anyio.run(run)
+    except (BrokenPipeError, anyio.BrokenResourceError, anyio.ClosedResourceError):
+        # the client went away (EPIPE) — exit quietly, no traceback (DigUp
+        # IndexService.swift:331-336). devnull dup2 keeps the shutdown flush
+        # from re-raising on the dead stdout.
+        try:
+            devnull = os.open(os.devnull, os.O_WRONLY)
+            os.dup2(devnull, sys.stdout.fileno())
+        except (OSError, ValueError):
+            pass

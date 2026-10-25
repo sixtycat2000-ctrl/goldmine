@@ -27,6 +27,7 @@ from .command_support import (
 )
 from .commands import ingest as ingest_commands
 from .commands.search import _search_pack_flags, cmd_search
+from .commands.estimate import cmd_estimate
 from .commands.inspection import cmd_status, cmd_doctor, cmd_help
 from .commands.models import _git_describe, _sidecar_sha256, _version_full, cmd_version, cmd_model, _probe_backend_live, cmd_backends
 from .commands.distill import _after_ts, cmd_distill
@@ -55,6 +56,7 @@ def cmd_ingest(args: argparse.Namespace) -> int:
 _DISPATCH = {
     "ingest": cmd_ingest,
     "search": cmd_search,
+    "estimate": cmd_estimate,
     "status": cmd_status,
     "version": cmd_version,
     "model": cmd_model,
@@ -122,6 +124,19 @@ def _unhandled_error(exc: Exception, json_mode: bool) -> int:
             doctor=True,
         ).to_json(), indent=2, ensure_ascii=False))
     return EXIT_RUNTIME
+
+
+def _broken_pipe_exit() -> int:
+    """`goldmine search … | head`: the reader left. Exit quietly, the way a
+    SIGPIPE death looks to the shell, without the traceback (DigUp
+    IndexService.swift:331-336 EPIPE discipline). The devnull dup2 keeps the
+    interpreter-shutdown stdout flush from re-raising on the dead pipe."""
+    try:
+        devnull = os.open(os.devnull, os.O_WRONLY)
+        os.dup2(devnull, sys.stdout.fileno())
+    except (OSError, ValueError):  # stdout already closed / not a real fd
+        pass
+    return 0
 
 
 def _run(argv: list[str] | None = None) -> int:
@@ -216,6 +231,10 @@ def _run(argv: list[str] | None = None) -> int:
     except KeyboardInterrupt:
         print("interrupted", file=sys.stderr)
         return EXIT_INTERRUPTED
+    except BrokenPipeError:
+        # must precede `except Exception` — the catch-all would otherwise
+        # print a traceback for a reader that simply closed the pipe
+        return _broken_pipe_exit()
     except RuntimeError as exc:
         # index newer than this build (migrations/store refuse on open) —
         # a specific, mechanical remedy exists, so it gets the real shape
@@ -269,7 +288,20 @@ def _termination_interrupt():
 
 def main(argv: list[str] | None = None) -> int:
     with _termination_interrupt(), command_runtime(_runtime()):
-        return _run(argv)
+        try:
+            rc = _run(argv)
+        except BrokenPipeError:
+            # belt for a pipe break raised inside another except body (e.g.
+            # _emit_error printing the error object in --json mode)
+            return _broken_pipe_exit()
+        try:
+            # small outputs can sit wholly in the stdout buffer — the break
+            # would otherwise surface only at interpreter shutdown (exit 120
+            # "Exception ignored"). Probe here so the guard catches it.
+            sys.stdout.flush()
+        except BrokenPipeError:
+            return _broken_pipe_exit()
+        return rc
 
 
 if __name__ == "__main__":

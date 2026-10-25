@@ -56,6 +56,32 @@ TCC_REASON = (
     "or index a copy elsewhere"
 )
 
+#: DigUp Crawler.swift:85-91 — an iCloud-evicted placeholder must be skipped
+#: BEFORE anything opens it (open/read materialize the file = a download).
+#: Python's stat module does not export SF_DATALESS (verified on this build)
+#: and non-macOS st_results have no st_flags at all, hence the fallbacks.
+SF_DATALESS = getattr(stat, "SF_DATALESS", 0x40000000)
+DATALESS_REASON = "iCloud dataless placeholder — not downloaded"
+
+
+def _is_dataless(path: str, st) -> bool:
+    """True when the file is an iCloud dataless placeholder.
+
+    The followed `st` is checked first — for a file symlink its st_flags are
+    the (evicted) target's, so symlinks into iCloud Drive are caught too;
+    stat()/lstat() never materialize a dataless file. The explicit lstat is
+    the documented no-side-effect probe (and the mechanism-test seam: tests
+    monkeypatch os.lstat with fake flags; a real evicted file needs an
+    iCloud environment CI cannot create).
+    """
+    if st is not None and getattr(st, "st_flags", 0) & SF_DATALESS:
+        return True
+    try:
+        flags = getattr(os.lstat(path), "st_flags", 0)
+    except OSError:
+        return False
+    return bool(flags & SF_DATALESS)
+
 
 def _matches_exclude(rel: str, absolute: str, patterns: list[str]) -> bool:
     return any(fnmatch.fnmatch(rel, pat) or fnmatch.fnmatch(absolute, pat) for pat in patterns)
@@ -119,12 +145,12 @@ def walk_files(
 
 
 def _handle_file(path: Path, *, code: bool, max_file_bytes: int):
-    """A root that is itself a file: classify + stat, same rules as directory walks."""
-    name = path.name
-    decision = _decide_file(path, name, code=code)
-    if decision.skip_reason or decision.kind is None:
-        yield SkipNotice(str(path), decision.skip_reason or "not an indexed kind")
-        return
+    """A root that is itself a file: classify + stat, same rules as directory walks.
+
+    stat comes BEFORE classification: _decide_file sniffs MPEG-TS heads by
+    opening the file, and an iCloud dataless root must be refused before any
+    open (an open IS the download).
+    """
     try:
         st = path.stat()
     except OSError as exc:
@@ -135,8 +161,16 @@ def _handle_file(path: Path, *, code: bool, max_file_bytes: int):
         # block a worker forever (named pipe named *.txt hung whole ingests).
         yield SkipNotice(str(path), "not a regular file")
         return
+    if _is_dataless(str(path), st):
+        yield SkipNotice(str(path), DATALESS_REASON)
+        return
     if st.st_size > max_file_bytes:
         yield SkipNotice(str(path), f"over size cap ({st.st_size} > {max_file_bytes} bytes)")
+        return
+    name = path.name
+    decision = _decide_file(path, name, code=code)
+    if decision.skip_reason or decision.kind is None:
+        yield SkipNotice(str(path), decision.skip_reason or "not an indexed kind")
         return
     yield Candidate(
         path=path, kind=decision.kind, size=st.st_size, mtime=st.st_mtime,
@@ -224,6 +258,12 @@ def _walk_dir(
             # honest reason; regular files (incl. followed file symlinks) are
             # unaffected.
             yield SkipNotice(abs_path, "not a regular file")
+            continue
+        if _is_dataless(abs_path, st):
+            # before the size cap AND before _decide_file: the TS head sniff
+            # opens the file, and open() on a dataless placeholder downloads
+            # it (DigUp Crawler.swift:85-91).
+            yield SkipNotice(abs_path, DATALESS_REASON)
             continue
         if st.st_size > max_file_bytes:
             from ..util import human_size

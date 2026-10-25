@@ -29,6 +29,7 @@ import calendar
 from contextlib import nullcontext
 import datetime
 import hashlib
+import json
 import math
 import os
 import re
@@ -287,24 +288,29 @@ class Searcher:
         why: bool = False,
         diagnostics: dict | None = None,
         obligation_sink: list | None = None,
+        stats: dict | None = None,
     ) -> list[Hit]:
         """`query` is the CLEAN query when `filters` is given (parse_filters
         already removed the filter tokens; callers pass the pair through).
         `snippet_width` controls the render-time «» snippet decoration of the
         final hits (None disables it); the stored excerpt is never touched.
-        `why=True` attaches the per-hit score decomposition (`--why`)."""
+        `why=True` attaches the per-hit score decomposition (`--why`).
+        `stats` receives query-time honesty counters (currently
+        `deleted_filtered`: file rows dropped because the file vanished since
+        the last ingest run — DigUp Engine.swift:749-760)."""
         snapshot = nullcontext() if self.store.db.in_transaction else self.store.read_snapshot()
         try:
             with snapshot:
                 return self._search(query, limit=limit, scorer=scorer, z_gate=z_gate, kinds=kinds,
                                     filters=filters, snippet_width=snippet_width, why=why,
-                                    diagnostics=diagnostics, obligation_sink=obligation_sink)
+                                    diagnostics=diagnostics, obligation_sink=obligation_sink,
+                                    stats=stats)
         except sqlite3.Error:
             check_deadline()  # SQLite interruption must retain RequestTimeout.
             raise
 
     def _search(self, query, *, limit, scorer, z_gate, kinds, filters, snippet_width, why,
-                diagnostics, obligation_sink):
+                diagnostics, obligation_sink, stats=None):
         if scorer not in ("hybrid", "lexical", "semantic", "rrf"):
             raise ValueError(f"unknown scorer '{scorer}'")
         check_deadline()
@@ -405,6 +411,7 @@ class Searcher:
             textless=textless,
         )
         candidates = set(reasons) & allowed
+        self._drop_deleted(candidates, stats)
         if not candidates:
             return []
 
@@ -569,6 +576,48 @@ class Searcher:
         return hits
 
     # ---------------------------------------------------------- static parts
+
+    def _drop_deleted(self, candidates: set[int], stats: dict | None) -> None:
+        """Query-time deleted-file filter (DigUp Engine.swift:749-760): a row
+        whose file vanished between ingest runs must not answer a query — its
+        hit would open nothing. Scoped to the index's stored file roots
+        (roots_json): synthetic stores without roots — and paths outside the
+        indexed roots — keep today's behavior, and URL rows are exempt, the
+        same semantics compute_deletions uses. Runs BEFORE limit truncation,
+        so the returned page is filled by live files and the pack budget is
+        spent on them only. `stats["_deleted_ids"]` accumulates fids (a file
+        dropped in several multi-query subqueries counts once)."""
+        if not candidates:
+            return
+        roots_raw = self.store.meta("roots_json")
+        if not roots_raw:
+            return
+        try:
+            roots = json.loads(roots_raw)
+        except (json.JSONDecodeError, TypeError):
+            return
+        from .store import _split_roots, _under_roots
+
+        file_roots, _url_roots = _split_roots(roots)
+        if not file_roots:
+            return
+        fids = sorted(candidates)
+        dropped: set[int] = set()
+        for start in range(0, len(fids), 500):
+            chunk = fids[start:start + 500]
+            marks = ",".join("?" * len(chunk))
+            for fid, path, source in self.store.db.execute(
+                f"SELECT id, path, source FROM files WHERE id IN ({marks})", chunk
+            ).fetchall():
+                if source != "file" or not _under_roots(path, source, file_roots, []):
+                    continue
+                if not os.path.exists(path):
+                    dropped.add(fid)
+        if not dropped:
+            return
+        candidates -= dropped
+        if stats is not None:
+            stats.setdefault("_deleted_ids", set()).update(dropped)
 
     @staticmethod
     def terms(text: str) -> list[str]:

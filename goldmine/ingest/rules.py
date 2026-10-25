@@ -105,10 +105,19 @@ PACKAGE_DIR_EXTS = (
     "definition", "docset", "workflow", "xpc", "pkg", "mpkg",
 )
 
-#: Folders never worth walking into (DigUp skippedFolderNames, verbatim).
+#: Folders never worth walking into (DigUp skippedFolderNames, Rules.swift:57-64
+#: — skipped wherever they appear, project root or not; is_project_root guard
+#: logic is a different mechanism and stays untouched).
 SKIP_FOLDERS = {
     "node_modules", "bower_components", "venv", "site-packages", "__pycache__",
     "DerivedData", "Pods", "Carthage",
+    # build-artifact outputs (DigUp Rules.swift:100-104 additions)
+    "build",    # Rust (cargo), Gradle, CMake, MSBuild
+    "target",   # Rust (cargo), Java (Maven)
+    "dist",     # npm/js bundles, setuptools
+    "out",      # IntelliJ / Java compiled classes
+    ".next",    # Next.js build cache (belt-and-braces: also a hidden dir,
+                #  which the walk never descends into anyway)
 }
 
 #: Any of these in a folder makes it a code project (DigUp projectMarkers).

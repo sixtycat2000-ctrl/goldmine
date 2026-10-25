@@ -274,6 +274,21 @@ def build_parser() -> argparse.ArgumentParser:
                           help="how many failure/metadata rows to list "
                                "(0 shows none)")
 
+    # --- DigUp P2 closeout (A3): read-only ingest-time estimate ---
+    # no parents=[common] on purpose: estimate never touches an index, so it
+    # carries no --db/--index surface at all.
+    p_estimate = sub.add_parser(
+        "estimate",
+        help="estimate first-ingest time for a folder (metadata only, "
+             "nothing is read, embedded, or written)",
+    )
+    p_estimate.add_argument("root", metavar="<root>",
+                            help="the folder (or single file) to size up")
+    p_estimate.add_argument("--json", action="store_true",
+                            help="machine-readable estimate")
+    p_estimate.add_argument("--code", action="store_true",
+                            help="count code files too (mirrors ingest --code)")
+
     # --- v2 item 4 (A10): provenance ---
     p_version = sub.add_parser(
         "version", parents=[common],

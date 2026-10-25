@@ -70,6 +70,30 @@ def test_walk_skips_folders_with_reason(tmp_path):
     assert [f.path.name for f in files] == ["keep.txt"]  # never descended
 
 
+def test_walk_skips_build_artifact_folders(tmp_path):
+    """A5 (digup-p2-closeout-001, DigUp Rules.swift:100-104): build/target/
+    dist/out are visible dir names skipped with a reason; .next is a hidden
+    dir, so the hidden-dir branch preempts folder_skip — skipped either way
+    (belt-and-braces membership documented in rules.SKIP_FOLDERS)."""
+    root = tmp_path / "w"
+    root.mkdir()
+    for name in ("build", "target", "dist", "out"):
+        (root / name).mkdir()
+        (root / name / "artifact.txt").write_text("x", encoding="utf-8")
+    hidden = root / ".next"
+    hidden.mkdir()
+    (hidden / "cache.txt").write_text("x", encoding="utf-8")
+    (root / "keep.txt").write_text("x", encoding="utf-8")
+    items = list(walk([root], code=False, exclude=[], max_file_bytes=1 << 20))
+    dir_notices = {i.path: i.reason for i in items
+                   if isinstance(i, SkipNotice) and i.is_dir}
+    files = [i.path.name for i in items if hasattr(i, "kind")]
+    for name in ("build", "target", "dist", "out"):
+        assert dir_notices[str(root / name)] == "developer folder", name
+    assert str(hidden) not in dir_notices  # hidden branch: silent, same outcome
+    assert files == ["keep.txt"]
+
+
 def test_walk_hidden_files_classified_hidden_dirs_skipped(tmp_path):
     root = tmp_path / "w"
     root.mkdir()

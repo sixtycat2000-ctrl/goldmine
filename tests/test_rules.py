@@ -117,6 +117,14 @@ def test_folder_skips():
     assert rules.folder_skip("docs") is None
 
 
+def test_folder_skips_build_artifacts():
+    """DigUp P2 closeout A5 (DigUp Rules.swift:100-104): build-artifact folder
+    names are skipped wherever they appear — no is_project_root guard on this
+    set (that mechanism is separate and untouched)."""
+    for name in ("build", "target", "dist", "out", ".next"):
+        assert rules.folder_skip(name) == "developer folder", name
+
+
 def test_project_markers():
     assert rules.is_project_root({".git", "src"})
     assert rules.is_project_root({"package.json"})

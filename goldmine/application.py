@@ -149,15 +149,21 @@ class Application:
         searcher = Searcher(store, None if request.lexical_only else backend,
                             admission_parameters=self.admission_parameters)
         decisions = []
+        # A2 (DigUp Engine.swift:749-760): count of file rows dropped because
+        # the file vanished since the last ingest run; surfaces in settings.
+        stats: dict = {}
         kwargs = dict(limit=request.limit, scorer=scorer, z_gate=request.z_gate,
                       obligation_sink=decisions,
                       kinds=request.kinds, filters=request.filters,
-                      snippet_width=request.snippet_width, why=request.why)
+                      snippet_width=request.snippet_width, why=request.why,
+                      stats=stats)
         if request.mode == "fast":
             hits = searcher.search(request.query, **kwargs)
             meta = ({"source_capabilities": decisions[0][1].source_capabilities} if decisions else {})
             if decisions and decisions[0][1].constrained:
                 meta["anchor_contract"] = decisions[0][1].diagnostics()
+            if stats.get("_deleted_ids"):
+                meta["deleted_filtered"] = len(stats["_deleted_ids"])
             return hits, meta, None
         from .quality import merge_queries, rerank_candidates, select_results
 
@@ -168,6 +174,8 @@ class Application:
                 fallback = "one_or_more_subqueries_failed"
         else:
             hits = searcher.search(request.query, **{**kwargs, "limit": 20 if request.limit > 0 else 0})
+        if stats.get("_deleted_ids"):
+            metadata["deleted_filtered"] = len(stats["_deleted_ids"])
         original = next((decision for text, decision in decisions if text == request.query), None)
         if original is not None:
             metadata["source_capabilities"] = original.source_capabilities
