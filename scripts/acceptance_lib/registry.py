@@ -28,6 +28,7 @@ NATIVE_MODULES = {
     "test_resource_observer_native.py": "Real Darwin ps/lsof/kqueue counters and owned tiny-process cleanup.",
     "test_comparison_source_views.py": "Synthetic capture fixtures materialize macOS screen-capture xattr.",
     "test_measurement_protocol.py": "Measurement packets bind the Darwin ps/lsof resource-observer identity.",
+    "test_video_frames.py": "Real ffmpeg/ffprobe keyframe extraction; hermetic profile forbids the tools.",
 }
 TEST_PROFILES = {
     "tests/test_eval_real.py::test_real_jsonl_validates_against_manifest": "assets",
