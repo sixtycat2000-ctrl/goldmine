@@ -235,6 +235,22 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                         self._drop_dataset_folders(candidates, file_roots, report)
 
             report.scanned += len(candidates)
+            # P1-3: match vanished rows against this run's candidates by
+            # POSIX identity BEFORE processing — a moved file re-points its
+            # row (segments/vectors kept) and then hits the unchanged skip
+            # at the new path, instead of delete + full re-embed.
+            with self._metrics.stage("scan"):
+                moves = walk.detect_moves(self.store, resolved_roots, candidates)
+            for fid, old_path, new_path in moves:
+                with self._metrics.stage("commit"):
+                    self.store.move_file(fid, new_path)
+                report.moves += 1
+            if moves:
+                report.note(
+                    "moved",
+                    f"{len(moves)} file(s) moved on disk — re-pointed without "
+                    "re-embedding",
+                )
             wave = max(int(self.cfg.ingest.workers) * 8, 16)
             done = 0
             pool = ThreadPoolExecutor(max_workers=max(1, int(self.cfg.ingest.workers)))

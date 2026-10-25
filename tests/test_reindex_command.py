@@ -2,6 +2,7 @@
 import json
 import sqlite3
 
+from goldmine import migrations
 from goldmine.cli import main
 from goldmine.config import Config
 from goldmine.doctor import check_index
@@ -20,7 +21,7 @@ def test_doctor_read_only_then_cli_explicit_upgrade_preserves_vectors(tmp_path, 
     assert main(["reindex", "lexical", "--db", str(db), "--json"]) == 0
     assert json.loads(capsys.readouterr().out)["component"] == "lexical"
     with sqlite3.connect(db) as con:
-        assert con.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert con.execute("PRAGMA user_version").fetchone()[0] == migrations.TARGET
         assert vector_digest(con) == digest
     assert main(["reindex", "lexical", "--db", str(db), "--json"]) == 0
 

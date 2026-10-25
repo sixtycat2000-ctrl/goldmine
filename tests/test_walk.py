@@ -12,6 +12,7 @@ from goldmine.ingest.walk import (
     TCC_REASON,
     SkipNotice,
     compute_deletions,
+    detect_moves,
     walk_files,
 )
 from goldmine.store import FileRec, Store

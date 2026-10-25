@@ -2,10 +2,12 @@
 
 Status: PARTIALLY EXECUTED 2026-10-25 · Date: 2026-10-25(挖掘+审计)· 同日执行
 **执行结果见 reports/execution/digup-plan-001/SUMMARY.md**。速览:P0-1/P0-2 PASS
-落地;P1-1+P1-2 A/B 零改善按预注册 REJECT(测量基建保留);P1-3 实现绿但撞冻结
-基线按规则 REJECT(配方保留);P1-4 前提部分证伪 DEFERRED(read_end≡read_to,
-真正特性是响应性两段式);P2(私钥/生成/压缩/ipynb)PASS 落地;§3.9 三决策点已
-预注册未实现。
+落地;P1-1+P1-2 A/B 零改善按预注册 REJECT(测量基建保留);**P1-3 上午因冻结基线
+REJECT,同日用户解冻后重落 ADOPTED(schema v7 + 基线重生成,3121 全过)**;P1-4
+前提部分证伪 DEFERRED(read_end≡read_to,真正特性是响应性两段式);P2 守卫 PASS
+落地(私钥内容扫描后经用户决定移除——纯本地立场);§3.9 三决策点已预注册未实现。
+多模态按既定设计**不动 schema**,不会再撞 P1-3 的冻结基线之墙;输出形状的字节
+对比风险已列入 §3.9 检查项。
 Method: 5 个只读探索代理读毕 DigUp 全部 51 个 Swift 文件(14,746 行),产出 27 起
 真实事故(A1–A27)与 36 条防御规则(B1–B36),全部带 file:line 与实测数字;随后对
 goldmine 逐项核实继承状态。DigUp 仓库只有单个 squash 的 Initial commit,git 史不可用,

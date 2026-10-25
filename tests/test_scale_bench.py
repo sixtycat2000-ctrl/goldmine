@@ -76,7 +76,8 @@ def test_actual_original_and_current_cli_read_equivalent_native_schemas(scale_ca
     case_dir = scale_capture / "121-10"
     reference = json.loads((case_dir / "reference/fixture.json").read_text())
     candidate = json.loads((case_dir / "candidate/fixture.json").read_text())
-    assert reference["schema_version"] == 4 and candidate["schema_version"] == 6
+    from goldmine.migrations import TARGET
+    assert reference["schema_version"] == 4 and candidate["schema_version"] == TARGET
     assert reference["logical_sha256"] == candidate["logical_sha256"]
     assert reference["counts"] == {"files": 13, "segments": 121, "fts": 121, "vectors": 121}
     with mutate(scale_capture) as capture:

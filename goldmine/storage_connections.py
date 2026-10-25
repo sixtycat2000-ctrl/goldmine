@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS files(
     chunker_version   TEXT,
     embed_id          TEXT,
     content_date      REAL,
+    dev               INTEGER,   -- P1-3: POSIX identity for move detection
+    ino               INTEGER,   -- (NULL for URL rows and pre-v7 rows)
     indexed_at        REAL
 );
 CREATE INDEX IF NOT EXISTS files_state ON files(state, kind);

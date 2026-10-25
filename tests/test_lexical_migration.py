@@ -74,7 +74,7 @@ def test_v4_to_v5_to_v6_preserves_vectors_text_and_uuid(tmp_path, monkeypatch):
     monkeypatch.setattr(migrations, "TARGET", 6)
     v6 = Store(path)
     try:
-        assert v6.db.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert v6.db.execute("PRAGMA user_version").fetchone()[0] == migrations.TARGET
         assert v6.meta("lexical_version") == "lex.v2-exact"
         assert v6.meta("index_uuid") == uuid
         assert vector_digest(v6.db) == before
@@ -199,7 +199,7 @@ Store(Path(sys.argv[1]))
         con.close()
         recovered = Store(path)
         try:
-            assert recovered.db.execute("PRAGMA user_version").fetchone()[0] == 6
+            assert recovered.db.execute("PRAGMA user_version").fetchone()[0] == migrations.TARGET
             assert vector_digest(recovered.db) == before
             assert recovered.db.execute("PRAGMA integrity_check").fetchone()[0] == "ok"
         finally:

@@ -35,9 +35,14 @@ def validate(raw: bytes, pack: dict, *, fixture: dict, n_hits: int):
     if meta["index_line"] != index_line:
         raise ValueError("human pack index identity differs from its actual native fixture")
     version, uuid = fixture["schema_version"], fixture.get("index_uuid")
-    if version not in (4, 6) or version == 4 and uuid is not None:
+    # citation protocol: v4 = legacy no-uuid; v6 AND LATER (v7+ additive
+    # schema bumps keep the protocol) = uuid-bearing
+    if version == 4:
+        if uuid is not None:
+            raise ValueError("human pack citation protocol differs from its native fixture")
+    elif version < 6:
         raise ValueError("human pack citation protocol differs from its native fixture")
-    if version == 6 and (not isinstance(uuid, str) or str(UUID(uuid)) != uuid):
+    if version >= 6 and (not isinstance(uuid, str) or str(UUID(uuid)) != uuid):
         raise ValueError("human pack needs its actual native fixture index UUID")
     expected = ["# goldmine answer pack v1", f"# query: {meta['query']}",
         "# search: scorer=semantic z_gate=0 limit=10 context=1 budget=4000 mode=tokenize",
@@ -62,7 +67,7 @@ def validate(raw: bytes, pack: dict, *, fixture: dict, n_hits: int):
     expected.append("# sources")
     for number, record in enumerate(pack["rows"], 1):
         expected.append(f"# [{number}] {file_path(record['file_id'])} L{record['part_ids'][0]}")
-        if version == 6:
+        if version >= 6:  # uuid-bearing citations: v6 onward (v7+ keeps it)
             expected.extend(f"# [{number}] citation: {citation_id(uuid, record['file_id'], sid)}" for sid in record["part_ids"])
     expected.append(f"# pack: {len(pack['rows'])} records · {n_hits} hits · {meta['duplicates_folded']} duplicates "
         f"folded · {meta['also_folded']} also folded · {meta['skipped_over_budget']} skipped (budget) · "

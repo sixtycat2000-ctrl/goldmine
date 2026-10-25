@@ -6,6 +6,7 @@ import sqlite3
 
 import pytest
 
+from goldmine import migrations
 from goldmine.application import Application
 from goldmine.citations import read_evidence, resolve_citation
 from goldmine.contracts import ApplicationError, SearchRequest
@@ -20,7 +21,7 @@ def search(path, query, **options):
         return Searcher(store, None).search(query, scorer="lexical", why=True, **options)
 
 
-@pytest.mark.parametrize("version", [4, 5, 6])
+@pytest.mark.parametrize("version", [4, 5, 6, "current"])
 def test_ordinary_supported_read_no_backend_or_index_mutation(tmp_path, version):
     path = build(tmp_path / "index.sqlite", version, [{"text": "harbor receipt ordinary evidence"}])
     before = hashlib.sha256(path.read_bytes()).hexdigest()
@@ -28,8 +29,13 @@ def test_ordinary_supported_read_no_backend_or_index_mutation(tmp_path, version)
         pytest.fail("lexical read constructed a backend")
     result = Application(path, forbidden).search(SearchRequest(query="harbor receipt", lexical_only=True))
     assert result.hits
-    assert result.settings["lexical_upgrade_required"] is (version != 6)
-    assert result.settings["source_capabilities"]["schema_version"] == version
+    # v6+ carry the current lexical derivation; "current" is the live TARGET
+    assert result.settings["lexical_upgrade_required"] is (
+        version != "current" and version < 6
+    )
+    assert result.settings["source_capabilities"]["schema_version"] == (
+        migrations.TARGET if version == "current" else version
+    )
     assert hashlib.sha256(path.read_bytes()).hexdigest() == before
 
 
@@ -260,7 +266,9 @@ def test_body_only4_all_returned_readers_use_actual_body_and_do_not_write(tmp_pa
     assert hashlib.sha256(path.read_bytes()).hexdigest() == before
 
 
-@pytest.mark.parametrize("version,table", [(5, "fts_cjk"), (6, "fts_cjk"), (6, "lookup_terms")])
+@pytest.mark.parametrize("version,table", [
+    (5, "fts_cjk"), (6, "fts_cjk"), (6, "lookup_terms"), ("current", "lookup_terms"),
+])
 def test_missing_promised_derived_table_is_not_legacy_fallback(tmp_path, version, table):
     path = build(tmp_path / "index.sqlite", version, [{"text": "ZT-84 harbor"}])
     with closing(sqlite3.connect(path)) as db:
@@ -270,13 +278,16 @@ def test_missing_promised_derived_table_is_not_legacy_fallback(tmp_path, version
             search(path, query)
 
 
-@pytest.mark.parametrize("version", [4, 5, 6])
+@pytest.mark.parametrize("version", [4, 5, 6, "current"])
 def test_contradictory_lexical_profile_is_an_error(tmp_path, version):
     path = build(tmp_path / "index.sqlite", version, [{"text": "ZT-84"}])
     # Raw test-owned mutation; production reads never repair it.
     if version == 4:
         with closing(sqlite3.connect(path)) as db:
             db.execute("INSERT INTO meta VALUES('lexical_version','lex.v2-exact')"); db.commit()
+    elif version == "current":
+        with closing(Store(path)) as writer:
+            writer.set_meta("lexical_version", "counterfeit")
     else:
         with fixture_writer(path, version) as writer:
             writer.set_meta("lexical_version", "counterfeit")
@@ -384,7 +395,7 @@ def test_same_reader_snapshot_survives_separate_legitimate_migration(tmp_path, v
             Store(path).close()
             assert reader.db.execute("PRAGMA user_version").fetchone()[0] == version
             assert Searcher(reader, None).search("ZT-84", scorer="lexical")
-        assert reader.db.execute("PRAGMA user_version").fetchone()[0] == 6
+        assert reader.db.execute("PRAGMA user_version").fetchone()[0] == migrations.TARGET
         assert Searcher(reader, None).search("ZT-84", scorer="lexical")
 
 
@@ -460,7 +471,7 @@ def test_actual_latency_prepare_prefix_only_upgrades_owned_copy(tmp_path, monkey
     assert len(stopped) == 1
     assert hashlib.sha256(source.read_bytes()).hexdigest() == before
     with closing(Store(session.db, ro=True)) as store:
-        assert store.db.execute("PRAGMA user_version").fetchone()[0] == (6 if upgrade else 4)
+        assert store.db.execute("PRAGMA user_version").fetchone()[0] == (migrations.TARGET if upgrade else 4)
         assert store.segment_text(2) == "A\u0301 ZT-84 harbor"
     manifest = out / "commands/prepare-lexical/manifest.json"
     assert manifest.exists() is upgrade

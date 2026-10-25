@@ -233,6 +233,44 @@ def test_delete_last_file_then_add_new_no_fts_orphans(cfg, tmp_path):
     store.close()
 
 
+def test_moved_file_repoints_row_without_reembedding(cfg, tmp_path):
+    """P1-3 (DigUp IndexStore.swift:261-269): renaming a file inside an
+    ingested root re-points its row (segments/vectors kept, unchanged skip
+    at the new path) instead of prune + full re-extract/re-embed."""
+    import os
+
+    r = tmp_path / "r"
+    r.mkdir()
+    old = r / "before.txt"
+    old.write_text("the moving corpus words\n", encoding="utf-8")
+    store = Store(cfg.home / "p13.sqlite")
+    IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+    assert store.find_by_path(str(old)) is not None
+    seg_before = store.db.execute(
+        "SELECT count(*) FROM segments WHERE file = ? AND kind != 'name'",
+        (store.find_by_path(str(old)).id,),
+    ).fetchone()[0]
+    assert seg_before > 0
+
+    os.replace(old, r / "after.txt")
+    report = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+    assert report.moves == 1
+    assert report.deleted == 0
+    assert store.find_by_path(str(old)) is None
+    rec = store.find_by_path(str(r / "after.txt"))
+    assert rec is not None
+    seg_after = store.db.execute(
+        "SELECT count(*) FROM segments WHERE file = ? AND kind != 'name'",
+        (rec.id,),
+    ).fetchone()[0]
+    assert seg_after == seg_before  # nothing re-extracted, vectors intact
+    hits = store.db.execute(
+        "SELECT rowid FROM fts WHERE name MATCH 'after' LIMIT 1"
+    ).fetchall()
+    assert hits, "moved file's name row must be searchable at the new name"
+    store.close()
+
+
 def test_unreadable_subtree_keeps_rows_then_normal_prune_resumes(cfg, tmp_path):
     """A1-18 (DigUp Indexer.swift:118-120): a subtree that turns unreadable
     between ingests (TCC prompt, permissions) keeps its rows — it is

@@ -1,912 +1,912 @@
 {
  "-.5mA": {
-  "bindings": [],
-  "exact": {},
-  "inspected_rows": 0,
-  "owners": [],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 5,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 5,
      "raw": "-.5mA",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "-.5mA",
    "reason": null
   },
-  "queries": 3,
+  "owners": [],
+  "bindings": [],
+  "witnesses": [],
+  "exact": {},
   "reason": "anchor_unresolved",
+  "inspected_rows": 0,
+  "queries": 3,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  ".5m": {
-  "bindings": [],
-  "exact": {},
-  "inspected_rows": 0,
-  "owners": [],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 3,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 3,
      "raw": ".5m",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": ".5m",
    "reason": null
   },
-  "queries": 3,
+  "owners": [],
+  "bindings": [],
+  "witnesses": [],
+  "exact": {},
   "reason": "anchor_unresolved",
+  "inspected_rows": 0,
+  "queries": 3,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  "/owned/5mA.csv": {
-  "bindings": [],
-  "exact": {},
-  "inspected_rows": 0,
-  "owners": [],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 14,
      "id": 0,
-     "kind": "path",
+     "component": 0,
+     "start": 0,
+     "end": 14,
      "raw": "/owned/5mA.csv",
-     "start": 0
+     "kind": "path"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "/owned/5mA.csv",
    "reason": null
   },
-  "queries": 4,
+  "owners": [],
+  "bindings": [],
+  "witnesses": [],
+  "exact": {},
   "reason": "anchor_unresolved",
+  "inspected_rows": 0,
+  "queries": 4,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  "/owned/kv.txt": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "path",
-    "file_id": 2,
-    "level": 0,
-    "match_type": "raw",
-    "query_term": "/owned/kv.txt",
-    "raw": "/owned/kv.txt",
-    "segment_id": 3
-   }
-  ],
-  "exact": {
-   "2": {
-    "level": 0,
-    "match_type": "raw",
-    "query_term": "/owned/kv.txt",
-    "raw_term": "/owned/kv.txt",
-    "segment_id": 3,
-    "source": "path"
-   }
-  },
-  "inspected_rows": 1,
-  "owners": [
-   [
-    2
-   ]
-  ],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 13,
      "id": 0,
-     "kind": "path",
+     "component": 0,
+     "start": 0,
+     "end": 13,
      "raw": "/owned/kv.txt",
-     "start": 0
+     "kind": "path"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": ""
+     "remainder": "",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "/owned/kv.txt",
    "reason": null
   },
-  "queries": 5,
+  "owners": [
+   [
+    2
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 2,
+    "segment_id": 3,
+    "field": "path",
+    "raw": "/owned/kv.txt",
+    "match_type": "raw",
+    "level": 0,
+    "query_term": "/owned/kv.txt",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
+  "witnesses": [],
+  "exact": {
+   "2": {
+    "level": 0,
+    "segment_id": 3,
+    "source": "path",
+    "raw_term": "/owned/kv.txt",
+    "match_type": "raw",
+    "query_term": "/owned/kv.txt"
+   }
+  },
   "reason": null,
+  "inspected_rows": 1,
+  "queries": 5,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  "5mA": {
-  "bindings": [],
-  "exact": {},
-  "inspected_rows": 0,
-  "owners": [],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 3,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 3,
      "raw": "5mA",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "5mA",
    "reason": null
   },
-  "queries": 3,
+  "owners": [],
+  "bindings": [],
+  "witnesses": [],
+  "exact": {},
   "reason": "anchor_unresolved",
+  "inspected_rows": 0,
+  "queries": 3,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  "77889900": {
-  "bindings": [],
-  "exact": {},
-  "inspected_rows": 0,
-  "owners": [],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 8,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 8,
      "raw": "77889900",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "77889900",
    "reason": null
   },
-  "queries": 3,
+  "owners": [],
+  "bindings": [],
+  "witnesses": [],
+  "exact": {},
   "reason": "anchor_unresolved",
+  "inspected_rows": 0,
+  "queries": 3,
   "source_capabilities": {
+   "schema_version": 7,
    "adapter_version": "stored-source.v1",
+   "original_column": true,
    "cjk_index": true,
    "exact_index": true,
    "exact_recall": "derived",
    "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
-  "witnesses": []
+   "original_provenance": "stored_original_or_body"
+  }
  },
  "K7Q2LM": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 5,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "K7Q2LM",
-    "raw": "K7Q2LM",
-    "segment_id": 10
-   }
-  ],
-  "exact": {
-   "5": {
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "K7Q2LM",
-    "raw_term": "K7Q2LM",
-    "segment_id": 10,
-    "source": "body"
-   }
-  },
-  "inspected_rows": 1,
-  "owners": [
-   [
-    5
-   ]
-  ],
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 6,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 6,
      "raw": "K7Q2LM",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "K7Q2LM",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    5
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 5,
+    "segment_id": 10,
+    "field": "body",
+    "raw": "K7Q2LM",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "K7Q2LM",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 5,
     "values": []
    }
-  ]
- },
- "LH-2209": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 4,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "LH-2209",
-    "raw": "LH-2209",
-    "segment_id": 8
-   }
   ],
   "exact": {
-   "4": {
+   "5": {
     "level": 1,
+    "segment_id": 10,
+    "source": "body",
+    "raw_term": "K7Q2LM",
     "match_type": "raw",
-    "query_term": "LH-2209",
-    "raw_term": "LH-2209",
-    "segment_id": 8,
-    "source": "body"
+    "query_term": "K7Q2LM"
    }
   },
+  "reason": null,
   "inspected_rows": 1,
-  "owners": [
-   [
-    4
-   ]
-  ],
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "LH-2209": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 7,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 7,
      "raw": "LH-2209",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "LH-2209",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    4
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 4,
+    "segment_id": 8,
+    "field": "body",
+    "raw": "LH-2209",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "LH-2209",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 4,
     "values": []
    }
-  ]
- },
- "TX-81": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "title",
-    "file_id": 6,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "TX-81",
-    "raw": "TX-81",
-    "segment_id": 11
-   },
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 6,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "TX-81",
-    "raw": "TX-81",
-    "segment_id": 12
-   }
   ],
   "exact": {
-   "6": {
+   "4": {
     "level": 1,
+    "segment_id": 8,
+    "source": "body",
+    "raw_term": "LH-2209",
     "match_type": "raw",
-    "query_term": "TX-81",
-    "raw_term": "TX-81",
-    "segment_id": 11,
-    "source": "title"
+    "query_term": "LH-2209"
    }
   },
-  "inspected_rows": 2,
-  "owners": [
-   [
-    6
-   ]
-  ],
+  "reason": null,
+  "inspected_rows": 1,
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "TX-81": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 5,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 5,
      "raw": "TX-81",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "TX-81",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    6
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 6,
+    "segment_id": 11,
+    "field": "title",
+    "raw": "TX-81",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "TX-81",
+    "component_segment_id": null,
+    "component_raw": null
+   },
+   {
+    "anchor_id": 0,
+    "file_id": 6,
+    "segment_id": 12,
+    "field": "body",
+    "raw": "TX-81",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "TX-81",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 6,
     "values": []
    }
-  ]
- },
- "ZT-84": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 1,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "ZT-84",
-    "raw": "ZT-84",
-    "segment_id": 2
-   }
   ],
   "exact": {
-   "1": {
+   "6": {
     "level": 1,
+    "segment_id": 11,
+    "source": "title",
+    "raw_term": "TX-81",
     "match_type": "raw",
-    "query_term": "ZT-84",
-    "raw_term": "ZT-84",
-    "segment_id": 2,
-    "source": "body"
+    "query_term": "TX-81"
    }
   },
+  "reason": null,
   "inspected_rows": 2,
-  "owners": [
-   [
-    1
-   ]
-  ],
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "ZT-84": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 5,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 5,
      "raw": "ZT-84",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "ZT-84",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 1,
+    "segment_id": 2,
+    "field": "body",
+    "raw": "ZT-84",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "ZT-84",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 1,
     "values": []
    }
-  ]
- },
- "`ZT-84 signed harbor`": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 1,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "ZT-84 signed harbor",
-    "raw": "ZT-84 signed harbor",
-    "segment_id": 2
-   }
   ],
   "exact": {
    "1": {
     "level": 1,
-    "match_type": "raw",
-    "query_term": "ZT-84 signed harbor",
-    "raw_term": "ZT-84 signed harbor",
     "segment_id": 2,
-    "source": "body"
+    "source": "body",
+    "raw_term": "ZT-84",
+    "match_type": "raw",
+    "query_term": "ZT-84"
    }
   },
-  "inspected_rows": 1,
-  "owners": [
-   [
-    1
-   ]
-  ],
+  "reason": null,
+  "inspected_rows": 2,
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "`ZT-84 signed harbor`": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 20,
      "id": 0,
-     "kind": "literal",
+     "component": 0,
+     "start": 1,
+     "end": 20,
      "raw": "ZT-84 signed harbor",
-     "start": 1
+     "kind": "literal"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "` ` "
+     "remainder": "` ` ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "`ZT-84 signed harbor`",
    "reason": null
   },
-  "queries": 4,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 1,
+    "segment_id": 2,
+    "field": "body",
+    "raw": "ZT-84 signed harbor",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "ZT-84 signed harbor",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 1,
     "values": []
    }
-  ]
- },
- "key_value_store.sqlite": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 2,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "key_value_store.sqlite",
-    "raw": "key_value_store.sqlite",
-    "segment_id": 4
-   }
   ],
   "exact": {
-   "2": {
+   "1": {
     "level": 1,
+    "segment_id": 2,
+    "source": "body",
+    "raw_term": "ZT-84 signed harbor",
     "match_type": "raw",
-    "query_term": "key_value_store.sqlite",
-    "raw_term": "key_value_store.sqlite",
-    "segment_id": 4,
-    "source": "body"
+    "query_term": "ZT-84 signed harbor"
    }
   },
+  "reason": null,
   "inspected_rows": 1,
-  "owners": [
-   [
-    2
-   ]
-  ],
+  "queries": 4,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "key_value_store.sqlite": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 22,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 22,
      "raw": "key_value_store.sqlite",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "key_value_store.sqlite",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    2
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 2,
+    "segment_id": 4,
+    "field": "body",
+    "raw": "key_value_store.sqlite",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "key_value_store.sqlite",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 2,
     "values": []
    }
-  ]
- },
- "py-1.0.3": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 3,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "py-1.0.3",
-    "raw": "py-1.0.3",
-    "segment_id": 6
-   }
   ],
   "exact": {
-   "3": {
+   "2": {
     "level": 1,
+    "segment_id": 4,
+    "source": "body",
+    "raw_term": "key_value_store.sqlite",
     "match_type": "raw",
-    "query_term": "py-1.0.3",
-    "raw_term": "py-1.0.3",
-    "segment_id": 6,
-    "source": "body"
+    "query_term": "key_value_store.sqlite"
    }
   },
+  "reason": null,
   "inspected_rows": 1,
-  "owners": [
-   [
-    3
-   ]
-  ],
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "py-1.0.3": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 8,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 8,
      "raw": "py-1.0.3",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "py-1.0.3",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    3
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 3,
+    "segment_id": 6,
+    "field": "body",
+    "raw": "py-1.0.3",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "py-1.0.3",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 3,
     "values": []
    }
-  ]
- },
- "zt-84": {
-  "bindings": [
-   {
-    "anchor_id": 0,
-    "component_raw": null,
-    "component_segment_id": null,
-    "field": "body",
-    "file_id": 1,
-    "level": 1,
-    "match_type": "raw",
-    "query_term": "zt-84",
-    "raw": "ZT-84",
-    "segment_id": 2
-   }
   ],
   "exact": {
-   "1": {
+   "3": {
     "level": 1,
+    "segment_id": 6,
+    "source": "body",
+    "raw_term": "py-1.0.3",
     "match_type": "raw",
-    "query_term": "zt-84",
-    "raw_term": "ZT-84",
-    "segment_id": 2,
-    "source": "body"
+    "query_term": "py-1.0.3"
    }
   },
-  "inspected_rows": 2,
-  "owners": [
-   [
-    1
-   ]
-  ],
+  "reason": null,
+  "inspected_rows": 1,
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
+ },
+ "zt-84": {
   "plan": {
    "anchors": [
     {
-     "component": 0,
-     "end": 5,
      "id": 0,
-     "kind": "identity",
+     "component": 0,
+     "start": 0,
+     "end": 5,
      "raw": "zt-84",
-     "start": 0
+     "kind": "identity"
     }
    ],
    "clauses": [
     {
+     "id": 0,
      "anchor_ids": [
       0
      ],
-     "id": 0,
-     "phrases": [],
-     "remainder": "  "
+     "remainder": "  ",
+     "phrases": []
     }
    ],
    "phrases": [],
    "pure_text": "zt-84",
    "reason": null
   },
-  "queries": 5,
-  "reason": null,
-  "source_capabilities": {
-   "adapter_version": "stored-source.v1",
-   "cjk_index": true,
-   "exact_index": true,
-   "exact_recall": "derived",
-   "metadata_recall": "whole_field_filtered_derived",
-   "original_column": true,
-   "original_provenance": "stored_original_or_body",
-   "schema_version": 6
-  },
+  "owners": [
+   [
+    1
+   ]
+  ],
+  "bindings": [
+   {
+    "anchor_id": 0,
+    "file_id": 1,
+    "segment_id": 2,
+    "field": "body",
+    "raw": "ZT-84",
+    "match_type": "raw",
+    "level": 1,
+    "query_term": "zt-84",
+    "component_segment_id": null,
+    "component_raw": null
+   }
+  ],
   "witnesses": [
    {
     "clause_id": 0,
     "file_id": 1,
     "values": []
    }
-  ]
+  ],
+  "exact": {
+   "1": {
+    "level": 1,
+    "segment_id": 2,
+    "source": "body",
+    "raw_term": "ZT-84",
+    "match_type": "raw",
+    "query_term": "zt-84"
+   }
+  },
+  "reason": null,
+  "inspected_rows": 2,
+  "queries": 5,
+  "source_capabilities": {
+   "schema_version": 7,
+   "adapter_version": "stored-source.v1",
+   "original_column": true,
+   "cjk_index": true,
+   "exact_index": true,
+   "exact_recall": "derived",
+   "metadata_recall": "whole_field_filtered_derived",
+   "original_provenance": "stored_original_or_body"
+  }
  }
 }

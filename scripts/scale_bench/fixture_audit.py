@@ -11,8 +11,21 @@ from .fixture import logical_identity
 from .protocol import ARMS, BLOCK, DIM, SEED, configuration, db_snapshot
 
 
+def _schema_target() -> int:
+    """The LIVE schema for the candidate arm (lazy: bench subprocesses may
+    not have the repo root on sys.path at import time)."""
+    import sys
+    root = str(Path(__file__).resolve().parents[2])
+    if root not in sys.path:
+        sys.path.insert(0, root)
+    from goldmine.migrations import TARGET
+
+    return TARGET
+
+
 def validate(case_dir: Path, case: dict, run: dict, project: Path) -> dict:
     rows, per_file, fixtures = case["rows"], case["segments_per_file"], {}
+    schema_target = _schema_target()
     for arm in ARMS:
         fixture = load(case_dir, case["fixtures"][arm])
         keys = {"schema", "kind", "rows", "segments_per_file", "dim", "seed", "generation_block_rows",
@@ -22,7 +35,10 @@ def validate(case_dir: Path, case: dict, run: dict, project: Path) -> dict:
             raise ValueError("vector-only or unknown fixtures cannot satisfy full CLI/pack capacity")
         expected = {"rows": rows, "segments_per_file": per_file, "dim": DIM, "seed": SEED,
                     "generation_block_rows": BLOCK, "generation_dtype": "float32", "stored_dtype": "<f2",
-                    "schema_version": 4 if arm == "reference" else 6, "quality_claim": False}
+                    # candidate arm = the LIVE schema (was 6; additive bumps
+                    # like P1-3 v7 stay valid candidates)
+                    "schema_version": 4 if arm == "reference" else schema_target,
+                    "quality_claim": False}
         if any(fixture.get(key) != value for key, value in expected.items()):
             raise ValueError("native fixture format differs from the fixed capacity protocol")
         uuid = fixture["index_uuid"]

@@ -20,7 +20,8 @@ UUID = "6f230a79-0bc1-47a7-9fa9-a6f6c9291ded"
 
 
 def build(path, version, docs, *, body_only=False, uuid=UUID):
-    if version == 6:
+    if version == "current":
+        # the live CURRENT schema (P1-3 v7): Store-created at TARGET
         with closing(Store(path)) as store:
             if uuid is None:
                 store.set_meta("index_uuid", None)
@@ -57,9 +58,11 @@ def build(path, version, docs, *, body_only=False, uuid=UUID):
             db.execute(sql)
             db.executemany("INSERT INTO fts(rowid,name,body) VALUES(?,?,?)", rows)
             db.commit()
-    if version == 5:
+    if version in (5, 6):
+        # legacy shapes: migrate EXACTLY to the requested version (a true
+        # v5/v6 db, not the live TARGET — P1-3 v7 made 6 a legacy version)
         with pytest.MonkeyPatch.context() as patch:
-            patch.setattr(migrations, "TARGET", 5)
+            patch.setattr(migrations, "TARGET", version)
             Store(path).close()
     return path
 

@@ -91,8 +91,8 @@ def read_source_profile(db):
     """Call inside the request transaction. Errors never choose a lower profile."""
     check_deadline()
     schema = db.execute("PRAGMA user_version").fetchone()[0]
-    if schema not in (4, 5, 6):
-        raise sqlite3.OperationalError("source verification needs supported schema4/5/6")
+    if schema not in (4, 5, 6, 7):
+        raise sqlite3.OperationalError("source verification needs supported schema4/5/6/7")
     _require(db, "files", ("id", "path", "kind", "info"))
     _require(db, "segments", ("id", "file", "kind"))
     _require(db, "meta", ("key", "value"))
@@ -112,6 +112,8 @@ def read_source_profile(db):
     if lexical != expected:
         raise sqlite3.OperationalError(f"schema{schema} has an inconsistent derived lexical version")
     _require(db, "fts_cjk", ("tokens",))
-    if schema == 6:
+    if schema >= 6:
         _require(db, "lookup_terms", ("normalized_term", "raw_term", "file_id", "segment_id", "source", "match_type"))
-    return ReadSourceProfile(schema, True, True, schema == 6)
+    # exact derived index exists from v6 onward (schema bumps above 6 are
+    # additive and keep it; P1-3 v7)
+    return ReadSourceProfile(schema, True, True, schema >= 6)

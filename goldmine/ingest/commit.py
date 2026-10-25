@@ -42,6 +42,9 @@ class IngestReport:
     unchanged: int = 0
     deleted: int = 0
     partial: int = 0
+    #: P1-3: rows re-pointed to a new path by POSIX-identity move detection
+    #: (segments/vectors kept, nothing re-embedded).
+    moves: int = 0
     #: A1-18 guard: rows kept because their root/subtree was unavailable at
     #: deletion time (ejected drive, TCC prompt) — never read as deleted.
     kept_unreachable: int = 0
@@ -71,6 +74,7 @@ class IngestReport:
                 "failed": self.failed,
                 "unchanged": self.unchanged,
                 "deleted": self.deleted,
+                "moves": self.moves,
                 "kept_unreachable": self.kept_unreachable,
                 "partial": self.partial,
             },
@@ -220,6 +224,7 @@ class CommitMixin:
             FileRec(
                 path=str(cand.path), source="file", kind=cand.kind,
                 size=cand.size, mtime=cand.mtime, sha256=sha, state="pending",
+                dev=getattr(cand, "dev", None), ino=getattr(cand, "ino", None),
             )
         )
         if outcome.capability == "failed":

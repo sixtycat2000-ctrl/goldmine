@@ -30,6 +30,10 @@ class Candidate:
     kind: str
     size: int
     mtime: float
+    #: P1-3: POSIX identity (same dev+ino+size+mtime at a new path = a MOVE,
+    #: not a delete+re-embed — DigUp IndexStore.swift:261-269).
+    dev: int | None = None
+    ino: int | None = None
 
 
 @dataclass
@@ -136,6 +140,7 @@ def _handle_file(path: Path, *, code: bool, max_file_bytes: int):
         return
     yield Candidate(
         path=path, kind=decision.kind, size=st.st_size, mtime=st.st_mtime,
+        dev=st.st_dev, ino=st.st_ino,
     )
 
 
@@ -229,7 +234,7 @@ def _walk_dir(
         if decision.kind is not None:
             yield Candidate(
                 path=Path(abs_path), kind=decision.kind, size=st.st_size,
-                mtime=st.st_mtime,
+                mtime=st.st_mtime, dev=st.st_dev, ino=st.st_ino,
             )
         else:
             reason = decision.skip_reason or "unknown type"
@@ -330,3 +335,44 @@ def compute_deletions(
     return Deletions(
         gone=out, kept_unreachable=kept, unavailable_roots=unavailable_roots
     )
+
+
+def detect_moves(
+    store: Store, roots: list[str], candidates: list[Candidate]
+) -> list[tuple[int, str, str]]:
+    """P1-3 (DigUp Indexer.swift:108-112): rows under the current roots whose
+    stored path vanished, matched against THIS run's candidates by POSIX
+    identity — same (dev, ino, size) with mtime within 1 ms means the file
+    MOVED: return (fid, old_path, new_path) for store.move_file, keeping
+    segments/vectors instead of delete + full re-embed ("Screenshot tools
+    move screenshots into project folders all the time"). Rows with NULL
+    dev/ino (URL rows, pre-v7 rows) are never matched; a vanished row
+    without a matching candidate stays a deletion, as before."""
+    from ..store import _split_roots, _under_roots
+
+    file_roots, url_roots = _split_roots(roots)
+    by_identity: dict[tuple[int, int], list[Candidate]] = {}
+    for cand in candidates:
+        if cand.dev is not None and cand.ino is not None:
+            by_identity.setdefault((cand.dev, cand.ino), []).append(cand)
+
+    moves: list[tuple[int, str, str]] = []
+    for fid, path, dev, ino, size, mtime in store.db.execute(
+        "SELECT id, path, dev, ino, size, mtime FROM files "
+        "WHERE source = 'file' AND dev IS NOT NULL AND ino IS NOT NULL "
+        "ORDER BY id"
+    ).fetchall():
+        if not _under_roots(path, "file", file_roots, url_roots):
+            continue
+        if os.path.exists(path):
+            continue
+        for cand in by_identity.get((dev, ino), ()):
+            if cand.path == path:
+                continue
+            if cand.size != size:
+                continue
+            if mtime is None or abs(cand.mtime - mtime) > 0.001:
+                continue
+            moves.append((fid, path, str(cand.path)))
+            break
+    return moves
