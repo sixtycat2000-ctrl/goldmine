@@ -176,3 +176,68 @@ def test_real_backend_end_to_end_photo_ingest(tmp_path):
     finally:
         con.close()
         store.close()
+
+
+@_skip
+@_skip_binary
+@_skip_models
+@pytest.mark.assets
+@pytest.mark.skipif(
+    not (Path("/usr/bin/ffprobe").exists() or Path("/opt/homebrew/bin/ffprobe").exists()),
+    reason="ffmpeg/ffprobe not installed",
+)
+def test_real_backend_end_to_end_video_frames(tmp_path):
+    """video-frames-001 end to end under the REAL backend: the deterministic
+    fixture video lands frame segments with unit-norm image vectors, the
+    media audit markers, and honest routing info (ASR outcome whatever it
+    is — frames ride both routings)."""
+    import sqlite3
+
+    from goldmine.backends import create_backend
+    from goldmine import config as config_mod
+    from goldmine.ingest import IngestPipeline
+    from goldmine.store import Store
+
+    root = tmp_path / "tree"
+    root.mkdir()
+    video = root / "ref-video.mp4"
+    video.write_bytes((MEDIA / "ref-video.mp4").read_bytes())
+    cfg = config_mod.load(env={**os.environ, "GOLDMINE_BACKEND": "llama",
+                               "GOLDMINE_HOME": str(tmp_path / "home")})
+    cfg.llama.embed_helper = str(HELPER)
+    cfg.llama.embed_helper_configured = True
+    cfg.ingest.asr = "off"          # routing determinism: raw windows + frames
+    db = tmp_path / "index.sqlite"
+    store = Store(db)
+    backend = create_backend(cfg, "llama")
+    try:
+        assert backend.capability().image, "media capability must be live here"
+        report = IngestPipeline(cfg, store, backend).run([str(root)])
+        assert report.failed == 0, report.failures
+        assert report.content_indexed == 1, report
+    finally:
+        backend.close()
+    con = sqlite3.connect(db)
+    try:
+        rows = con.execute(
+            "SELECT s.kind, s.modality, s.loc, s.loc_end, s.vec, f.info "
+            "FROM files f JOIN segments s ON s.file=f.id "
+            "WHERE s.kind='frame' ORDER BY s.loc"
+        ).fetchall()
+        assert len(rows) == 4, f"expected 4 scene keyframes, got {len(rows)}"
+        import struct
+
+        for kind, modality, loc, loc_end, blob, _info in rows:
+            assert kind == "frame" and modality == "image"
+            assert blob is not None
+            vec = np.frombuffer(blob, dtype="<f2").astype(np.float32)
+            assert vec.shape[0] == 768, vec.shape       # embeddinggemma-2 dim
+            assert abs(float(np.linalg.norm(vec)) - 1.0) < 1e-2
+        assert [r[2] for r in rows] == [0.5, 6.5, 12.5, 15.5]
+        info = json.loads(rows[0][5])
+        assert info.get("frames") == 4 and info.get("frame_interval") == 3.0
+        assert info.get("media_vectors") == "mm-v1"
+        assert info.get("audio_routing", "").startswith(("raw:", "text:", "none:"))
+    finally:
+        con.close()
+        store.close()

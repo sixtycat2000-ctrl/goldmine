@@ -720,8 +720,9 @@ def test_dry_run_previews_media_capability(cfg, fixture_tree):
     media.ffmpeg_path() is None or media.ffprobe_path() is None,
     reason="ffmpeg/ffprobe not installed (brew install ffmpeg)",
 )
-def test_video_soundtrack_windows_from_real_ffmpeg(cfg, tmp_path):
-    """Video v1 = ffprobe metadata + soundtrack windows (frames are a stretch)."""
+def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
+    """Video v4 = soundtrack windows + keyframes (video-frames-001): a scored
+    STATIC video keeps 1 frame seg alongside its 1 audio seg — 音频段+帧段并存."""
     from goldmine.util import run_tool
 
     root = tmp_path / "video-root"
@@ -741,18 +742,29 @@ def test_video_soundtrack_windows_from_real_ffmpeg(cfg, tmp_path):
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(video))
     assert rec and rec.capability == "content_indexed"
+    assert rec.extractor_version == "media-ffmpeg-mm.v2"
     assert rec.info["duration"] == pytest.approx(2.0, abs=0.3)
     rows = store.db.execute(
         "SELECT kind, modality, loc, loc_end, vec FROM segments "
         "WHERE file = ? AND kind = 'audio'", (rec.id,),
     ).fetchall()
-    assert len(rows) == 1                      # frames: deliberately not built
+    assert len(rows) == 1
     assert rows[0][1] == "audio"
     assert rows[0][2] == 0.0 and rows[0][3] == pytest.approx(2.0, abs=0.3)
     assert rows[0][4] is not None
-    assert not store.db.execute(
-        "SELECT COUNT(*) FROM segments WHERE file = ? AND kind = 'frame'", (rec.id,)
-    ).fetchone()[0]
+    frames = store.db.execute(
+        "SELECT kind, modality, loc, loc_end, vec, excerpt FROM segments "
+        "WHERE file = ? AND kind = 'frame'", (rec.id,),
+    ).fetchall()
+    assert len(frames) == 1                     # static video: aHash kept one
+    kind, modality, loc, loc_end, blob, label = frames[0]
+    assert kind == "frame" and modality == "image"
+    assert loc == pytest.approx(0.5, abs=0.01)  # min(0.5, d/2) grid start
+    assert loc_end == pytest.approx(2.0, abs=0.3)  # last kept frame = duration
+    assert blob is not None and len(blob) == 768 * 2
+    assert label == "frame 0.5s"
+    assert rec.info["frames"] == 1 and rec.info["frame_interval"] == 3.0
+    assert rec.info["windows"] == 1
     assert report.content_indexed == 1
     store.close()
 
@@ -761,8 +773,9 @@ def test_video_soundtrack_windows_from_real_ffmpeg(cfg, tmp_path):
     media.ffmpeg_path() is None or media.ffprobe_path() is None,
     reason="ffmpeg/ffprobe not installed (brew install ffmpeg)",
 )
-def test_video_without_audio_stream_is_metadata_only(cfg, tmp_path):
-    """A soundtrack-less video is honestly metadata-only, never failed."""
+def test_video_without_audio_stream_gets_frames(cfg, tmp_path):
+    """A soundtrack-less video is carried by its frames (video-frames-001):
+    no audio path runs, routing says none:no_audio_stream, never failed."""
     from goldmine.util import run_tool
 
     root = tmp_path / "mute-root"
@@ -779,9 +792,310 @@ def test_video_without_audio_stream_is_metadata_only(cfg, tmp_path):
     store = Store(cfg.home / "mm-mute.sqlite")
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(video))
-    assert rec and rec.capability == "metadata_only"
-    assert rec.detail == "no audio stream"
+    assert rec and rec.capability == "content_indexed"
+    assert rec.extractor_version == "media-ffmpeg-mm.v2"
+    assert rec.info["audio_routing"] == "none:no_audio_stream"
+    assert rec.info["frames"] == 1
+    assert "windows" not in rec.info             # the audio path never ran
+    frames = store.db.execute(
+        "SELECT kind, modality, vec FROM segments "
+        "WHERE file = ? AND kind = 'frame'", (rec.id,),
+    ).fetchall()
+    assert len(frames) == 1
+    assert frames[0][1] == "image" and frames[0][2] is not None
     assert report.failed == 0
+    store.close()
+
+
+# ------------------------------------------- video keyframes, offline mock --
+#
+# The offline suite never spawns ffmpeg for these (the real engine is covered
+# above + tests/test_video_frames.py): probes and the keyframe extractor are
+# monkeypatched, exactly like the audio-window mocks.
+
+def _fake_video_env(monkeypatch, *, frames, has_audio=True, duration=21.0):
+    from goldmine.ingest.media import Keyframe, VideoKeyframes
+
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_path", lambda: "/fake/ffprobe")
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_duration", lambda p: duration)
+    monkeypatch.setattr("goldmine.ingest.media.has_audio_stream", lambda p: has_audio)
+    monkeypatch.setattr(
+        "goldmine.ingest.media.video_keyframes",
+        lambda path, tmp, **k: VideoKeyframes(frames=frames, step=3.0, duration=duration),
+    )
+    # whisper resolvable on a dev machine would transcribe the junk bytes to
+    # an honest asr_status=error, and the PRE-EXISTING asr-retry rule then
+    # re-does the row every pass — not what these tests exercise.
+    monkeypatch.setattr("goldmine.ingest.asr.resolve_tools", lambda cfg: None)
+
+
+def test_multimodal_mock_video_frame_seg_shape(cfg, tmp_path, monkeypatch):
+    """Frame segs: kind=frame, modality=image, loc/loc_end from the keyframe,
+    budget 70 flows to embed_image, info carries frames/frame_interval; only
+    KEPT frames become segs (dedup happened upstream in video_keyframes —
+    engine-pinned by the fixture test: 4 of 7 sampled)."""
+    from goldmine.ingest.media import Keyframe
+
+    root = tmp_path / "kf-root"
+    root.mkdir()
+    video = root / "clip.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    jpegs = []
+    for i, loc in enumerate((0.5, 6.5, 12.5)):
+        p = tmp_path / f"k{i}.jpg"
+        p.write_bytes(b"\xff\xd8jpeg")
+        jpegs.append(Keyframe(path=p, loc=loc, loc_end=loc + 3.0))
+    _fake_video_env(monkeypatch, frames=jpegs)
+
+    def fake_windows(path, tmp, **kwargs):
+        one = tmp / "w0.wav"
+        one.write_bytes(tiny_wav_bytes(0.05))
+        return [media.MediaPiece(path=one, start=0.0, end=21.0)]
+
+    monkeypatch.setattr("goldmine.ingest.media.audio_windows", fake_windows)
+
+    backend = _mm_mock()
+    calls: list[int] = []
+    real_embed = backend.embed_image
+
+    def spy(path, *, budget=140):
+        calls.append(budget)
+        return real_embed(path, budget=budget)
+
+    backend.embed_image = spy
+
+    store = Store(cfg.home / "mm-kf.sqlite")
+    report = IngestPipeline(cfg, store, backend).run([str(root)])
+    rec = store.find_by_path(str(video))
+    assert rec and rec.capability == "content_indexed"
+    assert rec.extractor_version == "media-ffmpeg-mm.v2"
+    assert rec.info["frames"] == 3 and rec.info["frame_interval"] == 3.0
+    assert rec.info["windows"] == 1
+    rows = store.db.execute(
+        "SELECT kind, modality, loc, loc_end, excerpt, vec FROM segments "
+        "WHERE file = ? AND kind = 'frame' ORDER BY loc", (rec.id,),
+    ).fetchall()
+    assert len(rows) == 3                       # kept frames only
+    assert [(r[2], r[3]) for r in rows] == [(0.5, 3.5), (6.5, 9.5), (12.5, 15.5)]
+    for kind, modality, _l, _le, label, blob in rows:
+        assert kind == "frame" and modality == "image"
+        assert blob is not None
+        assert label.startswith("frame ")
+    assert calls == [70, 70, 70]                # frozen video_frame budget
+    assert report.content_indexed == 1
+    store.close()
+
+
+def test_video_frames_redone_for_legacy_rows_without_marker(cfg, tmp_path, monkeypatch):
+    """R-c: a pre-keyframes video row (no info.frames — including asr-
+    versioned transcript rows, which the media bump alone cannot reach) is
+    re-extracted once the image capability is live; the re-done row writes
+    the marker, so the next pass is unchanged (no churn)."""
+    from goldmine.ingest.media import Keyframe
+
+    root = tmp_path / "redo-root"
+    root.mkdir()
+    video = root / "old.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    jpeg = tmp_path / "k.jpg"
+    jpeg.write_bytes(b"\xff\xd8jpeg")
+    _fake_video_env(monkeypatch, frames=[Keyframe(path=jpeg, loc=0.5, loc_end=21.0)])
+    monkeypatch.setattr(
+        "goldmine.ingest.media.audio_windows", lambda path, tmp, **k: []
+    )
+
+    store = Store(cfg.home / "mm-redo.sqlite")
+    IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    rec = store.find_by_path(str(video))
+    assert rec.capability == "content_indexed"   # frames carried the file
+    assert rec.info["frames"] == 1
+
+    # simulate the legacy row: same bytes, marker stripped
+    info = dict(rec.info)
+    del info["frames"], info["frame_interval"]
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET info = ? WHERE id = ?", (json.dumps(info), rec.id)
+        )
+
+    report2 = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report2.unchanged == 0               # R-c re-did it
+    rec2 = store.find_by_path(str(video))
+    assert rec2.info["frames"] == 1             # marker back -> no more churn
+
+    report3 = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report3.unchanged == 1
+    store.close()
+
+
+def test_video_transcript_plus_frames_compound_version(cfg, tmp_path, monkeypatch):
+    """A TRANSCRIBED video keeps its transcript chunks and gains frame segs;
+    the extractor version composes asr+media so both dimensions stay
+    re-doable (registry key 'asr+media')."""
+    from goldmine.chunker import Chunk
+    from goldmine.ingest.extraction import ExtractMixin, _Outcome, _Piece
+    from goldmine.ingest.media import Keyframe
+
+    root = tmp_path / "asr-root"
+    root.mkdir()
+    video = root / "talk.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    jpeg = tmp_path / "k.jpg"
+    jpeg.write_bytes(b"\xff\xd8jpeg")
+    _fake_video_env(monkeypatch, frames=[Keyframe(path=jpeg, loc=0.5, loc_end=21.0)])
+
+    def fake_asr(self, cand, cap):
+        return _Outcome(
+            capability="content_indexed",
+            info={"asr_status": "complete", "audio_routing": "text:transcript",
+                  "duration": 21.0},
+            extractor_version="asr-whisper.v2",
+            chunks=[_Piece(Chunk("hello from the soundtrack", 0.0, 2.0),
+                           True, kind="audio", location_unit="second")],
+        )
+
+    monkeypatch.setattr(ExtractMixin, "_try_asr", fake_asr)
+
+    store = Store(cfg.home / "mm-asrkf.sqlite")
+    IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    rec = store.find_by_path(str(video))
+    assert rec.capability == "content_indexed"
+    assert rec.extractor_version == "asr-whisper.v2+media-ffmpeg-mm.v2"
+    assert rec.info["frames"] == 1
+    kinds = store.db.execute(
+        "SELECT kind, modality FROM segments WHERE file = ? ORDER BY kind",
+        (rec.id,),
+    ).fetchall()
+    assert ("audio", "text") in kinds           # transcript chunk
+    assert ("frame", "image") in kinds          # keyframe seg
+    store.close()
+
+
+def test_video_frames_failure_degrades_with_windows_present(cfg, tmp_path, monkeypatch):
+    """A frame-extraction error never destroys standing audio windows — the
+    row records frames=error:… honestly (long-video timeout discipline)."""
+    root = tmp_path / "degrade-root"
+    root.mkdir()
+    video = root / "long.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_path", lambda: "/fake/ffprobe")
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_duration", lambda p: 40.0)
+    monkeypatch.setattr("goldmine.ingest.media.has_audio_stream", lambda p: True)
+
+    def fake_windows(path, tmp, **kwargs):
+        one = tmp / "w0.wav"
+        one.write_bytes(tiny_wav_bytes(0.05))
+        return [media.MediaPiece(path=one, start=0.0, end=30.0)]
+
+    def explode(path, tmp, **k):
+        raise RuntimeError("ffmpeg timeout after 120s")
+
+    monkeypatch.setattr("goldmine.ingest.media.audio_windows", fake_windows)
+    monkeypatch.setattr("goldmine.ingest.media.video_keyframes", explode)
+    monkeypatch.setattr("goldmine.ingest.asr.resolve_tools", lambda cfg: None)
+
+    store = Store(cfg.home / "mm-degrade.sqlite")
+    report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report.failed == 0 and report.content_indexed == 1
+    rec = store.find_by_path(str(video))
+    assert rec.capability == "content_indexed"
+    # the honest record lives in info (_commit_media does not thread detail)
+    assert str(rec.info["frames"]).startswith("error:")
+    assert "timeout" in str(rec.info["frames"])
+    assert store.db.execute(
+        "SELECT COUNT(*) FROM segments WHERE file = ? AND kind = 'audio'",
+        (rec.id,),
+    ).fetchone()[0] == 1
+    store.close()
+
+
+def test_video_frames_failure_alone_is_failed_row(cfg, tmp_path, monkeypatch):
+    """Nothing else landed (no audio track, no frames) — the honest verdict
+    for a broken decode is a failed row, never silent metadata."""
+    root = tmp_path / "fail-root"
+    root.mkdir()
+    video = root / "broken.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"\xde\xad\xbe\xef" * 64)
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_path", lambda: "/fake/ffprobe")
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_duration", lambda p: 4.0)
+    monkeypatch.setattr("goldmine.ingest.media.has_audio_stream", lambda p: False)
+
+    def explode(path, tmp, **k):
+        raise RuntimeError("ffmpeg failed rc=1: moov atom not found")
+
+    monkeypatch.setattr("goldmine.ingest.media.video_keyframes", explode)
+
+    store = Store(cfg.home / "mm-fail.sqlite")
+    report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report.failed == 1 and report.content_indexed == 0
+    rec = store.find_by_path(str(video))
+    assert rec.capability == "failed"
+    assert "moov" in rec.detail
+    store.close()
+
+
+def test_video_frames_absent_without_image_capability(cfg, tmp_path, monkeypatch):
+    """A text-only backend honestly records none:no_image_capability (and the
+    row re-does once the capability arrives — R-c's second arm)."""
+    root = tmp_path / "textonly-root"
+    root.mkdir()
+    video = root / "clip.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_path", lambda: "/fake/ffprobe")
+    monkeypatch.setattr("goldmine.ingest.media.ffprobe_duration", lambda p: 10.0)
+    monkeypatch.setattr("goldmine.ingest.media.has_audio_stream", lambda p: False)
+    monkeypatch.setattr("goldmine.ingest.asr.resolve_tools", lambda cfg: None)
+
+    store = Store(cfg.home / "mm-textonly.sqlite")
+    IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(root)])
+    rec = store.find_by_path(str(video))
+    assert rec.capability == "metadata_only"
+    # L4 (preregistration): the cap.audio-false early exit stays literal —
+    # no frames attempted under a backend that cannot embed either modality
+    assert "backend lacks audio embedding" in rec.detail
+    assert rec.info["audio_routing"] == "none:no_capability"
+    assert "frames" not in rec.info
+    store.close()
+
+
+def test_video_frames_marker_redone_when_image_capability_arrives(
+        cfg, tmp_path, monkeypatch):
+    """R-c's second arm: a row that honestly recorded
+    frames='none:no_image_capability' re-does under an image-capable backend
+    and never churns after (the marker value changes). NOTE the real llama
+    path reaches this only via --reindex — enabling the helper changes the
+    embed identity, and the fingerprint gate forces the full re-extract that
+    carries every row past R-c anyway; the rule is defensive for backends
+    whose image capability is NOT fingerprint-relevant."""
+    root = tmp_path / "cap-root"
+    root.mkdir()
+    video = root / "clip.mp4"
+    video.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"junk" * 64)
+    _fake_video_env(monkeypatch, frames=[], has_audio=False)
+    monkeypatch.setattr("goldmine.ingest.media.has_video_stream", lambda p: False)
+
+    store = Store(cfg.home / "mm-cap.sqlite")
+    IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    rec = store.find_by_path(str(video))
+    # no audio track, extractor found no video stream: honest metadata row
+    # WITH the marker (this is what keeps R-c churn-free)
+    assert rec.capability == "metadata_only"
+    assert rec.info["frames"] == "none:no_video_stream"
+
+    # simulate the none:no_image_capability variant (as a backend that had
+    # audio but no image capability would have recorded)
+    info = dict(rec.info)
+    info["frames"] = "none:no_image_capability"
+    with store.write_transaction():
+        store.db.execute(
+            "UPDATE files SET info = ? WHERE id = ?", (json.dumps(info), rec.id)
+        )
+    report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report.unchanged == 0               # R-c second arm re-did it
+    rec2 = store.find_by_path(str(video))
+    assert rec2.info["frames"] == "none:no_video_stream"  # new marker value
+    report2 = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
+    assert report2.unchanged == 1              # no churn afterwards
     store.close()
 
 

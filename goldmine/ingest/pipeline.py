@@ -424,19 +424,21 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         for kind in ("doc", "pdf", "webpage", "code"):
             if kinds.get(kind):
                 report.by_kind.setdefault(kind, {})["content_indexed"] = kinds[kind]
-        for kind, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok)):
+        # video: soundtrack (ASR/audio) OR keyframes make it indexable
+        # (video-frames-001: a soundtrack-less clip gets frame vectors)
+        media_kinds = (
+            ("image", image_ok), ("audio", audio_ok),
+            ("video", audio_ok or image_ok),
+        )
+        for kind, ok in media_kinds:
             if kinds.get(kind):
                 report.by_kind.setdefault(kind, {})[
                     "content_indexed" if ok else "metadata_only"
                 ] = kinds[kind]
         report.content_indexed = sum(kinds.get(k, 0) for k in ("doc", "pdf", "webpage", "code"))
-        report.content_indexed += sum(
-            kinds.get(k, 0) for k, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok)) if ok
-        )
+        report.content_indexed += sum(kinds.get(k, 0) for k, ok in media_kinds if ok)
         report.metadata_only = sum(
-            kinds.get(k, 0)
-            for k, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok))
-            if not ok
+            kinds.get(k, 0) for k, ok in media_kinds if not ok
         )
         report.unsupported = sum(file_skips.values())
         for reason, n in sorted(file_skips.items(), key=lambda kv: (-kv[1], kv[0])):
@@ -537,6 +539,13 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                     and rec.detail == "backend lacks image embedding"):
                 # R-b: photos that never got a thumbnail pass because the
                 # image capability was off.
+                return False
+            if (rec.kind == "video" and cap.image
+                    and (rec.info or {}).get("frames") in (None, "none:no_image_capability")):
+                # R-c (video-frames-001): rows from before keyframes landed
+                # (including asr-versioned transcript rows — the media bump
+                # alone cannot reach them) get their frame pass; the re-done
+                # row always writes a frames marker, so this cannot churn.
                 return False
         return True
 

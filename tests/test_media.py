@@ -103,8 +103,10 @@ def test_no_silence_skip_keeps_all_windows(tmp_path):
     assert [(p.start, p.end) for p in pieces] == [(0.0, 30.0), (25.0, 55.0), (50.0, 62.0)]
 
 
-def test_video_soundtrack_uses_audio_path(tmp_path):
-    # a real video fixture via ffmpeg (lavfi color source + silent soundtrack)
+def test_video_soundtrack_still_uses_audio_path(tmp_path):
+    """v4: the soundtrack path is UNCHANGED by keyframes — a scored video
+    still yields the same raw windows (video-frames-001 froze this). The
+    keyframe engine itself is covered by tests/test_video_frames.py."""
     video = tmp_path / "clip.mp4"
     from goldmine.util import run_tool
 
@@ -119,7 +121,7 @@ def test_video_soundtrack_uses_audio_path(tmp_path):
         pytest.skip(f"lavfi source unavailable: {result.stderr.strip()[:120]}")
     duration = media.ffprobe_duration(video)
     assert duration == pytest.approx(2.0, abs=0.2)
-    pieces = media.video_soundtrack_windows(video, tmp_path / "windows")
+    pieces = media.audio_windows(video, tmp_path / "windows")
     assert len(pieces) == 1
 
 

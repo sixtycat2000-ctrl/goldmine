@@ -244,16 +244,20 @@ class ExtractMixin:
                 info={"audio_routing": "none:lexical_only"},
             )
 
-        # audio / video: the soundtrack is the only embeddable content.
-        # v2 ASR (02 §5.1) runs FIRST: a successful transcript becomes TEXT —
-        # FTS + prompted vectors under ANY text-capable backend (llama
-        # included). Raw-audio windows remain only for non-speech or when
-        # whisper is missing/failing (ingest.asr = auto|always|off).
+        # audio / video: ASR runs FIRST (02 §5.1; zero change here): a
+        # successful transcript becomes TEXT — FTS + prompted vectors under
+        # ANY text-capable backend. Raw-audio windows remain only for
+        # non-speech or when whisper is missing/failing. Videos additionally
+        # get keyframes (video-frames-001): every insertion below is gated on
+        # kind == "video"; the audio path itself is untouched.
         asr_outcome = self._try_asr(cand, cap)
         asr_info = dict(asr_outcome.info or {}) if asr_outcome is not None else {}
         if asr_outcome is not None:
             mode = str(getattr(self.cfg.ingest, "asr", "auto") or "auto")
             if asr_outcome.capability != "metadata_only" or mode == "always":
+                if kind == "video" and asr_outcome.capability == "content_indexed":
+                    # transcript + frames coexist (preregistration §3)
+                    return self._video_with_frames(cand, cap, asr_outcome, asr_info)
                 return asr_outcome
             if cap is None or not cap.audio:
                 asr_outcome.detail = "backend lacks audio embedding; " + (asr_outcome.detail or "ASR unavailable")
@@ -278,9 +282,20 @@ class ExtractMixin:
                 info={**asr_info, "audio_routing": "none:ffprobe_unreadable"},
             )
         if kind == "video" and media.has_audio_stream(path) is False:
-            return _Outcome(
-                capability="metadata_only", detail="no audio stream",
-                info={**asr_info, "audio_routing": "none:no_audio_stream"},
+            # soundtrack-less video (video-frames-001): skip the audio path,
+            # frames carry the file. ffmpeg missing is still honest metadata.
+            if media.ffmpeg_path() is None:
+                return _Outcome(
+                    capability="metadata_only",
+                    detail="no audio stream; ffmpeg not found",
+                    info={**asr_info, "duration": round(duration, 3),
+                          "audio_routing": "none:no_audio_stream",
+                          "frames": "none:ffmpeg_missing"},
+                )
+            return self._video_frames_outcome(
+                cand, cap, asr_info, duration,
+                audio_segs=[], audio_routing="none:no_audio_stream",
+                audio_partial=False,
             )
 
         # MM-D3 (preregistered): raw-audio vectors exist ONLY for files with
@@ -315,6 +330,15 @@ class ExtractMixin:
         # per-window ffmpeg failures/timeout are extraction errors => failed row
         # (let RuntimeError propagate into _extract's handler above)
 
+        if kind == "video":
+            # windows + frames (an all-silent soundtrack contributes nothing;
+            # frames decide the verdict) — audio files keep the tail verbatim
+            return self._video_frames_outcome(
+                cand, cap, asr_info, duration,
+                audio_segs=segs, audio_routing=routing,
+                audio_partial=duration > max_minutes * 60.0,
+            )
+
         info: dict = {
             **asr_info, "duration": round(duration, 3), "windows": len(segs),
             "audio_routing": routing,
@@ -331,7 +355,117 @@ class ExtractMixin:
         return _Outcome(
             capability="content_indexed",
             info=info,
-            extractor_version="media-ffmpeg-mm.v1",
+            extractor_version="media-ffmpeg-mm.v2",
+            media_segs=segs,
+            partial=partial,
+        )
+
+    # ------------------------------------------------ video keyframes (v4) --
+
+    def _video_frame_segs(self, cand: walk.Candidate, cap, info: dict) -> list[_MediaSeg]:
+        """Keyframe segs for one video (video-frames-001). Records the audit
+        markers into `info` — frames=<kept count> or "none:<reason>", plus
+        frame_interval=<step> whenever extraction ran.
+
+        Raises RuntimeError on extraction errors (decode failure / timeout /
+        pairing mismatch); the CALLER owns the failure policy (degrade when
+        audio content exists, propagate when nothing else landed)."""
+        if cap is None or not cap.image:
+            info["frames"] = "none:no_image_capability"
+            return []
+        if media.has_video_stream(cand.path) is False:
+            info["frames"] = "none:no_video_stream"
+            return []
+        try:
+            kf = media.video_keyframes(cand.path, self._media_tmp_dir())
+        except ToolError:
+            info["frames"] = "none:ffmpeg_missing"
+            return []
+        info["frames"] = len(kf.frames)
+        info["frame_interval"] = round(kf.step, 3)
+        return [
+            _MediaSeg(
+                kind="frame",
+                path=frame.path,
+                loc=frame.loc,
+                loc_end=frame.loc_end,
+                excerpt=f"frame {frame.loc:g}s",
+                budget=media.MEDIA_BUDGETS["video_frame"],
+                modality="image",
+            )
+            for frame in kf.frames
+        ]
+
+    def _video_with_frames(self, cand, cap, outcome: _Outcome, asr_info: dict) -> _Outcome:
+        """A transcribed video gains frame segs on top of its transcript
+        (audio段+帧段并存, preregistration §3). Frame extraction failure
+        DEGRADES — a transcript that already stands is never destroyed."""
+        info = dict(outcome.info or asr_info)
+        try:
+            frame_segs = self._video_frame_segs(cand, cap, info)
+        except RuntimeError as exc:
+            reason = str(exc)[:120]
+            info["frames"] = f"error:{reason}"
+            outcome.info = info
+            outcome.detail = (outcome.detail + "; " if outcome.detail else "") + \
+                f"video frames failed: {reason}"
+            return outcome
+        outcome.media_segs = [*outcome.media_segs, *frame_segs]
+        outcome.info = info
+        if frame_segs:
+            # composed extractor version (registry key "asr+media"): both the
+            # transcript and the frame dimensions stay re-doable; a bump on
+            # either side leaves the registry -> the row goes stale.
+            outcome.extractor_version = (
+                f"{outcome.extractor_version}+media-ffmpeg-mm.v2"
+            )
+        return outcome
+
+    def _video_frames_outcome(
+        self, cand, cap, asr_info: dict, duration: float, *,
+        audio_segs: list[_MediaSeg], audio_routing: str, audio_partial: bool,
+    ) -> _Outcome:
+        """The no-transcript video composition: raw audio windows (possibly
+        none) + keyframes. All-silent soundtracks reroute honestly; frames
+        decide the verdict when audio contributed nothing."""
+        if not audio_segs and audio_routing.startswith("raw:"):
+            audio_routing = "none:all_windows_silent"
+        info: dict = {
+            **asr_info, "duration": round(duration, 3),
+            "audio_routing": audio_routing,
+        }
+        if audio_segs:
+            info["windows"] = len(audio_segs)
+        detail: str | None = None
+        try:
+            frame_segs = self._video_frame_segs(cand, cap, info)
+        except RuntimeError as exc:
+            if not audio_segs:
+                raise  # nothing else landed: honest failed row
+            reason = str(exc)[:120]
+            info["frames"] = f"error:{reason}"
+            detail = f"video frames failed: {reason}"
+            frame_segs = []
+        segs = [*audio_segs, *frame_segs]
+        partial = audio_partial
+        if partial:
+            info["read_end"] = float(self.cfg.ingest.audio_max_minutes) * 60.0
+        if not segs:
+            reason = {
+                "none:no_audio_stream": "no audio stream; no frames extracted",
+                "none:all_windows_silent": "all audio windows silent (RMS gate); no frames extracted",
+            }.get(audio_routing, "no media segments extracted")
+            if isinstance(info.get("frames"), str) and info["frames"] == "none:no_video_stream":
+                reason = "no decodable video stream"
+            return _Outcome(
+                capability="metadata_only", detail=detail or reason,
+                info=info, partial=partial,
+            )
+        return _Outcome(
+            capability="content_indexed",
+            detail=detail,
+            info=info,
+            extractor_version="media-ffmpeg-mm.v2",
             media_segs=segs,
             partial=partial,
         )

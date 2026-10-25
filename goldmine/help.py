@@ -132,14 +132,17 @@ step). Later: `goldmine model install whisper-large-v3-turbo-q5_0` (installs
 the small VAD model too) — plus the goldmine-ocr helper (`goldmine doctor`
 names the fix when missing).
 
-Image/audio vectors (visual search): install the mmproj model
+Image/audio/video vectors (visual search): install the mmproj model
 (`goldmine model install mmproj-embeddinggemma-2-Q8_0`) and the
 goldmine-embed helper (the release asset into <home>/bin, or
 scripts/build_embed_helper.sh in a checkout). When both resolve, photos/
 screenshots get image vectors (token budgets photo 140 / screenshot 280),
 thin PDF pages get page-image vectors, glyph-order pages keep a meaning-only
-text vector, and audio WITHOUT a transcript gets raw-audio vectors —
-transcribed speech never gets both (measured DigUp lesson). Enabling this
+text vector, audio WITHOUT a transcript gets raw-audio vectors —
+transcribed speech never gets both (measured DigUp lesson) — and videos get
+keyframe image vectors (budget 70: one sample every ~3 s, near-duplicate
+frames merged by an 8×8 aHash within 4 bits, JPEG ≤1024 px, at most 1200
+frames per video). Enabling this
 joins the media fields into the embedding identity: that index re-embeds
 once (`goldmine ingest --reindex`).
 

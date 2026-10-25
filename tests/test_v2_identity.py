@@ -213,7 +213,8 @@ def test_extractor_registry_values_match_written_rows():
         "txt-stdlib.v1", "md-stdlib.v1", "docx-stdlib.v1", "html-stdlib.v1",
         "code-stdlib.v1", "ipynb-stdlib.v1", "url-stdlib.v1", "eml-stdlib.v2",
         "epub-stdlib.v2", "image-mm.v1", "image-mm-ocr.v1",
-        "media-ffmpeg-mm.v1", "asr-whisper.v2",
+        "media-ffmpeg-mm.v2", "asr-whisper.v2",
+        "asr-whisper.v2+media-ffmpeg-mm.v2",  # transcribed video + frames (v4)
     }
     assert set(fingerprints.EXTRACTOR_VERSIONS.values()) == written
     from goldmine import cli

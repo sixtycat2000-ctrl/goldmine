@@ -519,10 +519,12 @@ class CommitMixin:
                         self._metrics.call("embed_inputs")
                         with self._metrics.stage("embed"):
                             vec = embed.embed_texts([prompted])[0]
-                    elif m.kind in ("image", "page"):
+                    elif m.kind in ("image", "page", "frame"):
                         # page images embed like images with their own budget
                         # (pdf_page 280); images carry the extractor-pinned
-                        # per-kind budget (photo 140 / screenshot 280).
+                        # per-kind budget (photo 140 / screenshot 280); video
+                        # keyframes likewise (video_frame 70 — video-frames-001
+                        # closing the seam helper-design §5.6 left open).
                         self._metrics.call("embed_calls")
                         self._metrics.call("embed_inputs")
                         with self._metrics.stage("embed"):

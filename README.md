@@ -6,8 +6,10 @@ fp16 vectors. You explicitly choose every indexed folder or URL.
 
 The default llama backend embeds text. With the optional media helper
 (goldmine-embed) and the pinned mmproj model installed, photos, screenshots
-and thin PDF pages also get image vectors and transcript-less audio gets
-raw-audio vectors (visual search); without them photo names/metadata and
+and thin PDF pages also get image vectors, transcript-less audio gets
+raw-audio vectors, and videos get keyframe image vectors (one sample every
+~3 s, aHash near-duplicate merge, JPEG ≤1024, at most 1200 frames — visual
+search); without them photo names/metadata and
 actual OCR remain separate evidence types and images are metadata-only.
 Cards contain source excerpts. The optional quality mode is an unvalidated
 experiment.

@@ -369,7 +369,16 @@ EXTRACTOR_VERSIONS: dict[str, str] = {
     # the new segments and info fields up.
     "image": "image-mm.v1",
     "image+ocr": "image-mm-ocr.v1",
-    "media": "media-ffmpeg-mm.v1",
+    # video-frames-001 bump: keyframes land (select-sampled every ~3 s, aHash
+    # dedup, JPEG ≤1024, maxFrames 1200) — audio-window semantics unchanged,
+    # but the media family version moves once so every media row re-extracts
+    # (same shape as the digup-plan-002 media bump).
+    "media": "media-ffmpeg-mm.v2",
+    # transcribed videos carry transcript chunks AND frame segs; composed by
+    # extraction from the ASR outcome version + the media value. Either side
+    # bumping without updating here leaves the string out of the registry ->
+    # rows go stale -> re-extract (the safe direction).
+    "asr+media": "asr-whisper.v2+media-ffmpeg-mm.v2",
     # v2 ASR (item 6, 02 §5.1): whisper-cli + VAD transcript extraction —
     # audio/video files whose soundtrack became text segments. v2 bump (02 F8,
     # 2026-10-16): the transcript merge cap switched to est-tokens, so v1 rows

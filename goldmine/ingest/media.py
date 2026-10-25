@@ -1,12 +1,12 @@
-"""Media probes: ffprobe metadata + ffmpeg audio window extraction.
+"""Media probes: ffprobe metadata + ffmpeg audio windows + video keyframes.
 
-v1 scope (build pass 7): audio windows are the ONLY media embedding path, and
-only via media-capable backends (llama /v1/embeddings is text-only).
+Audio windows are the raw-soundtrack path (only via media-capable backends);
+keyframes (video-frames-001) are the video-visual path.
 - audio: 16 kHz mono PCM16 WAV windows, 30 s window / 25 s hop (5 s overlap —
   DigUp audioWindow: the model ignores anything longer), silent windows
   (RMS < 0.003 ≈ −50 dBFS) skipped, duration capped by cfg.ingest.audio_max_minutes.
-- video: ffprobe metadata + the soundtrack via the same audio path; visual
-  frames are a documented stretch (ARCHITECTURE §2.1) and are NOT built here.
+- video: ffprobe metadata + the soundtrack via the same audio path + keyframes
+  (ffmpeg select sampling every ~3 s, 8×8 aHash dedup ≤4 bits, JPEG ≤1024).
 - sniff_media works with NO tools installed so capability reporting stays exact.
 
 Tool absence raises ToolError; callers record metadata_only with the reason.
@@ -19,6 +19,7 @@ import math
 import shutil
 import struct
 import subprocess
+import uuid
 import wave
 from dataclasses import dataclass
 from pathlib import Path
@@ -51,20 +52,22 @@ FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 #: per-kind budget constants below, thin-PDF pages rendered to page images,
 #: glyph-order pages keep a meaning-only garbled-text vector; OCR text vectors
 #: now exist ONLY under text-only backends (the capability flip closes them).
-#: Video frames are DEFERRED: frame budget 70 stays frozen in the constants,
-#: no frame vectors are produced yet (preregistration scope decision A2).
+#: v4 bump (video-frames-001, A2 unfreeze): video keyframes land — one sample
+#: every ~3 s (fps1/3 shorthand; engine = ffmpeg select gte(prev+step)
+#: snapping to input frames, DigUp-shaped), 8x8 aHash dedup within 4 bits,
+#: JPEG <=1024 no upscale, maxFrames 1200 with step adaptation.
 MEDIA_PREPROCESSING = (
-    "v3:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003; "
+    "v4:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003; "
     "image=jpeg-thumb-1024-q90|png-1536(screenshot),minSide256,"
     "resize=bicubic-a-0.5-48px-fill-budget; "
     "page=pdftoppm150dpi-thin+glyphorder; "
-    "ocr_text_vector=text-only-backends; frames=deferred"
+    "ocr_text_vector=text-only-backends; "
+    "frames=fps1/3,ahash4bit,jpeg1024,max1200"
 )
 
 #: Frozen token budgets per media kind (digup-plan-002 preregistration;
 #: DigUp Model.swift:84 granularity — the whole index shares one embed
-#: identity, so any budget change re-embeds everything). `frame` is frozen
-#: here for identity stability but produces no vectors yet (deferred).
+#: identity, so any budget change re-embeds everything).
 MEDIA_BUDGETS = {
     "photo": 140,
     "screenshot": 280,
@@ -255,13 +258,226 @@ def audio_windows(
     return pieces
 
 
-def video_soundtrack_windows(path: Path, tmp: Path, **kwargs) -> list[MediaPiece]:
-    """Video v1 = metadata (ffprobe) + the soundtrack via audio_windows.
+def has_video_stream(path: Path) -> bool | None:
+    """True/False via ffprobe; None when ffprobe is missing or cannot decide."""
+    tool = ffprobe_path()
+    if tool is None:
+        return None
+    try:
+        proc = subprocess.run(
+            [
+                tool, "-v", "error", "-select_streams", "v",
+                "-show_entries", "stream=index", "-of", "csv=p=0", str(path),
+            ],
+            capture_output=True, timeout=30.0,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if proc.returncode != 0:
+        return None
+    return bool(proc.stdout.strip())
 
-    Visual frames (ffmpeg fps=1/3 + aHash dedup) are a documented stretch —
-    deliberately not built (ARCHITECTURE §2.1, DESIGN_DECISIONS §10).
-    """
-    return audio_windows(path, tmp, **kwargs)
+
+# -------------------------------------------------- video keyframes (v4) ---
+#
+# DigUp VideoExtractor.keyframes (MediaExtractors.swift:101-157) with ffmpeg
+# as the engine (video-frames-001 preregistration): sample one frame every
+# `step` seconds, keep one per shot (8×8 average hash within 4 bits only
+# extends the previous kept frame), each kept frame stands for the stretch
+# until the next one. One ffmpeg call decodes once and writes two outputs —
+# the JPEG sequence to embed and an 8×8 gray rawvideo stream for the hash —
+# both chains driven by the SAME select expression so the pairing invariant
+# (n_jpeg == n_gray) holds by construction and is still verified per run.
+#
+# Engine notes (measured, preregistration appendix): the fps=1/step filter
+# DROPS the tail sample frame (12 s / step 3.5 → 3 frames, not 4), so the
+# sampler is `select='isnan(prev_selected_t)+gte(t,prev_selected_t+step)'`
+# — the first frame after the seek, then the first frame at/after
+# prev+step, snapping to real input frames exactly like DigUp's
+# ±step/2-tolerance generator. image2/rawvideo outputs duplicate frames to
+# CFR unless `-fps_mode vfr` (4 selected frames became 139 files without it).
+
+#: DigUp Model.swift:65 frameInterval — the sampling floor.
+FRAME_INTERVAL_S = 3.0
+#: DigUp MediaExtractors.swift:105 maxFrames — step adapts beyond this.
+FRAME_MAX_COUNT = 1200
+#: Sampled-frame JPEG long-side cap (Indexer.swift:410 maxPixel 1024).
+FRAME_JPEG_MAX_SIDE = 1024
+
+
+@dataclass
+class Keyframe:
+    path: Path              # kept frame's JPEG (deduped frames' JPEGs are discarded)
+    loc: float              # declared grid time start + i*step
+    loc_end: float = 0.0    # next kept frame's time; last kept frame = duration
+
+
+@dataclass
+class VideoKeyframes:
+    frames: list[Keyframe]
+    step: float
+    duration: float
+
+
+def _frame_grid(duration: float, max_frames: int = FRAME_MAX_COUNT) -> tuple[float, float] | None:
+    """(start, step) for the sampling grid, or None when duration is unusable.
+
+    DigUp semantics: start = min(0.5, duration/2) (so any duration > 0 has at
+    least one sample), step = max(3.0, duration/max_frames) with the sampling
+    points strictly below duration (Swift stride is half-open). The step is
+    rounded UP to 6 decimals — plain rounding could nudge the point count past
+    max_frames by float arithmetic, so bump by 1e-6 until it fits."""
+    if not math.isfinite(duration) or duration <= 0:
+        return None
+    start = min(0.5, duration / 2.0)
+    step = max(FRAME_INTERVAL_S, duration / float(max_frames))
+    step = math.ceil(step * 1e6) / 1e6
+    while math.ceil((duration - start) / step) > max_frames:
+        step = math.ceil((step + 1e-6) * 1e6) / 1e6
+    return start, step
+
+
+def _ahash(gray64: bytes) -> int:
+    """8×8 grayscale → 64-bit average hash (DigUp averageHash, swift:140-156):
+    integer mean over the 64 bytes, bit i set iff byte i is STRICTLY greater.
+    Pure stdlib bit ops — no numpy/Pillow dependency."""
+    if len(gray64) != 64:
+        raise ValueError(f"aHash needs exactly 64 bytes, got {len(gray64)}")
+    mean = sum(gray64) // 64
+    hash_ = 0
+    for i, pixel in enumerate(gray64):
+        if pixel > mean:
+            hash_ |= 1 << i
+    return hash_
+
+
+def _hamming64(a: int, b: int) -> int:
+    return (a ^ b).bit_count()
+
+
+def _dedup_keyframes(
+    samples: list[tuple[float, Path, bytes]], duration: float
+) -> list[Keyframe]:
+    """One pass of aHash dedup + the fixup loop (DigUp swift:124-136).
+
+    `samples` = (declared grid time, JPEG path, 64 gray bytes) in sampling
+    order. A frame within 4 bits of the LAST KEPT frame is a near-duplicate:
+    its JPEG is deleted and the kept frame's interval implicitly extends.
+    Kept frame i ends where kept frame i+1 starts; the last ends at duration
+    (the fixup loop — swift:136)."""
+    kept: list[Keyframe] = []
+    last_hash: int | None = None
+    for loc, jpeg, gray in samples:
+        hash_ = _ahash(gray)
+        if last_hash is not None and _hamming64(hash_, last_hash) <= 4:
+            jpeg.unlink(missing_ok=True)
+            continue
+        last_hash = hash_
+        kept.append(Keyframe(path=jpeg, loc=round(loc, 3)))
+    for i in range(len(kept) - 1):
+        kept[i].loc_end = kept[i + 1].loc
+    if kept:
+        kept[-1].loc_end = round(duration, 3)
+    return kept
+
+
+def video_keyframes(
+    path: Path, tmp: Path, *, max_frames: int = FRAME_MAX_COUNT
+) -> VideoKeyframes:
+    """Sample + dedup keyframes: JPEGs (≤1024 long side, never upscaled,
+    rotation honored via ffmpeg's default autorotate) + their grid times.
+
+    Raises ToolError when ffmpeg is missing; RuntimeError on decode failure,
+    timeout, or a broken pairing/grid (honest extraction failures). A video
+    with a readable duration but no decodable frames returns EMPTY frames
+    (the caller's honest metadata path, never a failure)."""
+    ffmpeg = ffmpeg_path()
+    if ffmpeg is None:
+        raise ToolError("ffmpeg: not found")
+    duration = ffprobe_duration(path)
+    if duration is None:
+        raise RuntimeError(f"ffprobe could not read duration of {path}")
+    grid = _frame_grid(duration, max_frames)
+    if grid is None:
+        raise RuntimeError(f"unusable video duration {duration!r} for {path}")
+    start, step = grid
+    predicted = math.ceil((duration - start) / step)
+
+    tmp.mkdir(parents=True, exist_ok=True)
+    token = uuid.uuid4().hex[:10]
+    jpeg_pattern = tmp / f"kf-{token}-%06d.jpg"
+    gray_path = tmp / f"kf-{token}.gray"
+    # filtergraph-level quoting: the expression is single-quoted and the
+    # commas inside gte()/min() are backslash-escaped (probe-verified form).
+    select_ = (
+        "select='isnan(prev_selected_t)"
+        f"+gte(t\\,prev_selected_t+{step:.6f})'"
+    )
+    vf_jpeg = (
+        f"{select_},scale=min(iw\\,{FRAME_JPEG_MAX_SIDE}):"
+        f"min(ih\\,{FRAME_JPEG_MAX_SIDE}):force_original_aspect_ratio=decrease"
+    )
+    vf_gray = f"{select_},scale=8:8,format=gray"
+
+    from ..util import run_tool
+
+    result = run_tool(
+        [
+            ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+            "-ss", f"{start:.6f}", "-i", str(path),
+            "-map", "0:v:0", "-vf", vf_jpeg,
+            "-fps_mode", "vfr", "-q:v", "2", str(jpeg_pattern),
+            "-map", "0:v:0", "-vf", vf_gray,
+            "-fps_mode", "vfr", "-f", "rawvideo", str(gray_path),
+        ],
+        timeout_s=FFMPEG_TIMEOUT_S,
+    )
+    gray_bytes = gray_path.read_bytes() if gray_path.is_file() else b""
+    jpegs = sorted(tmp.glob(f"kf-{token}-*.jpg"))
+    if result.timed_out:
+        for j in jpegs:
+            j.unlink(missing_ok=True)
+        gray_path.unlink(missing_ok=True)
+        raise RuntimeError(f"ffmpeg timeout after {FFMPEG_TIMEOUT_S:g}s")
+    if result.rc != 0:
+        for j in jpegs:
+            j.unlink(missing_ok=True)
+        gray_path.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"ffmpeg failed rc={result.rc}: {result.stderr.strip()[:200]}"
+        )
+    if len(jpegs) * 64 != len(gray_bytes):
+        for j in jpegs:
+            j.unlink(missing_ok=True)
+        gray_path.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"keyframe stream mismatch: {len(jpegs)} JPEGs vs "
+            f"{len(gray_bytes) // 64} gray frames for {path.name}"
+        )
+    n = len(jpegs)
+    if n > predicted + 1:
+        # the select engine follows the declared grid; exceeding it by more
+        # than the one exact-boundary frame means the grid was violated
+        for j in jpegs:
+            j.unlink(missing_ok=True)
+        gray_path.unlink(missing_ok=True)
+        raise RuntimeError(
+            f"keyframe grid violation: {n} frames > {predicted}+1 predicted"
+        )
+    samples: list[tuple[float, Path, bytes]] = []
+    for i, jpeg in enumerate(jpegs):
+        loc = start + i * step
+        if loc >= duration:
+            break  # half-open grid: a boundary frame at exactly duration drops
+        samples.append((loc, jpeg, gray_bytes[i * 64:(i + 1) * 64]))
+    for jpeg in jpegs[len(samples):]:  # dropped tail JPEGs
+        jpeg.unlink(missing_ok=True)
+    gray_path.unlink(missing_ok=True)
+    return VideoKeyframes(
+        frames=_dedup_keyframes(samples, duration),
+        step=step,
+        duration=duration,
+    )
 
 
 # ----------------------------------------------- image preprocessing (v2 B5) --
@@ -419,8 +635,6 @@ def prepare_image(path: Path, tmp: Path, *, screenshot: bool = False, metadata=N
 
     camera = camera_and_position(path)
     prep.camera_make, prep.gps = camera.make, camera.gps
-    import uuid
-
     token = uuid.uuid4().hex[:10]
     tmp.mkdir(parents=True, exist_ok=True)
     out = tmp / (f"shot-{token}.png" if screenshot else f"thumb-{token}.jpg")
