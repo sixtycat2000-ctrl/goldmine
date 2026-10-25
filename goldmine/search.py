@@ -268,10 +268,15 @@ def _terms_of(text: str) -> list[str]:
 class Searcher:
     """Candidate generation and fusion. No DB writes, no backend lifecycle."""
 
-    def __init__(self, store: Store, backend: "EmbeddingBackend | None", *, admission_parameters: AdmissionParameters | None = None):
+    def __init__(self, store: Store, backend: "EmbeddingBackend | None", *, admission_parameters: AdmissionParameters | None = None,
+                 ranker=None):
         self.store = store
         self.backend = backend
         self.admission_parameters = admission_parameters or AdmissionParameters()
+        # rank-window-001: an optional rank head for window arbitration inside
+        # admitted files; None keeps evidence selection byte-identical.
+        self.ranker = ranker
+        self._rank_file_budget = [2]
 
     # ------------------------------------------------------------ public API
 
@@ -488,6 +493,7 @@ class Searcher:
             evidence = select_evidence(
                 self.store, rec, seg_id, lexical, evidence_vectors.get(fid, []),
                 semantic_only=scorer == "semantic", z_gate=z_gate, query_text=semantic_text,
+                ranker=self.ranker, rank_budget=self._rank_file_budget,
             )
             if evidence is None:
                 continue

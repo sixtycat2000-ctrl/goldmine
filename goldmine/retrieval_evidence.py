@@ -32,6 +32,16 @@ WINDOW_CHARS = 200
 WINDOW_MARGIN = 2
 WINDOW_Z_PARITY = 1.5
 WINDOW_POSITION_CAP = 64
+
+#: rank-window-001 (all-gates-program-001 Step C): within one admitted file,
+#: a cross-encoder may re-decide the PLAIN semantic ladder's window among
+#: lexically co-qualified candidates (unit count at least the primary's).
+#: Takeover needs a score lead of RERANK_TAKEOVER_MARGIN; tier-1/2 window
+#: verdicts are never overturned (division of labor with the window rules).
+RERANK_TAKEOVER_MARGIN = 0.01
+RERANK_POOL_CAP = 3
+RERANK_POOL_DOC_SECONDS = 0.22
+RERANK_HEADROOM_SECONDS = 2.0
 _LATIN_TOKEN = re.compile(r"[0-9a-z]+")
 
 
@@ -165,10 +175,89 @@ class EvidenceSelection:
     #: window dominance replaced the semantic top, the segment it displaced.
     window_units: int | None = None
     demoted_semantic_primary: int | None = None
+    #: rank-window-001 disclosure: when the cross-encoder replaced the plain
+    #: semantic ladder's window, the segment it displaced and both scores.
+    rank_demoted: int | None = None
+    rank_scores: tuple[float, float] | None = None
+
+
+_SENT_SPLIT = re.compile(r"(?<=[。！？.!?\n])\s*")
+
+
+def _sentence_hits(text, units):
+    """(max, sum) of distinct query units per sentence — the concentration
+    prior that orders (never decides) the rank pool."""
+    body = normalize(text)
+    if not body or not units:
+        return (0, 0)
+    hits = []
+    for sent in _SENT_SPLIT.split(body):
+        if not sent.strip():
+            continue
+        sent_tokens = {m.group(0) for m in _LATIN_TOKEN.finditer(sent)}
+        count = 0
+        for unit in units:
+            if unit.kind == "latin":
+                prefix = bool(unit.patterns) and unit.patterns[0].endswith("*")
+                if any(tok == unit.text or (prefix and tok.startswith(unit.text))
+                       for tok in sent_tokens):
+                    count += 1
+            else:
+                needles = ([p[1:-1].replace('""', '"') for p in unit.patterns]
+                           if unit.kind == "cjk" and unit.patterns else [unit.text])
+                if any(n and n in sent for n in needles):
+                    count += 1
+        hits.append(count)
+    return (max(hits) if hits else 0, sum(hits))
+
+
+def _rank_pool_cap():
+    """Docs the challenge may afford from the remaining request deadline."""
+    from .deadline import current_deadline
+    deadline = current_deadline()
+    if deadline is None:
+        return RERANK_POOL_CAP
+    affordable = int((deadline.remaining() - RERANK_HEADROOM_SECONDS) / RERANK_POOL_DOC_SECONDS)
+    return min(RERANK_POOL_CAP, affordable)
+
+
+def _rank_challenge(store, file, primary, content, by_id, units, windows, semantic_z,
+                    query_text, ranker, budget, lexical_units):
+    """Cross-encoder arbitration of the plain semantic ladder's window.
+
+    Returns (new_primary, demoted, scores) or (primary, None, None) when the
+    challenge does not fire or the rank head is unavailable/sick. Fires only
+    under a per-request file budget; never overturns a window-rule verdict
+    (the caller passes primaries whose demoted state is None)."""
+    if ranker is None or not query_text:
+        return primary, None, None
+    if budget is not None and budget[0] <= 0:
+        return primary, None, None
+    if not units.get(primary):
+        return primary, None, None
+    pool = [row[0] for row in content
+            if row[0] != primary and len(units.get(row[0], ())) >= len(units.get(primary, ()))]
+    concentration = {sid: _sentence_hits(by_id[sid][5], lexical_units) for sid in pool}
+    pool.sort(key=lambda sid: (-len(units.get(sid, ())), -concentration[sid][1],
+                               -windows.get(sid, 0), sid))
+    pool = pool[:_rank_pool_cap()]
+    if not pool:
+        return primary, None, None
+    docs = [by_id[primary][5]] + [by_id[sid][5] for sid in pool]
+    try:
+        scores, _meta = ranker.rank(query_text, docs)
+    except Exception:
+        return primary, None, None
+    if budget is not None:
+        budget[0] -= 1
+    best = max(range(len(scores)), key=lambda i: scores[i])
+    if best != 0 and scores[best] >= scores[0] + RERANK_TAKEOVER_MARGIN:
+        return pool[best - 1], primary, (scores[0], scores[best])
+    return primary, None, None
 
 
 def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=False, z_gate=3.0,
-                    query_text=None):
+                    query_text=None, ranker=None, rank_budget=None):
     """Select the primary pointer and complementary real-text supporting IDs."""
     units = lexical.segment_units if lexical is not None else {}
     exact = lexical.exact.get(file.id) if lexical is not None else None
@@ -208,6 +297,7 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
                      and by_id[exact.segment_id][1] == "name" and query_text is not None
                      and normalize(query_text.strip()) == normalize(exact.query_term))
     windows, demoted = {}, None
+    rank_demoted, rank_scores = None, None
     if semantic_only:
         primary = fallback
     elif body_exact or pure_metadata:
@@ -229,6 +319,15 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
                              and semantic_z.get(challenger, float("-inf"))
                              >= semantic_z.get(primary, float("-inf")) - WINDOW_Z_PARITY))):
                 demoted, primary = primary, challenger
+        # rank-window-001: the cross-encoder re-decides only the PLAIN ladder's
+        # window (a tier-1/2 verdict above stands) and only among candidates
+        # lexically co-qualified with the primary.
+        if demoted is None and primary in content_ids and query_text and ranker is not None:
+            new_primary, rank_demoted, rank_scores = _rank_challenge(
+                store, file, primary, content, by_id, units, windows, semantic_z,
+                query_text, ranker, rank_budget, query_units_meta)
+            if rank_demoted is not None:
+                primary = new_primary
     elif content and units.get(content[0][0]):
         primary = content[0][0]
     elif fallback in semantic_z and semantic_z[fallback] >= z_gate:
@@ -273,4 +372,5 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
         row[1], row[2], row[5], file.kind, file.extractor_version, file.info, row[3],
     )
     return EvidenceSelection(primary, tuple(supporting), evidence_type, media_type,
-                             window_units=windows.get(primary), demoted_semantic_primary=demoted)
+                             window_units=windows.get(primary), demoted_semantic_primary=demoted,
+                             rank_demoted=rank_demoted, rank_scores=rank_scores)

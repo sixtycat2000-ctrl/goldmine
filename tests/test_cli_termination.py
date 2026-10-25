@@ -27,7 +27,7 @@ class Waiting(LocalReranker):
         self._proc = subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)'])
         Path(sys.argv[2]).write_text(str(self._proc.pid))
         time.sleep(60)
-module.from_config=lambda cfg:Waiting(None,Path('/missing/model'))
+module.shared_ranker=lambda cfg:Waiting(None,Path('/missing/model'))  # seam moved with the shared-lease factory (rank-window-001)
 raise SystemExit(main(['search','needle','--db',sys.argv[1],'--backend','mock','--scorer','lexical',
                        '--mode','quality','--rerank','local']))
 '''

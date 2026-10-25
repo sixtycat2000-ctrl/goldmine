@@ -111,9 +111,9 @@ def cmd_search(args: argparse.Namespace) -> int:
         )
         started = time.monotonic()
         def reranker():
-            from ..rerank import from_config
+            from ..rerank import shared_ranker
 
-            return from_config(cfg)
+            return shared_ranker(cfg)
 
         result = Application(db, lambda: _search_backend(cfg, args, semantic=semantic),
                              reranker_factory=reranker).search(request)

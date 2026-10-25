@@ -100,9 +100,9 @@ def cmd_mcp(args: argparse.Namespace) -> int:
         return instance
 
     def reranker():
-        from ..rerank import from_config
+        from ..rerank import shared_ranker
 
-        return from_config(cfg)
+        return shared_ranker(cfg)
 
     run_stdio(Application(db, backend, reranker_factory=reranker))
     return EXIT_OK

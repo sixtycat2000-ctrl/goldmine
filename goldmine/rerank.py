@@ -11,6 +11,7 @@ from pathlib import Path
 import socket
 import subprocess
 import tempfile
+import threading
 import time
 
 from .deadline import check_deadline, deadline_sleep, remaining_timeout
@@ -22,7 +23,16 @@ class RerankError(RuntimeError):
     pass
 
 
+_FROM_CONFIG_CACHE: dict[tuple, LocalReranker] = {}
+_FROM_CONFIG_LOCK = threading.Lock()
+
+
 def from_config(cfg):
+    """LocalReranker for (server, model), memoized per process (rank-window-001):
+    repeated factory calls — one per search request in an evaluation loop —
+    share ONE lazily-spawned child instead of respawning 639MB per request.
+    close() terminates the child; the memoized instance respawns on next use,
+    preserving the no-idle-resident contract of the quality-mode path."""
     from .backends.llama import REPO_MODELS, _in_repo_checkout, resolve_server_path
 
     entry = by_key(DEFAULT_RERANKER_KEY)
@@ -31,7 +41,13 @@ def from_config(cfg):
     model = directory / entry.name
     if not model.is_file() and _in_repo_checkout():
         model = REPO_MODELS / entry.subdir / entry.name
-    return LocalReranker(server, model)
+    key = (str(server), str(model))
+    with _FROM_CONFIG_LOCK:
+        cached = _FROM_CONFIG_CACHE.get(key)
+        if cached is None:
+            cached = LocalReranker(server, model)
+            _FROM_CONFIG_CACHE[key] = cached
+        return cached
 
 
 def validate_scores(payload, count):
@@ -164,3 +180,74 @@ class LocalReranker:
             if self._log is not None:
                 self._log.close()
                 self._log = None
+
+
+class _SharedReranker:
+    """Process-level rank-head lease (rank-window-001): one resident child
+    while any holder lives, released to the registered idle policy after the
+    last holder closes. rank() transparently restarts a child released by the
+    idle timer; close() releases the lease instead of terminating."""
+
+    def __init__(self, ranker: LocalReranker, idle_release_s: float):
+        self._ranker = ranker
+        self._idle_release_s = idle_release_s
+        self._lock = threading.Lock()
+        self._refs = 0
+        self._deadline: float | None = None
+        self._timer: threading.Timer | None = None
+
+    def rank(self, query, documents):
+        return self._ranker.rank(query, documents)
+
+    def _reap(self):
+        with self._lock:
+            if self._refs <= 0 and self._timer is not None:
+                self._timer = None
+                self._ranker.close()
+
+    def acquire(self):
+        with self._lock:
+            self._refs += 1
+            if self._timer is not None:
+                self._timer.cancel()
+                self._timer = None
+
+    def close(self):
+        with self._lock:
+            self._refs = max(0, self._refs - 1)
+            if self._refs == 0 and self._idle_release_s >= 0:
+                timer = threading.Timer(self._idle_release_s, self._reap)
+                timer.daemon = True
+                timer.start()
+                self._timer = timer
+
+
+_SHARED: dict[tuple, _SharedReranker] = {}
+_SHARED_LOCK = threading.Lock()
+
+#: Registered rank-head idle policy (acceptance targets reranker_idle_release_s).
+IDLE_RELEASE_S = 300.0
+
+
+def shared_ranker(cfg):
+    """Process-level cached rank-head LEASE around LocalReranker, keyed by
+    (server, model). Every call returns a held lease (refcount +1): the caller
+    MUST close() it; the underlying child spawns lazily on first rank() and
+    terminates only after the last holder closed AND the registered idle
+    interval elapsed. This is the reranker_factory contract for search
+    commands; quality.py's `closing(factory())` pairs correctly with it."""
+    from .backends.llama import REPO_MODELS, _in_repo_checkout, resolve_server_path
+    entry = by_key(DEFAULT_RERANKER_KEY)
+    server, _ = resolve_server_path(cfg.llama)
+    directory = Path(cfg.models.dir).expanduser() if cfg.models.dir else Path(cfg.home).expanduser() / "models"
+    model = directory / entry.name
+    if not model.is_file() and _in_repo_checkout():
+        model = REPO_MODELS / entry.subdir / entry.name
+    key = (str(server), str(model))
+    with _SHARED_LOCK:
+        shared = _SHARED.get(key)
+        if shared is None:
+            shared = _SharedReranker(from_config(cfg), IDLE_RELEASE_S)
+            _SHARED[key] = shared
+    shared.acquire()
+    return shared

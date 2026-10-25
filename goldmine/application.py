@@ -146,8 +146,24 @@ class Application:
             raise ApplicationError("invalid_params", "reranking and multi-query need quality mode", exit_code=2)
 
     def _retrieve(self, store, backend, request, scorer):
+        # rank-window-001: the window arbitration rank head is armed only for
+        # pack-building requests (answer evidence assembly). Bare listing
+        # searches — including the latency bench — keep the ranker off, and
+        # their file scores never depended on window choice anyway.
+        ranker = None
+        if request.pack and self.reranker_factory is not None:
+            try:
+                # The factory product's lifetime is policy-managed by its
+                # provider (a shared lease reaps on idle; a raw LocalReranker
+                # is owned by the provider) — never closed here.
+                ranker = self.reranker_factory()
+            except Exception:
+                ranker = None
+        return self._retrieve_with_ranker(store, backend, request, scorer, ranker)
+
+    def _retrieve_with_ranker(self, store, backend, request, scorer, ranker):
         searcher = Searcher(store, None if request.lexical_only else backend,
-                            admission_parameters=self.admission_parameters)
+                            admission_parameters=self.admission_parameters, ranker=ranker)
         decisions = []
         # A2 (DigUp Engine.swift:749-760): count of file rows dropped because
         # the file vanished since the last ingest run; surfaces in settings.
