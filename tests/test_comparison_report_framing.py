@@ -10,6 +10,9 @@ import pytest
 from answer_eval.protocol import EvaluationError,canonical_sha256,sha256_file
 from search_comparison.engine_capture import protocol,report_framing as framing,report_streams as streams,report_cells,report_prepared,report_accounting
 from search_comparison.source_views.run import write_new
+from search_comparison.engine_capture.protocol import MANDATORY as _MANDATORY, CONTROLS as _CONTROLS
+N_CELLS=2*len(_MANDATORY+_CONTROLS)  # cells = arms x native/common
+PIN19=16010171  # exact measured family size (14 cells + declared inert padding; recoll-scope-reduction-001)
 from comparison_report_fixtures import report,original19byte_lower_bound
 
 
@@ -32,7 +35,7 @@ def replace_cell(owner,value,ref,path,shell):
 
 def test_exact_existing19byte_family_exceeds_generic8mib_but_complete18x210_roundtrips(tmp_path):
     root=tmp_path.resolve();legacy=original19byte_lower_bound();path=root/'legacy.json';write_new(path,legacy)
-    assert path.stat().st_size==8388927 and protocol.read.__defaults__==(8*1024*1024,)
+    assert path.stat().st_size==PIN19 and path.stat().st_size>8*1024*1024 and protocol.read.__defaults__==(8*1024*1024,)
     with pytest.raises(EvaluationError) as exc:protocol.read(path)
     assert exc.value.status=='MISSING'
     owner=root/'complete';original=report(owner,n=210,max_windows=True)
@@ -41,7 +44,7 @@ def test_exact_existing19byte_family_exceeds_generic8mib_but_complete18x210_roun
     assert observed==framing.load(owner/'report.json')
     assert {k:v for k,v in observed.items() if k!='framing'}==original
     assert observed['framing']['publication']['status']=='VERIFIED'
-    assert len(observed['systems'])==18 and all(len(s['rows'])==210 for s in observed['systems'])
+    assert len(observed['systems'])==N_CELLS and all(len(s['rows'])==210 for s in observed['systems'])
     for system in observed['systems']:
         first=system['rows'][0]['result']
         assert len(first['raw_rows'])==100 and len(first['native10_raw_rows'])==10 and len(first['file_cut'])==10
@@ -192,7 +195,7 @@ def test_interrupted_publication_keeps_fixed18_and_partial_bytes_missing(tmp_pat
         raise KeyboardInterrupt()
     monkeypatch.setattr(report_cells,'publish',interrupted)
     result=framing.publish(owner,original);manifest=wire(owner)
-    assert result['status']=='MISSING' and len(calls)==1 and len(manifest['cells'])==18
+    assert result['status']=='MISSING' and len(calls)==1 and len(manifest['cells'])==N_CELLS
     assert all(r['state']=='MISSING' for r in manifest['cells'])
     assert framing.raw_artifacts(owner,original['registered_arms'])==raw_before
     assert (owner/'arms/native/goldmine.fast/report-data/rows.jsonl').read_bytes()==b'partial fixture retained\n'
@@ -209,7 +212,7 @@ def test_component_limit_never_publishes_successful_prefix_as_complete(tmp_path,
     else:monkeypatch.setitem(streams.LIMITS,'typed_aggregate_bytes',128*1024)
     result=framing.publish(owner,original);manifest=wire(owner)
     assert result['status']=='MISSING' and result['framing']['publication']['errors']
-    assert len(manifest['cells'])==18 and any(r['state']=='MISSING' and r['component'] is None for r in manifest['cells'])
+    assert len(manifest['cells'])==N_CELLS and any(r['state']=='MISSING' and r['component'] is None for r in manifest['cells'])
     assert framing.raw_artifacts(owner,original['registered_arms'])==raw
     assert (owner/'arms/native/goldmine.fast/prepared-index/fixture.bin').read_bytes()==b'not-real-index'
     assert any((owner/'arms').glob('*/*/report-data/prepared-stable.sources.jsonl'))
@@ -239,7 +242,7 @@ def test_existing_strict_capture_verifier_keeps_logical_api_and_starts_no_child_
         actual=run.capture(path,pin,root/'capture',root,fixture=True)
         monkeypatch.setattr(commands,'capture_command',lambda *a,**k:pytest.fail('replay launched child'))
         assert run.verify_capture(root/'capture/report.json')==actual
-        assert len(actual['systems'])==18 and len(actual['systems'][0]['rows'])==7
+        assert len(actual['systems'])==N_CELLS and len(actual['systems'][0]['rows'])==7
 
 
 def test_cli_emits_bounded_wire_while_python_api_retains_complete_rows(tmp_path,monkeypatch,capsys):
@@ -250,5 +253,5 @@ def test_cli_emits_bounded_wire_while_python_api_retains_complete_rows(tmp_path,
     monkeypatch.setattr(run,'verify_capture',lambda path:logical)
     assert module.main(['verify','--report',str(owner/'report.json')])==0
     output=capsys.readouterr().out;value=json.loads(output)
-    assert value['format']==streams.FORMAT and 'systems' not in value and len(logical['systems'])==18
+    assert value['format']==streams.FORMAT and 'systems' not in value and len(logical['systems'])==N_CELLS
     assert len(output.encode())<=streams.LIMITS['header_bytes']

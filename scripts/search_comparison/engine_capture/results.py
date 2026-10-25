@@ -104,14 +104,21 @@ def _recoll(text, mapping):
     if (total > 100) != ("printing" in lines[1]):
         raise EvaluationError("Recoll count saturation framing is contradictory")
     rows = []
+    directory_rows = 0
     for i, (encoded,) in enumerate(entries, 1):
         try:
             url = base64.b64decode(encoded, validate=True).decode("utf-8")
         except (binascii.Error, UnicodeError) as exc:
             raise EvaluationError("Recoll file URI is not base64 UTF8") from exc
-        rows.append({"source_path": mapping.recoll_url(url), "engine_rank": i, "engine_id": url, "score": None,
+        source_path = mapping.recoll_url(url)
+        if source_path is None:
+            # Recoll's default inode/directory pseudo-document: retained raw,
+            # never part of a file window (capture-completion-fix-001).
+            directory_rows += 1
+        rows.append({"source_path": source_path, "engine_rank": i, "engine_id": url, "score": None,
                      "raw": {"url": url}, "position_status": "NOT_COMPARABLE_UNVERIFIED_ORIGINAL_COORDINATES"})
-    return rows, {"processed_query": lines[0], "reported_total": total, "treatment": {"status": "ENGINE_NATIVE_PIPELINE"}}
+    return rows, {"processed_query": lines[0], "reported_total": total, "directory_rows": directory_rows,
+                  "treatment": {"status": "ENGINE_NATIVE_PIPELINE"}}
 
 
 def parse_result(text, arm, mapping, index):
@@ -121,8 +128,9 @@ def parse_result(text, arm, mapping, index):
         rows, meta = _qmd(parse_json(text, "QMD stdout"), index)
     else:
         rows, meta = _recoll(text, mapping)
-    window = file_window([r["source_path"] for r in rows])
-    first = {r["source_path"]: r for r in reversed(rows)}
+    files = [r for r in rows if r["source_path"] is not None]
+    window = file_window([r["source_path"] for r in files])
+    first = {r["source_path"]: r for r in reversed(files)}
     cut = [{**first[p], "file_rank": i} for i, p in enumerate(window["files"], 1)]
     return {"raw_rows": rows, "file_cut": cut, "window": window, "native10_raw_rows": rows[:10],
             "position_status": "NOT_COMPARABLE_UNVERIFIED_ORIGINAL_COORDINATES", **meta}

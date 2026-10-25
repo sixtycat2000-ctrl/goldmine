@@ -49,10 +49,14 @@ def setup(owner, name, paths, view, *, replay=False):
     values = dict(paths, selected_corpus=view["corpus"], native_corpus=view["corpus"], common_corpus=view["corpus"])
     if name == "goldmine":
         cfg = owner / "goldmine.toml"
+        # [search] request_timeout_s aligns the engine's internal client
+        # deadline with the plan's preregistered 600s query wall (the product
+        # default 10s/5s interactive deadline silently overrides it otherwise;
+        # capture-completion-fix-001).
         text_file(cfg, '[core]\nhome = ' + json.dumps(str(owner / "home")) + '\n[backend]\ndefault = "llama"\n'
                        '[llama]\nserver = ' + json.dumps(paths["server"]) + '\nmodel = ' + json.dumps(paths["embedding"]) +
                        '\n[models]\ndir = ' + json.dumps(paths["models"]) + '\n[ingest]\nasr = "always"\nasr_whisper = ' + json.dumps(paths["whisper"]) +
-                       '\nasr_language = "auto"\nasr_max_minutes = 120.0\n[ocr]\nenabled = true\n')
+                       '\nasr_language = "auto"\nasr_max_minutes = 120.0\n[ocr]\nenabled = true\n[search]\nrequest_timeout_s = 600.0\n')
         values.update(goldmine_db=str(owner / "index.sqlite"), goldmine_config=str(cfg))
     elif name == "qmd":
         cfg = owner / "qmd-config"
@@ -78,11 +82,8 @@ def setup(owner, name, paths, view, *, replay=False):
         # them literally, so a JSON-quoted absolute path is treated as relative
         # and index creation fails on a quote-containing mkdir (see
         # recoll-conf-fix-001). Owned paths never contain newlines/quotes.
-        # excludedmimetypes drops the factory-default inode/directory pseudo
-        # documents (recoll-dir-exclusion-fix-001): file retrieval is the
-        # comparison's object and the mapping is frozen to the 122 files.
         text_file(cfg / "recoll.conf", "topdirs = " + view["corpus"] +
-            "\ndbdir = " + str(owner / "recoll-db") + "\nloglevel = 2\nindexStoreDocText = 1\npreferStoredTextMimes = *\nexcludedmimetypes = inode/directory\n")
+            "\ndbdir = " + str(owner / "recoll-db") + "\nloglevel = 2\nindexStoreDocText = 1\npreferStoredTextMimes = *\n")
         if view["name"] == "common":
             # Shared converted input is plain UTF8, not another Markdown -> HTML
             # conversion. Native view keeps the installed MIME/filter behavior.

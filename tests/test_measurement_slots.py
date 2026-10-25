@@ -72,14 +72,14 @@ def test_actual1728_writer_complete1000row_cache_roundtrip_and_final_cell_census
     assert old.stat().st_size>storage.ROOT_ADMIN_BYTES
     assert storage.root_accounting(old_report)['root_administration']['status']=='FAIL'
     rootref=slots.index(owner,schedule,entries)
-    assert rootref['rows']==1728 and warmed==126
+    assert rootref['rows']==1344 and warmed==126  # qmd.query warm+prime slots: 2 views x 63, arm-set invariant
     assert slots.observations(rootref,schedule,owner)==observations
     assert all(len(filesystem.index_witness(s['path'],'qmd')['cache'])==1000 for s in states.values())
     index=Path(rootref['path']);new_report={'artifacts':{'slots.jsonl':{'bytes':index.stat().st_size,'allocated_bytes':index.stat().st_blocks*512}},
                                           'status':'MISSING','full_comparison_status':'MISSING','resource_status':'MISSING'}
     assert storage.root_accounting(new_report)['root_administration']['status']=='PASS'
     assert index.stat().st_size<1024*1024
-    assert all('pre_index' not in r and 'clock' not in r for r in storage.read_lines({k:rootref[k] for k in ('path','sha256','rows')},1728))
+    assert all('pre_index' not in r and 'clock' not in r for r in storage.read_lines({k:rootref[k] for k in ('path','sha256','rows')},1344))
     for view in selection.VIEWS:
         for arm in selection.ARMS:
             ledger=SimpleNamespace(owner=owner/'cells'/view/arm,replay=None)

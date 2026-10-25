@@ -260,7 +260,7 @@ def test_actual_fixture_export_fixed_missing_matrix_and_disk_replay(owner):
         assert "unselected" not in exported.read_text()
         report = capture(path, pin, owner / "capture", owner, fixture=True)
         assert report["status"] == "MISSING"
-        assert len(report["systems"]) == 18
+        assert len(report["systems"]) == 14  # 7 arms x 2 views (recoll-scope-reduction-001)
         assert all(len(s["rows"]) == 7 and not s["commands"] for s in report["systems"])
         assert report["full_comparison_status"] == "MISSING_PERFORMANCE_UPDATE_RESOURCE_PHASES"
         assert verify_capture(owner / "capture/report.json") == report

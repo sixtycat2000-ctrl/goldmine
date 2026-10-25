@@ -112,4 +112,10 @@ def original19byte_lower_bound():
                 qrel={'id':request['id'],'relevance':{} if request['primary_class']=='noise' else {'d000.txt':3}}
                 rows.append({**request,'ordinal':n+1,'status':'OK','result':parsed,'metrics':run._metrics(request,qrel,parsed),'error':None})
             systems.append({'arm':arm,'view':view,'rows':rows})
-    return {'schema':1,'systems':systems,'evidence_mode':'fixture','quality_evidence':False,'release_eligible':False}
+    # Declared inert padding keeps this synthetic (non-receipt) family above
+    # the generic 8MiB read bound at any registered arm count, preserving the
+    # exact-size regression pin's premise after the 14-cell scope reduction.
+    import sys as _sys
+    pad = 'x' * max(0, 8 * 1024 * 1024 + 64 * 1024 - _sys.getsizeof(systems) - 4096)
+    return {'schema':1,'systems':systems,'evidence_mode':'fixture','quality_evidence':False,'release_eligible':False,
+            'declared_inert_padding':pad}

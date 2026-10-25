@@ -92,6 +92,10 @@ class SearchCfg:
     limit: int = 20
     z_gate: float = 3.0  # single qualification rule (v2.1 A/B; see search.py)
     scorer: str = "hybrid"
+    # None keeps the interactive per-request defaults (10s quality / 5s fast);
+    # an explicit value raises the client request deadline for long-budget
+    # callers (batch evaluation, the P2-08 comparison's 600s query wall).
+    request_timeout_s: float | None = None
 
 
 @dataclass
@@ -266,6 +270,8 @@ def _apply_section(cfg: Config, section: str, data: dict[str, Any]) -> None:
             cfg.search.z_gate = v
         if "scorer" in data:
             cfg.search.scorer = str(data["scorer"])
+        if "request_timeout_s" in data and data["request_timeout_s"] is not None and (v := _coerce_float(data["request_timeout_s"])) is not None:
+            cfg.search.request_timeout_s = v
         unknown(section, data, set(SearchCfg.__dataclass_fields__))
     elif section == "distill":
         if "threshold" in data and (v := _coerce_float(data["threshold"])) is not None:

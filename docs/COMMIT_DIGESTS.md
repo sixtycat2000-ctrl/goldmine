@@ -241,3 +241,29 @@ tests/test_index_lifecycle_regressions.py tests/test_sources_repair.py`。
 `goldmine forget TARGET --db PATH --dry-run` 看范围。完整回执保存在本工作树
 的 `reports/execution/lifecycle-repair-20261025/`，能力与质量摘要见
 [FEATURE_STATUS](FEATURE_STATUS.md)。
+
+## Merge: P2-08 fair-comparison fixes (p2-08-fair-comparison → main)
+
+**关键行**
+- `goldmine/config.py` + `goldmine/commands/search.py`: 新增 `[search] request_timeout_s`（默认 None=保持 10s/5s 交互死线；显式设定时提高客户端请求预算）
+- `scripts/search_comparison/engine_capture/settings.py`: recoll.conf 用原始标量路径；goldmine.toml 写入 request_timeout_s=600（对比配置）
+- `scripts/search_comparison/engine_capture/{indexes,results,plan,protocol}.py`、`adapters.py`、`source_views/media.py`: 8 项审计/解析/边界修复；臂注册表 9→7（owner 指示移除 Recoll）
+- `tests/`: 硬编码 18 格/1728 槽/字节钉全部改为从协议推导或按 14 格重钉（含夹具加声明式填充以保持 ">8MiB" 前提）
+
+**每行的风险**
+- request_timeout_s: 默认关闭，现有用户行为零变化；配置解析走既有 unknown-key 拒绝路径；若设定过小，长查询会提前超时（对比里设 600=计划冻结的查询墙）
+- 协议 9→7 臂：任何依赖 18 格的下游（报告汇总/测量包）需同步——测试已全部改齐
+- 字节钉 PIN19=16010171：依赖夹具生成器字节级稳定，改动 fixtures 需重钉
+
+**不确定的地方**
+- 对方会话的 test_existing_strict_capture_verifier 合并前在 main 上失败；合并后通过（被 N_CELLS/夹具修复顺带覆盖），未单独根因分析
+- measurements 正式机仍有 1 处未修的休眠假设（更新见证），本合并不含其修复
+
+**90 秒验证**
+```
+PYTHONPATH=scripts:. reports/execution/tooling/mcp-venv/bin/python -B -m pytest \
+  tests/test_comparison_engines.py tests/test_comparison_measurements.py \
+  tests/test_comparison_source_views.py tests/test_measurement_execution.py \
+  tests/test_measurement_slots.py tests/test_comparison_report_framing.py -q   # 373 passed
+python3 -m goldmine search --help   # 无新旗标（配置项在 goldmine.toml [search]）
+```

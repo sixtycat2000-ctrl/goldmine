@@ -97,10 +97,10 @@ def test_complete18_by1728_missing_matrix_replays_without_any_children(tmp_path,
     monkeypatch.setattr(commands,'capture_command',lambda *a,**k:pytest.fail('unavailable matrix must not start a child'))
     report=_execute(root,ref,baseref,plan,packet,baseline)
     assert report['status']=='MISSING' and report['full_comparison_status']=='MISSING'
-    assert len(report['systems'])==18 and report['slots']['rows']==1728
+    assert len(report['systems'])==14 and report['slots']['rows']==1344
     observed=slots.observations(report['slots'],packet['schedule'],root)
     assert all(r['status']=='MISSING' and r['command'] is None for r in observed)
-    assert sum(r['n_fixed'] for r in report['timing']['cells'])==1080
+    assert sum(r['n_fixed'] for r in report['timing']['cells'])==840
     for pair,cellref in zip([(v,a) for v in VIEWS for a in ARMS],report['systems']):
         cell=storage.load_cell(cellref,root/'cells'/pair[0]/pair[1])
         assert len(cell['updates']['operations'])==19 and cell['commands']==[]
@@ -151,8 +151,8 @@ def test_final_source_failure_stays_complete_missing_report_and_replays(tmp_path
     plan.bundle.verify=source_changed
     ref={'path':str(tmp_path.resolve()/'declared-unused.json'),'sha256':'b'*64}
     report=_execute(root,ref,ref,plan,packet,baseline)
-    assert report['final_integrity']['status']=='MISSING' and report['slots']['rows']==1728
-    assert len(report['systems'])==18 and report['status']=='MISSING'
+    assert report['final_integrity']['status']=='MISSING' and report['slots']['rows']==1344
+    assert len(report['systems'])==14 and report['status']=='MISSING'
     assert all(r['complete_service_latency'] is None for r in report['timing']['cells'])
     assert _execute(root,ref,ref,plan,packet,baseline,saved=report)==report
 

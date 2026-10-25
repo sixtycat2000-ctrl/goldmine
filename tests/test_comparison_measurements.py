@@ -74,7 +74,7 @@ def test_complete_interleaved_schedule_and_prime_links():
             assert prime["ordinal"]+1==s["ordinal"] and prime["id"]==s["id"]
             assert prime["role"]=="cache_prime" and not s["restore_pre_query_snapshot"]
     first=[s for s in slots if s["role"]=="measured"][:36]
-    assert len({(s["view"],s["arm"]) for s in first})==18
+    assert len({(s["view"],s["arm"]) for s in first})==14
 
 
 @pytest.mark.parametrize("mutation",["drop", "swap", "duplicate", "trailing-null"])
