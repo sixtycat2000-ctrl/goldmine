@@ -41,6 +41,13 @@ def _cfg(tmp_path, *, helper: Path | None = None, mmproj: Path | None = None,
     cfg.embed_helper_configured = True
     cfg.mmproj = str(mmproj if mmproj is not None else (tmp_path / "mmproj.gguf"))
     cfg.mmproj_configured = True
+    # The text model must resolve for MediaEmbedder.resolvable(); machines
+    # without the pinned models/ checkout need an explicit fake payload.
+    fake_model = tmp_path / "fake-model.gguf"
+    if not fake_model.exists():
+        fake_model.write_bytes(b"fake-model")
+    cfg.model = fake_model
+    cfg.model_configured = True
     cfg.startup_timeout = startup_timeout
     cfg.request_timeout = request_timeout
     return cfg
