@@ -103,6 +103,49 @@ def test_margin_below_two_keeps_the_semantic_primary(store):
     assert chosen.primary == sem_top and chosen.demoted_semantic_primary is None
 
 
+# ------------------------------------------- span-window-v2-001 tier-2 takeover
+
+def test_margin_one_with_z_qualification_and_parity_demotes(store):
+    """Tier 2: one extra window unit swaps two semantically comparable windows."""
+    query = "connect timeout"
+    file, (sem_top, other) = source(store, ["connect settings explained", "the connect timeout"])
+    words = lexical_for(file, query, [(sem_top, {0}), (other, {0, 1})])
+    chosen = select_evidence(store, file, sem_top, words, [(sem_top, 5.0, .9), (other, 4.0, .85)], query_text=query)
+    assert chosen.primary == other and chosen.demoted_semantic_primary == sem_top
+
+
+def test_margin_one_without_z_gate_keeps_the_semantic_primary(store):
+    query = "connect timeout"
+    file, (sem_top, other) = source(store, ["connect settings explained", "the connect timeout"])
+    words = lexical_for(file, query, [(sem_top, {0}), (other, {0, 1})])
+    chosen = select_evidence(store, file, sem_top, words, [(sem_top, 5.0, .9), (other, 2.5, .7)], query_text=query)
+    assert chosen.primary == sem_top and chosen.demoted_semantic_primary is None
+
+
+def test_margin_two_takes_over_even_without_any_z(store):
+    """Tier 1 stays z-independent: a strong window lead needs no semantic score."""
+    query = "connect timeout applies"
+    file, (sem_top, other) = source(store, ["connect explained settings", "the connect timeout applies to calls"])
+    words = lexical_for(file, query, [(sem_top, {0}), (other, {0, 1, 2})])
+    chosen = select_evidence(store, file, sem_top, words, [(sem_top, 5.0, .9)], query_text=query)
+    assert chosen.primary == other and chosen.demoted_semantic_primary == sem_top
+
+
+def test_zless_global_max_shadows_a_qualified_margin_one_peer(store):
+    """Single-challenger semantics: the (window, units, z) global max is the only
+    candidate tested, so a z-less margin-1 max blocks a peer that tier 2 would
+    have admitted (span-window-v2-001 shadowing invariant)."""
+    query = "connect timeout applies"
+    spread = "connect timeout filler " + "x " * 200 + "applies noted"
+    texts = ["connect explained settings", "the connect timeout answered", spread]
+    file, ids = source(store, texts)
+    sem_top, other, zless = ids
+    words = lexical_for(file, query, [(sem_top, {0}), (other, {0, 1}), (zless, {0, 1, 2})])
+    chosen = select_evidence(store, file, sem_top, words, [(sem_top, 5.0, .9), (other, 4.0, .85)], query_text=query)
+    # zless carries the best units at margin 1, fails tier 2 (no z), and no fallback scan
+    assert chosen.primary == sem_top and chosen.demoted_semantic_primary is None
+
+
 def test_challenger_needs_at_least_as_many_body_units(store):
     query = "alpha beta gamma delta"
     file, (sem_top, dense) = source(store, ["alpha beta gamma delta spread " + "z " * 200 + "alpha",

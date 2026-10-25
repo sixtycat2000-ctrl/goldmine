@@ -23,8 +23,14 @@ from .lexical import normalize
 #: more distinct query units inside one WINDOW_CHARS-character window of its
 #: stored text while carrying at least as many body units. The matching rule
 #: below is frozen by the preregistration; FTS/stem positions are not used.
+#:
+#: span-window-v2-001 tiers the takeover: a WINDOW_MARGIN lead still swaps
+#: unconditionally; a margin-1 lead swaps only between two semantically
+#: qualified windows whose z-scores stay within WINDOW_Z_PARITY of each other
+#: (a lexical-only or far-weaker window never wins on one extra unit).
 WINDOW_CHARS = 200
 WINDOW_MARGIN = 2
+WINDOW_Z_PARITY = 1.5
 WINDOW_POSITION_CAP = 64
 _LATIN_TOKEN = re.compile(r"[0-9a-z]+")
 
@@ -215,8 +221,13 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
                 windows[row[0]] = window_units(row[5], query_units_meta)
             challenger = max((row[0] for row in content), key=lambda sid: (
                 windows[sid], len(units.get(sid, ())), semantic_z.get(sid, float("-inf")), -sid))
-            if (challenger != primary and windows[challenger] >= windows[primary] + WINDOW_MARGIN
-                    and len(units.get(challenger, ())) >= len(units.get(primary, ()))):
+            margin = windows[challenger] - windows[primary]
+            if (challenger != primary and len(units.get(challenger, ())) >= len(units.get(primary, ()))
+                    and (margin >= WINDOW_MARGIN
+                         or (margin == WINDOW_MARGIN - 1
+                             and semantic_z.get(challenger, float("-inf")) >= z_gate
+                             and semantic_z.get(challenger, float("-inf"))
+                             >= semantic_z.get(primary, float("-inf")) - WINDOW_Z_PARITY))):
                 demoted, primary = primary, challenger
     elif content and units.get(content[0][0]):
         primary = content[0][0]
