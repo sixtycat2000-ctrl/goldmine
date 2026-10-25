@@ -13,13 +13,30 @@ from .legacy_anchors import LegacyCandidates
 from .lexical import (ExactMatch, cjk_runs, fts_quote, grams, identifier_tokens,
                       normalize, path_identifier_tokens, query_units, term_forms, _is_cjk)
 from .query_obligations import (MAX_SOURCE_ROWS, QUOTE_PROVENANCE_SEGMENT_CAP,
-                                Anchor, compact_alias, lexemes,
+                                Anchor, anchor_strength, compact_alias, lexemes,
                                 literal_equal, path_plausible, quote_normalize,
                                 typed_normalize)
 
 
 class VerificationBound(ValueError):
     """Recall was bounded; never infer absence from a truncated view."""
+
+
+#: info-recall-001 metadata tier grammar: the WHOLE anchor, casefolded to its
+#: maximal [0-9a-zà-ÿł]+ body, equals one maximal word token of a file's own
+#: name surfaces or recorded info values. Component parts never match on
+#: their own (`ssl.TLSVersion.TLSv1_9` flattens to one token and binds
+#: nothing; its `ssl` component is NOT a binding surface).
+_FLAT_KEEP = re.compile(r"[^0-9a-zà-ÿł]+")
+_FLAT_TOKEN = re.compile(r"[0-9a-zà-ÿł]+")
+
+
+def _flat_anchor(raw):
+    return _FLAT_KEEP.sub("", unicodedata.normalize("NFKC", raw).lower())
+
+
+def _flat_tokens(value):
+    return _FLAT_TOKEN.findall(unicodedata.normalize("NFKC", value or "").lower())
 
 
 #: Code rows where a bound surface is DEFINED rather than mentioned: a
@@ -162,6 +179,7 @@ class Resolver:
         self.witnesses: set[int] = set()
         self.queries = 0
         self._quote_cache: dict[int, str | None] = {}
+        self._bodyless: dict[int, bool] = {}
 
     def execute(self, sql, values=()):
         check_deadline()
@@ -375,6 +393,9 @@ class Resolver:
             found = self._qualified(anchor)
         if not found and not body_only and anchor.kind == "path" and path_plausible(anchor.raw):
             found = self._path_suffix(anchor)
+        if not found and not body_only and anchor.kind == "identity" \
+                and anchor_strength(anchor) == "obligatory":
+            found = self._metadata(anchor)
         # One deterministic witness for each logical source-field binding;
         # repeated occurrences in a long file cannot multiply per-hit why.
         # Among a code file's body rows the definition outranks a mention.
@@ -428,6 +449,52 @@ class Resolver:
             output.append(Binding(anchor.id, fid, name[0], "path", tail,
                                   "path_suffix", 3, anchor.raw))
         return output
+
+    def _metadata(self, anchor):
+        """Whole-anchor flat equality over each file's own name/info surfaces
+        (info-recall-001): the tier of last resort for an obligatory identity
+        anchor whose ordinary routes found nothing. A match proves the file is
+        NAMED for (or records the metadata value of) the anchor — weaker than
+        every ordinary binding, so level 3 and never a ranking input. The
+        bounded name-row scan shares the C-5c budget discipline: the +1 row
+        distinguishes truncation; scanned rows do not enter `attempted`.
+        Quote/literal anchors never enter (their provenance promise — the
+        corpus stores this very text — is not satisfied by a token hit)."""
+        flat = _flat_anchor(anchor.raw)
+        if not flat or not _FLAT_TOKEN.fullmatch(flat):
+            return []
+        rows = self.execute(
+            "SELECT s.id,s.file,f.path,f.info,t.name FROM segments s "
+            "JOIN files f ON f.id=s.file LEFT JOIN fts t ON t.rowid=s.id "
+            "WHERE s.kind='name' ORDER BY s.id LIMIT ?",
+            (MAX_SOURCE_ROWS + 1,),
+        ).fetchall()
+        if len(rows) > MAX_SOURCE_ROWS:
+            raise VerificationBound("anchor_verification_bound")
+        output = []
+        for sid, fid, path, info, name_col in rows:
+            if fid not in self.allowed:
+                continue
+            value = decode_info(info) or {}
+            surfaces = [("basename", name_col), ("basename", PurePath(path).name)]
+            for key in ("taken_source", "taken"):
+                if isinstance(value.get(key), str):
+                    surfaces.append(("info", value[key]))
+            for field, surface in surfaces:
+                if flat in _flat_tokens(surface):
+                    output.append(Binding(anchor.id, fid, sid, field, surface,
+                                          "metadata_token", 3, anchor.raw))
+                    break
+        return output
+
+    def is_bodyless(self, file_id):
+        """True when the file has no non-name segments (its whole searchable
+        material is the name row). Cached per request."""
+        if file_id not in self._bodyless:
+            self._bodyless[file_id] = self.execute(
+                "SELECT EXISTS(SELECT 1 FROM segments WHERE file=? AND kind!='name')",
+                (file_id,)).fetchone()[0] == 0
+        return self._bodyless[file_id]
 
     def _qualified(self, anchor):
         """module[.Qualifier...].symbol -> the module's file, when every

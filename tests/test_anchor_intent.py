@@ -379,6 +379,10 @@ def test_F6_c_int_fixture_payloads_byte_identical_to_frozen_baseline(index):
         fid = index.upsert_file(FileRec(path=path, kind="doc", state="done",
             capability="content_indexed", info={"title": title} if title else None))
         index.fts_text(fid, "chunk", 7, text, False, loc_end=7, excerpt_text=text)
+    # info-recall-001 re-pin: the metadata tier adds ONE bounded name-scan
+    # query for unbound obligatory anchors ('-.5mA', '.5m'), so their
+    # `queries` counter rose by 1; every decision field (plan/owners/
+    # bindings/witnesses/exact/reason) stayed byte-identical for all 15.
     baseline = _json.loads((_Path(__file__).parent / "anchor_intent_cint_baseline.json")
                            .read_text())
     for query, expected in baseline.items():

@@ -79,7 +79,8 @@ def _finish(decision, resolver):
 
 
 def _best_exact(bindings):
-    order = {"raw": 0, "alias": 1, "qualified_components": 2, "path_suffix": 3}
+    order = {"raw": 0, "alias": 1, "qualified_components": 2, "path_suffix": 3,
+             "metadata_token": 4}
     output = {}
     for b in sorted(bindings, key=lambda b: (b.level, order[b.match_type],
                                              b.segment_id, b.field)):
@@ -227,7 +228,21 @@ def _owners(plan, query, resolver, terms_of, *, spans=None):
         # SC-01: the clause's pure remainder units are identical for every
         # eligible file; prepare them once per clause in registered order.
         units = remainder_units(clause.remainder, terms_of)
+        # info-recall-001 bodyless exemption: a metadata-bound file whose only
+        # segment is the name row has no body a remainder could witness — the
+        # question is vacuous, the binding stands, and the exemption is
+        # disclosed as its own witness kind. Scoped to metadata bindings;
+        # phrases keep their body-literal requirement.
+        metadata_bound = {b.file_id: b for b in bindings
+                          if b.match_type == "metadata_token" and b.anchor_id in clause.anchor_ids}
         for fid in sorted(eligible):
+            binding = metadata_bound.get(fid)
+            if (binding is not None and not clause.phrases
+                    and resolver.is_bodyless(fid)):
+                accepted.add(fid)
+                witnesses[clause.id, fid] = (
+                    ("metadata_bodyless", binding.query_term, binding.segment_id),)
+                continue
             proof = resolver.remainder(fid, clause.remainder, clause.phrases, terms_of, units=units)
             if proof is not None:
                 accepted.add(fid)
