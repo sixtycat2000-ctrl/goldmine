@@ -289,12 +289,12 @@ GENERATED_MARKERS = (
 
 def code_content_refusal(text: str) -> str | None:
     """Content-level refusal for CODE-path files (DigUp CodeExtractor.swift
-    :41-61 port): a private-key block anywhere, a generated-file marker in
-    the head, or minified content (avg line > 300 chars AND some line >
-    3000). None = index normally. Keys pasted into a code-root .md are as
-    refused as keys in .py — extension-based is_secret cannot see content."""
-    if "PRIVATE KEY-----" in text:
-        return "holds a private key"
+    :53-61 port, key-scan REMOVED by user decision 2026-10-25: goldmine is
+    purely local — a key pasted into one's own code file is indexable, no
+    moralizing content rules; the extension-based is_secret (.pem/.key/...)
+    gate is unchanged). Remaining refusals are QUALITY judgments, not safety:
+    a generated-file marker in the head, or minified content (avg line > 300
+    chars AND some line > 3000) — machine output that pollutes search."""
     head = text[:1000]
     for marker in GENERATED_MARKERS:
         if marker in head:

@@ -1,8 +1,12 @@
 """P2: code-content guards + notebook cell extraction (DigUp CodeExtractor
-port). Private keys pasted into code-root files are refused by CONTENT, not
-just extension; generated and minified files are honest unsupported rows;
-notebooks are read as cells and their outputs (base64 blobs) never enter
-the index — previously the raw JSON was chunked as code text.
+port). Generated and minified files are honest unsupported rows (QUALITY
+refusals); notebooks are read as cells and their outputs (base64 blobs)
+never enter the index — previously the raw JSON was chunked as code text.
+
+User decision 2026-10-25: the private-key CONTENT scan is REMOVED — goldmine
+is purely local, a key pasted into one's own code file is indexable. The
+extension-based is_secret (.pem/.key/.env...) gate is unchanged. The test
+below pins that stance so it is not silently re-added.
 """
 
 from __future__ import annotations
@@ -14,9 +18,12 @@ import pytest
 from goldmine.ingest.rules import code_content_refusal
 
 
-def test_private_key_refused_anywhere_in_content():
+def test_private_key_content_is_indexed_pure_local():
+    """User decision 2026-10-25: goldmine is purely local — a key pasted
+    into one's own code file is indexable content, not a refusal. Only the
+    extension-based is_secret gate exists (unchanged, tested in test_rules)."""
     text = "notes about deployment\n\n-----BEGIN RSA PRIVATE KEY-----\nMIIE...\n"
-    assert code_content_refusal(text) == "holds a private key"
+    assert code_content_refusal(text) is None
 
 
 @pytest.mark.parametrize(
@@ -122,13 +129,14 @@ def test_notebook_nbformat3_and_malformed(tmp_home, tmp_path):
     assert "not a valid notebook" in (rec.detail or "")
 
 
-def test_private_key_py_is_unsupported(tmp_home, tmp_path):
+def test_private_key_py_is_indexed_pure_local(tmp_home, tmp_path):
+    """Same stance end-to-end: a code file containing a key block indexes
+    normally (pure local — no content-level key refusal)."""
     report, rec, caps = _pipeline_outcome(
         tmp_home, tmp_path, "leaked.py",
         "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAA\n",
     )
-    assert rec.capability == "unsupported"
-    assert rec.detail == "holds a private key"
+    assert rec.capability == "content_indexed"
 
 
 def test_generated_and_minified_py_unsupported(tmp_home, tmp_path):
