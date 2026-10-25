@@ -373,12 +373,16 @@ EXTRACTOR_VERSIONS: dict[str, str] = {
     # dedup, JPEG ≤1024, maxFrames 1200) — audio-window semantics unchanged,
     # but the media family version moves once so every media row re-extracts
     # (same shape as the digup-plan-002 media bump).
-    "media": "media-ffmpeg-mm.v2",
+    # digup-p2-closeout-001 B1 bump: the audio tail gate (>= 2 s NEW audio,
+    # DigUp MediaExtractors.swift:76) moves the family v2 -> v3. The literal
+    # mirrors ingest.media.MEDIA_EXTRACTOR_VERSION (pinned equal by
+    # tests/test_v2_identity.py — drift means rows go stale forever).
+    "media": "media-ffmpeg-mm.v3",
     # transcribed videos carry transcript chunks AND frame segs; composed by
     # extraction from the ASR outcome version + the media value. Either side
     # bumping without updating here leaves the string out of the registry ->
     # rows go stale -> re-extract (the safe direction).
-    "asr+media": "asr-whisper.v2+media-ffmpeg-mm.v2",
+    "asr+media": "asr-whisper.v2+media-ffmpeg-mm.v3",
     # v2 ASR (item 6, 02 §5.1): whisper-cli + VAD transcript extraction —
     # audio/video files whose soundtrack became text segments. v2 bump (02 F8,
     # 2026-10-16): the transcript merge cap switched to est-tokens, so v1 rows
@@ -401,8 +405,15 @@ def current_extractors() -> set[str]:
     try:
         from .ingest.extract_pdf import pdftotext_version
 
-        versions.add(f"pdftotext@{pdftotext_version() or 'unknown'}")
-        versions.add(f"pdftotext+visionocr@{pdftotext_version() or 'unknown'}")
+        ver = pdftotext_version() or "unknown"
+        versions.add(f"pdftotext@{ver}")
+        versions.add(f"pdftotext+visionocr@{ver}")
+        # digup-p2-closeout-001 B2: Arabic lost-letter pages replaced via
+        # render->OCR->three-checks carry '+arocr' (alone or with thin-page
+        # visionocr on the same file — composition is sorted, so the combined
+        # form is +arocr+visionocr)
+        versions.add(f"pdftotext+arocr@{ver}")
+        versions.add(f"pdftotext+arocr+visionocr@{ver}")
     except RequestTimeout:
         raise
     except Exception:  # pragma: no cover - tool probing must never break status

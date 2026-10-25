@@ -40,8 +40,10 @@ ingest — index files and URLs
   goldmine ingest <PATH-or-URL> [more paths…]
 
 Folders are walked recursively (skips secrets, minified bundles, dataset
-folders, node_modules-class noise). URLs are crawled with a page/depth budget,
-respecting robots.txt.
+folders, node_modules-class noise, build outputs like build/target/dist/out).
+iCloud placeholders that were never downloaded (evicted to dataless) are
+skipped with their reason — indexing never triggers an iCloud download. URLs
+are crawled with a page/depth budget, respecting robots.txt.
 
 Common flags:
   --code              include source code / data files (off by default)
@@ -50,6 +52,11 @@ Common flags:
   --reindex           clear extracted content and re-extract everything
   --refresh-thin      re-extract scanned/thin PDF pages (OCR upgrade)
   --exclude GLOB      repeatable; relative or absolute patterns
+
+Before a big first ingest, `goldmine estimate <folder>` previews the expected
+minutes from metadata alone (nothing is read, embedded, or written; pdfinfo
+page counts and ffprobe durations when present, DigUp M4 Pro rate priors —
+goldmine's own calibration is pending).
 
 Every file gets an honest capability row (visible in `goldmine status`):
   content-indexed   fully searchable (text + vector)
@@ -93,8 +100,11 @@ Useful flags:
                    the fzf shell widget (scripts/shell/)
 
 Zero hits always prints `nothing found for '…'` plus a next step — never an
-error. Exit codes: 0 found-or-honest-zero · 3 index/model fingerprint mismatch
-(`goldmine reset --reindex` rebuilds; `--lexical` searches anyway).
+error. Results whose file vanished since the last ingest are filtered at
+query time (reported as `deleted_filtered` in --json settings) — a hit always
+points at something on disk. Exit codes: 0 found-or-honest-zero · 3 index/model
+fingerprint mismatch (`goldmine reset --reindex` rebuilds; `--lexical`
+searches anyway).
 """,
     "models": """\
 models — the pinned model manager

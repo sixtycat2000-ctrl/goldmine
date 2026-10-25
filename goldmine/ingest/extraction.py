@@ -355,7 +355,7 @@ class ExtractMixin:
         return _Outcome(
             capability="content_indexed",
             info=info,
-            extractor_version="media-ffmpeg-mm.v2",
+            extractor_version=media.MEDIA_EXTRACTOR_VERSION,
             media_segs=segs,
             partial=partial,
         )
@@ -383,6 +383,7 @@ class ExtractMixin:
             return []
         info["frames"] = len(kf.frames)
         info["frame_interval"] = round(kf.step, 3)
+        info["frame_timestamps"] = media.FRAME_TIMESTAMPS_VERSION
         return [
             _MediaSeg(
                 kind="frame",
@@ -417,7 +418,7 @@ class ExtractMixin:
             # transcript and the frame dimensions stay re-doable; a bump on
             # either side leaves the registry -> the row goes stale.
             outcome.extractor_version = (
-                f"{outcome.extractor_version}+media-ffmpeg-mm.v2"
+                f"{outcome.extractor_version}+{media.MEDIA_EXTRACTOR_VERSION}"
             )
         return outcome
 
@@ -465,7 +466,7 @@ class ExtractMixin:
             capability="content_indexed",
             detail=detail,
             info=info,
-            extractor_version="media-ffmpeg-mm.v2",
+            extractor_version=media.MEDIA_EXTRACTOR_VERSION,
             media_segs=segs,
             partial=partial,
         )

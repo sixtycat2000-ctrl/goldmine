@@ -95,6 +95,19 @@ def page_text_problem(text: str) -> str | None:
     return None
 
 
+def upgraded_pdftotext_version(tool_version: str, upgrades: set[str]) -> str:
+    """Compose 'pdftotext@<ver>' + sorted upgrade tags -> 'pdftotext+a+b@<ver>'.
+    Single-'visionocr' output is byte-identical to the legacy
+    replace('pdftotext@', 'pdftotext+visionocr@') form; fingerprints'
+    current_extractors registers every combination this can emit — the two
+    must stay in lockstep (digup-p2-closeout-001 B2 review D8)."""
+    tags = "".join(f"+{name}" for name in sorted(upgrades))
+    if not tags:
+        return tool_version
+    base, sep, ver = tool_version.partition("@")
+    return f"{base}{tags}{sep}{ver}"
+
+
 def _which(tool: str) -> str | None:
     """shutil.which with the brew poppler dir as fallback (monkeypatch-friendly)."""
     found = shutil.which(tool)

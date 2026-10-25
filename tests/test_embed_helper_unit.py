@@ -261,9 +261,11 @@ def test_fingerprint_with_media_joins_all_four_extras(tmp_path, mmproj_file, mon
     backend = LlamaServerBackend(cfg)
     assert backend._media.resolvable()
     fields = backend.fingerprint_fields()
-    # v4 (video-frames-001): keyframes land — the frames= clause replaced
-    # frames=deferred; budgets/routing unchanged (frame70 was frozen from day one)
-    assert fields["media"].startswith("v4:")
+    # v5 (digup-p2-closeout-001 B1): audio tail kept only with >=2 s NEW
+    # audio — the audio clause gains tail-min2s; frames/budgets/routing
+    # unchanged from v4 (video-frames-001).
+    assert fields["media"].startswith("v5:")
+    assert "rms-gate0.003,tail-min2s;" in fields["media"]
     assert "resize=bicubic-a-0.5-48px-fill-budget" in fields["media"]
     assert "frames=fps1/3,ahash4bit,jpeg1024,max1200" in fields["media"]
     assert fields["media_routing"] == "raw-audio-only-when-no-transcript.v1"

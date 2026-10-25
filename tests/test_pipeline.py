@@ -730,8 +730,8 @@ def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
     video = root / "clip.mp4"
     result = run_tool(
         [media.ffmpeg_path(), "-hide_banner", "-loglevel", "error",
-         "-f", "lavfi", "-i", "color=c=black:s=64x64:d=2",
-         "-f", "lavfi", "-i", "sine=frequency=440:duration=2",
+         "-f", "lavfi", "-i", "color=c=black:s=64x64:d=2.5",
+         "-f", "lavfi", "-i", "sine=frequency=440:duration=2.5",
          "-shortest", "-y", str(video)],
         timeout_s=60.0,
     )
@@ -742,15 +742,15 @@ def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(video))
     assert rec and rec.capability == "content_indexed"
-    assert rec.extractor_version == "media-ffmpeg-mm.v2"
-    assert rec.info["duration"] == pytest.approx(2.0, abs=0.3)
+    assert rec.extractor_version == "media-ffmpeg-mm.v3"
+    assert rec.info["duration"] == pytest.approx(2.5, abs=0.3)
     rows = store.db.execute(
         "SELECT kind, modality, loc, loc_end, vec FROM segments "
         "WHERE file = ? AND kind = 'audio'", (rec.id,),
     ).fetchall()
     assert len(rows) == 1
     assert rows[0][1] == "audio"
-    assert rows[0][2] == 0.0 and rows[0][3] == pytest.approx(2.0, abs=0.3)
+    assert rows[0][2] == 0.0 and rows[0][3] == pytest.approx(2.5, abs=0.3)
     assert rows[0][4] is not None
     frames = store.db.execute(
         "SELECT kind, modality, loc, loc_end, vec, excerpt FROM segments "
@@ -760,7 +760,7 @@ def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
     kind, modality, loc, loc_end, blob, label = frames[0]
     assert kind == "frame" and modality == "image"
     assert loc == pytest.approx(0.5, abs=0.01)  # min(0.5, d/2) grid start
-    assert loc_end == pytest.approx(2.0, abs=0.3)  # last kept frame = duration
+    assert loc_end == pytest.approx(2.5, abs=0.3)  # last kept frame = duration
     assert blob is not None and len(blob) == 768 * 2
     assert label == "frame 0.5s"
     assert rec.info["frames"] == 1 and rec.info["frame_interval"] == 3.0
@@ -793,7 +793,7 @@ def test_video_without_audio_stream_gets_frames(cfg, tmp_path):
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(video))
     assert rec and rec.capability == "content_indexed"
-    assert rec.extractor_version == "media-ffmpeg-mm.v2"
+    assert rec.extractor_version == "media-ffmpeg-mm.v3"
     assert rec.info["audio_routing"] == "none:no_audio_stream"
     assert rec.info["frames"] == 1
     assert "windows" not in rec.info             # the audio path never ran
@@ -868,7 +868,7 @@ def test_multimodal_mock_video_frame_seg_shape(cfg, tmp_path, monkeypatch):
     report = IngestPipeline(cfg, store, backend).run([str(root)])
     rec = store.find_by_path(str(video))
     assert rec and rec.capability == "content_indexed"
-    assert rec.extractor_version == "media-ffmpeg-mm.v2"
+    assert rec.extractor_version == "media-ffmpeg-mm.v3"
     assert rec.info["frames"] == 3 and rec.info["frame_interval"] == 3.0
     assert rec.info["windows"] == 1
     rows = store.db.execute(
@@ -960,7 +960,7 @@ def test_video_transcript_plus_frames_compound_version(cfg, tmp_path, monkeypatc
     IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(video))
     assert rec.capability == "content_indexed"
-    assert rec.extractor_version == "asr-whisper.v2+media-ffmpeg-mm.v2"
+    assert rec.extractor_version == "asr-whisper.v2+media-ffmpeg-mm.v3"
     assert rec.info["frames"] == 1
     kinds = store.db.execute(
         "SELECT kind, modality FROM segments WHERE file = ? ORDER BY kind",

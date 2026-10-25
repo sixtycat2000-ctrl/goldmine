@@ -365,7 +365,7 @@ def test_pipeline_whisper_missing_falls_back(tmp_path, asr_cfg):
     asr_cfg.ingest.asr_whisper = str(tmp_path / "absent-whisper-cli")
     root = tmp_path / "corpus"
     root.mkdir()
-    write_wav(root / "tone.wav", 1.0)
+    write_wav(root / "tone.wav", 2.5)  # B1: >=2 s survives the tail gate
 
     # multimodal: v1 raw-window path (media-ffmpeg extractor)
     store = Store(asr_cfg.home / "mm.sqlite")
@@ -407,7 +407,7 @@ def test_pipeline_asr_off_keeps_v1_path(tmp_path, asr_cfg):
     asr_cfg.ingest.asr = "off"
     root = tmp_path / "corpus"
     root.mkdir()
-    write_wav(root / "tone.wav", 1.0)
+    write_wav(root / "tone.wav", 2.5)  # B1: >=2 s survives the tail gate
     store = Store(asr_cfg.home / "off.sqlite")
     try:
         with MockBackend(dim=768, multimodal=True) as backend:

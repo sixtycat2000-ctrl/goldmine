@@ -81,18 +81,149 @@ def test_glyph_order_without_image_capability_keeps_text(tmp_path, monkeypatch):
 
 
 def test_lost_letters_detected_and_marked_only(tmp_path, monkeypatch):
-    """digup-plan-002 A1 scope: lostLetters is DETECTION + info marker; the
-    Arabic OCR-replace content change is a deferred follow-up."""
+    """OCR unavailable: the honest fallback is detection + info marker —
+    the text layer keeps its words (DigUp takes the replace path only when
+    it can render+OCR; goldmine's B2 adds the replace, this pins the floor).
+    states mark the page 'unavailable' so a later OCR-enabled run re-does
+    the file once (_needs_ocr_redo upgrade path)."""
     pipeline = _pipeline(tmp_path)
     _fake_render(monkeypatch, tmp_path)
+    monkeypatch.setattr(pipeline, "_ocr_probe", lambda: False)
     pages = [(1, (_LOST + "more real prose follows here ") * 8)]
-    monkeypatch.setattr(extract_pdf, "extract_pages",
-                        lambda *a, **kw: PdfResult(pages=pages, total=1))
+    _fake_pages(monkeypatch, pages)
     outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
     assert outcome.info["pdf_text_problem"] == "lostLetters@1"
+    assert outcome.info["ocr_page_states"] == {"1": "unavailable"}
     # no diversion: the text layer keeps its words
     assert any("\u0627" in p.chunk.text for p in outcome.chunks)
     assert not outcome.media_segs
+    assert outcome.extractor_version.startswith("pdftotext@")
+
+
+# ------------------------------------------------- B2: lostLetters -> OCR replace
+
+_VALID_AR = ("الكتاب المدرسي في المكتبة والسلام عليكم ورحمة الله. " * 6).strip()
+
+
+def _ar_pipeline(tmp_path, monkeypatch, ocr_pages):
+    """Probe on + a canned _ocr_pages: {page: (text, ms)} — the fake render
+    keeps pdftoppm available so the pipeline's own gates pass."""
+    pipeline = _pipeline(tmp_path)
+    _fake_render(monkeypatch, tmp_path)
+
+    def fake_ocr(_path, pages, _tmp, *, states=None):
+        if states is not None:
+            states.update({p: "complete" for p in pages})
+        return {p: ocr_pages[p] for p in pages if p in ocr_pages}
+
+    monkeypatch.setattr(pipeline, "_ocr_probe", lambda: True)
+    monkeypatch.setattr(pipeline, "_ocr_pages", fake_ocr)
+    return pipeline
+
+
+def _fake_pages(monkeypatch, pages, total=None):
+    """extract_pages monkeypatch with the REAL versioned tool string, so
+    composed extractor versions match the fingerprints registry."""
+    monkeypatch.setattr(
+        extract_pdf, "extract_pages",
+        lambda *a, **kw: PdfResult(
+            pages=pages, total=total if total is not None else len(pages),
+            tool_version=f"pdftotext@{extract_pdf.pdftotext_version() or 'unknown'}"),
+    )
+
+
+def test_lost_letters_replaced_when_ocr_valid(tmp_path, monkeypatch):
+    pipeline = _ar_pipeline(tmp_path, monkeypatch, {1: (_VALID_AR, 5.0)})
+    pages = [(1, (_LOST + "prose padding to pass thin gate " * 10))]
+    _fake_pages(monkeypatch, pages)
+    outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
+    # the broken layer never lands; the OCR text does
+    assert not any("?\u0633" in (p.chunk.text or "") for p in outcome.chunks)
+    assert any(p.chunk.text.startswith("الكتاب") for p in outcome.chunks)
+    assert outcome.info["arocr_pages"] == [1]
+    assert "pdf_text_problem" not in outcome.info
+    assert outcome.extractor_version.startswith("pdftotext+arocr@")
+    assert "ar-ocr: 1 lost-letter page(s) replaced" in (outcome.detail or "")
+    # normal chunking: full-text path, no page-image stacking
+    assert not outcome.media_segs
+
+
+def test_lost_letters_kept_when_ocr_not_arabic(tmp_path, monkeypatch):
+    latin = "The quick brown fox jumps over the lazy dog. " * 12
+    pipeline = _ar_pipeline(tmp_path, monkeypatch, {1: (latin, 5.0)})
+    pages = [(1, (_LOST + "prose padding to pass thin gate " * 10))]
+    _fake_pages(monkeypatch, pages)
+    outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
+    assert outcome.info["pdf_text_problem"] == "lostLetters@1"
+    assert "arocr_pages" not in outcome.info
+    assert any("\u0627" in p.chunk.text for p in outcome.chunks)  # original kept
+    assert outcome.extractor_version.startswith("pdftotext@")     # no arocr tag
+    assert outcome.info["ocr_page_states"] == {"1": "kept"}
+
+
+def test_lost_letters_kept_when_ocr_too_short(tmp_path, monkeypatch):
+    pipeline = _ar_pipeline(tmp_path, monkeypatch, {1: ("كتاب قصير", 5.0)})
+    pages = [(1, (_LOST + "prose padding to pass thin gate " * 10))]
+    _fake_pages(monkeypatch, pages)
+    outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
+    assert outcome.info["pdf_text_problem"] == "lostLetters@1"
+    assert "arocr_pages" not in outcome.info
+
+
+def test_lost_letters_kept_when_ocr_itself_pathological(tmp_path, monkeypatch):
+    bad_ar = (_LOST + "وحتى مع نص عربي أطول من مئتي حرف لاجتياز بوابة الطول. ") * 6
+    assert extract_pdf.page_text_problem(bad_ar) == "lostLetters"
+    pipeline = _ar_pipeline(tmp_path, monkeypatch, {1: (bad_ar, 5.0)})
+    pages = [(1, (_LOST + "prose padding to pass thin gate " * 10))]
+    _fake_pages(monkeypatch, pages)
+    outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
+    assert outcome.info["pdf_text_problem"] == "lostLetters@1"
+    assert "arocr_pages" not in outcome.info
+
+
+def test_arocr_combines_with_thin_visionocr_version(tmp_path, monkeypatch):
+    """Page 1 thin (OCR-upgraded -> visionocr), page 2 lostLetters (ar
+    replace): one file, both tags, the composed string must be exactly what
+    fingerprints.current_extractors registers."""
+    long_latin = "The lighthouse keeper logged the harbor chart depth. " * 12
+    pipeline = _ar_pipeline(tmp_path, monkeypatch,
+                            {1: (long_latin, 5.0), 2: (_VALID_AR, 5.0)})
+    pages = [(1, "short"), (2, (_LOST + "prose padding to pass thin gate " * 10))]
+    _fake_pages(monkeypatch, pages)
+    outcome = pipeline._extract_pdf(Path("/docs/x.pdf"), 100)
+    assert outcome.extractor_version.startswith("pdftotext+arocr+visionocr@")
+    assert outcome.info["arocr_pages"] == [2]
+    assert outcome.info["ocr_pages"] == [1]
+    from goldmine.fingerprints import current_extractors
+
+    assert outcome.extractor_version in current_extractors()
+
+
+def test_all_pdftotext_variants_registered_current():
+    from goldmine.fingerprints import current_extractors
+
+    versions = current_extractors()
+    for stem in ("pdftotext", "pdftotext+visionocr", "pdftotext+arocr",
+                 "pdftotext+arocr+visionocr"):
+        assert any(v.startswith(stem + "@") for v in versions), stem
+
+
+def test_media_version_registry_matches_the_constant():
+    """The registry literal and extraction's shared constant must be equal —
+    drift means out-of-registry rows re-extracting forever (review D1)."""
+    from goldmine.fingerprints import EXTRACTOR_VERSIONS
+    from goldmine.ingest.media import MEDIA_EXTRACTOR_VERSION
+
+    assert EXTRACTOR_VERSIONS["media"] == MEDIA_EXTRACTOR_VERSION
+    assert EXTRACTOR_VERSIONS["asr+media"].endswith(MEDIA_EXTRACTOR_VERSION)
+
+
+def test_media_preprocessing_v5_tail_tag():
+    from goldmine.ingest.media import MEDIA_PREPROCESSING, TAIL_MIN_NEW_S
+
+    assert MEDIA_PREPROCESSING.startswith("v5:")
+    assert ",tail-min2s;" in MEDIA_PREPROCESSING
+    assert TAIL_MIN_NEW_S == 2.0
 
 
 def test_thin_pages_gain_page_image_segments(tmp_path, monkeypatch):

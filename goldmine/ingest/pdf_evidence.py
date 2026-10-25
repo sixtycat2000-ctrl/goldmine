@@ -36,6 +36,41 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
     if candidates and pipeline._ocr_probe():
         with tempfile.TemporaryDirectory(prefix="goldmine-pdfocr-") as td:
             recovered = pipeline._ocr_pages(path, candidates, Path(td), states=states)
+    # B2 (digup-p2-closeout-001, DigUp Extractors.swift:96-160): lostLetters
+    # pages upgrade from marker-only to render -> OCR -> three validity checks
+    # -> REPLACE. Non-thin pages only (thin pages are the thin batch's job —
+    # no double render/OCR); the ar batch carries its OWN states dict so the
+    # thin batch's blanket 'unavailable' init cannot clobber real states.
+    ar_recovered: dict[int, str] = {}
+    lost_candidates = [
+        number for number, text in result.pages
+        if len(text.strip()) >= extract_pdf.THIN_PAGE_CHARS
+        and extract_pdf.page_text_problem(text.strip()) == "lostLetters"
+    ]
+    if lost_candidates:
+        if pipeline._ocr_probe():
+            ar_states: dict[int, str] = {}
+            with tempfile.TemporaryDirectory(prefix="goldmine-pdfarocr-") as td:
+                ar_raw = pipeline._ocr_pages(path, lost_candidates, Path(td),
+                                             states=ar_states)
+            for number, (text, _ms) in ar_raw.items():
+                text = text.strip()
+                # DigUp's three checks: enough text, itself problem-free, and
+                # actually Arabic (0x0600-0x06FF — the detector's own block).
+                if (
+                    len(text) >= extract_pdf.THIN_PAGE_CHARS
+                    and extract_pdf.page_text_problem(text) is None
+                    and any(0x0600 <= ord(c) <= 0x06FF for c in text)
+                ):
+                    ar_recovered[number] = text
+                    ar_states[number] = "complete"
+                else:
+                    ar_states[number] = "kept"  # honest fallback: original kept
+            states.update(ar_states)
+        else:
+            # 'unavailable' rides the _needs_ocr_redo upgrade path: one redo
+            # when OCR arrives, terminal states after (no churn).
+            states.update({number: "unavailable" for number in lost_candidates})
     pieces = []
     media_segs = []
     thin_pages, ocr_pages, garbled_pages, lost_pages = [], [], [], []
@@ -54,6 +89,12 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
 
     for number, source in result.pages:
         stripped = source.strip()
+        if number in ar_recovered:
+            # ar-replaced page: the OCR text IS the page — normal chunking,
+            # no thin treatment, no page-image stacking (existing rules apply
+            # unchanged; is_thin falls out False since the check passed
+            # >= THIN_PAGE_CHARS).
+            stripped = ar_recovered[number]
         upgraded = recovered.get(number, ("", None))[0].strip()
         is_thin = len(stripped) < extract_pdf.THIN_PAGE_CHARS
         text = stripped
@@ -143,11 +184,17 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         info["page_images"] = len([m for m in media_segs if m.path is not None])
     if garbled_pages:
         info["garbled_pages"] = garbled_pages
+    if ar_recovered:
+        info["arocr_pages"] = sorted(ar_recovered)
     if lost_pages:
         info["pdf_text_problem"] = "lostLetters@" + ",".join(map(str, lost_pages))
-    version = result.tool_version
+    upgrades: set[str] = set()
     if ocr_pages:
-        version = version.replace("pdftotext@", "pdftotext+visionocr@", 1)
+        upgrades.add("visionocr")
+    if ar_recovered:
+        upgrades.add("arocr")
+    version = extract_pdf.upgraded_pdftotext_version(result.tool_version, upgrades)
+    if ocr_pages:
         detail = f"ocr: {len(ocr_pages)} page(s)"
         if thin_pages:
             detail += f"; thin-text: {len(thin_pages)} page(s) need OCR (scanned)"
@@ -155,6 +202,9 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         detail = f"thin-text: {len(thin_pages)} page(s) need OCR (scanned)"
     else:
         detail = None
+    if ar_recovered:
+        detail = (detail + "; " if detail else "") + (
+            f"ar-ocr: {len(ar_recovered)} lost-letter page(s) replaced")
     if garbled_pages:
         detail = (detail + "; " if detail else "") + f"garbled: {len(garbled_pages)} page(s) as image+meaning"
     if not pieces and not media_segs:

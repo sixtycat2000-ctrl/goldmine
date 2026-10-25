@@ -37,6 +37,16 @@ HOP_S = 25.0
 SILENCE_RMS = 0.003        # ≈ −50 dBFS (DigUp)
 FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 
+#: DigUp MediaExtractors.swift:76 `minimum`: the final partial audio window
+#: survives only when it carries at least this much NEW audio beyond the
+#: previous window's coverage (windows overlap by WINDOW_S - HOP_S = 5 s).
+TAIL_MIN_NEW_S = 2.0
+
+#: One name for the media extractor family (fingerprints registry, audio and
+#: video outcome composition share it — an out-of-sync literal means rows go
+#: stale forever, the digup-p2-closeout-001 D1 review item).
+MEDIA_EXTRACTOR_VERSION = "media-ffmpeg-mm.v3"
+
 #: Recorded in the media-capable backends' fingerprints (the mock's
 #: multimodal flag keeps its own "bytes.v1"): these windowing/gate parameters
 #: define the bytes the model actually sees, so changing any of them must force
@@ -56,8 +66,14 @@ FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 #: every ~3 s (fps1/3 shorthand; engine = ffmpeg select gte(prev+step)
 #: snapping to input frames, DigUp-shaped), 8x8 aHash dedup within 4 bits,
 #: JPEG <=1024 no upscale, maxFrames 1200 with step adaptation.
+#: v5 bump (digup-p2-closeout-001 B1): the final audio window is kept only
+#: with >= 2 s of NEW audio past the previous window's coverage (DigUp
+#: MediaExtractors.swift:67-76 port — short lived tails carried almost
+#: nothing but overlap); media extractor family moves v2 -> v3 so every
+#: media row re-extracts and re-embeds once (user-authorized, no installed
+#: base).
 MEDIA_PREPROCESSING = (
-    "v4:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003; "
+    "v5:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003,tail-min2s; "
     "image=jpeg-thumb-1024-q90|png-1536(screenshot),minSide256,"
     "resize=bicubic-a-0.5-48px-fill-budget; "
     "page=pdftoppm150dpi-thin+glyphorder; "
@@ -227,6 +243,8 @@ def audio_windows(
     tmp.mkdir(parents=True, exist_ok=True)
     start = 0.0
     index = 0
+    tail_appended = False     # did the FINAL cut window survive the RMS gate?
+    tail_span: tuple[float, float] | None = None
     while start < effective:
         end = min(start + window, effective)
         out = tmp / f"window-{index:04d}.wav"
@@ -252,9 +270,24 @@ def audio_windows(
             logger.debug("media: window %.1f-%.1fs silent, skipped", start, end)
             out.unlink(missing_ok=True)
         if start + window >= effective:
+            tail_appended = len(pieces) > 0 and pieces[-1].path == out
+            tail_span = (start, end)
             break
         start += hop
         index += 1
+    # B1 tail gate (DigUp MediaExtractors.swift:67-76): the final partial
+    # window survives only with >= TAIL_MIN_NEW_S of NEW audio past the
+    # previous window's coverage. Geometry uses the loop's RAW values (piece
+    # fields are rounded); a full-window file has no partial tail, and a
+    # sub-window file is gated as a whole (DigUp offset == 0 -> no overlap).
+    if tail_appended and tail_span is not None:
+        tail_len = tail_span[1] - tail_span[0]
+        new_audio = tail_len - (window - hop) if effective >= window else tail_len
+        if new_audio < TAIL_MIN_NEW_S:
+            logger.debug("media: tail window %.1f-%.1fs dropped (%.2fs new audio)",
+                         tail_span[0], tail_span[1], new_audio)
+            pieces[-1].path.unlink(missing_ok=True)
+            pieces.pop()
     return pieces
 
 
@@ -301,6 +334,7 @@ def has_video_stream(path: Path) -> bool | None:
 FRAME_INTERVAL_S = 3.0
 #: DigUp MediaExtractors.swift:105 maxFrames — step adapts beyond this.
 FRAME_MAX_COUNT = 1200
+FRAME_TIMESTAMPS_VERSION = "source-pts.v1"
 #: Sampled-frame JPEG long-side cap (Indexer.swift:410 maxPixel 1024).
 FRAME_JPEG_MAX_SIDE = 1024
 
@@ -308,7 +342,7 @@ FRAME_JPEG_MAX_SIDE = 1024
 @dataclass
 class Keyframe:
     path: Path              # kept frame's JPEG (deduped frames' JPEGs are discarded)
-    loc: float              # declared grid time start + i*step
+    loc: float              # actual source presentation timestamp
     loc_end: float = 0.0    # next kept frame's time; last kept frame = duration
 
 
@@ -414,7 +448,7 @@ def video_keyframes(
         f"+gte(t\\,prev_selected_t+{step:.6f})'"
     )
     vf_jpeg = (
-        f"{select_},scale=min(iw\\,{FRAME_JPEG_MAX_SIDE}):"
+        f"{select_},showinfo,scale=min(iw\\,{FRAME_JPEG_MAX_SIDE}):"
         f"min(ih\\,{FRAME_JPEG_MAX_SIDE}):force_original_aspect_ratio=decrease"
     )
     vf_gray = f"{select_},scale=8:8,format=gray"
@@ -423,7 +457,7 @@ def video_keyframes(
 
     result = run_tool(
         [
-            ffmpeg, "-hide_banner", "-loglevel", "error", "-y",
+            ffmpeg, "-hide_banner", "-loglevel", "info", "-nostats", "-y",
             "-ss", f"{start:.6f}", "-i", str(path),
             "-map", "0:v:0", "-vf", vf_jpeg,
             "-fps_mode", "vfr", "-q:v", "2", str(jpeg_pattern),
@@ -455,6 +489,18 @@ def video_keyframes(
             f"{len(gray_bytes) // 64} gray frames for {path.name}"
         )
     n = len(jpegs)
+    import re
+
+    timestamps = [start + float(value) for value in re.findall(
+        r"\[Parsed_showinfo_\d+[^\]]*\].*?\bn:\s*\d+\s+pts:\s*-?\d+\s+pts_time:([-+\d.eE]+)",
+        result.stderr,
+    )]
+    if (len(timestamps) != n or any(not math.isfinite(t) for t in timestamps)
+            or any(a >= b for a, b in zip(timestamps, timestamps[1:]))):
+        for jpeg in jpegs:
+            jpeg.unlink(missing_ok=True)
+        gray_path.unlink(missing_ok=True)
+        raise RuntimeError("keyframe presentation timestamps missing or inconsistent")
     if n > predicted + 1:
         # the select engine follows the declared grid; exceeding it by more
         # than the one exact-boundary frame means the grid was violated
@@ -466,7 +512,7 @@ def video_keyframes(
         )
     samples: list[tuple[float, Path, bytes]] = []
     for i, jpeg in enumerate(jpegs):
-        loc = start + i * step
+        loc = timestamps[i]
         if loc >= duration:
             break  # half-open grid: a boundary frame at exactly duration drops
         samples.append((loc, jpeg, gray_bytes[i * 64:(i + 1) * 64]))
