@@ -104,7 +104,8 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
     assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v7-evidence-window-witness"
     assert structural["algorithm_version"] == "anchor.v3-quote-provenance"
-    assert structural["status"] == "UNVALIDATED" and structural["quality_results"] is None
+    assert structural["status"] == "ADOPTED"
+    assert structural["quality_results"]["public_current_010"]["status"] == "PASS"
     assert structural["semantic_remainder"] == "structural_quote_provenance"
     # The v1 and v2 registrations are preserved verbatim as immutable history.
     v1_entry, v2_entry = structural["history"]
