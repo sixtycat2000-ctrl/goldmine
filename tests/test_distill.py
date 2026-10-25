@@ -1069,3 +1069,24 @@ def test_excerpts_traceable_to_stored_segments(indexed):
         for ex in card.excerpts:
             assert ex["role"] in ("primary", "coverage")
             assert ex["text"] in stored | fts
+
+
+def test_incremental_refreshes_excerpt_after_its_source_segment_is_replaced(indexed):
+    from goldmine.store import SegmentRec
+    from goldmine.util import excerpt as make_excerpt
+
+    _, _, (k8s, _) = _fabricate_prior_run(indexed)
+    member = k8s[0]
+    with indexed.write_transaction():
+        indexed.db.execute("UPDATE cards SET excerpts=? WHERE id IN (SELECT card FROM card_chunks WHERE chunk=?)",
+                           (json.dumps([{"path": member.path, "kind": member.kind,
+                                         "loc": member.loc, "loc_end": member.loc_end,
+                                         "text": make_excerpt(member.text), "role": "primary"}]), member.sid))
+    indexed.replace_segments(member.fid, [SegmentRec(
+        kind="chunk", modality="text", loc=1, loc_end=1, text_for_fts="a new unrelated satellite manuscript",
+        vec=_vec(80))])
+    result = _run_and_save(indexed, scope=Scope(), min_members=2)
+    assert result["stats"]["mode"] == "incremental"
+    for card in result["cards"]:
+        actual = {(m.path, make_excerpt(m.text)) for m in card.members}
+        assert all((part["path"], part["text"]) in actual for part in card.excerpts)

@@ -10,6 +10,19 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 import ci_validation
 
 
+def test_video_engine_cases_belong_to_native_profile():
+    import ast
+    from acceptance_lib.registry import classify
+
+    root = Path(__file__).resolve().parents[1]
+    tree = ast.parse((root / "tests/test_video_frames.py").read_text())
+    for function in tree.body:
+        if isinstance(function, ast.FunctionDef) and function.name.startswith("test_keyframes_"):
+            markers = [ast.unparse(decorator) for decorator in function.decorator_list]
+            assert "pytest.mark.native" in markers, function.name
+            assert classify(f"tests/test_video_frames.py::{function.name}", ["native"]) == "native"
+
+
 def test_live_ci_needs_existing_inputs_and_creates_no_green_report(tmp_path, capsys):
     out = tmp_path / "ci"
     assert ci_validation.main(["--profile", "live", "--out", str(out)]) == 2

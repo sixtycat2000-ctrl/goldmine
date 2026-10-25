@@ -26,6 +26,7 @@ from ..chunker import CHUNKER_VERSION, Chunk, chunk_text_tokens, effective_token
 from ..config import Config
 from ..store import FileRec, Store
 from ..util import sha256_file
+from ..index_state import (contains, json_list, publish_identity, record_roots, validate_identity)
 from . import media, rules, walk
 from .commit import CommitMixin, IngestReport, _merge_reasons
 from .extraction import CODE_HARD_CAP_BYTES, ExtractMixin, _OcrRequest, _Outcome
@@ -35,35 +36,8 @@ from .urls import UrlIngestMixin
 logger = logging.getLogger("goldmine.ingest")
 
 
-def _thin_marker(rec) -> bool:
-    """--refresh-thin selection (02 §5.2): a stored row that carries thin-page
-    state — info.thin_text (pages that STAYED thin) or the scanned-PDF
-    metadata_only detail. ocr_pages-only rows are current; a better future
-    OCR is an extractor-version bump, handled by the G10 path instead."""
-    if rec.detail and "page needs OCR" in rec.detail:
-        return True
-    return bool(rec.info and rec.info.get("thin_text"))
-
-
-def _needs_ocr_redo(rec) -> bool:
-    """A screenshot that was indexed metadata_only by a text-only backend
-    before OCR was available (detail 'backend lacks image embedding',
-    screenshot flag, OCR marker absent or 'unavailable'): plain ingest re-does
-    it once OCR is ready so it gains its text (A5 upgrade path). Rows marked
-    'no text' or with ocr_chars never re-do — no churn."""
-    info = rec.info or {}
-    if rec.kind == "pdf":
-        states = info.get("ocr_page_states", {})
-        if states:
-            return any(state in ("unavailable", "error") for state in states.values())
-        return _thin_marker(rec)  # legacy thin pages, before per-page provenance
-    if rec.kind != "image" or not info.get("screenshot"):
-        return False
-    if info.get("ocr_status") in ("unavailable", "error"):
-        return True
-    if info.get("ocr_status") in ("complete", "no_text", "low_confidence"):
-        return False
-    return info.get("ocr") == "unavailable" or ("ocr" not in info and "ocr_chars" not in info)
+# Compatibility exports for existing callers; policy is shared with repair.
+from .update_policy import thin_marker as _thin_marker, needs_ocr_redo as _needs_ocr_redo
 
 
 class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
@@ -124,6 +98,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         self.last_metrics: dict | None = None
         self._backend_started = False
         self._startup_interrupted = False
+        self._live_fp = None
+        self._reindex_requested = False
 
     # ------------------------------------------------------------------ run
 
@@ -146,6 +122,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         self._metrics = IngestMetrics(enabled=instrument, backend=self.backend)
         self._backend_started = False
         self._startup_interrupted = False
+        self._reindex_requested = reindex
         exclude = list(exclude or [])
         # P2-11: one absolute, CWD-independent form for everything stored or
         # compared (file rows, roots_json, prune comparisons). URLs stay verbatim.
@@ -190,11 +167,19 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
             return result
 
         assert self.store is not None, "pipeline needs a Store unless dry_run"
+        forgotten_roots = json_list(self.store, "forgotten_sources_json")
+        file_roots = [r for r in file_roots if not any(contains(f, r) for f in forgotten_roots)]
+        url_roots = [r for r in url_roots if not any(contains(f, r) for f in forgotten_roots)]
+        resolved_roots = report.roots = [*file_roots, *url_roots]
+        for root in forgotten_roots:
+            if not root.startswith(("http://", "https://")):
+                exclude.extend([root, root.rstrip("/") + "/*"])
         max_file_bytes = int(self.cfg.ingest.max_file_mb) * (1 << 20)
         max_chunks = self.cfg.ingest.max_chunks
         batch = max(1, int(self.cfg.llama.batch))
 
         live_fp = None
+        replace_identity = False
         try:
             if self.backend is not None and not self.lexical_only:
                 # Known static identities can be gated without loading a model.
@@ -205,34 +190,67 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 with self._metrics.stage("embed"):
                     live_fp = self._prepare_backend(report, startup=eager)
                 if reindex:
-                    # P1-3: clear only AFTER startup + the fingerprint gate
-                    # passed — a failed startup must not leave a hollow index
-                    # that the content-hash skip would never rebuild.
-                    self._clear_vectors()
-            elif reindex:
-                # lexical-only reindex: no backend, no gate — clear directly.
-                self._clear_vectors()
+                    try:
+                        validate_identity(self.store, live_fp, embed_id=self._embed_identity)
+                    except fingerprints.FingerprintMismatch:
+                        replace_identity = True
+                        # A model change is index-wide. A same-model rebuild
+                        # stays within the requested directories/files.
+                        known = json_list(self.store, "roots_json")
+                        known.extend(path for (path,) in self.store.db.execute("SELECT path FROM files")
+                                     if not any(contains(root, path) for root in [*resolved_roots, *known]))
+                        for root in known:
+                            if root in resolved_roots or any(contains(f, root) for f in forgotten_roots):
+                                continue
+                            if root.startswith(("http://", "https://")):
+                                url_roots.append(root)
+                            else:
+                                root = str(Path(root).expanduser().resolve())
+                                try:
+                                    Path(root).stat()
+                                except OSError as exc:
+                                    raise fingerprints.FingerprintMismatch(
+                                        f"cannot change models while recorded source is unavailable: {root}: {exc}; "
+                                        "restore it or explicitly forget it first"
+                                    ) from exc
+                                file_roots.append(root)
+                        resolved_roots = report.roots = list(dict.fromkeys([*file_roots, *url_roots]))
+                        report.note("model_rebuild", "model changed; rebuilding all recorded sources")
+                        if root_errors:
+                            raise fingerprints.FingerprintMismatch("model rebuild requires accessible source roots")
 
             candidates: list[walk.Candidate] = []
             unreachable_prefixes: list[str] = []
+            unsupported = []
             with self._metrics.stage("scan"):
                 for item in walk.walk_files(
                     [Path(r) for r in file_roots], code=code, exclude=exclude,
                     max_file_bytes=max_file_bytes,
                 ):
                     if isinstance(item, walk.Candidate):
-                        candidates.append(item)
+                        if not any(contains(root, str(item.path)) for root in forgotten_roots):
+                            candidates.append(item)
                     elif item.is_dir:
                         # A1-18: an unreadable subtree is unavailable, not
                         # empty — its rows are exempt from deletion below.
                         if item.unreachable:
                             unreachable_prefixes.append(item.path)
                     else:
-                        with self._metrics.stage("commit"):
-                            self._record_unsupported(self.store, item.path, item.reason, report)
+                        if not any(contains(root, item.path) for root in forgotten_roots):
+                            unsupported.append(item)
+
+            if replace_identity and unreachable_prefixes:
+                raise fingerprints.FingerprintMismatch("model rebuild encountered unavailable subtrees; old model retained")
+            if live_fp is not None:
+                publish_identity(self.store, live_fp, replace=replace_identity,
+                                 identity=self._embed_identity_dict)
+            if update_roots:
+                record_roots(self.store, report.roots)
+            with self._metrics.stage("commit"):
+                for item in unsupported:
+                    self._record_unsupported(self.store, item.path, item.reason, report)
                 if not include_datasets:
-                    with self._metrics.stage("commit"):
-                        self._drop_dataset_folders(candidates, file_roots, report)
+                    self._drop_dataset_folders(candidates, file_roots, report)
 
             report.scanned += len(candidates)
             # P1-3: match vanished rows against this run's candidates by
@@ -371,9 +389,11 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 raise
             self._backend_started = True
         live_fp = fingerprints.build(self.backend)
-        fingerprints.gate(self.store.meta, live_fp)
         self._embed_identity = fingerprints.live_embed_id(self.backend)
         self._embed_identity_dict = fingerprints.live_embed_identity(self.backend)
+        self._live_fp = live_fp
+        if not self._reindex_requested:
+            validate_identity(self.store, live_fp, embed_id=self._embed_identity)
         build_string = getattr(self.backend, "build_string", None)
         if build_string and self._backend_started:
             previous = self.store.meta("llama_build")
@@ -462,92 +482,26 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
 
     def _skip_unchanged(self, cand: walk.Candidate, sha: str, reindex: bool,
                         refresh_thin: bool = False) -> bool:
-        """(size, mtime) prefilter passed on the walk; sha256 confirms here.
-
-        v2 skip-fix family — THE plain-ingest re-do path (02 G10 + D3/B11;
-        one shared check for the chunker and extractor dimensions):
-        - a done content file whose chunker_version is stale is RE-DONE (D3);
-        - a done content file whose extractor_version is outside the current
-          registry is RE-DONE (G10: landing OCR/sips upgrades old rows on the
-          next ordinary ingest, no flags, never a refusal);
-        - refresh_thin additionally re-does files carrying thin-page markers
-          (info.thin_text / detail 'page needs OCR') even with sha unchanged —
-          targeted repair without a full pass (02 §5.2)."""
         if reindex:
             return False
         rec = self.store.find_by_path(str(cand.path))
-        if rec is None or rec.state != "done":
+        if (rec is None or rec.size != cand.size or rec.sha256 != sha
+                or (rec.mtime is not None and rec.mtime != cand.mtime)):
             return False
-        if rec.size != cand.size or rec.sha256 is None:
-            return False
-        if rec.mtime is not None and cand.mtime is not None and rec.mtime != cand.mtime:
-            return False
-        if rec.sha256 != sha:
-            return False
-        if rec.kind == "image" and (rec.info or {}).get("exif_version") != media.EXIF_METADATA_VERSION:
-            # Repair legacy capture/edit-time confusion once, including
-            # metadata-only photos. The marker also records a truthful absence.
-            return False
-        if rec.kind == "image" and (rec.info or {}).get("exif_status") not in {"complete", "absent", "unsupported", "unavailable"}:
-            # Native timeout/process/JSON failures are not authoritative absence.
-            # Rows written before the status distinction also need one refresh.
-            return False
-        if rec.kind == "image" and (rec.info or {}).get("exif_reader") is None and media.exif_reader(cand.path) is not None:
-            return False  # A formerly missing native metadata reader arrived.
-        if rec.capability == "content_indexed":
-            if rec.chunker_version != self._chunker_version:
-                return False
-            if rec.extractor_version not in self._current_extractor_set():
-                return False
-        if refresh_thin and _thin_marker(rec):
-            return False
-        if _needs_ocr_redo(rec) and self._ocr_probe():
-            # a screenshot indexed under a text-only backend BEFORE OCR was
-            # available can now gain text. The re-done row always carries an
-            # ocr marker (ocr_chars or info.ocr), so this cannot churn.
-            if rec.kind != "pdf":
-                return False
-            from .extract_pdf import pdftoppm_path
+        from .update_policy import reasons_for_update
 
-            if pdftoppm_path() is not None:
-                return False
-        if (rec.kind in ("audio", "video")
-                and (rec.info or {}).get("asr_status") in ("unavailable", "error")
-                and not self.lexical_only and self.backend.capability().text
-                and str(self.cfg.ingest.asr) != "off"):
+        def asr_ready():
             if self._asr_ready is None:
                 from .asr import resolve_tools
 
                 self._asr_ready = resolve_tools(self.cfg) is not None
-            if self._asr_ready:
-                return False
-        # digup-plan-002 media-capability redo rules (amendments M5, normative
-        # predicates — a re-done row always writes audio_routing or a media
-        # vector or an honest none:* reason, so neither rule can churn):
-        if self.backend is not None and not self.lexical_only:
-            cap = self.backend.capability()
-            if (rec.kind in ("audio", "video")
-                    and cap.audio
-                    and (rec.info or {}).get("audio_routing") is None
-                    and (rec.info or {}).get("asr_segments") is None):
-                # R-a: an audio/video row from before the audio capability
-                # (or before routing markers existed) with NO transcript can
-                # now gain raw windows — including when ASR tools are absent.
-                return False
-            if (rec.kind == "image" and cap.image
-                    and rec.capability == "metadata_only"
-                    and rec.detail == "backend lacks image embedding"):
-                # R-b: photos that never got a thumbnail pass because the
-                # image capability was off.
-                return False
-            if (rec.kind == "video" and cap.image
-                    and (rec.info or {}).get("frames") in (None, "none:no_image_capability")):
-                # R-c (video-frames-001): rows from before keyframes landed
-                # (including asr-versioned transcript rows — the media bump
-                # alone cannot reach them) get their frame pass; the re-done
-                # row always writes a frames marker, so this cannot churn.
-                return False
-        return True
+            return self._asr_ready
+
+        return not reasons_for_update(
+            self.store, rec, self.cfg, None if self.lexical_only else self.backend,
+            extractors=self._current_extractor_set() if rec.capability == "content_indexed" else None,
+            refresh_thin=refresh_thin, ocr_ready=self._ocr_probe, asr_ready=asr_ready,
+        )
 
     def _current_extractor_set(self) -> set[str]:
         """Current extractor versions, computed once per run (tool probes)."""
@@ -587,6 +541,10 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                             source: str = "file") -> None:
         """A file the walker refused to read: recorded as capability=unsupported
         with a machine-stable reason (SPEC §9). Folder notices never reach here."""
+        from ..index_state import forgotten
+
+        if forgotten(store, path):
+            return
         if kind_override is None:
             ext = Path(path).suffix.lstrip(".").lower()
             kind_override = (
@@ -598,20 +556,27 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 else "doc"
             )
         kind = kind_override
-        store.upsert_file(
-            FileRec(
-                path=path, source=source, kind=kind, size=0, mtime=None,
-                sha256=None, state="done", capability="unsupported", detail=reason,
-                info={"reason": reason},
-                chunker_version=self._chunker_version,
+        with store.write_transaction():
+            fid = store.upsert_file(
+                FileRec(
+                    path=path, source=source, kind=kind, size=0, mtime=None,
+                    sha256=None, state="done", capability="unsupported", detail=reason,
+                    info={"reason": reason},
+                    chunker_version=self._chunker_version,
+                )
             )
-        )
+            store.invalidate_file(fid, state="done", capability="unsupported", detail=reason,
+                                  info={"reason": reason}, chunker_version=self._chunker_version)
         report.scanned += 1
         self._tally(report, kind, "unsupported")
         _merge_reasons(report.unsupported_reasons, reason)
 
     def _record_failed(self, store: Store, path: str, detail: str | None, report,
                        fid: int | None = None, kind: str = "doc", info: dict | None = None) -> None:
+        from ..index_state import forgotten
+
+        if forgotten(store, path):
+            return
         if fid is None:
             rec = store.find_by_path(path)
             fid = rec.id if rec and rec.id is not None else store.upsert_file(
@@ -620,13 +585,8 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         # P1-5: drop the previous extract's content segments (+ their FTS rows)
         # so search cannot serve text of a file that no longer extracts; the
         # name row stays. Search also excludes failed files (belt and braces).
-        with store.write_transaction():
-            store.delete_content_segments(fid)
-            store.mark_file(
-                fid, state="failed", capability="failed", detail=detail,
-                info=info, extractor_version=None,
-                chunker_version=self._chunker_version, embed_id=None,
-            )
+        store.invalidate_file(fid, state="failed", capability="failed", detail=detail,
+                              info=info, chunker_version=self._chunker_version)
         self._tally(report, kind, "failed")
         report.failures.append({"path": path, "detail": detail or "failed"})
         del report.failures[:-10]
@@ -661,14 +621,6 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
 
     # -------------------------------------------------------------- helpers
 
-    def _clear_vectors(self) -> None:
-        """--reindex: clear segments + fingerprint; re-extract everything."""
-        with self.store.write_transaction():
-            self.store.db.execute("DELETE FROM fts")
-            self.store.db.execute("DELETE FROM segments")
-        self.store.set_meta("fingerprint_id", None)
-        self.store.set_meta("fingerprint_json", None)
-
     def _finalize(self, report: IngestReport, live_fp: dict | None, *,
                   update_roots: bool = True) -> None:
         store = self.store
@@ -678,23 +630,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         report.vectors = counts.vectors
         report.segments = counts.segments
         if live_fp is not None:
-            store.set_meta("fingerprint_id", fingerprints.fingerprint_id(live_fp))
-            store.set_meta("fingerprint_json", fingerprints.canonical(live_fp).decode())
-            # v2 embed identity meta. F1: derived from the backend's OWN
-            # structured fields (same derivation the per-file writes used);
-            # the stored-fingerprint parse is only a safety net for paths
-            # that never ran the live block.
-            store.set_meta(
-                "embed_id", self._embed_identity
-                or fingerprints.embed_id_from_fingerprint(live_fp)
-            )
-            store.set_meta(
-                "embed_identity_json",
-                fingerprints.canonical(
-                    self._embed_identity_dict
-                    or fingerprints.embed_identity(live_fp)
-                ).decode(),
-            )
+            validate_identity(store, live_fp, embed_id=self._embed_identity)
             report.fingerprint = {
                 "id": fingerprints.fingerprint_id(live_fp),
                 "backend": live_fp.get("backend"),
@@ -720,13 +656,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         # (the F10 principle). Default True keeps every existing caller
         # byte-identical.
         if update_roots:
-            stored = store.meta("roots_json")
-            try:
-                previous = json.loads(stored) if stored else []
-            except json.JSONDecodeError:
-                previous = []
-            merged = list(dict.fromkeys([*previous, *report.roots]))
-            store.set_meta("roots_json", json.dumps(merged))
+            record_roots(store, report.roots)
         if store.meta("schema_version") is None:
             store.set_meta("schema_version", str(Store.SCHEMA_VERSION))
         if store.meta("app_version") is None:

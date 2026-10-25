@@ -585,13 +585,9 @@ class WatchDaemon:
         `goldmine ingest <path>` records; delta/resume passes never touch it
         (D3, update_roots=False)."""
         assert self.store is not None
-        stored = self.store.meta("roots_json")
-        try:
-            previous = json.loads(stored) if stored else []
-        except json.JSONDecodeError:
-            previous = []
-        merged = list(dict.fromkeys([*previous, *self.roots]))
-        self.store.set_meta("roots_json", json.dumps(merged))
+        from .index_state import record_roots
+
+        record_roots(self.store, self.roots)
 
     def _install_signals(self) -> None:
         for sig in (signal.SIGTERM, signal.SIGINT):

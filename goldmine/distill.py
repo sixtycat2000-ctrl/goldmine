@@ -253,21 +253,9 @@ def corpus_hash_for(store: Store, scope: Scope) -> str:
 def _scoped_files(store: Store, scope: Scope) -> list[tuple[str, str | None]]:
     """In-scope vector-bearing files as (path, sha256), sorted — the corpus_hash
     file list (D9). Same scoping rules as _corpus (§6.2)."""
-    from .store import _split_roots, _under_roots
+    from .distill_corpus import scoped_files
 
-    rows = store.db.execute(
-        """SELECT DISTINCT f.path, f.sha256, f.kind, f.source FROM files f
-           JOIN segments s ON s.file = f.id WHERE s.vec IS NOT NULL"""
-    ).fetchall()
-    file_roots, url_roots = _split_roots(scope.under or [])
-    out: list[tuple[str, str | None]] = []
-    for path, sha, kind, source in rows:
-        if scope.kinds is not None and kind not in scope.kinds:
-            continue
-        if scope.under and not _under_roots(path, source, file_roots, url_roots):
-            continue
-        out.append((path, sha))
-    return sorted(out)
+    return scoped_files(store, scope)
 
 
 # ------------------------------------------------------------------- tokenize
@@ -829,61 +817,11 @@ def cluster_terms(
 # -------------------------------------------------------------------- corpus
 
 
-def _corpus(store: Store, scope: Scope) -> list[CItem]:
-    """All vectorized in-scope segments, canonical (file_id, segment_id) order,
-    with FTS text (§2.1/§6.2). URL sources never enter distill scope — cards
-    cluster file content."""
-    from .store import _split_roots, _under_roots
+def _corpus(store: Store, scope: Scope, *, max_chunks: int | None = None) -> list[CItem]:
+    """Decode only the SQL-scoped corpus, after its count passes the cap."""
+    from .distill_corpus import load_corpus
 
-    table = store.load_vectors()  # ids/file_ids ordered by segment id
-    if len(table) == 0:
-        return []
-    file_info = {
-        row[0]: (row[1], row[2], row[3])
-        for row in store.db.execute(
-            "SELECT id, path, kind, mtime FROM files"
-        ).fetchall()
-    }
-    texts = {
-        row[0]: row[1] or ""
-        for row in store.db.execute("SELECT rowid, coalesce(original, body) FROM fts").fetchall()
-    }
-    seg_meta = {
-        r[0]: (r[1], r[2], r[3], r[4])
-        for r in store.db.execute(
-            "SELECT s.id, f.path, f.kind, s.loc, s.loc_end "
-            "FROM segments s JOIN files f ON f.id = s.file "
-            "WHERE s.vec IS NOT NULL"
-        ).fetchall()
-    }
-    file_roots, url_roots = _split_roots(scope.under or [])
-
-    items: list[CItem] = []
-    for sid, fid, vec in zip(table.ids, table.file_ids, table.matrix):
-        info = seg_meta.get(sid)
-        if info is None:
-            continue
-        path, kind, loc, loc_end = info
-        finfo = file_info.get(fid)
-        if finfo is None:
-            continue
-        fpath, _kind2, mtime = finfo
-        if scope.kinds is not None and kind not in scope.kinds:
-            continue
-        if scope.under and not _under_roots(fpath, "url" if fpath.startswith(
-                ("http://", "https://")) else "file", file_roots, url_roots):
-            continue
-        if scope.after is not None and (mtime or 0.0) < scope.after:
-            continue
-        items.append(
-            CItem(
-                sid=sid, fid=fid, vec=np.asarray(vec, dtype=np.float32),
-                text=texts.get(sid, ""), path=path, kind=kind,
-                loc=loc, loc_end=loc_end,
-            )
-        )
-    items.sort(key=lambda it: (it.fid, it.sid))  # canonical order (normative)
-    return items
+    return load_corpus(store, scope, max_chunks=max_chunks)
 
 
 def _check_corpus_bound(items: list[CItem], max_chunks: int) -> None:
@@ -1307,7 +1245,9 @@ def _incremental_run(
     mode = "incremental"
 
     # (the dissolve sweep settles PRIOR state: tombstones + below-min cards)
-    dissolve = store.dissolve_pass(view_id, min_members)
+    changed_cards = {card.id for card in store.load_view_cards(view_id)
+                     if card.size != len(card.members)}
+    dissolve = store.dissolve_pass(view_id, min_members, valid_sids={item.sid for item in items})
 
     # F8a: snapshot BEFORE assignment
     view_cards = store.load_view_cards(view_id)
@@ -1315,8 +1255,7 @@ def _incremental_run(
     new_items = [it for it in kept if it.sid not in member_sids]
 
     # F8d: ORIGINAL member vectors loaded once per card, centered once
-    table = store.load_vectors()
-    vec_by_sid = dict(zip(table.ids, table.matrix))
+    vec_by_sid = {item.sid: item.vec for item in items}
     member_cvecs: dict[int, np.ndarray] = {}
     for card in view_cards:
         vecs = [vec_by_sid[sid] for sid in card.members if sid in vec_by_sid]
@@ -1377,6 +1316,18 @@ def _incremental_run(
         joined = joins.get(card.id, [])
         members = [citem_by_sid[sid] for sid in card.members if sid in citem_by_sid]
         members.extend(joined)
+        stored_excerpts = json.loads(card.excerpts) if card.excerpts else []
+        actual_excerpts = {(member.path, member.kind, member.loc, member.loc_end, make_excerpt(member.text))
+                           for member in members}
+        invalid_excerpt = any((part.get("path"), part.get("kind"), part.get("loc"),
+                               part.get("loc_end"), part.get("text")) not in actual_excerpts
+                              for part in stored_excerpts)
+        if card.id in changed_cards or invalid_excerpt:
+            rebuilt = _build_card(members, [members, *new_clusters],
+                                  fingerprint_id=fingerprint_id, algo=algo)
+            rebuilt.created_at = card.created_at
+            cards.append(rebuilt)
+            continue
         mat = np.stack([m.vec for m in members])
         centroid = mat.sum(axis=0)
         norm = float(np.linalg.norm(centroid)) or 1.0
@@ -1386,7 +1337,7 @@ def _incremental_run(
             title=card.title,
             title_kind=card.title_kind,
             terms=json.loads(card.terms) if card.terms else [],
-            excerpts=json.loads(card.excerpts) if card.excerpts else [],
+            excerpts=stored_excerpts,
             members=members,
             n_files=len({m.fid for m in members}),
             status="active",
@@ -1474,8 +1425,7 @@ def run_distill(
     - else: {"cards": [Card], "stats": {…}} — the caller persists via
       store.save_run (kept separate so the eval harness can score runs
       in memory and the CLI owns the transaction boundary)."""
-    items = _corpus(store, scope)
-    _check_corpus_bound(items, max_chunks)
+    items = _corpus(store, scope, max_chunks=max_chunks)
     kept, removed = dedupe(items)
 
     view_id = view_id_for(scope)

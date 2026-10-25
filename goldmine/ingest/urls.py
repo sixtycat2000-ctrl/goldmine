@@ -10,6 +10,7 @@ from ..backends.base import EmbeddingError
 from ..store import FileRec, _folder_words
 from . import walk
 from .extraction import _Piece, _has_words
+from .commit import name_segment
 
 URL_EXTRACTOR_VERSION = "url-stdlib.v1"
 
@@ -39,7 +40,15 @@ class UrlIngestMixin:
 
         bounds = bounds or CrawlBounds(politeness=self.cfg.ingest.politeness)
         bounds = bounds or CrawlBounds(politeness=self.cfg.ingest.politeness)
-        for item in crawl(urls, bounds):
+        from ..index_state import json_list
+
+        excluded = json_list(self.store, "forgotten_sources_json")
+        pages = crawl(urls, bounds, excluded) if excluded else crawl(urls, bounds)
+        for item in pages:
+            from ..index_state import forgotten
+
+            if forgotten(self.store, item.path if isinstance(item, walk.SkipNotice) else item.url):
+                continue
             if isinstance(item, walk.SkipNotice):
                 self._record_unsupported(
                     self.store, item.path, item.reason, report,
@@ -49,6 +58,7 @@ class UrlIngestMixin:
             from .extract_html import html_to_text
 
             plain, title = html_to_text(item.html)
+            report.scanned += 1
             fid = self.store.upsert_file(
                 FileRec(
                     path=item.url, source="url", kind="webpage",
@@ -57,8 +67,9 @@ class UrlIngestMixin:
                 )
             )
             if not plain.strip():
-                self._finish_file(
-                    fid, capability="metadata_only", detail="no text extracted",
+                self._commit_segments(
+                    fid, [name_segment(item.url, _folder_words(item.url, "url"))],
+                    capability="metadata_only", detail="no text extracted",
                     info={"fetched_at": item.fetched_at, "final_url": item.final_url},
                     extractor_version=URL_EXTRACTOR_VERSION,
                     report=report, kind="webpage",
@@ -90,10 +101,6 @@ class UrlIngestMixin:
             except EmbeddingError as exc:
                 # P1-5: the re-crawled page failed — its previous extract
                 # must not stay searchable.
-                self.store.delete_content_segments(fid)
-                self._tally(report, "webpage", "failed")
-                report.failures.append(
-                    {"path": item.url, "detail": f"embedding failed: {exc}"}
-                )
-                report.failed += 1
+                self._record_failed(self.store, item.url, f"embedding failed: {exc}",
+                                    report, fid=fid, kind="webpage")
                 continue

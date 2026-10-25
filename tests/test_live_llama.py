@@ -57,6 +57,37 @@ def _cfg(tmp_path: Path) -> LlamaCfg:
 
 @_skip_binary
 @_skip_model
+def test_live_lexical_backfill_preserves_text_and_matches_document_embedding(tmp_path):
+    from goldmine.backends.base import document_prompt
+    from goldmine.repair import execute_repairs, plan_repairs
+    from goldmine.util import pack_fp16
+
+    root = tmp_path / "corpus"
+    root.mkdir()
+    body = "中文知识库：退款期限为四十五天。 Keep the original receipt."
+    (root / "note.txt").write_text(body)
+    cfg = Config(home=tmp_path / "home")
+    cfg.llama = _cfg(tmp_path)
+    store = Store(tmp_path / "backfill.sqlite")
+    backend = LlamaServerBackend(cfg.llama)
+    try:
+        IngestPipeline(cfg, store, None, lexical_only=True).run([str(root)])
+        before = store.db.execute("SELECT rowid,body,original FROM fts ORDER BY rowid").fetchall()
+        plan = plan_repairs(store, cfg, backend, missing_vectors=True)
+        assert len(plan) == 1 and plan[0]["action"] == "backfill"
+        result = execute_repairs(store, cfg, backend, plan)
+        assert result["vectors_added"] == 1 and not result["failures"]
+        assert store.db.execute("SELECT rowid,body,original FROM fts ORDER BY rowid").fetchall() == before
+        expected = backend.embed_texts([document_prompt("note", body)])[0]
+        assert store.db.execute("SELECT vec FROM segments WHERE kind='chunk'").fetchone()[0] == pack_fp16(expected)
+        assert plan_repairs(store, cfg, backend, missing_vectors=True) == []
+    finally:
+        backend.close()
+        store.close()
+
+
+@_skip_binary
+@_skip_model
 def test_live_spawn_embed_dim_and_build_recorded(tmp_path):
     with LlamaServerBackend(_cfg(tmp_path)) as backend:
         vectors = backend.embed_texts(["kubernetes pod eviction", "sourdough starter"])

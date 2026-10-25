@@ -191,3 +191,26 @@ def test_mcp_context_contains_stored_neighbors_and_round_trip_citations(tmp_path
             back = decode(await client.call_tool("goldmine_get", {"citation_id": neighbor["citation"]["citation_id"]}))
             assert neighbor["text"] in back["context_text"]
     anyio.run(exercise)
+
+
+@pytest.mark.parametrize("with_disconnect", [False, True])
+def test_stdio_disconnect_handler_preserves_other_task_failures(monkeypatch, with_disconnect):
+    pytest.importorskip("mcp")
+    import anyio
+    import os
+    from goldmine import mcp_server
+
+    failure = ValueError("unrelated protocol failure")
+    errors = [failure]
+    if with_disconnect:
+        errors.insert(0, ExceptionGroup("writer", [BrokenPipeError("client left")]))
+    def fail(run):
+        raise ExceptionGroup("tasks", errors)
+
+    monkeypatch.setattr(mcp_server, "create_server", lambda app: object())
+    monkeypatch.setattr(anyio, "run", fail)
+    # Keep pytest's output usable while exercising the real cleanup branch.
+    monkeypatch.setattr(os, "dup2", lambda *args: None)
+    with pytest.raises(ExceptionGroup) as caught:
+        mcp_server.run_stdio(None)
+    assert caught.value.exceptions == (failure,)

@@ -335,15 +335,16 @@ class Searcher:
         keyword_segment: dict[int, int] = {}  # file -> best (first) matching segment
         coverage: dict[int, float] = {}
         lexical = None
+        allowed = self._allowed_files(kinds, filters)
         if want_lexical:
             lexical = collect_lexical(
                 self.store, query, terms, filters.phrases if filters is not None else [], self.terms,
+                allowed_files=allowed,
             )
             word_rank = lexical.word_rank
             keyword_segment = lexical.keyword_segment
             coverage = lexical.coverage
 
-        allowed = self._allowed_files(kinds, filters)
         phrases = filters.phrases if filters is not None else []
         anchor = resolve_obligations(
             self.store, query, phrases, allowed, self.terms,
@@ -759,12 +760,25 @@ class Searcher:
             if filters.before is not None:
                 where.append(f"{_DATE_EXPR} <= ?")
                 params.append(filters.before)
-            for host in filters.site:
-                where.append("source = 'url' AND path LIKE '%' || ? || '%'")
-                params.append(host)
+            if filters.site:
+                where.append("source = 'url'")
         rows = self.store.db.execute(
-            f"SELECT id FROM files WHERE {' AND '.join(where)}", tuple(params)
+            f"SELECT id,path FROM files WHERE {' AND '.join(where)}", tuple(params)
         ).fetchall()
+        if filters is not None and filters.site:
+            from urllib.parse import urlsplit
+
+            try:
+                hosts = [host.casefold().rstrip(".").encode("idna").decode("ascii") for host in filters.site]
+            except UnicodeError:
+                return set()
+            def matches(path):
+                try:
+                    host = (urlsplit(path).hostname or "").rstrip(".").encode("idna").decode("ascii").casefold()
+                    return all(host == target or host.endswith("." + target) for target in hosts)
+                except (ValueError, UnicodeError):
+                    return False
+            rows = [row for row in rows if matches(row[1])]
         return {r[0] for r in rows}
 
     def _files_with_text(self, file_ids) -> set[int]:

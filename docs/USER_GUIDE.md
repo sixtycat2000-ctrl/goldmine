@@ -246,10 +246,10 @@ More: `goldmine help troubleshoot` (each with its fix), `goldmine help` for all 
 
 `goldmine distill` condenses the index into topic cards: short extractive titles, keyword
 lines, and up to three verbatim excerpts per card, each with a citation back to the file.
-v2.1 calibrates the similarity threshold from your corpus every run (the preview tells you
-what it measured and why — real corpora normally run the percentile fallback; that is
-expected, not a bug), and an admission guard keeps one broad topic from absorbing
-everything (the v1 mega-cluster bug). Typical loop:
+The v3 co-association ensemble uses a fixed default threshold of 0.45.
+`--threshold` overrides that admission threshold; the preview reports observed
+distributions without changing it. Incremental runs inherit the previous value.
+Typical loop:
 
     goldmine distill --preview                      # look before writing
     goldmine distill --as notes --under ~/notes     # save a named view + build cards
@@ -258,7 +258,8 @@ everything (the v1 mega-cluster bug). Typical loop:
 Re-runs of a saved view are incremental: existing card memberships are frozen, deleted
 content is swept (cards that fall below the minimum dissolve), and the threshold is
 inherited so labels stay stable. `--refresh` forces a full rebuild; `status` tells you when
-cards are empty after the v4 upgrade. Design of record: `docs/v2.1-r6-distill.md`.
+cards are empty after the v4 upgrade. Current behavior is recorded in `SPEC.md` and `docs/FEATURE_STATUS.md`;
+`docs/v2.1-r6-distill.md` preserves the earlier v2 design.
 
 ## Explicit background commands and remaining experiments
 

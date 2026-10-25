@@ -144,21 +144,9 @@ def cmd_reset(args: argparse.Namespace) -> int:
                     exit_code=EXIT_USAGE,
                 ), json_mode=json_mode)
                 return EXIT_USAGE
-            with store.write_transaction():
-                store.db.execute("DELETE FROM fts")
-                store.db.execute("DELETE FROM card_chunks")
-                store.db.execute("DELETE FROM cards")
-                store.db.execute("DELETE FROM segments")
-                # v4 (R6): cards' run history + named views describe the wiped
-                # vectors — reset clears them with everything else
-                store.db.execute("DELETE FROM distill_runs")
-                store.db.execute("DELETE FROM distill_views")
-            store.set_meta("fingerprint_id", None)
-            store.set_meta("fingerprint_json", None)
-            store.set_meta("cards_v2_rebuild_note", None)
         finally:
             store.close()
-        logger.info("reset: cleared vectors + cards; re-ingesting %d root(s)", len(roots))
+        logger.info("reset: rebuilding %d recorded root(s)", len(roots))
         return _run_reindex_ingest(
             cfg, db, roots,
             backend_name=_g(args, "backend"),
@@ -212,14 +200,22 @@ def _run_reindex_ingest(cfg: Config, db: Path, roots: list[str], *,
     except BackendUnavailable as exc:
         _emit_error(_err_backend(
             exc,
-            message="reset --reindex: no backend — the index is now vectorless",
+            message="reset --reindex: no backend — existing index retained",
             fixes=["goldmine model check", "goldmine ingest --lexical-only"],
         ), json_mode=json_mode)
         return EXIT_PREREQ
     store = Store(db)
     try:
         pipeline = IngestPipeline(cfg, store, backend)
-        report = pipeline.run(list(roots), reindex=True)
+        include_code = store.db.execute("SELECT 1 FROM files WHERE kind='code' AND capability='content_indexed' LIMIT 1").fetchone() is not None
+        report = pipeline.run(list(roots), reindex=True, code=include_code)
+        if not report.cancelled and not report.failed:
+            with store.write_transaction():
+                store.db.execute("DELETE FROM card_chunks")
+                store.db.execute("DELETE FROM cards")
+                store.db.execute("DELETE FROM distill_runs")
+                store.db.execute("DELETE FROM distill_views")
+                store.set_meta("cards_v2_rebuild_note", None)
         print(render_ingest_summary(report, json_mode=json_mode))
         if report.cancelled:
             return EXIT_INTERRUPTED

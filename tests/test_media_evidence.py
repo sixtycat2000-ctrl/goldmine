@@ -35,7 +35,10 @@ def candidate(tmp_path, kind="image"):
 
 
 def commit(pipeline, cand, outcome):
-    pipeline._commit(cand, "fixture-sha", outcome, IngestReport(), batch=32, embed=pipeline.backend)
+    report = IngestReport()
+    # Direct commit tests enter after the normal run() identity preparation.
+    pipeline._prepare_backend(report, startup=False)
+    pipeline._commit(cand, "fixture-sha", outcome, report, batch=32, embed=pipeline.backend)
     return pipeline.store.find_by_path(str(cand.path))
 
 

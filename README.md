@@ -44,6 +44,30 @@ indexing never triggers a download — and hits whose file vanished since the
 last ingest are filtered at query time, so a result always points at
 something on disk.
 
+## Repair and source scope
+
+```sh
+goldmine repair --db library.sqlite --plan
+goldmine repair /chosen/folder --db library.sqlite --missing-vectors
+goldmine repair --db library.sqlite --failed-only
+goldmine ingest /chosen/folder --db library.sqlite --reindex
+goldmine sources --db library.sqlite
+goldmine forget /chosen/folder/private --db library.sqlite --dry-run
+goldmine forget /chosen/folder/private --db library.sqlite
+goldmine sources restore /chosen/folder/private --db library.sqlite
+```
+
+`repair --plan` opens the index read-only and lists per-file reasons. Text
+backfill retains stored original text, segment IDs and existing vectors; oversized
+inputs and media that need source bytes use targeted extraction. Add
+`--lexical-only` when retrying extraction without an embedding backend.
+Same-model `ingest --reindex` rebuilds only the selected scope. Changing models
+requires all recorded sources to be available and rebuilds their shared index.
+
+`forget` removes indexed evidence and affected card snapshots, records a persistent
+exclusion for ingest/watch, and leaves source files on disk. `sources remove` is
+an alias. Restore the exclusion explicitly, then ingest to index that scope again.
+
 ## Semantic search and optional tools
 
 Explicitly install the pinned embedding model with `goldmine model install
@@ -80,22 +104,17 @@ SQLite remains authoritative and cache defects fall back to it.
 
 ## Evidence and validation
 
-The historical legacy suite has 109 queries (104 answerable items and 5 noise
-items; the 19 capability-gated media queries are excluded from its frozen
-denominator). On the original production baseline, the 2026-10-21 real-model
-reproduction matched success@5 **0.7862**, success@1 **0.5931**, MRR **0.6835** and
-nDCG@10 **0.6885** exactly. These numbers describe that baseline, not an improvement
-claim for this branch. The independent full-media suite has 136 fixed queries
-(78 real + 58 media, 27 of them needs-gated; 8 are keyframe-retrieval questions with moment-level location verdicts); its stored-evidence preflight
-(EXIF/OCR/ASR provenance) passes against the real-backend corpus index, and its
-formal gate is pending the multimodal landing. Re-baselined from the stale 169
-on 2026-10-25 (receipt: reports/execution/digup-plan-002/step-1-baseline/).
+[FEATURE_STATUS](docs/FEATURE_STATUS.md) is the current capability and quality
+record. The frozen product suite contains 420 questions from 122 sources with
+a grouped 210/210 dev/holdout split; the older 28-question corpus is a diagnostic
+seed. The separate answer and card inputs contain 80 tasks and 120 documents.
+Those prepared inputs do not establish answer or clustering quality.
 
-The portable product suite requires 420 audited questions. Its current draft has
-28 questions from 12 original MIT sources, with no frozen holdout. The remaining
-392 questions and real PDF/media assets are missing. New independent 80-question
-answer/grading runs and the real 100-document, eight-topic card corpus are also
-missing. No final quality milestone or release candidate is declared.
+Historical text/media gate results apply only to their recorded source and
+index snapshots. The current lifecycle, filtered-retrieval and source-PTS changes
+need fresh real-model quality measurements; no historical score is inherited.
+The remaining real answer/grading jobs and card quality runs are recorded in
+FEATURE_STATUS. Optional reranking and multi-query remain unvalidated experiments.
 
 Run the fixed hermetic profile with:
 

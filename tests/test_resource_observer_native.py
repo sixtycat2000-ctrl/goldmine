@@ -72,13 +72,25 @@ def rebind(run, *, observation=None, records=None, binding=None, receipt_change=
 
 
 
-def test_actual_simple_command_raw_counters_and_hard_fd_handshake(tmp_path):
+def test_actual_simple_command_raw_counters_and_hard_fd_handshake(tmp_path, monkeypatch):
+    from acceptance_lib.resource_observer import Observer
+
     before = resource.getrlimit(resource.RLIMIT_NOFILE)
-    # 2s instead of the historical 0.08s: the observer must sample the
-    # short-lived process and read its descriptors before it exits; shorter
-    # sleeps raced on loaded CI runners ("process-disappeared-before-
-    # ownership-check" / "ownership-lost-during-counter-read").
-    run, value, inner, manifest = execute(tmp_path, "import resource,time; print(resource.getrlimit(resource.RLIMIT_NOFILE));time.sleep(2)")
+    release = tmp_path / "release-child"
+    original_sample = Observer.sample
+    def sample_then_release(observer):
+        original_sample(observer)
+        if observer.target_exec_seen and not release.exists():
+            # A timed sleep always races the final ownership/FD read. Hold the
+            # real child until its target sample completes, then await its
+            # unreaped exit so the final census sees the actual zombie row.
+            release.touch()
+            owned_process._wait_unreaped(observer.proc, max(0, observer.deadline - time.monotonic()))
+    monkeypatch.setattr(Observer, "sample", sample_then_release)
+    body = ("import resource,time;from pathlib import Path;"
+            "print(resource.getrlimit(resource.RLIMIT_NOFILE),flush=True)\n"
+            f"while not Path({str(release)!r}).exists(): time.sleep(.005)")
+    run, value, inner, manifest = execute(tmp_path, body)
     result = replay(run, value, inner)
     assert result["status"] == "MISSING" and result["coverage_gaps"] == ["fixture-only-policy"]
     assert result["sample_count"] >= 2 and result["peak"]["sampled_root_rss_bytes"] > 0

@@ -82,7 +82,7 @@ def _host_of(canonical_url: str) -> str:
     return (urllib.parse.urlsplit(canonical_url).hostname or "").lower()
 
 
-def crawl(start_urls: list[str], bounds: CrawlBounds) -> Iterator[CrawledPage | SkipNotice]:
+def crawl(start_urls: list[str], bounds: CrawlBounds, excluded=()) -> Iterator[CrawledPage | SkipNotice]:
     """BFS fetch. Yields CrawledPage for fetched HTML and SkipNotice for every
     URL that was seen but not ingested (with the reason). Never raises for
     ordinary crawl conditions — hard failures come back as SkipNotices too."""
@@ -115,6 +115,10 @@ def crawl(start_urls: list[str], bounds: CrawlBounds) -> Iterator[CrawledPage | 
     while head < len(frontier):
         url, depth = frontier[head]
         head += 1
+        from ..index_state import contains
+
+        if any(contains(root, url) for root in excluded):
+            continue
         host = _host_of(url)
         if host not in allowed_hosts:
             yield SkipNotice(url, "off-host link")

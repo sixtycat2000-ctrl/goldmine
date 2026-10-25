@@ -106,9 +106,8 @@ class InitCfg:
 
 @dataclass
 class DistillCfg:
-    # v2.1 R6 (D13): None = CALIBRATED — every run measures τ from the corpus
-    # (distill.measure_tau). A value here (or --threshold X) acts as a manual
-    # override (tau_source='manual'); the v1 default 0.70 was the bug.
+    # v3: None selects the fixed co-association threshold 0.45. An explicit
+    # value (or --threshold) is manual; incremental runs inherit their tau.
     threshold: float | None = None
     min_members: int = 3
     max_chunks: int = 50000

@@ -188,6 +188,19 @@ class CommitMixin:
         per file: the old segments die with the new ones or not at all)."""
         with self._metrics.stage("commit"):
             with self.store.write_transaction():
+                from ..index_state import forgotten
+
+                record = self.store.get_file(fid)
+                if record is None:
+                    return
+                if forgotten(self.store, record.path):
+                    self.store.delete_file(fid)
+                    report.note("forgotten", f"source was forgotten while extracting: {record.path}")
+                    return
+                if any(seg.vec is not None for seg in segs):
+                    from ..index_state import publish_identity
+
+                    publish_identity(self.store, self._live_fp, identity=self._embed_identity_dict)
                 self.store.replace_segments(fid, segs)
                 self._finish_file(
                     fid, capability=capability, detail=detail, info=info,
@@ -207,6 +220,10 @@ class CommitMixin:
         embed: EmbeddingBackend | None,
     ) -> None:
         store = self.store
+        from ..index_state import forgotten
+
+        if forgotten(store, str(cand.path)):
+            return
         if cand.kind == "image" and outcome.info.get("exif_status") in ("error", "unavailable"):
             # Extraction workers have no store access. Preserve prior proven
             # capture metadata here only when the immutable source SHA agrees;

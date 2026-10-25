@@ -29,6 +29,7 @@ def tree(tmp_path, make_pdf_fixture) -> Path:
     return root
 
 
+@pytest.mark.native
 def test_estimate_json_shape_and_counts(tree):
     result = est.estimate_root(tree, code=True)
     assert result["files"] == {"doc": 2, "pdf": 1, "image": 1, "audio": 1, "code": 1}
@@ -47,6 +48,7 @@ def test_estimate_json_shape_and_counts(tree):
     assert any("whisper" in n for n in result["notes"])  # the honest audio caveat
 
 
+@pytest.mark.native
 def test_estimate_long_pdf_first_pass_split(tmp_path, make_pdf_fixture):
     root = tmp_path / "p"
     root.mkdir()

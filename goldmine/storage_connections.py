@@ -219,6 +219,9 @@ def open_index(path: Path, *, ro: bool = False, timeout_s: float = 60.0) -> sqli
         # Both fresh DDL and the migration ladder leave a committed database
         # fenced. Reinstall atomically if a current-format fixture omitted it.
         db.execute("BEGIN IMMEDIATE")
+        from .index_state import install_membership_cleanup
+
+        install_membership_cleanup(db)
         install_fences(db)
     db.commit()
     return db

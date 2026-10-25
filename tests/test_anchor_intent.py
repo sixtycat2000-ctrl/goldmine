@@ -366,13 +366,19 @@ def test_F5_unbound_camel_red_line_SearchPanel_cjk_still_refuses(index):
 def test_F6_c_int_fixture_payloads_byte_identical_to_frozen_baseline(index):
     import json as _json
     from pathlib import Path as _Path
-    add(index, "ZT-84 signed harbor charge record", path="/owned/zt84.txt")
-    add(index, "key_value_store.sqlite schema note", path="/owned/kv.txt")
-    add(index, "py-1.0.3 wheel listing", path="/owned/wheel.txt")
-    add(index, "LH-2209 flight manifest", path="/owned/lh.txt")
-    add(index, "K7Q2LM activation code", path="/owned/k7.txt")
-    add(index, "TX-81 calibration sheet body", path="/owned/tx81.txt",
-        title="TX-81 calibration sheet")
+    # Append the frozen fixture's content to each initial name row. Replacing
+    # that row used to rely on SQLite recycling deleted IDs; IDs now stay spent.
+    for path, text, title in (
+        ("/owned/zt84.txt", "ZT-84 signed harbor charge record", None),
+        ("/owned/kv.txt", "key_value_store.sqlite schema note", None),
+        ("/owned/wheel.txt", "py-1.0.3 wheel listing", None),
+        ("/owned/lh.txt", "LH-2209 flight manifest", None),
+        ("/owned/k7.txt", "K7Q2LM activation code", None),
+        ("/owned/tx81.txt", "TX-81 calibration sheet body", "TX-81 calibration sheet"),
+    ):
+        fid = index.upsert_file(FileRec(path=path, kind="doc", state="done",
+            capability="content_indexed", info={"title": title} if title else None))
+        index.fts_text(fid, "chunk", 7, text, False, loc_end=7, excerpt_text=text)
     baseline = _json.loads((_Path(__file__).parent / "anchor_intent_cint_baseline.json")
                            .read_text())
     for query, expected in baseline.items():

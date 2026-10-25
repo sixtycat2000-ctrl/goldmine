@@ -43,9 +43,11 @@ python3 scripts/eval_real.py --suite legacy --backend llama --gate
 python3 scripts/eval_real.py --suite full-media --backend llama --gate --baseline evals/media_full_baseline.json
 ```
 
-**怎么读**：结尾 `gate: green`，且各指标 delta 全 `+0.0000`。这是**回归
-底线**（没变差），不是产品质量证明——产品成绩单看 FEATURE_STATUS 里的
-product 套件（那是另一回事，目前还有红门）。
+**怎么读**：结尾 `gate: green` 表示没有触发现有统计回归门，仍须读每项
+delta。2026-10-25 的 lifecycle 检查中，两套 Success@5 均不变；同一道
+`real-103` 从 Top1 降至第 2 位，故 Top1/MRR 有小幅下降，不能写成
+“零差异”。这些命令对已有索引做查询回归，没有重新验证新的媒体提取。
+产品成绩单看 FEATURE_STATUS 里的 product 套件（目前仍有红门）。
 
 ## 5. 只读估算不写库（~2 秒）
 
@@ -57,17 +59,22 @@ python3 -m goldmine estimate <任意目录>
 校准待做"）和"nothing was read, embedded, or written"。跑完目录里不该多出
 任何 .sqlite 文件。
 
-## 6. 全量离线套件（~8 分钟）
+## 6. 分层回归套件（离线约 6 分钟，原生约 3 分钟）
 
 ```sh
-python3 -m pytest -q tests
+python3 scripts/acceptance.py run --profile offline --out reports/execution/anchor-offline-001
+python3 scripts/acceptance.py run --profile native --out reports/execution/anchor-native-001
+python3 scripts/acceptance.py run --profile optional-mcp --out reports/execution/anchor-mcp-001
 ```
 
-**怎么读**：当前已知基线 = **全过，除 2 个档案化失败**
-（`comparison_native_resolvers` 确定性旧败；`resource_observer_native`
-时序 flake——若它失败，单独重跑 3 次再下结论）。**出现任何其他 FAILED
-就是新问题**，拿着名字去问会话要归因（就像 2026-10-25 撞车那次：stash
- A/B 一验就知道是谁的）。
+**怎么读**：先在 Python 3.12+、装有锁定测试依赖的虚拟环境执行；原生需要本机工具，MCP
+需要 SDK extra。三个命令按顺序运行，每次用新的输出目录。原生的源码漂移
+对抗用例会临时改写源码，与离线的源码身份校验不能在同一工作树并行运行。
+
+要求 `pytest.*` 与 `source.stable` 均为 PASS；必需测试的 skip、丢失入口和
+缺少回执都不是通过。旧的 resolver 失败与资源观察器时序问题已有定位及
+验证；任何新的 FAIL 都需要查原始日志，不能靠反复重跑消掉。最新计数和
+回执范围见 [FEATURE_STATUS](FEATURE_STATUS.md)。
 
 ---
 

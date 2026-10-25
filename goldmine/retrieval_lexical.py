@@ -10,14 +10,17 @@ from .lexical import (
 from .retrieval_evidence import collect_body_units
 
 
-def _cjk_rows(db, patterns):
+def _cjk_rows(db, patterns, allowed_files=None):
     if not patterns:
         return []
-    return db.execute(
-        "SELECT s.file,s.id,bm25(fts_cjk) FROM fts_cjk JOIN segments s ON s.id=fts_cjk.rowid "
-        "WHERE fts_cjk MATCH ? ORDER BY bm25(fts_cjk),s.id LIMIT 1000",
-        (" OR ".join(dict.fromkeys(patterns)),),
-    ).fetchall()
+    from .index_state import lexical_scope
+
+    with lexical_scope(db, allowed_files) as scope:
+        return db.execute(
+            "SELECT s.file,s.id,bm25(fts_cjk) FROM fts_cjk JOIN segments s ON s.id=fts_cjk.rowid "
+            f"WHERE fts_cjk MATCH ? {scope} ORDER BY bm25(fts_cjk),s.id LIMIT 1000",
+            (" OR ".join(dict.fromkeys(patterns)),),
+        ).fetchall()
 
 
 def _cjk_coverage(db, patterns, file_ids):
@@ -49,18 +52,18 @@ def _phrase_files(db, phrase, candidate_rows):
     return found
 
 
-def collect_lexical(store, query: str, terms: list[str], phrases: list[str], terms_of) -> LexicalResult:
+def collect_lexical(store, query: str, terms: list[str], phrases: list[str], terms_of, *, allowed_files=None) -> LexicalResult:
     units = query_units(query, terms, phrases)
     latin_patterns = [u.patterns[0] for u in units if u.kind == "latin"]
     latin_patterns += [fts_quote(u.text) for u in units if u.kind == "phrase" and not u.patterns]
-    latin_rows = store.search_fts(" OR ".join(latin_patterns), limit=1000) if latin_patterns else []
+    latin_rows = store.search_fts(" OR ".join(latin_patterns), limit=1000, allowed_files=allowed_files) if latin_patterns else []
     result = LexicalResult()
     for position, row in enumerate(latin_rows, 1):
         result.word_rank.setdefault(row.file_id, position)
         result.keyword_segment.setdefault(row.file_id, row.segment_id)
     tables = {r[0] for r in store.db.execute("SELECT name FROM sqlite_schema WHERE type='table'")}
     cjk_patterns = [pattern for unit in units if unit.kind in ("cjk", "phrase") for pattern in unit.patterns]
-    cjk_rows = _cjk_rows(store.db, cjk_patterns) if "fts_cjk" in tables else []
+    cjk_rows = _cjk_rows(store.db, cjk_patterns, allowed_files) if "fts_cjk" in tables else []
     result.unit_count = len(units)
     result.units = list(units)
     result.segment_units, result.segment_files = collect_body_units(

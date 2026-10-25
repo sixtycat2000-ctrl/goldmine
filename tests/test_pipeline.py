@@ -720,7 +720,7 @@ def test_dry_run_previews_media_capability(cfg, fixture_tree):
     media.ffmpeg_path() is None or media.ffprobe_path() is None,
     reason="ffmpeg/ffprobe not installed (brew install ffmpeg)",
 )
-def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
+def test_video_soundtrack_windows_from_real_ffmpeg(cfg, tmp_path):
     """Video v4 = soundtrack windows + keyframes (video-frames-001): a scored
     STATIC video keeps 1 frame seg alongside its 1 audio seg — 音频段+帧段并存."""
     from goldmine.util import run_tool
@@ -759,10 +759,10 @@ def test_video_soundtrack_windows_and_frames_from_real_ffmpeg(cfg, tmp_path):
     assert len(frames) == 1                     # static video: aHash kept one
     kind, modality, loc, loc_end, blob, label = frames[0]
     assert kind == "frame" and modality == "image"
-    assert loc == pytest.approx(0.5, abs=0.01)  # min(0.5, d/2) grid start
+    assert loc == pytest.approx(0.52, abs=0.001)  # actual 25 fps source frame after the 0.5 s seek
     assert loc_end == pytest.approx(2.5, abs=0.3)  # last kept frame = duration
     assert blob is not None and len(blob) == 768 * 2
-    assert label == "frame 0.5s"
+    assert label == "frame 0.52s"
     assert rec.info["frames"] == 1 and rec.info["frame_interval"] == 3.0
     assert rec.info["windows"] == 1
     assert report.content_indexed == 1
@@ -808,6 +808,33 @@ def test_video_without_audio_stream_gets_frames(cfg, tmp_path):
 
 
 # ------------------------------------------- video keyframes, offline mock --
+
+@pytest.mark.skipif(
+    media.ffmpeg_path() is None or media.ffprobe_path() is None,
+    reason="ffmpeg/ffprobe not installed (brew install ffmpeg)",
+)
+def test_video_without_audio_stream_is_metadata_only(cfg, tmp_path):
+    """Retain the original text-only-backend contract alongside the new
+    multimodal keyframe case above; absence of audio never fabricates text."""
+    from goldmine.util import run_tool
+
+    root = tmp_path / "mute-text-only"
+    root.mkdir()
+    video = root / "mute.mp4"
+    result = run_tool([media.ffmpeg_path(), "-hide_banner", "-loglevel", "error", "-f", "lavfi",
+                       "-i", "color=c=black:s=64x64:d=1", "-y", str(video)], timeout_s=60)
+    assert result.rc == 0, result.stderr
+    store = Store(cfg.home / "mute-text-only.sqlite")
+    try:
+        report = IngestPipeline(cfg, store, MockBackend()).run([str(root)])
+        record = store.find_by_path(str(video))
+        assert record.capability == "metadata_only"
+        assert report.metadata_only == 1 and report.failed == 0
+        assert store.counts().vectors == 0
+    finally:
+        store.close()
+
+
 #
 # The offline suite never spawns ffmpeg for these (the real engine is covered
 # above + tests/test_video_frames.py): probes and the keyframe extractor are

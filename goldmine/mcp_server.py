@@ -119,12 +119,16 @@ def run_stdio(application: Application) -> None:
 
     try:
         anyio.run(run)
-    except (BrokenPipeError, anyio.BrokenResourceError, anyio.ClosedResourceError):
+    except* (BrokenPipeError, anyio.BrokenResourceError, anyio.ClosedResourceError):
         # the client went away (EPIPE) — exit quietly, no traceback (DigUp
-        # IndexService.swift:331-336). devnull dup2 keeps the shutdown flush
-        # from re-raising on the dead stdout.
+        # IndexService.swift:331-336). SDK task groups wrap these exceptions;
+        # except* removes only disconnect errors, preserving unrelated failures.
+        # devnull dup2 also prevents a second error at interpreter shutdown.
         try:
             devnull = os.open(os.devnull, os.O_WRONLY)
-            os.dup2(devnull, sys.stdout.fileno())
+            try:
+                os.dup2(devnull, sys.stdout.fileno())
+            finally:
+                os.close(devnull)
         except (OSError, ValueError):
             pass

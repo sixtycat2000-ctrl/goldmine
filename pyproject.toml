@@ -43,6 +43,7 @@ goldmine = "goldmine.cli:main"
 include = ["goldmine*"]
 
 [tool.pytest.ini_options]
+testpaths = ["tests"]
 markers = [
     "live: tier-3 live tests; need GOLDMINE_LIVE=1 and real binaries/models",
     "eval: relevance / clustering-sensitivity harness (reports, rarely asserts)",

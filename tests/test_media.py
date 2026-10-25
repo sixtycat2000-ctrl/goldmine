@@ -61,7 +61,7 @@ def test_ffprobe_duration_garbage_is_none(tmp_path):
     assert media.ffprobe_duration(path) is None
 
 
-def test_sub_window_file_gated_as_a_whole(tmp_path):
+def test_single_window_short_clip(tmp_path):
     """B1 (digup-p2-closeout-001): a file shorter than one window is gated as
     a whole (DigUp MediaExtractors.swift:76 offset==0 -> alreadyCovered 0) —
     a 1.0 s clip carries < 2 s of audio, so it yields NO window. The v2-era
@@ -135,7 +135,7 @@ def test_no_silence_skip_keeps_all_windows(tmp_path):
     assert [(p.start, p.end) for p in pieces] == [(0.0, 30.0), (25.0, 55.0), (50.0, 62.0)]
 
 
-def test_video_soundtrack_still_uses_audio_path(tmp_path):
+def test_video_soundtrack_uses_audio_path(tmp_path):
     """v4: the soundtrack path is UNCHANGED by keyframes — a scored video
     still yields the same raw windows (video-frames-001 froze this). The
     keyframe engine itself is covered by tests/test_video_frames.py."""

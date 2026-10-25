@@ -24,7 +24,10 @@ def cmd_status(args: argparse.Namespace) -> int:
     if refused is not None:
         return refused
     limit = _g(args, "failures")
-    snapshot = Application(db).status(include_details=True, failure_limit=10 if limit is None else limit)
+    from ..backends import create_backend
+
+    snapshot = Application(db, lambda: create_backend(cfg, _g(args, "backend"))).status(
+        include_details=True, failure_limit=10 if limit is None else limit)
     backends = probe_all(cfg)
     payload = _status_payload(snapshot, db, backends, watch_status_payload(cfg))
     if json_mode:

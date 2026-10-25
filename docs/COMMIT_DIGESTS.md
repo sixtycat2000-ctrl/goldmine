@@ -203,3 +203,41 @@ docs/ANCHORS.md 第 2 条（指纹拒绝现场，用的就是 v4 备份库）+ �
 
 docs/ANCHORS.md 第 1、2、5、6 条；批次 A 当天双 gate delta 全 0
 （回执在本地 reports/execution/digup-p2-closeout-001/batch-a-close/）。
+
+---
+
+## codex/index-lifecycle-repair — 定向修复、来源生命周期与范围预检（用户已批准合回 main）
+
+### 关键行
+
+`index_state.py` 与 `ingest/update_policy.py` 集中模型身份、失效和升级判断；
+同模型重建只改指定范围，换模型先检查全部已记录来源，再发布身份。
+`repair` 增加只读计划、失败重试和原文向量补齐；`sources`/`forget` 增加
+持久排除与卡片清理。`distill_corpus.py` 先用 SQL 筛范围、数容量，再解码。
+FTS 在候选上限前筛范围；站点按主机边界；视频位置读取实际 PTS。
+MCP 断管处理覆盖嵌套异常，并继续抛出其他真实错误。
+合并保留 main 后续的 helper 测试环境修复、验收清单迁移及 MCP 测试分层调整；
+它们没有改动产品运行时代码。
+
+### 每行的风险
+
+换模型属于全库身份迁移；来源不可用时必须拒绝，不能留下混合向量。
+忘记来源会移除索引证据及受影响卡片，但原文件保留；恢复排除后需要重新
+摄取。片段 ID 不再回收，旧引用不会重指新片段。筛选提前可能改变词法
+排名；两套历史门通过，仍有 `real-103` 从第 1 降到第 2 的差异。
+
+### 我不确定的地方
+
+已有索引上的查询门不能证明新提取器重建后的检索质量；本次没有刷新冻结
+基线、调阈值或打开产品 holdout。真实答案评分与卡片聚类质量的既有缺口
+继续记录在 FEATURE_STATUS。资源计数测试已用退出握手消除采样竞争，
+没有放宽观察器的缺口判定或原断言。
+
+### 你 90 秒怎么验
+
+在装好测试依赖的环境运行 `python3 -m pytest -q
+tests/test_index_lifecycle_regressions.py tests/test_sources_repair.py`。
+对自己的索引先运行 `goldmine repair --db PATH --plan`；移除前用
+`goldmine forget TARGET --db PATH --dry-run` 看范围。完整回执保存在本工作树
+的 `reports/execution/lifecycle-repair-20261025/`，能力与质量摘要见
+[FEATURE_STATUS](FEATURE_STATUS.md)。

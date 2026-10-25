@@ -49,7 +49,7 @@ Common flags:
   --code              include source code / data files (off by default)
   --dry-run           classify only — nothing written, no backend needed
   --lexical-only      index text without embeddings (keyword-only index)
-  --reindex           clear extracted content and re-extract everything
+  --reindex           re-extract selected scope; changed models rebuild all recorded roots
   --refresh-thin      re-extract scanned/thin PDF pages (OCR upgrade)
   --exclude GLOB      repeatable; relative or absolute patterns
 
@@ -173,6 +173,20 @@ because re-running ASR costs real time.
 See also: goldmine help maintenance (backup), models (install keys)
 """,
     "maintenance": """\
+repair and sources
+
+  goldmine repair --plan --db library.sqlite
+  goldmine repair --missing-vectors --db library.sqlite
+  goldmine repair --failed-only --db library.sqlite
+  goldmine sources --db library.sqlite
+  goldmine forget /chosen/private --db library.sqlite --dry-run
+  goldmine sources restore /chosen/private --db library.sqlite
+
+repair lists per-file reasons; --plan keeps the index read-only. Missing text
+vectors are filled from stored original text. Forgetting removes index evidence
+and affected cards, leaves source files in place and excludes future ingest/watch.
+Restore the exclusion explicitly, then ingest to restore indexed content.
+
 maintenance — status, doctor, backup, reset
 
   goldmine status            the honest state: indexed roots, per-kind

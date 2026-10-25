@@ -91,7 +91,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_ingest.add_argument("--lexical-only", action="store_true",
                           help="ingest without embeddings (FTS-only index)")
     p_ingest.add_argument("--reindex", action="store_true",
-                          help="clear segments + fingerprint and re-extract everything")
+                          help="re-extract the selected sources; a changed model rebuilds all recorded sources")
     p_ingest.add_argument("--refresh-thin", action="store_true",
                           help="re-extract files with thin/scanned PDF pages "
                                "(OCR upgrade) even when unchanged")
@@ -113,6 +113,26 @@ def build_parser() -> argparse.ArgumentParser:
     p_ingest.add_argument("--batch", type=int, metavar="N", help="embedding batch, default 16")
     p_ingest.add_argument("--encoding", metavar="CHARSET",
                           help="text decode override for this run (D5b)")
+
+    p_repair = sub.add_parser("repair", parents=[common], help="plan or repair selected indexed sources")
+    p_repair.add_argument("targets", nargs="*", metavar="PATH/URL", help="limit to indexed files, folders or URL prefixes")
+    p_repair.add_argument("--plan", action="store_true", help="show files and repair reasons; open the index read-only")
+    repair_mode = p_repair.add_mutually_exclusive_group()
+    repair_mode.add_argument("--failed-only", action="store_true", help="retry only stored failed files")
+    repair_mode.add_argument("--missing-vectors", action="store_true", help="fill eligible stored text vectors; re-extract media when needed")
+    p_repair.add_argument("--lexical-only", action="store_true", help="retry extraction without embeddings")
+
+    p_forget = sub.add_parser("forget", parents=[common], help="remove indexed sources and exclude future ingest/watch")
+    p_forget.add_argument("targets", nargs="+", metavar="PATH/URL", help="indexed file, directory or URL scope to forget")
+    p_forget.add_argument("--dry-run", action="store_true", help="preview removal without writes")
+    p_sources = sub.add_parser("sources", parents=[common], help="list, remove or restore explicitly indexed scope")
+    source_verbs = p_sources.add_subparsers(dest="sources_verb")
+    source_verbs.add_parser("list", parents=[common], help="list roots and forgotten scopes")
+    p_remove = source_verbs.add_parser("remove", parents=[common], help="same operation as goldmine forget")
+    p_remove.add_argument("targets", nargs="+", metavar="PATH/URL", help="indexed file, directory or URL scope to forget")
+    p_remove.add_argument("--dry-run", action="store_true", help="preview indexed removal without writes")
+    p_restore = source_verbs.add_parser("restore", parents=[common], help="allow a forgotten scope to be ingested explicitly again")
+    p_restore.add_argument("targets", nargs="+", metavar="PATH/URL", help="forgotten scope to allow for explicit future ingest")
 
     p_search = sub.add_parser(
         "search", parents=[common], help="hybrid search",
@@ -305,27 +325,24 @@ def build_parser() -> argparse.ArgumentParser:
     # never even shows in --help ---
     _add_model_commands(sub, "model")
 
-    # --- agent B's commands: subparsers exist, handlers are honest stubs ---
+    # --- extractive topic cards ---
     p_distill = sub.add_parser(
         "distill", parents=[common],
-        help="distill golden cards (v2: calibrated tau, admission guard)",
+        help="distill extractive topic cards (v3 co-association ensemble)",
         description=(
-            "Cluster the index's vectors into topic cards. v2 calibrates the "
-            "tau threshold from the corpus itself (Otsu over sampled pairwise "
-            "cosines, percentile fallback — real corpora are expected to run "
-            "the percentile path); a leader pass with an average-link "
-            "admission guard replaces the v1 mega-cluster behavior."
+            "Cluster indexed vectors into extractive topic cards using the v3 "
+            "co-association ensemble. The default tau is fixed at 0.45; "
+            "--threshold overrides it and incremental runs inherit it. "
+            "Reported distribution statistics do not calibrate tau."
         ),
     )
     p_distill.add_argument("--preview", action="store_true",
-                           help="dry run: corpus size, calibrated tau (+ raw + "
+                           help="dry run: corpus size, fixed/manual tau (+ raw + "
                                 "source + fallback reason), pairwise quartiles, "
                                 "size histogram, largest dropped clusters — "
                                 "writes NOTHING")
     p_distill.add_argument("--threshold", type=float, metavar="X",
-                           help="manual tau override (tau_source='manual'); "
-                                "unset = CALIBRATED from the corpus (v2 "
-                                "change: no more fixed 0.70 default)")
+                           help="manual co-association tau override; default fixed 0.45 (tau_source='fixed')")
     p_distill.add_argument("--min-members", type=int, metavar="N",
                            help="smallest cluster kept (default 3; 0 keeps "
                                 "singletons)")

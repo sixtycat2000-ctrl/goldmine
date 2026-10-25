@@ -300,4 +300,68 @@ def test_walk_subdir_scandir_oserror_is_unreachable_dir_notice(tmp_path, monkeyp
     assert [i.path.name for i in items if hasattr(i, "kind")] == ["ok.txt"]
 
 
+# Original FIFO regressions required by the acceptance inventory.
+
+def test_walk_fifo_with_text_ext_is_skipped_not_read(tmp_path):
+    """A named pipe named *.txt classifies as a doc; the old walker yielded a
+    Candidate and extract_txt's read_bytes() BLOCKED FOREVER on the writerless
+    pipe — one hung worker stalled the whole ingest. The walker now gates on
+    S_ISREG and skips specials with a reason (02-ingestion F2)."""
+    if os.name != "posix":
+        pytest.skip("os.mkfifo is POSIX-only")
+    root = tmp_path / "w"
+    root.mkdir()
+    os.mkfifo(root / "pipe_notes.txt")
+    (root / "real.txt").write_text("readable", encoding="utf-8")
+    items = list(walk([root], code=False, exclude=[], max_file_bytes=1 << 20))
+    files = [i for i in items if hasattr(i, "kind")]
+    notices = [i for i in items if isinstance(i, SkipNotice) and not i.is_dir]
+    assert [f.path.name for f in files] == ["real.txt"]
+    assert len(notices) == 1
+    assert notices[0].path.endswith("pipe_notes.txt")
+    assert notices[0].reason == "not a regular file"
+
+
+def test_walk_fifo_as_root_is_skipped(tmp_path):
+    """Same gate for a root that is itself a FIFO (`_handle_file`)."""
+    if os.name != "posix":
+        pytest.skip("os.mkfifo is POSIX-only")
+    fifo = tmp_path / "top.txt"
+    os.mkfifo(fifo)
+    items = list(walk([fifo], code=False, exclude=[], max_file_bytes=1 << 20))
+    notices = [i for i in items if isinstance(i, SkipNotice) and not i.is_dir]
+    assert len(notices) == 1 and notices[0].reason == "not a regular file"
+    assert not any(hasattr(i, "kind") for i in items)
+
+
+def test_walk_end_to_end_ingest_survives_a_fifo(tmp_path):
+    """Full pipeline: the FIFO is recorded unsupported with the machine reason
+    and the run COMPLETES (the regression was a whole-run hang, confirmed by
+    the critique's >5s subprocess probe)."""
+    from goldmine.backends.mock import MockBackend
+    from goldmine.config import load
+    from goldmine.ingest import IngestPipeline
+    from goldmine.store import Store as _Store
+
+    if os.name != "posix":
+        pytest.skip("os.mkfifo is POSIX-only")
+    root = tmp_path / "w"
+    root.mkdir()
+    os.mkfifo(root / "pipe_notes.txt")
+    (root / "note.txt").write_text("normal words here", encoding="utf-8")
+    cfg = load()
+    cfg.home = tmp_path / "home"
+    store = _Store(cfg.home / "idx.sqlite")
+    try:
+        with MockBackend(dim=768) as backend:
+            report = IngestPipeline(cfg, store, backend).run([str(root)])
+        assert report.failed == 0
+        assert report.content_indexed == 1
+        assert report.unsupported == 1
+        row = store.db.execute(
+            "SELECT capability, detail FROM files WHERE path LIKE '%pipe_notes.txt'"
+        ).fetchone()
+        assert row == ("unsupported", "not a regular file")
+    finally:
+        store.close()
 

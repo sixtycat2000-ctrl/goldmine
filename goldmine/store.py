@@ -399,6 +399,16 @@ class Store:
             self.db.execute("DELETE FROM segments WHERE file = ? AND kind != 'name'", (fid,))
             self._vec_generation += 1
 
+    def invalidate_file(self, fid: int, *, state="pending", capability=None,
+                        detail=None, info=None, chunker_version=None) -> None:
+        """Invalidate old body, vectors, memberships and provenance together."""
+        with self.write_transaction():
+            self.delete_content_segments(fid)
+            self.mark_file(fid, state=state, capability=capability, detail=detail,
+                           info=info, extractor_version=None,
+                           chunker_version=chunker_version, embed_id=None,
+                           replace_content_date=True)
+
     def delete_file(self, fid: int) -> None:
         with self.write_transaction():
             self._delete_segments_and_fts(fid)
@@ -464,11 +474,14 @@ class Store:
     # -- segments + FTS -------------------------------------------------------
 
     def _insert_segment(self, fid: int, seg: SegmentRec) -> int:
+        from .index_state import next_segment_id
+
         vec_blob = pack_fp16(seg.vec) if seg.vec is not None else None
+        sid = next_segment_id(self)
         cur = self.db.execute(
-            """INSERT INTO segments(file, kind, modality, loc, loc_end, excerpt, vec)
-               VALUES(?, ?, ?, ?, ?, ?, ?)""",
-            (fid, seg.kind, seg.modality, seg.loc, seg.loc_end, seg.excerpt, vec_blob),
+            """INSERT INTO segments(id, file, kind, modality, loc, loc_end, excerpt, vec)
+               VALUES(?, ?, ?, ?, ?, ?, ?, ?)""",
+            (sid, fid, seg.kind, seg.modality, seg.loc, seg.loc_end, seg.excerpt, vec_blob),
         )
         self._vec_generation += 1
         return int(cur.lastrowid)
@@ -653,20 +666,23 @@ class Store:
 
     # -- keyword search -------------------------------------------------------
 
-    def search_fts(self, match: str, limit: int = 1000) -> list[FtsRow]:
+    def search_fts(self, match: str, limit: int = 1000, *, allowed_files=None) -> list[FtsRow]:
         """FTS5 OR-match, best first. bm25 is lower-is-better: ORDER BY ascending."""
         from .read_source import fts_projection
 
         _, original_sql = fts_projection(self.db, "fts")
-        rows = self.db.execute(
-            f"""SELECT fts.rowid, s.file, fts.name, fts.body, {original_sql},
+        from .index_state import lexical_scope
+
+        with lexical_scope(self.db, allowed_files) as scope:
+            rows = self.db.execute(
+                f"""SELECT fts.rowid, s.file, fts.name, fts.body, {original_sql},
                       bm25(fts, 3.0, 1.0) AS rank
                FROM fts JOIN segments s ON s.id = fts.rowid
-               WHERE fts MATCH ?
+               WHERE fts MATCH ? {scope}
                ORDER BY rank
                LIMIT ?""",
-            (match, limit),
-        ).fetchall()
+                (match, limit),
+            ).fetchall()
         return [
             FtsRow(
                 segment_id=r[0], file_id=r[1], name=r[2], body=r[3],
@@ -834,7 +850,7 @@ class Store:
         ).fetchall()
         return {r[0] for r in rows}
 
-    def dissolve_pass(self, view_id: str, min_members: int) -> DissolveResult:
+    def dissolve_pass(self, view_id: str, min_members: int, *, valid_sids=None) -> DissolveResult:
         """§4.4: the tombstone sweep + below-min dissolve for one view, in
         ONE transaction. (1) card_chunks rows pointing at deleted segments go
         (the v2 DDL keeps the chunk FK CASCADE-free on purpose — this sweep
@@ -849,6 +865,14 @@ class Store:
         import time
 
         with self.write_transaction():
+            if valid_sids is not None:
+                self.db.create_function("_gm_card_member_valid", 1, lambda sid: int(sid in valid_sids))
+                try:
+                    self.db.execute(
+                        "DELETE FROM card_chunks WHERE card IN (SELECT id FROM cards WHERE view_id=? AND status='active') "
+                        "AND NOT _gm_card_member_valid(chunk)", (view_id,))
+                finally:
+                    self.db.create_function("_gm_card_member_valid", 1, None)
             self.db.execute(
                 """DELETE FROM card_chunks WHERE card IN
                    (SELECT id FROM cards WHERE view_id = ? AND status = 'active')
@@ -857,21 +881,29 @@ class Store:
             )
             rows = self.db.execute(
                 """SELECT c.id, cc.chunk FROM cards c
-                   JOIN card_chunks cc ON cc.card = c.id
+                   LEFT JOIN card_chunks cc ON cc.card = c.id
                    WHERE c.view_id = ? AND c.status = 'active'""",
                 (view_id,),
             ).fetchall()
             members_by_card: dict[int, list[int]] = {}
             for card_id, chunk_id in rows:
-                members_by_card.setdefault(card_id, []).append(chunk_id)
+                members_by_card.setdefault(card_id, [])
+                if chunk_id is not None:
+                    members_by_card[card_id].append(chunk_id)
             result = DissolveResult()
             if not members_by_card:
                 return result
-            table = self.load_vectors()
-            vec_by_sid = dict(zip(table.ids, table.matrix))
+            vec_by_sid = {}
+            ids = list({sid for members in members_by_card.values() for sid in members})
+            for start in range(0, len(ids), 400):
+                batch = ids[start:start + 400]
+                marks = ",".join("?" for _ in batch)
+                for sid, blob in self.db.execute(f"SELECT id,vec FROM segments WHERE id IN ({marks})", batch):
+                    if blob is not None and len(blob) == 1536:
+                        vec_by_sid[sid] = unpack_fp16(blob)
             for card_id, members in members_by_card.items():
                 n = len(members)
-                if n < min_members:
+                if n == 0 or n < min_members:
                     self.db.execute(
                         "DELETE FROM card_chunks WHERE card = ?", (card_id,)
                     )

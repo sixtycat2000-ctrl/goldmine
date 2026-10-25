@@ -7,10 +7,11 @@ update it in the same change. Design rationale lives in [ARCHITECTURE.md](ARCHIT
 [docs/DESIGN_DECISIONS.md](docs/DESIGN_DECISIONS.md); wave designs of record:
 docs/v2.1-r6-distill.md (distill), docs/v2.1-pack-eval.md (pack/context), docs/v2.1-r8-serve.md (serve).
 
-**Aligned to the 2026-10-21 development implementation.** Command set (17):
+**Aligned to the 2026-10-25 development implementation.** Command set (21):
 `init` · `ingest` · `search` · `serve` (`status`/`stop`) · `watch` · `status` · `version` ·
 `model` (`install`/`list`/`verify`/`use`/`adopt`/`check`) · `distill` · `doctor` ·
-`backup` · `backends` · `reset` · `open` · `reindex` · `mcp` · `help`. (`goldmine models …` is a hidden
+`backup` · `backends` · `reset` · `open` · `reindex` · `mcp` · `help` ·
+`estimate` · `repair` · `sources` · `forget`. (`goldmine models …` is a hidden
 argv alias of `goldmine model …`, `models add X` == `model install X`.)
 
 Python 3.12, stdlib-first. Dependencies: `numpy` (required), `mcp==2.0.0` (optional `mcp` extra), `pytest` (dev). External tools (`pdftotext`, `textutil`, `ffmpeg`,
@@ -160,6 +161,27 @@ to include it). Explicit `--root PATH` flags are the user's own choice and the o
 
 ---
 
+## 2.1 Targeted maintenance and source scope
+
+`goldmine repair [PATH/URL...] [--plan] [--failed-only | --missing-vectors]`
+uses only already indexed files within the selected scope. `--plan` opens the
+index read-only, performs no extraction or model startup, and lists each repair
+reason. Default execution repairs reported candidates. `--failed-only` selects
+stored failed files; `--missing-vectors` fills eligible stored text vectors in
+place and re-extracts inputs needing source bytes or new chunk boundaries.
+`--lexical-only` retries extraction without embeddings and cannot combine with
+`--missing-vectors`. Exit 5 reports per-file failures; unavailable source files
+remain recorded until restored or explicitly forgotten.
+
+`goldmine sources [list]` lists recorded roots and forgotten scopes.
+`goldmine forget PATH/URL...` and `goldmine sources remove PATH/URL...` remove
+indexed rows, their FTS/vector evidence and affected saved card snapshots, without
+deleting source files. A persistent exclusion prevents ordinary ingest/watch of
+a parent from re-adding the forgotten scope. `--dry-run` previews without index
+writes. `goldmine sources restore PATH/URL...` removes an exclusion; explicit
+ingest is required to restore content. Scope matching uses literal path boundaries
+and separates file paths from URLs/origins. JSON commands use `goldmine/1` envelopes.
+
 ## 3. `goldmine ingest`
 
 ```
@@ -172,9 +194,10 @@ goldmine ingest PATH... [URL...] [flags]
                             impact; no DB writes, no backend, no tool spawns. Exit 0.
   --lexical-only            explicit opt-in to ingest without embeddings (all content becomes
                             FTS-only). Without it, an unavailable backend is a refusal (exit 4).
-  --reindex                 clear all segments + fingerprint, re-extract and re-embed
-                            everything under the stored/current roots (fingerprint-mismatch
-                            remediation; clears only AFTER backend startup + gate pass).
+  --reindex                 re-extract selected files/directories, retaining other roots.
+                            A changed model preflights and rebuilds all recorded roots;
+                            unavailable roots refuse the model transition. Identity is
+                            persisted before the first vector commit.
   --refresh-thin            re-extract files carrying thin/scanned PDF pages even when
                             unchanged (targeted OCR-upgrade repair; §16).
   --exclude GLOB            repeatable; glob relative to any root (also matched against the
@@ -384,17 +407,17 @@ conflicts.
 
 ---
 
-## 5. `goldmine distill` (v2)
+## 5. `goldmine distill` (v3)
 
 ```
 goldmine distill [flags]
 
-  --preview            dry run: corpus size, calibrated τ (+ raw + source + fallback
+  --preview            dry run: scoped corpus size, fixed/manual τ (+ raw + source + fallback
                        reason), pairwise quartiles, size histogram (kept + dropped),
                        largest dropped clusters — writes NOTHING
-  --threshold X        manual τ override (tau_source='manual'); UNSET means CALIBRATED
-                       from the corpus (v2 — the v1 fixed 0.70 default was the
-                       mega-cluster bug; design of record: docs/v2.1-r6-distill.md)
+  --threshold X        manual co-association τ override (tau_source='manual');
+                       UNSET uses fixed F=0.45 (tau_source='fixed'); incremental
+                       runs inherit the previous value
   --min-members N      drop clusters smaller than N [default 3; 0 keeps singletons]
   --max-chunks N       corpus bound; refuse (never truncate) beyond it [default 50000]
   --kinds KINDS        restrict corpus by kind (default: all vectorized kinds)
@@ -452,7 +475,7 @@ vanished member files ≤ 20% (a modified file is updated in place, never delete
 `--refresh` is absent. `corpus_hash` never gates eligibility — audit identity only. Cards,
 run stats and history persist in the index (`cards`, `distill_runs` tables).
 
-stdout (human, markdown) — H1, then the run header carrying algo, calibrated τ + source,
+stdout (human, markdown) — H1, then the run header carrying algo, fixed/manual/inherited τ + source,
 corpus size/hash and scope; then a TOC and the cards:
 
 ```

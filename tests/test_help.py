@@ -58,3 +58,10 @@ def test_troubleshoot_mirrors_the_error_table():
         "nothing found",
     ):
         assert needle in text, needle
+
+
+def test_distill_help_describes_fixed_v3_threshold(capsys):
+    assert main(["distill", "--help"]) == 0
+    text = capsys.readouterr().out
+    assert "0.45" in text and "fixed" in text and "co-association" in text
+    assert "Otsu" not in text and "CALIBRATED" not in text

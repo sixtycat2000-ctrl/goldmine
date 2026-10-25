@@ -182,6 +182,7 @@ def test_fixture_video_sha_pinned():
 # ------------------------------------------------------- engine (ffmpeg) ---
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_fixture_scenes(tmp_path):
     """The 4-scene fixture: one kept frame per scene, within-scene duplicates
     merged, spans follow the fixup loop, last span = duration."""
@@ -190,8 +191,10 @@ def test_keyframes_fixture_scenes(tmp_path):
     assert 19.9 < kf.duration < 20.5
     kept = [(k.loc, k.loc_end) for k in kf.frames]
     assert len(kept) == 4
-    assert kept[0][0] == 0.5 and kept[1][0] == 6.5
-    assert kept[2][0] == 12.5 and kept[3][0] == 15.5
+    # The fixture is 12.5 fps: selected real frames snap to 0.56 + n*3.04,
+    # rather than the old invented 0.5 + n*3.0 timestamps.
+    assert kept[0][0] == 0.56 and kept[1][0] == 6.64
+    assert kept[2][0] == 12.72 and kept[3][0] == 15.76
     assert kept[0][1] == kept[1][0] and kept[2][1] == kept[3][0]
     assert kept[3][1] == pytest.approx(kf.duration, abs=0.01)
     # only the KEPT frames' JPEGs remain in the scratch dir
@@ -200,6 +203,7 @@ def test_keyframes_fixture_scenes(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_jpeg_never_upscaled(tmp_path):
     """The 320x180 fixture is below the 1024 budget: frames keep their size
     (sips confirms 320x180 after extraction)."""
@@ -215,6 +219,7 @@ def test_keyframes_jpeg_never_upscaled(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_deterministic_across_runs(tmp_path):
     a = video_keyframes(FIXTURE, tmp_path / "a")
     b = video_keyframes(FIXTURE, tmp_path / "b")
@@ -225,6 +230,7 @@ def test_keyframes_deterministic_across_runs(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_subsecond_video_one_frame(tmp_path):
     import subprocess
 
@@ -243,6 +249,7 @@ def test_keyframes_subsecond_video_one_frame(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_static_video_collapses_to_one(tmp_path):
     import subprocess
 
@@ -260,6 +267,7 @@ def test_keyframes_static_video_collapses_to_one(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_garbage_raises_honestly(tmp_path):
     bad = tmp_path / "broken.mp4"
     bad.write_bytes(b"\x00\x00\x00\x18ftypisom" + b"\xde\xad\xbe\xef" * 64)
@@ -268,6 +276,7 @@ def test_keyframes_garbage_raises_honestly(tmp_path):
 
 
 @needs_ffmpeg
+@pytest.mark.native
 def test_keyframes_no_video_stream_raises(tmp_path):
     """Audio-only data in a video container: the map fails — the extraction
     layer pre-checks has_video_stream, the media contract is an honest error."""
@@ -282,3 +291,22 @@ def test_keyframes_no_video_stream_raises(tmp_path):
     )
     with pytest.raises(RuntimeError):
         video_keyframes(video, tmp_path / "out")
+
+
+@needs_ffmpeg
+@pytest.mark.native
+def test_keyframes_locations_follow_source_pts_without_accumulated_grid_drift(tmp_path, monkeypatch):
+    import subprocess
+    from goldmine.ingest import media
+
+    video = tmp_path / "slow.mp4"
+    subprocess.run([__import__("shutil").which("ffmpeg"), "-hide_banner", "-loglevel", "error",
+                    "-f", "lavfi", "-i", "testsrc2=size=160x90:rate=5/2", "-t", "24",
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", str(video)],
+                   capture_output=True, timeout=60, check=True)
+    # Retain every selected frame so this tests timestamps independently of
+    # visual dedup, whose behavior is tested above.
+    monkeypatch.setattr(media, "_dedup_keyframes", lambda samples, duration: [
+        Keyframe(path=path, loc=round(loc, 3), loc_end=duration) for loc, path, _ in samples])
+    result = video_keyframes(video, tmp_path / "out")
+    assert [frame.loc for frame in result.frames] == [.8, 4., 7.2, 10.4, 13.6, 16.8, 20., 23.2]

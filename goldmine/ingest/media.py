@@ -394,7 +394,7 @@ def _dedup_keyframes(
 ) -> list[Keyframe]:
     """One pass of aHash dedup + the fixup loop (DigUp swift:124-136).
 
-    `samples` = (declared grid time, JPEG path, 64 gray bytes) in sampling
+    `samples` = (actual source PTS, JPEG path, 64 gray bytes) in sampling
     order. A frame within 4 bits of the LAST KEPT frame is a near-duplicate:
     its JPEG is deleted and the kept frame's interval implicitly extends.
     Kept frame i ends where kept frame i+1 starts; the last ends at duration

@@ -28,6 +28,8 @@ from .command_support import (
 from .commands import ingest as ingest_commands
 from .commands.search import _search_pack_flags, cmd_search
 from .commands.estimate import cmd_estimate
+from .commands.repair import cmd_repair
+from .commands.sources import cmd_sources
 from .commands.inspection import cmd_status, cmd_doctor, cmd_help
 from .commands.models import _git_describe, _sidecar_sha256, _version_full, cmd_version, cmd_model, _probe_backend_live, cmd_backends
 from .commands.distill import _after_ts, cmd_distill
@@ -57,6 +59,9 @@ _DISPATCH = {
     "ingest": cmd_ingest,
     "search": cmd_search,
     "estimate": cmd_estimate,
+    "repair": cmd_repair,
+    "sources": cmd_sources,
+    "forget": cmd_sources,
     "status": cmd_status,
     "version": cmd_version,
     "model": cmd_model,
