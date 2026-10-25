@@ -39,6 +39,23 @@ def _flat_tokens(value):
     return _FLAT_TOKEN.findall(unicodedata.normalize("NFKC", value or "").lower())
 
 
+#: Common data-file extensions: a dotted anchor ending in one of these names a
+#: FILE, not a module attribute (`key_value_store.sqlite`), and the qualified
+#: precedence must not reroute it to a module that merely imports the tail.
+_EXTENSION_TAILS = frozenset({
+    "sqlite", "db", "json", "yaml", "yml", "toml", "csv", "tsv", "txt", "md",
+    "rst", "log", "html", "css", "js", "ts", "xml", "ini", "cfg", "env",
+})
+
+
+def _dotted_identifier(raw):
+    """module[.Qualifier...].symbol shape, with a non-filename tail."""
+    parts = raw.split(".")
+    if len(parts) < 2 or not all(p.isidentifier() for p in parts):
+        return False
+    return parts[-1] not in _EXTENSION_TAILS
+
+
 #: Code rows where a bound surface is DEFINED rather than mentioned: a
 #: def/class-style declaration, a (possibly annotated) assignment, or a C
 #: macro, each at a line start. Stdlib modules name every public function in
@@ -389,8 +406,20 @@ class Resolver:
             if anchor.kind in {"literal", "path"}:
                 for raw in literal_surfaces(anchor.raw, row.text or ""):
                     found.append(Binding(anchor.id, row.file, row.id, "body", raw, "raw", 1, anchor.raw))
+        # qualified-precedence-001: for a dotted all-identifier IDENTITY anchor,
+        # the module file's qualified bindings own the anchor; a cross-file body
+        # mention of the dotted string is not a candidate owner. Computed once
+        # here and reused by the empty-hand fallback below. Backtick/quote
+        # literals keep their verbatim-text routing; filename-shaped tails
+        # (key_value_store.sqlite) keep the ordinary paths.
+        qualified = None
+        if not body_only and anchor.kind == "identity" and _dotted_identifier(anchor.raw):
+            qualified = self._qualified(anchor)
+            if qualified:
+                qfiles = {b.file_id for b in qualified}
+                found = [b for b in found if b.file_id in qfiles] + qualified
         if not found and not body_only:
-            found = self._qualified(anchor)
+            found = qualified if qualified is not None else self._qualified(anchor)
         if not found and not body_only and anchor.kind == "path" and path_plausible(anchor.raw):
             found = self._path_suffix(anchor)
         if not found and not body_only and anchor.kind == "identity" \

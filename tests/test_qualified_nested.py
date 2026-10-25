@@ -84,7 +84,19 @@ def test_bare_colon_class_header_alone_is_a_conservative_miss(index):
     assert hits(index, "lone.Only.member") == []
 
 
-def test_literal_binding_outranks_reconstruction(ssl_index):
+def test_identity_anchor_prefers_module_over_verbatim_mention(ssl_index):
+    # qualified-precedence-001 retires the registered old ordering (the
+    # qualified-nested-001 preregistration pinned the mention-first behavior):
+    # for a dotted IDENTITY anchor the module file's reconstruction owns the
+    # anchor; a cross-file body mention is not a candidate owner.
     add_module(ssl_index, "/owned/notes.py", "ssl.TLSVersion.TLSv1_2 mentioned verbatim")
     found = hits(ssl_index, "ssl.TLSVersion.TLSv1_2")
+    assert found and found[0].path != "/owned/notes.py"
+
+
+def test_backtick_literal_keeps_the_verbatim_mention_routing(ssl_index):
+    # the verbatim-quote promise outranks everything: a literal anchor routes
+    # to the file that stores this exact text, never to a reconstruction.
+    add_module(ssl_index, "/owned/notes.py", "ssl.TLSVersion.TLSv1_2 mentioned verbatim")
+    found = hits(ssl_index, "`ssl.TLSVersion.TLSv1_2`")
     assert found and found[0].path == "/owned/notes.py" and found[0].why["exact_source"] == "body"
