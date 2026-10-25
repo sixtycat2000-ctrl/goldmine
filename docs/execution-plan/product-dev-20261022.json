@@ -2527,12 +2527,12 @@
     "numpy": "2.5.4"
   },
   "model_identity": {
-    "path": "/Users/yul/git/goldmine/models/embeddinggemma-2-Q8_0.gguf",
+    "path": "<goldmine-root>/models/embeddinggemma-2-Q8_0.gguf",
     "sha256": "2188ac1deca4b77dffefd603c2776a9d76d9d74ec01841392982ebb840b09135",
     "bytes": 309855456
   },
   "server_identity": {
-    "path": "/Users/yul/git/goldmine/reports/execution/P2-06/base-005/outside-source/native/llama-server",
+    "path": "<goldmine-root>/reports/execution/P2-06/base-005/outside-source/native/llama-server",
     "sha256": "9703ef0fe47dd47a9c27c16365f7a240e0d2b8914a264080c56f5b1d958b7e8d",
     "bytes": 21326064
   },

@@ -38,6 +38,11 @@ shows stored capabilities and staleness. `goldmine backup --db sample.sqlite --o
 backup.sqlite` creates a verified backup. `goldmine reindex lexical --db sample.sqlite`
 explicitly rebuilds derived CJK/exact indexes from stored text, with no model or
 source-file reads. Searches and diagnostics open existing indexes read-only.
+`goldmine estimate <folder>` previews first-ingest time from metadata alone
+(read-only). iCloud placeholders that were never downloaded are skipped —
+indexing never triggers a download — and hits whose file vanished since the
+last ingest are filtered at query time, so a result always points at
+something on disk.
 
 ## Semantic search and optional tools
 

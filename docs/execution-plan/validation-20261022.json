@@ -158,7 +158,7 @@
     "status": "PASS",
     "datasets": 3,
     "scope": "exact ZIP assets only; real ingestion/rankings not run",
-    "cache_root": "/Users/yul/.cache/goldmine-evaluation-20261022-expansion/public-assets",
+    "cache_root": "<evaluation-cache>",
     "checked_against": "evals/public_manifest.json"
   }
 }

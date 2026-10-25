@@ -1,6 +1,6 @@
 # 架构与权限边界对抗审查
 
-审查对象为 2026-10-21 的 P0–P2 执行计划，以及当前 Store、迁移、检索、pack、CLI 和模型 RPC 的真实约束。审查采用数据库/检索/MCP 边界视角和 [thermo-nuclear-code-quality-review](/Users/yul/.codex/skills/thermo-nuclear-code-quality-review/SKILL.md) 的结构标准。此报告的 ACCEPTED 表示计划修订已接纳，不表示相应实现或验收已经完成。没有把真实持牌专家或付费工具的评审作为事实。
+审查对象为 2026-10-21 的 P0–P2 执行计划，以及当前 Store、迁移、检索、pack、CLI 和模型 RPC 的真实约束。审查采用数据库/检索/MCP 边界视角和 [thermo-nuclear-code-quality-review](<home>/.codex/skills/thermo-nuclear-code-quality-review/SKILL.md) 的结构标准。此报告的 ACCEPTED 表示计划修订已接纳，不表示相应实现或验收已经完成。没有把真实持牌专家或付费工具的评审作为事实。
 
 审查阶段只运行临时目录内的 Python/SQLite/NumPy 反例；没有修改生产源码、用户索引、模型或外部配置。以下行号指审查时的代码，后续重构可能移动。
 

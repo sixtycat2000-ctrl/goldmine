@@ -153,6 +153,10 @@ sync 时对"消失行"做一次 inode 反查。
 
 ### P1-4 长文件续读(finishLongFiles 等价物)
 
+> **2026-10-25 状态:另立任务**——依赖响应性/优先级 re-design(与 watch/serve
+> 的调度语义耦合),不随 digup-p2-closeout-001 批次落地;首段步进/截断标记
+> 现状维持。mmap 向量缓存与 watch 静默窗同为条件性延期(§4 表内注明)。
+
 DigUp 事故 A4:首段步进把 >50 页 PDF 截在 30 页(标 partial)、**40-chunk 文档**
 截断且误标 done;修复 = 显式 read_to/read_end + 后置续读,每步一事务
 (Indexer.swift:169-209),排序理由:"a book's last pages matter less than
@@ -248,14 +252,16 @@ read_to/read_end——撞 caps 的文件永远无法越过 caps 获得更多内�
 
 | 项 | DigUp 证据 | 动作(审计后) |
 |---|---|---|
-| `goldmine estimate` | Estimator.swift:5-16(365 文件 160s@M4 Pro;截图 0.32s 含 OCR、PDF 0.09s/页、音频 0.0089/s、代码 0.037s/stretch) | 只读元数据估算首段时间;init/大根摄取前的预期管理 |
-| watch 按代码根的静默窗 | Engine.swift:382,395,435-445;codeQuiet 60s 默认在 AppSettings.swift:39-40,77;codeLongestWait 600 在 Engine.swift:110 | 增补:goldmine watch 若引入按根 code 模式,加 60s 静默窗 + codeNoise 列表;电源门控已实现(§0),不重做 |
-| 代码规则补全 | CodeExtractor.swift:35-63;Rules.swift:57-64, 100-104;ipynb 在 CodeExtractor.swift:150-163 | **2026-10-25 已执行+用户修正**:(a) ipynb 按 cell 读、输出永不读 — 已落地(此前 base64 输出进索引);(b) 内容级 minified + 生成文件标记拒读 — 已落地(质量判断);(c) ~~`PRIVATE KEY-----` 内容扫描~~ — **用户否决(纯本地,无此硬规则),已移除并用测试反向钉死**;扩展名级 is_secret 未动;(d) `.git` 为文件已不读;vendored/build 目录表为扩展既有 `SKIP_FOLDERS` 而非新建,待办 |
-| iCloud dataless 跳过 | Crawler.swift:85-91(SF_DATALESS 0x40000000 + 非 current) | 未下载占位 → 跳过并报原因,绝不触发下载(goldmine 现状未核到等价物,需查 walk 的 st_flags) |
-| EPIPE 收尾(窄化) | IndexService.swift:331-336;main.swift:7 | 审计:serve.py/rerank.py/ocr.py **已安全**(连接循环 OSError 静默/子进程 stdout 落文件/父侧捕获);残余两处:`mcp_server.py:94-119` stdio 无 BrokenPipe 吞错;`cli.py:246` 无 BrokenPipeError 捕获(`goldmine search \| head` 走通用 handler) |
+| `goldmine estimate` | Estimator.swift:5-16(365 文件 160s@M4 Pro;截图 0.32s 含 OCR、PDF 0.09s/页、音频 0.0089/s、代码 0.037s/stretch) | **2026-10-25 已落地**(digup-p2-closeout-001 A3):`goldmine estimate <root> [--json] [--code]`,只读元数据(pdfinfo 页数/ffprobe 时长,缺工具大声降级注明),DigUp 速率先验+"goldmine 校准待做"诚实标签,无 --db 面 |
+| watch 按代码根的静默窗 | Engine.swift:382,395,435-445;codeQuiet 60s 默认在 AppSettings.swift:39-40,77;codeLongestWait 600 在 Engine.swift:110 | **条件性延期**:goldmine watch 无按根 code 模式,引入时再加 60s 静默窗 + codeNoise 列表;电源门控已实现(§0),不重做 |
+| 代码规则补全 | CodeExtractor.swift:35-63;Rules.swift:57-64, 100-104;ipynb 在 CodeExtractor.swift:150-163 | **2026-10-25 已执行+用户修正**:(a) ipynb 按 cell 读、输出永不读 — 已落地(此前 base64 输出进索引);(b) 内容级 minified + 生成文件标记拒读 — 已落地(质量判断);(c) ~~`PRIVATE KEY-----` 内容扫描~~ — **用户否决(纯本地,无此硬规则),已移除并用测试反向钉死**;扩展名级 is_secret 未动;(d) `.git` 为文件已不读;(e) vendored/build 目录表 — **2026-10-25 已落地**(digup-p2-closeout-001 A5):SKIP_FOLDERS += build/target/dist/out/.next,逐项注明生态,is_project_root 保护逻辑未动 |
+| iCloud dataless 跳过 | Crawler.swift:85-91(SF_DATALESS 0x40000000 + 非 current) | **2026-10-25 已落地**(digup-p2-closeout-001 A1):walk 以 followed-stat st_flags + os.lstat 双探针判定,`_decide_file` 的 TS 头嗅探(open!)之前拦截,SkipNotice "iCloud dataless placeholder — not downloaded";机制测试 monkeypatch st_flags,真实 iCloud 路径验证配方见执行记录(本机无 dataless 文件,如实 MISSING) |
+| EPIPE 收尾(窄化) | IndexService.swift:331-336;main.swift:7 | **2026-10-25 已落地**(digup-p2-closeout-001 A4):cli `_run` 显式 BrokenPipeError 处理 + `main()` 退出前 flush 探针(小输出全在缓冲区、只在解释器收尾 flush 时爆 rc=120 的坑)+ devnull dup2;mcp stdio 吞 Broken/ClosedResourceError;`goldmine search \| head` 退出干净无 traceback |
 | 停机不停读(毒文件) | Indexer.swift:483-492 `stopReading` | 中途失败的文件保留已读内容、记 done。**须与 P1-5 反陈旧文本规则调和**(`pipeline.py:557-559`:_record_failed 删段是防"搜索服务于已不能抽取的文件文本"的有意设计;watch 已有 delta-pass 毒文件清单 `watch.py:950-976`,sweep 仍无限重试)。建议:仅"读入中途 IO 错误"保留段,抽取器明确拒绝仍走现行删段 |
-| A19 查询期 fileExists 过滤 | Engine.swift:749-760 | goldmine 检索路径无磁盘存在性检查(`search.py:441-494`);已删文件滞留到下次 ingest/watch sweep(full_period_s 21600)。移植时注意 URL 行豁免(与 `compute_deletions` 语义一致) |
-| mmap 向量缓存 | Vectors.swift:22-27(60MB 矩阵 free 后滞留) | Python 侧 malloc 行为不同;10 万+向量级先测 np.memmap 再定 |
+| A19 查询期 fileExists 过滤 | Engine.swift:749-760 | **2026-10-25 已落地**(digup-p2-closeout-001 A2):`Searcher._search` 候选阶段过滤已删 file 行(限定索引存储 roots——合成路径离线测试不受影响;URL 行豁免,与 compute_deletions 同语义),limit 截断前执行故 pack 预算不缩水,计数经 settings.deleted_filtered 上报(CLI --json 与 MCP metadata 可见) |
+| 音频尾窗 ≥2s 新音频门 | MediaExtractors.swift:67-76(`minimum` 2s,alreadyCovered=window-hop) | **2026-10-25 已落地**(digup-p2-closeout-001 B1):尾窗仅当携带 ≥2s **新音频**(超出前一窗覆盖)才保留——按源码语义移植而非字面"长度<2s"(该字面规则在 window30/hop25 下是不可达死代码;62s 夹具实测尾窗保留,新音频 7s);MEDIA_PREPROCESSING v5(,tail-min2s),media 家族版本 v2→v3 全量重抽重嵌(已授权,无存量用户) |
+| lostLetters→OCR 替换 | Extractors.swift:96-160 + Indexer.swift(实测 R@1 0.75 vs 0.73 乱序对照同源) | **2026-10-25 已落地**(digup-p2-closeout-001 B2):pdf_evidence 渲染(pdftoppm 150dpi/1400px,与 DigUp 2000px 偏差在案)→既有 Vision OCR→三查(≥THIN_PAGE_CHARS、自身无病理、含阿拉伯块标量)→通过替换页文本并记 `+arocr` 提取器版本变体(四种组合均注册 current,无 churn);任一不通过保留原文(诚实回退)+states 标记走 `_needs_ocr_redo` 升级路径。真实病理资产本机不可造(cupsfilter/CoreText 全带 ToUnicode,MISSING 如实记录),机制测试为主 |
+| mmap 向量缓存 | Vectors.swift:22-27(60MB 矩阵 free 后滞留) | **条件性延期**:Python 侧 malloc 行为不同;10 万+向量级先测 np.memmap 再定 |
 
 已从 P2 移除(审计确认已实现):模型下载契约(§0)、watch 电源门控(§0)、
 弱匹配折叠(§0)。
