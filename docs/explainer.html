@@ -412,7 +412,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sub);fon
     <div class="al"><div class="alh"><b>护栏</b><span>GUARD RAILS</span></div>
       <div class="boxes">
         <div class="bx"><b>指纹门禁</b><span>模型/提示词变了 ⇒ 拒绝混用向量</span></div>
-        <div class="bx"><b>回归门禁</b><span>169 题金标集 + 统计检验</span></div>
+        <div class="bx"><b>回归门禁</b><span>128 题金标集 + 统计检验</span></div>
         <div class="bx"><b>doctor</b><span>13+ 项体检，失败自带修复命令</span></div>
       </div></div>
   </div>
@@ -424,10 +424,10 @@ footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--sub);fon
   <div class="chno">06</div>
   <p class="kick rv">CHAPTER 06 · 质量与诚实</p>
   <h2 class="t rv">"变好了"必须能证伪</h2>
-  <p class="lede rv">一切质量结论压在一份<b>金标数据集</b>上：105 个真实文件、169 道人工出题，每题标注哪个文件、哪一页哪一行算答对、给几分。七三开冻结切分——调参只能看 70%，剩下 30% 封存到大考。</p>
+  <p class="lede rv">一切质量结论压在一份<b>金标数据集</b>上：66 个钉哈希的真实文件、128 道人工出题，每题标注哪个文件、哪一页哪一行算答对、给几分。七三开冻结切分——调参只能看 70%，剩下 30% 封存到大考。</p>
 
-  <div class="fig rv">FIG. 04 — 题库地图 · 169 题逐题落格（每格 = 一道人工标注的题）</div>
-  <div class="qgrid rv" id="qgrid" role="img" aria-label="169 道评测题按类型着色的点阵图"></div>
+  <div class="fig rv">FIG. 04 — 题库地图 · 128 题逐题落格（每格 = 一道人工标注的题）</div>
+  <div class="qgrid rv" id="qgrid" role="img" aria-label="128 道评测题按类型着色的点阵图"></div>
   <div class="qlegend rv">
     <span><i style="background:var(--gold)"></i>语义理解 45</span>
     <span><i style="background:rgba(227,169,76,.55)"></i>编号 16 · 代码符号 16 · 中文 6</span>
@@ -685,7 +685,7 @@ addEventListener("scroll", onScroll, {passive:true}); onScroll();
 /* ---------- question matrix ---------- */
 (function(){
   var g=$("#qgrid"); if(!g) return;
-  var spec=[["语义理解",45,"g3"],["编号查找",16,"g2"],["代码符号",16,"g2"],["PDF 页定位",15,"g1"],["过滤查询",11,"g1"],["中文",6,"g2"],["网页",5,"g1"],["噪声防幻觉",5,"nz"]];
+  var spec=[["语义理解",31,"g3"],["编号查找",5,"g2"],["代码符号",6,"g2"],["PDF 页定位",15,"g1"],["过滤查询",8,"g1"],["中文",3,"g2"],["网页",5,"g1"],["噪声防幻觉",5,"nz"]];
   var media=[["媒体 · 纯文本",10,"g3"],["媒体 · 录音",10,"g3"],["媒体 · 截图",10,"g3"],["媒体 · 图像",10,"g3"],["媒体 · 扫描页",10,"g1"]];
   var html="";
   function push(cls,n,meta){ for(var i=0;i<n;i++){ html+='<div class="qq '+cls+'" title="'+meta+'"></div>'; } }

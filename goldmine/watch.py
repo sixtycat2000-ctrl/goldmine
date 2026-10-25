@@ -862,7 +862,16 @@ class WatchDaemon:
         )
         self._pipeline = pipeline
         self._wrap_receipt(backend)
+        # MM-D2 instrumentation (digup-plan-002 §5.7): per-pass model load is
+        # a measured fact, not an inference. Inside the same try as the pass
+        # so a startup failure lands in the BackendStartupError handler below
+        # (never escapes _run_pass's Never-raises contract).
+        backend_load_s = None
         try:
+            if backend is not None:
+                load_t0 = time.monotonic()
+                backend.startup()
+                backend_load_s = round(time.monotonic() - load_t0, 2)
             report = pipeline.run(
                 list(roots),
                 code=self.code,
@@ -913,6 +922,7 @@ class WatchDaemon:
             "at": self._wall(),
             "kind": kind,
             "duration_s": round(duration, 3),
+            "backend_load_s": backend_load_s,
             "scanned": report.scanned,
             "new": report.content_indexed,
             "metadata_only": report.metadata_only,
@@ -928,6 +938,7 @@ class WatchDaemon:
             f"{report.content_indexed} · unchanged {report.unchanged} · "
             f"failed {report.failed} · deleted {report.deleted} · "
             f"{duration:.1f}s"
+            + (f" · backend load {backend_load_s}s" if backend_load_s else "")
         )
         if self.json_mode:
             print(render_ingest_summary(report, json_mode=True), file=self.stream)

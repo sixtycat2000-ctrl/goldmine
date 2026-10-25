@@ -29,12 +29,12 @@ never trip the gate.
 
 Every run headline carries 95% CIs: exact binomial (Clopper-Pearson,
 scipy-free) for the count metrics, percentile bootstrap for MRR/nDCG. At
-n=146 the s@5 CI is ~±0.07 — read deltas smaller than that as noise.
+n=109 the s@5 CI is ~±0.08 — read deltas smaller than that as noise.
 
 The ONE mechanical accuracy gate: --gate — a tracked metric failing only
 when its drop is BOTH beyond -0.02 absolute AND statistically significant:
 s@5/s@1 via the exact McNemar test on paired flips (two-sided p < 0.05;
-trips at 7 same-direction flips at n=146, where the paired bootstrap's
+trips at 7 same-direction flips at n=109, where the paired bootstrap's
 effective wire is ~10 flips), MRR/nDCG via the paired bootstrap 95% CI.
 lookup/zero-hit are advisory and cannot trip. The 0.85/0.90-class numbers
 are PUBLISHED TARGETS, printed, not gated.
@@ -91,7 +91,7 @@ BOOTSTRAP_SEED = 42
 
 #: s@5/s@1 are paired binary outcomes — the primary gate statistic is the
 #: exact McNemar test on the discordant pairs (trips at 7 same-direction
-#: flips at n=146; the paired bootstrap's effective wire there is ~10)
+#: flips at n=109; the paired bootstrap's effective wire there is ~10)
 BINARY_METRICS = frozenset({"success@5", "success@1"})
 MCNEMAR_ALPHA = 0.05
 
@@ -735,7 +735,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--db", default=str(EVALS_DIR / "eval.sqlite"))
     parser.add_argument("--backend", default="mock", help="mock | llama")
     parser.add_argument("--suite", choices=["legacy", "full-media"], default="legacy",
-                        help="legacy keeps the frozen 150-query denominator; full-media requires all 169")
+                        help="legacy keeps the frozen 109-query denominator (128 minus 19 needs-gated); full-media requires all 128")
     parser.add_argument("--manifest", default=str(MANIFEST_JSON))
     parser.add_argument("--fixture-root", default=None)
     parser.add_argument("--split", default="all",
@@ -775,7 +775,7 @@ def main(argv: list[str] | None = None) -> int:
     args.baseline = args.baseline or str(BASELINE_JSON if args.suite == "legacy"
                                          else EVALS_DIR / "media_full_baseline.json")
     if args.suite == "full-media" and args.split != "all":
-        parser.error("full-media uses all 169 queries; --split must be all")
+        parser.error("full-media uses all 128 queries; --split must be all")
 
     manifest = json.loads(Path(args.manifest).read_text())
     fixture_root = Path(args.fixture_root or manifest["fixture"]["root"])

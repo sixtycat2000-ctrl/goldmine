@@ -519,6 +519,25 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 self._asr_ready = resolve_tools(self.cfg) is not None
             if self._asr_ready:
                 return False
+        # digup-plan-002 media-capability redo rules (amendments M5, normative
+        # predicates — a re-done row always writes audio_routing or a media
+        # vector or an honest none:* reason, so neither rule can churn):
+        if self.backend is not None and not self.lexical_only:
+            cap = self.backend.capability()
+            if (rec.kind in ("audio", "video")
+                    and cap.audio
+                    and (rec.info or {}).get("audio_routing") is None
+                    and (rec.info or {}).get("asr_segments") is None):
+                # R-a: an audio/video row from before the audio capability
+                # (or before routing markers existed) with NO transcript can
+                # now gain raw windows — including when ASR tools are absent.
+                return False
+            if (rec.kind == "image" and cap.image
+                    and rec.capability == "metadata_only"
+                    and rec.detail == "backend lacks image embedding"):
+                # R-b: photos that never got a thumbnail pass because the
+                # image capability was off.
+                return False
         return True
 
     def _current_extractor_set(self) -> set[str]:

@@ -23,7 +23,8 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
         raise BuildError(f"LLAMA_TAG must remain the pinned {TAG}")
     if not (1 <= jobs <= 8):
         raise BuildError("jobs must be in1..8; default2 limits shared-host memory pressure")
-    for tool in ("git", "cmake", "otool", "lipo", "codesign", "swiftc"):
+    for tool in ("git", "cmake", "otool", "lipo", "codesign", "swiftc",
+                 "clang", "clang++"):
         if not shutil.which(tool) and not (tool == "swiftc" and dev_skip_ocr):
             raise BuildError(f"required native build tool missing: {tool}")
     if not (source / ".git").exists():
@@ -54,17 +55,48 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
         build_dir = work / "build"
         options = ["-DCMAKE_BUILD_TYPE=Release", "-DBUILD_SHARED_LIBS=OFF",
             "-DGGML_BACKEND_DL=OFF", "-DGGML_METAL=ON", "-DGGML_METAL_EMBED_LIBRARY=ON",
+            "-DGGML_BLAS=OFF",
             "-DLLAMA_OPENSSL=OFF", "-DLLAMA_BUILD_TESTS=OFF", "-DLLAMA_BUILD_EXAMPLES=OFF",
             "-DLLAMA_BUILD_SERVER=ON", "-DLLAMA_BUILD_APP=OFF"]
+        # (mtmd arrives via the default LLAMA_BUILD_TOOLS=ON standalone path —
+        # tools/CMakeLists.txt:31; COMMON stays ON because llama-server needs
+        # it. GGML_BLAS=OFF is the digup-plan-002 rev2 unification: without it
+        # ggml's backend registry references ggml-blas symbols the helper's
+        # 7-archive link line does not carry — and Metal is the compute path
+        # either way; receipts build-static-noblas.log.)
         command(["cmake", "-S", str(source), "-B", str(build_dir), *options])
         command(["cmake", "--build", str(build_dir), "--target", "llama-server", "--parallel", str(jobs)])
+        # digup-plan-002: the static mtmd library for the media helper
+        command(["cmake", "--build", str(build_dir), "--target", "mtmd", "--parallel", str(jobs)])
+        command(["cmake", "--build", str(build_dir), "--target", "llama", "--parallel", str(jobs)])
         server = build_dir / "bin/llama-server"
         ocr = None
         if not dev_skip_ocr:
             ocr = work / "goldmine-ocr"
             command(["swiftc", "-O", str(root / "tools/ocr/ocr_helper.swift"), "-o", str(ocr)])
+        # the media helper: compile the single C file, link the 7 static
+        # archives with clang++ (libc++ must ride along; Accelerate supplies
+        # the vDSP symbols ggml-cpu unconditionally references on macOS —
+        # both were measured on the vendored b11461, receipts digup-plan-002).
+        embed = work / "goldmine-embed"
+        embed_obj = work / "goldmine-embed.o"
+        command(["clang", "-O2", "-std=c11", "-c", str(root / "tools/embed/goldmine-embed.c"),
+                 "-I", str(source / "tools/mtmd"),
+                 "-I", str(source / "include"),
+                 "-I", str(source / "ggml/include"),
+                 "-o", str(embed_obj)])
+        command(["clang++", "-O2", str(embed_obj), "-o", str(embed),
+                 str(build_dir / "src/libllama.a"),
+                 str(build_dir / "tools/mtmd/libmtmd.a"),
+                 str(build_dir / "vendor/hash/libvendor-hash.a"),
+                 str(build_dir / "ggml/src/libggml.a"),
+                 str(build_dir / "ggml/src/libggml-base.a"),
+                 str(build_dir / "ggml/src/libggml-cpu.a"),
+                 str(build_dir / "ggml/src/ggml-metal/libggml-metal.a"),
+                 "-framework", "Foundation", "-framework", "Metal",
+                 "-framework", "Accelerate", "-framework", "CoreFoundation"])
         dependencies = {}
-        for binary in [server, *([ocr] if ocr else [])]:
+        for binary in [server, embed, *([ocr] if ocr else [])]:
             arch = command(["lipo", "-archs", str(binary)]).strip()
             if arch != "arm64":
                 raise BuildError(f"asset architecture must be arm64, got {arch}")
@@ -74,23 +106,27 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
         version = command([str(server), "--version"])
         if not version.strip():
             raise BuildError("llama-server version output missing")
+        if command([str(embed), "--version"]).strip() != "goldmine-embed 1":
+            raise BuildError("unexpected goldmine-embed handshake")
         if ocr is not None:
             if command([str(ocr), "--version"]).strip() != "goldmine-ocr 1":
                 raise BuildError("unexpected OCR handshake")
         metadata.update({"tag": TAG, "architecture": "arm64", "platform": platform.platform(),
             "cmake_options": options, "jobs": jobs, "dependencies": dependencies,
             "version": version.strip(), "ocr_source_sha256": sha256(root / "tools/ocr/ocr_helper.swift"),
+            "embed_source_sha256": sha256(root / "tools/embed/goldmine-embed.c"),
             "runtime_dyld_overrides": False, "command_logs": logs.name})
         epoch = int(git(source, "show", "-s", "--format=%ct", "HEAD").stdout)
         suffix = "-dev-no-ocr" if dev_skip_ocr else ""
         asset = package_asset(server, ocr, out, f"llama-server-macos-arm64-{TAG}{suffix}.tar.xz",
-                              metadata, epoch=epoch, license_file=source / "LICENSE")
+                              metadata, epoch=epoch, license_file=source / "LICENSE", embed=embed)
     import tarfile
     try:
         with tempfile.TemporaryDirectory(prefix=".native-extract-", dir=out) as tmp:
             with open_native_archive(asset) as archive:
                 archive.extractall(tmp, filter="data")
             command([str(Path(tmp) / "llama-server"), "--version"], Path(tmp))
+            command([str(Path(tmp) / "goldmine-embed"), "--version"], Path(tmp))
             if not dev_skip_ocr:
                 command([str(Path(tmp) / "goldmine-ocr"), "--version"], Path(tmp))
     except (BuildError, OSError, tarfile.TarError):

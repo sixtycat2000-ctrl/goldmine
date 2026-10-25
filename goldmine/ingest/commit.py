@@ -27,7 +27,7 @@ from ..chunker import (
 from ..store import FileRec, SegmentRec, _folder_words
 from ..evidence import file_evidence_types
 from ..util import excerpt
-from . import walk
+from . import walk, media
 from .extraction import _Outcome, _Piece
 
 
@@ -248,7 +248,7 @@ class CommitMixin:
             _merge_reasons(report.unsupported_reasons, outcome.detail or "unknown")
             return
 
-        if outcome.media_segs:
+        if outcome.media_segs and not outcome.chunks:
             self._commit_media(cand, fid, outcome, report, embed=embed)
             return
 
@@ -264,6 +264,8 @@ class CommitMixin:
                 extractor_version=outcome.extractor_version,
                 content_date=outcome.content_date,
                 partial=outcome.partial,
+                media_segs=outcome.media_segs,
+                media_path=str(cand.path),
             )
         except EmbeddingError as exc:
             # per-file failure, not a run abort: an oversized/rejected input
@@ -292,10 +294,15 @@ class CommitMixin:
         content_date: float | None = None,
         partial: bool = False,
         with_loc: bool = True,
+        media_segs: list | None = None,
+        media_path: str | None = None,
     ) -> None:
         """Shared TEXT commit (file chunks + crawled pages): ctx guard, batched
         prompted embedding, name row + content segments, atomic replace and the
-        verdict/tally tail. Empty `pieces` commits a metadata_only row.
+        verdict/tally tail. Empty `pieces` commits a metadata_only row — unless
+        `media_segs` carries page-image/garbled vectors (digup-plan-002: a PDF
+        outcome can hold text chunks AND media segments; the old dispatcher's
+        either/or would have dropped one side).
 
         Raises EmbeddingError after embedding failed — the CALLER owns failure
         bookkeeping (file rows: _record_failed; pages: drop the previous
@@ -304,10 +311,26 @@ class CommitMixin:
         with_loc=False commits segments with loc=None regardless of chunk locs
         (the URL path's url-stdlib behavior — pages have no line numbers)."""
         if not pieces:
+            if not media_segs:
+                self._commit_segments(
+                    fid, [name_segment(name, fts_words)], capability="metadata_only",
+                    detail=detail or "no content", info=info, extractor_version=extractor_version,
+                    report=report, kind=kind, content_date=content_date,
+                )
+                return
+            media = self._embed_media_segs(
+                media_segs, embed, fid, report, title,
+                media_path or f"fid:{fid}", kind=kind, info=info,
+            )
+            if media is None:
+                return
+            if any(s.vec is not None for s in media):
+                info["media_vectors"] = "mm-v1"
             self._commit_segments(
-                fid, [name_segment(name, fts_words)], capability="metadata_only",
-                detail=detail or "no content", info=info, extractor_version=extractor_version,
-                report=report, kind=kind, content_date=content_date,
+                fid, [name_segment(name, fts_words), *media],
+                capability="content_indexed", detail=detail, info=info,
+                extractor_version=extractor_version, report=report, kind=kind,
+                content_date=content_date,
             )
             return
 
@@ -362,6 +385,16 @@ class CommitMixin:
                     vec=vec,
                 )
             )
+        if media_segs:
+            media = self._embed_media_segs(
+                media_segs, embed, fid, report, title,
+                media_path or f"fid:{fid}", kind=kind, info=info,
+            )
+            if media is None:
+                return
+            if any(s.vec is not None for s in media):
+                info["media_vectors"] = "mm-v1"
+            segs.extend(media)
         self._commit_segments(
             fid, segs, capability="content_indexed", detail=detail, info=info,
             extractor_version=extractor_version, report=report, kind=kind,
@@ -439,65 +472,64 @@ class CommitMixin:
                 out.append(piece)
         return out
 
-    def _commit_media(
-        self,
-        cand: walk.Candidate,
-        fid: int,
-        outcome: _Outcome,
-        report: IngestReport,
-        *,
-        embed: EmbeddingBackend | None,
-    ) -> None:
-        """Embed media segments on the MAIN thread (serial, one call per piece —
-        ARCHITECTURE §7.1): images via embed_image(thumbnail), audio windows
-        via embed_audio_wav(bytes). Image/audio vectors carry NO prompt (D7);
-        `ocr` segments carry the recognized text for FTS always, plus a
-        document-prompted TEXT vector only under the A5 llama policy. A file
-        with any FTS-bearing segment is content_indexed even without vectors
-        (SPEC's definition — OCR'd screenshots under llama count)."""
+    def _embed_media_segs(
+        self, media_segs, embed, fid, report, title, path_str: str, *,
+        kind: str, info: dict,
+    ) -> "list[SegmentRec] | None":
+        """Embed one outcome's media segments (main thread, serial — ARCH
+        §7.1) into SegmentRecs. OCR text keeps its FTS re-chunking; garbled
+        page text embeds meaning-only (never FTS); images/pages carry their
+        frozen budget; audio rides the raw WAV. Returns None after recording
+        a per-file failure (the caller aborts the commit)."""
         store = self.store
-        info = dict(outcome.info)
-        if outcome.partial:
-            info["partial"] = True
-            report.partial += 1
-        segs: list[SegmentRec] = [
-            name_segment(Path(cand.path).name,
-                         _folder_words(str(cand.path), "file"))
-        ]
-        media_segs = []
-        for m in outcome.media_segs:
+        segs: list = []
+        for m in media_segs:
             if m.kind != "ocr" or not m.text_for_fts:
-                media_segs.append(m)
+                segs.append(m)
                 continue
             limit = int(self.cfg.ingest.max_chunks)
             chunks = self._chunk_text(m.text_for_fts, "image", limit + 1)
             if len(chunks) > limit:
                 info["partial"] = True
-                if not outcome.partial:
-                    report.partial += 1
+                report.partial += 1
                 chunks = chunks[:limit]
-            pieces = self._ctx_guard_split([_Piece(chunk, m.embed_text, kind="ocr") for chunk in chunks], Path(cand.path).stem)
+            pieces = self._ctx_guard_split([_Piece(chunk, m.embed_text, kind="ocr") for chunk in chunks], title)
             for piece in pieces:
                 chunk = piece.chunk
-                media_segs.append(replace(m, text_for_fts=chunk.text, excerpt=excerpt(chunk.text),
-                                          loc=chunk.loc, loc_end=chunk.loc_end))
-        for m in media_segs:
+                segs.append(replace(m, text_for_fts=chunk.text, excerpt=excerpt(chunk.text),
+                                    loc=chunk.loc, loc_end=chunk.loc_end))
+        out: list[SegmentRec] = []
+        for m in segs:
             vec: np.ndarray | None = None
             if embed is not None:
                 try:
                     if m.kind == "ocr":
                         if m.embed_text and m.text_for_fts:
-                            title = Path(cand.path).stem
                             prompted = document_prompt(title, m.text_for_fts)
                             self._metrics.call("embed_calls")
                             self._metrics.call("embed_inputs")
                             with self._metrics.stage("embed"):
                                 vec = embed.embed_texts([prompted])[0]
-                    elif m.kind == "image":
+                    elif m.garbled is not None:
+                        # glyph-order page (digup-plan-002 A1): a meaning-ONLY
+                        # text vector — the garbled words never reach FTS and
+                        # never surface as an excerpt (DigUp Indexer.swift:555)
+                        prompted = document_prompt(title, m.garbled[:4000])
                         self._metrics.call("embed_calls")
                         self._metrics.call("embed_inputs")
                         with self._metrics.stage("embed"):
-                            vec = embed.embed_image(m.path)
+                            vec = embed.embed_texts([prompted])[0]
+                    elif m.kind in ("image", "page"):
+                        # page images embed like images with their own budget
+                        # (pdf_page 280); images carry the extractor-pinned
+                        # per-kind budget (photo 140 / screenshot 280).
+                        self._metrics.call("embed_calls")
+                        self._metrics.call("embed_inputs")
+                        with self._metrics.stage("embed"):
+                            vec = embed.embed_image(
+                                m.path,
+                                budget=m.budget or media.MEDIA_BUDGETS["photo"],
+                            )
                     else:
                         self._metrics.call("embed_calls")
                         self._metrics.call("embed_inputs")
@@ -507,21 +539,23 @@ class CommitMixin:
                     # file vanished/unreadable since the walk: per-file failure,
                     # not a backend crash
                     self._record_failed(
-                        store, str(cand.path), f"media read failed: {exc}",
-                        report, fid=fid, kind=cand.kind,
+                        store, path_str, f"media read failed: {exc}",
+                        report, fid=fid, kind=kind,
                     )
-                    return
+                    return None
                 except EmbeddingError as exc:
                     self._record_failed(
-                        store, str(cand.path), f"embedding failed: {exc}",
-                        report, fid=fid, kind=cand.kind,
+                        store, path_str, f"embedding failed: {exc}",
+                        report, fid=fid, kind=kind,
                     )
-                    return
-            if m.kind == "ocr":
+                    return None
+            if m.modality is not None:
+                modality = m.modality if vec is not None else "none"
+            elif m.kind == "ocr":
                 modality = "text" if vec is not None else "none"
             else:
                 modality = m.kind if vec is not None else "none"
-            segs.append(
+            out.append(
                 SegmentRec(
                     kind=m.kind,
                     modality=modality,
@@ -532,8 +566,48 @@ class CommitMixin:
                     vec=vec,
                 )
             )
+        return out
+
+    def _commit_media(
+        self,
+        cand: walk.Candidate,
+        fid: int,
+        outcome: _Outcome,
+        report: IngestReport,
+        *,
+        embed: EmbeddingBackend | None,
+    ) -> None:
+        """Embed media segments on the MAIN thread (serial, one call per piece —
+        ARCHITECTURE §7.1), via the shared _embed_media_segs helper: images via
+        embed_image(thumbnail, budget), page images likewise, garbled page text
+        as a meaning-only document-prompted vector, audio windows via
+        embed_audio_wav(bytes). Image/audio vectors carry NO prompt (D7);
+        `ocr` segments carry the recognized text for FTS always, plus a
+        document-prompted TEXT vector only under the A5 text-only policy. A
+        file with any FTS-bearing segment is content_indexed even without
+        vectors (SPEC's definition — OCR'd screenshots under llama count)."""
+        info = dict(outcome.info)
+        if outcome.partial:
+            info["partial"] = True
+            report.partial += 1
+        segs: list[SegmentRec] = [
+            name_segment(Path(cand.path).name,
+                         _folder_words(str(cand.path), "file"))
+        ]
+        media = self._embed_media_segs(
+            outcome.media_segs, embed, fid, report, Path(cand.path).stem,
+            str(cand.path), kind=cand.kind, info=info,
+        )
+        if media is None:
+            return
+        segs.extend(media)
         has_fts_text = any(s.kind != "name" and s.text_for_fts for s in segs)
         indexed = any(s.vec is not None for s in segs) or has_fts_text
+        # digup-plan-002 audit marker: stamped ONLY when a media segment
+        # actually landed WITH a vector (the redo rules and audits key on it;
+        # a vec-less commit must not claim media vectors).
+        if any(s.vec is not None for s in segs if s.kind != "name"):
+            info["media_vectors"] = "mm-v1"
         self._commit_segments(
             fid, segs,
             capability="content_indexed" if indexed else "metadata_only",

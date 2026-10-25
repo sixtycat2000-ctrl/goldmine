@@ -30,6 +30,71 @@ PDF_TIMEOUT_S = 60.0    # subprocess timeout per pdftotext/pdfinfo call (ARCH §
 BREW_POPPLER_BIN = Path("/opt/homebrew/bin")
 
 
+# ------------------------------------------------- text-layer pathology (§3.5)
+#
+# DigUp PageTextProblem.check (SearchText.swift:165-215) ported verbatim:
+# a deterministic Unicode-scalar scan over the EXTRACTED page text. The
+# disease lives in the PDF's text layer, so any extractor (DigUp's PDFKit,
+# goldmine's poppler) sees the same symptoms.
+
+#: dependent vowel signs of Bengali and Devanagari — in a real word each
+#: follows a consonant (or its nukta)
+_INDIC_VOWEL_SIGN = (
+    set(range(0x09BE, 0x09C5)) | {0x09C7, 0x09C8, 0x09CB, 0x09CC, 0x09D7,
+                                  0x09E2, 0x09E3}
+    | {0x093A, 0x093B} | set(range(0x093E, 0x094D)) | {0x094E, 0x094F}
+    | set(range(0x0955, 0x0958)) | {0x0962, 0x0963}
+)
+_INDIC_CONSONANT_OR_NUKTA = (
+    set(range(0x0995, 0x09BA)) | {0x09BC, 0x09CE, 0x09DC, 0x09DD, 0x09DF,
+                                  0x09F0, 0x09F1}
+    | set(range(0x0915, 0x093A)) | {0x093C} | set(range(0x0958, 0x0960))
+    | set(range(0x0979, 0x0980))
+)
+#: the Arabic block proper (DigUp Script.arabic, SearchText.swift:161 — the
+#: whole 0x0600 block; the isalpha() guard narrows to letters like Swift's
+#: scalar.properties.isAlphabetic)
+_ARABIC = set(range(0x0600, 0x0700))
+_LOST_LETTERS_MIDDLE = set("?.\ufffd")
+
+
+def page_text_problem(text: str) -> str | None:
+    """"glyphOrder" | "lostLetters" | None — the page's text-layer pathology.
+
+    glyphOrder: Bengali/Hindi read in glyph order (vowel signs ahead of their
+    consonants, conjuncts lost) — too garbled to show or match, enough words
+    survive for a meaning vector beside the page's picture.
+    lostLetters: Arabic lam-ligature loss (a bare alef before ?/. where the
+    article's lam went with the ligature). Detection only in goldmine for now
+    (digup-plan-002 A1): the OCR-replace path is a deferred content change.
+    """
+    import unicodedata
+
+    text = unicodedata.normalize("NFC", text)
+    vowel_signs = misplaced = lost_letters = 0
+    previous = 0x20
+    before_previous = 0x20
+    for scalar in map(ord, text):
+        if scalar in _INDIC_VOWEL_SIGN:
+            vowel_signs += 1
+            if previous not in _INDIC_CONSONANT_OR_NUKTA:
+                misplaced += 1
+        if (
+            before_previous == 0x0627
+            and chr(previous) in _LOST_LETTERS_MIDDLE
+            and scalar in _ARABIC
+            and chr(scalar).isalpha()
+        ):
+            lost_letters += 1
+        before_previous = previous
+        previous = scalar
+    if vowel_signs >= 10 and misplaced * 20 >= vowel_signs:
+        return "glyphOrder"
+    if lost_letters >= 2:
+        return "lostLetters"
+    return None
+
+
 def _which(tool: str) -> str | None:
     """shutil.which with the brew poppler dir as fallback (monkeypatch-friendly)."""
     found = shutil.which(tool)

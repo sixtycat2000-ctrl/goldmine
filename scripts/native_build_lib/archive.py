@@ -37,7 +37,8 @@ def open_native_archive(path: Path):
 
 
 def package_asset(server: Path, ocr: Path | None, out: Path, name: str,
-                  metadata: dict, *, epoch: int, license_file: Path) -> Path:
+                  metadata: dict, *, epoch: int, license_file: Path,
+                  embed: Path | None = None) -> Path:
     destination = out / name
     if destination.exists():
         raise BuildError(f"asset already exists; choose a new output directory: {destination}")
@@ -49,10 +50,16 @@ def package_asset(server: Path, ocr: Path | None, out: Path, name: str,
         if ocr is not None:
             shutil.copy2(ocr, stage / "goldmine-ocr")
             os.chmod(stage / "goldmine-ocr", 0o755)
+        if embed is not None:
+            # digup-plan-002: the media-embedding helper ships beside the
+            # other two binaries (<home>/bin/goldmine-embed).
+            shutil.copy2(embed, stage / "goldmine-embed")
+            os.chmod(stage / "goldmine-embed", 0o755)
         shutil.copy2(license_file, stage / "LLAMA-LICENSE.txt")
         files = {p.name: sha256(p) for p in sorted(stage.iterdir())}
         write_json(stage / "native-manifest.json", {"schema": 1, **metadata,
-                   "files": files, "release_eligible": ocr is not None})
+                   "files": files,
+                   "release_eligible": ocr is not None and embed is not None})
         uncompressed = stage / "asset.tar"
         with tarfile.open(uncompressed, "w") as tar:
             for path in sorted(stage.iterdir()):
@@ -82,5 +89,5 @@ def package_asset(server: Path, ocr: Path | None, out: Path, name: str,
         write_json(out / f"{name}.manifest.json", {"schema": 1,
             "asset": {"path": name, "sha256": sha256(destination)},
             "native_manifest_sha256": sha256(stage / "native-manifest.json"),
-            "release_eligible": ocr is not None, **metadata})
+            "release_eligible": ocr is not None and embed is not None, **metadata})
     return destination

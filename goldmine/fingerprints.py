@@ -363,9 +363,13 @@ EXTRACTOR_VERSIONS: dict[str, str] = {
     # raw-bytes image path — image-bytes.v1 rows are stale by design so plain
     # ingest re-does them (G10). The -ocr variant marks files whose screenshot
     # OCR text landed (info.ocr_chars); both are current simultaneously.
-    "image": "image-sips.v2",
-    "image+ocr": "image-sips-ocr.v2",
-    "media": "media-ffmpeg.v1",
+    # digup-plan-002 bump (multimodal landing): per-kind token budgets, the
+    # goldmine-side budget-filling resize, MM-D3 routing markers and thin-page
+    # page-image segments — every image/media row re-extracts once, picking
+    # the new segments and info fields up.
+    "image": "image-mm.v1",
+    "image+ocr": "image-mm-ocr.v1",
+    "media": "media-ffmpeg-mm.v1",
     # v2 ASR (item 6, 02 §5.1): whisper-cli + VAD transcript extraction —
     # audio/video files whose soundtrack became text segments. v2 bump (02 F8,
     # 2026-10-16): the transcript merge cap switched to est-tokens, so v1 rows

@@ -12,7 +12,7 @@ No final quality milestone, release candidate, hosted CI success or publication 
 | Semantic fast retrieval | Default hybrid, fixed embedding pin | llama is text-only; exact stored fingerprint required | Historical real baseline reproduced; final candidate regression recorded in PROGRESS |
 | PDF / supporting evidence | One file per hit; up to three content segments | True page units, same-page chunks and bounded adjacent pages | Twenty-page and multi-block adversarial cases pass; latest completed real product PDF gate fails |
 | OCR / ASR / photo metadata | Ingest with explicit tools; status records evidence states | Vision OCR; Poppler; whisper/ffmpeg; EXIF is metadata | Tool probes and focused cases pass; complete full-media provenance/quality missing |
-| Photograph visual semantics | Not available through llama | No generated caption fallback | Reports `visual_search=false`; needs a multimodal backend |
+| Photograph visual semantics | Image vectors via the resident goldmine-embed helper + pinned mmproj (helper+mmproj resolve → `visual_search=true`); photo 140 / screenshot 280 budgets, thin-PDF page images, glyph-order meaning vectors, raw audio only without a transcript | No generated caption fallback; installs without helper/mmproj stay text-only (fingerprint unchanged) | Live media reference vectors (2 image + 2 audio) reproduce cosine 1.0 + exact fp16 sha; OCR-text-vector auto-close pinned; full-media retrieval gate pending the rebuilt eval index |
 | Packs and opaque citations | `search --pack`, get/context APIs | Whole context, source IDs and why count toward budget; estimator is labeled | Real SDK Agent chain and real-token matrix pass at four budgets/three context widths; fresh answer A/B missing |
 | Read-only MCP | Explicit `mcp --db PATH`, optional exact SDK 2.0.0 | Four tools; one active operation/two waiters; no source reread | Current SDK/stdio/queue/cancellation CI passes; fresh installed-wheel proof remains pending |
 | Deterministic multi-query | `--mode quality --multi-query`, off by default | Original plus at most two source-derived clauses | Grammar, identity, filters and cancellation tests pass; compound benefit unmeasured |
@@ -40,9 +40,12 @@ source passes all four CI profiles: 2,821 tests, zero skips. See the
 The [80-question answer inputs](../evals/answer_v3/README.md) and
 [120-document card inputs](../evals/distill_real/README.md) are frozen and audited.
 The 480 real answer jobs, 960 real grading jobs and actual card clustering run
-are still missing. Separately, the legacy 169-row media suite has source bytes
-that lack required EXIF/OCR evidence; its strict provenance check remains
-MISSING. Mechanical tests do not replace any of these outcomes.
+are still missing. Separately, the full-media suite is re-baselined to its
+on-disk 128 queries (78 real + 50 media, 19 needs-gated; 2026-10-25, receipt
+reports/execution/digup-plan-002/step-1-baseline/): its stored-evidence
+provenance preflight (EXIF/OCR/ASR) now PASSES against the real-backend corpus
+index, while its formal retrieval gate remains pending the multimodal landing.
+Mechanical tests do not replace any of these outcomes.
 
 Search admission parameters are [preregistered](../evals/search_parameters.json)
 with at most three arms and the original control. All three registered numeric

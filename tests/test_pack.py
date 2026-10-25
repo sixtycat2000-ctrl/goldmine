@@ -180,7 +180,7 @@ def test_textless_hit_renders_explicit_note(tmp_path):
     store = Store(tmp_path / "t.sqlite")
     fid = store.upsert_file(FileRec(path="/img/scan.png", kind="image", size=10))
     store.mark_file(fid, state="done", capability="content_indexed", detail=None,
-                    info=None, extractor_version="image-sips.v2")
+                    info=None, extractor_version="image-mm.v1")
     segs = [SegmentRec(kind="name", modality="none", excerpt="scan.png",
                        text_for_fts="folder words scan.png")]
     # a vector-only segment: vec present, NO text_for_fts -> no fts row

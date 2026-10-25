@@ -45,6 +45,9 @@ from ..deadline import (
     deadline_sleep, remaining_timeout,
 )
 from ..http_transport import request as http_request
+from ..ingest.media import (
+    MEDIA_BUDGETS, MEDIA_PREPROCESSING, MEDIA_ROUTING, LEGAL_BUDGETS,
+)
 from .base import (
     PROMPT_SCHEME,
     BackendStartupError,
@@ -53,6 +56,7 @@ from .base import (
     EmbeddingError,
     NotSupported,
 )
+from .embed_helper import MediaEmbedder
 
 logger = logging.getLogger("goldmine.backends.llama")
 
@@ -239,6 +243,10 @@ class LlamaServerBackend(EmbeddingBackend):
         self._sha256_cache: str | None = None
         self.model_spawn_count = 0
         self.embedding_http_requests = 0
+        # Media sidecar (digup-plan-002): lazy — nothing spawns until the
+        # first embed_image/embed_audio_wav; MM-D1's dual residency only
+        # materializes for media-bearing ingests.
+        self._media = MediaEmbedder(cfg, resolve_model_path(cfg))
 
     # ------------------------------------------------------------- identity
 
@@ -247,9 +255,12 @@ class LlamaServerBackend(EmbeddingBackend):
         return VEC_DIM
 
     def capability(self) -> Capability:
-        # /v1/embeddings is TEXT-ONLY in llama.cpp (mmproj exists but images and
-        # audio are not embeddable through this endpoint) — honest capability.
-        return Capability(text=True, image=False, audio=False)
+        # Text always goes through llama-server. Images/audio go through the
+        # resident goldmine-embed helper + the pinned mmproj (digup-plan-002):
+        # both modalities are reported exactly when helper + mmproj resolve
+        # (static check — no spawn; honest NotSupported otherwise).
+        image, audio = self._media.capability()
+        return Capability(text=True, image=image, audio=audio)
 
     def model_path(self) -> Path:
         return resolve_model_path(self.cfg)
@@ -285,7 +296,7 @@ class LlamaServerBackend(EmbeddingBackend):
     def fingerprint_fields(self) -> dict:
         model = self.model_path()
         sha = self.model_sha256() if model.is_file() else "missing"
-        return {
+        fields = {
             "model_id": model.stem,
             "model_sha256": sha,
             "dim": VEC_DIM,
@@ -293,6 +304,22 @@ class LlamaServerBackend(EmbeddingBackend):
             "pooling": "server:mean",  # spawned with --pooling mean
             "normalization": "l2_post",  # client re-normalizes defensively
         }
+        # Media extras appear EXACTLY when helper+mmproj resolve (the mock's
+        # discipline: a text-only install stays fingerprint-byte-identical to
+        # pre-multimodal builds). All four join both the index fingerprint and
+        # the embed identity (fingerprints.build / live_embed_identity).
+        if self._media.resolvable():
+            fields["media"] = MEDIA_PREPROCESSING
+            fields["mmproj_sha256"] = self._media.mmproj_sha256()
+            fields["media_budgets"] = (
+                f"photo{MEDIA_BUDGETS['photo']} "
+                f"shot{MEDIA_BUDGETS['screenshot']} "
+                f"page{MEDIA_BUDGETS['pdf_page']} "
+                f"frame{MEDIA_BUDGETS['video_frame']} "
+                f"[{','.join(str(b) for b in LEGAL_BUDGETS)}]"
+            )
+            fields["media_routing"] = MEDIA_ROUTING
+        return fields
 
     def max_input_tokens(self) -> int | None:
         return int(self.cfg.ctx)
@@ -522,6 +549,7 @@ class LlamaServerBackend(EmbeddingBackend):
 
     def close(self) -> None:
         self._started = False
+        self._media.close()
         self._kill()
 
     # ------------------------------------------------------------ embedding
@@ -712,32 +740,67 @@ class LlamaServerBackend(EmbeddingBackend):
             out[start:start + part.shape[0]] = part
         return _l2_normalize(out)  # defensive; record 'l2_post' in fingerprint
 
-    def embed_image(self, path: Path) -> np.ndarray:
-        raise NotSupported(
-            "llama /v1/embeddings is text-only — images are metadata-only under "
-            "this backend (use --backend mock for image vectors)"
-        )
+    def embed_image(self, path: Path, *, budget: int = MEDIA_BUDGETS["photo"]) -> np.ndarray:
+        if int(budget) not in LEGAL_BUDGETS:
+            raise ValueError(
+                f"budget {budget} not in {list(LEGAL_BUDGETS)}"
+            )
+        if not self._media.resolvable():
+            raise NotSupported(
+                "goldmine-embed helper or mmproj not resolvable — images are "
+                "metadata-only under this install (build the helper with "
+                "scripts/build_embed_helper.sh and `goldmine model install "
+                "mmproj-embeddinggemma-2-Q8_0`)"
+            )
+        self.startup()  # text server must be up (dim probe) before media too
+        vec = self._media.embed_image(Path(path), int(budget))
+        return _l2_normalize(vec.reshape(1, -1))[0]  # defensive; 'l2_post'
 
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
-        raise NotSupported(
-            "llama /v1/embeddings is text-only — audio is metadata-only under "
-            "this backend (use --backend mock for audio vectors)"
-        )
+        if not self._media.resolvable():
+            raise NotSupported(
+                "goldmine-embed helper or mmproj not resolvable — audio is "
+                "metadata-only under this install (build the helper with "
+                "scripts/build_embed_helper.sh and `goldmine model install "
+                "mmproj-embeddinggemma-2-Q8_0`)"
+            )
+        self.startup()
+        vec = self._media.embed_audio_wav(wav)
+        return _l2_normalize(vec.reshape(1, -1))[0]  # defensive; 'l2_post'
 
     # -------------------------------------------------------------- report
 
     def describe(self) -> dict:
         server, source = resolve_server_path(self.cfg)
         model = self.model_path()
+        image_ok, audio_ok = self._media.capability()
         info: dict = {
             "id": self.backend_id,
             "dim": VEC_DIM,
-            "capability": {"text": True, "image": False, "audio": False},
+            "capability": {"text": True, "image": image_ok, "audio": audio_ok},
             "server": str(server) if server else None,
             "server_source": source,
             "model": str(model),
             "note": BREW_CANNOT_LOAD_NOTE,
         }
+        from .embed_helper import resolve_helper_path, resolve_mmproj_path
+        helper, helper_source = resolve_helper_path(self.cfg)
+        info["embed_helper"] = str(helper) if helper else None
+        info["embed_helper_source"] = helper_source
+        mmproj = resolve_mmproj_path(self.cfg)
+        info["mmproj"] = str(mmproj) if mmproj.is_file() else None
+        if image_ok or audio_ok:
+            info["mmproj_sha256"] = self._media.mmproj_sha256()
+        elif helper is None:
+            info["media_fix_hint"] = (
+                "build the helper: scripts/build_embed_helper.sh (dev) or the "
+                "release asset into <home>/bin/goldmine-embed"
+            )
+        elif not mmproj.is_file():
+            info["media_fix_hint"] = (
+                "`goldmine model install mmproj-embeddinggemma-2-Q8_0` (or the "
+                "repo models/ pin)"
+            )
         available = server is not None and model.is_file()
         if server is None:
             info["fix_hint"] = (

@@ -60,14 +60,17 @@ class _MediaSeg:
     embedded on the main thread in _commit — ARCHITECTURE §7.1 keeps all
     vector production off the extraction threads)."""
 
-    kind: str                        # 'image' | 'audio' | 'ocr' (segment kind)
-    path: Path | None = None         # image: the thumbnail to embed (v2 sips prep)
+    kind: str                        # 'image' | 'audio' | 'ocr' | 'page' (segment kind)
+    path: Path | None = None         # image/page: the bitmap to embed (sips thumb / rendered page)
     wav: bytes | None = None         # audio: one 16 kHz mono PCM16 window
-    loc: float | None = None         # audio: window start/end seconds; image: NULL
+    loc: float | None = None         # audio: window start/end seconds; page: page number; image: NULL
     loc_end: float | None = None
     excerpt: str | None = None       # image: filename; audio: short window label
     text_for_fts: str | None = None  # ocr: recognized text (always FTS-indexed)
     embed_text: bool = False         # ocr under a text-only backend: text vector (A5)
+    budget: int | None = None        # digup-plan-002: vision token budget (frozen constants)
+    modality: str | None = None      # vector modality; page/garbled map away from `kind`
+    garbled: str | None = None       # glyph-order page text: meaning-only TEXT vector (§3.5/A1)
 
 
 @dataclass
@@ -238,6 +241,7 @@ class ExtractMixin:
             return _Outcome(
                 capability="metadata_only",
                 detail="lexical-only ingest (media has no text)",
+                info={"audio_routing": "none:lexical_only"},
             )
 
         # audio / video: the soundtrack is the only embeddable content.
@@ -253,22 +257,39 @@ class ExtractMixin:
                 return asr_outcome
             if cap is None or not cap.audio:
                 asr_outcome.detail = "backend lacks audio embedding; " + (asr_outcome.detail or "ASR unavailable")
+                asr_outcome.info = {**asr_info, "audio_routing": "none:no_capability"}
                 return asr_outcome
 
         if cap is None or not cap.audio:
-            return _Outcome(capability="metadata_only", detail="backend lacks audio embedding")
+            return _Outcome(
+                capability="metadata_only", detail="backend lacks audio embedding",
+                info={**asr_info, "audio_routing": "none:no_capability"},
+            )
         if media.ffprobe_path() is None:
-            return _Outcome(capability="metadata_only", detail="ffprobe not found", info=asr_info)
+            return _Outcome(
+                capability="metadata_only", detail="ffprobe not found",
+                info={**asr_info, "audio_routing": "none:ffprobe_missing"},
+            )
         duration = media.ffprobe_duration(path)
         if duration is None:
             return _Outcome(
                 capability="metadata_only",
                 detail="ffprobe could not read duration",
-                info=asr_info,
+                info={**asr_info, "audio_routing": "none:ffprobe_unreadable"},
             )
         if kind == "video" and media.has_audio_stream(path) is False:
-            return _Outcome(capability="metadata_only", detail="no audio stream", info=asr_info)
+            return _Outcome(
+                capability="metadata_only", detail="no audio stream",
+                info={**asr_info, "audio_routing": "none:no_audio_stream"},
+            )
 
+        # MM-D3 (preregistered): raw-audio vectors exist ONLY for files with
+        # no transcript — we only reach this line when ASR produced none.
+        routing = "raw:no-transcript({})".format(
+            asr_info.get("asr_status")
+            or ("off" if str(getattr(self.cfg.ingest, "asr", "auto") or "auto") == "off"
+                else "unavailable")
+        )
         max_minutes = float(self.cfg.ingest.audio_max_minutes)
         try:
             with tempfile.TemporaryDirectory(prefix="goldmine-media-") as td:
@@ -282,15 +303,22 @@ class ExtractMixin:
                         loc=piece.start,
                         loc_end=piece.end,
                         excerpt=f"audio {piece.start:g}–{piece.end:g}s",
+                        modality="audio",
                     )
                     for piece in pieces
                 ]
         except ToolError:
-            return _Outcome(capability="metadata_only", detail="ffmpeg not found", info=asr_info)
+            return _Outcome(
+                capability="metadata_only", detail="ffmpeg not found",
+                info={**asr_info, "audio_routing": "none:ffmpeg_missing"},
+            )
         # per-window ffmpeg failures/timeout are extraction errors => failed row
         # (let RuntimeError propagate into _extract's handler above)
 
-        info: dict = {**asr_info, "duration": round(duration, 3), "windows": len(segs)}
+        info: dict = {
+            **asr_info, "duration": round(duration, 3), "windows": len(segs),
+            "audio_routing": routing,
+        }
         partial = duration > max_minutes * 60.0
         if partial:
             info["read_end"] = max_minutes * 60.0
@@ -298,12 +326,12 @@ class ExtractMixin:
             return _Outcome(
                 capability="metadata_only",
                 detail="all audio windows silent (RMS gate)",
-                info=info,
+                info={**info, "audio_routing": "none:all_windows_silent"},
             )
         return _Outcome(
             capability="content_indexed",
             info=info,
-            extractor_version="media-ffmpeg.v1",
+            extractor_version="media-ffmpeg-mm.v1",
             media_segs=segs,
             partial=partial,
         )
@@ -381,6 +409,7 @@ class ExtractMixin:
                 )
         info["asr_segments"] = len(result.segments)
         info["asr_status"] = "complete"
+        info["audio_routing"] = "text:transcript"
         return _Outcome(
             capability="content_indexed",
             info=info,
@@ -452,7 +481,7 @@ class ExtractMixin:
 
         want_image_vec = cap is not None and cap.image and not self.lexical_only
         segs: list[_MediaSeg] = []
-        extractor = "image-sips.v2"
+        extractor = "image-mm.v1"
 
         if want_image_vec:
             # full v2 prep: EXIF + thumbnail + minSide/cap refusals
@@ -476,7 +505,7 @@ class ExtractMixin:
                         capability="content_indexed",
                         detail=f"image undecodable; ocr text only ({str(exc)[:80]})",
                         info=info,
-                        extractor_version="image-sips-ocr.v2",
+                        extractor_version="image-mm-ocr.v1",
                         media_segs=segs,
                         content_date=content_date,
                     )
@@ -504,7 +533,7 @@ class ExtractMixin:
                         capability="content_indexed",
                         detail=f"{prep.refused}; ocr text only",
                         info=info,
-                        extractor_version="image-sips-ocr.v2",
+                        extractor_version="image-mm-ocr.v1",
                         media_segs=segs,
                         content_date=content_date,
                     )
@@ -515,11 +544,15 @@ class ExtractMixin:
                     info=info,
                     content_date=content_date,
                 )
-            segs.append(_MediaSeg(kind="image", path=prep.path, excerpt=path.name))
+            segs.append(_MediaSeg(
+                kind="image", path=prep.path, excerpt=path.name,
+                budget=media.MEDIA_BUDGETS["screenshot" if is_shot else "photo"],
+                modality="image",
+            ))
             info["thumb"] = f"{prep.width}x{prep.height}"
         if ocr_text:
             segs.append(self._ocr_seg(path, ocr_text, cap))
-            extractor = "image-sips-ocr.v2"
+            extractor = "image-mm-ocr.v1"
 
         if not segs:
             reason = (

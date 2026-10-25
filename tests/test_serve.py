@@ -76,6 +76,18 @@ def short_sock_dir() -> Path:
 
 def make_cfg(tmp_path: Path, *, model: Path | None = None,
              sock: Path | None = None, **llama_overrides) -> Config:
+    # digup-plan-002: default these tests to a MEDIA-LESS install — an
+    # explicitly-missing helper path is honored (no vendor fallback), so
+    # capability/fingerprint expectations stay deterministic in any checkout
+    # (the fake llama-server cannot load the real helper's models anyway).
+    # The with-media handshake parity has its own focused test below.
+    media_defaults = {
+        "embed_helper": tmp_path / "no-embed-helper",
+        "embed_helper_configured": True,
+        "mmproj": _fake_model(tmp_path).with_name("fake-mmproj.gguf"),
+        "mmproj_configured": True,
+    }
+    llama_kw = {**media_defaults, **llama_overrides}
     cfg = Config(
         home=tmp_path / "home",
         llama=LlamaCfg(
@@ -86,7 +98,7 @@ def make_cfg(tmp_path: Path, *, model: Path | None = None,
             batch=16,
             startup_timeout=10.0,
             request_timeout=10.0,
-            **llama_overrides,
+            **llama_kw,
         ),
         serve=ServeCfg(
             linger=60, timeout_s=10.0,
@@ -1407,3 +1419,40 @@ def test_fingerprint_gate_refuses_identically_served_and_cold(tmp_path, serve_en
     rc_cold = main(["search", "eviction", "--no-serve"])
     capsys.readouterr()
     assert rc_serve == 3 == rc_cold
+
+
+def test_handshake_parity_with_media_extras(tmp_path):
+    """digup-plan-002: on a MEDIA-CAPABLE install (helper+mmproj resolve) the
+    daemon handshake must carry the same four fingerprint extras a cold
+    backend reports — static resolution only, no model load (the fake helper
+    script satisfies resolvable(); nothing ever spawns)."""
+    from goldmine import fingerprints
+    from goldmine.backends.llama import LlamaServerBackend
+
+    fake_helper = Path(__file__).with_name("fake_embed_helper.py")
+    fake_mmproj = tmp_path / "mmproj-fake.gguf"
+    fake_mmproj.write_bytes(b"fake-mmproj-for-parity")
+    cfg = make_cfg(
+        tmp_path,
+        embed_helper=fake_helper, embed_helper_configured=True,
+        mmproj=fake_mmproj, mmproj_configured=True,
+    )
+    box = start_daemon(cfg)
+    try:
+        served, _ = connect_or_cold(cfg)
+        cold = LlamaServerBackend(cfg.llama)
+        try:
+            assert cold._media.resolvable()
+            served_fields = served.fingerprint_fields()
+            cold_fields = cold.fingerprint_fields()
+            for key in ("media", "mmproj_sha256", "media_budgets", "media_routing"):
+                assert key in served_fields, key
+                assert served_fields[key] == cold_fields[key], key
+            assert served.capability() == cold.capability()
+            assert served.capability().image and served.capability().audio
+            assert fingerprints.build(served) == fingerprints.build(cold)
+        finally:
+            served.close()
+            cold.close()
+    finally:
+        box.stop()

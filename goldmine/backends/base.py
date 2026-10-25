@@ -148,12 +148,16 @@ class EmbeddingBackend(ABC):
         ...
 
     @abstractmethod
-    def embed_image(self, path: Path) -> np.ndarray:
-        """Raises NotSupported when the backend is text-only."""
+    def embed_image(self, path: Path, *, budget: int = 140) -> np.ndarray:
+        """Embed one prepared image (the sips thumbnail stage already ran).
+        Budget is the vision token budget — one of ingest.media.LEGAL_BUDGETS
+        (70, 140, 280, 560, 1120; digup-plan-002 frozen constants).
+        Raises NotSupported when the backend is text-only."""
 
     @abstractmethod
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
-        """Raises NotSupported when the backend is text-only."""
+        """Embed one 16 kHz mono WAV window (≤ 30 s). Raises NotSupported
+        when the backend is text-only."""
 
     @abstractmethod
     def describe(self) -> dict:

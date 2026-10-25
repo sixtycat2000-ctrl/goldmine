@@ -649,17 +649,22 @@ class RemoteBackend(EmbeddingBackend):
         caller; ingest stays cold — moves to G6). None = estimator fallback."""
         return None
 
-    def embed_image(self, path: Path) -> np.ndarray:
-        # llama.py messages VERBATIM (D1: the ABC surface fits unchanged)
+    def embed_image(self, path: Path, *, budget: int = 140) -> np.ndarray:
+        # llama.py messages VERBATIM (D1: the ABC surface fits unchanged);
+        # the budget kwarg is signature parity only (digup-plan-002).
         raise NotSupported(
-            "llama /v1/embeddings is text-only — images are metadata-only under "
-            "this backend (use --backend mock for image vectors)"
+            "goldmine-embed helper or mmproj not resolvable — images are "
+            "metadata-only under this install (build the helper with "
+            "scripts/build_embed_helper.sh and `goldmine model install "
+            "mmproj-embeddinggemma-2-Q8_0`)"
         )
 
     def embed_audio_wav(self, wav: bytes) -> np.ndarray:
         raise NotSupported(
-            "llama /v1/embeddings is text-only — audio is metadata-only under "
-            "this backend (use --backend mock for audio vectors)"
+            "goldmine-embed helper or mmproj not resolvable — audio is "
+            "metadata-only under this install (build the helper with "
+            "scripts/build_embed_helper.sh and `goldmine model install "
+            "mmproj-embeddinggemma-2-Q8_0`)"
         )
 
     def describe(self) -> dict:

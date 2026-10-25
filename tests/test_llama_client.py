@@ -44,6 +44,11 @@ def fake_cfg(tmp_path) -> LlamaCfg:
         batch=2,
         startup_timeout=10.0,
         request_timeout=10.0,
+        # digup-plan-002: pin the MEDIA-LESS leg deterministically — an
+        # explicitly-missing helper is honored (no vendor fallback), so these
+        # tests keep their text-only semantics in any checkout.
+        embed_helper=tmp_path / "no-embed-helper",
+        embed_helper_configured=True,
     )
 
 

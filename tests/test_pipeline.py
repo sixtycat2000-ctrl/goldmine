@@ -552,7 +552,7 @@ def test_multimodal_mock_indexes_image_content(cfg, fixture_tree):
 
     rec = store.find_by_path(str(png))
     assert rec and rec.capability == "content_indexed"
-    assert rec.extractor_version == "image-sips.v2"
+    assert rec.extractor_version == "image-mm.v1"
     rows = store.db.execute(
         "SELECT id, kind, modality, loc, loc_end, excerpt, vec FROM segments "
         "WHERE file = ?", (rec.id,),
@@ -830,7 +830,7 @@ def test_screenshot_ocr_under_multimodal_is_fts_only(cfg, tmp_path, fake_ocr):
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     rec = store.find_by_path(str(shot))
     assert rec and rec.capability == "content_indexed"
-    assert rec.extractor_version == "image-sips-ocr.v2"
+    assert rec.extractor_version == "image-mm-ocr.v1"
     assert rec.info["ocr_chars"] == len(FAKE_OCR_TEXT)
     rows = store.db.execute(
         "SELECT s.kind, s.modality, f.body, s.vec FROM segments s "
@@ -866,7 +866,7 @@ def test_screenshot_ocr_under_text_only_backend_gets_text_vector(cfg, tmp_path, 
     report = IngestPipeline(cfg, store, backend).run([str(root)])
     rec = store.find_by_path(str(shot))
     assert rec and rec.capability == "content_indexed"   # FTS text counts (SPEC)
-    assert rec.extractor_version == "image-sips-ocr.v2"
+    assert rec.extractor_version == "image-mm-ocr.v1"
     row = store.db.execute(
         "SELECT s.kind, s.modality, f.body, s.vec FROM segments s "
         "LEFT JOIN fts f ON f.rowid = s.id "
@@ -1312,6 +1312,6 @@ def test_g10_old_image_version_redone(cfg, tmp_path):
     report = IngestPipeline(cfg, store, _mm_mock()).run([str(root)])
     assert report.unchanged == 0
     rec = store.find_by_path(str(shot))
-    assert rec.extractor_version == "image-sips.v2"
+    assert rec.extractor_version == "image-mm.v1"
     assert rec.info.get("thumb") == "600x400"
     store.close()

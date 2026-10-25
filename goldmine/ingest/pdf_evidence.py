@@ -8,12 +8,12 @@ from pathlib import Path
 
 from ..chunker import Chunk
 from ..util import ToolError
-from . import extract_pdf
+from . import extract_pdf, media
 
 
 def extract_pdf_outcome(pipeline, path, max_chunks):
     # Imported here to keep the extraction dispatch's result types in one place.
-    from .extraction import _Outcome, _Piece, _has_words
+    from .extraction import _Outcome, _Piece, _MediaSeg, _has_words
 
     try:
         result = extract_pdf.extract_pages(path, max_pages=pipeline.cfg.ingest.max_pages)
@@ -21,6 +21,15 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         return _Outcome(capability="metadata_only", detail="pdftotext not found")
     except RuntimeError as exc:
         return _Outcome(capability="failed", detail=str(exc))
+    # digup-plan-002: page-IMAGE vectors for thin/scanned and glyph-order
+    # pages — only when the backend can actually embed images and pdftoppm
+    # can render (otherwise the current text-only behavior is the honest one).
+    cap = pipeline.backend.capability() if pipeline.backend is not None else None
+    want_page_images = (
+        cap is not None and cap.image
+        and not pipeline.lexical_only
+        and extract_pdf.pdftoppm_path() is not None
+    )
     candidates = [number for number, text in result.pages if len(text.strip()) < extract_pdf.THIN_PAGE_CHARS]
     states = {number: "unavailable" for number in candidates}
     recovered = {}
@@ -28,9 +37,21 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         with tempfile.TemporaryDirectory(prefix="goldmine-pdfocr-") as td:
             recovered = pipeline._ocr_pages(path, candidates, Path(td), states=states)
     pieces = []
-    thin_pages, ocr_pages = [], []
+    media_segs = []
+    thin_pages, ocr_pages, garbled_pages, lost_pages = [], [], [], []
     partial = result.truncated
     read_to = None
+
+    def render_page(number: int) -> Path | None:
+        """One page to PNG in the run-scoped media scratch dir (never a
+        TemporaryDirectory — media segs are consumed a wave later at commit).
+        ToolError (no pdftoppm) is swallowed: the page falls back to text."""
+        try:
+            prefix = pipeline._media_tmp_dir() / f"page-{number}"
+            return extract_pdf.render_page_png(path, number, prefix)
+        except (ToolError, RuntimeError):
+            return None
+
     for number, source in result.pages:
         stripped = source.strip()
         upgraded = recovered.get(number, ("", None))[0].strip()
@@ -46,6 +67,28 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
                 text = "\n".join(t for t in (stripped, upgraded) if t)
                 if upgraded:
                     states[number] = "low_text"
+        # Text-layer pathology (DigUp PageTextProblem port, extract_pdf):
+        # glyph-order pages divert to picture + meaning-only vector when the
+        # image path is live; lost-letter pages are DETECTED ONLY this
+        # milestone (the Arabic OCR-replace is a deferred content change).
+        problem = extract_pdf.page_text_problem(stripped) if stripped else None
+        if problem == "glyphOrder" and want_page_images:
+            rendered = render_page(number)
+            if rendered is not None:
+                garbled_pages.append(number)
+                media_segs.append(_MediaSeg(
+                    kind="page", path=rendered, loc=float(number),
+                    loc_end=float(number), excerpt="",
+                    budget=media.MEDIA_BUDGETS["pdf_page"], modality="image",
+                ))
+                media_segs.append(_MediaSeg(
+                    kind="page", loc=float(number), loc_end=float(number),
+                    garbled=stripped, modality="text",
+                ))
+                read_to = number
+                continue  # the garbled words never reach FTS/chunks (§3.5)
+        elif problem == "lostLetters":
+            lost_pages.append(number)
         if not text:
             read_to = number
             continue
@@ -71,6 +114,20 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         read_to = number
         if partial and len(chunks) > remaining:
             break
+    # Still-thin pages (scanned slides the OCR could not rescue) get the
+    # page-IMAGE vector alongside their thin FTS text (DigUp Indexer.swift
+    # pageImage rows; budget 280). Glyph-order diversions already rendered.
+    if want_page_images:
+        for number in thin_pages:
+            if number in garbled_pages:
+                continue
+            rendered = render_page(number)
+            if rendered is not None:
+                media_segs.append(_MediaSeg(
+                    kind="page", path=rendered, loc=float(number),
+                    loc_end=float(number), excerpt="",
+                    budget=media.MEDIA_BUDGETS["pdf_page"], modality="image",
+                ))
     info = {"pages": result.total}
     if partial:
         info.update(partial=True, read_to=read_to, read_end=read_to)
@@ -82,6 +139,12 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         info["ocr_text_pages"] = sorted(recovered)
     if thin_pages:
         info.update(thin_text=True, thin_pages=thin_pages)
+    if media_segs:
+        info["page_images"] = len([m for m in media_segs if m.path is not None])
+    if garbled_pages:
+        info["garbled_pages"] = garbled_pages
+    if lost_pages:
+        info["pdf_text_problem"] = "lostLetters@" + ",".join(map(str, lost_pages))
     version = result.tool_version
     if ocr_pages:
         version = version.replace("pdftotext@", "pdftotext+visionocr@", 1)
@@ -92,8 +155,11 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
         detail = f"thin-text: {len(thin_pages)} page(s) need OCR (scanned)"
     else:
         detail = None
-    if not pieces:
+    if garbled_pages:
+        detail = (detail + "; " if detail else "") + f"garbled: {len(garbled_pages)} page(s) as image+meaning"
+    if not pieces and not media_segs:
         return _Outcome(capability="metadata_only", detail="page needs OCR (scanned)" if result.pages else "no text extracted",
                         info=info, extractor_version=version, title=result.title, partial=partial)
     return _Outcome(capability="content_indexed", detail=detail, info=info,
-                    extractor_version=version, title=result.title, chunks=pieces, partial=partial)
+                    extractor_version=version, title=result.title, chunks=pieces,
+                    media_segs=media_segs, partial=partial)

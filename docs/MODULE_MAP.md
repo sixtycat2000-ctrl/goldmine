@@ -254,7 +254,7 @@ class EmbeddingBackend(ABC):
     def capability(self) -> Capability
     def fingerprint_fields(self) -> dict             # model id/sha (or helper version), pooling…
     def embed_texts(self, texts: list[str]) -> list["np.ndarray"]        # L2-normalized f32
-    def embed_image(self, path: Path) -> "np.ndarray"                    # raises NotSupported
+    def embed_image(self, path: Path, *, budget: int = 140) -> "np.ndarray"   # raises NotSupported; budget ∈ {70,140,280,560,1120}
     def embed_audio_wav(self, wav: bytes) -> "np.ndarray"                # raises NotSupported
     def describe(self) -> dict                       # availability, version, fix hints
     def close(self) -> None                          # kill only OUR children
@@ -262,6 +262,23 @@ class EmbeddingBackend(ABC):
 def query_prompt(text: str) -> str    # "task: search result | query: {text}"  (V2/D7 verbatim)
 def document_prompt(title: str | None, text: str) -> str
                                       # "title: {none} | text: {text}"
+```
+
+### `backends/embed_helper.py` **[digup-plan-002]** — MediaEmbedder sidecar
+```python
+class MediaEmbedder:                # owned by LlamaServerBackend; lazy spawn
+    def resolvable(self) -> bool    # helper + mmproj + model files resolve (static)
+    def capability(self) -> tuple[bool, bool]                      # (image, audio)
+    def startup(self) -> None       # spawn → ready event → caps (BackendStartupError)
+    def embed_image(self, path, budget) -> np.ndarray              # resident goldmine-embed
+    def embed_audio_wav(self, wav: bytes) -> np.ndarray            # 30s cap helper-side
+    def close(self) -> None         # SIGTERM → 5s → SIGKILL, own child only
+# resident C helper tools/embed/goldmine-embed.c (llama+mtmd static, 7 archives
+# + Foundation/Metal/Accelerate); line-JSON protocol, path_b64/wav_b64; only
+# stderr is drain-threaded (stdout is the protocol channel); media fingerprint
+# extras (media/mmproj_sha256/media_budgets/media_routing) are emitted by the
+# PARENT backend exactly when resolvable() — text-only installs stay
+# fingerprint-byte-identical.
 ```
 
 ### `backends/mock.py` **[v1]** — offline-first (TEST_PLAN tier 1–2 enabler)

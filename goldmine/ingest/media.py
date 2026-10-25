@@ -46,11 +46,36 @@ FFMPEG_TIMEOUT_S = 120.0    # per window batch (ARCHITECTURE §8)
 #: taken; screenshots additionally get Vision OCR text — FTS-only where an
 #: image vector exists (DigUp Indexer.swift:510-513), TEXT-vector under
 #: text-only backends (A5: there is no image vector to carry the meaning).
+#: v3 bump (digup-plan-002, multimodal helper landing): goldmine-side resize
+#: to the token budget (bit-exact mtmd/DigUp bicubic, 48px patch grid),
+#: per-kind budget constants below, thin-PDF pages rendered to page images,
+#: glyph-order pages keep a meaning-only garbled-text vector; OCR text vectors
+#: now exist ONLY under text-only backends (the capability flip closes them).
+#: Video frames are DEFERRED: frame budget 70 stays frozen in the constants,
+#: no frame vectors are produced yet (preregistration scope decision A2).
 MEDIA_PREPROCESSING = (
-    "v2:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003; "
-    "image=jpeg-thumb-1024-q90|png-1536(screenshot),minSide256; "
-    "ocr_text_vector=llama-only"
+    "v3:audio=wav-16k-mono-pcm16,window30s,hop25s,rms-gate0.003; "
+    "image=jpeg-thumb-1024-q90|png-1536(screenshot),minSide256,"
+    "resize=bicubic-a-0.5-48px-fill-budget; "
+    "page=pdftoppm150dpi-thin+glyphorder; "
+    "ocr_text_vector=text-only-backends; frames=deferred"
 )
+
+#: Frozen token budgets per media kind (digup-plan-002 preregistration;
+#: DigUp Model.swift:84 granularity — the whole index shares one embed
+#: identity, so any budget change re-embeds everything). `frame` is frozen
+#: here for identity stability but produces no vectors yet (deferred).
+MEDIA_BUDGETS = {
+    "photo": 140,
+    "screenshot": 280,
+    "pdf_page": 280,
+    "video_frame": 70,
+}
+#: The legal helper budget set (DigUp LlamaEmbedder.budgets, swift:16).
+LEGAL_BUDGETS = (70, 140, 280, 560, 1120)
+
+#: MM-D3 routing rule recorded verbatim in fingerprints + per-file info.
+MEDIA_ROUTING = "raw-audio-only-when-no-transcript.v1"
 
 #: image / audio / video magic sniffing (extension + content head)
 _MAGIC = (

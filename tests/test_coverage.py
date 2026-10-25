@@ -276,8 +276,14 @@ def test_coverage_report_fixture_gate_passes(fixture_db):
     assert by_name["code"]["status"] == "ok", by_name["code"]
     assert by_name["pdf-text"]["status"] == "ok", by_name["pdf-text"]
     assert by_name["archives-zero-by-design"]["status"] == "ok"
-    # scanned pdfs + OCR are advisory until the OCR item lands
-    assert by_name["pdf-scanned"]["status"] == "advisory"
+    # scanned pdfs: metadata_only fixtures stay ADVISORY; with the media
+    # capability live (digup-plan-002) thin/scanned pages gain page-image
+    # vectors and become content_indexed — the bucket then disappears
+    # entirely, which is the good outcome, not a gap.
+    if "pdf-scanned" in by_name:
+        assert by_name["pdf-scanned"]["status"] == "advisory"
+    else:
+        assert report["multimodal"], "bucket may only vanish with media vectors"
     failed = [c for c in checks if c["status"] == "fail"]
     assert failed == [], failed
     # audio/video: enforced only with ffprobe (the media window cutter)

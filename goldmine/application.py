@@ -70,6 +70,16 @@ class Application:
             check_deadline()
             yield backend
 
+    def _visual_capability(self) -> bool:
+        """Static media-capability probe (no spawn): helper + mmproj resolved
+        on this install. Feeds status' visual_search flag together with the
+        stored fingerprint's media extras (digup-plan-002 T14)."""
+        try:
+            with self._backend(enabled=True) as backend:
+                return backend is not None and backend.capability().image
+        except Exception:
+            return False
+
     def search(self, request: SearchRequest) -> SearchResult:
         self._validate_search_mode(request)
         timeout_s = request.timeout_s if request.timeout_s is not None else (10.0 if request.mode == "quality" else 5.0)
@@ -325,7 +335,15 @@ class Application:
                 capabilities={
                     "opaque_citations": uuid is not None, "cjk_lexical": "fts_cjk" in tables,
                     "exact_lookup": "lookup_terms" in tables, "stored_text": "fts" in tables,
-                    "visual_search": False,
+                    # digup-plan-002: visual search is live exactly when the
+                    # media capability is — helper+mmproj resolvable on THIS
+                    # install (static check, no spawn) and the index was built
+                    # with the media extras. The stored fingerprint carries
+                    # media fields iff vectors of that family exist.
+                    "visual_search": bool(
+                        fp is not None and fp.get("media")
+                        and self._visual_capability()
+                    ),
                 },
                 staleness=fingerprints.staleness_report(store, live_embed), details=details,
                 evidence=stored_evidence_status(store, limit=100 if include_details else 0),

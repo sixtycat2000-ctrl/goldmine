@@ -125,12 +125,23 @@ Downloads are .partial-resumable and retried automatically; a failed transfer
 continues from where it stopped.
 """,
     "media": """\
-media — speech transcription (ASR) and screenshot OCR
+media — speech transcription (ASR), screenshot OCR, image/audio vectors
 
 Enable during setup: `goldmine init --media` (or answer yes at init's media
 step). Later: `goldmine model install whisper-large-v3-turbo-q5_0` (installs
 the small VAD model too) — plus the goldmine-ocr helper (`goldmine doctor`
 names the fix when missing).
+
+Image/audio vectors (visual search): install the mmproj model
+(`goldmine model install mmproj-embeddinggemma-2-Q8_0`) and the
+goldmine-embed helper (the release asset into <home>/bin, or
+scripts/build_embed_helper.sh in a checkout). When both resolve, photos/
+screenshots get image vectors (token budgets photo 140 / screenshot 280),
+thin PDF pages get page-image vectors, glyph-order pages keep a meaning-only
+text vector, and audio WITHOUT a transcript gets raw-audio vectors —
+transcribed speech never gets both (measured DigUp lesson). Enabling this
+joins the media fields into the embedding identity: that index re-embeds
+once (`goldmine ingest --reindex`).
 
 Audio/video: whisper transcribes (measured ~7x realtime — a 1 h podcast in
 ~8 min), segments become searchable with `0:06s`-style locations; `goldmine
@@ -138,8 +149,8 @@ open --hit N --query …` jumps QuickTime/IINA to the moment. Config: [ingest]
 asr = auto | always | off (auto = transcribe when whisper + models resolve).
 
 Screenshots/scans: the Vision OCR helper reads text on images and thin PDF
-pages; text becomes a text vector (keyword + semantic searchable). Config:
-[ocr] enabled = true/false.
+pages; the OCR text is keyword-searchable always, and becomes a text vector
+ONLY under text-only installs (where no image vector carries the meaning).
 
 Everything media is honest per file in `goldmine status`: metadata-only rows
 carry the reason (e.g. "asr unavailable"), failures are never silent, and

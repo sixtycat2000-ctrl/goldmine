@@ -136,7 +136,10 @@ class MockBackend(EmbeddingBackend):
             return np.zeros((0, self._dim), dtype=np.float32)
         return np.stack([self._embed_text(t) for t in texts])
 
-    def embed_image(self, path: Path) -> np.ndarray:
+    def embed_image(self, path: Path, *, budget: int = 140) -> np.ndarray:
+        # `budget` accepted-and-ignored: signature parity with the real
+        # backend (base.py) — the mock hashes bytes; budgets are identity
+        # constants, not quality knobs, for the fake path.
         if not self.multimodal:
             raise NotSupported("default mock is text-only; construct with multimodal=True")
         return self._embed_bytes(Path(path).read_bytes())

@@ -212,8 +212,8 @@ def test_extractor_registry_values_match_written_rows():
     written = {
         "txt-stdlib.v1", "md-stdlib.v1", "docx-stdlib.v1", "html-stdlib.v1",
         "code-stdlib.v1", "ipynb-stdlib.v1", "url-stdlib.v1", "eml-stdlib.v2",
-        "epub-stdlib.v2", "image-sips.v2", "image-sips-ocr.v2",
-        "media-ffmpeg.v1", "asr-whisper.v2",
+        "epub-stdlib.v2", "image-mm.v1", "image-mm-ocr.v1",
+        "media-ffmpeg-mm.v1", "asr-whisper.v2",
     }
     assert set(fingerprints.EXTRACTOR_VERSIONS.values()) == written
     from goldmine import cli

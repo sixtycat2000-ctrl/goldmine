@@ -468,6 +468,24 @@ class ServeDaemon:
             "pooling": "server:mean",  # spawned with --pooling mean (llama.py)
             "normalization": "l2_post",  # the backend re-normalizes defensively
         }
+        # digup-plan-002: the media extras (media preproc string, mmproj sha,
+        # budgets, routing) join the fingerprint exactly when helper+mmproj
+        # resolve on THIS machine — sourced from the backend's own STATIC
+        # fingerprint_fields (no spawn), so the handshake stays byte-parity
+        # with a cold LlamaServerBackend (D1) even on media-capable installs.
+        # The canonical six above keep the FRESH sha; only extras merge in.
+        from .backends.llama import LlamaServerBackend
+
+        probe = LlamaServerBackend(self.cfg.llama)
+        live_fields = probe.fingerprint_fields()
+        for key in ("media", "mmproj_sha256", "media_budgets", "media_routing"):
+            if key in live_fields:
+                self._fp_fields[key] = live_fields[key]
+        capability = probe.capability()
+        self._capability_info = {
+            "text": True, "image": capability.image, "audio": capability.audio,
+        }
+        probe.close()
 
     def _bind(self) -> None:
         if len(os.fsencode(str(self.sock_path))) > SUN_PATH_MAX - 1:
@@ -779,7 +797,9 @@ class ServeDaemon:
             "fingerprint_fields": dict(self._fp_fields),
             "backend_id": "llama",
             "dim": VEC_DIM,
-            "capability": {"text": True, "image": False, "audio": False},
+            "capability": getattr(
+                self, "_capability_info", {"text": True, "image": False, "audio": False}
+            ),
             "max_input_tokens": int(self.cfg.llama.ctx),
             "model_path": self.model_path,
             "resident": self._resident,
