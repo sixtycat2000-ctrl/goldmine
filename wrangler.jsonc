@@ -1,0 +1,19 @@
+// goldmine official site — Workers Static Assets (free tier).
+// Deploy per /Users/yul/git/mac/cloudflare-deploy.md:
+//   source ~/git/mac/scripts/cloudflare-env.sh
+//   npx wrangler deploy --dry-run   # first
+//   npx wrangler deploy             # then; record the version id
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "goldmine-site",
+  "compatibility_date": "2026-10-01",
+  "account_id": "3841b626c455778e61662b7277c2109e",
+  "assets": {
+    "directory": "./site",
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

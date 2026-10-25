@@ -8,7 +8,52 @@
 
 ---
 
-## (本提交) — 旅程文档：八幕全程 + 术语考古词典
+## (本提交·site-001) — 官网 v1（含用户新反馈重构）：专业首页 + 分层 Learn 地图 + Cloudflare 上线
+
+### 关键行
+
+1. `site/index.html`：专业产品页重写——对比表（goldmine vs Spotlight vs
+   云 AI vs grep，8 行逐行带 verify 注释）、实测数字六卡（含 12 红门如实
+   印出）、六个工程决定、快速开始带真实 GitHub URL。去 AI 味：短句、
+   数字、无排比。nav 改 Learn、GitHub 链接入。
+2. `site/content/concepts.json` v2：77 节点 / **四深度层**（L3 项目机制 32 →
+   L2 系统技术 16 → L1 领域方法 18 → L0 基础概念 11）/ 232 条下探边 /
+   35 条完整四层链（如 指纹门→SHA-256→键序规范化→哈希函数）。教学
+   subagent 逐概念制作，代码引用逐条验真（还纠正了文档一处不实：
+   whisper 走独立 whisper-cli 而非 llama.cpp——记入 SITE_IMPROVEMENTS #1）。
+3. `site/assets/map.js` + `site/tools/bake_graph.py`：分层带状布局（层间
+   虚线 + L3~L0 层标签）、标签碰撞剔除、面包屑、面板层徽章；无 JS 时
+   降级为按层分组的目录视图。
+4. `wrangler.jsonc`：Workers Static Assets（免费层、无绑定、observability
+   on）。**已上线**：https://goldmine-site.sixtycat2000.workers.dev
+   （版本 6906a7af，/、/learn、/docs 全 200，回执
+   reports/execution/site-001/deploy.txt，本地留档）。
+5. `docs/SITE_IMPROVEMENTS.md`：过程中发现的 10 条改进点（只记录不顺手修）。
+
+### 每行的风险
+
+- 对比表基于 2026-10 各产品公开行为——有时效性，verify 注释在，更新靠
+  人工（SITE_IMPROVEMENTS #9）。
+- 77 节点教学内容的代码引用已验真，但教学口径未逐条人工复核——以代码
+  为准，复述中发现偏差即回改。
+- account_id 提交进仓（非机密；token 在钥匙串未落盘）。
+- WebKit 隐性炸弹已修：IO 负百分比 rootMargin 令整页揭示失效——新页面
+  一律像素 margin（SITE_IMPROVEMENTS #7）。
+
+### 我不确定的地方
+
+交互链（搜索→选中→下探→面包屑→键盘）在 IAB 逐项验证过；真机触屏
+（sheet 拖关/双指缩放）与低功率设备动效未测；自动化冒烟缺位（#8）。
+
+### 你 90 秒怎么验
+
+打开 https://goldmine-site.sixtycat2000.workers.dev ——首页滚到对比表；
+进 Learn，搜"指纹门"，回车，点任一"深挖"chip：相机飞到下一层、左上角
+出现面包屑、面板徽章变 L2。
+
+---
+
+## a4a329f — 旅程文档：八幕全程 + 术语考古词典
 
 ### 关键行
 

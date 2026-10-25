@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="description" content="goldmine Learn — 77 个概念、四个深度层（项目机制→系统技术→领域方法→基础概念），从任何项目技术至少下探三层到基础概念。中英双语。">
+<title>goldmine · Learn</title>
+<link rel="stylesheet" href="assets/goldmine.css">
+<script>document.documentElement.classList.add("js")</script>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-logo" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" transform="rotate(45 12 12)" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="9.5" r="1.8" fill="currentColor"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></symbol>
+</svg>
+
+<div class="progress" aria-hidden="true"></div>
+<nav class="nav scrolled">
+  <div class="nav-in">
+    <a class="brand" href="index.html"><svg width="20" height="20"><use href="#i-logo"/></svg><b>goldmine</b></a>
+    <div class="nav-links">
+      <a href="index.html" data-zh="首页" data-en="Home">首页</a>
+      <a href="docs.html" data-zh="文档" data-en="Docs">文档</a>
+      <a href="learn.html" class="active" data-zh="Learn" data-en="Learn">Learn</a>
+      <a href="https://github.com/sixtycat2000-ctrl/goldmine" aria-label="GitHub">GitHub</a>
+      <div class="lang-pill" role="group" aria-label="language"><button data-lang="zh">中</button><button data-lang="en">EN</button></div>
+    </div>
+  </div>
+</nav>
+
+<div class="map-app">
+  <div class="map-live" style="position:relative;height:100%;min-height:0">
+    <canvas id="map" aria-hidden="true"></canvas>
+    <div class="map-bar">
+      <div class="search-box">
+        <input id="map-search" type="search" placeholder="找概念 · find a concept （/）" aria-label="search concepts">
+        <div class="results" role="listbox"></div>
+      </div>
+      <span style="font:11px var(--mono);color:var(--sub-2)" data-zh="拖拽平移 · 滚轮缩放 · 点击下探" data-en="drag to pan · wheel to zoom · click to drill">拖拽平移 · 滚轮缩放 · 点击下探</span>
+    </div>
+    <div class="breadcrumbs" aria-label="trail"></div>
+    <div class="zoom-ui">
+      <button id="zin" aria-label="zoom in"><svg width="18" height="18"><use href="#i-plus"/></svg></button>
+      <button id="zout" aria-label="zoom out"><svg width="18" height="18"><use href="#i-minus"/></svg></button>
+      <button id="zreset" aria-label="reset view"><svg width="18" height="18"><use href="#i-reset"/></svg></button>
+    </div>
+    <div class="clusterbar" role="group" aria-label="clusters"></div>
+    <div class="fallback" hidden></div>
+  </div>
+
+  <aside id="panel" aria-label="concept detail">
+    <button class="p-close" aria-label="close"><svg width="16" height="16"><use href="#i-close"/></svg></button>
+    <span class="p-cluster"></span>
+    <h2>—</h2>
+    <p class="p-sub">—</p>
+    <div class="tabs" role="tablist">
+      <button data-tab="def" role="tab" class="on">定义</button>
+      <button data-tab="plain" role="tab">大白话</button>
+      <button data-tab="example" role="tab">实例</button>
+      <span class="bar" aria-hidden="true"></span>
+    </div>
+    <div class="layer-body" role="tabpanel"></div>
+    <div class="refs-block">
+      <p class="p-sec" data-zh="真实代码 · REAL CODE" data-en="REAL CODE">真实代码 · REAL CODE</p>
+      <ul class="refs"></ul>
+    </div>
+    <div class="deep-block">
+      <p class="p-sec" data-zh="深挖 · DIG DEEPER" data-en="DIG DEEPER">深挖 · DIG DEEPER</p>
+      <div class="deep-list"></div>
+    </div>
+  </aside>
+</div>
+
+<div id="node-list" class="sr-only" role="group" aria-label="concepts"></div>
+<p id="map-live-region" class="sr-only" aria-live="polite"></p>
+<script type="application/json" id="gm-graph">{{GRAPH_JSON}}</script>
+
+<noscript>
+<style>#map,.map-bar,.zoom-ui,.clusterbar,.breadcrumbs{display:none}</style>
+</noscript>
+<script src="assets/app.js" defer></script>
+<script src="assets/map.js" defer></script>
+</body>
+</html>
