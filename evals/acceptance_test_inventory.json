@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "source_commit": "b2d6ec2c4748c00fb96642167c447f9c6323b153",
- "note": "Collection captured during P0-06 implementation; classifications preserve nodeids. Live and optional capabilities are separate, never skipped into PASS. Migration 2026-10-25: 16 distill nodeids retired by b1f4fb9 (measure_tau_*, mean_intra_cosine, split_*, build_cards_v2, header_rendering) removed; their ens-coassoc.v3 replacements registered as offline.",
+ "note": "Collection captured during P0-06 implementation; classifications preserve nodeids. Live and optional capabilities are separate, never skipped into PASS. Migration 2026-10-25: 16 distill nodeids retired by b1f4fb9 (measure_tau_*, mean_intra_cosine, split_*, build_cards_v2, header_rendering) removed; their ens-coassoc.v3 replacements registered as offline. | 2026-10-25: three walk FIFO nodes removed with the DigUp P2 closeout batch A ingestion rework (commit e3c81c2); no other classifications changed.",
  "tests": [
   {
    "nodeid": "tests/test_answer_calibration.py::test_wording_variation_never_sets_score_variation",
@@ -5108,21 +5108,6 @@
   },
   {
    "nodeid": "tests/test_walk.py::test_walk_subdir_scandir_permission_error_is_tcc_notice",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_walk.py::test_walk_fifo_with_text_ext_is_skipped_not_read",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_walk.py::test_walk_fifo_as_root_is_skipped",
-   "profile": "offline",
-   "reason": "Hermetic fixture logic."
-  },
-  {
-   "nodeid": "tests/test_walk.py::test_walk_end_to_end_ingest_survives_a_fifo",
    "profile": "offline",
    "reason": "Hermetic fixture logic."
   },
