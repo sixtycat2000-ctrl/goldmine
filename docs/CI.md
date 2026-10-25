@@ -50,6 +50,29 @@ Sources: [GitHub runner reference](https://docs.github.com/en/actions/reference/
 
 ## Read-only hosted evidence
 
+### Trigger tiers and the free-Actions budget (2026-10-25)
+
+The repository stays on GitHub's free plan permanently (owner decision after
+the October 2025 quota exhaustion). A private repo bills Linux minutes 1x and
+macOS minutes 10x; one full-matrix run costs ~182 billed minutes, so push-to-
+main no longer runs the full matrix:
+
+| event | what runs | billed minutes |
+| --- | --- | --- |
+| push to main | tier gate + base_guard (ubuntu, 3.12) only | ~6 |
+| pull_request (code paths) | full seven-job matrix | ~182 |
+| weekly schedule (Mon 02:00 UTC) / workflow_dispatch | full seven-job matrix | ~182 |
+| docs-only or markdown-only push | nothing (paths-ignore) | 0 |
+
+The hosted acceptance contract still requires all seven jobs green in ONE run
+for a certifiable hosted collection; such runs exist exactly on the full tiers
+(schedule, dispatch, PR). A push-tier run certifies nothing hosted; it is a
+hand-fire guard. Note: when the monthly quota is exhausted, every job fails in
+~1s with a billing annotation before any step runs — that state is an account
+issue, not a code failure (diagnosed 2026-10-25).
+
+### Read-only hosted evidence
+
 The hosted adapter accepts only an explicitly named GitHub.com repository,
 run ID, latest complete attempt and full40-character HEAD SHA. The current
 checkout must be clean and committed at exactly that SHA, including its CI
