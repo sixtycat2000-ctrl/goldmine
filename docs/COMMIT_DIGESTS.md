@@ -8,7 +8,32 @@
 
 ---
 
-## (本提交) — 理解密度制度落地：AGENTS.md + 锚点卡 + 第一讲 + 摘要制度
+## (本提交) — 第二讲：指纹与身份模型
+
+### 关键行
+
+纯文档：`docs/WALKTHROUGH-fingerprint.md` 新增（四层身份模型 / 十问），
+AGENTS.md 轮讲清单与文档地图更新。零代码。
+
+### 每行的风险
+
+无代码风险。讲义内容已对照 fingerprints.py 源码逐节核实（build/canonical/
+gate、v2 embed_identity 拆分、注册表语义），但十问答案未独立校对——
+你复述时的偏差会由下一讲开讲时校正。
+
+### 我不确定的地方
+
+无。
+
+### 你 90 秒怎么验
+
+读 docs/WALKTHROUGH-fingerprint.md 第一节的四层图，然后试着不看书说出
+"改 MEDIA_PREPROCESSING 字符串会动哪几层、每层后果是什么"——这是本讲
+的合成题。
+
+---
+
+## aa3b0c9 — 理解密度制度落地：AGENTS.md + 锚点卡 + 第一讲 + 摘要制度
 
 ### 关键行
 
