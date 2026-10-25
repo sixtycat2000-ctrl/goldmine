@@ -1,28 +1,46 @@
-"""Distill v2: calibrated-τ topic cards over the index's vectors (R6).
+"""Distill v3: ensemble co-association topic cards over the index's vectors.
 
-Design of record: docs/v2.1-r6-distill.md (D1–D15 + the 2026-10-19 review
-amendments F1–F11). Algorithm, normative:
+Design of record: reports/execution/P2-04/distill-purity-diagnosis-001/
+design-proposal.md + design-revision-002.md (two adversarial review rounds).
+Algorithm, normative:
 
   corpus = all vectorized segments in scope, ordered by (file_id, segment_id)
   1. exact dedupe by sha256 of normalized text
   2. near-dup removal: greedy, drop when cosine >= 0.97 to an already-kept chunk
-  3. τ calibration (measure_tau): sampled pairwise cosines (all pairs when
-     N <= 300, else a 300-row stride gram — deterministic, no seed), 256-bin
-     histogram, Otsu t* = bin-center of argmax between-class variance, the
-     hump/valley + mode-proximity fallback to the P90 percentile path, clamp
-     [0.55, 0.85]. tau_source ∈ otsu|floor|ceil|percentile|manual|inherited.
-     REAL corpora are unimodal and EXPECTED to land on 'percentile' (F2a).
-  4. leader clustering with the average-link admission guard (cluster_v2):
-     a chunk joins the FIRST cluster (lowest index) where cos-to-centroid >= τ
-     AND mean-cos-to-members = (S_c·x̂)/n_c >= τ_lo = max(τ−0.10, 0.35) (D4);
-     else it founds a new cluster. The guard reads the running member sum —
-     never a centroid shortcut (F7: the two disagree near the boundary).
-  5. clusters < min_members are dropped — never silently: the full size
+  3. centering: mu = mean of the deduped row-normalized vectors; cmat = the
+     rows renormalized after subtracting mu. On real corpora the raw cosine
+     space is a narrow hub (cross-topic median ~0.6); centering restores
+     threshold discriminability (cross median ~0) without changing ranks.
+  4. deterministic ensemble (96 runs): spherical k-means with farthest-first
+     init (start offsets 0..3, lowest-index ties, farthest-chunk revival) over
+     BOTH spaces {centered, raw} x k in {20..64 step 4} (k_eff capped at n//4;
+     above N_DENSE the k grid scales by n//ENS_K_SCALE and the run set shrinks
+     to ENS_LARGE_K x 2 starts). co[i,j] = fraction of runs placing i and j in
+     the same cluster. No RNG anywhere.
+  5. fine leader: chunks in canonical order join the FIRST group whose mean
+     co-association to the current members >= CO_LEADER_F (tau).
+  6. dual-channel agglomerative remerge. Two groups merge while EITHER
+     (a) co-channel: mean pair co >= REMERGE_RE AND min pair co >= REMERGE_MN
+         (average-link merge with a complete-link guard — no junk may ride)
+     OR (b) geo-channel: centered-centroid cosine >= GEO_THETA AND the minimum
+         centered cosine across the two groups' pairs >= GEO_MINC (repairs
+         same-topic fragments on cleanly separable corpora, where the
+     ensemble consistently splits topics and fragment co is exactly 0).
+     Deterministic: candidates compete on (channel, score), strict >, (a,b)
+     ascending scan; block statistics are recomputed after every merge.
+  7. groups < min_members are dropped — never silently: the full size
      histogram (kept + dropped) is reported in stats and --preview.
-  6. cards sorted by (size desc, first member); card = medoid primary excerpt
-     + up to 2 coverage excerpts (greedy max-min-cosine-distance, stop < 0.25)
-     + filtered tf-idf terms (df >= 2 distinct members, bigram competition)
-     + extractive title (first sentence of the medoid member).
+  8. cards sorted by (size desc, first member); card = medoid primary excerpt
+     + up to 2 coverage excerpts + filtered tf-idf terms + extractive title.
+
+tau semantics (v3): tau IS the co-association admission threshold F
+(CO_LEADER_F). It is an architecture constant, not calibrated per corpus —
+the v2 pairwise-cosine calibration (Otsu/P90) was retired after real-corpus
+diagnosis showed it lands on the within-topic median of a hub distribution
+(reports/execution/P2-04/distill-purity-diagnosis-001/README.md). The
+co-association distribution itself is still reported honestly (histogram +
+quartiles). tau_source ∈ {fixed, manual, inherited}; --threshold overrides F;
+incremental runs inherit the previous run's F unchanged.
 
 Constants are module-level names (testable, documented) — deliberately NOT
 config surface (kill-list spirit, 06 §4.9).
@@ -44,40 +62,45 @@ from .store import Store
 from .util import excerpt as make_excerpt
 from .util import normalize_text, pack_fp16, sha256_bytes
 
-ALGO_FAMILY = "leader-avglink"          # D7: view identity family
-ALGO = "leader-avglink.v2"              # v2 algo string (run rows + cards)
+ALGO_FAMILY = "ens-coassoc"          # view identity family (D7 semantics)
+ALGO = "ens-coassoc.v3"              # v3 algo string (run rows + cards)
 NEAR_DUP_COSINE = 0.97
 TOKEN_RE = re.compile(r"\w+", re.UNICODE)
 
-# -- τ calibration (D1/D2, §2.2) ---------------------------------------------
-CALIB_SAMPLE_ROWS = 300        # stride gram rows when N > 300 (<= 44,850 pairs)
-CALIB_BINS = 256               # histogram bins over [0, 1]
-TAU_FLOOR = 0.55
-TAU_CEIL = 0.85
-MODE_PROXIMITY_K = 1.2         # fallback when |t* - mode| <= k·σ (B9; k
-                               # calibrated on the hard canary: t* lands
-                               # 1.04σ from the mode there, 1.0 misses)
-HUMP_REL_HEIGHT = 0.20         # hump = local max >= 0.20 · dominant peak
-VALLEY_REL_DEPTH = 0.60        # real valley: min between humps <= 0.60 · smaller peak
+# -- ensemble (deterministic; no RNG) ------------------------------------------
+ENS_K_GRID = (20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64)
+ENS_STARTS = (0, 1, 2, 3)            # farthest-first start offsets
+ENS_LARGE_K = (20, 28, 36, 44, 52, 60)   # reduced grid above N_DENSE
+SKM_ITERS = 300
+SKM_TOL = 1e-7                       # np.allclose(newC, C, atol=SKM_TOL)
 
-# -- admission guard (D4) ------------------------------------------------------
-GUARD_MARGIN = 0.10            # τ_lo = max(τ - 0.10, 0.35)
-GUARD_FLOOR = 0.35
+# -- co-association consumption -------------------------------------------------
+CO_LEADER_F = 0.45                   # tau: fine-leader admission threshold
+REMERGE_RE = 0.22                    # co-channel mean gate
+REMERGE_MN = 0.10                    # co-channel complete-link guard
+GEO_THETA = 0.50                     # geo-channel centered-centroid gate
+GEO_MINC = 0.20                      # geo-channel min centered-pair guard
 
-# -- two-level topics (D5, §2.4) ----------------------------------------------
-SPLIT_MIN_N = 12               # consider splitting clusters with n >= 12
-SPLIT_MARGIN = 0.12            # split when s̄ < τ - 0.12
-SPLIT_TAU_SUB = 0.08           # recursive leader at τ_sub = τ + 0.08
-SPLIT_ACCEPT_GAIN = 0.05       # accept when size-weighted children s̄ improves >= 0.05
-SPLIT_MAX_DEPTH = 2
+# -- scale tiers -----------------------------------------------------------------
+N_DENSE = 8000                       # n <= N_DENSE: exact chunk-level co
+MICRO_FLOOR = 256
+MICRO_SQRT_K = 8                     # m0 = min(n, max(256, 8*isqrt(n)))
+ENS_K_SCALE = 1024                   # micro tier: s = n // 1024 (floor)
+CO_ACC_ROWS = 256                    # dense-tier row-blocked accumulation
+
+# -- incremental (centered-space cosine gates) -----------------------------------
+INC_JOIN_COS = 0.30
+INC_GUARD_COS = 0.20
+DELETE_RATIO_LIMIT = 0.20      # > 20% member-file deletions force a full run
+
+# -- report ---------------------------------------------------------------------------
+CALIB_BINS = 256               # 256-bin histogram over [0, 1] (report only)
+CALIB_SAMPLE_ROWS = 300        # stride-gram rows for the co distribution report
 
 # -- excerpts (D11) -------------------------------------------------------------
 COVERAGE_STOP_DISTANCE = 0.25  # stop when the next pick is < 0.25 from all picked
 EXCERPTS_PER_CARD = 3          # primary + up to 2 coverage
 TITLE_MAX_CHARS = 70
-
-# -- incremental (D8/D9, F4/F5/F8) ------------------------------------------------
-DELETE_RATIO_LIMIT = 0.20      # > 20% member-file deletions force a full run
 
 _SENT_SPLIT = re.compile(r"(?<=[.!?。！？])\s+")
 _HEX_RE = re.compile(r"^[0-9a-fA-F]{6,}$")
@@ -85,11 +108,10 @@ _UNIT_RE = re.compile(r"^\d+(\.\d+)?(kb|mb|gb|tb|px|hz)$")
 
 HISTOGRAM_BUCKETS = ("1", "2", "3-5", "6-10", "11-25", "26-100", "100+")
 
-#: The --json stats key set (§6.3 "EXACTLY", plus F5's
-#: chunks_reassigned_into_existing_cards). The internal stats dict carries
-#: more (view_id, member_files, embed_id, scope) for run rows and preview —
-#: render_json projects to exactly this list so the published schema is
-#: additive-only from here.
+#: The --json stats key set (§6.3 "EXACTLY"). The internal stats dict carries
+#: more (view_id, member_files, embed_id, scope, center_mu, ens_mode…) for run
+#: rows and preview — render_json projects to exactly this list so the
+#: published schema is additive-only from here.
 PUBLIC_STATS_KEYS = (
     "corpus_chunks", "after_dedupe", "duplicates_removed", "clusters_kept",
     "clusters_dropped_small", "histogram", "tau", "tau_raw", "tau_source",
@@ -140,14 +162,16 @@ class Scope:
 
 @dataclass
 class TauResult:
-    """τ calibration outcome (§2.2). Pure function of the deduped matrix."""
+    """Co-association threshold report. tau is the architecture constant F
+    (or the --threshold override / the inherited value); histogram and
+    quartiles describe the observed co-association distribution."""
 
     tau: float
-    tau_source: str                # otsu|floor|ceil|percentile|manual|inherited
+    tau_source: str                # fixed|manual|inherited
     tau_raw: float
-    histogram: list[int]           # 256 bins, clamped indexing (F6)
+    histogram: list[int]           # 256 bins over [0, 1], clamped indexing
     quartiles: tuple[float, float, float]
-    fallback_reason: str | None = None   # why the percentile path fired (preview)
+    fallback_reason: str | None = None   # always None in v3 (kept for schema)
 
 
 @dataclass
@@ -162,7 +186,7 @@ class Card:
     n_files: int
     parent: "Card | None" = None
     status: str = "active"         # active|header|dissolved
-    centroid: np.ndarray | None = None   # (768,) float32, renormalized mean
+    centroid: np.ndarray | None = None   # (768,) float32, RAW-space mean
     fingerprint_id: str = ""
     distill_algo: str = ALGO
     created_at: float = 0.0
@@ -178,6 +202,7 @@ class Card:
 
     @property
     def excerpts_json(self) -> str:
+        """Store contract: cards.excerpts is a JSON array string."""
         return json.dumps(self.excerpts, ensure_ascii=False)
 
     @property
@@ -246,7 +271,6 @@ def _scoped_files(store: Store, scope: Scope) -> list[tuple[str, str | None]]:
 
 
 # ------------------------------------------------------------------- tokenize
-
 
 def _is_term_token(tok: str) -> bool:
     """D10 term filter: len >= 3, contains a letter, letters >= digits, not
@@ -320,18 +344,17 @@ def dedupe(items: list[CItem]) -> tuple[list[CItem], int]:
     return kept, removed
 
 
-# ----------------------------------------------------------------- calibration
+# ----------------------------------------------------- co-association report
 
 
-def _sample_pair_cosines(matrix: np.ndarray) -> np.ndarray:
-    """Deterministic pairwise sample (D1): all N(N−1)/2 pairs when N <= 300,
-    else rows i_k = round(k·N/300) (duplicates collapsed, order preserved —
-    stride kills RNG), gram over the sampled rows, upper triangle."""
+def _sample_pair_values(matrix: np.ndarray) -> np.ndarray:
+    """Deterministic upper-triangle sample of a square value matrix (the
+    co-association report input): all pairs when N <= CALIB_SAMPLE_ROWS, else
+    rows i_k = round(k·N/300) (duplicates collapsed, order preserved)."""
     n = matrix.shape[0]
     if n <= CALIB_SAMPLE_ROWS:
-        gram = matrix @ matrix.T
         iu = np.triu_indices(n, k=1)
-        return gram[iu]
+        return matrix[iu]
     rows: list[int] = []
     seen: set[int] = set()
     for k in range(CALIB_SAMPLE_ROWS):
@@ -339,15 +362,13 @@ def _sample_pair_cosines(matrix: np.ndarray) -> np.ndarray:
         if i not in seen:
             seen.add(i)
             rows.append(i)
-    ms = matrix[rows]
-    gram = ms @ ms.T
+    sub = matrix[np.ix_(rows, rows)]
     iu = np.triu_indices(len(rows), k=1)
-    return gram[iu]
+    return sub[iu]
 
 
 def _histogram_of(vals: np.ndarray) -> np.ndarray:
-    """256 bins over [0, 1]; F6: clamp negatives to bin 0, values >= 1 to the
-    last bin — never wrap."""
+    """256 bins over [0, 1]; values are clamped into range — never wrap."""
     hist = np.zeros(CALIB_BINS, dtype=np.int64)
     bins = np.clip((vals * CALIB_BINS).astype(np.int64), 0, CALIB_BINS - 1)
     for b in bins:
@@ -355,155 +376,252 @@ def _histogram_of(vals: np.ndarray) -> np.ndarray:
     return hist
 
 
-def _otsu_cut(hist: np.ndarray) -> int:
-    """t* = argmax over cuts t ∈ 1..255 of ω0·ω1·(μ0−μ1)² (bin-index moments).
-    Returns 0 when the histogram is degenerate (all mass in one bin)."""
-    total = int(hist.sum())
-    if total == 0:
-        return 0
-    if int(hist.max()) == total:
-        return 0  # single-bin degenerate → caller falls back (§2.2.4)
-    bin_idx = np.arange(CALIB_BINS, dtype=np.float64)
-    sum_all = float((hist * bin_idx).sum())
-    omega0 = 0.0
-    mu0 = 0.0
-    best_t, best_var = 1, -1.0
-    for t in range(1, CALIB_BINS):
-        count = int(hist[t - 1])
-        if count:
-            omega0 += count
-            mu0 += (t - 1) * count
-        omega1 = total - omega0
-        if omega0 == 0 or omega1 == 0:
-            continue
-        mu0m = mu0 / omega0
-        mu1m = (sum_all - mu0) / omega1
-        var = omega0 * omega1 * (mu0m - mu1m) ** 2
-        if var > best_var:
-            best_var, best_t = var, t
-    return best_t
-
-
-def _smoothed(hist: np.ndarray) -> np.ndarray:
-    kernel = np.ones(5, dtype=np.float64) / 5.0
-    return np.convolve(hist.astype(np.float64), kernel, mode="same")
-
-
-def _local_maxima(s: np.ndarray) -> list[int]:
-    """Local maxima of the smoothed histogram, EDGES INCLUDED (all mass at
-    cosine ~0 or ~1 is a real hump — synthetic corpora live there)."""
-    out = []
-    if s[0] > s[1]:
-        out.append(0)
-    for b in range(1, CALIB_BINS - 1):
-        if s[b] > s[b - 1] and s[b] >= s[b + 1]:
-            out.append(b)
-    if s[CALIB_BINS - 1] > s[CALIB_BINS - 2]:
-        out.append(CALIB_BINS - 1)
-    return out
-
-
-def measure_tau(matrix: np.ndarray, *, manual: float | None = None) -> TauResult:
-    """τ calibration (§2.2). Pure function of the deduped decoded-fp16 matrix
-    — no Store, no backend. `manual` (--threshold/config) overrides the cut
-    (tau_source='manual') while steps 2–4 still populate histogram/quartiles."""
-    vals = _sample_pair_cosines(matrix)
+def co_tau_report(co: np.ndarray, *, manual: float | None = None) -> TauResult:
+    """The v3 tau report: tau = F (constant or --threshold override); the
+    observed co-association distribution is reported, never decides."""
+    vals = _sample_pair_values(co)
     hist = _histogram_of(vals)
-    quartiles = tuple(float(q) for q in np.percentile(vals, [25, 50, 75]))
-    fallback_reason: str | None = None
-
-    if manual is not None:
-        return TauResult(
-            tau=float(manual), tau_source="manual", tau_raw=float(manual),
-            histogram=[int(x) for x in hist], quartiles=quartiles,  # type: ignore[arg-type]
-        )
-
-    sigma = float(np.std(vals)) if vals.size else 0.0
-    t_star = _otsu_cut(hist)
-    tau_raw = (t_star + 0.5) / CALIB_BINS
-
-    on_otsu_path = t_star > 0
-    if not on_otsu_path:
-        fallback_reason = "degenerate single-bin histogram (single hump)"
-
-    if on_otsu_path:
-        s = _smoothed(hist)
-        dominant = int(np.argmax(s))
-        humps = [b for b in _local_maxima(s) if s[b] >= HUMP_REL_HEIGHT * s[dominant]]
-        if len(humps) < 2:
-            on_otsu_path = False
-            fallback_reason = "fewer than two histogram humps (unimodal)"
-        else:
-            top_two = sorted(humps, key=lambda b: (-s[b], b))[:2]
-            a, b = min(top_two), max(top_two)
-            valley_min = float(s[a:b + 1].min())
-            smaller_peak = float(min(s[a], s[b]))
-            if valley_min > VALLEY_REL_DEPTH * smaller_peak:
-                on_otsu_path = False
-                fallback_reason = "no real valley between the top two humps"
-            elif abs(tau_raw - (dominant + 0.5) / CALIB_BINS) <= MODE_PROXIMITY_K * sigma:
-                on_otsu_path = False
-                fallback_reason = "mode proximity (t* within k·σ of the mode)"
-
-    if on_otsu_path:
-        tau = min(max(tau_raw, TAU_FLOOR), TAU_CEIL)
-        source = "otsu"
-        if tau_raw < TAU_FLOOR:
-            source = "floor"
-        elif tau_raw > TAU_CEIL:
-            source = "ceil"
-        return TauResult(
-            tau=tau, tau_source=source, tau_raw=tau_raw,
-            histogram=[int(x) for x in hist], quartiles=quartiles,  # type: ignore[arg-type]
-        )
-
-    # percentile fallback (B9/F2a): real corpora are unimodal — expected path
-    tau_raw = float(np.percentile(vals, 90)) if vals.size else TAU_FLOOR
-    tau = min(max(tau_raw, TAU_FLOOR), TAU_CEIL)
+    quartiles = tuple(float(q) for q in np.percentile(vals, [25, 50, 75])) \
+        if vals.size else (0.0, 0.0, 0.0)
+    tau = float(manual) if manual is not None else float(CO_LEADER_F)
     return TauResult(
-        tau=tau, tau_source="percentile", tau_raw=tau_raw,
-        histogram=[int(x) for x in hist], quartiles=quartiles,  # type: ignore[arg-type]
-        fallback_reason=fallback_reason,
+        tau=tau, tau_source="manual" if manual is not None else "fixed",
+        tau_raw=tau, histogram=[int(x) for x in hist],
+        quartiles=quartiles,  # type: ignore[arg-type]
     )
 
 
 # ----------------------------------------------------------------- clustering
 
 
-def _bucket_for(n: int) -> str:
-    if n <= 2:
-        return str(n)
-    if n <= 5:
-        return "3-5"
-    if n <= 10:
-        return "6-10"
-    if n <= 25:
-        return "11-25"
-    if n <= 100:
-        return "26-100"
-    return "100+"
+def _renorm_rows(m: np.ndarray) -> np.ndarray:
+    return m / np.maximum(np.linalg.norm(m, axis=1, keepdims=True), 1e-12)
 
 
-def size_histogram(clusters: list[list[CItem]]) -> dict[str, int]:
-    """Full size histogram over ALL clusters — kept and dropped merged (§2.3,
-    06 §4.2 "no longer silently")."""
-    out = dict.fromkeys(HISTOGRAM_BUCKETS, 0)
-    for c in clusters:
-        out[_bucket_for(len(c))] += 1
-    return out
+def skm_det(M: np.ndarray, k: int, start: int = 0) -> np.ndarray:
+    """Deterministic spherical k-means.
+
+    Farthest-first init from canonical index `start mod n`; every argmax tie
+    takes the lowest index; an empty cluster revives as the chunk farthest
+    from its previous center. Zero RNG — the whole v3 core is reproducible
+    byte-for-byte on identical input."""
+    n = len(M)
+    centers = [start % n]
+    d = 1.0 - M @ M[centers[0]]
+    for _ in range(k - 1):
+        nxt = int(np.argmax(d))
+        centers.append(nxt)
+        d = np.minimum(d, 1.0 - M @ M[nxt])
+    C = M[centers].copy()
+    for _ in range(SKM_ITERS):
+        lab = (M @ C.T).argmax(axis=1)
+        newC = np.zeros_like(C)
+        for j in range(k):
+            ids = np.nonzero(lab == j)[0]
+            if len(ids):
+                s = M[ids].sum(axis=0)
+                newC[j] = s / max(float(np.linalg.norm(s)), 1e-12)
+            else:
+                newC[j] = M[int(np.argmin(M @ C[j]))]
+        if np.allclose(newC, C, atol=SKM_TOL):
+            C = newC
+            break
+        C = newC
+    return (M @ C.T).argmax(axis=1)
 
 
-def cluster_v2(
-    items: list[CItem], tau: float, min_members: int = 3
+def _dense_coassociation(n: int, spaces: tuple[np.ndarray, ...]) -> np.ndarray:
+    """Exact chunk-level co-association, row-blocked accumulation (the n×n
+    outer product is never materialized whole)."""
+    co = np.zeros((n, n), np.float32)
+    runs = 0
+    for M in spaces:
+        for k in ENS_K_GRID:
+            k_eff = max(2, min(k, n // 4))
+            for start in ENS_STARTS:
+                lab = skm_det(M, k_eff, start)
+                oh = np.zeros((n, k_eff), np.float32)
+                oh[np.arange(n), lab] = 1.0
+                for r0 in range(0, n, CO_ACC_ROWS):
+                    co[r0:r0 + CO_ACC_ROWS] += \
+                        oh[r0:r0 + CO_ACC_ROWS] @ oh.T
+                runs += 1
+    co /= runs
+    np.fill_diagonal(co, 1.0)
+    return co, runs
+
+
+def _micro_coassociation(n: int, cmat: np.ndarray):
+    """Micro-tier co-association (n > N_DENSE): fold the ensemble onto
+    m0 = min(n, max(256, 8·isqrt(n))) micro clusters. co_micro[a,b] is the
+    exact mean chunk-level co-association between cells a and b; the diagonal
+    is defined as literal 1.0 (the 0/0 formula never applies). Same-cell
+    chunks are never separated — the accepted approximation of this tier.
+    micro_split_rate (report-only monitoring): mean share of cells whose
+    chunks land in more than one cluster across the ensemble runs."""
+    m0 = min(n, max(MICRO_FLOOR, MICRO_SQRT_K * math.isqrt(n)))
+    micro_lab = skm_det(cmat, m0, 0)
+    sizes = np.bincount(micro_lab, minlength=m0).astype(np.float64)
+    cell_members = [np.nonzero(micro_lab == c)[0] for c in range(m0)]
+    s = n // ENS_K_SCALE
+    P = np.zeros((m0, m0), np.float64)
+    split_total = 0
+    runs = 0
+    for k in ENS_LARGE_K:
+        k_eff = max(2, min(k * s, n // 4))
+        for start in (0, 1):
+            lab = skm_det(cmat, k_eff, start)
+            A = np.zeros((m0, k_eff), np.float64)
+            np.add.at(A, (micro_lab, lab), 1.0)
+            P += A @ A.T
+            for c in range(m0):
+                members = cell_members[c]
+                if members.size and np.unique(lab[members]).size > 1:
+                    split_total += 1
+            runs += 1
+    outer = np.outer(sizes, sizes)
+    co_micro = P / (outer * runs)
+    np.fill_diagonal(co_micro, 1.0)
+    return co_micro, micro_lab, runs, split_total / (runs * m0)
+
+
+def build_coassociation(mat: np.ndarray):
+    """Ensemble co-association over the deduped corpus.
+
+    Returns (co, cmat, mode, runs, micro_lab) — micro_lab is None in the
+    dense tier. Dense-tier exactness and the micro fold formula are pinned
+    by unit tests against brute force."""
+    n = len(mat)
+    mu = mat.mean(axis=0)
+    cmat = _renorm_rows(mat - mu)
+    if n <= N_DENSE:
+        co, runs = _dense_coassociation(n, (cmat, mat))
+        return co, cmat, "dense", runs, None
+    co_micro, micro_lab, runs, split = _micro_coassociation(n, cmat)
+    return co_micro, cmat, "micro", runs, micro_lab
+
+
+def co_leader_fine(co: np.ndarray, f: float) -> list[list[int]]:
+    """Fine leader over the co-association matrix: canonical order, a chunk
+    joins the FIRST group (creation order) whose members' mean co to it >= f;
+    else it founds a new group. Same first-wins contract as the v2 leader."""
+    groups: list[list[int]] = []
+    for i in range(len(co)):
+        placed = False
+        for gi in range(len(groups)):
+            if float(co[groups[gi], i].mean()) >= f:
+                groups[gi].append(i)
+                placed = True
+                break
+        if not placed:
+            groups.append([i])
+    return groups
+
+
+def remerge_dual(
+    co: np.ndarray, cmat: np.ndarray, groups: list[list[int]],
+    re: float = REMERGE_RE, mn: float = REMERGE_MN,
+    theta_c: float = GEO_THETA, min_c: float = GEO_MINC,
+) -> list[list[int]]:
+    """Dual-channel agglomerative remerge.
+
+    A candidate pair merges while EITHER the co-channel (mean pair co >= re
+    AND min pair co >= mn — average-link merge, complete-link guard) OR the
+    geo-channel (centered-centroid cosine >= theta_c AND min centered pair
+    cosine >= min_c) qualifies. Candidates compete on (channel, score) —
+    co-channel (1.0, mean) outranks geo-channel (0.5, cc); exact ties break
+    by the smallest (a, b) — identical decisions to a full ascending rescan
+    with strict >.
+
+    Complexity (review N5): pair statistics are computed EXACTLY per pair
+    (np.ix_ block mean/min over the CURRENT members — the same arithmetic a
+    full rescan would evaluate) but only maintained for pairs involving a
+    merged group; qualified pairs are kept in a small candidate dict. The
+    initial all-singleton pass is vectorized (block mean == block min == the
+    scalar co entry)."""
+    mm = [list(g) for g in groups]
+    G = len(mm)
+    cents = []
+    for g in mm:
+        s_ = cmat[g].sum(axis=0)
+        cents.append(s_ / max(float(np.linalg.norm(s_)), 1e-12))
+
+    def _pair_qual(a: int, b: int):
+        """(channel, score) for a qualifying pair, else None. Exact stats."""
+        block = co[np.ix_(mm[a], mm[b])]
+        mean, mnv = float(block.mean()), float(block.min())
+        if mean >= re and mnv >= mn:
+            return (1.0, mean)
+        cc = float(cents[a] @ cents[b])
+        if cc >= theta_c:
+            if min_c > 0.0:
+                pmin = float(np.min(cmat[mm[a]] @ cmat[mm[b]].T))
+                if pmin < min_c:
+                    return None
+            return (0.5, cc)
+        return None
+
+    candidates: dict[tuple[int, int], tuple[float, float]] = {}
+
+    def _refresh(a: int, live: list[int]) -> None:
+        for other in live:
+            if other == a:
+                continue
+            key = (a, other) if a < other else (other, a)
+            q = _pair_qual(a, other)
+            if q is not None:
+                candidates[key] = q
+            else:
+                candidates.pop(key, None)
+
+    # initial pass: every group is a singleton at entry for the fine-leader
+    # output — mean == min == the scalar co entry (vectorized candidate scan)
+    if all(len(g) == 1 for g in mm):
+        co_thr = np.maximum(re, mn)
+        iu = np.triu_indices(G, k=1)
+        ok_co = co[np.ix_([g[0] for g in mm], [g[0] for g in mm])] >= co_thr
+        cc_mat = np.stack(cents) @ np.stack(cents).T
+        for a, b in zip(*iu):
+            if ok_co[a, b]:
+                candidates[(a, b)] = (1.0, float(co[mm[a][0], mm[b][0]]))
+            elif float(cc_mat[a, b]) >= theta_c:
+                if min_c > 0.0:
+                    pmin = float(cmat[mm[a][0]] @ cmat[mm[b][0]])
+                    if pmin < min_c:
+                        continue
+                candidates[(a, b)] = (0.5, float(cc_mat[a, b]))
+    else:
+        live = list(range(G))
+        for a in live:
+            _refresh(a, live)
+
+    live = list(range(G))
+    while candidates:
+        best_key, best_q = None, None
+        for key, q in candidates.items():
+            if best_q is None or q > best_q or (
+                q == best_q and key < best_key
+            ):
+                best_key, best_q = key, q
+        a, b = best_key
+        mm[a] = mm[a] + mm[b]
+        s_ = cmat[mm[a]].sum(axis=0)
+        cents[a] = s_ / max(float(np.linalg.norm(s_)), 1e-12)
+        live.remove(b)
+        for key in [k for k in candidates if k[0] == b or k[1] == b]:
+            del candidates[key]
+        _refresh(a, live)
+    return [mm[i] for i in sorted(live)]
+
+
+def cluster_leader(
+    items: list[CItem], tau: float, tau_lo: float,
+    min_members: int = 3,
 ) -> tuple[list[list[CItem]], dict[str, int]]:
-    """Leader clustering with the average-link admission guard (D4).
-
-    Deterministic given the (fid, sid) order: running member sums S_c (NEVER
-    a centroid shortcut for the guard — F7), renormalized centroids compared
-    for the primary gate, first-index-wins among clusters passing BOTH gates,
-    new cluster on failure. Clusters below min_members are dropped; the
-    returned histogram covers kept + dropped buckets (§2.3)."""
-    tau_lo = max(tau - GUARD_MARGIN, GUARD_FLOOR)
+    """Leader clustering with the average-link admission guard (v2's D4,
+    parameterized). The caller decides the space: items carry whatever
+    vectors it wants compared (the incremental remainder passes centered
+    vectors). Deterministic given the (fid, sid) order."""
     sums: list[np.ndarray] = []
     counts: list[int] = []
     clusters: list[list[CItem]] = []
@@ -534,7 +652,48 @@ def cluster_v2(
     return kept, size_histogram(clusters)
 
 
-# ------------------------------------------------------- excerpts / content
+def ens_coassoc_v3(kept: list[CItem], min_members: int = 3, *, f: float | None = None):
+    """The v3 full-run clustering core.
+
+    Returns (kept_groups, all_groups, mu, mode, runs, co) where groups are
+    lists of indices into `kept`; co is the (chunk- or micro-level)
+    co-association matrix used for the report."""
+    mat = _renorm_rows(np.stack([it.vec for it in kept]).astype(np.float32))
+    mu = mat.mean(axis=0)
+    f_val = float(f) if f is not None else CO_LEADER_F
+    co, cmat, mode, runs, micro_lab = build_coassociation(mat)
+    if mode == "dense":
+        groups = co_leader_fine(co, f_val)
+        merged = remerge_dual(co, cmat, groups)
+        kept_groups = [g for g in merged if len(g) >= min_members]
+        return kept_groups, merged, mu, mode, runs, co
+    # micro tier: cluster at micro-cell level, then expand cells to chunks.
+    # The remerge's geometric channel indexes cmat by CELL id, so it receives
+    # the per-cell centered centroid matrix — never the chunk-level cmat.
+    unit_by_cell: dict[int, list[int]] = {}
+    for i, cell in enumerate(micro_lab):
+        unit_by_cell.setdefault(int(cell), []).append(i)
+    cell_ids = sorted(unit_by_cell)
+    cell_cents = []
+    for cell in cell_ids:
+        members = unit_by_cell[cell]
+        v = cmat[members].sum(axis=0)
+        cell_cents.append(v / max(float(np.linalg.norm(v)), 1e-12))
+    cell_cmat = np.stack(cell_cents) if cell_cents else cmat[:0]
+    id_of_cell = {cell: idx for idx, cell in enumerate(cell_ids)}
+    micro_groups = co_leader_fine(co, f_val)
+    micro_merged = remerge_dual(co, cell_cmat, micro_groups)
+    all_groups = [
+        [i for cell in g for i in unit_by_cell[cell_ids[int(cell)]]]
+        for g in micro_merged
+    ]
+    return (
+        [g for g in all_groups if len(g) >= min_members],
+        all_groups, mu, mode, runs, co,
+    )
+
+
+# ----------------------------------------------------------------- excerpts / content
 
 
 def _pick_excerpts(members: list[CItem]) -> list[int]:
@@ -596,8 +755,7 @@ def cluster_terms(
     """Card terms (D10): filtered tokens, member-df >= 2 gate, tf-idf scored
     (tf × log(n_groups / cluster-df), ties → alphabetical), eligible bigrams
     compete on the same score and replace both halves when they outscore
-    both. `all_groups` = kept cards + headers (n_groups never 0 in v2 — the
-    mega-cluster degenerate case is gone; max(1, ·) as belt-and-braces)."""
+    both."""
     n_groups = max(1, len(all_groups))
 
     # per-member token sets → member-df (distinct CHUNKS, D10/§2.5)
@@ -746,76 +904,6 @@ def _check_corpus_bound(items: list[CItem], max_chunks: int) -> None:
 # --------------------------------------------------------------- card build
 
 
-def mean_intra_cosine(members: list[CItem]) -> float:
-    """s̄ = (‖S_c‖² − n)/(n(n−1)) (D5, §2.4) — exactly 06 §4.2, computed from
-    the running sum: one norm, no second pass. n < 2 → 1.0 (trivially tight)."""
-    n = len(members)
-    if n < 2:
-        return 1.0
-    s = np.sum([m.vec for m in members], axis=0)
-    return float((float(s @ s) - n) / (n * (n - 1)))
-
-
-def _split_node(members: list[CItem], tau: float, depth: int) -> dict:
-    """One D5 split decision, recursive. Returns a node
-    ``{"members": members, "children": [nodes]}`` — a LEAF has no children.
-
-    Split when n >= 12 and s̄ < τ − 0.12; recursive leader at τ_sub = τ+0.08;
-    accept only when the children's size-weighted mean s̄ improves by ≥ 0.05
-    (over-splitting a genuinely uniform topic is the failure being guarded).
-    depth ≤ 2: top clusters = 0, children = 1, grandchildren = 2, no depth-3."""
-    if len(members) < SPLIT_MIN_N or depth >= SPLIT_MAX_DEPTH:
-        return {"members": members, "children": []}
-    s_bar = mean_intra_cosine(members)
-    if s_bar >= tau - SPLIT_MARGIN:
-        return {"members": members, "children": []}
-    sub_clusters, _hist = cluster_v2(members, tau + SPLIT_TAU_SUB, min_members=1)
-    if len(sub_clusters) < 2:
-        return {"members": members, "children": []}
-    weighted = sum(
-        len(c) * mean_intra_cosine(c) for c in sub_clusters
-    ) / len(members)
-    # "children's mean s-bar improves by >= 0.05" (06 SS4.2): improves =
-    # TIGHTER, i.e. weighted_children - s_bar_parent >= 0.05. (The R6 spec's
-    # formula printed the subtraction backwards; the 06 wording is the intent
-    # and is what guards against over-splitting.)
-    if weighted - s_bar < SPLIT_ACCEPT_GAIN:
-        return {"members": members, "children": []}
-    return {
-        "members": members,
-        "children": [_split_node(c, tau, depth + 1) for c in sub_clusters],
-    }
-
-
-def split_two_level(clusters: list[list[CItem]], tau: float) -> tuple[list, list]:
-    """D5 (§2.4): per cluster with n ≥ 12, split the internally loose ones at
-    τ_sub = τ + 0.08 (accepted splits only). Leaves become cards; every
-    accepted internal node becomes a header card row (status='header', size =
-    Σ child sizes, content over the union of descendant members). Returns
-    (leaf_shells, header_shells) — Card shells with .members and .parent set
-    (headers carry .children for rendering); content is filled by the caller
-    via _build_card(into=shell)."""
-    leaves: list[Card] = []
-    headers: list[Card] = []
-
-    def _emit(node: dict, parent: Card | None) -> Card:
-        shell = Card(title="", title_kind="terms", terms=[], excerpts=[],
-                     members=list(node["members"]), n_files=0)
-        shell.parent = parent
-        if not node["children"]:
-            shell.status = "active"
-            leaves.append(shell)
-            return shell
-        shell.status = "header"
-        headers.append(shell)
-        shell.children = [_emit(child, shell) for child in node["children"]]
-        return shell
-
-    for cluster in clusters:
-        _emit(_split_node(cluster, tau, depth=0), None)
-    return leaves, headers
-
-
 def _build_card(
     members: list[CItem],
     all_groups: list[list[CItem]],
@@ -826,9 +914,7 @@ def _build_card(
     into: Card | None = None,
 ) -> Card:
     """One card's content (§2.5/§2.6): medoid + coverage excerpts, filtered
-    terms, extractive title, member weights = cos-to-final-centroid. With
-    `into`, fills the pre-made shell (split_two_level leaves/headers) and
-    returns it — parent/children links survive content filling."""
+    terms, extractive title, member weights = cos-to-final-centroid."""
     mat = np.stack([m.vec for m in members])
     centroid = mat.sum(axis=0)
     norm = float(np.linalg.norm(centroid)) or 1.0
@@ -869,39 +955,53 @@ def _build_card(
     return card
 
 
-def build_cards_v2(
+def _bucket_for(n: int) -> str:
+    if n <= 2:
+        return str(n)
+    if n <= 5:
+        return "3-5"
+    if n <= 10:
+        return "6-10"
+    if n <= 25:
+        return "11-25"
+    if n <= 100:
+        return "26-100"
+    return "100+"
+
+
+def size_histogram(clusters: list[list[CItem]]) -> dict[str, int]:
+    """Full size histogram over ALL clusters — kept and dropped merged (§2.3,
+    06 §4.2 "no longer silently")."""
+    out = dict.fromkeys(HISTOGRAM_BUCKETS, 0)
+    for c in clusters:
+        out[_bucket_for(len(c))] += 1
+    return out
+
+
+def build_cards(
     kept: list[CItem],
+    groups_kept: list[list[int]],
+    groups_all: list[list[int]],
     *,
     tau: float,
     min_members: int,
     fingerprint_id: str,
-) -> tuple[list[Card], list[list[CItem]], dict[str, int]]:
-    """Clusters → card objects (§2): leader pass, then the D5 two-level
-    split — leaves become active cards, accepted internal nodes become
-    header rows. Returns (ordered_cards, kept_clusters, histogram) where
-    ordered_cards = active cards by (-size, first member) + header rows
-    after (§2.6)."""
-    clusters, hist = cluster_v2(kept, tau, min_members)
+) -> list[Card]:
+    """Groups → card objects (§2). Cards are active leaves only (the v2 D5
+    header level was retired with the s̄ trigger — see diagnosis). Ordering
+    (-size, first member); topic ids assigned over that order (§2.6)."""
     algo = f"{ALGO} t={tau:.2f} min={min_members}"
-    leaf_shells, header_shells = split_two_level(clusters, tau)
-    all_groups = [s.members for s in leaf_shells] + [
-        s.members for s in header_shells
-    ]
-    for shell in leaf_shells:
-        _build_card(shell.members, all_groups, fingerprint_id=fingerprint_id,
-                    algo=algo, into=shell)
-    for shell in header_shells:
-        _build_card(shell.members, all_groups, fingerprint_id=fingerprint_id,
-                    algo=algo, status="header", into=shell)
-    cards = leaf_shells + header_shells
-    active = [c for c in cards if c.status == "active"]
-    active.sort(key=lambda c: (-c.size, c.first_member_key))
-    headers = [c for c in cards if c.status == "header"]
-    headers.sort(key=lambda c: (-c.size, c.first_member_key))
-    ordered = active + headers  # §2.6: topic ids over kept cards, headers after
-    for i, card in enumerate(ordered, start=1):
+    all_groups_items = [[kept[i] for i in g] for g in groups_all]
+    cards: list[Card] = []
+    for g in groups_kept:
+        cards.append(_build_card(
+            [kept[i] for i in g], all_groups_items,
+            fingerprint_id=fingerprint_id, algo=algo,
+        ))
+    cards.sort(key=lambda c: (-c.size, c.first_member_key))
+    for i, card in enumerate(cards, start=1):
         card.topic_id = i
-    return ordered, clusters, hist
+    return cards
 
 
 # --------------------------------------------------------------- run helpers
@@ -926,16 +1026,15 @@ def header_line(stats: dict) -> str:
 
 
 SCALE_NOTE = (
-    "τ calibrated on pairwise cosines; assignments compare cos-to-centroid, "
-    "which reads ~1.1–1.6× higher"
+    "τ is the co-association admission threshold (ensemble co-cluster "
+    "frequency in [0, 1]), not a cosine scale"
 )
 
-
-#: F2 (preview τ honesty): shown when the preview's fresh calibration is NOT
+#: F2 (preview τ honesty): shown when the preview's fresh τ report is NOT
 #: what an actual run would use — an incremental-eligible run inherits the
-#: previous run's τ (D8) and skips calibration entirely.
+#: previous run's τ (D8) and skips the report entirely.
 PREVIEW_TAU_INHERIT_NOTE = (
-    "τ shown is a fresh full-run calibration; an actual run would inherit "
+    "τ shown is a fresh full-run value; an actual run would inherit "
     "τ={tau:.4f} (tau_source=inherited)"
 )
 
@@ -948,12 +1047,9 @@ def render_preview(
     *,
     inherited_tau: float | None = None,
 ) -> str:
-    """--preview report (§6.1): corpus size, τ (+raw/source/reason), pairwise
-    quartiles, size histogram, top terms of the 10 largest dropped clusters,
-    the B10 scale note, and the full-vs-incremental intent. Writes NOTHING.
-    F2: when the intent is incremental, `inherited_tau` is the τ an actual run
-    would inherit — the printed calibration is preview-only, and the report
-    says so."""
+    """--preview report (§6.1): corpus size, τ (+raw/source), co-association
+    quartiles, size histogram, top terms of the 10 largest dropped groups,
+    the scale note, and the full-vs-incremental intent. Writes NOTHING."""
     lines = [
         "distill preview (dry run — nothing written)",
         (
@@ -963,12 +1059,7 @@ def render_preview(
         ),
         (
             f"tau: {tau_result.tau:.4f} (raw {tau_result.tau_raw:.4f}, "
-            f"source {tau_result.tau_source}"
-            + (
-                f", fallback: {tau_result.fallback_reason}"
-                if tau_result.fallback_reason
-                else ""
-            ) + ")"
+            f"source {tau_result.tau_source})"
         ),
     ]
     if inherited_tau is not None:
@@ -977,13 +1068,13 @@ def render_preview(
         )
     lines.extend([
         (
-            f"pairwise quartiles: p25 {tau_result.quartiles[0]:.3f} / "
+            f"co-association quartiles: p25 {tau_result.quartiles[0]:.3f} / "
             f"p50 {tau_result.quartiles[1]:.3f} / p75 {tau_result.quartiles[2]:.3f}"
         ),
         f"size histogram (kept + dropped): {json.dumps(stats['histogram'])}",
     ])
     if dropped_preview:
-        lines.append("largest dropped clusters (top terms):")
+        lines.append("largest dropped groups (top terms):")
         for size, terms in dropped_preview:
             lines.append(f"  {size:>4} chunks — {', '.join(terms) or '(no terms)'}")
     lines.append(f"note: {SCALE_NOTE}")
@@ -1009,7 +1100,7 @@ def _fmt_loc(kind: str, loc, loc_end) -> str:
             m, s = divmod(rem, 60)
             if h:
                 return f"{h}:{m:02d}:{s:02d}"
-            return f"{m}:{s:02d}"
+            return f"{m:02d}:{s:02d}"
 
         end = loc_end if loc_end is not None else loc
         return f"{_hmmss(loc)}-{_hmmss(end)}"
@@ -1032,7 +1123,9 @@ def render_markdown(
     """Markdown v2 (§6.3): H1 + run header, TOC, per card the terms line and
     up to 3 excerpts as blockquotes each followed by its citation as a
     markdown link; per-member citations capped at 10 + `… +N more chunks`.
-    limit_cards=None shows all; 0 shows none (zero-means-default, P3-13)."""
+    limit_cards=None shows all; 0 shows none (zero-means-default, P3-13).
+    v3 cards are all active; header-group branches remain for historical
+    rows rendered from older runs."""
     shown = [c for c in cards if c.status == "active"]
     headers = [c for c in cards if c.status == "header"]
     if limit_cards is not None:
@@ -1088,11 +1181,11 @@ def render_markdown(
 
 def render_json(cards: list[Card], stats: dict) -> dict:
     """--json v2 (§6.3): schema goldmine.cards/v2, NO wall-clock fields (D14);
-    the `llm` card key is present and always null in R6 (additive-only schema)."""
+    the `llm` card key is present and always null (additive-only schema)."""
 
     def _parent_id(card: Card) -> int | None:
-        # headers sit after all cards in the ordered list and carry their own
-        # topic_id (§2.6) — parent_id is that id, None for top-level cards
+        # v3 emits active cards only; header rows from historical runs keep
+        # their parent linkage — parent_id is that id, None for top-level
         return card.parent.topic_id if card.parent is not None else None
 
     return {
@@ -1140,13 +1233,15 @@ def eligibility(
 ) -> tuple[bool, str]:
     """Incremental eligibility (§4.3, F4/F8): a previous run for the view;
     τ equal (an explicit --threshold must match); embed_id equal; vanished
-    member files ≤ 20% (a MODIFIED file is not deleted — F8b); not --refresh.
-    corpus_hash NEVER gates eligibility (F4) — audit identity only."""
+    member files ≤ 20% (a MODIFIED file is not deleted — F8b); the previous
+    run carries the v3 internal state (center_mu — v2-era rows predate it);
+    not --refresh. corpus_hash NEVER gates eligibility (F4) — audit identity
+    only."""
     if refresh:
         return False, "--refresh forces a full recompute"
     if prev_run is None:
         return False, "no previous run for this view"
-    # the run row's algo string is parameterized ("… t=0.72 min=3"); the
+    # the run row's algo string is parameterized ("… t=0.45 min=3"); the
     # eligibility comparison is on the algo FAMILY (tau is checked apart)
     if str(prev_run.get("algo", "")).split()[0] != ALGO:
         return False, f"algo changed ({prev_run.get('algo')} -> {ALGO})"
@@ -1154,6 +1249,8 @@ def eligibility(
         return False, "explicit --threshold differs from the previous run's tau"
     if str(prev_run.get("stats", {}).get("embed_id")) != str(embed_id):
         return False, "embed identity changed since the previous run"
+    if not (prev_run.get("stats", {}) or {}).get("center_mu"):
+        return False, "previous run predates center_mu (full recompute required)"
     if prev_member_files:
         deleted = prev_member_files - current_member_files
         ratio = len(deleted) / len(prev_member_files)
@@ -1166,16 +1263,16 @@ def eligibility(
 
 
 def _dropped_preview(
-    kept: list[CItem], min_members: int, tau: float
+    kept: list[CItem], groups_all: list[list[int]], min_members: int,
 ) -> list[tuple[int, list[str]]]:
-    """Top terms of the 10 largest dropped clusters (--preview, §6.1)."""
-    all_clusters, _hist = cluster_v2(kept, tau, min_members=1)
-    dropped = [c for c in all_clusters if len(c) < min_members]
-    dropped.sort(key=lambda c: (-len(c), (c[0].fid, c[0].sid)))
+    """Top terms of the 10 largest dropped groups (--preview, §6.1)."""
+    dropped = [g for g in groups_all if len(g) < min_members]
+    dropped.sort(key=lambda g: (-len(g), (kept[g[0]].fid, kept[g[0]].sid)))
+    all_groups_items = [[kept[i] for i in g] for g in groups_all]
     out: list[tuple[int, list[str]]] = []
-    for cluster in dropped[:10]:
-        terms = cluster_terms(cluster, all_clusters)
-        out.append((len(cluster), terms))
+    for group in dropped[:10]:
+        terms = cluster_terms([kept[i] for i in group], all_groups_items)
+        out.append((len(group), terms))
     return out
 
 
@@ -1201,9 +1298,11 @@ def _incremental_run(
     eligibility()); (c) a joining chunk takes the FIRST qualifying card,
     lowest index — never "nearest"; (d) the guard's member set is the
     ORIGINAL members loaded once — chunks joining this run never raise the
-    bar mid-run. τ is inherited (tau_source='inherited', D8) and calibration
-    is SKIPPED — no new sampled gram."""
+    bar mid-run. τ (=F) is inherited (tau_source='inherited', D8) and the
+    ensemble is SKIPPED — new chunks join by centered-space cosine gates."""
     tau = float(prev_run["tau"])
+    prev_stats = prev_run.get("stats", {}) or {}
+    mu = np.asarray(prev_stats["center_mu"], dtype=np.float32)
     algo = f"{ALGO} t={tau:.2f} min={min_members}"
     mode = "incremental"
 
@@ -1215,29 +1314,34 @@ def _incremental_run(
     member_sids = store.view_member_chunk_ids(view_id)
     new_items = [it for it in kept if it.sid not in member_sids]
 
-    # F8d: ORIGINAL member vectors loaded once per card
+    # F8d: ORIGINAL member vectors loaded once per card, centered once
     table = store.load_vectors()
     vec_by_sid = dict(zip(table.ids, table.matrix))
-    member_mats: dict[int, np.ndarray] = {}
+    member_cvecs: dict[int, np.ndarray] = {}
     for card in view_cards:
         vecs = [vec_by_sid[sid] for sid in card.members if sid in vec_by_sid]
-        member_mats[card.id] = (
-            np.stack(vecs) if vecs else np.zeros((0, table.matrix.shape[1]), np.float32)
-        )
+        if vecs:
+            cv = np.stack(vecs) - mu
+            member_cvecs[card.id] = _renorm_rows(cv)
+        else:
+            member_cvecs[card.id] = np.zeros((0, mu.shape[0]), np.float32)
 
     # F8c: FIRST qualifying card wins (both gates), not the nearest
-    tau_lo = max(tau - GUARD_MARGIN, GUARD_FLOOR)
     joins: dict[int, list[CItem]] = {}
     remainder: list[CItem] = []
     for item in new_items:
+        xc = (item.vec.astype(np.float32) - mu)
+        xc = xc / max(float(np.linalg.norm(xc)), 1e-12)
         placed = False
         for card in view_cards:  # ascending id == creation order
             if card.centroid is None:
                 continue
-            if float(card.centroid @ item.vec) < tau:
+            cc = card.centroid.astype(np.float32) - mu
+            cc = cc / max(float(np.linalg.norm(cc)), 1e-12)
+            if float(cc @ xc) < INC_JOIN_COS:
                 continue
-            mat = member_mats[card.id]
-            if mat.shape[0] == 0 or float((mat @ item.vec).mean()) < tau_lo:
+            mat = member_cvecs[card.id]
+            if mat.shape[0] == 0 or float((mat @ xc).mean()) < INC_GUARD_COS:
                 continue
             joins.setdefault(card.id, []).append(item)
             placed = True
@@ -1245,16 +1349,30 @@ def _incremental_run(
         if not placed:
             remainder.append(item)
 
-    # the remainder founds new cards (same leader as a full run)
-    new_clusters, hist = cluster_v2(remainder, tau, min_members)
+    # the remainder clusters itself: centered-space leader at the incremental
+    # gates (tau=INC_JOIN_COS, guard=INC_GUARD_COS). Card building consumes
+    # the ORIGINAL raw-vector items (centroids are stored raw-space).
+    def _centered(it: CItem) -> CItem:
+        v = it.vec.astype(np.float32) - mu
+        return CItem(sid=it.sid, fid=it.fid,
+                     vec=v / max(float(np.linalg.norm(v)), 1e-12),
+                     text=it.text, path=it.path, kind=it.kind,
+                     loc=it.loc, loc_end=it.loc_end)
+
+    raw_by_sid = {it.sid: it for it in remainder}
+    centered_remainder = [_centered(it) for it in remainder]
+    new_clusters, hist = cluster_leader(
+        centered_remainder, INC_JOIN_COS, INC_GUARD_COS, min_members,
+    )
+    new_clusters = [[raw_by_sid[m.sid] for m in c] for c in new_clusters]
     dropped_small = sum(hist.values()) - len(new_clusters)
 
     citem_by_sid = {it.sid: it for it in items}
     cards: list[Card] = []
 
     # updated existing cards: frozen memberships + this run's joins; the
-    # centroid is the renormalized mean over the FULL member set (never an
-    # online fp16 update) and weights are cos-to-FINAL-centroid (§2.6)
+    # centroid is the renormalized RAW-space mean over the FULL member set
+    # and weights are cos-to-FINAL-centroid (§2.6)
     for card in view_cards:
         joined = joins.get(card.id, [])
         members = [citem_by_sid[sid] for sid in card.members if sid in citem_by_sid]
@@ -1281,24 +1399,14 @@ def _incremental_run(
             ],
         ))
 
-    algo_str = f"{ALGO} t={tau:.2f} min={min_members}"
-    leaf_shells, header_shells = split_two_level(new_clusters, tau)
-    remainder_groups = [s.members for s in leaf_shells + header_shells]
-    for shell in leaf_shells:
-        _build_card(shell.members, remainder_groups,
-                    fingerprint_id=fingerprint_id, algo=algo_str, into=shell)
-    for shell in header_shells:
-        _build_card(shell.members, remainder_groups,
-                    fingerprint_id=fingerprint_id, algo=algo_str,
-                    status="header", into=shell)
-    cards.extend(leaf_shells)
-    cards.extend(header_shells)
+    all_new_groups = new_clusters  # kept clusters only for term idf
+    for cluster in new_clusters:
+        cards.append(_build_card(
+            cluster, all_new_groups,
+            fingerprint_id=fingerprint_id, algo=algo,
+        ))
     ordered = [c for c in cards if c.status == "active"]
     ordered.sort(key=lambda c: (-c.size, c.first_member_key))
-    ordered += sorted(
-        (c for c in cards if c.status == "header"),
-        key=lambda c: (-c.size, c.first_member_key),
-    )
     cards = ordered
 
     rid = run_id_for(algo, tau, scope, corpus_hash, mode)
@@ -1323,7 +1431,7 @@ def _incremental_run(
         "reclustered_chunks": dissolve.reentered,
         "chunks_reassigned_into_existing_cards": sum(len(v) for v in joins.values()),
         "dissolved_cards": dissolve.dissolved,
-        "new_cards": len(leaf_shells),
+        "new_cards": len(new_clusters),
         "budget": None,
         "fingerprint_id": fingerprint_id,
         "view_id": view_id,
@@ -1333,6 +1441,11 @@ def _incremental_run(
         "member_files": sorted(current_member_files),
         "embed_id": embed_id,
         "fallback_reason": None,
+        # chained-increment state (M1): forwarded verbatim so the next
+        # incremental run against THIS run stays eligible
+        "center_mu": [float(x) for x in mu],
+        "ens_mode": prev_stats.get("ens_mode"),
+        "ens_runs": prev_stats.get("ens_runs"),
     }
     for i, card in enumerate(cards, start=1):
         card.topic_id = i
@@ -1354,7 +1467,7 @@ def run_distill(
     refresh: bool = False,
     preview: bool = False,
 ) -> dict:
-    """The v2 distill run (§2/§4). Returns a result dict:
+    """The v3 distill run (§2/§4). Returns a result dict:
 
     - preview=True: {"preview": <report text>, "stats": …, "tau": TauResult,
       "intent": …} — NOTHING is written (no save_run, no cards mutation).
@@ -1403,37 +1516,37 @@ def run_distill(
         return inc
 
     # ---- full run (§2) ----
-    tau_result = measure_tau(
-        np.stack([it.vec for it in kept]) if kept else np.zeros((0, 768), np.float32),
-        manual=threshold,
+    groups_kept, groups_all, mu, mode, runs, co = ens_coassoc_v3(
+        kept, min_members, f=float(threshold) if threshold is not None else None,
     )
+    tau_result = co_tau_report(co, manual=threshold)
     tau = tau_result.tau
     algo = f"{ALGO} t={tau:.2f} min={min_members}"
-    mode = "full"
-    cards, clusters, hist = build_cards_v2(
-        kept, tau=tau, min_members=min_members, fingerprint_id=fingerprint_id,
+    mode_str = "full"
+    cards = build_cards(
+        kept, groups_kept, groups_all,
+        tau=tau, min_members=min_members, fingerprint_id=fingerprint_id,
     )
-    rid = run_id_for(algo, tau, scope, corpus_hash, mode)
-    active_count = sum(1 for c in cards if c.status == "active")
+    rid = run_id_for(algo, tau, scope, corpus_hash, mode_str)
     stats = {
         "corpus_chunks": len(items),
         "after_dedupe": len(kept),
         "duplicates_removed": removed,
-        "clusters_kept": active_count,
-        "clusters_dropped_small": sum(hist.values()) - len(clusters),
-        "histogram": hist,
+        "clusters_kept": len(cards),
+        "clusters_dropped_small": len(groups_all) - len(groups_kept),
+        "histogram": size_histogram([[kept[i] for i in g] for g in groups_all]),
         "tau": round(tau, 4),
         "tau_raw": round(tau_result.tau_raw, 4),
         "tau_source": tau_result.tau_source,
         "tau_inherited": False,
         "algo": algo,
-        "mode": mode,
+        "mode": mode_str,
         "run_id": rid,
         "corpus_hash": corpus_hash,
         "reclustered_chunks": 0,
         "chunks_reassigned_into_existing_cards": 0,
         "dissolved_cards": 0,
-        "new_cards": active_count,
+        "new_cards": len(cards),
         "budget": None,
         "fingerprint_id": fingerprint_id,
         # identity inputs the run rows carry for §4.3 eligibility (not JSON):
@@ -1443,7 +1556,11 @@ def run_distill(
         "scope_after": scope.after,
         "member_files": sorted(current_member_files),
         "embed_id": embed_id,
-        "fallback_reason": tau_result.fallback_reason,
+        "fallback_reason": None,
+        # v3 internal state (persisted in the run row; not in PUBLIC_STATS)
+        "center_mu": [float(x) for x in mu],
+        "ens_mode": mode,
+        "ens_runs": runs,
     }
     for i, card in enumerate(cards, start=1):
         card.topic_id = i
@@ -1452,9 +1569,9 @@ def run_distill(
     if preview:
         if ok:
             intent = f"incremental ({reason})"
-            # F2 τ honesty: the fresh calibration above is NOT what an actual
-            # run would use — incremental inherits the previous run's τ (D8)
-            # and skips calibration entirely. Say so, loudly.
+            # F2 τ honesty: the fresh value above is NOT what an actual run
+            # would use — incremental inherits the previous run's τ (D8)
+            # and skips the ensemble entirely. Say so, loudly.
             inherited_tau = float(prev_run["tau"])
         elif refresh:
             intent = "full recompute (--refresh)"
@@ -1464,7 +1581,8 @@ def run_distill(
             inherited_tau = None
         return {
             "preview": render_preview(
-                stats, tau_result, _dropped_preview(kept, min_members, tau), intent,
+                stats, tau_result,
+                _dropped_preview(kept, groups_all, min_members), intent,
                 inherited_tau=inherited_tau,
             ),
             "stats": stats,

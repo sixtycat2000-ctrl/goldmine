@@ -36,6 +36,14 @@ class LlamaCfg:
     # when missing; the built-in default falls through to <home>/models and the
     # repo models/ pin (backends/llama.py:resolve_model_path).
     model_configured: bool = False
+    # Media-embedding sidecar (digup-plan-002): explicit goldmine-embed helper
+    # binary path. Same explicit-wins-even-when-missing philosophy as `server`.
+    embed_helper: Path = Path("goldmine-embed")
+    embed_helper_configured: bool = False
+    # Explicit mmproj override; the default resolution walks the manifest pin
+    # (<home>/models then the repo models/ copy — backends/embed_helper.py).
+    mmproj: Path = Path("mmproj-embeddinggemma-2-Q8_0.gguf")
+    mmproj_configured: bool = False
     # Propagated goldmine home (set by load from Config.home; None for
     # standalone LlamaCfg instances — llama.py falls back to GOLDMINE_HOME env
     # then the platform default). Used for the <home>/bin/llama-server and
@@ -428,6 +436,12 @@ def load(config_path: Path | None = None, env: Mapping[str, str] = os.environ) -
     if v := env.get("GOLDMINE_MODEL"):
         cfg.llama.model = Path(v)
         cfg.llama.model_configured = True
+    if v := env.get("GOLDMINE_EMBED_HELPER"):
+        cfg.llama.embed_helper = Path(v)
+        cfg.llama.embed_helper_configured = True
+    if v := env.get("GOLDMINE_MMPROJ"):
+        cfg.llama.mmproj = Path(v)
+        cfg.llama.mmproj_configured = True
     if v := env.get("GOLDMINE_MODELS"):
         cfg.models.dir = Path(v)
     # R8 serve (D7): the explicit-daemon-socket override; read ONLY here (the

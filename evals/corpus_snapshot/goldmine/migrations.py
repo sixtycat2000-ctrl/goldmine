@@ -51,7 +51,7 @@ import sqlite3
 import time
 from pathlib import Path
 
-TARGET = 6  # == Store.SCHEMA_VERSION; single source, imported by store.py
+TARGET = 7  # == Store.SCHEMA_VERSION; single source, imported by store.py
 
 #: The chunker id a v1 index really ran with (REDESIGN §6 / 05:152,264). The
 #: backfill stamps THIS, never the current CHUNKER_VERSION: staleness then
@@ -412,8 +412,21 @@ def _v5_to_v6(db: sqlite3.Connection, from_version: int) -> int:
     return 6
 
 
+def _v6_to_v7(db: sqlite3.Connection, from_version: int) -> int:
+    """v6 -> v7 — P1-3 move detection: files gains POSIX identity columns.
+    Purely additive ALTERs; no backfill (pre-v7 rows keep NULL dev/ino and
+    are simply never move-matched — the prune path is unchanged for them).
+    Landed under the 2026-10-25 user unfreeze (baseline regeneration)."""
+    _add_column_if_missing(db, "files", "dev", "INTEGER")
+    _add_column_if_missing(db, "files", "ino", "INTEGER")
+    _set_meta(db, "schema_version", "7")
+    db.execute("PRAGMA user_version = 7")
+    return 7
+
+
 MIGRATIONS: dict[int, callable] = {
     2: _v1_to_v2, 3: _v2_to_v3, 4: _v3_to_v4, 5: _v4_to_v5, 6: _v5_to_v6,
+    7: _v6_to_v7,
 }
 
 

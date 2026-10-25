@@ -138,8 +138,9 @@ def test_write_splits_is_deterministic():
 
 # ------------------------------------------------------------ scoring units
 
-def _hit(path, kind="doc", loc=None, loc_end=None):
-    return Hit(path=path, kind=kind, loc=loc, loc_end=loc_end)
+def _hit(path, kind="doc", loc=None, loc_end=None, segment=None):
+    # Hit.kind is the FILE kind; Hit.segment the SEGMENT kind (search.py:494)
+    return Hit(path=path, kind=kind, loc=loc, loc_end=loc_end, segment=segment)
 
 
 FX = Path("/tmp/gm_covfix")
@@ -173,6 +174,51 @@ def test_score_query_pages_containment():
     # a line-loc doc hit never satisfies a pages expectation
     m = er.score_query(q, [_hit(resolved, kind="doc", loc=2)], FX)
     assert m["success1"] == 0.0
+
+
+def test_score_query_keyframe_loc_moment_rule():
+    """video-eval-01: expect['loc'] demands the SAME kept frame — the primary
+    evidence segment must be kind 'frame' within 0.5s of the keyframe loc."""
+    q = {"id": "t3", "q": "x", "tag": "video",
+         "expect": [{"path": "/v/clip.mp4", "loc": 24.5, "grade": 3}]}
+    # the kept frame itself (file kind video, segment kind frame)
+    m = er.score_query(q, [_hit("/v/clip.mp4", kind="video", loc=24.5,
+                                segment="frame")], FX)
+    assert m["success1"] == 1.0 and m["rr"] == 1.0
+    # adjacent kept frame 3s away: right file, wrong MOMENT -> no success
+    m = er.score_query(q, [_hit("/v/clip.mp4", kind="video", loc=21.5,
+                                segment="frame")], FX)
+    assert m["success5"] == 0.0
+    assert 0.0 < m["ndcg"] < 1.0        # same-file-wrong-location grade-1 credit
+    # an audio window of the same file numerically containing 24.5 must NOT
+    # satisfy (segment kind guard)
+    m = er.score_query(q, [_hit("/v/clip.mp4", kind="video", loc=0.0,
+                                loc_end=30.0, segment="audio")], FX)
+    assert m["success5"] == 0.0
+    # the segment-kind trap: kind='frame' (file kind never is) vs segment
+    m = er.score_query(q, [_hit("/v/clip.mp4", kind="frame", loc=24.5,
+                                segment="video")], FX)
+    assert m["success5"] == 0.0
+
+
+def test_score_query_loc_rule_ignores_other_expects():
+    # expects WITHOUT a loc key are untouched by the new branch
+    q = {"id": "t4", "q": "x", "tag": "semantic",
+         "expect": [{"path": "/a/b.md", "grade": 3}]}
+    m = er.score_query(q, [_hit("/a/b.md", loc=1.0, segment="frame")], FX)
+    assert m["success1"] == 1.0
+
+
+def test_video_questions_needs_gated_out_of_legacy():
+    queries = _queries()
+    video = [q for q in queries if q.get("tag") == "video"]
+    assert len(video) == 8
+    assert all(q.get("needs") == ["frames"] for q in video)
+    legacy = er.eligible_queries(queries)
+    assert len(legacy) == 109              # the frozen denominator holds
+    assert not any(q.get("tag") == "video" for q in legacy)
+    full = er.eligible_queries(queries, include_needs=er.SKIPPED_NEEDS)
+    assert len(full) == 136
 
 
 def test_score_query_noise_and_grades():

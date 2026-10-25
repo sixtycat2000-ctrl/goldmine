@@ -80,8 +80,8 @@ items; the 19 capability-gated media queries are excluded from its frozen
 denominator). On the original production baseline, the 2026-10-21 real-model
 reproduction matched success@5 **0.7862**, success@1 **0.5931**, MRR **0.6835** and
 nDCG@10 **0.6885** exactly. These numbers describe that baseline, not an improvement
-claim for this branch. The independent full-media suite has 128 fixed queries
-(78 real + 50 media, 19 of them needs-gated); its stored-evidence preflight
+claim for this branch. The independent full-media suite has 136 fixed queries
+(78 real + 58 media, 27 of them needs-gated; 8 are keyframe-retrieval questions with moment-level location verdicts); its stored-evidence preflight
 (EXIF/OCR/ASR provenance) passes against the real-backend corpus index, and its
 formal gate is pending the multimodal landing. Re-baselined from the stale 169
 on 2026-10-25 (receipt: reports/execution/digup-plan-002/step-1-baseline/).

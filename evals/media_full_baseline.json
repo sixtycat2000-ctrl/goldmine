@@ -1,17 +1,17 @@
 {
  "schema": 1,
- "suite_id": "media-full.v3",
+ "suite_id": "media-full.v4",
  "preflight": {
   "schema": 1,
   "index_schema": 7,
   "index_identity": {
-   "index_uuid": "82264782-290f-4183-8d88-3e7755ecf0b9",
-   "embed_id": "b2e131b4d55d5543",
+   "index_uuid": "9cef1063-5457-4d91-a4c1-3f662b462058",
+   "embed_id": "c7789e00ffafbc3e",
    "chunker_version": null,
    "lexical_version": "lex.v2-exact"
   },
-  "indexed_corpus_sha256": "2959707b5b670e8d87638d1a7d3a457c01d85d6319a55e3877e173fb994d9390",
-  "queries_sha256": "55bcb68c359323a51331eda2003042e7ad7a19290af26426b24d9666e3c886e4",
+  "indexed_corpus_sha256": "944bdf5087650d4ca93ff8d7ab93acc944de5cd37ca7acd28aa654e80034f9d1",
+  "queries_sha256": "91479503d05ea7aee846f353f3e8b3293b343c5f0035e7b3838fdd6d9e2ab65d",
   "eligible_ids": [
    "media-001",
    "media-002",
@@ -63,6 +63,14 @@
    "media-048",
    "media-049",
    "media-050",
+   "media-051",
+   "media-052",
+   "media-053",
+   "media-054",
+   "media-055",
+   "media-056",
+   "media-057",
+   "media-058",
    "real-001",
    "real-002",
    "real-003",
@@ -142,7 +150,7 @@
    "real-116",
    "real-117"
   ],
-  "answerable": 123,
+  "answerable": 131,
   "noise": 5,
   "capabilities": [
    {
@@ -392,6 +400,102 @@
       "detail": "stored OCR page provenance and nonempty page text required"
      }
     ]
+   },
+   {
+    "id": "media-051",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-052",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-053",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-054",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-055",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-056",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/ed-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-057",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/sintel-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
+   },
+   {
+    "id": "media-058",
+    "capability": "frames",
+    "present": true,
+    "evidence": [
+     {
+      "path": "/Users/yul/git/goldmine/evals/video_corpus/ed2-excerpt.mp4",
+      "present": true,
+      "detail": "actual frame/image segments required"
+     }
+    ]
    }
   ],
   "missing": [],
@@ -403,28 +507,28 @@
  "backend": "llama",
  "scorer": "hybrid",
  "date": "2026-10-25",
- "corpus_version": "v6-2026-10-25-ocr-pages",
- "corpus_sha": "6f4b997a1bc8c64d",
+ "corpus_version": "v7-2026-10-25-video-frames",
+ "corpus_sha": "132ebffc515f3a5a",
  "split": "all",
  "metrics": {
   "success@5": {
-   "value": 0.8699186991869918,
-   "n": 123
+   "value": 0.8625954198473282,
+   "n": 131
   },
   "success@1": {
-   "value": 0.6991869918699187,
-   "n": 123
+   "value": 0.7099236641221374,
+   "n": 131
   },
   "MRR": {
-   "value": 0.764869660601368,
-   "n": 123
+   "value": 0.7711407972858355,
+   "n": 131
   },
   "nDCG@10": {
-   "value": 0.764817473669556,
-   "n": 123
+   "value": 0.7747525322542539,
+   "n": 131
   },
   "lookup success@1": {
-   "value": 0.4,
+   "value": 0.6,
    "n": 5
   },
   "zero-hit honesty": {
@@ -464,7 +568,7 @@
    "media-028": 1.0,
    "media-029": 1.0,
    "media-030": 1.0,
-   "media-031": 1.0,
+   "media-031": 0.0,
    "media-032": 1.0,
    "media-033": 1.0,
    "media-034": 1.0,
@@ -484,6 +588,14 @@
    "media-048": 1.0,
    "media-049": 1.0,
    "media-050": 1.0,
+   "media-051": 1.0,
+   "media-052": 1.0,
+   "media-053": 1.0,
+   "media-054": 1.0,
+   "media-055": 1.0,
+   "media-056": 1.0,
+   "media-057": 1.0,
+   "media-058": 1.0,
    "real-001": 1.0,
    "real-002": 1.0,
    "real-003": 1.0,
@@ -509,7 +621,7 @@
    "real-037": 0.0,
    "real-038": 1.0,
    "real-039": 1.0,
-   "real-040": 1.0,
+   "real-040": 0.0,
    "real-041": 1.0,
    "real-042": 1.0,
    "real-043": 1.0,
@@ -539,7 +651,7 @@
    "real-082": 1.0,
    "real-083": 1.0,
    "real-084": 1.0,
-   "real-085": 0.0,
+   "real-085": 1.0,
    "real-086": 1.0,
    "real-087": 1.0,
    "real-088": 1.0,
@@ -548,7 +660,7 @@
    "real-091": 1.0,
    "real-102": 1.0,
    "real-103": 1.0,
-   "real-104": 1.0,
+   "real-104": 0.0,
    "real-105": 1.0,
    "real-106": 1.0,
    "real-107": 1.0,
@@ -609,6 +721,14 @@
    "media-048": 1.0,
    "media-049": 1.0,
    "media-050": 1.0,
+   "media-051": 1.0,
+   "media-052": 1.0,
+   "media-053": 1.0,
+   "media-054": 1.0,
+   "media-055": 1.0,
+   "media-056": 0.0,
+   "media-057": 0.0,
+   "media-058": 1.0,
    "real-001": 1.0,
    "real-002": 0.0,
    "real-003": 1.0,
@@ -642,7 +762,7 @@
    "real-046": 1.0,
    "real-054": 0.0,
    "real-055": 1.0,
-   "real-056": 0.0,
+   "real-056": 1.0,
    "real-058": 0.0,
    "real-059": 1.0,
    "real-063": 1.0,
@@ -664,7 +784,7 @@
    "real-082": 1.0,
    "real-083": 1.0,
    "real-084": 1.0,
-   "real-085": 0.0,
+   "real-085": 1.0,
    "real-086": 1.0,
    "real-087": 0.0,
    "real-088": 1.0,
@@ -673,7 +793,7 @@
    "real-091": 1.0,
    "real-102": 1.0,
    "real-103": 1.0,
-   "real-104": 1.0,
+   "real-104": 0.0,
    "real-105": 1.0,
    "real-106": 1.0,
    "real-107": 1.0,
@@ -694,7 +814,7 @@
    "media-008": 1.0,
    "media-009": 1.0,
    "media-010": 1.0,
-   "media-011": 0.16666666666666666,
+   "media-011": 0.125,
    "media-012": 1.0,
    "media-013": 1.0,
    "media-014": 1.0,
@@ -708,13 +828,13 @@
    "media-022": 0.0,
    "media-023": 1.0,
    "media-024": 0.0,
-   "media-025": 0.125,
+   "media-025": 0.0,
    "media-026": 0.25,
    "media-027": 1.0,
    "media-028": 1.0,
    "media-029": 0.5,
    "media-030": 1.0,
-   "media-031": 0.2,
+   "media-031": 0.125,
    "media-032": 0.2,
    "media-033": 0.3333333333333333,
    "media-034": 0.2,
@@ -734,6 +854,14 @@
    "media-048": 1.0,
    "media-049": 1.0,
    "media-050": 1.0,
+   "media-051": 1.0,
+   "media-052": 1.0,
+   "media-053": 1.0,
+   "media-054": 1.0,
+   "media-055": 1.0,
+   "media-056": 0.5,
+   "media-057": 0.25,
+   "media-058": 1.0,
    "real-001": 1.0,
    "real-002": 0.5,
    "real-003": 1.0,
@@ -755,19 +883,19 @@
    "real-019": 1.0,
    "real-020": 0.25,
    "real-021": 1.0,
-   "real-022": 0.1,
-   "real-037": 0.14285714285714285,
-   "real-038": 0.2,
+   "real-022": 0.1111111111111111,
+   "real-037": 0.125,
+   "real-038": 0.25,
    "real-039": 0.5,
-   "real-040": 0.25,
-   "real-041": 0.5,
+   "real-040": 0.16666666666666666,
+   "real-041": 0.3333333333333333,
    "real-042": 1.0,
    "real-043": 1.0,
    "real-044": 1.0,
    "real-046": 1.0,
    "real-054": 0.0,
    "real-055": 1.0,
-   "real-056": 0.25,
+   "real-056": 1.0,
    "real-058": 0.2,
    "real-059": 1.0,
    "real-063": 1.0,
@@ -789,7 +917,7 @@
    "real-082": 1.0,
    "real-083": 1.0,
    "real-084": 1.0,
-   "real-085": 0.1111111111111111,
+   "real-085": 1.0,
    "real-086": 1.0,
    "real-087": 0.5,
    "real-088": 1.0,
@@ -798,7 +926,7 @@
    "real-091": 1.0,
    "real-102": 1.0,
    "real-103": 1.0,
-   "real-104": 1.0,
+   "real-104": 0.0,
    "real-105": 1.0,
    "real-106": 1.0,
    "real-107": 1.0,
@@ -819,7 +947,7 @@
    "media-008": 1.0,
    "media-009": 1.0,
    "media-010": 1.0,
-   "media-011": 0.3562071871080222,
+   "media-011": 0.3154648767857287,
    "media-012": 1.0,
    "media-013": 1.0,
    "media-014": 1.0,
@@ -827,19 +955,19 @@
    "media-016": 0.9385574520455129,
    "media-017": 1.0,
    "media-018": 1.0,
-   "media-019": 0.9327783893101107,
+   "media-019": 0.944847956559586,
    "media-020": 1.0,
    "media-021": 0.2890648263178878,
    "media-022": 0.0,
    "media-023": 1.0,
    "media-024": 0.0,
-   "media-025": 0.3154648767857287,
+   "media-025": 0.0,
    "media-026": 0.4306765580733931,
    "media-027": 1.0,
    "media-028": 1.0,
    "media-029": 0.6309297535714574,
    "media-030": 1.0,
-   "media-031": 0.38685280723454163,
+   "media-031": 0.3154648767857287,
    "media-032": 0.38685280723454163,
    "media-033": 0.5,
    "media-034": 0.38685280723454163,
@@ -859,6 +987,14 @@
    "media-048": 1.0,
    "media-049": 0.894999002123018,
    "media-050": 1.0,
+   "media-051": 1.0,
+   "media-052": 1.0,
+   "media-053": 1.0,
+   "media-054": 1.0,
+   "media-055": 1.0,
+   "media-056": 0.6309297535714574,
+   "media-057": 0.4306765580733931,
+   "media-058": 1.0,
    "real-001": 0.8395700624665824,
    "real-002": 0.6112833214150001,
    "real-003": 1.0,
@@ -880,19 +1016,19 @@
    "real-019": 0.7039180890341347,
    "real-020": 0.3031610197508214,
    "real-021": 1.0,
-   "real-022": 0.20347796014867164,
-   "real-037": 0.12669792223864473,
-   "real-038": 0.18154179253735267,
-   "real-039": 0.44412286644879784,
-   "real-040": 0.4367467095119258,
-   "real-041": 0.6309297535714574,
-   "real-042": 0.5,
+   "real-022": 0.34755243272219133,
+   "real-037": 0.11990623328406573,
+   "real-038": 0.20210734650054757,
+   "real-039": 0.6112833214150001,
+   "real-040": 0.40716692445688885,
+   "real-041": 0.5,
+   "real-042": 0.543791241910304,
    "real-043": 1.0,
    "real-044": 0.7039180890341347,
    "real-046": 1.0,
    "real-054": 0.0,
    "real-055": 1.0,
-   "real-056": 0.3498029516038255,
+   "real-056": 0.5498274873833713,
    "real-058": 0.18154179253735267,
    "real-059": 1.0,
    "real-063": 1.0,
@@ -914,7 +1050,7 @@
    "real-082": 1.0,
    "real-083": 1.0,
    "real-084": 1.0,
-   "real-085": 0.3010299956639812,
+   "real-085": 1.0,
    "real-086": 1.0,
    "real-087": 0.7967075809905066,
    "real-088": 1.0,
@@ -923,7 +1059,7 @@
    "real-091": 1.0,
    "real-102": 1.0,
    "real-103": 1.0,
-   "real-104": 1.0,
+   "real-104": 0.6666666666666666,
    "real-105": 1.0,
    "real-106": 1.0,
    "real-107": 1.0,
@@ -936,7 +1072,7 @@
   "lookup success@1": {
    "real-054": 0.0,
    "real-055": 1.0,
-   "real-056": 0.0,
+   "real-056": 1.0,
    "real-058": 0.0,
    "real-059": 1.0
   },

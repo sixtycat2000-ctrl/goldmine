@@ -23,8 +23,10 @@ sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
 QUERIES = REPO_ROOT / "evals" / "media_queries.jsonl"
 
-TAG_COUNTS = {"text": 10, "audio": 10, "screenshot": 10, "image": 10, "pdf-scanned": 10}
-NEEDS_VALUES = {"asr", "ocr", "exif"}
+# video-eval-001: +8 keyframe-retrieval questions (tag video, needs frames,
+# absolute clip paths + expect loc — see the schema assertions below)
+TAG_COUNTS = {"text": 10, "audio": 10, "screenshot": 10, "image": 10, "pdf-scanned": 10, "video": 8}
+NEEDS_VALUES = {"asr", "ocr", "exif", "frames"}
 
 
 @pytest.fixture
@@ -51,17 +53,23 @@ def load_queries() -> list[dict]:
 
 def test_media_queries_schema():
     queries = load_queries()
-    assert len(queries) == 50
+    assert len(queries) == 58
     ids = [q["id"] for q in queries]
-    assert len(set(ids)) == 50
+    assert len(set(ids)) == 58
     assert all(q["id"].startswith("media-") for q in queries)
     counts: dict[str, int] = {}
     for q in queries:
         assert q["q"].strip(), f"{q['id']}: empty query"
         assert isinstance(q["expect"], list) and q["expect"], f"{q['id']}: no expect"
         for entry in q["expect"]:
-            assert set(entry) <= {"path", "lines", "grade"}, f"{q['id']}: {entry}"
-            assert Path(entry["path"]).is_absolute() is False, "fixture-relative paths"
+            assert set(entry) <= {"path", "lines", "grade", "loc"}, f"{q['id']}: {entry}"
+            if q.get("tag") == "video":
+                # video-eval-001: keyframe questions point at the committed
+                # clip corpus (absolute) with the keyframe moment in `loc`
+                assert Path(entry["path"]).is_absolute(), "video expects are absolute"
+                assert "loc" in entry
+            else:
+                assert Path(entry["path"]).is_absolute() is False, "fixture-relative paths"
             if "grade" in entry:
                 assert 0 <= entry["grade"] <= 3
             if "lines" in entry:
@@ -84,6 +92,11 @@ def test_media_queries_expect_paths_exist_in_fixture(fast_fixture):
     }
     for q in load_queries():
         for entry in q["expect"]:
+            if Path(entry["path"]).is_absolute():
+                # video-eval-001: clip-corpus expects live in the repo, pinned
+                # by corpus_manifest.json (not the fixture)
+                assert Path(entry["path"]).is_file(), f"{q['id']}: {entry['path']} missing"
+                continue
             assert entry["path"] in known, f"{q['id']}: {entry['path']} not in fixture"
             assert entry["path"] in on_disk, f"{q['id']}: {entry['path']} not on disk"
 

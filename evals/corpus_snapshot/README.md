@@ -4,9 +4,15 @@ A local macOS CLI for indexed documents, source code, PDF pages, OCR and timesta
 speech transcripts. SQLite holds the source text, lexical indexes and 768-dimensional
 fp16 vectors. You explicitly choose every indexed folder or URL.
 
-The default llama backend embeds text. It does **not** search photographs by their
-visual contents; photo names/metadata and actual OCR are separate evidence types.
-Cards contain source excerpts. The optional quality mode is an unvalidated experiment.
+The default llama backend embeds text. With the optional media helper
+(goldmine-embed) and the pinned mmproj model installed, photos, screenshots
+and thin PDF pages also get image vectors, transcript-less audio gets
+raw-audio vectors, and videos get keyframe image vectors (one sample every
+~3 s, aHash near-duplicate merge, JPEG ≤1024, at most 1200 frames — visual
+search); without them photo names/metadata and
+actual OCR remain separate evidence types and images are metadata-only.
+Cards contain source excerpts. The optional quality mode is an unvalidated
+experiment.
 
 This branch implements the [P0–P2 execution plan](docs/execution-plan/README.md).
 The package stays **0.2.0 development** until the required quality and release checks
@@ -69,12 +75,16 @@ SQLite remains authoritative and cache defects fall back to it.
 
 ## Evidence and validation
 
-The historical legacy suite has 150 queries, including 145 answerable items and
-5 noise items. On the original production baseline, the 2026-10-21 real-model
+The historical legacy suite has 109 queries (104 answerable items and 5 noise
+items; the 19 capability-gated media queries are excluded from its frozen
+denominator). On the original production baseline, the 2026-10-21 real-model
 reproduction matched success@5 **0.7862**, success@1 **0.5931**, MRR **0.6835** and
 nDCG@10 **0.6885** exactly. These numbers describe that baseline, not an improvement
-claim for this branch. The independent full-media suite has 169 fixed queries;
-missing EXIF/OCR provenance currently prevents its formal gate.
+claim for this branch. The independent full-media suite has 128 fixed queries
+(78 real + 50 media, 19 of them needs-gated); its stored-evidence preflight
+(EXIF/OCR/ASR provenance) passes against the real-backend corpus index, and its
+formal gate is pending the multimodal landing. Re-baselined from the stale 169
+on 2026-10-25 (receipt: reports/execution/digup-plan-002/step-1-baseline/).
 
 The portable product suite requires 420 audited questions. Its current draft has
 28 questions from 12 original MIT sources, with no frozen holdout. The remaining

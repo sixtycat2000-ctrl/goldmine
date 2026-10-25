@@ -1,12 +1,13 @@
 {
  "schema": 1,
- "corpus_version": "v6-2026-10-25-ocr-pages",
- "created": "2026-10-18",
+ "corpus_version": "v7-2026-10-25-video-frames",
+ "created": "2026-10-25-video-frames",
  "ingest_dir_roots": [
   "/Users/yul/git/DigUp",
   "/Users/yul/git/goldmine/goldmine",
   "/Users/yul/git/goldmine/docs",
   "/Users/yul/git/goldmine/scripts",
+  "/Users/yul/git/goldmine/evals/video_corpus",
   "/Users/yul/git/goldmine/evals/corpus_snapshot"
  ],
  "fixture": {
@@ -474,64 +475,64 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/README.md",
    "source": "goldmine",
-   "bytes": 5189,
-   "sha256": "9fc6b21bd1f1a5fce446b50b37201b13feeef8e7f62e4d87a9aa993b7b4bfeae",
+   "bytes": 5830,
+   "sha256": "5a3a081cd8fb7c0ecb440e829adba2e1dafa6a19214adeb6c4f0baf05286d0d9",
    "origin": "/Users/yul/git/goldmine/README.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/ARCHITECTURE.md",
    "source": "goldmine",
-   "bytes": 28126,
-   "sha256": "4c97ef9a0d918140c39d160e8943ae42b22da44865cda853b2df4a8cd480dd7d",
+   "bytes": 28374,
+   "sha256": "77ce64c89c8a8145dca2260dc33898c39d6e3fba8f31d3b1735f585da527c43f",
    "origin": "/Users/yul/git/goldmine/ARCHITECTURE.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/SPEC.md",
    "source": "goldmine",
-   "bytes": 44119,
-   "sha256": "6d4c2903c2832ae229cf0a01e6d0862d814c91a55ab9df8d22cc6b0ad27a7b07",
+   "bytes": 44872,
+   "sha256": "51bc010721b112f8a421850dae5be0dfa9cbe6725ad324119214570cd1b37f8f",
    "origin": "/Users/yul/git/goldmine/SPEC.md"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/search.py",
    "source": "goldmine",
-   "bytes": 39368,
-   "sha256": "936b4d89e70b696f2ec38fe0249ad490a23f6587be7bc9a5f5d41f35380e5377",
+   "bytes": 41380,
+   "sha256": "26ad629f8fbd4a92078bf8170088d3db26e695d0099506bdc4a51efe2cbab158",
    "origin": "/Users/yul/git/goldmine/goldmine/search.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/store.py",
    "source": "goldmine",
-   "bytes": 41080,
-   "sha256": "bc89e44c827ee6e9cd9aa278eeb951f9169e2712df302ee39acd0778e6eed313",
+   "bytes": 42591,
+   "sha256": "d2957467d1510c303fa4a8baf3415eb1fba69cdaaf7c950d82c397ef263c4913",
    "origin": "/Users/yul/git/goldmine/goldmine/store.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/chunker.py",
    "source": "goldmine",
-   "bytes": 24184,
-   "sha256": "9054b61efd313729e30631115c3cb89d442842ba0042cb21d3498316c22f5410",
+   "bytes": 27794,
+   "sha256": "22f7ea7cc1f983927fcde5b6cbc13a0c5587c02a4fcb31bd237d234d318fa232",
    "origin": "/Users/yul/git/goldmine/goldmine/chunker.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/config.py",
    "source": "goldmine",
-   "bytes": 19183,
-   "sha256": "70eb37b99a832a7ea74a46f6914196538e695f69c73be120acc148c2c9aeae3f",
+   "bytes": 19940,
+   "sha256": "540e0d0f01276994f7e9ba3fb0a0664df3ec3893ca677fa6e265504b69ffb089",
    "origin": "/Users/yul/git/goldmine/goldmine/config.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/fingerprints.py",
    "source": "goldmine",
-   "bytes": 21617,
-   "sha256": "72b766a16121851cf9f5c9bf9d9c16ecb4a36f84e8cd7ff731d508b276c818f4",
+   "bytes": 22603,
+   "sha256": "b047fc91684cac00cb5ecd716d319ef2cf6e017a43453583d64b07de5239a019",
    "origin": "/Users/yul/git/goldmine/goldmine/fingerprints.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/distill.py",
    "source": "goldmine",
-   "bytes": 57534,
-   "sha256": "abf5e0e3369ef1790df2bfe1957390b7329252c880c67ec941106fbb8839f3bf",
+   "bytes": 62748,
+   "sha256": "c1aaa4ba10105b7f6d04f8f0e4b1fe521eda88cbab78c69b6f4b1314b0817c20",
    "origin": "/Users/yul/git/goldmine/goldmine/distill.py"
   },
   {
@@ -544,57 +545,57 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/migrations.py",
    "source": "goldmine",
-   "bytes": 22177,
-   "sha256": "701c61a19221299441d3f2d9ccab8b5f055aa99f50ec859d02dc6f16f29f0607",
+   "bytes": 22777,
+   "sha256": "840e0a49eee797859de24ab4823c589cf30daeb826f7443f0cb9431c84606053",
    "origin": "/Users/yul/git/goldmine/goldmine/migrations.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/base.py",
    "source": "goldmine",
-   "bytes": 6513,
-   "sha256": "f7e6130283c4a19223fddfef97ae2475da1ec6fb31d2b2a12534101524ed2221",
+   "bytes": 7235,
+   "sha256": "d1374b002748ff8e1c1b682b3ad6976002128d3183f61d9a369adf27c2bf9439",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/base.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/llama.py",
    "source": "goldmine",
-   "bytes": 32762,
-   "sha256": "cefe0f11b4b7114abd32bbd5a486a388a26d65913490d53ce995ffee138c7eab",
+   "bytes": 36121,
+   "sha256": "860e4575fe216641802c54a31cef023310ad598c907784f067ca870458eceb34",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/llama.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/backends/mock.py",
    "source": "goldmine",
-   "bytes": 6288,
-   "sha256": "b53bf73b9eabf0416dc50e60d037c5fb8b6889564e09a854d729a50df3b1a3ee",
+   "bytes": 6480,
+   "sha256": "574dfc8a329e578cf88987f2af8a1e441ae7db82e078497f6314450a2ee3ac27",
    "origin": "/Users/yul/git/goldmine/goldmine/backends/mock.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/pipeline.py",
    "source": "goldmine",
-   "bytes": 32565,
-   "sha256": "cb3f2f9665c394f7dff9d043d3fd75e8e4085c0846721f9a9255e9e7ae91b64b",
+   "bytes": 36209,
+   "sha256": "dc613a5c6aea052465d838479bcec2c9a59fc94abb14f6e96344484d2d0851b2",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/pipeline.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/walk.py",
    "source": "goldmine",
-   "bytes": 10387,
-   "sha256": "cef17079b82c249820ff6675eecc5d5d02d4c97f40f7124604bca89cf427ebc8",
+   "bytes": 15326,
+   "sha256": "3828b0338ace64ac254f1fc5fb744d8b3e4483587e6efc0230b58d3ba319250c",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/walk.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/rules.py",
    "source": "goldmine",
-   "bytes": 14427,
-   "sha256": "72905b782e4b418a334e063769521cabf38d949207ff7e928d48fe92f2aa2db7",
+   "bytes": 15729,
+   "sha256": "35cbff647b9b52f9d09dfeb9c8ea1fa4c3c8801854699f9a0180ff6c660d01aa",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/rules.py"
   },
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/extract_pdf.py",
    "source": "goldmine",
-   "bytes": 8370,
-   "sha256": "bfa848c32961ff8eaa46aff625e17add04f265efa30f6a4abb2da7aa4824dcbb",
+   "bytes": 11013,
+   "sha256": "0629e81f039bb328b136ff54a275eb7b5e1f2e8bb7bb7b272e8be256a5d7b019",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/extract_pdf.py"
   },
   {
@@ -607,8 +608,8 @@
   {
    "path": "/Users/yul/git/goldmine/evals/corpus_snapshot/goldmine/ingest/media.py",
    "source": "goldmine",
-   "bytes": 15488,
-   "sha256": "b17cb42c6151d5b563380cfefa2c5e05369c82a9e0ae8e76065f636b09c58b2f",
+   "bytes": 25414,
+   "sha256": "9ccc954e49503c535a05fc4a3110496b56980eb5031dc50c6d1b181a20bcb451",
    "origin": "/Users/yul/git/goldmine/goldmine/ingest/media.py"
   },
   {
@@ -638,13 +639,36 @@
    "bytes": 29038,
    "sha256": "ccf387c127a6c0475d6f8eaf580bc45b4886a61f571713b018d56ef3185dbe28",
    "origin": "/Users/yul/git/goldmine/docs/v2/06-distill-knowledge.md"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/video_corpus/bbb-excerpt.mp4",
+   "source": "video-corpus",
+   "bytes": 1733977,
+   "sha256": "a62478774af73ec0a21c90ca9e00e369770a3e376d669c704dc8f56d2a9dbad0"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/video_corpus/ed-excerpt.mp4",
+   "source": "video-corpus",
+   "bytes": 2759169,
+   "sha256": "7a899c0c2fdc16f0f1cbb9a8e011926a9cbb617a7285f7d527d1ad4f089f2c0b"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/video_corpus/ed2-excerpt.mp4",
+   "source": "video-corpus",
+   "bytes": 1492401,
+   "sha256": "a2afeb481a9e5d5fb0fbe72d793f0f7368d780417a7867cc4886a69f1d4b5db0"
+  },
+  {
+   "path": "/Users/yul/git/goldmine/evals/video_corpus/sintel-excerpt.mp4",
+   "source": "video-corpus",
+   "bytes": 2018833,
+   "sha256": "01db9588a4a85e34979bc41498b4742b1c765bd213af2a98751ca2e999311240"
   }
  ],
  "notes": [
   "goldmine-self corpus files are snapshot-pinned under evals/corpus_snapshot/ ('origin' holds the live path); the index and the labels consume the snapshot, so dev-day edits cannot rot them \u2014 refresh the manifest deliberately to move the snapshot",
   "fixture files marked 'requires' (say/ffmpeg) are existence-checked only; the say wav additionally pins a content-stable surrogate (tool + transcript + duration bucket \u2014 its raw bytes are environment-dependent)",
   "fixture 'version' record (version + generator content hash + file count) is a corpus_sha input: a regenerated fixture invalidates loudly",
-  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)",
-  "v6 2026-10-25 (ocr-restore-001, D4-pattern source-data fix): the scanned pages of atlas-hybrid.pdf/atlas-scanned.pdf regenerated with receipt/chart-realistic rendered text (8 lines/page at line_gap_rows=4) so Vision OCR recovers 233-254 chars/page \u2014 pdf_evidence now records info.ocr_pages and the six needs:ocr preflight items (media-045..050) close. Raster pages still carry no text layer; no product code, label or denominator change."
+  "scripts/eval_relevance.py and docs/TEST_PLAN.md are excluded from the index \u2014 they quote the noise-query strings (self-leak, F6)"
  ]
 }

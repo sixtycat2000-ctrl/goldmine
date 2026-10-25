@@ -10,7 +10,9 @@ import json
 from pathlib import Path
 import sqlite3
 
-SUITE_IDS = {"legacy": "legacy.v3", "full-media": "media-full.v3"}
+# video-eval-001: full-media grows 128 -> 136 (+8 keyframe-retrieval
+# questions) — a denominator change is a suite identity change.
+SUITE_IDS = {"legacy": "legacy.v3", "full-media": "media-full.v4"}
 
 
 def _canonical(value) -> bytes:
@@ -45,6 +47,11 @@ def _stored_capability(con, path: str, need: str, exp: dict) -> tuple[bool, str]
         ok = kind == "pdf" and any(sk in {"page", "chunk"} and loc in pages and text and text.strip()
                                   for sk, _, loc, _, text in segments)
         return bool(ok), "stored OCR page provenance and nonempty page text required"
+    if need == "frames":
+        # video-eval-01: actual stored keyframe vectors on the expected file
+        ok = kind == "video" and any(
+            sk == "frame" and modality == "image" for sk, modality, _, _, _ in segments)
+        return bool(ok), "actual frame/image segments required"
     if need == "exif":
         # Name/path matches never stand in for embedded photo metadata.
         available = {key: val for key, val in info.items()

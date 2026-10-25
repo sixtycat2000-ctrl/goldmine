@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "created": "2026-10-25",
+  "task": "video-eval-001: real-source video clips for keyframe-retrieval questions",
+  "license_note": "All three sources are Blender Foundation open movies / trailers under CC-BY 3.0 (attribution: © Blender Foundation, blender.org). Excerpts are re-encoded (H.264, no audio) — the license permits derivative excerpts with attribution.",
+  "clips": [
+    {
+      "file": "bbb-excerpt.mp4",
+      "sha256": "a62478774af73ec0a21c90ca9e00e369770a3e376d669c704dc8f56d2a9dbad0",
+      "duration_s": 40.0,
+      "source_title": "Big Buck Bunny (2008, Blender Foundation, CC-BY 3.0)",
+      "source_url": "https://archive.org/download/BigBuckBunny_124/Content/big_buck_bunny_720p_surround.mp4",
+      "source_sha256": "46f62396c755e1ed0ab856a1521378d54196e125ef1a1643a199af087a15046b",
+      "excerpt_command": "ffmpeg -ss 120 -t 40 -i big_buck_bunny_360p.mp4 -an -c:v libx264 -preset veryfast -crf 22 -pix_fmt yuv420p -threads 1 bbb-excerpt.mp4",
+      "content_anchor": "excerpt covers source 120-160s: the meadow/forest stretch after the intro; keyframe contact sheets in reports/execution/video-eval-001/"
+    },
+    {
+      "file": "ed-excerpt.mp4",
+      "sha256": "7a899c0c2fdc16f0f1cbb9a8e011926a9cbb617a7285f7d527d1ad4f089f2c0b",
+      "duration_s": 40.0,
+      "source_title": "Elephants Dream (2006, Blender Foundation, CC-BY 3.0)",
+      "source_url": "https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
+      "source_sha256": "fd6dc0e9da3a2f63487957325983f197f23c6ff1cd2b29bb71e64db567e0994c",
+      "excerpt_command": "ffmpeg -ss 480 -t 40 -i ed_1024_512kb.mp4 -an -c:v libx264 -preset veryfast -crf 22 -pix_fmt yuv420p -threads 1 ed-excerpt.mp4",
+      "content_anchor": "excerpt covers source 480-520s: the second half inside the surreal machine world; keyframe contact sheets in reports/execution/video-eval-001/"
+    },
+    {
+      "file": "sintel-excerpt.mp4",
+      "sha256": "01db9588a4a85e34979bc41498b4742b1c765bd213af2a98751ca2e999311240",
+      "duration_s": 32.208333,
+      "source_title": "Sintel trailer (2010, Blender Foundation, CC-BY 3.0)",
+      "source_url": "https://download.blender.org/durian/trailer/sintel_trailer-480p.mp4",
+      "source_sha256": "b670602fa00934ca27c4351bb0efe7ea7a07fae57284e44226025eeed7c51254",
+      "excerpt_command": "ffmpeg -ss 20 -i sintel_trailer-480p.mp4 -an -c:v libx264 -preset veryfast -crf 22 -pix_fmt yuv420p -threads 1 sintel-excerpt.mp4",
+      "content_anchor": "excerpt covers the trailer from 20s to end (studio logo head excluded); keyframe contact sheets in reports/execution/video-eval-001/"
+    },
+    {
+      "file": "ed2-excerpt.mp4",
+      "sha256": "a2afeb481a9e5d5fb0fbe72d793f0f7368d780417a7867cc4886a69f1d4b5db0",
+      "duration_s": 40.0,
+      "source_title": "Elephants Dream (2006, Blender Foundation, CC-BY 3.0) — second excerpt (opening loft sequence)",
+      "source_url": "https://archive.org/download/ElephantsDream/ed_1024_512kb.mp4",
+      "source_sha256": "fd6dc0e9da3a2f63487957325983f197f23c6ff1cd2b29bb71e64db567e0994c",
+      "excerpt_command": "ffmpeg -ss 0 -t 40 -i ed_1024_512kb.mp4 -an -c:v libx264 -preset veryfast -crf 22 -pix_fmt yuv420p -threads 1 ed2-excerpt.mp4",
+      "content_anchor": "excerpt covers source 0-40s: the loft/workshop opening with the round machine; added at construction because the machine-interior excerpt dominated primary-segment selection"
+    }
+  ],
+  "design_notes": [
+    "no audio (-an): the frame-retrieval path is under test; speech routing is already covered by the asr-tagged questions — this also removes the transcript-leak class entirely",
+    "filenames carry only source acronyms (bbb/ed/sintel); captions and questions must not use them (checked at authoring)",
+    "studio-logo heads/tails excluded from every excerpt (cross-clip near-duplicate keyframes)"
+  ]
+}

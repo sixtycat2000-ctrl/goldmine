@@ -171,10 +171,13 @@ harness compares them; see [docs/TEST_PLAN.md](docs/TEST_PLAN.md)).
 
 ### 2.3 Distill
 
-> v2.1 (R6): τ is CALIBRATED from the corpus (Otsu over sampled pairwise cosines,
-> percentile fallback, `tau_source`), clustering adds the average-link admission guard, and
-> cards are medoid + coverage excerpts — normative algorithm: docs/v2.1-r6-distill.md
-> (the v1 diagram below is kept for the data flow, not the algorithm).
+> v3 (2026-10): clustering is a deterministic ensemble co-association core (96
+> farthest-first spherical k-means runs over {centered, raw} spaces → co-association
+> matrix → fine leader at the constant F=0.45 → dual-channel agglomerative remerge); τ IS
+> that constant (`tau_source ∈ fixed|manual|inherited`) — the v2 pairwise-cosine Otsu/P90
+> calibration was retired after real-corpus diagnosis (see
+> reports/execution/P2-04/distill-purity-diagnosis-001). Cards remain medoid + coverage
+> excerpts (the v1 diagram below is kept for the data flow, not the algorithm).
 
 ```
 segments (vectors + text, fingerprint-matched, extractor-matched)

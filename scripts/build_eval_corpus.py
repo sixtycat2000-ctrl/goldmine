@@ -64,7 +64,13 @@ SNAPSHOT_DIR = EVALS_DIR / "corpus_snapshot"
 # pipeline.py, README.md) and lacked docs/v2/05+06 entirely — five answer-eval
 # questions carried facts no snapshot pack could support (docs/v2.1-pack-eval.md
 # review amendment F1). Conscious corpus bump: refresh + re-ingest + re-baseline.
-CORPUS_VERSION = "v3-2026-10-18"
+# v7 (2026-10-25, video-eval-001): + evals/video_corpus (three CC-BY excerpt
+# clips for keyframe-retrieval questions) as an ingest root, and the goldmine
+# snapshot re-pins the tree after digup-plan-002 + video-frames-001 landed.
+# NOTE: this constant had drifted (v3 while the manifest said v6 from the
+# digup-plan-002 refresh) — a --refresh-manifest from the stale tree would
+# have REGRESSED the version; v7 resets the constant to the manifest truth.
+CORPUS_VERSION = "v7-2026-10-25-video-frames"
 
 # ------------------------------------------------------------- curated sources
 # Curated subsets of the three real repos. Ingestion takes the whole source
@@ -166,6 +172,7 @@ INGEST_DIR_ROOTS = [
     REPO_ROOT / "goldmine",
     REPO_ROOT / "docs",
     REPO_ROOT / "scripts",
+    REPO_ROOT / "evals" / "video_corpus",
 ]
 
 SOURCE_NOTES = {
@@ -280,6 +287,12 @@ def write_manifest(manifest_path: Path, fixture_root: Path) -> dict:
         entry = _file_entry(snap, "goldmine")
         entry["origin"] = str(REPO_ROOT / rel)
         files.append(entry)
+
+    # video-eval-001: the real-source excerpt clips are pinned like any
+    # other corpus file (provenance/sources/licenses live beside them in
+    # evals/video_corpus/provenance.json)
+    for clip in sorted((REPO_ROOT / "evals" / "video_corpus").glob("*.mp4")):
+        files.append(_file_entry(clip, "video-corpus"))
 
     fix_manifest = _ensure_fixture(fixture_root)
     fixture_entries = _fixture_entries(fixture_root, fix_manifest)
@@ -469,6 +482,10 @@ def build_index(db: Path, backend_name: str, manifest: dict, *,
         report = pipeline.run(roots, code=True,
                               exclude=["make_coverage_fixture.py",
                                        "manifest.json",
+                                       # video-eval-001: the clip provenance
+                                       # (sources/licenses/content anchors)
+                                       # quotes scene words the captions use
+                                       "provenance.json",
                                        "eval_relevance.py",
                                        "TEST_PLAN.md",
                                        "v2.1-pack-eval.md"]

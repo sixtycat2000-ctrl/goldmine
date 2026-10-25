@@ -47,6 +47,10 @@ class FileRec:
     chunker_version: str | None = None
     embed_id: str | None = None
     content_date: float | None = None
+    # P1-3: POSIX identity for move detection (NULL for URL rows; pre-v7
+    # rows migrate to NULL and are never move-matched).
+    dev: int | None = None
+    ino: int | None = None
     id: int | None = None
     indexed_at: float | None = None
 
@@ -157,7 +161,7 @@ class DissolveResult:
 
 def _file_row(row) -> FileRec:
     (fid, path, source, kind, size, mtime, sha, state, capability, detail, info,
-     extractor, chunker_version, embed_id, content_date, indexed_at) = row
+     extractor, chunker_version, embed_id, content_date, dev, ino, indexed_at) = row
     return FileRec(
         path=path,
         source=source,
@@ -173,13 +177,15 @@ def _file_row(row) -> FileRec:
         chunker_version=chunker_version,
         embed_id=embed_id,
         content_date=content_date,
+        dev=dev,
+        ino=ino,
         id=fid,
         indexed_at=indexed_at,
     )
 
 
 _SELECT_FILE = """SELECT id, path, source, kind, size, mtime, sha256, state, capability,
-detail, info, extractor_version, chunker_version, embed_id, content_date, indexed_at
+detail, info, extractor_version, chunker_version, embed_id, content_date, dev, ino, indexed_at
 FROM files"""
 
 
@@ -241,8 +247,8 @@ class Store:
             cur = self.db.execute(
                 """INSERT INTO files(path, source, kind, size, mtime, sha256, state,
                    capability, detail, info, extractor_version, chunker_version,
-                   embed_id, indexed_at)
-                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   embed_id, dev, ino, indexed_at)
+                   VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                    ON CONFLICT(path) DO UPDATE SET
                      source = excluded.source,
                      kind = excluded.kind,
@@ -257,12 +263,15 @@ class Store:
                      chunker_version = coalesce(excluded.chunker_version,
                                                 files.chunker_version),
                      embed_id = coalesce(excluded.embed_id, files.embed_id),
+                     dev = coalesce(excluded.dev, files.dev),
+                     ino = coalesce(excluded.ino, files.ino),
                      indexed_at = excluded.indexed_at
                    RETURNING id""",
                 (
                     rec.path, rec.source, rec.kind, rec.size, rec.mtime, rec.sha256,
                     rec.state, rec.capability, rec.detail, info_json,
                     rec.extractor_version, rec.chunker_version, rec.embed_id,
+                    rec.dev, rec.ino,
                     rec.indexed_at or time.time(),
                 ),
             )
@@ -287,6 +296,28 @@ class Store:
             sid = self._insert_segment(fid, seg)
             self._insert_fts(sid, fid, seg, is_name=True)
         return int(fid)
+
+    def move_file(self, fid: int, new_path: str) -> None:
+        """P1-3 (DigUp IndexStore.move): same POSIX identity at a new path —
+        re-point the row (path + name segment + FTS folder words), keep
+        segments/vectors/state untouched. Nothing is re-extracted or
+        re-embedded; the caller's unchanged-skip then hits at the new path."""
+        with self.write_transaction():
+            self.db.execute("UPDATE files SET path = ? WHERE id = ?", (new_path, fid))
+            self.db.execute(
+                "DELETE FROM fts WHERE rowid IN "
+                "(SELECT id FROM segments WHERE file = ? AND kind = 'name')",
+                (fid,),
+            )
+            self.db.execute("DELETE FROM segments WHERE file = ? AND kind = 'name'", (fid,))
+            seg = SegmentRec(
+                kind="name",
+                modality="none",
+                excerpt=_display_name(new_path),
+                text_for_fts=_folder_words(new_path, "file"),
+            )
+            sid = self._insert_segment(fid, seg)
+            self._insert_fts(sid, fid, seg, is_name=True)
 
     def mark_file(
         self,

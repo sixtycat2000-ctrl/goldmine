@@ -24,7 +24,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .base import Capability, EmbeddingBackend, NotSupported, DOCUMENT_PROMPT_TEMPLATE
+from .base import Capability, EmbeddingBackend, NotSupported, DOCUMENT_PROMPT_TEMPLATE, PROMPT_SCHEME
 
 _TOKEN = re.compile(r"[a-z0-9]+")
 
@@ -68,7 +68,7 @@ class MockBackend(EmbeddingBackend):
             "model_id": f"mock-v1(seed={self.seed})",
             "model_sha256": "n/a",
             "dim": self._dim,
-            "prompts": "v1:q='task: search result | query: {}' d='title: {} | text: {}'",
+            "prompts": PROMPT_SCHEME,
             "pooling": "none",
             "normalization": "l2",
         }
@@ -136,7 +136,10 @@ class MockBackend(EmbeddingBackend):
             return np.zeros((0, self._dim), dtype=np.float32)
         return np.stack([self._embed_text(t) for t in texts])
 
-    def embed_image(self, path: Path) -> np.ndarray:
+    def embed_image(self, path: Path, *, budget: int = 140) -> np.ndarray:
+        # `budget` accepted-and-ignored: signature parity with the real
+        # backend (base.py) — the mock hashes bytes; budgets are identity
+        # constants, not quality knobs, for the fake path.
         if not self.multimodal:
             raise NotSupported("default mock is text-only; construct with multimodal=True")
         return self._embed_bytes(Path(path).read_bytes())

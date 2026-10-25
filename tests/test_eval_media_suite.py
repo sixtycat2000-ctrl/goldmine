@@ -22,9 +22,11 @@ def test_suite_query_sets_keep_historical_denominators():
     # (150->109 / 169->128). The historical 150/169 suite stays byte-frozen in
     # evals/history/20261021 and docs/execution-plan/baseline-20261021.json.
     # These pins still forbid any further silent denominator drift.
-    assert len(legacy) == 109 and len(full) == 128
-    assert sum(q["tag"] != "noise" for q in full) == 123
-    assert len({q["id"] for q in full} - {q["id"] for q in legacy}) == 19
+    # video-eval-001 (v7): full-media grows 128 -> 136 (+8 needs-gated
+    # keyframe-retrieval questions); legacy keeps its frozen 109.
+    assert len(legacy) == 109 and len(full) == 136
+    assert sum(q["tag"] != "noise" for q in full) == 131
+    assert len({q["id"] for q in full} - {q["id"] for q in legacy}) == 27
     assert eval_real.should_skip({"needs": ["asr", "ocr"]}, {"asr"})
 
 

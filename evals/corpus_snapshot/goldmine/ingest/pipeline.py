@@ -214,6 +214,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 self._clear_vectors()
 
             candidates: list[walk.Candidate] = []
+            unreachable_prefixes: list[str] = []
             with self._metrics.stage("scan"):
                 for item in walk.walk_files(
                     [Path(r) for r in file_roots], code=code, exclude=exclude,
@@ -221,7 +222,12 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 ):
                     if isinstance(item, walk.Candidate):
                         candidates.append(item)
-                    elif not item.is_dir:
+                    elif item.is_dir:
+                        # A1-18: an unreadable subtree is unavailable, not
+                        # empty — its rows are exempt from deletion below.
+                        if item.unreachable:
+                            unreachable_prefixes.append(item.path)
+                    else:
                         with self._metrics.stage("commit"):
                             self._record_unsupported(self.store, item.path, item.reason, report)
                 if not include_datasets:
@@ -229,6 +235,22 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                         self._drop_dataset_folders(candidates, file_roots, report)
 
             report.scanned += len(candidates)
+            # P1-3: match vanished rows against this run's candidates by
+            # POSIX identity BEFORE processing — a moved file re-points its
+            # row (segments/vectors kept) and then hits the unchanged skip
+            # at the new path, instead of delete + full re-embed.
+            with self._metrics.stage("scan"):
+                moves = walk.detect_moves(self.store, resolved_roots, candidates)
+            for fid, old_path, new_path in moves:
+                with self._metrics.stage("commit"):
+                    self.store.move_file(fid, new_path)
+                report.moves += 1
+            if moves:
+                report.note(
+                    "moved",
+                    f"{len(moves)} file(s) moved on disk — re-pointed without "
+                    "re-embedding",
+                )
             wave = max(int(self.cfg.ingest.workers) * 8, 16)
             done = 0
             pool = ThreadPoolExecutor(max_workers=max(1, int(self.cfg.ingest.workers)))
@@ -310,12 +332,25 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                     self._record_url_unimplemented(url, report)
 
             # Deletions: files under a root that vanished since the last ingest.
+            # A1-18 guard: roots/subtrees unavailable RIGHT NOW keep their rows
+            # (an ejected drive or a TCC prompt must not read as "all deleted").
             with self._metrics.stage("scan"):
-                gone = walk.compute_deletions(self.store, resolved_roots)
+                deletions = walk.compute_deletions(
+                    self.store, resolved_roots, unreachable=unreachable_prefixes
+                )
             with self._metrics.stage("commit"):
-                for fid in gone:
+                for fid in deletions.gone:
                     self.store.delete_file(fid)
-            report.deleted = len(gone)
+            report.deleted = len(deletions.gone)
+            report.kept_unreachable = deletions.kept_unreachable
+            if deletions.kept_unreachable or deletions.unavailable_roots:
+                roots_named = ", ".join(r for r, _ in deletions.unavailable_roots)
+                report.note(
+                    "kept_unreachable",
+                    f"{deletions.kept_unreachable} file row(s) kept: root or "
+                    "subtree unavailable (not read as deleted)"
+                    + (f" — {roots_named}" if roots_named else ""),
+                )
         finally:
             if self.backend is not None:
                 self.backend.close()
@@ -389,19 +424,21 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
         for kind in ("doc", "pdf", "webpage", "code"):
             if kinds.get(kind):
                 report.by_kind.setdefault(kind, {})["content_indexed"] = kinds[kind]
-        for kind, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok)):
+        # video: soundtrack (ASR/audio) OR keyframes make it indexable
+        # (video-frames-001: a soundtrack-less clip gets frame vectors)
+        media_kinds = (
+            ("image", image_ok), ("audio", audio_ok),
+            ("video", audio_ok or image_ok),
+        )
+        for kind, ok in media_kinds:
             if kinds.get(kind):
                 report.by_kind.setdefault(kind, {})[
                     "content_indexed" if ok else "metadata_only"
                 ] = kinds[kind]
         report.content_indexed = sum(kinds.get(k, 0) for k in ("doc", "pdf", "webpage", "code"))
-        report.content_indexed += sum(
-            kinds.get(k, 0) for k, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok)) if ok
-        )
+        report.content_indexed += sum(kinds.get(k, 0) for k, ok in media_kinds if ok)
         report.metadata_only = sum(
-            kinds.get(k, 0)
-            for k, ok in (("image", image_ok), ("audio", audio_ok), ("video", audio_ok))
-            if not ok
+            kinds.get(k, 0) for k, ok in media_kinds if not ok
         )
         report.unsupported = sum(file_skips.values())
         for reason, n in sorted(file_skips.items(), key=lambda kv: (-kv[1], kv[0])):
@@ -483,6 +520,32 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
 
                 self._asr_ready = resolve_tools(self.cfg) is not None
             if self._asr_ready:
+                return False
+        # digup-plan-002 media-capability redo rules (amendments M5, normative
+        # predicates — a re-done row always writes audio_routing or a media
+        # vector or an honest none:* reason, so neither rule can churn):
+        if self.backend is not None and not self.lexical_only:
+            cap = self.backend.capability()
+            if (rec.kind in ("audio", "video")
+                    and cap.audio
+                    and (rec.info or {}).get("audio_routing") is None
+                    and (rec.info or {}).get("asr_segments") is None):
+                # R-a: an audio/video row from before the audio capability
+                # (or before routing markers existed) with NO transcript can
+                # now gain raw windows — including when ASR tools are absent.
+                return False
+            if (rec.kind == "image" and cap.image
+                    and rec.capability == "metadata_only"
+                    and rec.detail == "backend lacks image embedding"):
+                # R-b: photos that never got a thumbnail pass because the
+                # image capability was off.
+                return False
+            if (rec.kind == "video" and cap.image
+                    and (rec.info or {}).get("frames") in (None, "none:no_image_capability")):
+                # R-c (video-frames-001): rows from before keyframes landed
+                # (including asr-versioned transcript rows — the media bump
+                # alone cannot reach them) get their frame pass; the re-done
+                # row always writes a frames marker, so this cannot churn.
                 return False
         return True
 

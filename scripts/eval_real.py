@@ -76,7 +76,9 @@ BASELINE_JSON = EVALS_DIR / "baseline.json"
 
 #: media-pipeline capabilities that have not landed yet — their queries are
 #: skipped by default so the gate's corpus stays stable (C11/A4)
-SKIPPED_NEEDS = frozenset({"asr", "ocr", "exif"})
+# video-eval-001: "frames" joins the gated set — the 8 keyframe-retrieval
+# questions stay OUT of the frozen legacy 109 and IN full-media.
+SKIPPED_NEEDS = frozenset({"asr", "ocr", "exif", "frames"})
 
 #: per-tag deltas below this n are advisory only (B12/A4)
 ADVISORY_N = 20
@@ -251,6 +253,13 @@ def _loc_satisfied(hit, exp: dict) -> bool:
             return False
         end = hit.loc_end if hit.loc_end is not None else hit.loc
         return hit.loc <= b and end >= a  # overlap (DigUp at())
+    if "loc" in exp:
+        # video keyframe moment (video-eval-001): satisfied only by the SAME
+        # kept frame — Hit.segment is the SEGMENT kind ("frame"; Hit.kind is
+        # the file kind "video" — using it here scored 0/37 in construction),
+        # and same-file audio windows must never fake a numeric containment.
+        return (hit.segment == "frame" and hit.loc is not None
+                and abs(hit.loc - exp["loc"]) < 0.5)
     return True
 
 
