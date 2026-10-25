@@ -19,6 +19,9 @@
    类只读命令在结构上就不带写入口）；dataless 文件在 open 前拦截。
 6. **一会话一分支**：每个会话在独立分支干活，合并经用户——杜绝
    2026-10-25 那种双会话同树撞车。提交只包含本会话白名单文件。
+   长跑任务（对比/测量/评测，>30 分钟）再加一层保险：在**专用 git
+   worktree** 里执行，工作树被并发会话覆盖/清理也不伤测量（P2-08
+   实证：主树两次被覆盖、worktree 免疫）。
 
 ## 每个提交一份"人读 diff 摘要"
 
@@ -57,6 +60,11 @@
 | 提交摘要档案 | [docs/COMMIT_DIGESTS.md](docs/COMMIT_DIGESTS.md) |
 | 轮讲系列 | [1 搜索打分](docs/WALKTHROUGH-search.md) · [2 指纹与身份](docs/WALKTHROUGH-fingerprint.md) · [3 摄取管线](docs/WALKTHROUGH-ingest.md) · [4 诚实契约](docs/WALKTHROUGH-honesty.md) · [5 双常驻进程](docs/WALKTHROUGH-processes.md) |
 | 旅程与技术考古 | [docs/JOURNEY.md](docs/JOURNEY.md)（八幕全程 + 术语逐层挖底词典） |
+| 引擎对比基线（QMD 竞品数字） | reports/execution/P2-08/comparison-report-001/（竞品钉死 2.8.3，**跨轮复用**：重跑只需 Goldmine 侧；QMD 格应逐字节复现，兼作每轮环境控制组；逐行指标在 heavy-evidence/，原始 stdout 可对任意新指标离线重算） |
 
 执行记录：reports/execution/<任务名>/（本地留档、按惯例不入库——回执
-在那里面，摘要在这里）。
+在那里面，摘要在这里）。清理以**信息无损**为界：保留引擎原始输出
+（stdout）、回执（argv/退出码）与逐行指标；删除的是重复簿记（每命令
+重复序列化的资源清单、重复的全库再审计快照）与可重装副本（npm 树、
+快照缓存）。实例：cleanup/p2-08-comparison-20261025-00{2,3,4}（26G→
+990M，一条真实信息未丢）。
