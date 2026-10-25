@@ -38,12 +38,18 @@ CLIP_FILES = {
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--db", default="/tmp/pool.sqlite")
+    parser.add_argument("--ledger", default=str(
+        REPO_ROOT / "reports/execution/video-eval-001/captions.jsonl"),
+        help="query ledger jsonl: {clip, loc, caption[, words]} — the synthetic "
+             "captions by default; a HUMAN-query ledger uses the same shape so "
+             "both distributions run through the identical pooling pipeline "
+             "(moment-precision-001 / human-validation)")
     parser.add_argument("--out", default=str(
         REPO_ROOT / "reports/execution/video-eval-001/pooling.jsonl"))
     args = parser.parse_args()
 
     ledger = []
-    ledger_path = REPO_ROOT / "reports/execution/video-eval-001/captions.jsonl"
+    ledger_path = Path(args.ledger)
     for line in ledger_path.read_text().splitlines():
         if line.startswith("//"):
             continue
