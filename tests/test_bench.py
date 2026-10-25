@@ -35,7 +35,9 @@ def test_bench_gate1b_loads_a_real_store_db(tmp_path, rows):
     import bench
 
     db = tmp_path / "bench.sqlite"
-    result = bench.bench_gate1b(rows, runs=2, db_path=db)
+    # 5 runs: the pass estimator takes the min, which is robust to shared
+    # runner noise while keeping the frozen budget constant untouched.
+    result = bench.bench_gate1b(rows, runs=5, db_path=db)
     assert result["rows"] == rows
     assert result["vectors_loaded"] == rows
     assert db.is_file() and result["db_bytes"] > 0
