@@ -56,9 +56,10 @@
   }
   function easeOutExpo(t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); }
   function flyTo(x, y, scale) {
-    flight = { t0: performance.now(), dur: 700,
+    var s = Math.max(fit.scale * 0.45, Math.min(fit.scale * 2.6, scale || cam.scale));
+    flight = { t0: performance.now(), dur: rm ? 1 : 700,
       from: { x: cam.x, y: cam.y, scale: cam.scale },
-      to: { x: x, y: y, scale: scale || cam.scale } };
+      to: { x: x, y: y, scale: s } };
   }
   function stepFlight(now) {
     if (!flight) return;
@@ -71,26 +72,37 @@
   }
 
   function resize() {
+    /* layout may not be ready at boot (defer script): clientWidth 0 means
+       "try again when the observer fires" — never bake a 0x0 backing store */
+    if (!canvas.clientWidth || !canvas.clientHeight) return;
     var dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = canvas.clientWidth * dpr; canvas.height = canvas.clientHeight * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    if (Math.abs(fit.scale - 1) < 1e-9 || !resize.done) { computeFit(); cam.scale = fit.scale; cam.x = fit.x; cam.y = fit.y; resize.done = true; }
-    else computeFit();
+    var first = !resize.done;
+    computeFit();
+    if (first) { cam.scale = fit.scale; cam.x = fit.x; cam.y = fit.y; resize.done = true; }
+    else clampCam();
   }
 
   /* state ------------------------------------------------------------ */
   var sel = null, hover = null, focusId = null, isolated = null, filterIds = null;
   var trail = [];
+  var lastSelId = null;
   function relatedOf(n) {
     var s = {};
     n.deep.forEach(function (d) { if (byId[d.to]) s[d.to] = 1; });
     deepEdges.forEach(function (e) { if (e.a === n && e.b) s[e.b.id] = 1; if (e.b === n) s[e.a.id] = 1; });
     return s;
   }
+  var relatedCache = null;
+  function relatedCached(n) {
+    if (!relatedCache) relatedCache = relatedOf(n);
+    return relatedCache;
+  }
   function nodeState(n) {
     if (sel === n) return "selected";
     if (hover === n || focusId === n.id) return "hover";
-    if (sel) return relatedOf(sel)[n.id] ? "related" : "dimmed";
+    if (sel) return relatedCached(sel)[n.id] ? "related" : "dimmed";
     if (isolated) return n.cluster === isolated ? "rest" : "dimmed";
     if (filterIds) return filterIds[n.id] ? "rest" : "dimmed";
     return "rest";
@@ -99,8 +111,9 @@
   /* render ------------------------------------------------------------ */
   var labelFont = window.matchMedia && window.matchMedia("(max-width: 760px)").matches;
   function project(n, t) {
-    var dx = Math.sin(t * n.wx + n.ph) * n.A * n.driftScale;
-    var dy = Math.sin(t * n.wy + n.ph * 1.3) * n.A * n.driftScale;
+    var amp = rm ? 0 : n.A * n.driftScale;
+    var dx = Math.sin(t * n.wx + n.ph) * amp;
+    var dy = Math.sin(t * n.wy + n.ph * 1.3) * amp;
     var wx = n.x + dx, wy = n.y + dy;
     n.sx = (wx - cam.x) * cam.scale + canvas.clientWidth / 2;
     n.sy = (wy - cam.y) * cam.scale + canvas.clientHeight / 2;
@@ -187,7 +200,9 @@
         ctx.font = (n.layer === 3 ? "12" : "11") + "px ui-monospace,Menlo,monospace";
         var title = lang() === "en" ? n.title_en : n.title_zh;
         ctx.textAlign = "center";
-        var w = ctx.measureText(title).width;
+        var mkey = ctx.font + title;
+        if (mCache[mkey] === undefined) mCache[mkey] = ctx.measureText(title).width;
+        var w = mCache[mkey];
         var rect = { x: n.sx - w / 2 - 2, y: n.sy + n.sr + 3, w: w + 4, h: 14 };
         var clash = false;
         for (var li = 0; li < placedLabels.length; li++) {
@@ -219,22 +234,42 @@
   function enLabel(cid) { var c = clusters.filter(function (x) { return x.id === cid; })[0]; return c ? c.label_en : ""; }
   function lang() { return window.gmCurrentLang ? window.gmCurrentLang() : "zh"; }
 
+  var mCache = {};
   var rm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var raf = null, visible = true;
+  var raf = null;
   function loop(now) {
-    if (visible && !document.hidden) draw(now);
-    raf = requestAnimationFrame(loop);
-  }
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(function (e) { visible = e[0].intersectionRatio > 0; }).observe(canvas);
+    try { draw(now); }
+    catch (e) {
+      if (!window.__gmErr) {
+        window.__gmErr = String(e);
+        if (raf) cancelAnimationFrame(raf);
+        var fb = document.querySelector(".fallback .banner");
+        if (fb) fb.hidden = false;
+        return; // stop the loop on first draw exception — never spin at 60fps
+      }
+    }
+    updateZoomButtons();
+    raf = requestAnimationFrame(loop); // rAF self-pauses in background tabs
   }
 
   /* input ------------------------------------------------------------- */
+  function evPos(e) {
+    /* e.offsetX is unreliable under pointer capture (Safari) and for
+       synthetic events — always derive from clientX/Y + live rect */
+    var r = canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function projectAll(t) { nodes.forEach(function (n) { project(n, t); }); }
   function hitNode(x, y) {
+    /* project NOW: never trust cached screen positions (rAF may have been
+       frozen — background tab, restore, first click after load) */
+    projectAll(performance.now() / 1000);
     var best = null, bd = 1e9;
+    var touch = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+    var slack = touch ? 30 : 26; // generous target: nodes are small at fit zoom
     nodes.forEach(function (n) {
       var d = Math.hypot(n.sx - x, n.sy - y);
-      var r = Math.max(n.sr + 6, 22);
+      var r = Math.max(n.sr + 8, slack);
       if (d < r && d < bd) { bd = d; best = n; }
     });
     return best;
@@ -245,43 +280,60 @@
   }
   var drag = null;
   canvas.addEventListener("pointerdown", function (e) {
-    canvas.setPointerCapture(e.pointerId);
-    drag = { x: e.offsetX, y: e.offsetY, cx: cam.x, cy: cam.y, moved: 0, id: e.pointerId };
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) { /* synthetic or already-released pointer */ }
+    var p = evPos(e);
+    drag = { x: p.x, y: p.y, cx: cam.x, cy: cam.y, moved: 0, id: e.pointerId };
     canvas.classList.add("grabbing");
   });
   canvas.addEventListener("pointermove", function (e) {
     if (drag) {
-      var dx = e.offsetX - drag.x, dy = e.offsetY - drag.y;
+      var p = evPos(e);
+      var dx = p.x - drag.x, dy = p.y - drag.y;
       drag.moved = Math.max(drag.moved, Math.hypot(dx, dy));
       flight = null;
       cam.x = drag.cx - dx / cam.scale; cam.y = drag.cy - dy / cam.scale;
       clampCam();
     } else {
-      var n = hitNode(e.offsetX, e.offsetY);
+      var p = evPos(e);
+      var n = hitNode(p.x, p.y);
       hover = n;
       canvas.style.cursor = n ? "pointer" : "grab";
     }
   });
+  function tapSelect(x, y) {
+    var n = hitNode(x, y);
+    if (!n && window.__selDbg) {
+      var near = nodes.map(function (m) {
+        return { id: m.id, d: Math.round(Math.hypot(m.sx - x, m.sy - y)), sr: +m.sr.toFixed(1) };
+      }).sort(function (a, b) { return a.d - b.d; }).slice(0, 3);
+      (window.__selLog = window.__selLog || []).push("MISS@" + Math.round(x) + "," + Math.round(y) + " near=" + JSON.stringify(near));
+    }
+    if (n) select(n); else closePanel();
+  }
   canvas.addEventListener("pointerup", function (e) {
     canvas.classList.remove("grabbing");
-    if (drag && drag.moved < 4) {
-      var n = hitNode(e.offsetX, e.offsetY);
-      if (n) select(n); else { closePanel(); }
-    }
+    if (drag && drag.moved < 4) { var p = evPos(e); tapSelect(p.x, p.y); }
+    drag = null;
+  });
+  canvas.addEventListener("pointercancel", function () {
+    canvas.classList.remove("grabbing");
     drag = null;
   });
   canvas.addEventListener("dblclick", function (e) {
-    var w = screenToWorld(e.offsetX, e.offsetY);
+    var p = evPos(e);
+    var w = screenToWorld(p.x, p.y);
     flyTo(w.x, w.y, Math.min(fit.scale * 2.6, cam.scale * 1.5));
   });
   canvas.addEventListener("wheel", function (e) {
+    if (e.ctrlKey) return; // Ctrl+wheel = browser page zoom, keep it
     e.preventDefault();
     var factor = Math.exp(-e.deltaY * 0.0016);
-    var w = screenToWorld(e.offsetX, e.offsetY);
+    var p = evPos(e);
+    var w = screenToWorld(p.x, p.y);
     flight = null;
     cam.scale *= factor; clampCam();
-    cam.x = w.x - (e.offsetX - canvas.clientWidth / 2) / cam.scale;
-    cam.y = w.y - (e.offsetY - canvas.clientHeight / 2) / cam.scale;
+    cam.x = w.x - (p.x - canvas.clientWidth / 2) / cam.scale;
+    cam.y = w.y - (p.y - canvas.clientHeight / 2) / cam.scale;
     clampCam();
   }, { passive: false });
 
@@ -291,7 +343,12 @@
                     en: { def: "Definition", plain: "Plain", example: "Example" } };
   var activeTab = "def";
   function select(n, viaFlight) {
-    sel = n; n.visited = true; nodes.forEach(function (m) { m.driftScale = m === n ? 0.3 : 1; });
+    (window.__selLog = window.__selLog || []).push(n.id + (viaFlight ? "(flight)" : ""));
+    relatedCache = null;
+    sel = n; n.visited = true; lastSelId = n.id; relatedCache = null;
+    nodes.forEach(function (m) { m.driftScale = m === n ? 0.3 : 1; });
+    document.querySelector(".map-app").classList.add("panel-open");
+    panel.inert = false;
     if (!viaFlight) {
       var w = canvas.clientWidth, targetScale = Math.max(fit.scale * 1.35, cam.scale);
       flyTo(n.x + (w > 1100 ? -0.12 * w / targetScale : 0), n.y, targetScale);
@@ -299,6 +356,8 @@
     openPanel(n);
     announce((lang() === "en" ? "selected " : "已选中 ") + n.title_zh + " · " + n.title_en);
     updateTwin();
+    var firstTab = panel.querySelector(".tabs button:not([disabled])");
+    if (firstTab && document.activeElement && document.activeElement.tagName !== "INPUT") firstTab.focus();
   }
   function openPanel(n) {
     var L = lang();
@@ -321,6 +380,8 @@
       var k = b.getAttribute("data-tab"); b.disabled = !has[k];
       b.textContent = tabLabels[L][k];
       b.classList.toggle("on", k === activeTab);
+      b.setAttribute("aria-selected", k === activeTab ? "true" : "false");
+      b.setAttribute("aria-controls", "panel-layer");
     });
     moveTabBar();
     renderLayer(n);
@@ -368,18 +429,32 @@
   panel.querySelectorAll(".tabs button").forEach(function (b) {
     b.addEventListener("click", function () {
       activeTab = b.getAttribute("data-tab");
-      panel.querySelectorAll(".tabs button").forEach(function (x) { x.classList.toggle("on", x === b); });
+      panel.querySelectorAll(".tabs button").forEach(function (x) {
+        x.classList.toggle("on", x === b);
+        x.setAttribute("aria-selected", x === b ? "true" : "false");
+      });
       moveTabBar(); renderLayer(sel);
     });
   });
   function closePanel() {
-    panel.classList.remove("open"); sel = null;
+    (window.__selLog = window.__selLog || []).push("CLOSE");
+    panel.classList.remove("open");
+    document.querySelector(".map-app").classList.remove("panel-open");
+    panel.inert = true;
+    sel = null; relatedCache = null;
+    if (lastSelId) {
+      var b = twin.querySelector('[data-id="' + lastSelId + '"]');
+      if (b) { b.tabIndex = 0; b.focus(); return; }
+    }
+    focusSearch();
     nodes.forEach(function (m) { m.driftScale = 1; });
     updateTwin();
   }
   panel.querySelector(".p-close").addEventListener("click", closePanel);
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
+      var help = document.getElementById("shortcuts");
+      if (help && !help.hidden) { help.hidden = true; return; }
       if (panel.classList.contains("open")) { closePanel(); return; }
       if (trail.length) { var prev = trail.pop(); select(prev, true); flyTo(prev.x, prev.y, cam.scale); return; }
       if (isolated) { toggleIsolate(isolated); return; }
@@ -387,10 +462,18 @@
       flyTo(fit.x, fit.y, fit.scale);
     }
     if (e.target.tagName === "INPUT") return;
-    if (e.key === "+") zoomStep(1.25);
+    if (e.key === "+" || e.key === "=") zoomStep(1.25);
     if (e.key === "-") zoomStep(0.8);
     if (e.key === "0") flyTo(fit.x, fit.y, fit.scale);
     if (e.key === "/") { e.preventDefault(); focusSearch(); }
+    if (e.key === "l" || e.key === "L") {
+      window.gmApplyLang(window.gmCurrentLang() === "en" ? "zh" : "en", true);
+    }
+  });
+  var helpBtn = document.getElementById("help-btn");
+  if (helpBtn) helpBtn.addEventListener("click", function () {
+    var help = document.getElementById("shortcuts");
+    if (help) help.hidden = !help.hidden;
   });
   function pushTrail(n) { trail.push(n); if (trail.length > 6) trail.shift(); renderTrail(); }
   function renderTrail() {
@@ -412,6 +495,12 @@
   function zoomStep(f) {
     flyTo(cam.x, cam.y, Math.max(fit.scale * 0.45, Math.min(fit.scale * 2.6, cam.scale * f)));
   }
+  function updateZoomButtons() {
+    var maxed = cam.scale >= fit.scale * 2.55, mined = cam.scale <= fit.scale * 0.46;
+    if (zin) zin.disabled = maxed;
+    if (zout) zout.disabled = mined;
+  }
+
   var zin = document.getElementById("zin"), zout = document.getElementById("zout"), zrst = document.getElementById("zreset");
   if (zin) zin.addEventListener("click", function () { zoomStep(1.25); });
   if (zout) zout.addEventListener("click", function () { zoomStep(0.8); });
@@ -450,6 +539,34 @@
     });
     if (best) { focusId = best.id; var b = twin.querySelector('[data-id="' + best.id + '"]'); if (b) b.focus(); }
   }
+  document.addEventListener("keydown", function (e) {
+    if (e.target.tagName === "INPUT" || e.target.closest("#panel")) return;
+    var map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
+    if (!map[e.key]) return;
+    e.preventDefault();
+    var entry = focusId && byId[focusId] ? byId[focusId] : null;
+    if (!entry) {
+      var cx = canvas.clientWidth / 2, cy = canvas.clientHeight / 2, bd = 1e18;
+      nodes.forEach(function (n) {
+        var d = (n.sx - cx) * (n.sx - cx) + (n.sy - cy) * (n.sy - cy);
+        if (d < bd) { bd = d; entry = n; }
+      });
+    } else {
+      var v = map[e.key];
+      var best = null, bs = -1e9;
+      nodes.forEach(function (n2) {
+        if (n2 === entry) return;
+        var vx = n2.x - entry.x, vy = n2.y - entry.y;
+        var d = Math.hypot(vx, vy); if (d < 1) return;
+        var dot = (vx * v[0] + vy * v[1]) / d;
+        if (dot > 0.35) { var s = dot - d / 800; if (s > bs) { bs = s; best = n2; } }
+      });
+      entry = best || entry;
+    }
+    focusId = entry.id;
+    var b = twin.querySelector('[data-id="' + entry.id + '"]');
+    if (b) { b.tabIndex = 0; b.focus(); }
+  });
   twin.addEventListener("keydown", function (e) {
     var cur = focusId; if (!cur) return;
     var map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
@@ -479,6 +596,7 @@
         });
         selIdx = 0;
         renderResults(q);
+        announce((lang() === "en" ? matches.length + " matches" : matches.length + " 个匹配"));
       }, 120);
     });
     input.addEventListener("keydown", function (e) {
@@ -495,8 +613,18 @@
     });
     function renderResults(q) {
       if (!matches.length && q) {
-        resultsEl.innerHTML = '<button disabled>没有匹配 — 试试 cosine · 指纹 · holdout</button>';
-        resultsEl.classList.add("open"); return;
+        resultsEl.innerHTML = '<div class="no-match">没有匹配 — 试试：</div>' +
+          ["cosine", "指纹门", "holdout"].map(function (s) {
+            return '<button data-q="' + s + '">' + s + "</button>";
+          }).join("");
+        resultsEl.classList.add("open");
+        resultsEl.querySelectorAll("button[data-q]").forEach(function (b) {
+          b.addEventListener("click", function () {
+            input.value = b.getAttribute("data-q");
+            input.dispatchEvent(new Event("input", { bubbles: true }));
+          });
+        });
+        return;
       }
       if (!q) { resultsEl.classList.remove("open"); return; }
       resultsEl.innerHTML = matches.slice(0, 8).map(function (n, i) {
@@ -539,7 +667,7 @@
   }
 
   /* announce + language ------------------------------------------------ */
-  var live = document.getElementById("map-live");
+  var live = document.getElementById("map-live-region") || document.getElementById("map-live");
   function announce(msg) { if (live) live.textContent = msg; }
   document.documentElement.addEventListener("gmlang", function () {
     if (sel) openPanel(sel);
@@ -552,8 +680,47 @@
   /* boot ----------------------------------------------------------------- */
   resize();
   window.addEventListener("resize", function () { resize(); });
+  /* the authoritative size signal: fires when layout finally gives the
+     canvas its real box (covers the boot-time 0x0 race) */
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(function () { resize(); }).observe(canvas);
+  } else {
+    setTimeout(resize, 60); setTimeout(resize, 300);
+  }
   buildTwin(); buildClusterbar();
   document.querySelector(".map-live").classList.add("ready");
-  if (rm) { draw(performance.now()); }
-  else raf = requestAnimationFrame(loop);
+  /* list-view toggle (mobile + parity with no-JS fallback) */
+  var listBtn = document.getElementById("list-toggle");
+  if (listBtn) listBtn.addEventListener("click", function () {
+    var live = document.querySelector(".map-live");
+    var on = live.classList.toggle("list-mode");
+    listBtn.setAttribute("aria-pressed", on ? "true" : "false");
+  });
+  /* shortcuts popover (?) */
+  var help = document.getElementById("shortcuts");
+  if (help) {
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "?" && e.target.tagName !== "INPUT") {
+        help.hidden = !help.hidden;
+      }
+    });
+    help.addEventListener("click", function (e) { if (e.target === help) help.hidden = true; });
+  }
+  /* test/QA seam (read-only introspection; also drives future smoke tests) */
+  window.__gm = {
+    nodes: nodes, byId: byId, cam: cam, fit: fit,
+    flyTo: flyTo, select: select, hitNode: hitNode,
+    screenToWorld: screenToWorld
+  };
+  if (rm) {
+    /* reduced motion: no ambient loop — redraw on demand only */
+    ["pointermove", "pointerdown", "pointerup", "wheel", "dblclick", "keydown"].forEach(function (t) {
+      canvas.addEventListener(t, function () { draw(performance.now()); });
+    });
+    window.addEventListener("resize", function () { draw(performance.now()); });
+    document.documentElement.addEventListener("gmlang", function () { draw(performance.now()); });
+    draw(performance.now());
+  } else {
+    raf = requestAnimationFrame(loop);
+  }
 })();

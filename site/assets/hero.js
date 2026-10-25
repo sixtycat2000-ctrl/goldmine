@@ -19,7 +19,7 @@
   var points = [], dust = [], star = { x: 0, y: 0, t: 0 };
   var T = 16, firstOrbit = true;
   var ptr = { x: 0, y: 0, tx: 0, ty: 0 };
-  var sprites = {};
+  var sprites = {}, rayGradient = null;
 
   function rnd(a, b) { return a + Math.random() * (b - a); }
 
@@ -61,6 +61,7 @@
 
   function resize() {
     var rect = hero.getBoundingClientRect();
+    if (!rect.width || !rect.height) return; // layout not ready — retry via observer below
     W = Math.max(320, rect.width); H = Math.max(320, rect.height);
     DPR = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = W * DPR; canvas.height = H * DPR;
@@ -74,18 +75,22 @@
   sprites.goldDim = makeSprite("227,169,76", 16);
   sprites.teal = makeSprite("111,179,170", 16);
 
-  var litSet = [];
+  var litSet = [], distBuf = [];
+  var igniteSkip = 0;
   function ignite(t) {
+    if (igniteSkip++ % 5 !== 0) return; // recompute neighbors 12x/s, draw every frame
     var R = Math.max(120, Math.min(240, 180 * Math.min(W, H) / 800));
     var sx = star.x * W, sy = star.y * H;
-    var arr = points.map(function (p) {
-      var dx = p.sx - sx, dy = p.sy - sy;
-      return { p: p, d: dx * dx + dy * dy };
-    }).sort(function (a, b) { return a.d - b.d; });
+    distBuf.length = 0;
+    for (var i = 0; i < points.length; i++) {
+      var pdx = points[i].sx - sx, pdy = points[i].sy - sy;
+      distBuf.push({ p: points[i], d: pdx * pdx + pdy * pdy });
+    }
+    distBuf.sort(function (a, b) { return a.d - b.d; });
     var within = 0;
     litSet.length = 0;
-    for (var i = 0; i < arr.length && within < 6; i++) {
-      if (arr[i].d < R * R) { arr[i].p.litTarget = 1; litSet.push(arr[i].p); within++; }
+    for (var i = 0; i < distBuf.length && within < 6; i++) {
+      if (distBuf[i].d < R * R) { distBuf[i].p.litTarget = 1; litSet.push(distBuf[i].p); within++; }
     }
     points.forEach(function (p) {
       var dx = p.sx - sx, dy = p.sy - sy;
@@ -137,10 +142,15 @@
   function drawStar() {
     var sx = star.x * W, sy = star.y * H;
     ctx.drawImage(sprites.gold, sx - 32, sy - 32, 64, 64);
-    var g = ctx.createLinearGradient(sx, sy, sx - 46, sy + 18);
-    g.addColorStop(0, "rgba(240,197,120,.8)"); g.addColorStop(1, "rgba(240,197,120,0)");
+    var g = rayGradient || (rayGradient = (function () {
+      var gr = ctx.createLinearGradient(0, 0, -46, 18);
+      gr.addColorStop(0, "rgba(240,197,120,.8)"); gr.addColorStop(1, "rgba(240,197,120,0)");
+      return gr;
+    })());
+    ctx.save(); ctx.translate(sx, sy);
     ctx.strokeStyle = g; ctx.lineWidth = 1.4;
-    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx - 46, sy + 18); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-46, 18); ctx.stroke();
+    ctx.restore();
     ctx.fillStyle = "#F0C578";
     ctx.beginPath();
     for (var i = 0; i < 8; i++) {
@@ -151,14 +161,16 @@
     ctx.closePath(); ctx.fill();
   }
 
-  var frame = 0, slow = 0, t0 = performance.now();
+  var frame = 0, t0 = performance.now(), lastNow = t0;
+  var orbitP = 0; // accumulated phase — continuous across period changes
   function loop(now) {
+    if (!heroVisible) { raf = requestAnimationFrame(loop); return; } // offscreen: idle, keep loop warm
     var t = (now - t0) / 1000;
-    star.t += 1 / 60 / (firstOrbit ? 3 : T);
-    if (star.t >= 1) { star.t = 0; if (firstOrbit) firstOrbit = false; }
+    var dt = Math.min(0.1, (now - lastNow) / 1000); lastNow = now;
     var period = firstOrbit ? 3 : T;
-    star.t += 0; /* handled above */
-    var prog = starOrbitProgress(now, period);
+    orbitP += dt / period;
+    if (orbitP >= 1 && firstOrbit) { orbitP -= 1; firstOrbit = false; }
+    var prog = orbitP % 1;
     star.x = 0.5 + 0.30 * Math.sin(2 * Math.PI * prog);
     star.y = 0.44 + 0.26 * Math.sin(4 * Math.PI * prog + Math.PI / 3);
     ptr.x += (ptr.tx - ptr.x) * 0.04; ptr.y += (ptr.ty - ptr.y) * 0.04;
@@ -172,11 +184,6 @@
       if (dt > 30 && dust.length > 20) dust.splice(0, Math.floor(dust.length * 0.3));
     }
     raf = requestAnimationFrame(loop);
-  }
-  var starStart = null;
-  function starOrbitProgress(now, period) {
-    if (starStart === null) starStart = now;
-    return ((now - starStart) / 1000 / period) % 1;
   }
   var raf = null;
 
@@ -221,11 +228,16 @@
   });
   hero.addEventListener("pointerleave", function () { ptr.tx = 0; ptr.ty = 0; });
   window.addEventListener("resize", function () { if (rm) staticFrame(); else resize(); });
+  if ("ResizeObserver" in window) new ResizeObserver(function () { resize(); }).observe(hero);
 
   resize();
   if (rm) { staticFrame(); return; }
   raf = requestAnimationFrame(function tick(now) {
+    if (!W) resize(); // boot race: layout landed after first paint
     canvas.classList.add("on");
     raf = requestAnimationFrame(loop);
   });
+  var _raf = raf;
+  raf = null;
+
 })();

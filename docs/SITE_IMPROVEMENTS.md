@@ -39,3 +39,42 @@
 10. **并行会话撞车再现**：本任务期间工作树仍有另一会话的未提交改动
     （build 期间 README/SPEC 等持续变动）。AGENTS.md"一会话一分支"
     已立规但未被执行环境强制；hosted CI 是真正的强制点（仍未跑通）。
+
+---
+# 第二轮（2026-10-25 晚：交互升级 + 五领域对抗评审后）
+
+> 评审团：产品 UX / 无障碍 WCAG 2.2 / 双语技术文案 / 性能与产线工程 / 产品策略。
+> 交付 35 条发现。以下为**未在本轮修复**的遗留项（已修 25 条，摘要见
+> COMMIT_DIGESTS.md）。
+
+## 已知遗留（按优先级）
+
+1. **learn.html 内联 JSON 仍未外置**（评审 PERF#3）：225KB 内联数据走关键
+   路径。外置 fetch 方案已验证可行（.assetsignore/_headers 均生效），需要
+   map.js 加载态骨架。留待下次。
+2. **首页缺产品实拍动图**（STRAT#2，评审称为最高转化缺口）：需要一个真实
+   的 search→open-at-timestamp 的 15s GIF/视频。素材要用真终端录。
+3. **安装摩擦**（STRAT#9）：无 brew/PyPI 一行安装。发布到 PyPI 是产品任务，
+   不属于站点。
+4. **对比表第 7-8 行自证倾向**（STRAT#7）：'换模型保护/公开度量'是竞品
+   没有的维度，评分表偏向自选赛道。建议每行链接到证据文件。
+5. **learn 示例的可达性标注**（评审 P2#17）：部分"可跟算实例"依赖完整仓库
+   + 真模型，应在内容层加"需完整仓库"范围标签（concepts.json 数据层改动）。
+6. **sitemap 缺 lastmod、无 og:image 分享卡**（PERF#11 部分）：og:image 需
+   1200×630 渲染图。
+7. **Playwright 冒烟测试**（原 #8 仍未做）：window.__gm seam 已就位，脚本
+   是体力活。
+8. **hero 星空的 ignite 每帧 map+sort 已降频至 1/5 帧**，但仍是 O(n log n)；
+   节点数再涨需换部分选择算法。
+
+## 修复存档（本轮已修，备查）
+
+P0：quickstart mkdir、关闭面板 inert/焦点归还/列宽归还、.assetsignore 内部
+文件暴露、learn 安全头（CSP/HSTS/nosniff/DENY）。本地功能三大真凶：
+setPointerCapture 异常杀点击（Safari 用户全灭）、shortcuts 面板 display:grid
+压过 hidden 永久悬浮、rAF 冻结下 canvas 0×0 backing（时序竞态，ResizeObserver
+治本）+ offsetX 在 capture/合成事件下不可靠（evPos 自算）。交互升级：懒投影
+命中、命中容差 26/30px、目录视图切换、? 快捷键面板、Esc 五级链、Ctrl+wheel
+还页缩放、RM 事件驱动重绘（不再 60fps 空转）、boot 一次性致意、诚实演示字幕、
+doc-level 方向键入图、tabs/listbox ARIA、对比表语义化+脚注锚、GitHub 直链
+审计索引、canonical/OG/robots/sitemap/404、拖动 307 消除（extensionless 链接）。

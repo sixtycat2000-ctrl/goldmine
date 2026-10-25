@@ -79,9 +79,19 @@
         btn.setAttribute("data-label", ok ? "copied" : "failed");
         setTimeout(function () { btn.classList.remove("ok"); if (old) btn.setAttribute("data-label", old); }, 1200);
       }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
-      } else { done(false); }
+      function fallbackCopy() {
+        try {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          var ok = document.execCommand("copy");
+          document.body.removeChild(ta);
+          done(ok);
+        } catch (e) { done(false); }
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, fallbackCopy);
+      } else { fallbackCopy(); }
     });
   }
 

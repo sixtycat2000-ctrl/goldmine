@@ -4,8 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='2' transform='rotate(45 12 12)' fill='none' stroke='%23E3A94C' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='1.8' fill='%23E3A94C'/%3E%3C/svg%3E">
 <meta name="description" content="goldmine 文档 — 入门、概念、架构、评测与证据、运维。">
 <title>goldmine · 文档 / Docs</title>
+<link rel="canonical" href="https://goldmine-site.sixtycat2000.workers.dev/docs">
+<meta property="og:title" content="goldmine · 文档">
+<meta property="og:description" content="入门、概念、命令参考、架构、评测与证据、运维。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/goldmine.css">
 <script>document.documentElement.classList.add("js")</script>
 </head>
@@ -17,11 +23,11 @@
 <div class="progress" aria-hidden="true"></div>
 <nav class="nav">
   <div class="nav-in">
-    <a class="brand" href="index.html"><svg width="20" height="20"><use href="#i-logo"/></svg><b>goldmine</b></a>
+    <a class="brand" href="/"><svg width="20" height="20"><use href="#i-logo"/></svg><b>goldmine</b></a>
     <div class="nav-links">
-      <a href="index.html" data-zh="首页" data-en="Home">首页</a>
-      <a href="docs.html" class="active" data-zh="文档" data-en="Docs">文档</a>
-      <a href="learn.html" data-zh="Learn" data-en="Learn">Learn</a>
+      <a href="/" data-zh="首页" data-en="Home">首页</a>
+      <a href="/docs" class="active" data-zh="文档" data-en="Docs">文档</a>
+      <a href="/learn" data-zh="Learn" data-en="Learn">Learn</a>
       <a href="https://github.com/sixtycat2000-ctrl/goldmine" aria-label="GitHub">GitHub</a>
       <div class="lang-pill" role="group" aria-label="language"><button data-lang="zh">中</button><button data-lang="en">EN</button></div>
     </div>
@@ -39,6 +45,7 @@
     <a href="#repo" data-zh="仓库文档索引" data-en="Repo docs index">仓库文档索引</a>
   </nav>
   <main class="prose">
+    <h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">goldmine docs</h1>
     <h2 id="start" data-zh="快速开始" data-en="Quickstart">快速开始</h2>
     <p data-zh="Python 3.12+，基础包只依赖 numpy。零模型也能用——纯词法检索：" data-en="Python 3.12+; the base package depends only on numpy. Zero-model works too — pure lexical search:">Python 3.12+，基础包只依赖 numpy。零模型也能用——纯词法检索：</p>
     <div class="term"><div class="term-hd"><span>quickstart</span><button class="copy-btn" aria-label="copy"><svg width="14" height="14"><use href="#i-copy"/></svg><span data-zh="复制" data-en="copy">复制</span></button></div>
@@ -53,8 +60,8 @@
     <p data-zh="可选工具：Poppler（pdftotext/pdftoppm，PDF）、ffmpeg + whisper（音视频）、macOS Vision OCR（截图/扫描页）、goldmine-embed 常驻助手（图像/音频向量）。缺哪个就降级哪个，原因写在能力行里。" data-en="Optional tools: Poppler (PDFs), ffmpeg + whisper (audio/video), macOS Vision OCR (screenshots/scans), the goldmine-embed resident helper (image/audio vectors). Whatever is missing degrades with the reason recorded in the capability row.">可选工具：Poppler、ffmpeg + whisper、Vision OCR、goldmine-embed 助手。缺哪个就降级哪个，原因写在能力行里。</p>
 
     <h2 id="concepts" data-zh="概念" data-en="Concepts">概念</h2>
-    <p data-zh="最好的入口是概念地图：45 个概念、7 个集群，从「嵌入」一路下探到「指纹身份」再到「预注册」——每个概念三层（专业定义 / 大白话 / 可跟算的实例）+ 真实代码引用，中英双语。" data-en="The best entry is the concept map: 45 concepts in 7 clusters, from 'embedding' down to 'fingerprint identity' to 'preregistration' — three layers each (professional / plain / worked example) plus real code refs, bilingual.">最好的入口是概念地图：45 个概念、7 个集群，三层讲解 + 真实代码引用，中英双语。</p>
-    <p><a href="learn.html">→ <span data-zh="打开概念地图" data-en="Open the concept map">打开概念地图</span></a></p>
+    <p data-zh="最好的入口是概念地图：77 个概念、7 个集群、四个深度层，从项目机制一路下探到基础概念——每个概念三层（专业定义 / 大白话 / 可跟算的实例）+ 真实代码引用，中英双语。" data-en="The best entry is the concept map: 77 concepts in 7 clusters across four depth layers, from project mechanisms down to fundamentals — three layers each plus real code refs, bilingual.">最好的入口是概念地图：45 个概念、7 个集群，三层讲解 + 真实代码引用，中英双语。</p>
+    <p><a href="/learn">→ <span data-zh="打开概念地图" data-en="Open the concept map">打开概念地图</span></a></p>
 
     <h2 id="cli" data-zh="命令参考（速查）" data-en="CLI reference (quick)">命令参考（速查）</h2>
     <div class="term"><div class="term-hd"><span>commands</span></div>
@@ -80,8 +87,8 @@ backup / reindex / reset / model / doctor / serve / watch / mcp</pre></div>
     <h2 id="repo" data-zh="仓库文档索引" data-en="Repo docs index">仓库文档索引</h2>
     <p data-zh="以下文件在仓库里（本站不复制它们——证据链只有一份）：" data-en="These live in the repository (this site does not copy them — the evidence chain exists exactly once):">以下文件在仓库里（本站不复制它们——证据链只有一份）：</p>
     <div class="term"><div class="term-hd"><span>repository</span></div>
-<pre>README.md USER_GUIDE.md SPEC.md ARCHITECTURE.md
-docs/FEATURE_STATUS.md docs/JOURNEY.md docs/ANCHORS.md docs/AGENTS… (AGENTS.md at root)
+<pre>docs/FEATURE_STATUS.md docs/JOURNEY.md docs/ANCHORS.md AGENTS.md（仓库根目录）
+README.md USER_GUIDE.md SPEC.md ARCHITECTURE.md
 docs/WALKTHROUGH-{search,fingerprint,ingest,honesty,processes}.md
 docs/MODULE_MAP.md docs/DESIGN_DECISIONS.md docs/digup-derived-plan.md
 docs/TEST_PLAN.md docs/MCP.md docs/HOLDOUT_AUDIT.md docs/PUBLIC_EVALUATION.md
@@ -91,9 +98,29 @@ docs/execution-plan/PROGRESS.md evals/</pre></div>
 
 <footer class="foot"><div class="foot-in">
   <span>goldmine · <span data-zh="本地优先语义搜索" data-en="local-first semantic search">本地优先语义搜索</span></span>
-  <span class="mid"><a href="index.html">index</a><a href="docs.html">docs</a><a href="learn.html">learn</a></span>
+  <span class="mid"><a href="/">index</a><a href="/docs">docs</a><a href="/learn">learn</a></span>
   <span><span class="mark0">0 bytes</span> <span data-zh="离开你的机器" data-en="leave your machine">离开你的机器</span></span>
 </div></footer>
 <script src="assets/app.js" defer></script>
+<script>
+// scrollspy: highlight the toc link of the section in view
+(function(){
+  var links = [].slice.call(document.querySelectorAll(".toc a"));
+  var map = {};
+  links.forEach(function(a){ map[a.getAttribute("href").slice(1)] = a; });
+  if (!("IntersectionObserver" in window)) return;
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(en){
+      if (en.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove("on"); });
+        var a = map[en.target.id]; if (a) a.classList.add("on");
+      }
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  Object.keys(map).forEach(function(id){
+    var h = document.getElementById(id); if (h) io.observe(h);
+  });
+})();
+</script>
 </body>
 </html>
