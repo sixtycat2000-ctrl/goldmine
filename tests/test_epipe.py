@@ -45,6 +45,7 @@ def test_search_into_closed_pipe_exits_quietly(tmp_path):
         assert marker not in err, marker
 
 
+@pytest.mark.optional_mcp
 def test_mcp_stdio_client_gone_exits_quietly(tmp_path):
     pytest.importorskip("mcp")
     from test_mcp import fixture_index
