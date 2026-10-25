@@ -1,0 +1,185 @@
+{
+ "nodes": [
+  {
+   "id": "exact-promote", "cluster": "search", "layer": 3,
+   "term_zh": "精确命中提前", "term_en": "Exact-Match Promotion",
+   "one_liner_zh": "引号短语与锚点验证过的精确命中在最终排序里整体提前",
+   "one_liner_en": "Quoted phrases and anchor-verified exact hits jump the queue",
+   "professional_zh": "精确命中（引号短语、锚点契约验证过的）在最终排序里整体提前，按精确等级排。语义分再高也不能把「逐字出现」压下去——混合打分管相关性，精确等级管确定性，两条规则分工不混。",
+   "professional_en": "Exact hits (quoted phrases, anchor-contract-verified) are promoted as a block in the final ordering, by exactness grade. No semantic score can push a verbatim occurrence down: hybrid scoring owns relevance, the exactness grade owns certainty — two rules, two jobs.",
+   "plain_zh": "你打引号就是要逐字。逐字出现的结果永远排在「意思差不多」前面，不管语义模型多喜欢后者。",
+   "plain_en": "Quotes mean verbatim. Anything containing the exact string outranks everything that merely resembles it — no matter how much the embedding model likes the other file.",
+   "example_zh": "search '\"z_gate=3.0\"' --db evals/eval.sqlite：含这个逐字串的文件排最前，语义近亲排后面。",
+   "example_en": "search '\"z_gate=3.0\"' --db evals/eval.sqlite — files containing the literal string come first; semantic cousins follow.",
+   "code_refs": ["goldmine/search.py — 精确等级与最终排序提前"],
+   "analogy_zh": " quoted 的意思就是「我要逐字」", "analogy_en": "Quotes are a verbatim contract",
+   "dig_deeper": [
+    {"to": "hybrid-fusion", "why_zh": "提前发生在融合打分之后", "why_en": "Promotion happens after fusion scoring"},
+    {"to": "fts5-bm25", "why_zh": "逐字命中由词法臂验证", "why_en": "The lexical arm verifies verbatim hits"}
+   ]
+  },
+  {
+   "id": "near-dup-fold", "cluster": "search", "layer": 3,
+   "term_zh": "近重复折叠", "term_en": "Near-Duplicate Folding",
+   "one_liner_zh": "同一文件近似度 0.97 以上的段落只展示一条",
+   "one_liner_en": "Segments of the same file above cos 0.97 collapse into one row",
+   "professional_zh": "渲染层把同一文件的近重复段落折叠：余弦 0.97 以上的近似段只展一条主记录，其余收进该行。目标是屏幕密度而不是召回——折叠发生在排序与预算之后，--json 保留全量供程序消费。",
+   "professional_en": "The render layer folds near-duplicate segments within a file: segments above cosine 0.97 collapse into the top record. It trades screen density, not recall — folding happens after ranking and budgeting, and --json keeps everything for programs.",
+   "plain_zh": "同一份文件里五段长得几乎一样的话，人只想看一次。机器搜到了五段的事实不变，屏幕上只给你看一条。",
+   "plain_en": "If one file has five nearly identical passages, you want to see one. All five were found; the screen shows one; the JSON has five.",
+   "example_zh": "对同一文件反复出现同一术语的长手册做 search，人读模式每文件近重复段只占一行。",
+   "example_en": "Search a long manual reusing one phrase — human mode shows one row per near-dup cluster.",
+   "code_refs": ["goldmine/render.py — 近重复折叠（cos 0.97）与主记录合并"],
+   "analogy_zh": "同一句话说了五遍，屏幕只念一遍", "analogy_en": "Said five times, shown once",
+   "dig_deeper": [
+    {"to": "weak-fold", "why_zh": "另一种折叠：弱匹配整行折掉", "why_en": "The other fold: whole weak rows"},
+    {"to": "cosine", "why_zh": "0.97 这个数是谁的余弦", "why_en": "Whose cosine is 0.97"}
+   ]
+  },
+  {
+   "id": "weak-fold", "cluster": "search", "layer": 3,
+   "term_zh": "弱匹配折叠", "term_en": "Weak-Match Folding",
+   "one_liner_zh": "低于 0.5×榜首分数的命中整行折叠，实测从未折掉预期答案",
+   "one_liner_en": "Hits below 0.5× the top score fold away; never once folded the expected answer",
+   "professional_zh": "继承自 DigUp 的实测规则：分数低于榜首 0.5 倍的命中在 human 模式整行折叠（DigUp 实测 26.2→5.7 条/查询，从未折掉预期答案）；--json 模式保留全量。折叠只影响人读输出，不碰排序、预算与程序接口。",
+   "professional_en": "Inherited from DigUp's measurement: in human mode, hits scoring under 0.5× the leader fold away (DigUp measured 26.2→5.7 rows/query and never folded the expected answer); --json keeps everything. Folding touches human output only — ranking, budgets and program interfaces are untouched.",
+   "plain_zh": "分数不到第一名一半的结果，多半是凑数的。人读输出里把它们收起来，但机器（--json）仍然全量可查——藏是藏给你看的，不是藏事实。",
+   "plain_en": "Results scoring under half the leader are usually noise. Human output hides them; --json never does — hidden from eyes, not from programs.",
+   "example_zh": "docs/ANCHORS.md 第 2 条场景里加 --json 对比 human 输出，行数差异就是这条规则在工作。",
+   "example_en": "Run the ANCHORS #2 scenario with and without --json — the row-count delta is this rule working.",
+   "code_refs": ["goldmine/render.py:147-197 — human 折叠与 --json 全量"],
+   "analogy_zh": "演唱会名单只登台唱过的人", "analogy_en": "Only performers make the setlist",
+   "dig_deeper": [
+    {"to": "near-dup-fold", "why_zh": "兄弟规则：同文件内的段落折叠", "why_en": "Sibling rule: folding inside one file"},
+    {"to": "admission-gate", "why_zh": "进池子的门槛在折叠之前", "why_en": "The pool gate runs before folding"}
+   ]
+  },
+  {
+   "id": "kind-hint", "cluster": "search", "layer": 3,
+   "term_zh": "类型提示", "term_en": "Kind Hints",
+   "one_liner_zh": "命中文件的类型匹配给 +1.0 平坦加成，封顶不叠加",
+   "one_liner_en": "A matching file-kind adds a flat +1.0, capped, never stacked",
+   "professional_zh": "融合分里的类型项：命中文件的 kind 与查询暗示的类型一致时加 1.0——平坦、封顶、不叠加，避免类型成为第二个语义分。lookup 型查询下类型项随权重反转为 (0.5, 4.0) 里的固定部分。DigUp 曾实测「code 词权 2.0→1.0」的收益，但 goldmine 自己的 A/B（85 文件、21 题）显示混合词法已饱和（s@5=1.000），按纪律不采——记录在 digup-derived-plan §5。",
+   "professional_en": "The kind term in the fusion score: when the hit's kind matches the query's implied type, +1.0 — flat, capped, never stacked, so kind can't become a second semantic score. Under lookup queries it rides the inverted (0.5, 4.0) weights. DigUp measured a gain from re-weighting code terms, but goldmine's own A/B (85 files, 21 queries) showed lexical matching already saturates (s@5=1.000) — recorded, not adopted (digup-derived-plan §5).",
+   "plain_zh": "问代码时代码文件加一分固定分——只是一分，不搞复利。DigUp 的同款调参在我们这复测为零收益，按「别处有效≠这里有效」的规矩放弃。",
+   "plain_en": "Code queries give code files one flat point — no compounding. DigUp's same tweak re-measured as zero here; 'worked elsewhere' is not evidence here.",
+   "example_zh": "search 'parse config' --kind code --db …：--kinds 过滤是显式版，类型提示是打分里的隐式版。",
+   "example_en": "search 'parse config' --kind code — --kinds is the explicit filter; kind hints are the implicit scoring version.",
+   "code_refs": ["goldmine/search.py — kind 加成（平坦封顶）", "goldmine/rules.py — kind 判定"],
+   "analogy_zh": "对口型加一分，不多加", "analogy_en": "One point for matching the category",
+   "dig_deeper": [
+    {"to": "hybrid-fusion", "why_zh": "类型项在融合公式里的位置", "why_en": "Where the kind term sits in the fusion formula"},
+    {"to": "lookup-inversion", "why_zh": "权重反转时谁不变", "why_en": "What survives the weight inversion"}
+   ]
+  },
+  {
+   "id": "multi-query", "cluster": "search", "layer": 3,
+   "term_zh": "确定性多查询", "term_en": "Deterministic Multi-Query",
+   "one_liner_zh": "--multi-query 把原查询加最多两个来源派生子句，规则生成不用 AI 猜",
+   "one_liner_en": "--multi-query adds up to two source-derived clauses — rules, not AI guesses",
+   "professional_zh": "quality 模式可选开关（默认关）：原查询之外，由确定性规则从已命中来源派生最多两个子句再查一遍合并。派生是语法级的、可复现的——同样的输入永远同样的子句，这使它能进评测。复合问题的收益尚未测得，故保持默认关闭。",
+   "professional_en": "An optional quality-mode switch (off by default): beyond the original query, deterministic rules derive at most two clauses from already-hit sources and merge the results. Derivation is grammatical and reproducible — same input, same clauses — which is what makes it evaluable. Compound-question benefit is unmeasured, so it stays off.",
+   "plain_zh": "第一遍没找全时，从已找到的文件里反推出两个「换个问法」再搜一轮。关键是换法是规则定的，不是模型自由发挥——不然测都没法测。",
+   "plain_en": "When round one misses, derive two reformulations from what did hit and search again. The reformulations come from rules, not model free-styling — otherwise you couldn't measure them.",
+   "example_zh": "search 'why does admission reject' --mode quality --multi-query --db …：JSON 输出里能看到派生子句。",
+   "example_en": "search 'why does admission reject' --mode quality --multi-query — the JSON shows the derived clauses.",
+   "code_refs": ["goldmine/search.py — 多查询合并", "goldmine/query_plan.py — 派生规则"],
+   "analogy_zh": "第一遍没找到，换个问法再问一次——换法写死在规则里", "analogy_en": "Ask again, rephrased — the rephrasing is rulebook-fixed",
+   "dig_deeper": [
+    {"to": "hybrid-fusion", "why_zh": "多路结果怎么合并成一份排序", "why_en": "How multi-round results merge"},
+    {"to": "eval-metrics", "why_zh": "「收益未测」用什么尺子测", "why_en": "The rulers that would measure the benefit"}
+   ]
+  },
+  {
+   "id": "local-rerank", "cluster": "search", "layer": 3,
+   "term_zh": "本地重排", "term_en": "Local Reranking",
+   "one_liner_zh": "可选的钉版 639MB 重排模型，只对前 20 条入选段重排，默认关",
+   "one_liner_en": "An optional pinned 639MB reranker reorders the top-20 admitted segments; off by default",
+   "professional_zh": "quality 模式可选（--rerank local，默认关）：钉版 639MB 交叉编码器，只对准入后的前 20 段、每段 384 token 重排。六个真实端点探针与有界输入/清理测试已过；开发 A/B 与资源门未跑完，所以不默认开——证据没齐的开关不替用户做主。",
+   "professional_en": "Optional in quality mode (--rerank local, off by default): a pinned 639MB cross-encoder reranks only the top-20 admitted segments at 384 tokens each. Six real endpoint probes and bounded-input/cleanup tests pass; the dev A/B and resource gates haven't run, so it ships off — an unproven switch doesn't get to default on.",
+   "plain_zh": "第二名愿意请一位更挑剔的评委来重打分——但这位评委 639MB，请一次不便宜，所以默认不请。",
+   "plain_en": "A pickier judge re-scores the finalists — but the judge is 639MB and slow to summon, so by default nobody calls it.",
+   "example_zh": "search '退款条款' --mode quality --rerank local --db …：对比开关前后的排序差异。",
+   "example_en": "search '退款条款' --mode quality --rerank local — diff the ordering with it on and off.",
+   "code_refs": ["goldmine/rerank.py — 本地重排与子进程租约"],
+   "analogy_zh": "复赛请更严的评委，默认不请", "analogy_en": "A stricter judge for the finals — on request",
+   "dig_deeper": [
+    {"to": "rank-window", "why_zh": "交叉编码器的另一种用法：仲裁证据窗", "why_en": "The cross-encoder's other job: arbitrating evidence windows"},
+    {"to": "quantization", "why_zh": "639MB 是怎么来的", "why_en": "Where 639MB comes from"}
+   ]
+  },
+  {
+   "id": "rank-window", "cluster": "search", "layer": 3,
+   "term_zh": "交叉编码器窗口仲裁", "term_en": "Cross-Encoder Window Arbitration",
+   "one_liner_zh": "本地重排器可以在同文件内改判证据窗口，2026-10-26 落地，cjk@5 0.77→0.87",
+   "one_liner_en": "The local reranker may re-decide the evidence window within a file; landed 2026-10-26, cjk@5 0.77→0.87",
+   "professional_zh": "rank-window-001（提交 863fcb7）：在入选文件内部，若主证据来自普通语义阶梯，本地 Qwen3-Reranker 可在词法共资格的候选窗（单元数 ≥ 主证据、按句单元浓度排序）中改判——改判需要 0.01 分差领先；Tier-1/2 窗口结论永不被推翻；只在 pack 构建请求武装（裸列表搜索与时延基准不开）；重排器按 (server, model) 记忆化，评测循环共享一个懒拉起的子进程。013 真库回放：cjk@5 0.7667→0.8667、semantic@5 0.80→0.8667，双双过 0.85 门。",
+   "professional_en": "rank-window-001 (commit 863fcb7): inside an admitted file whose primary came from the plain semantic ladder, a local Qwen3-Reranker may re-decide the window among lexically co-qualified candidates (unit count ≥ the primary's, ordered by sentence-unit concentration); takeover needs a 0.01 score lead; Tier-1/2 window verdicts are never overturned; it arms only for pack-building requests (bare listing searches and the latency bench stay off); the reranker is memoized per (server, model) so evaluation loops share one lazily-spawned child. Real-code replay on the 013 index: cjk@5 0.7667→0.8667, semantic@5 0.80→0.8667 — both past the 0.85 gate.",
+   "plain_zh": "语义模型有时被「标题党」段落吸走，真正答案挤在同文件另一段。现在允许一位更仔细的评委在同文件内改判「给你看哪段」——但只改判这一件事，且必须有分差优势才许改。",
+   "plain_en": "Semantic models occasionally fall for a clickbait segment while the answer sits in the next one. A stricter judge may now overturn which segment you see — within the same file, only that one decision, and only with a score lead.",
+   "example_zh": "scripts/eval_real.py 的 013 回放记录在提交 863fcb7 的提交说明里；pack 输出中同文件的证据窗与关掉仲裁的版本对比可复现该增益。",
+   "example_en": "The 013 replay is recorded in commit 863fcb7's message; diffing pack output with arbitration on/off reproduces the gain.",
+   "code_refs": ["goldmine/rerank.py — 窗口仲裁武装与 0.01 领先规则", "goldmine/retrieval_evidence.py — 候选窗资格与改判"],
+   "analogy_zh": "同文件内允许改判「看哪段」，但要有分差优势", "analogy_en": "Overturn the window, not the verdict — and only with a lead",
+   "dig_deeper": [
+    {"to": "evidence-selection", "why_zh": "被仲裁的原始规则长什么样", "why_en": "The base rule being arbitrated"},
+    {"to": "local-rerank", "why_zh": "同一位评委的另一份工作", "why_en": "The same judge's other job"},
+    {"to": "shared-embedding-space", "why_zh": "为什么重排分数不能直接混进余弦", "why_en": "Why rerank scores can't mix into cosine"}
+   ]
+  },
+  {
+   "id": "distill-cards", "cluster": "search", "layer": 3,
+   "term_zh": "蒸馏卡片", "term_en": "Distilled Excerpt Cards",
+   "one_liner_zh": "把 100 篇混主题文档自动聚成主题卡片，原文逐字、增量更新",
+   "one_liner_en": "Auto-cluster 100 mixed-topic documents into verbatim excerpt cards; incremental updates",
+   "professional_zh": "distill 命令：v3 共现集成、默认 τ=0.45（可手动覆盖或增量继承）、卡片只收逐字原文、schema v4 携带 fp16 质心。mock 评测：v1 规则 purity 0.120 FAIL vs v2 purity 0.880 / ARI 0.812 / 主题找回 8-of-8 PASS。真实 120 文档输入已冻结并独立审计；真实聚类质量跑分仍欠——机制与质量分开记账。",
+   "professional_en": "The distill command: a v3 co-occurrence ensemble, default τ=0.45 (manual override or inherited incremental), cards hold verbatim original text only, schema v4 carries fp16 centroids. Mock eval: v1 rule purity 0.120 FAIL vs v2 purity 0.880 / ARI 0.812 / topic recovery 8-of-8 PASS. The real 120-document inputs are frozen and independently audited; the real clustering quality run is still owed — mechanics and quality are booked separately.",
+   "plain_zh": "把一堆杂七杂八的文档按内容自动归堆，每堆给你一张「原句卡片」。归堆规则换 v2 时旧规则打 0.12 分——红就是红，记录在案才换的。",
+   "plain_en": "Auto-pile mixed documents into topic piles and hand you a card of verbatim quotes per pile. When the rule went v1→v2, v1 scored 0.120 — the FAIL is on the record; that's why it was replaced.",
+   "example_zh": "scripts/eval_distill.py --report-real：看真库的卡片视图；质检门在 mock 与 hard 变体上分颜色。",
+   "example_en": "scripts/eval_distill.py --report-real — the real-library card view; gates report mock and hard variants separately.",
+   "code_refs": ["goldmine/distill.py — 聚类与增量 τ", "scripts/eval_distill.py — 评测门"],
+   "analogy_zh": "自动剪报师：按主题剪，只贴原文", "analogy_en": "A clipping service: by topic, verbatim only",
+   "dig_deeper": [
+    {"to": "chunking", "why_zh": "卡片从哪些块里选", "why_en": "Which chunks cards are cut from"},
+    {"to": "eval-metrics", "why_zh": "purity/ARI 是什么尺子", "why_en": "What purity and ARI measure"}
+   ]
+  },
+  {
+   "id": "context-expand", "cluster": "search", "layer": 3,
+   "term_zh": "邻块展开", "term_en": "Neighbor Context Expansion",
+   "one_liner_zh": "--context N 把同文件前后各 N 块一并带回，pack 默认 ±1",
+   "one_liner_en": "--context N pulls in N neighbors on each side; pack ships ±1 by default",
+   "professional_zh": "答案经常被切在两块交界上。--context N（clamp ≤3）把同一文件里位置连续的前后各 N 块一并返回：邻块不额外占搜索结果名额，pack 模式默认 ±1 并做接缝去重、近重复折叠进主记录。SDK Agent 链与真实 token 矩阵在四档预算 × 三档上下文宽度上通过。",
+   "professional_en": "Answers get cut at chunk boundaries. --context N (clamped ≤3) returns N positionally-continuous neighbors from the same file: neighbors take no extra result slots, pack ships ±1 by default with seam dedup and near-dup folding into the main record. Real SDK agent chains and a real-token matrix pass at four budgets × three context widths.",
+   "plain_zh": "「利润增长 12%」在上一段结尾，「原因是……」在下一段开头。这条规则把下一段也端上来，省得你自己猜去哪找。",
+   "plain_en": "\"Profit rose 12%\" ends one chunk; \"because…\" starts the next. This fetches the next chunk so you don't have to guess where it went.",
+   "example_zh": "search '退款期限' --context 2 --db lib.sqlite：每条命中前后各两块随行。",
+   "example_en": "search '退款期限' --context 2 — two neighbors on each side ride along.",
+   "code_refs": ["goldmine/pack.py — pack 邻块与接缝去重", "goldmine/commands/search.py — --context"],
+   "analogy_zh": "复印时多印前后各一页", "analogy_en": "Photocopy the page before and after",
+   "dig_deeper": [
+    {"to": "chunking", "why_zh": "「块」是怎么切出来的", "why_en": "How chunks are cut"},
+    {"to": "pack-budget", "why_zh": "邻块的 token 从谁的预算里扣", "why_en": "Whose budget neighbors spend"}
+   ]
+  },
+  {
+   "id": "why-arithmetic", "cluster": "search", "layer": 3,
+   "term_zh": "--why 分数分解", "term_en": "--why Score Breakdown",
+   "one_liner_zh": "每个命中的算术摆出来：语义 z、词覆盖、类型项各自多少",
+   "one_liner_en": "Every hit shows its arithmetic: semantic z, coverage, kind term, itemized",
+   "professional_zh": "--why 把每条命中的分数分解打印出来：语义 z 分、词覆盖率、类型加成、精确等级各自的贡献与最终融合值。每个数字可追问来源——这是「诚实契约」在打分子系统的落地面：不解释的分数不配被信任。",
+   "professional_en": "--why prints each hit's arithmetic: semantic z, word coverage, kind bonus, exactness grade, and the fused total, itemized. Every number can be traced to its source — the honesty contract's face in the scoring subsystem: a number you can't interrogate is a number you can't trust.",
+   "plain_zh": "每条结果自带小票：这分怎么算的，一项一项列给你。不同意？每一项都能顺着查到机制。",
+   "plain_en": "Every hit ships with a receipt: here's how the score was computed, line by line. Disagree? Each line traces to a mechanism you can inspect.",
+   "example_zh": "search 'z_gate' --why --db evals/eval.sqlite：对比两条命中的分解，看词覆盖怎么压过语义。",
+   "example_en": "search 'z_gate' --why --db evals/eval.sqlite — compare two hits' breakdowns; watch coverage beat semantics.",
+   "code_refs": ["goldmine/search.py — 分数分解产出", "goldmine/render.py — --why 渲染"],
+   "analogy_zh": "成绩单分项给分，不报总分了事", "analogy_en": "Itemized grading, not just a total",
+   "dig_deeper": [
+    {"to": "hybrid-fusion", "why_zh": "被分解的公式本体", "why_en": "The formula being itemized"},
+    {"to": "honesty-contract", "why_zh": "这条功能背后的宪法", "why_en": "The constitution behind the flag"}
+   ]
+  }
+ ]
+}

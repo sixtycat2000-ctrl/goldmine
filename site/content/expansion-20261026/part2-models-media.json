@@ -1,0 +1,204 @@
+{
+ "nodes": [
+  {
+   "id": "frozen-inference-params", "cluster": "models", "layer": 3,
+   "term_zh": "冻结推理参数", "term_en": "Frozen Inference Params",
+   "one_liner_zh": "ctx=ubatch=batch=2048（文本 512）、n_seq_max=16、kv_unified、池化 MEAN——写死并进指纹",
+   "one_liner_en": "ctx=ubatch=batch=2048 (512 text), n_seq_max=16, kv_unified, MEAN pooling — pinned and fingerprinted",
+   "professional_zh": "推理参数全部冻结：上下文=批次=微批次 2048（纯文本 512）、16 路并发序列、统一 KV、池化 MEAN。这些值决定向量的取值，所以属于嵌入身份——改动任何一个都会触发指纹变化与全量重嵌，这正是设计：不许悄悄动。",
+   "professional_en": "All inference params are frozen: ctx=ubatch=batch 2048 (512 for pure text), 16 concurrent sequences, unified KV, MEAN pooling. These values determine vector values, so they belong to the embedding identity — changing any triggers a fingerprint change and full re-embed. That is the design: no silent changes.",
+   "plain_zh": "做向量这道菜的火候和锅型写死在菜谱里。改火候=换了道菜，全库重做，绝不偷偷换。",
+   "plain_en": "The stove, the pan, the heat — all fixed in the recipe. Change one and it's a different dish: re-embed everything, never swap silently.",
+   "example_zh": "status --json 的 current.embed_id 变过 = 这套参数变过；回看需要备份库。",
+   "example_en": "A changed current.embed_id in status --json means these params changed; rolling back needs a backup library.",
+   "code_refs": ["goldmine/backends/llama.py — 参数冻结与 fingerprint_fields"],
+   "analogy_zh": "菜谱锁死，改一味料就要重做全锅", "analogy_en": "The recipe is locked; one changed spice re-cooks the pot",
+   "dig_deeper": [
+    {"to": "fingerprint-gate", "why_zh": "参数变化如何被门看见", "why_en": "How the gate sees a param change"},
+    {"to": "pooling", "why_zh": "MEAN 池化在算什么", "why_en": "What MEAN pooling computes"}
+   ]
+  },
+  {
+   "id": "kv-free-embedding", "cluster": "models", "layer": 3,
+   "term_zh": "无 KV 记忆的嵌入", "term_en": "KV-Free Embedding",
+   "one_liner_zh": "gemma-embedding2 没有 KV 记忆（llama.cpp 源码级事实）——常驻省的是加载不是计算图",
+   "one_liner_en": "gemma-embedding2 has no KV memory (a llama.cpp source-level fact) — residency saves loading, not a compute graph",
+   "professional_zh": "这类嵌入模型没有 KV 缓存可跨批次保留，每个批次清空重来。所以「常驻」的价值被精确界定：省掉的是每次 spawn 的 ~1GB 模型加载搬运与进程冷启动，不是缓存了什么计算。这也是媒体边车选「一次加载反复嵌入」架构的依据。",
+   "professional_en": "This embedding family keeps no KV cache across batches; every batch starts clean. That pins down what residency buys: it saves the ~1GB model load and per-call spawn, not some cached compute. It's also why the media sidecar is 'load once, embed many'.",
+   "plain_zh": "这位厨师每道菜都要从头洗锅——常驻的意义是让他一直站在灶台边，省的是「每次从家叫来」的路程，不是备菜。",
+   "plain_en": "This chef washes the pan for every dish. Keeping them in the kitchen saves the commute, not the prep.",
+   "example_zh": "serve 常驻前后同一查询的耗时差（几秒 → 亚秒）主要就是这份加载差。",
+   "example_en": "The per-query time delta before/after serve (seconds → sub-second) is mostly this load.",
+   "code_refs": ["goldmine/backends/llama.py — 批次间清空与常驻管理"],
+   "analogy_zh": "常驻省的是通勤，不是备菜", "analogy_en": "Residency saves the commute, not the prep",
+   "dig_deeper": [
+    {"to": "watch-serve", "why_zh": "常驻的两个用户：serve 与 watch", "why_en": "The two residents: serve and watch"},
+    {"to": "quantization", "why_zh": "~1GB 是 Q8_0 量化后的体积", "why_en": "Where the ~1GB comes from"}
+   ]
+  },
+  {
+   "id": "backend-lifecycle", "cluster": "models", "layer": 3,
+   "term_zh": "后端生命周期", "term_en": "Backend Lifecycle",
+   "one_liner_zh": "spawn → 握手 → 服务 → close 只杀自己拉起的子进程",
+   "one_liner_en": "spawn → handshake → serve → close kills only its own children",
+   "professional_zh": "后端生命周期四段：冷启动 spawn（llama-server / embed 边车）、--version + 模型 sha 握手、服务期健康监督、close 按 pid 记账只杀自己 spawn 的进程。「只杀自己的」是血泪纪律——杀掉别人家的 llama-server 是上古事故；健康失败走 NotSupported/BackendStartupError（exit 2）诚实降级，不崩、记录原因、下次再试。",
+   "professional_en": "Four phases: cold spawn (llama-server / embed sidecar), a --version + model-sha handshake, supervised serving, then close — which kills only processes it spawned, by pid. 'Only your own children' is scar tissue: killing someone else's llama-server is an ancient incident. A failed handshake degrades honestly via NotSupported/BackendStartupError (exit 2): no crash, reason recorded, retry next time.",
+   "plain_zh": "进程家用账本：生了谁、谁还活着、关门前一个个点名送走。别人家的孩子绝对不碰。",
+   "plain_en": "A household ledger: who was spawned, who's alive, and a roll call at closing. Other people's children are never touched.",
+   "example_zh": "goldmine serve 启动后 ps 看得到子进程；Ctrl-C 后子进程随之消失且只消失自己的。",
+   "example_en": "Start goldmine serve, watch the children in ps; Ctrl-C reaps them — only ours.",
+   "code_refs": ["goldmine/backends/llama.py — spawn/握手/close 记账"],
+   "analogy_zh": "关门前点名，只送自己家的孩子", "analogy_en": "Roll call at closing; only our kids go home",
+   "dig_deeper": [
+    {"to": "process-pipe", "why_zh": "子进程通信的底座", "why_en": "The substrate of child-process talk"},
+    {"to": "sidecar-protocol", "why_zh": "握手之后说什么协议", "why_en": "The protocol after the handshake"}
+   ]
+  },
+  {
+   "id": "budget-routing", "cluster": "media", "layer": 3,
+   "term_zh": "媒体预算路由", "term_en": "Media Budget Routing",
+   "one_liner_zh": "照片 140 / 截图 280 / PDF 页 280 / 视频帧 70 token——按类路由并进指纹",
+   "one_liner_en": "Photo 140 / screenshot 280 / PDF page 280 / video frame 70 tokens — routed per class, fingerprinted",
+   "professional_zh": "图片进模型前按类分预算（合法档 70–1120）：photo 140、screenshot 280、pdf_page 280、video_frame 70。560 档被 DigUp 实测「2× 慢、真实照片无收益」淘汰。预算值与按类路由规则从第一天起作为冻结常量写进指纹——动预算 = 全库向量过期，不许悄悄动。",
+   "professional_en": "Images enter the model under per-class token budgets (legal set 70–1120): photo 140, screenshot 280, pdf_page 280, video_frame 70. The 560 tier was retired by DigUp's measurement: 2× slower, no better on real shots. Budgets and routing rules have been frozen constants in the fingerprint since day one — touch a budget and every vector in the library goes stale, on purpose.",
+   "plain_zh": "不同类型的图给不同「语言额度」：截图文字多给一点，视频帧一闪而过给少点。额度表是冻结常量，改一格全库重嵌——所以有 A/B 实测才改。",
+   "plain_en": "Each media class gets its own token allowance: screenshots more, video frames less. The table is frozen — changing one cell re-embeds the library, so it changes only with A/B evidence.",
+   "example_zh": "status --json 的指纹 extras 里能看到 media_budgets；换预算的库会被指纹门拒收。",
+   "example_en": "media_budgets shows up in the fingerprint extras in status --json; a library built under different budgets gets refused.",
+   "code_refs": ["goldmine/ingest/media.py — 按类预算", "goldmine/backends/llama.py — 预算进 fingerprint extras"],
+   "analogy_zh": "每类图一张定额餐券", "analogy_en": "A fixed meal ticket per media class",
+   "dig_deeper": [
+    {"to": "media-token-budget", "why_zh": "token 预算物理上控制什么", "why_en": "What a token budget physically controls"},
+    {"to": "media-extras-conditional", "why_zh": "预算进指纹的条件性", "why_en": "How budgets enter the fingerprint, conditionally"}
+   ]
+  },
+  {
+   "id": "ocr-batching", "cluster": "media", "layer": 3,
+   "term_zh": "OCR 批处理", "term_en": "OCR Batching (F7)",
+   "one_liner_zh": "多张截图的 OCR 汇成一个批次、一个 leader 线程拉起一次 helper",
+   "one_liner_en": "Screenshots' OCR requests merge into one batch; one leader thread spawns the helper once",
+   "professional_zh": "F7 省钱机制：同一波里多张截图的 OCR 请求汇进一个批次，由一个 leader 线程一次性拉起 Vision helper——省掉每图一次的进程启动与 Vision 冷启动。批次是 run 级单例（嵌套 run/复用 pipeline 实例时要先想清楚，见腐烂风险清单）。",
+   "professional_en": "The F7 economy: OCR requests for all screenshots in a wave merge into one batch, and a single leader thread spawns the helper once — eliminating per-image process startup and Vision cold-start. The batch is a run-level singleton (think twice before nested runs or reused pipeline instances — it's on the rot-risk list).",
+   "plain_zh": "五十张截图 OCR，不是开五十次软件，是把活儿写成一张单子、请一次师傅全办了。",
+   "plain_en": "OCR for fifty screenshots is one work order and one summoned specialist — not fifty launches.",
+   "example_zh": "含大量截图的目录 ingest，对比日志里 helper 的 spawn 次数（1 次 vs 每图 1 次）。",
+   "example_en": "Ingest a screenshot-heavy folder; the log shows one helper spawn instead of one per image.",
+   "code_refs": ["goldmine/ingest/extraction.py — OCR 批处理与 leader 线程", "goldmine/ocr.py — helper 批接口"],
+   "analogy_zh": "攒一单请一次师傅", "analogy_en": "Batch the order, summon the expert once",
+   "dig_deeper": [
+    {"to": "vision-ocr", "why_zh": "被批处理调用的 OCR 本体", "why_en": "The OCR being batched"},
+    {"to": "wave-extraction", "why_zh": "批次在波次里的位置", "why_en": "Where the batch sits in the wave"}
+   ]
+  },
+  {
+   "id": "page-render-ocr", "cluster": "media", "layer": 3,
+   "term_zh": "薄页渲染 OCR", "term_en": "Thin-Page Render OCR",
+   "one_liner_zh": "没文字层的 PDF 页：渲染成图 → OCR → 三道质检 → 通过才替换页文本",
+   "one_liner_en": "Text-less PDF pages: render to image → OCR → three checks → replace only if all pass",
+   "professional_zh": "对薄页（无文字层或文字病理）的 PDF：pdftoppm 150dpi/1400px 渲染页图（与 DigUp 2000px 的偏差在案）→ Vision OCR → 三道检查（字符量 ≥ 阈值、自身无病理、含预期字符块）→ 全过才替换页文本并记 +arocr 提取器版本变体；任一不过保留原文（诚实回退）并标记走 OCR-redo 升级路径。阿拉伯丢字页是同类机制的特例（arocr-replace 节点）。",
+   "professional_en": "For thin pages (no text layer or pathological text): render via pdftoppm at 150dpi/1400px (the deviation from DigUp's 2000px is on record) → Vision OCR → three checks (character mass, self-pathology, expected script block) → replace the page text only if all pass, recording an +arocr extractor-version variant. Any failure keeps the original (honest fallback) and flags the OCR-redo upgrade path. Arabic lost-letter pages are a special case of the same mechanism (see arocr-replace).",
+   "plain_zh": "扫描版 PDF 没有字，就把每页当照片读。读出来的字要过三道检查才配上岗——不过关就老实保留「读不出」的现状，不硬凑。",
+   "plain_en": "Scanned PDFs have no text, so each page is read as a photo. The OCR output faces three checks before it may replace anything; fail any and the page honestly stays 'unread'.",
+   "example_zh": "造一个只有图片的 PDF ingest 后 search 其中的词；三查不过的场景在机制测试里有夹具。",
+   "example_en": "Ingest an image-only PDF and search its words; the failing-checks path has fixtures in the mechanism tests.",
+   "code_refs": ["goldmine/ingest/pdf_evidence.py — 渲染、OCR、三查、替换"],
+   "analogy_zh": "照片先过安检再上岗当文本", "analogy_en": "The photo passes security before working as text",
+   "dig_deeper": [
+    {"to": "arocr-replace", "why_zh": "阿拉伯丢字页的特例", "why_en": "The Arabic lost-letter special case"},
+    {"to": "glyph-order-vector", "why_zh": "读不出来的页还有第二条路", "why_en": "A second road for unreadable pages"},
+    {"to": "poppler", "why_zh": "渲染用的工具", "why_en": "The rendering tool"}
+   ]
+  },
+  {
+   "id": "keyframes", "cluster": "media", "layer": 3,
+   "term_zh": "视频关键帧", "term_en": "Video Keyframes",
+   "one_liner_zh": "约每 3 秒采一帧、aHash 去重、至多 1200 帧",
+   "one_liner_en": "A frame about every 3 s, aHash dedup, hard cap 1200",
+   "professional_zh": "视频按约 3 秒间隔抽帧，aHash 汉明距 ≤4bit 判重去重，maxFrames 1200 封顶；帧按 video_frame 预算（70 token）进图像向量。本机实测 ffmpeg 对 5 分钟 1080p H.264 抽帧 3.88 秒（对照组 macOS 原生 4.07 秒），选型记录在案含反例数据。检索粒度到「时刻」：命中帧回指源视频的 PTS。",
+   "professional_en": "Frames are sampled about every 3 seconds, deduped by aHash (Hamming ≤4 bits), capped at 1200, and embedded at the video_frame budget (70 tokens). Measured locally: ffmpeg extracts a 5-min 1080p H.264 in 3.88 s (vs 4.07 s native) — the choice, counterexamples included, is on record. Retrieval granularity is the moment: a hit frame points back to the source video's PTS.",
+   "plain_zh": "视频当「每三秒一张的幻灯片」搜。重复画面靠感知哈希去掉，长视频有 1200 帧上限。命中告诉你是第几秒，open 直接跳过去。",
+   "plain_en": "A video is searched like slides, one every ~3 s. Repeats collapse by perceptual hash; long videos cap at 1200 frames. Hits report the second — open jumps there.",
+   "example_zh": "全媒体套件有 8 道关键帧检索题（moment 级定位），历史门 8/8——机制证明，不是自然语言查询质量主张。",
+   "example_en": "The full-media suite has 8 keyframe questions (moment-level verdicts), historically 8/8 — a mechanics proof, not a natural-query claim.",
+   "code_refs": ["goldmine/ingest/media.py — 抽帧、aHash 去重、PTS 记录"],
+   "analogy_zh": "把视频摊成一摞定时快照", "analogy_en": "Spread the video into timed snapshots",
+   "dig_deeper": [
+    {"to": "ahash", "why_zh": "去重用的感知哈希", "why_en": "The perceptual hash doing dedup"},
+    {"to": "ffmpeg-tools", "why_zh": "抽帧工具与选型实测", "why_en": "The extraction tool and its measured shootout"}
+   ]
+  },
+  {
+   "id": "exif-metadata", "cluster": "media", "layer": 3,
+   "term_zh": "EXIF 元数据", "term_en": "EXIF Metadata",
+   "one_liner_zh": "照片的拍摄参数原样进索引当名字可搜的依据",
+   "one_liner_en": "Photo capture metadata is indexed verbatim as searchable metadata",
+   "professional_zh": "EXIF（机型、时间、GPS 等）按元数据处理：进索引、可被 lookup 型查询命中，但不给内容向量——它不是「内容」。照片的视觉语义由图像向量负责，两条路分工明确。能力行按 metadata_only 记账时原因写明。",
+   "professional_en": "EXIF (device, timestamps, GPS) is treated as metadata: indexed and hittable by lookup-style queries, but given no content vector — it isn't content. Visual meaning is the image vector's job; the two roads don't blur. When a photo ends up metadata_only, the capability row says why.",
+   "plain_zh": "照片「什么时候拍的、用什么拍的」当标签搜；「照片里是什么」当图搜。两件事，两条路。",
+   "plain_en": "When/what-camera is searchable as tags; what's-in-the-photo is searchable as an image. Two questions, two roads.",
+   "example_zh": "search 'iPhone 拍摄 2025-03' 这类元数据查询走 lookup 臂命中 EXIF 行。",
+   "example_en": "A query like 'iPhone 2025-03' hits EXIF rows through the lookup arm.",
+   "code_refs": ["goldmine/ingest/exif.py — EXIF 抽取"],
+   "analogy_zh": "标签归标签，画面归画面", "analogy_en": "Tags are tags; pixels are pixels",
+   "dig_deeper": [
+    {"to": "file-metadata", "why_zh": "文件系统层的元数据亲戚", "why_en": "The filesystem-level cousin"},
+    {"to": "lookup-inversion", "why_zh": "元数据查询吃的权重反转", "why_en": "The weight inversion metadata queries ride"}
+   ]
+  },
+  {
+   "id": "wav-windowing", "cluster": "media", "layer": 3,
+   "term_zh": "音频窗口切分", "term_en": "Audio Windowing",
+   "one_liner_zh": "30 秒窗 / 25 秒步进 / 16kHz 单声道 / RMS 静音闸",
+   "one_liner_en": "30 s windows, 25 s hop, 16 kHz mono, an RMS silence gate",
+   "professional_zh": "长音频切成 30 秒窗、25 秒步进（5 秒重叠防边界丢词），重采样 16kHz 单声道后过 RMS>0.003 静音闸——全静音窗不产向量不产转写。尾窗只有在携带 ≥2 秒新音频（超出前一窗覆盖）时才保留：按源码语义移植而非字面「长度<2s」（那条字面规则在 30/25 参数下是不可达死代码，62 秒夹具实测尾窗保留、新音频 7 秒）。",
+   "professional_en": "Long audio is cut into 30 s windows with a 25 s hop (5 s overlap guards boundary words), resampled to 16 kHz mono, then gated at RMS > 0.003 — all-silent windows produce neither vectors nor transcripts. A tail window survives only if it carries ≥2 s of genuinely new audio beyond the previous window's coverage: a semantic port, not the literal '<2 s' rule, which is unreachable dead code under 30/25 (a 62 s fixture keeps its tail with 7 s new audio).",
+   "plain_zh": "录音切成带 5 秒重叠的 30 秒段；纯静音段直接丢弃；最后一小段只有真带了没听过的新内容才留——省预算也防垃圾向量。",
+   "plain_en": "Recordings become 30 s slices with 5 s overlap; pure silence is dropped; the tail survives only if it adds real new audio — saving budget and blocking junk vectors.",
+   "example_zh": "对纯静音 WAV ingest：status 的能力行会给出「为什么没有任何音频向量」。",
+   "example_en": "Ingest an all-silent WAV; the capability row explains why no audio vectors exist.",
+   "code_refs": ["goldmine/ingest/asr.py — 窗口切分与 RMS 闸", "goldmine/ingest/media.py — 尾窗 ≥2s 新音频门"],
+   "analogy_zh": "切成有重叠的段，静音和炒冷饭都不要", "analogy_en": "Overlapping slices; silence and reruns need not apply",
+   "dig_deeper": [
+    {"to": "rms-silence-gate", "why_zh": "静音闸的判定细节", "why_en": "The silence gate's details"},
+    {"to": "tail-min2s", "why_zh": "尾窗门的完整语义", "why_en": "The tail gate's full semantics"},
+    {"to": "whisper-asr", "why_zh": "窗口之后谁来做转写", "why_en": "Who transcribes the windows"}
+   ]
+  },
+  {
+   "id": "glyph-order-vector", "cluster": "media", "layer": 3,
+   "term_zh": "乱序文本含义向量", "term_en": "Glyph-Order Meaning Vector",
+   "one_liner_zh": "孟加拉/阿拉伯连字在 PDF 里乱序时，给页图向量再配一条「仅含义」文本向量",
+   "one_liner_en": "When Bengali/Arabic ligatures scramble in PDFs, page images get an extra meaning-only text vector",
+   "professional_zh": "复杂文字（孟加拉 glyph 顺序、阿拉伯连字）在 PDF 提取时常以视觉顺序乱序落地——词法臂废了。对策：渲染页图给图像向量之外，把乱序文本再嵌一条「含义专用」向量（模型对词序的敏感度低于词面，实测 R@1 0.75 vs 0.73 乱序对照，DigUp Extractors.swift:108-111 同源）。这条向量明确标注仅含义用途，不参与词法。",
+   "professional_en": "Complex scripts (Bengali glyph order, Arabic ligatures) often land scrambled in visual order from PDF extraction — the lexical arm is dead on them. The fix: beyond the page-image vector, embed the scrambled text as a meaning-only vector (the model tolerates word-order noise better than letter noise; measured R@1 0.75 vs 0.73 against the scrambled baseline, same source as DigUp's Extractors.swift:108-111). The vector is explicitly flagged meaning-only and never joins lexical matching.",
+   "plain_zh": "字序被打乱的文字，精确匹配没法用，但「大意」还在。给这段乱码单独算一个「只讲大意」的向量，让语义臂把它捞回来。",
+   "plain_en": "Scrambled text can't match exactly, but the gist survives. A dedicated meaning-only vector lets the semantic arm fish it back out.",
+   "example_zh": "含孟加拉/阿拉伯内容的 PDF 在 status 里可见「含义专用」向量标记（media_vectors 路由信息）。",
+   "example_en": "Bengali/Arabic PDFs show the meaning-only vector flag in status routing info.",
+   "code_refs": ["goldmine/ingest/extraction.py — 乱序文本的含义专用向量", "goldmine/ingest/commit.py — 嵌入路由"],
+   "analogy_zh": "字序坏了就只比大意", "analogy_en": "When order breaks, compare the gist",
+   "dig_deeper": [
+    {"to": "shared-embedding-space", "why_zh": "乱序文本为何还能进同一语义空间", "why_en": "Why scrambled text still shares the semantic space"},
+    {"to": "unicode", "why_zh": "乱序的根源在编码层", "why_en": "The encoding-level root of scrambling"}
+   ]
+  },
+  {
+   "id": "media-staging", "cluster": "media", "layer": 3,
+   "term_zh": "媒体暂存目录", "term_en": "Media Staging Directory",
+   "one_liner_zh": "缩略图在抽取期生成、提交期才嵌入——暂存目录必须是 run 级",
+   "one_liner_en": "Thumbnails are made at extraction but embedded at commit — staging must live at run level",
+   "professional_zh": "媒体段的加工（缩略图、窗口、帧）在抽取期完成，嵌入在提交期（一波之后）——中间隔着波次边界。所以暂存目录放在 run 级，不能放在抽取函数的临时目录里：早期版本用完即删，提交期文件已消失，这是个真实踩过的坑（症状：「提交期文件不存在」类 flake），腐烂风险清单第 1 条。",
+   "professional_en": "Media processing (thumbnails, windows, frames) happens at extraction; embedding happens at commit — a wave boundary apart. Staging therefore lives at run level, never in the extraction function's temp dir: an early version deleted as it went and the files were gone by commit. A real, stepped-on landmine (symptom: 'file missing at commit' flakes); rot-risk item #1.",
+   "plain_zh": "备菜和下锅隔着一道工序，备好的菜得放在操作台上，不能抓在抽屉里——抽屉一关菜就没了。",
+   "plain_en": "Prep and cooking are separate stations; prepped ingredients go on the counter, not in a drawer that closes.",
+   "example_zh": "对大媒体目录 ingest 中途 Ctrl-C：暂存残留会在下一次 run 清理，不留孤儿。",
+   "example_en": "Ctrl-C a large media ingest: staging residue is cleaned by the next run — no orphans.",
+   "code_refs": ["goldmine/ingest/pipeline.py — run 级暂存目录生命周期"],
+   "analogy_zh": "备好的菜放操作台，不放抽屉", "analogy_en": "Prep on the counter, not in a drawer",
+   "dig_deeper": [
+    {"to": "wave-extraction", "why_zh": "波次边界为什么存在", "why_en": "Why the wave boundary exists"},
+    {"to": "one-transaction", "why_zh": "提交期的原子性", "why_en": "Commit-time atomicity"}
+   ]
+  }
+ ]
+}

@@ -1,0 +1,349 @@
+{
+ "nodes": [
+  {
+   "id": "skip-layers", "cluster": "systems", "layer": 3,
+   "term_zh": "跳过表与项目根", "term_en": "Skip Tables & Project Roots",
+   "one_liner_zh": "构建目录、密钥、minified、包目录、FIFO——walk 前就挡下，各带原因",
+   "one_liner_en": "Build dirs, secrets, minified code, bundles, FIFOs — blocked at walk time, each with a reason",
+   "professional_zh": "walk 的目录层跳过：SKIP_FOLDERS（build/target/dist/out/.next，逐项注明生态）、隐藏目录不下钻、包目录（.app）、.noindex、TCC 不可读≠空；文件层跳过：密钥/证书、内容级 minified 与生成文件标记拒读、许可文件、超大小帽、FIFO 特殊文件。is_project_root 保护逻辑防止把项目本身误判成产物目录。每条跳过都记原因——跳过也是能力行，不是静默消失。",
+   "professional_en": "Walk-time directory skips: SKIP_FOLDERS (build/target/dist/out/.next, each annotated with its ecosystem), hidden dirs not descended, bundle dirs (.app), .noindex, and TCC-unreadable ≠ empty. File-level skips: secrets/certs, content-level minified and generated-file markers, license files, size caps, FIFOs. is_project_root guards against misjudging a project as its own build output. Every skip records its reason — skipping is a capability row, not a silent vanish.",
+   "plain_zh": "进门前先看邀请名单：编译产物、密钥、压成一行的代码、安装包——每类都有挡驾理由，且理由可查。不是「没看见」，是「看见了、决定不读、原因在此」。",
+   "plain_en": "A guest list at the door: build output, secrets, minified blobs, installers — each rejection carries its reason. Not 'didn't see it' but 'saw it, declined to read it, here's why'.",
+   "example_zh": "status --failures 与能力行里能看到 unsupported 行的原因（如 'license file'、'minified'）。",
+   "example_en": "status --failures and capability rows show unsupported reasons ('license file', 'minified').",
+   "code_refs": ["goldmine/ingest/walk.py — 目录/文件双层跳过", "goldmine/ingest/rules.py — SKIP_FOLDERS 与判定规则"],
+   "analogy_zh": "进门看名单，拒之有理", "analogy_en": "A guest list with printed reasons",
+   "dig_deeper": [
+    {"to": "walk-gates", "why_zh": "行走门禁的全景", "why_en": "The full walk-gate panorama"},
+    {"to": "capability-rows", "why_zh": "跳过如何记账", "why_en": "How skips get booked"}
+   ]
+  },
+  {
+   "id": "symlink-policy", "cluster": "systems", "layer": 3,
+   "term_zh": "符号链策略", "term_en": "Symlink Policy",
+   "one_liner_zh": "目录链永不跟随（防环），文件链跟到内容",
+   "one_liner_en": "Directory symlinks never followed (cycle guard); file symlinks are read through",
+   "professional_zh": "目录符号链永不跟随——目录环（a→b→a）会让确定性 walk 变成无限循环；st_ino/st_dev 同时用于 walk 防环。文件符号链跟到内容：链本身不是内容，指向的文件才是。这是一对方向相反的决定，共同原则是「语义优先于字面」。",
+   "professional_en": "Directory symlinks are never followed — a directory cycle (a→b→a) would turn a deterministic walk into an infinite one; st_ino/st_dev double as the walk's cycle guard. File symlinks are read through: the link isn't the content, the target is. Two opposite calls, one principle: semantics over literalism.",
+   "plain_zh": "指路的牌子不逛，牌子指到的店要进。不然两家店互相挂对方的牌子，你就在街上走到天黑。",
+   "plain_en": "Walk into the shop the sign points to; do not shop the sign. Two shops pointing at each other would keep you on the street till dark.",
+   "example_zh": "含 a→b→a 目录环的树 ingest 正常终止，机制测试有环夹具。",
+   "example_en": "A tree with an a→b→a cycle ingests and terminates; the cycle fixture is in the mechanism tests.",
+   "code_refs": ["goldmine/ingest/walk.py — 目录链不跟随与 inode 防环"],
+   "analogy_zh": "逛店不逛路牌", "analogy_en": "Shops, not signs",
+   "dig_deeper": [
+    {"to": "file-metadata", "why_zh": "inode 在防环里的角色", "why_en": "inode's role in the cycle guard"},
+    {"to": "walk-gates", "why_zh": "walk 的其余门禁", "why_en": "The walk's other gates"}
+   ]
+  },
+  {
+   "id": "phantom-roots", "cluster": "systems", "layer": 3,
+   "term_zh": "幻影根检查", "term_en": "Phantom Root Check (F10)",
+   "one_liner_zh": "摄取开始时逐根 stat——开始时就消失的根按「根失败」处理，不进删除计算",
+   "one_liner_en": "Every root is stat'ed at ingest start; roots already gone are per-root failures, never deletion input",
+   "professional_zh": "F10 事故教训：一个开始时就不存在的根如果不处理，会被当成「空目录」参与同步，把不该动的行当成已删除。goldmine 在 ingest 开始时对每个根 stat（pipeline.py），失败者作为 per-root failure 排除出 resolved_roots，其行不进 compute_deletions，并计入 exit-5 的按根失败报告。这是「不可读≠空」家族的第一道岗。",
+   "professional_en": "The F10 lesson: a root missing at start, if unhandled, looks like an 'empty folder' and its rows read as deleted. goldmine stats every root at ingest start; failures are excluded from resolved_roots as per-root failures, their rows never enter compute_deletions, and the failure is reported in the exit-5 accounting. The first checkpoint of the 'unreadable ≠ empty' family.",
+   "plain_zh": "开工先点名：来不了的目录记「缺席」，不能当成「这个人不存在了」把他档案销毁。",
+   "plain_en": "Roll call before work: an absent directory is marked absent — never pronounced dead with its records shredded.",
+   "example_zh": "ingest 一个不存在的路径：退出码 5，报告列出该根的失败原因，库内无行被删。",
+   "example_en": "Ingest a nonexistent path: exit 5, the root's failure listed, no rows deleted.",
+   "code_refs": ["goldmine/ingest/pipeline.py:158-184 — 开始时逐根 stat"],
+   "analogy_zh": "开工点名，缺席≠销户", "analogy_en": "Roll call: absent ≠ erased",
+   "dig_deeper": [
+    {"to": "unreachable-guard", "why_zh": "运行中途的第二道岗", "why_en": "The mid-run second checkpoint"},
+    {"to": "deletion-detection", "why_zh": "被守卫保护的删除计算", "why_en": "The deletion computation being guarded"}
+   ]
+  },
+  {
+   "id": "unreachable-guard", "cluster": "systems", "layer": 3,
+   "term_zh": "不可读≠空守卫", "term_en": "The Unreadable-Is-Not-Empty Guard",
+   "one_liner_zh": "根/子树中途不可读 → 行保留 + 报告计数，绝不读成「全删了」",
+   "one_liner_en": "A root or subtree that goes unreadable mid-run keeps its rows and reports the count — never reads as 'all deleted'",
+   "professional_zh": "DigUp 事故 A18 的直系守卫：移动硬盘爬取中途弹出，该根「看起来空了」，sync 险些把整盘当已删除清掉。goldmine 的开始时守卫已有（phantom-roots），本节点是中途岗：compute_deletions 删减前逐根重新 stat；不可达根的行保留并在报告列出 'root unavailable, N rows kept'；子目录 OSError/PermissionError 的子树同样按不可达处理。规矩：任何新的「清行」路径都必须过 unreachable 前缀守卫。",
+   "professional_en": "DigUp incident A18's direct descendant: a drive ejected mid-crawl 'looked empty' and sync nearly wiped the whole volume as deleted. goldmine's start-time guard exists (phantom-roots); this is the mid-run checkpoint: compute_deletions re-stats every root before pruning; unreachable roots keep their rows and report 'root unavailable, N rows kept'; subtrees failing with OSError/PermissionError are treated as unreachable too. House rule: any new row-pruning path must pass the unreachable-prefix guard.",
+   "plain_zh": "抽屉拉不开，不等于抽屉是空的。拉不开就整抽屉保留，贴条说明「暂不可读」——绝不当成里面什么都没有来清仓。",
+   "plain_en": "A stuck drawer isn't an empty drawer. Leave it sealed, tag it 'temporarily unreadable' — never liquidate it on the assumption it held nothing.",
+   "example_zh": "机制测试用中途重命名根目录模拟拔盘：断言行仍在、报告有 kept 标记；根恢复后正常续作。",
+   "example_en": "Mechanism tests rename a root mid-ingest to simulate ejection: rows survive, report shows kept; normal work resumes once restored.",
+   "code_refs": ["goldmine/ingest/walk.py — unreachable 标志", "goldmine/ingest/pipeline.py — 删减前逐根重 stat"],
+   "analogy_zh": "拉不开的抽屉不是空抽屉", "analogy_en": "A stuck drawer isn't empty",
+   "dig_deeper": [
+    {"to": "phantom-roots", "why_zh": "开始时的第一道岗", "why_en": "The start-time first checkpoint"},
+    {"to": "deletion-detection", "why_zh": "守卫保护的计算本体", "why_en": "The computation being guarded"},
+    {"to": "honesty-contract", "why_zh": "这条守卫是契约第 5 条", "why_en": "This guard is contract clause 5"}
+   ]
+  },
+  {
+   "id": "deletion-detection", "cluster": "systems", "layer": 3,
+   "term_zh": "删除检测", "term_en": "Deletion Detection",
+   "one_liner_zh": "本轮 roots 范围内、磁盘上消失的行清掉——先过不可读守卫与移动检测",
+   "one_liner_en": "Rows gone from disk within this round's roots are pruned — after the unreadable and move guards",
+   "professional_zh": "compute_deletions 在每轮摄取收尾运行：当前 roots_json 范围内、路径在磁盘上消失的行被清理。清删顺序是设计：先过幻影根/不可读守卫（不能把「读不到」当「已删除」），再过移动检测（路径消失但 POSIX 身份还在 = 移动不是删除）。查询期的兜底是 deleted-filter（候选阶段过滤已删文件行）——离线删除是准绳，查询期过滤是保险。",
+   "professional_en": "compute_deletions closes each ingest round: rows whose paths vanished from disk within the current roots_json are pruned. The order is the design: phantom/unreachable guards run first (unreadable never reads as deleted), then move detection (path gone but POSIX identity alive = moved, not deleted). Query-time deleted-filter is the belt-and-suspenders: offline deletion is the truth, the query-time filter is the insurance.",
+   "plain_zh": "每轮收尾核对一遍「名单上的人磁盘上还在不在」。但先确认不是「门锁了」也不是「搬家了」，才准销名。",
+   "plain_en": "Each round ends checking who's still on disk. But first: is the door just locked? Did they move? Only then may a name come off the list.",
+   "example_zh": "删掉一个已索引文件再 ingest：报告显示该行清理；立即 search 时若索引未更新，deleted_filtered 计数兜底。",
+   "example_en": "Delete an indexed file and re-ingest: the report shows the prune; search before that shows the deleted_filtered counter catching it.",
+   "code_refs": ["goldmine/ingest/walk.py:247-268 — compute_deletions", "goldmine/ingest/pipeline.py — 调用点与守卫顺序"],
+   "analogy_zh": "销名之前先排除锁门和搬家", "analogy_en": "Rule out locked doors and moving vans first",
+   "dig_deeper": [
+    {"to": "move-detection", "why_zh": "「搬家」的判定", "why_en": "How 'moved' is decided"},
+    {"to": "deleted-filter", "why_zh": "查询期的保险丝", "why_en": "The query-time fuse"},
+    {"to": "roots-bookkeeping", "why_zh": "「本轮范围」从哪来", "why_en": "Where 'this round's roots' comes from"}
+   ]
+  },
+  {
+   "id": "sidecar-protocol", "cluster": "systems", "layer": 3,
+   "term_zh": "边车一行 JSON 协议", "term_en": "The Sidecar's One-JSON-Per-Line Protocol",
+   "one_liner_zh": "stdout 上每行一个 JSON：请求 path_b64/wav_b64，回 768 维向量——简单到不会错",
+   "one_liner_en": "One JSON per line on stdout: send path_b64/wav_b64, get back a 768-dim vector — too simple to get wrong",
+   "professional_zh": "goldmine-embed 边车的线协议刻意原始：请求一行 JSON（path_b64 / wav_b64），响应一行 JSON（768 维向量）。配套四条血泪纪律：①stdout 是协议信道，只有 stderr 开排空线程（早期双排空线程把协议响应吃掉，请求永远等不到回包）；②裸 fd + os.read 轮询（BufferedReader 预读会吃掉 poll 的数据）；③EPIPE 吞错 + SIGPIPE 忽略；④超长坏行丢弃保活不毒连接。",
+   "professional_en": "The goldmine-embed sidecar's wire protocol is deliberately primitive: one JSON line in (path_b64 / wav_b64), one JSON line out (a 768-dim vector). Four scar-tissue rules accompany it: (1) stdout is the protocol channel; only stderr gets a drain thread (an early two-drain version ate protocol responses — requests waited forever); (2) raw fd + os.read polling (BufferedReader's lookahead starves poll); (3) swallow EPIPE, ignore SIGPIPE; (4) drop oversized bad lines to keep the connection alive.",
+   "plain_zh": "和边车说话像老式电报：一行进一行出，格式简单到没法 misunderstanding。四条使用须知全是真事故换来的。",
+   "plain_en": "Talking to the sidecar is telegraphy: one line in, one line out, too simple to misread. The four usage rules are all purchased with real incidents.",
+   "example_zh": "tools/embed/goldmine-embed.c 头注释与 tests/ 的协议测试钉住格式；坏行注入测试验证第④条。",
+   "example_en": "The C file's header and protocol tests pin the format; a bad-line injection test proves rule 4.",
+   "code_refs": ["tools/embed/goldmine-embed.c — 线协议实现", "goldmine/backends/embed_helper.py — 客户端四纪律"],
+   "analogy_zh": "一行电报，四条保命规矩", "analogy_en": "Telegraph plus four survival rules",
+   "dig_deeper": [
+    {"to": "poll-raw-read", "why_zh": "纪律②的完整机制", "why_en": "Rule 2's full mechanism"},
+    {"to": "epipe-discipline", "why_zh": "纪律③的完整机制", "why_en": "Rule 3's full mechanism"},
+    {"to": "process-pipe", "why_zh": "管道通信的底层", "why_en": "Pipes underneath it all"}
+   ]
+  },
+  {
+   "id": "repair-commands", "cluster": "systems", "layer": 3,
+   "term_zh": "repair 三命令", "term_en": "The repair Triad",
+   "one_liner_zh": "--plan 只读体检 / --missing-vectors 补向量 / --failed-only 重试失败行",
+   "one_liner_en": "--plan read-only checkup / --missing-vectors fill gaps / --failed-only retry failures",
+   "professional_zh": "索引维护的三段式：repair --plan 列出 stored pending/failed 状态、缺向量、chunker/extractor 变更、可用的 OCR/ASR/媒体升级与不可达来源（索引只读、不起模型）；repair --missing-vectors 原位补齐合格文本向量（保留原文、段 ID 与已有向量，需重切的在范围内重抽）；repair --failed-only 只重试存量失败文件。默认 repair 选全部候选，但绝不扫描新范围——修理不扩地盘。",
+   "professional_en": "Index maintenance in three moves: repair --plan reports stored pending/failed state, missing vectors, chunker/extractor changes, available OCR/ASR/media upgrades, unreachable sources (read-only, no model start); repair --missing-vectors fills eligible stored text vectors in place (text, segment IDs and existing vectors preserved; re-chunk cases re-extract within scope); repair --failed-only retries stored failures only. Default repair selects all candidates but never scans new scope — repairs don't annex territory.",
+   "plain_zh": "体检（不动刀）、补缺口、重试失败——三件事分开设，且都不许「顺手把新文件夹也索引了」。",
+   "plain_en": "Checkup (no cutting), fill gaps, retry failures — three separate moves, none of which may 'conveniently' index new folders.",
+   "example_zh": "python3 -m goldmine repair --plan --db evals/eval.sqlite：只读体检，输出按类别分节。",
+   "example_en": "python3 -m goldmine repair --plan --db evals/eval.sqlite — a read-only checkup, sectioned by category.",
+   "code_refs": ["goldmine/repair.py — 三命令实现", "goldmine/commands/repair.py — CLI 面"],
+   "analogy_zh": "体检、补漏、返工，三张工单", "analogy_en": "Checkup, gap-fill, rework: three work orders",
+   "dig_deeper": [
+    {"to": "wave-extraction", "why_zh": "重试复用的摄取机器", "why_en": "The ingest machinery retries reuse"},
+    {"to": "capability-rows", "why_zh": "失败状态存哪、怎么读", "why_en": "Where failure state lives and how to read it"}
+   ]
+  },
+  {
+   "id": "index-upgrade", "cluster": "systems", "layer": 3,
+   "term_zh": "升级与备份", "term_en": "Upgrade & Backup",
+   "one_liner_zh": "backup 先行；reindex lexical 只重建派生索引；旧程序永不写升级库",
+   "one_liner_en": "backup first; reindex lexical rebuilds only derived indexes; old programs never write upgraded libraries",
+   "professional_zh": "升级流程四步：停服务 → goldmine backup 出校验过的单文件备份（保留作回滚）→ reindex lexical 升级/重建派生索引（存储原文与向量 BLOB 原样保留；只读命令不触发升级）→ 新库只给新程序写。旧写者会被围栏拒绝（old writers are fenced）；未来 schema 直接拒开。装轮 smoke 已演练 v4→v6 升级、备份、引用陈旧、未来 schema 拒绝与用旧程序恢复的全链路。",
+   "professional_en": "Four steps: stop services → goldmine backup produces a verified single-file copy (kept for rollback) → reindex lexical upgrades/rebuilds derived indexes (stored originals and vector BLOBs untouched; read-only commands never trigger upgrades) → the new library is written only by new programs. Old writers are fenced; future schemas refuse to open. An installed-wheel smoke rehearsed the whole chain: v4→v6 upgrade, backup, citation staleness, future-schema refusal, and restore under the old program.",
+   "plain_zh": "升级像搬家：先公证备份（能随时搬回去），装修只动可拆装的部分（原文和向量不动），旧家具（旧程序）不许进新家乱放。",
+   "plain_en": "Upgrading is moving house: notarized backup first (you can always move back), renovation touches only removable parts (originals and vectors stay), and old furniture (old programs) may not move in.",
+   "example_zh": "goldmine backup --db OLD.sqlite --out pre-upgrade.sqlite：输出带校验，恢复到不同路径用旧程序只读检查。",
+   "example_en": "goldmine backup --db OLD.sqlite --out pre-upgrade.sqlite — verified output; restore to a different path and inspect read-only with the old program.",
+   "code_refs": ["goldmine/commands/lifecycle.py — backup/reindex/reset", "goldmine/migrations.py — schema 迁移"],
+   "analogy_zh": "公证备份、只动软装、旧程序免进", "analogy_en": "Notarize, renovate softly, fence out old writers",
+   "dig_deeper": [
+    {"to": "transaction", "why_zh": "单文件库为什么让备份这么简单", "why_en": "Why one-file libraries make backup trivial"},
+    {"to": "repair-commands", "why_zh": "升级后的修补工具", "why_en": "The post-upgrade repair tools"}
+   ]
+  },
+  {
+   "id": "serve-linger", "cluster": "systems", "layer": 3,
+   "term_zh": "serve 心跳与自动退", "term_en": "serve Heartbeat & Linger",
+   "one_liner_zh": "常驻后端 + 心跳 socket + linger 超时自动退——搜索从秒级到亚秒",
+   "one_liner_en": "Resident backend + heartbeat socket + linger timeout — search goes from seconds to sub-second",
+   "professional_zh": "serve（opt-in 守护）把后端常驻：llama-server 与媒体边车一次加载反复使用，每次查询免掉模型冷启动，搜索从「每次起模型几秒」变亚秒。生命周期由心跳与 linger 超时管理：没人用就自动退出，不留僵尸后台。能力/指纹信息由静态探针合并——不起进程也能如实回答 visual_search 之类的能力问询（能力宣称先于服务、由探针派生）。",
+   "professional_en": "serve (an opt-in daemon) keeps the backends resident: llama-server and the media sidecar load once and serve many, removing model cold-start from every query — seconds become sub-second. Lifecycle runs on heartbeat + linger timeout: unused, it exits itself, leaving no zombie background. Capability/fingerprint answers merge from static probes — even without the process running, questions like visual_search get truthful answers (claims derive from probes, and precede the service).",
+   "plain_zh": "请一位翻译住家里（明确要求才请），没人说话他就自己收拾走人。还没请他时你也能问「在不在」——门口的探针替他诚实作答。",
+   "plain_en": "A translator moves in only when you ask; when nobody talks to him he leaves by himself. And before he moves in, the door probe answers 'is he available?' truthfully on his behalf.",
+   "example_zh": "goldmine serve --db lib.sqlite 后连续 search：第二次查询起可对比亚秒时延；空闲超时后进程自行消失。",
+   "example_en": "goldmine serve --db lib.sqlite, then back-to-back searches: sub-second from the second query; idle past linger, the process is gone.",
+   "code_refs": ["goldmine/serve.py — 心跳、linger、静态探针合并"],
+   "analogy_zh": "住家翻译，闲了自走，行踪探针可查", "analogy_en": "A live-in translator who self-departs and is probe-reportable",
+   "dig_deeper": [
+    {"to": "watch-serve", "why_zh": "两个守护的分工总览", "why_en": "The two daemons' division of labor"},
+    {"to": "backend-lifecycle", "why_zh": "常驻的进程纪律", "why_en": "The residency's process discipline"}
+   ]
+  },
+  {
+   "id": "watch-quiet", "cluster": "systems", "layer": 3,
+   "term_zh": "静默窗口合并", "term_en": "Quiet-Window Merging",
+   "one_liner_zh": "文件变化先攒进静默窗再统一处理，另有 6 小时全量兜底扫",
+   "one_liner_en": "File changes accumulate through a quiet window before processing, with a 6-hour full sweep as the floor",
+   "professional_zh": "watch 的增量节拍：文件变化事件先在静默窗口内合并（构建工具常在毫秒内连续写十几个文件，逐个处理是灾难），窗口合拢后只重做变化的文件；full_period_s=21600（6 小时）的全量兜底扫接住任何事件机制漏掉的变化。与 watch 的自适应轮询节奏、电源门控协同：忙时不烧电、闲时不失灵。",
+   "professional_en": "watch's incremental tempo: change events merge inside a quiet window (build tools write a dozen files within milliseconds — handling each is a disaster); when the window closes, only changed files redo. A full sweep at full_period_s=21600 (6 hours) catches anything the event path missed. It cooperates with adaptive polling cadence and power gating: busy time doesn't burn battery, idle time doesn't go blind.",
+   "plain_zh": "快递员不会每件到就敲门：攒一窗的包裹一起送。另外每 6 小时整体巡一遍楼，保证一个不漏。",
+   "plain_en": "The courier doesn't knock per parcel; the window's worth goes out together. And every 6 hours the whole building gets a sweep.",
+   "example_zh": "watch 运行中落一个文件 → status 里可见 ≤90s 内可搜（R9 live 实测口径）。",
+   "example_en": "Drop a file while watch runs → searchable within ≤90 s (the R9 live-measured bound).",
+   "code_refs": ["goldmine/watch.py — 静默窗与 full_period_s"],
+   "analogy_zh": "攒一窗一起送 + 定时全楼巡", "analogy_en": "Batch the window; sweep the floor regularly",
+   "dig_deeper": [
+    {"to": "idempotency", "why_zh": "增量重跑为什么安全", "why_en": "Why incremental reruns are safe"},
+    {"to": "power-gating", "why_zh": "节拍的电源约束", "why_en": "The tempo's power constraints"}
+   ]
+  },
+  {
+   "id": "poison-list", "cluster": "systems", "layer": 3,
+   "term_zh": "毒文件清单", "term_en": "The Poison List",
+   "one_liner_zh": "增量期反复失败的文件不再无限重试——两层分账",
+   "one_liner_en": "Files failing repeatedly during incremental passes stop being retried forever — accounted at two layers",
+   "professional_zh": "delta 期反复失败的文件进清单，不再无限重试；全量扫时另计（环境可能已修复，给一次机会）。防的是「一颗老鼠屎坏一锅汤」：一个永远解析失败的文件不该拖住整条管线，但也不该被静默遗忘——清单是记账不是抹除，status 与失败报告永远可查。与 P1-5 反陈旧规则调和：仅「读入中途 IO 错误」保留已读段，抽取器明确拒绝的仍走现行删段。",
+   "professional_en": "Files failing repeatedly during delta passes enter the list and stop being retried indefinitely; the full sweep counts separately (the environment may have healed — grant one more chance). It prevents one bad file from stalling the pipeline while refusing to silently forget it: the list is bookkeeping, not erasure, always visible in status and failure reports. Reconciled with the anti-staleness rule: only mid-read IO errors keep already-read segments; extractor-declared rejections still follow the current segment-pruning path.",
+   "plain_zh": "总考不及格的科目先挂起，不无限补考；但期总考（全量扫）再给一次机会。挂起有台账，不是除名。",
+   "plain_en": "A repeatedly failing subject gets parked, not infinite retakes; the final (full sweep) grants one more attempt. Parked is on the books, not expelled.",
+   "example_zh": "status --failures 能看到哪些文件在清单上、失败原因是什么。",
+   "example_en": "status --failures shows which files are listed and why they failed.",
+   "code_refs": ["goldmine/watch.py:950-976 — delta 毒文件清单"],
+   "analogy_zh": "挂起有台账，不是除名", "analogy_en": "Parked on the books, not expelled",
+   "dig_deeper": [
+    {"to": "capability-rows", "why_zh": "失败原因的记账格式", "why_en": "How failure reasons are booked"},
+    {"to": "idempotency", "why_zh": "重试与续跑的关系", "why_en": "How retry relates to resume"}
+   ]
+  },
+  {
+   "id": "power-gating", "cluster": "systems", "layer": 3,
+   "term_zh": "电源门控", "term_en": "Power Gating",
+   "one_liner_zh": "thermal 暂停全部、内存压力 ≥2 推迟嵌 pass、电池模式限批 50 文件",
+   "one_liner_en": "Thermal pauses everything; memory pressure ≥2 defers embed passes; battery mode caps batches at 50 files",
+   "professional_zh": "watch 的礼貌纪律（继承 DigUp PowerPolicy 并实测迁移）：pmset 探测三态——thermal 受限暂停全部摄取；内存压力 ≥2 推迟嵌入 pass；电池模式下 delta pass ≤50 文件 + 120s 间隔。一处刻意偏离：低电量模式只报告不阻塞（goldmine 决策 H12——本地工具不该替用户做主停工）。后端加载走同一纪律：起不来不崩、记录原因、下次再试。",
+   "professional_en": "watch's courtesy rules (inherited from DigUp's PowerPolicy, migrated with measurement): pmset probes three states — thermal throttling pauses all ingestion; memory pressure ≥2 defers embed passes; battery mode caps delta passes at 50 files with 120 s spacing. One deliberate deviation: low-power mode reports but does not block (goldmine decision H12 — a local tool shouldn't overrule the user's choice to keep working). Backend loading shares the discipline: fail to start without crashing, record the reason, retry next pass.",
+   "plain_zh": "电脑发烧就歇会儿、内存紧张就缓缓、用电池就小口吃——但「没电别干活」不由程序说了算，只提醒不拦着。",
+   "plain_en": "Hot machine? Pause. Tight memory? Defer. On battery? Small bites. But 'battery means stop working' is the user's call — the tool nudges, it doesn't blockade.",
+   "example_zh": "doctor 与 status 的心跳里能看到电源状态与当时的门控决定。",
+   "example_en": "The heartbeat in doctor/status shows the power state and the gating decision it produced.",
+   "code_refs": ["goldmine/watch.py:771-792 — pmset 探测", "goldmine/config.py:129-136 — 门控配置"],
+   "analogy_zh": "看天吃饭，但主意的最终决定权在你", "analogy_en": "Read the weather; the user owns the call",
+   "dig_deeper": [
+    {"to": "pmset-probe", "why_zh": "探测的机械层", "why_en": "The probe's mechanical layer"},
+    {"to": "watch-quiet", "why_zh": "被门控的节拍", "why_en": "The tempo being gated"}
+   ]
+  },
+  {
+   "id": "mcp-queue", "cluster": "systems", "layer": 3,
+   "term_zh": "MCP 单操作队列", "term_en": "The MCP One-Operation Queue",
+   "one_liner_zh": "四个只读工具、同一时刻一个操作 + 两个等待者、全程预算与取消",
+   "one_liner_en": "Four read-only tools, one active operation with two waiters, budgets and cancellation throughout",
+   "professional_zh": "MCP 服务暴露四个只读工具（search / get / context / status），产品安全铁律：不执行外部动作、不下载、不写库。并发模型刻意保守：同一时刻一个活跃操作 + 最多两个等待者——检索引擎的下游不需要并行写入面（本来也没有写入口）。每次调用带预算（token 上限）与取消语义；显式 --db PATH 绑定，SDK extra 可选精确 2.0.0。新段型接入时 _files_with_text 口径要重审（腐烂风险清单）。",
+   "professional_en": "The MCP server exposes four read-only tools (search / get / context / status) under the product-safety iron rule: no external actions, no downloads, no writes. The concurrency model is deliberately conservative: one active operation plus at most two waiters — a retrieval engine's downstream needs no parallel write surface (there is no write surface). Every call carries budgets (token caps) and cancellation; --db PATH binds explicitly; the SDK extra pins exactly 2.0.0. When new segment types land, the _files_with_text census must be re-audited (rot-risk list).",
+   "plain_zh": "给 AI 助手的窗口只有一个柜台、一次办一件、排队最多俩——而且这柜台只读不写，想改库没有这条通道。",
+   "plain_en": "One counter, one transaction at a time, two waiting chairs max — and the counter is read-only; there is simply no write lane.",
+   "example_zh": "docs/MCP.md 是四工具的契约原文；SDK/stdio/队列/取消测试在 optional-mcp profile。",
+   "example_en": "docs/MCP.md is the four-tool contract; SDK/stdio/queue/cancellation tests run in the optional-mcp profile.",
+   "code_refs": ["goldmine/mcp_server.py — 队列与预算", "goldmine/mcp_contracts.py — 工具契约"],
+   "analogy_zh": "只读柜台，一号位一队列", "analogy_en": "A read-only counter with a one-deep queue",
+   "dig_deeper": [
+    {"to": "mcp-readonly", "why_zh": "四工具的面（原有节点）", "why_en": "The four-tool surface (the earlier node)"},
+    {"to": "pack-budget", "why_zh": "预算语义的来源", "why_en": "Where the budget semantics come from"}
+   ]
+  },
+  {
+   "id": "roots-bookkeeping", "cluster": "systems", "layer": 3,
+   "term_zh": "roots 记账", "term_en": "roots Bookkeeping",
+   "one_liner_zh": "update_roots 把每轮流过的范围记进库——A2 过滤「只管自己人」的依据",
+   "one_liner_en": "update_roots records each round's walked scope — the basis for A2's 'only our own' filtering",
+   "professional_zh": "每轮摄取收尾时 update_roots 把本轮实际走过的范围合并进库（roots_json）。这份记账是查询期删文件过滤（A2）的作用域依据：只对真实摄取过的目录范围内的行做磁盘存在性检查——离线测试用假路径建库不会被误伤（无 roots_json = 不过滤的约定，动写入口径时要重审）。forget/sources remove 的排除关系也记在同一份账上，sources restore 解除后需显式 ingest 才恢复索引。",
+   "professional_en": "At each round's close, update_roots merges the round's actually-walked scope into the library (roots_json). This ledger scopes the query-time deleted filter (A2): disk-existence checks apply only to rows within genuinely-ingested directories — offline tests with fake paths are untouched (the no-roots_json-no-filter convention; re-audit when touching the write path). forget/sources-remove exclusions live in the same ledger; after sources restore, an explicit ingest is needed to re-index.",
+   "plain_zh": "管家的名册记着「我实际看过哪些地方」。删文件检查只查名册内的房间——没看过的不归它管，也不能装管。",
+   "plain_en": "The housekeeper's ledger lists rooms actually walked. Deleted-file checks apply only inside the ledger — rooms never visited are neither governed nor fake-governed.",
+   "example_zh": "goldmine sources list 显示 roots 与排除；forget PATH --dry-run 预览不动库。",
+   "example_en": "goldmine sources list shows roots and exclusions; forget PATH --dry-run previews without writing.",
+   "code_refs": ["goldmine/ingest/pipeline.py — update_roots", "goldmine/sources.py — sources/forget/restore"],
+   "analogy_zh": "只管名册内的房间", "analogy_en": "Govern only the rooms you walked",
+   "dig_deeper": [
+    {"to": "deleted-filter", "why_zh": "这份账的查询期消费者", "why_en": "The query-time consumer of this ledger"},
+    {"to": "deletion-detection", "why_zh": "离线侧的同一份范围", "why_en": "The offline side of the same scope"}
+   ]
+  },
+  {
+   "id": "commit-digests", "cluster": "process", "layer": 3,
+   "term_zh": "人读提交摘要", "term_en": "Human-Readable Commit Digests",
+   "one_liner_zh": "COMMIT_DIGESTS.md 四段固定：关键行 / 风险 / 不确定 / 90 秒怎么验",
+   "one_liner_en": "COMMIT_DIGESTS.md, four fixed sections: key lines / risks / uncertainties / how to verify in 90 s",
+   "professional_zh": "每个提交在合并/推送前向 docs/COMMIT_DIGESTS.md 追加四段式摘要：关键行（讲了什么行，不讲故事）、每行的风险、我不确定的地方、用户 90 秒怎么亲手验证。这是所有者的第一阅读面——把「读 diff」的成本从无限（读代码）压到有限（读四段+跑一条命令）。与锚点卡配套：摘要里的「怎么验」尽量直接引用锚点命令。",
+   "professional_en": "Before any merge/push, every commit appends a four-section digest to docs/COMMIT_DIGESTS.md: key lines (what changed, no stories), each line's risk, what I'm unsure about, and how the owner verifies it by hand in 90 seconds. It's the owner's first reading surface — compressing 'read the diff' from unbounded (read code) to bounded (read four sections, run one command). Paired with the anchor cards: the 'how to verify' sections cite anchor commands directly wherever possible.",
+   "plain_zh": "每个提交自带一张「给老板的一页纸」：改了啥、哪有险、哪里我没把握、你两分半怎么查。不写小说。",
+   "plain_en": "Every commit ships a one-pager for the boss: what changed, where the risk is, what I'm unsure of, how to check in 90 seconds. No novellas.",
+   "example_zh": "docs/COMMIT_DIGESTS.md 顶部就是历史摘要流；读三次你就有了这个仓库的风险直觉。",
+   "example_en": "docs/COMMIT_DIGESTS.md is the running digest stream; three reads in, you have the repo's risk instincts.",
+   "code_refs": ["docs/COMMIT_DIGESTS.md — 摘要档案"],
+   "analogy_zh": "一页纸汇报，不写小说", "analogy_en": "A one-pager, not a novella",
+   "dig_deeper": [
+    {"to": "evidence-receipt", "why_zh": "摘要背后必须存在的回执", "why_en": "The receipts that must back every digest"},
+    {"to": "anchors-card", "why_zh": "「90 秒怎么验」的命令来源", "why_en": "Where the 90-second checks come from"}
+   ]
+  },
+  {
+   "id": "lecture-system", "cluster": "process", "layer": 3,
+   "term_zh": "轮讲制度", "term_en": "The Walkthrough System",
+   "one_liner_zh": "每周一讲、讲后复述、缺口进下一讲——已覆盖五个子系统",
+   "one_liner_en": "One subsystem per week, owner recites after, gaps roll into the next lecture — five covered",
+   "professional_zh": "理解密度制度：AI 会话负责「供货」，每周一个子系统走读（搜索打分/指纹身份/摄取管线/诚实契约/双常驻进程），每讲末尾十问，所有者脱稿复述才算过关，缺口进下一讲。新子系统落地时追加新讲。这是把「理解」当成有交付物、有验收的工程任务，而不是「有问题再问」的被动等待。",
+   "professional_en": "The comprehension-density institution: AI sessions supply, the owner absorbs — one subsystem per week (search scoring / fingerprint identity / ingest pipeline / the honesty contract / the twin resident processes), ten questions ending each lecture, and the owner must recite from memory to pass; gaps roll into the next lecture. New subsystems add lectures. Understanding is treated as an engineering deliverable with acceptance criteria, not a passive 'ask when confused'.",
+   "plain_zh": "每周一对一授课 + 随堂测验：学生（仓库所有者）能脱稿复述，这一讲才算教完。没讲明白的，下周接着讲。",
+   "plain_en": "Weekly one-on-one with a quiz: the student (the repo's owner) must recite unaided before a lecture counts. What didn't stick comes back next week.",
+   "example_zh": "docs/WALKTHROUGH-*.md 是五讲讲义；本 Learn 地图的很多节点直接从讲义挖出。",
+   "example_en": "docs/WALKTHROUGH-*.md are the five lectures; many nodes in this very Learn map were mined from them.",
+   "code_refs": ["docs/WALKTHROUGH-search.md — 第一讲"],
+   "analogy_zh": "每周授课，复述过关", "analogy_en": "Weekly lectures, recite to pass",
+   "dig_deeper": [
+    {"to": "anchors-card", "why_zh": "复述之外的亲手验证", "why_en": "Hands-on checks beyond recital"},
+    {"to": "peer-review", "why_zh": "同属知识保质期制度", "why_en": "A sibling knowledge-freshness institution"}
+   ]
+  },
+  {
+   "id": "worktree-rule", "cluster": "process", "layer": 3,
+   "term_zh": "长跑 worktree 隔离", "term_en": "Worktree Isolation for Long Runs",
+   "one_liner_zh": "超过 30 分钟的测量任务在专用 git worktree 里跑——主树被覆盖也不伤测量",
+   "one_liner_en": "Measurements over 30 minutes run in a dedicated git worktree — main-tree churn can't hurt them",
+   "professional_zh": "一会话一分支之外的加保：对比/测量/评测等长跑任务（>30 分钟）在专用 git worktree 执行。P2-08 的实证：主工作树在测量进行中被并发会话覆盖两次，worktree 里的测量毫发无伤。教训制度化——长跑的敌人不是失败，是「跑的时候地基被别人换了」。",
+   "professional_en": "Extra insurance beyond one-session-one-branch: comparison/measurement/eval runs over 30 minutes execute in a dedicated git worktree. P2-08's evidence: the main tree was overwritten twice by concurrent sessions mid-measurement; the worktree run was unharmed. The institutionalized lesson — a long run's enemy isn't failure, it's the floor being swapped out from under it.",
+   "plain_zh": "马拉松选手跑自己的封闭赛道，不和装修队共用马路——哪怕装修队只占路十分钟也不行。",
+   "plain_en": "The marathoner runs a closed course, never sharing the road with renovation crews — even a ten-minute closure is too many.",
+   "example_zh": "comparison-report-001 的复现指引明确给出 worktree 路径——测量与复现同规。",
+   "example_en": "comparison-report-001's repro instructions name the worktree path — measurement and reproduction follow the same rule.",
+   "code_refs": ["AGENTS.md — 铁律第 6 条", "reports/execution/P2-08/ — 实证记录"],
+   "analogy_zh": "马拉松跑封闭赛道", "analogy_en": "Marathons need closed courses",
+   "dig_deeper": [
+    {"to": "one-session-one-branch", "why_zh": "同一条铁律的另一半", "why_en": "The other half of the same iron rule"},
+    {"to": "branching", "why_zh": "分支模型的底层", "why_en": "The branch model underneath"}
+   ]
+  },
+  {
+   "id": "info-lossless", "cluster": "process", "layer": 3,
+   "term_zh": "信息无损清理", "term_en": "Information-Lossless Cleanup",
+   "one_liner_zh": "保留引擎原始输出/回执/逐行指标，删重复簿记与可重装副本——26G→990M",
+   "one_liner_en": "Keep raw engine output, receipts, per-line metrics; drop duplicate bookkeeping and reinstallable copies — 26G→990M",
+   "professional_zh": "执行记录清理的判据是一条线：信息无损。保留：引擎原始 stdout、回执（argv/退出码）、逐行指标（可对任意新指标离线重算）。删除：重复簿记（每命令重复序列化的资源清单、重复的全库再审计快照）与可重装副本（npm 树、快照缓存）。实例 cleanup/p2-08-comparison-20261025-00{2,3,4}：26G→990M，一条真实信息未丢。清理是工程不是大扫除——每笔删除要说得出「为什么这不是信息」。",
+   "professional_en": "The criterion for pruning execution records is a single line: information lossless. Keep: raw engine stdout, receipts (argv/exit codes), per-line metrics (recomputable offline against any future metric). Delete: duplicate bookkeeping (per-command re-serialized resource manifests, repeated whole-repo re-audit snapshots) and reinstallable copies (npm trees, snapshot caches). Case cleanup/p2-08-comparison-20261025-00{2,3,4}: 26G→990M with zero real information lost. Cleanup is engineering, not spring cleaning — every deletion must say why it isn't information.",
+   "plain_zh": "扔鞋盒前先立规矩：发票和原始照片留下，包装盒和说明书副本扔掉。26G 减到 990M，凭据一张不少。",
+   "plain_en": "Rules before tossing shoeboxes: invoices and originals stay; packaging and spare manuals go. 26G to 990M, not one receipt missing.",
+   "example_zh": "heavy-evidence/ 目录保留了逐行指标与原始 stdout——任何新指标都能离线重算，无需重跑引擎。",
+   "example_en": "heavy-evidence/ keeps per-line metrics and raw stdout — any new metric recomputes offline, no engine rerun needed.",
+   "code_refs": ["AGENTS.md — 清理判据", "reports/execution/P2-08/heavy-evidence/ — 保留层示例"],
+   "analogy_zh": "留发票，扔包装盒", "analogy_en": "Keep invoices, toss packaging",
+   "dig_deeper": [
+    {"to": "evidence-receipt", "why_zh": "「必须保留」的那一层是什么", "why_en": "What counts as the must-keep layer"},
+    {"to": "sha256", "why_zh": "可重算性依赖的哈希", "why_en": "The hash that recomputability leans on"}
+   ]
+  },
+  {
+   "id": "claim-discipline", "cluster": "process", "layer": 3,
+   "term_zh": "主张纪律", "term_en": "Claim Discipline",
+   "one_liner_zh": "对外每一句主张与证据同纪律：没打绿的门不写现在时",
+   "one_liner_en": "Every public claim follows evidence discipline: no present tense for unmet gates",
+   "professional_zh": "营销语言与代码同等纪律：官网首页印着 12 项红门；能力表每行标注证据等级（VERIFIED 需要 全部证据，IMPLEMENTED 只是代码存在）；尚未做到的事只能以 roadmap/计划语气出现。这张 Learn 地图同样受审：每个节点的数字都要能溯源到回执。反例是行业常态——「基本通过」「接近行业水平」这类修辞在此仓库是禁语。",
+   "professional_en": "Marketing language follows the same discipline as code: the homepage prints its 12 red gates; capability rows carry evidence grades (VERIFIED requires complete evidence; IMPLEMENTED means only that code exists); unfinished work appears only in roadmap/future tense. This Learn map is audited the same way — every number traces to receipts. The industry's normal rhetoric ('basically passes', 'near state-of-the-art') is banned vocabulary here.",
+   "plain_zh": "广告词按合同标准写：说出去的每个数字要能对账，没做到的事用将来时。红门挂在首页不是谦虚，是合规。",
+   "plain_en": "Ad copy written to contract standard: every public number reconciles, unfinished work uses future tense. Red gates on the homepage aren't humility — they're compliance.",
+   "example_zh": "对照检验：官网「数字」区的每个卡片都在仓库有对应回执；找不到回执的数字按事故处理。",
+   "example_en": "A standing audit: every card in the site's numbers section has a receipt in the repo; an unreceipted number is treated as an incident.",
+   "code_refs": ["AGENTS.md — 铁律第 1 条", "site/index.html — 红门卡片（verify 注释）"],
+   "analogy_zh": "广告词按合同标准写", "analogy_en": "Ad copy at contract standard",
+   "dig_deeper": [
+    {"to": "honesty-contract", "why_zh": "对内版本的同一条宪法", "why_en": "The same constitution, internal edition"},
+    {"to": "three-state", "why_zh": "主张只能取的三种态", "why_en": "The only three states a claim may take"}
+   ]
+  }
+ ]
+}

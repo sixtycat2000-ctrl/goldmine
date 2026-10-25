@@ -6,10 +6,10 @@
 <meta name="referrer" content="no-referrer">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='2' transform='rotate(45 12 12)' fill='none' stroke='%23E3A94C' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='1.8' fill='%23E3A94C'/%3E%3C/svg%3E">
 <meta property="og:title" content="goldmine · Learn">
-<meta property="og:description" content="77 个概念、四个深度层：从项目机制一路下探到基础概念。中英双语的可交互概念地图。">
+<meta property="og:description" content="145 个概念、四层深度：七个集群井口逐层下探，从项目机制一路钻到基础概念。中英双语的可交互下钻地图。">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
-<meta name="description" content="goldmine Learn — 77 个概念、四个深度层（项目机制→系统技术→领域方法→基础概念），从任何项目技术至少下探三层到基础概念。中英双语。">
+<meta name="description" content="goldmine Learn — 145 个概念、四个深度层（项目机制→系统技术→领域方法→基础概念），zoom in 逐层下探到底层概念。中英双语。">
 <title>goldmine · Learn</title>
 <link rel="canonical" href="https://goldmine-site.sixtycat2000.workers.dev/learn">
 <link rel="stylesheet" href="assets/goldmine.css">
@@ -51,14 +51,14 @@
       </div>
       <button id="list-toggle" class="bar-btn" aria-pressed="false" data-zh="目录" data-en="List">目录</button>
       <button id="help-btn" class="bar-btn" aria-label="shortcuts（?）">?</button>
-      <span style="font:11px var(--mono);color:var(--sub-2)" data-zh="拖拽平移 · 滚轮缩放 · 点击下探" data-en="drag to pan · wheel to zoom · click to drill">拖拽平移 · 滚轮缩放 · 点击下探</span>
+      <span style="font:11px var(--mono);color:var(--sub-2)" data-zh="拖拽平移 · 滚轮缩放 · 单击选中 · 双击下探 · Esc 回上一层" data-en="drag to pan · wheel to zoom · click to select · double-click to drill · Esc to climb">拖拽平移 · 滚轮缩放 · 单击选中 · 双击下探 · Esc 回上一层</span>
     </div>
     <div id="shortcuts" class="shortcuts" hidden>
       <b data-zh="键盘" data-en="Keyboard">键盘</b>
       <span>/</span><i data-zh="搜索" data-en="search">搜索</i>
       <span>←↑↓→</span><i data-zh="按几何方向跳节点" data-en="nearest node in that direction">按几何方向跳节点</i>
-      <span>Enter</span><i data-zh="选中" data-en="select">选中</i>
-      <span>Esc</span><i data-zh="关面板→回退→取消隔离→清筛选→复位" data-en="panel → back → isolate → filter → reset">关面板→回退→取消隔离→清筛选→复位</i>
+      <span>Enter</span><i data-zh="下探（有子概念时）" data-en="drill when children exist">下探（有子概念时）</i>
+      <span>Esc</span><i data-zh="关面板→回上一层→回地表" data-en="panel → climb one level → surface">关面板→回上一层→回地表</i>
       <span>+ − 0</span><i data-zh="缩放 / 复位" data-en="zoom / reset">缩放 / 复位</i>
       <span>L</span><i data-zh="中英切换" data-en="language">中英切换</i>
       <span>?</span><i data-zh="本面板" data-en="this panel">本面板</i>
@@ -69,7 +69,7 @@
       <button id="zout" aria-label="zoom out"><svg width="18" height="18"><use href="#i-minus"/></svg></button>
       <button id="zreset" aria-label="reset view"><svg width="18" height="18"><use href="#i-reset"/></svg></button>
     </div>
-    <div class="clusterbar" role="group" aria-label="clusters"></div>
+    <div id="depth-rail" class="depth-rail" role="group" aria-label="depth"></div>
     <div class="fallback" hidden></div>
   </div>
 

@@ -1,0 +1,261 @@
+{
+ "nodes": [
+  {
+   "id": "four-layer-identity", "cluster": "identity", "layer": 3,
+   "term_zh": "四层身份模型", "term_en": "The Four-Layer Identity Model",
+   "one_liner_zh": "指纹 / embed_id / 提取器注册表 / 评测基线身份——各管一件事",
+   "one_liner_en": "Fingerprint / embed_id / extractor registry / baseline identity — one job each",
+   "professional_zh": "人们说「指纹」时经常把四件独立的事混成一个数。goldmine 显式拆成四层：①嵌入指纹（管「向量家族不混」，gate 拒绝 exit 3）②embed_id（管「哪些行要重嵌」）③提取器版本注册表（管「哪些行要重抽」）④评测基线身份（管「评测分母没被偷换」）。拆开之后「改了 X 会发生什么」从玄学变成查表题。",
+   "professional_en": "People say 'the fingerprint' meaning four independent jobs mushed into one number. goldmine splits them explicitly: (1) the embedding fingerprint — refuses mixed vector families, exit 3; (2) embed_id — decides which rows re-embed; (3) the extractor-version registry — decides which rows re-extract; (4) eval baseline identity — guards the denominator. Once split, 'what happens if I change X' is a table lookup, not folklore.",
+   "plain_zh": "身份证、工牌、门禁卡、获奖证书是四张卡，不是一个纹身。每张管一扇门，改哪张只影响哪扇门。",
+   "plain_en": "ID badge, work badge, door card, diploma: four cards, not one tattoo. Each opens its own door; changing one moves only that door.",
+   "example_zh": "改 MEDIA_PREPROCESSING 串（批次 B v4→v5）：装媒体的机器全量重嵌（embed_id 层）、纯文本安装逐字节不动（条件附加层）、词法检索照常（不碰向量）——一次改动三层反应，全部可预期。",
+   "example_en": "Changing MEDIA_PREPROCESSING (v4→v5): media installs re-embed (embed_id layer), text-only installs stay byte-identical (conditional extras), lexical search never notices. One change, three predictable reactions.",
+   "code_refs": ["goldmine/fingerprints.py — 四层的构建与检查"],
+   "analogy_zh": "四张卡管四扇门", "analogy_en": "Four cards, four doors",
+   "dig_deeper": [
+    {"to": "embed-id", "why_zh": "第二层的拆分逻辑", "why_en": "The second layer's split logic"},
+    {"to": "extractor-registry", "why_zh": "第三层的方向性设计", "why_en": "The third layer's directional design"},
+    {"to": "baseline-identity", "why_zh": "第四层与审计门", "why_en": "The fourth layer and the audit gate"},
+    {"to": "fingerprint-gate", "why_zh": "第一层在哪开火", "why_en": "Where the first layer fires"}
+   ]
+  },
+  {
+   "id": "embed-id", "cluster": "identity", "layer": 3,
+   "term_zh": "embed_id 拆分", "term_en": "The embed_id Split",
+   "one_liner_zh": "只有「决定存量向量取值」的字段才触发重嵌——查询提示词不进，文档提示词进",
+   "one_liner_en": "Only fields that change stored vector values trigger re-embedding — query prompts out, document prompts in",
+   "professional_zh": "v1 指纹把嵌入身份、分块、抽取语义、工具集捆成一个数：任何一件变都读成「全部重嵌」。v2 拆出 embed_id，只收真正决定存量向量取值的字段（backend/model/sha/dim/prompts_doc/pooling/normalization + 媒体预处理串）。关键差别对待：文档提示词变了，每个存量向量的取值都变——必须重嵌；查询提示词只影响查询那一个向量——一个存量字节都不用动。2026-10 的 v1→v2 提示词重构因此是零重嵌迁移（迁移回填的 embed_id 与新库逐位相等，有测试钉死）。",
+   "professional_en": "The v1 fingerprint bundled embedding identity, chunking, extraction semantics and tooling into one number: anything changing read as 're-embed everything'. v2 splits embed_id to carry only fields that determine stored vector values (backend/model/sha/dim/prompts_doc/pooling/normalization + the media preprocessing string). The key asymmetry: document prompts change every stored vector's value — re-embed; query prompts affect only the one query vector — not a stored byte moves. The 2026-10 prompt refactor was therefore a zero-reembed migration (the migrated embed_ids are bit-equal to fresh libraries; test-pinned).",
+   "plain_zh": "「会影响库存菜味道的配方改动」才回炉全部菜；只影响「点菜单子写法」的改动，一盘都不用回炉。",
+   "plain_en": "Only recipe changes that alter the stored dishes' taste re-cook the kitchen; menu-font changes re-cook nothing.",
+   "example_zh": "ANCHORS 第 1 条 status --json：embed_stale=0 表示库存向量与当前 embed_id 一致。",
+   "example_en": "ANCHORS #1 status --json: embed_stale=0 means stored vectors match the live embed_id.",
+   "code_refs": ["goldmine/fingerprints.py:150 — embed_id 构造"],
+   "analogy_zh": "改配方才回炉，改菜单不用", "analogy_en": "Recipes trigger recalls; menus don't",
+   "dig_deeper": [
+    {"to": "prompt-scheme", "why_zh": "文档/查询提示词方案本体", "why_en": "The prompt scheme itself"},
+    {"to": "four-layer-identity", "why_zh": "它在四层里的位置", "why_en": "Its place in the four layers"}
+   ]
+  },
+  {
+   "id": "extractor-registry", "cluster": "identity", "layer": 3,
+   "term_zh": "提取器版本注册表", "term_en": "The Extractor-Version Registry",
+   "one_liner_zh": "每行存版本串，不在「本构建会写出的集合」里 = 下次重抽",
+   "one_liner_en": "Each row stores a version string; if it's not in the set this build would write, the row re-extracts",
+   "professional_zh": "current_extractors() 给出本构建可能写出的全部版本串集合（pdftotext@24.08.0、media-ffmpeg-mm.v3、组合串按字母序统一组装）。行的版本不在集合里 = stale = 下次摄取重抽。方向性设计：漏登记一个新串，后果只是「多抽一遍」（无害）；反方向（行为变了版本没变）才是灾难——旧行静默过期。redo 标记是注册表之外的升级路径：语义是「当时没能力、现在有了，补一次」，终态后不再触发、不 churn。",
+   "professional_en": "current_extractors() lists every version string this build could write (pdftotext@24.08.0, media-ffmpeg-mm.v3, combos assembled alphabetically). A row whose string isn't in the set is stale and re-extracts on next ingest. The design is directional: forgetting to register a new string costs one extra extraction (harmless); the reverse — changed behavior, unchanged string — silently expires old rows, which is the disaster. Redo markers are the off-registry upgrade path: 'couldn't then, can now, patch once' — terminal states don't re-trigger.",
+   "plain_zh": "每行文件盖一个「工艺版本」章。章不在现行目录里就重做一遍——最坏多干一次活，绝不会拿着过期的货当好货卖。",
+   "plain_en": "Every row carries a process-version stamp. A stamp missing from the current catalog means redo — worst case is extra work, never selling expired goods as fresh.",
+   "example_zh": "ANCHORS 第 1 条：extractor_stale=0 表示没有行拿着过期的工艺版本。",
+   "example_en": "ANCHORS #1: extractor_stale=0 means no row holds an expired process stamp.",
+   "code_refs": ["goldmine/fingerprints.py — current_extractors 与组合组装"],
+   "analogy_zh": "工艺版本章 + 现行目录比对", "analogy_en": "Process stamps checked against the live catalog",
+   "dig_deeper": [
+    {"to": "behavior-version-triple", "why_zh": "改行为时的三件套纪律", "why_en": "The triple discipline behind changes"},
+    {"to": "four-layer-identity", "why_zh": "它在四层里的位置", "why_en": "Its place in the four layers"}
+   ]
+  },
+  {
+   "id": "behavior-version-triple", "cluster": "identity", "layer": 3,
+   "term_zh": "新行为三件套", "term_en": "The Behavior-Version Triple",
+   "one_liner_zh": "行为变 → 版本串变 → 注册新串，三件必须同步",
+   "one_liner_en": "Behavior changed → string changed → string registered — all three, always",
+   "professional_zh": "改任何提取/嵌入行为时的同步纪律。两个真陷阱都有测试钉死：①字面量漂移——extraction.py 曾三处硬编码 media-ffmpeg-mm.v2 而注册表升到 v3，写出的串永不在注册表里，每行永久反复重抽（2026-10-25 评审抓的 D1）；修法是单一共享常量 + 相等性测试。②组合爆炸——一个文件可叠加多种升级（薄页 OCR + 阿拉伯替换），版本串由统一组装函数拼、注册表登记全部四种组合，两者必须同源。",
+   "professional_en": "The sync discipline for any extraction/embedding behavior change. Two real traps, both test-pinned: (1) literal drift — extraction.py hardcoded media-ffmpeg-mm.v2 in three places while the registry moved to v3, so written strings were never in the registry and every row re-extracted forever (D1, caught in the 2026-10-25 review); fixed with a single shared constant + an equality test. (2) combinatorial blowup — one file can stack upgrades (thin-page OCR + Arabic replacement); a single assembly function builds the string and the registry lists all four combos, and the two must stay same-sourced.",
+   "plain_zh": "改了做法就要换标签、新标签要上目录——三件少一件，轻则白干重则假货。曾有三处手抄标签抄漏的真人真事，从此标签只有一个源头。",
+   "plain_en": "Changed the process? New label. New label? Into the catalog. Miss one and you either redo work forever or ship stale as fresh. Three hand-copied labels once drifted — labels now have exactly one source.",
+   "example_zh": "tests/ 里有 media 版本字面量与共享常量的相等性测试——有意改串而不改常量会当场红。",
+   "example_en": "An equality test pins the media version literal to the shared constant — drift turns red on contact.",
+   "code_refs": ["goldmine/ingest/extraction.py — 共享版本常量", "goldmine/fingerprints.py — 注册表"],
+   "analogy_zh": "改工艺、换标签、上目录，一步不能少", "analogy_en": "Process, label, catalog — all three or none",
+   "dig_deeper": [
+    {"to": "extractor-registry", "why_zh": "注册表怎么消费这些串", "why_en": "How the registry consumes the strings"},
+    {"to": "hash-function", "why_zh": "为什么「同一来源」在这仓库里总是靠 sha/相等性测试钉", "why_en": "Why 'single source' gets pinned by hashes/equality tests here"}
+   ]
+  },
+  {
+   "id": "reference-vectors", "cluster": "identity", "layer": 3,
+   "term_zh": "参考向量测试", "term_en": "Reference Vector Tests",
+   "one_liner_zh": "钉死的输入必须产出逐位相同的向量——模型/构建升级的第一道检查",
+   "one_liner_en": "Pinned inputs must reproduce bit-identical vectors — the first check on any model/build bump",
+   "professional_zh": "一组钉死的参考输入（短/长文本、中英混合、查询与文档提示词、图像、音频）在当前模型+构建下的输出向量被冻结；复现（cosine ≥ 0.999，媒体为精确 fp16 sha）→ 构建升级不动指纹、不重嵌；不复现 → 指纹字段升级 + reindex 通告。这也是 llama.cpp 构建串故意不进指纹的依据：构建变了向量没变，不该惩罚用户——谁来证明「没变」？就是这套测试。再生成有显式环境开关，杜绝意外覆盖。",
+   "professional_en": "A set of pinned reference inputs (short/long text, mixed-script, query and document prompts, images, audio) has frozen expected outputs under the current model+build. Reproduced (cosine ≥ 0.999; media as exact fp16 sha) → a build bump changes no fingerprint and re-embeds nothing. Not reproduced → fingerprint fields bump with a reindex notice. This is also why the llama.cpp build string is deliberately excluded from the fingerprint: a build change with unchanged vectors shouldn't punish users — and these tests are who proves 'unchanged'. Regeneration requires an explicit env switch; accidental overwrites are fenced.",
+   "plain_zh": "模型或引擎升级后先「对暗号」：同样的输入必须得到同样的向量。暗号对上了就不用劳民重嵌；对不上就承认换了家族，走重嵌流程。",
+   "plain_en": "After any upgrade, exchange passwords first: same inputs must yield the same vectors. Password matches — nobody re-embeds. It doesn't — the family changed, admit it and re-embed properly.",
+   "example_zh": "ANCHORS 第 3 条：GOLDMINE_LIVE=1 pytest tests/test_reference_vectors.py tests/test_reference_media_vectors.py → 2 passed, 2 skipped（跳过的是再生成守卫）。",
+   "example_en": "ANCHORS #3: GOLDMINE_LIVE=1 pytest tests/test_reference_vectors.py tests/test_reference_media_vectors.py → 2 passed, 2 skipped (the skips are regeneration guards).",
+   "code_refs": ["tests/test_reference_vectors.py — 文本参考向量", "tests/test_reference_media_vectors.py — 媒体参考向量"],
+   "analogy_zh": "升级前对暗号，对上才放行", "analogy_en": "Exchange passwords before upgrading",
+   "dig_deeper": [
+    {"to": "embeddinggemma", "why_zh": "被钉住的模型本体", "why_en": "The pinned model itself"},
+    {"to": "fixed-point", "why_zh": "「逐位一致」在数上一层是什么意思", "why_en": "What 'bit-identical' means one level down"}
+   ]
+  },
+  {
+   "id": "media-extras-conditional", "cluster": "identity", "layer": 3,
+   "term_zh": "媒体四件套条件附加", "term_en": "Conditional Media Extras",
+   "one_liner_zh": "装了媒体能力才附加四个指纹键——纯文本安装的指纹逐字节不变",
+   "one_liner_en": "Media capability adds four fingerprint keys — text-only installs stay byte-identical",
+   "professional_zh": "helper + mmproj 都能解析时，指纹才附加 media（预处理串）、mmproj_sha256、media_budgets、media_routing 四键。由此：装媒体的机器和纯文本机器属于不同向量家族（正常，它们确实产出不同向量）；但纯文本安装的指纹不因「代码里存在媒体功能」而变——有守卫测试钉死「纯文本安装逐字节不变」。改 fingerprint_fields 时不得绕过这条守卫加字段。",
+   "professional_en": "Only when helper + mmproj both resolve does the fingerprint gain four keys: media (preprocessing string), mmproj_sha256, media_budgets, media_routing. Consequences: a media install and a text-only install are different vector families (correct — they produce different vectors); but a text-only install's fingerprint never changes merely because media code exists — a guard test pins 'text-only installs stay byte-identical'. Adding fingerprint fields must not bypass that guard.",
+   "plain_zh": "装没装多媒体，指纹里多不多那四个键——这是机器的真实能力差异，不是代码差异。没装_extra 键的机器，指纹一个字节都不该变。",
+   "plain_en": "Whether the four media keys appear reflects the machine's real capability, not the codebase's. A text-only machine's fingerprint must not move a byte.",
+   "example_zh": "ANCHORS 第 2 条的拒收现场 differs in: media 就是这两个家族相撞的实况。",
+   "example_en": "The ANCHORS #2 refusal — differs in: media — is these two families colliding, live.",
+   "code_refs": ["goldmine/backends/llama.py — fingerprint_fields 条件附加"],
+   "analogy_zh": "有厨房才印菜单上的那四行", "analogy_en": "The four lines print only if the kitchen exists",
+   "dig_deeper": [
+    {"to": "mmproj", "why_zh": "触发附加的投影头", "why_en": "The projector that triggers the extras"},
+    {"to": "fingerprint-gate", "why_zh": "两个家族相撞时会发生什么", "why_en": "What happens when the families collide"}
+   ]
+  },
+  {
+   "id": "lexical-escape", "cluster": "identity", "layer": 3,
+   "term_zh": "词法逃生门", "term_en": "The Lexical Escape Hatch",
+   "one_liner_zh": "指纹不符被拒时 --lexical 仍可搜——明示的逃生门，不是偷偷降级",
+   "one_liner_en": "Refused by the gate? --lexical still searches — an explicit hatch, not a silent fallback",
+   "professional_zh": "词法检索不碰向量、不过指纹门，永远可用。所以指纹拒（exit 3）的错误信息里明确给出这条路：加 --lexical 继续搜。这是「诚实契约」的降级形态：系统拒绝了语义服务，但把还能做什么、怎么做明明白白告诉你——降级必须大声，也必须给出路。",
+   "professional_en": "Lexical search touches no vectors and passes no fingerprint gate — it always works. The exit-3 message therefore hands you the hatch explicitly: add --lexical. This is the honesty contract's degraded mode: the system refuses semantic service and plainly tells you what still works and how. Degradation must be loud — and must offer a door.",
+   "plain_zh": "门卫拦下语义搜索时顺手递一张纸条：「词法检索不查身份，随时能搜，加 --lexical 就行。」不吭声地把你降级才是事故。",
+   "plain_en": "When the gate refuses semantic search, it hands you a note: lexical ignores identities, add --lexical. Silently downgrading you would be the actual incident.",
+   "example_zh": "ANCHORS 第 2 条后半：同一查询加 --lexical → rc=0 有结果。",
+   "example_en": "Second half of ANCHORS #2: same query with --lexical → rc=0 with results.",
+   "code_refs": ["goldmine/retrieval_lexical.py — 词法检索路径", "goldmine/cli.py — exit 3 与逃生提示"],
+   "analogy_zh": "正门关了，明示侧门在哪", "analogy_en": "Front door locked — the side door is signposted",
+   "dig_deeper": [
+    {"to": "fingerprint-gate", "why_zh": "拦截发生的门", "why_en": "The gate doing the refusing"},
+    {"to": "fts5-bm25", "why_zh": "逃生门背后的引擎", "why_en": "The engine behind the hatch"}
+   ]
+  },
+  {
+   "id": "baseline-identity", "cluster": "identity", "layer": 3,
+   "term_zh": "评测基线身份", "term_en": "Baseline Identity",
+   "one_liner_zh": "语料清单变了 gate 响亮作废；重生唯一通道是审计门",
+   "one_liner_en": "A changed corpus invalidates the gate loudly; the only rebirth path is the audit gate",
+   "professional_zh": "评测基线文件携带 corpus_version + corpus_sha：语料清单漂移 → gate 响亮作废，绝不静默拿旧分母比新语料。基线重生的唯一合法通道是审计门：备份 → 重建 → 逐条对账（预期内放行、未解释漂移追责）。2026-10-25 的现场范例：8 项差异逐项有归属，其中「+1 文件」查实为新命令文件落进摄取根——不是夹带。「顺手重建」是夹带的头号入口，被制度性堵死。",
+   "professional_en": "Baseline files carry corpus_version + corpus_sha: corpus drift invalidates the gate loudly — never silently compares an old denominator against new material. The only legal rebirth is the audit gate: back up → rebuild → reconcile line by line (expected deltas pass; unexplained drift gets owned). The 2026-10-25 live example: 8 deltas, each attributed, including a '+1 file' traced to a new command doc landing in the ingest root — not smuggling. 'Casual rebuilds' are the #1 smuggling vector, and the process is built to lock that door.",
+   "plain_zh": "考卷换了一页，旧成绩单作废重考——而且新考卷要逐题对账：为什么多了道题，谁批准的。偷偷换考卷在这个仓库是重罪。",
+   "plain_en": "Changed the exam by one page? The old score dies and the new paper gets reconciled question by question: why does this question exist, who approved it. Quietly swapping exams is a felony here.",
+   "example_zh": "evals/ 下的基线 README 记录冻结与审计状态；HOLDOUT_AUDIT.md 是封存纪律的正文。",
+   "example_en": "The baseline READMEs under evals/ record freeze and audit state; HOLDOUT_AUDIT.md is the sealing charter.",
+   "code_refs": ["goldmine/quality.py — gate 的身份校验"],
+   "analogy_zh": "考卷换页成绩作废，逐题对账才能重考", "analogy_en": "New exam page, voided scores, reconciled line by line",
+   "dig_deeper": [
+    {"to": "audit-gate", "why_zh": "审计门的完整流程", "why_en": "The audit gate's full procedure"},
+    {"to": "sha256", "why_zh": "corpus_sha 是怎么算的", "why_en": "How corpus_sha is computed"}
+   ]
+  },
+  {
+   "id": "frozen-suite", "cluster": "eval", "layer": 3,
+   "term_zh": "420 题冻结套件", "term_en": "The Frozen 420-Question Suite",
+   "one_liner_zh": "122 真实来源、210/210 训练/留出分组，留出集封存",
+   "one_liner_en": "122 real sources, grouped 210/210 train/holdout — holdout sealed",
+   "professional_zh": "产品评测底座：420 道题来自 122 个真实来源（含 PDF/OCR/音频/EXIF 证据），按文件分组切 210/210 dev/holdout，holdout 封存未开。任何参数改动的裁判。最新开发跑分 current005（2026-10-22）：strict s@5 96/180、PACK 97/180、噪声 20/30 正确空答——12 项质量门为红，如实挂台账。分组切分是防「题目泄漏」：同一文件的题必须同侧。",
+   "professional_en": "The product-eval bedrock: 420 questions from 122 real sources (PDF, OCR, audio, EXIF evidence included), grouped by file into 210/210 dev/holdout with holdout sealed. It judges every parameter change. The latest dev run, current005 (2026-10-22): strict s@5 96/180, PACK 97/180, 20/30 correct empty answers on noise — 12 quality gates red, on the public ledger. Grouping prevents leakage: questions from one file must live on one side.",
+   "plain_zh": "一份 420 题的固定考卷，一半平时练手、一半封存当高考。封存那半谁都不能提前看——不然分数就是自欺。",
+   "plain_en": "A fixed 420-question exam: half for daily practice, half sealed as the final. Nobody peeks at the sealed half — otherwise the score is self-deception.",
+   "example_zh": "evals/product_v4_expansion/README.md 是套件的冻结说明；FEATURE_STATUS 引用 current005 的逐门结果。",
+   "example_en": "evals/product_v4_expansion/README.md is the freeze record; FEATURE_STATUS cites current005 gate-by-gate.",
+   "code_refs": ["evals/product_v4_expansion/README.md — 套件冻结说明"],
+   "analogy_zh": "固定考卷 + 封存的高考卷", "analogy_en": "A fixed exam with a sealed final",
+   "dig_deeper": [
+    {"to": "holdout", "why_zh": "留出集的一般方法论", "why_en": "Holdout as general method"},
+    {"to": "quality-gates", "why_zh": "红门怎么记账", "why_en": "How red gates get booked"},
+    {"to": "baseline-identity", "why_zh": "考卷本身怎么防偷换", "why_en": "How the exam itself is protected"}
+   ]
+  },
+  {
+   "id": "ab-calibration", "cluster": "eval", "layer": 3,
+   "term_zh": "A/B 校准", "term_en": "A/B Calibration",
+   "one_liner_zh": "参数只许 A/B 定：n=146 真模型评测、train/holdout 一致、零单题回归",
+   "one_liner_en": "Params change only by A/B: n=146 real-model eval, train/holdout agreement, zero per-query regressions",
+   "professional_zh": "z_gate=3.0 的出生记录：v2.1 校准 A/B（n=146 真模型评测）2.0→3.0 使 s@5 0.747→0.781、MRR 0.646→0.665、零命中诚实度 0.4→0.6，train 与 holdout 一致、零单题回归——四条全中才采纳。这是「参数改动要过统计门」的正面样板：数字可复跑、结论可追溯、决策有记录。",
+   "professional_en": "The birth record of z_gate=3.0: a v2.1 calibration A/B (n=146, real model) moving 2.0→3.0 lifted s@5 0.747→0.781, MRR 0.646→0.665, zero-hit honesty 0.4→0.6 — consistent across train/holdout with zero per-query regressions. All four criteria met, so adopted. The positive template for 'parameter changes pass statistical gates': reproducible numbers, traceable conclusions, recorded decisions.",
+   "plain_zh": "调参数像调药量：不靠感觉靠对照试验，还要两边病人（train/holdout）都见效、且没有一个病人恶化，才算数。",
+   "plain_en": "Tuning is dosing: controlled trials only, both cohorts (train/holdout) must benefit, and no single patient may worsen.",
+   "example_zh": "search.py 头注释保存着历次校准的完整先例链——下一个调参者先读它。",
+   "example_en": "search.py's header comment keeps the full precedent chain — read it before the next tuning attempt.",
+   "code_refs": ["goldmine/admission.py — 校准结论的落点", "goldmine/search.py — 头注释先例链"],
+   "analogy_zh": "调药量靠对照试验，不靠感觉", "analogy_en": "Dosing by trial, not by feel",
+   "dig_deeper": [
+    {"to": "significance-testing", "why_zh": "「显著」的判定机器", "why_en": "The machinery deciding 'significant'"},
+    {"to": "admission-gate", "why_zh": "被校准的参数本体", "why_en": "The parameter being calibrated"},
+    {"to": "scientific-preregistration", "why_zh": "试验设计先冻结的方法论", "why_en": "Freezing the design before the trial"}
+   ]
+  },
+  {
+   "id": "noise-questions", "cluster": "eval", "layer": 3,
+   "term_zh": "噪声题与空答率", "term_en": "Noise Questions & Empty-Answer Rate",
+   "one_liner_zh": "30 条没有答案的捣乱查询：正确行为是返回空——QMD 全给了结果",
+   "one_liner_en": "30 noise queries with no right answer: correct behavior is empty — QMD answered all of them",
+   "professional_zh": "评测里的噪声题（乱打的词、不存在的概念）没有相关文档，「诚实返回空」才是满分答案。goldmine 默认配置空答率 43–60%（准入机制挡掉一半，偏「宁可给结果」）；对比框架里 QMD query 臂 0%——30 条全给了结果，vsearch 靠 0.3 分数阈值兜底 30%。这是产品哲学差异，也是 R11 决策层「校准弃答」的靶子：把「识别没有答案」从副产品变成能力。zero-hit honesty 指标当前 1.0。",
+   "professional_en": "Noise questions (gibberish, nonexistent concepts) have no relevant documents, so the honest empty answer is the perfect score. Goldmine's default config returns empty on 43–60% (admission blocks about half; the posture leans 'better to answer something'); in the comparison framework QMD's query arm scored 0% — it answered all 30 — and vsearch's 0.3 score threshold salvages 30%. A philosophy difference, and the target for R11's calibrated abstention: turn 'noticing there's no answer' from a side effect into a capability. The zero-hit honesty metric currently reads 1.0.",
+   "plain_zh": "被考「不存在的东西」时，敢交白卷是能力不是失败。30 道捣乱题，我们交了一半白卷，QMD 一道没敢空着。",
+   "plain_en": "Asked about things that don't exist, handing in a blank page is competence, not failure. On 30 trick questions we blanked about half; QMD blanked none.",
+   "example_zh": "search 'qzkjvbw983' --db …：看到 nothing found + 一步建议，就是这条能力在工作。",
+   "example_en": "search 'qzkjvbw983' — seeing 'nothing found' plus a next step is this capability working.",
+   "code_refs": ["goldmine/commands/search.py — nothing found 渲染", "goldmine/admission.py — 准入即弃答的第一层"],
+   "analogy_zh": "敢交白卷是能力", "analogy_en": "A confident blank page",
+   "dig_deeper": [
+    {"to": "zero-hit-honesty", "why_zh": "零命中作为合法答案的宪法条文", "why_en": "The constitutional clause on honest zeros"},
+    {"to": "admission-gate", "why_zh": "空答率的机制来源", "why_en": "The mechanism behind the empty rate"}
+   ]
+  },
+  {
+   "id": "quality-gates", "cluster": "eval", "layer": 3,
+   "term_zh": "质量门与红门台账", "term_en": "Quality Gates & the Red Ledger",
+   "one_liner_zh": "12 项质量门为红——印在官网首页，因为没达标就是没达标",
+   "one_liner_en": "12 quality gates are red — printed on the homepage, because not meeting a gate is a fact",
+   "professional_zh": "质量门是把「变好还是变坏」自动化的裁决器：420 题套件的每项指标配阈值，跑分不过就亮红。current005 有 12 门为红；与 current004 相比噪声拒绝改善、可答题与 PACK 点估计下降，成对区间含零（不能断言变差，也不能粉饰变好）。红门不许消音：官网首页、FEATURE_STATUS、本站的评测描述都如实携带。任何「顺手调一下让它变绿」的操作都属于质量重试，被铁律禁止。",
+   "professional_en": "Quality gates automate the is-it-better verdict: every suite metric has a threshold; miss it, turn red. current005 has 12 red; vs current004, noise rejection improved while answerable and PACK point estimates fell, with paired intervals spanning zero (cannot claim worse — cannot spin better either). Red gates may not be muted: homepage, FEATURE_STATUS, and this site's eval copy all carry them. Any 'tweak until green' is a quality retry, forbidden by the iron rules.",
+   "plain_zh": "仪表盘上有十二盏红灯亮着，官网首页就摆着这十二盏灯的照片。修好之前不摘灯、不遮灯、不换个角度看灯。",
+   "plain_en": "Twelve red lights on the dashboard; the homepage photographs them as they are. No removing, dimming, or re-angleing until they're actually fixed.",
+   "example_zh": "FEATURE_STATUS 的 Data and release gates 一节就是台账原文；官网首页「96/180 · 12 红」卡片是它的 mirror。",
+   "example_en": "FEATURE_STATUS 'Data and release gates' is the ledger; the homepage's 96/180 · 12-red card mirrors it.",
+   "code_refs": ["docs/FEATURE_STATUS.md — 红门台账", "scripts/eval_real.py — --gate 裁决"],
+   "analogy_zh": "红灯亮着不摘，直到真修好", "analogy_en": "Red lights stay lit until truly fixed",
+   "dig_deeper": [
+    {"to": "regression-gate", "why_zh": "回归门的思想原型", "why_en": "The idea behind regression gates"},
+    {"to": "paired-intervals", "why_zh": "「区间含零」为什么两边都禁止", "why_en": "Why zero-spanning intervals forbid both claims"},
+    {"to": "three-state", "why_zh": "红门是 FAIL 态的制度化", "why_en": "Red gates institutionalize the FAIL state"}
+   ]
+  },
+  {
+   "id": "evidence-receipt", "cluster": "eval", "layer": 3,
+   "term_zh": "证据回执", "term_en": "Evidence Receipts",
+   "one_liner_zh": "PASS 必须附原始回执：argv、退出码、输出哈希、前后源码身份",
+   "one_liner_en": "A PASS must carry raw receipts: argv, exit code, output hash, source identity before/after",
+   "professional_zh": "本仓库的结论只有三态：PASS（附原始回执：完整命令行、退出码、输出 sha、前后源码身份）/ FAIL（如实记）/ MISSING（证据不全就承认不全）。「基本通过」是禁语。reports/execution/ 下的每次测量都按此留档；官网与文档里的每个数字都应能沿回执链溯源。这是对「我说它行」的最强防腐剂：没有回执的 PASS 视同不存在。",
+   "professional_en": "Verdicts come in exactly three states: PASS (with raw receipts — full argv, exit code, output hash, source identity before and after), FAIL (recorded as failure), MISSING (incomplete evidence admitted as incomplete). 'Basically passed' is banned vocabulary. Every measurement under reports/execution/ is archived this way; every number on the site should trace down a receipt chain. It's the strongest preservative against 'trust me': a PASS without receipts doesn't exist.",
+   "plain_zh": "说「做成了」必须同时交出监控录像：命令原文、退出码、输出指纹。交不出录像，就当没做成。",
+   "plain_en": "Claiming success requires the camera footage: the exact command, exit code, output fingerprint. No footage, no claim.",
+   "example_zh": "reports/execution/P2-08/comparison-report-001/REPORT.md 里每个表格数字都注明可离线重算的原始 stdout 位置。",
+   "example_en": "Every number in comparison-report-001/REPORT.md points at raw stdout that recomputes it offline.",
+   "code_refs": ["docs/COMMIT_DIGESTS.md — 人读摘要的锚", "reports/execution/ — 本地回执树（摘要入库，回执留档）"],
+   "analogy_zh": "口说无凭，回执为证", "analogy_en": "Show the footage or it didn't happen",
+   "dig_deeper": [
+    {"to": "three-state", "why_zh": "三态结论的宪法条文", "why_en": "The three-state constitutional clause"},
+    {"to": "sha256", "why_zh": "输出哈希怎么算", "why_en": "How output hashes are computed"}
+   ]
+  },
+  {
+   "id": "paired-intervals", "cluster": "eval", "layer": 3,
+   "term_zh": "成对区间", "term_en": "Paired Intervals",
+   "one_liner_zh": "同一道题两个版本对比——区间含零时，「变好」和「变差」都不许说",
+   "one_liner_en": "Same questions, two versions — when the interval spans zero, neither 'better' nor 'worse' may be claimed",
+   "professional_zh": "成对设计：同一道题在新旧两版下各跑一次，差值的置信区间消掉题目间方差。current005 对 current004 的可答题指标成对区间含零——统计上既不能断言变差，也不能粉饰变好，如实写「区间含零」。区间是双向的诚实：它同时约束乐观与悲观两种说谎。",
+   "professional_en": "Paired design: each question runs under both versions and the confidence interval of the per-question deltas removes between-question variance. current005 vs current004's answerable metrics span zero — statistically one may claim neither worse nor better, recorded plainly as 'intervals include zero'. The interval is honesty in both directions: it binds optimistic and pessimistic lies alike.",
+   "plain_zh": "同一批学生补课后成绩变化的区间盖住了 0：既不能吹「进步了」，也不能叹「退步了」——只能说「没测出变化」。",
+   "plain_en": "The interval on per-student deltas covers 0: no 'improved!', no 'declined!' — only 'no measurable change'.",
+   "example_zh": "FEATURE_STATUS 引用 current005 的成对区间结论原文，可逐指标复核。",
+   "example_en": "FEATURE_STATUS quotes current005's paired-interval conclusions, metric by metric.",
+   "code_refs": ["scripts/eval_real.py — 成对差值计算"],
+   "analogy_zh": "区间含零，两边都不许说", "analogy_en": "Zero in the interval mutes both directions",
+   "dig_deeper": [
+    {"to": "significance-basics", "why_zh": "置信区间的底层含义", "why_en": "What confidence intervals mean underneath"},
+    {"to": "quality-gates", "why_zh": "区间结论怎么进门禁", "why_en": "How interval verdicts enter the gates"}
+   ]
+  }
+ ]
+}

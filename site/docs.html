@@ -42,6 +42,7 @@
     <a href="#arch" data-zh="架构" data-en="Architecture">架构</a>
     <a href="#eval" data-zh="评测与证据" data-en="Eval &amp; evidence">评测与证据</a>
     <a href="#ops" data-zh="运维" data-en="Operations">运维</a>
+    <a href="#roadmap" data-zh="路线图" data-en="Roadmap">路线图</a>
     <a href="#repo" data-zh="仓库文档索引" data-en="Repo docs index">仓库文档索引</a>
   </nav>
   <main class="prose">
@@ -60,7 +61,7 @@
     <p data-zh="可选工具：Poppler（pdftotext/pdftoppm，PDF）、ffmpeg + whisper（音视频）、macOS Vision OCR（截图/扫描页）、goldmine-embed 常驻助手（图像/音频向量）。缺哪个就降级哪个，原因写在能力行里。" data-en="Optional tools: Poppler (PDFs), ffmpeg + whisper (audio/video), macOS Vision OCR (screenshots/scans), the goldmine-embed resident helper (image/audio vectors). Whatever is missing degrades with the reason recorded in the capability row.">可选工具：Poppler、ffmpeg + whisper、Vision OCR、goldmine-embed 助手。缺哪个就降级哪个，原因写在能力行里。</p>
 
     <h2 id="concepts" data-zh="概念" data-en="Concepts">概念</h2>
-    <p data-zh="最好的入口是概念地图：77 个概念、7 个集群、四个深度层，从项目机制一路下探到基础概念——每个概念三层（专业定义 / 大白话 / 可跟算的实例）+ 真实代码引用，中英双语。" data-en="The best entry is the concept map: 77 concepts in 7 clusters across four depth layers, from project mechanisms down to fundamentals — three layers each plus real code refs, bilingual.">最好的入口是概念地图：45 个概念、7 个集群，三层讲解 + 真实代码引用，中英双语。</p>
+    <p data-zh="最好的入口是概念地图：145 个概念、7 个集群井口、四个深度层，从项目机制 zoom in 一路下探到基础概念——每个概念三层（专业定义 / 大白话 / 可跟算的实例）+ 真实代码引用，中英双语。" data-en="The best entry is the concept map: 145 concepts in 7 cluster dig-sites across four depth layers, from project mechanisms down to fundamentals — three layers each plus real code refs, bilingual.">最好的入口是概念地图：145 个概念、7 个集群、四层深度，逐层下探 + 真实代码引用，中英双语。</p>
     <p><a href="/learn">→ <span data-zh="打开概念地图" data-en="Open the concept map">打开概念地图</span></a></p>
 
     <h2 id="cli" data-zh="命令参考（速查）" data-en="CLI reference (quick)">命令参考（速查）</h2>
@@ -84,6 +85,16 @@ backup / reindex / reset / model / doctor / serve / watch / mcp</pre></div>
     <h2 id="ops" data-zh="运维" data-en="Operations">运维</h2>
     <p data-zh="watch / serve 都是显式启动的守护进程（安装不注册任何后台服务）；MCP 提供四个只读工具（search / get / context / status），带预算与取消语义；backup 生成校验过的单文件备份。" data-en="watch / serve are explicitly-started daemons (no background service is registered at install); MCP exposes four read-only tools with budgets and cancellation; backup produces a verified single-file copy.">watch / serve 显式启动；MCP 四个只读工具；backup 校验过的备份。</p>
 
+    <h2 id="roadmap" data-zh="路线图 · 未来在哪胜出" data-en="Roadmap · where we must win">路线图 · 未来在哪胜出</h2>
+    <p data-zh="对照 DigUp（同源桌面前辈）与 QMD（实测过的 CLI 竞品）得出的五个战场，按顺序。完整分析（含差距数字与判据）见仓库 docs/ROADMAP-2026.md——以下是产品视角的摘要。" data-en="Five battlefields, in order, derived from the DigUp (sibling desktop predecessor) and QMD (measured CLI competitor) comparisons. Full analysis with numbers and acceptance criteria: docs/ROADMAP-2026.md in the repository.">对照 DigUp 与 QMD 得出的五个战场，按顺序。完整分析见仓库 docs/ROADMAP-2026.md。</p>
+    <div class="term"><div class="term-hd"><span>roadmap-2026</span></div>
+<pre><span class="cmd">1 · 红门打绿</span>        <span class="out">12 项质量门转绿前，对外只讲能力覆盖，不讲质量叙事</span>
+<span class="cmd">2 · 纯文本精搜追平 QMD</span>  <span class="out">common s@5 91.7% → ≥98%，交叉编码器已点亮（0.77→0.87）</span>
+<span class="cmd">3 · 材料→答案闭环</span>    <span class="out">跑完 480 答题 + 960 判卷，材料包盲评 90.6% 成为常测指标</span>
+<span class="cmd">4 · 服役面可靠性</span>     <span class="out">serve 亚秒纪律 / watch 断电续跑 / 真实病态路径补证</span>
+<span class="cmd">5 · 决策层 R11</span>      <span class="out">查询路由 · 校准弃答 · 判卷核实（QMD 没有的维度）</span></pre></div>
+    <p data-zh="铁律不变：不聊天机器人、一切本地无云、不扫全盘、holdout 只在审计门下开。营销语言与证据同纪律——没打绿的门不以完成时写进本站。" data-en="The iron rules stand: no chatbot, all-local, no whole-disk scans, holdout opens only under the audit gate. Marketing follows evidence discipline — unmet gates never appear here in the present tense.">铁律不变：不聊天机器人、一切本地无云、不扫全盘、holdout 只在审计门下开。没打绿的门不以完成时写进本站。</p>
+
     <h2 id="repo" data-zh="仓库文档索引" data-en="Repo docs index">仓库文档索引</h2>
     <p data-zh="以下文件在仓库里（本站不复制它们——证据链只有一份）：" data-en="These live in the repository (this site does not copy them — the evidence chain exists exactly once):">以下文件在仓库里（本站不复制它们——证据链只有一份）：</p>
     <div class="term"><div class="term-hd"><span>repository</span></div>
@@ -91,6 +102,7 @@ backup / reindex / reset / model / doctor / serve / watch / mcp</pre></div>
 README.md USER_GUIDE.md SPEC.md ARCHITECTURE.md
 docs/WALKTHROUGH-{search,fingerprint,ingest,honesty,processes}.md
 docs/MODULE_MAP.md docs/DESIGN_DECISIONS.md docs/digup-derived-plan.md
+docs/ROADMAP.md docs/ROADMAP-2026.md
 docs/TEST_PLAN.md docs/MCP.md docs/HOLDOUT_AUDIT.md docs/PUBLIC_EVALUATION.md
 docs/execution-plan/PROGRESS.md evals/</pre></div>
   </main>

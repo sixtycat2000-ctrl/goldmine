@@ -11,8 +11,8 @@ tpl = (SITE / "learn.template.html").read_text(encoding="utf-8")
 def esc(s):
     return html.escape(str(s or ""), quote=True)
 
-# static fallback: groups by LAYER (v2), deepest last
-layers_meta = {b["layer"]: b for b in graph["meta"].get("bands", [])}
+# static fallback: groups by LAYER (v3), deepest last
+layers_meta = {b["n"]: b for b in graph["meta"].get("layers", [])}
 groups_html = []
 for lay in sorted(layers_meta, reverse=True):
     lm = layers_meta[lay]

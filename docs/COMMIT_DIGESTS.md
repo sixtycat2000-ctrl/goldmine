@@ -312,3 +312,32 @@ PYTHONPATH=scripts:. reports/execution/tooling/mcp-venv/bin/python -B -m pytest 
   tests/test_measurement_slots.py tests/test_comparison_report_framing.py -q   # 373 passed
 python3 -m goldmine search --help   # 无新旗标（配置项在 goldmine.toml [search]）
 ```
+
+## site-v3-roadmap-learn-20261026 — 凌晨定时会话：DigUp/QMD 竞争战略 + 官网 v3（2026-10-26）
+
+**关键行**
+- `docs/ROADMAP-2026.md`（新）：对 DigUp 与 QMD 的差距/胜出点分析，五战场排序（红门打绿 → 纯文本追平 → 材料→答案闭环 → 服役面 → R11 决策层），全部数字带出处。
+- `site/index.html`：首页文案整体重写（痛点先行 dek、场景前置）；新增 `#vsqmd` 区块——QMD 正面对比三卡（78.3% vs 66.1% 覆盖、1.4s vs 21.8s 速度、43–60% vs 0% 噪声空答）+ 纯文本让步句（91.7% vs 100%）。
+- `site/docs.html`：新增「路线图 · 五战场」区块（含指向 ROADMAP-2026.md），概念计数 77→145，TOC 加 Roadmap。
+- `site/content/concepts.json`：77→145 节点（+68，全部带真实代码出处与双语三层讲解），新增 27 条下钻边；扩容源文件 `site/content/expansion-20261026/part{1..5}*.json` + 合并器 `site/tools/merge_expansion.py`（幂等、schema 校验、边目标校验）。
+- `site/tools/bake_graph.py`：布局 v3「集群井口下钻」——7 个集群井口 + L3 网格 + 子概念行（380px/层）；parent 森林保证全链终止于 L3（相邻边最少孩子优先分配 + 跳层回退挂 inker + keystone 兜底），产出 reveal/parent/keystone。
+- `site/assets/map.js`：引擎重写——地表视角（井口瓦片+keystone）→ 进集群 → 双击/Enter/面板 chip 逐层下探 → Esc 逐层回退；深度标尺、搜索直达（自动展开祖先链）、双指缩放、节点屏幕半径钳制（≤20px）。
+- `site/assets/app.js`：`.rv` 入场动画加兜底清扫（视口内未 reveal 的元素每 1.5s 强制补显）——动画失效环境内容不再隐形。
+- `site/learn.html` / `graph.baked.json` / `build_learn.py`：145 节点重烘焙重建（389KB），no-JS fallback 改按 meta.layers 分组。
+
+**每行的风险**
+- concepts.json 是合并产物：原 77 节点内容理论上逐字未动（合并器不重写已有节点），但文件整体重排过缩进——diff 大，审阅靠 merge 脚本的幂等性而非肉眼。
+- map.js 重写幅度大：旧「全图可见 + 集群隔离」交互被「井口下钻」替代（clusterbar 隐藏未删）；老用户若依赖全图一览会感到变化——list 模式与搜索保留。
+- 首页 QMD 数字（78.3/66.1、1.4/21.8、43–60/0、91.7/100）来自 comparison-report-001 的 dev 套件口径，非产品 420 题门——文案已标注「诚实起见」与回执路径，但读者仍可能把 dev 数字当产品质量。
+- bake 的 parent 分配是启发式（最少孩子优先 + inker 回退 + keystone 兜底）：个别节点的「父子」归属是布局选择而非唯一真理。
+
+**我不确定的地方**
+- WALKTHROUGH-processes.md 说 watch 用 FSEvents，digup-derived-plan.md §0 与 ROADMAP R9 说自适应轮询（5s→120s）——两处矛盾，新节点文案刻意只写「静默窗合并 + 6 小时全量兜底」不点名机制，需 owner 裁决哪份文档过时。
+- 首页让步句把「纯文本 91.7% vs 100%」写成「路线图战场 2」——这是竞争战略判断（ROADMAP-2026 战场排序），owner 可能想改排序。
+- learn 交互从「全图」改「下钻」属产品语义变化，已按用户凌晨指示执行（"zoom in zoom out 挖掘到底层概念的点"），但未做可用性外测。
+
+**用户 90 秒怎么验**
+- 打开 https://goldmine-site.sixtycat2000.workers.dev/learn → 点任意井口（如「文件系统与进程」）→ 双击任一 L3 节点看子概念展开 → 连按 Esc 看逐层回退；按 `/` 搜 holdout 回车看直达。
+- 首页滚到 03 区块看 QMD 三卡与让步句；docs 页滚到「路线图」区块。
+- 亲手验数字：仓库 `reports/execution/P2-08/comparison-report-001/REPORT.md` 对表；锚点 `python3 -m goldmine status --db evals/eval.sqlite --json`（staleness 全 0）与 `python3 -m goldmine search "copper gasket" --db evals/eval.sqlite.pre-p2b.sqlite`（rc=3 指纹拒）本会话已跑过。
+- 部署版本：`2e05cc65-2c90-488f-a037-2c76ec0b9762`（wrangler deploy 于 2026-10-26 ~06:00）。

@@ -1,0 +1,285 @@
+{
+ "nodes": [
+  {
+   "id": "unicode61-tokenizer", "cluster": "search", "layer": 2,
+   "term_zh": "unicode61 分词器", "term_en": "The unicode61 Tokenizer",
+   "one_liner_zh": "FTS5 默认分词器：处理拉丁/数字很好，不切中文词——中文查询只有语义一条腿",
+   "one_liner_en": "FTS5's default tokenizer: great for Latin/digits, no CJK word-splitting — CJK queries run on the semantic leg alone",
+   "professional_zh": "词法臂建立在 FTS5 的 unicode61 tokenizer 上（含 M* 类别补丁处理孟加拉/阿拉伯拆词——DigUp A1 教训已继承）。已知缺口：unicode61 不切中文词，整句中文进索引成了长 token，关键词匹配对中文查询基本失效（R10b）。候选方案（二元切分 / trigram）已立项未裁决——任何更改都要 A/B + 指纹影响评估。这是台账上公开的差距，不是藏着的短板。",
+   "professional_en": "The lexical arm rides FTS5's unicode61 tokenizer (with the M* category patch for Bengali/Arabic word-splitting — DigUp incident A1's inherited lesson). Known gap: unicode61 doesn't split CJK words; whole Chinese sentences index as long tokens, so keyword matching is mostly dead for CJK queries (R10b). Candidate fixes (bigram / trigram) are proposed but undecided — any change needs A/B plus a fingerprint impact review. This gap is on the public ledger, not hidden.",
+   "plain_zh": "这台切词机认空格和标点，中文没空格它就整句囫囵吞。所以中文搜索全靠语义那条腿——已知、在账上、有候选方案没拍板。",
+   "plain_en": "This tokenizer splits on spaces and punctuation; Chinese has none, so it swallows whole sentences. CJK search runs on the semantic leg alone — known, on the ledger, candidates proposed.",
+   "example_zh": "search '退款期限' --lexical --db …：中文词法命中弱是现状；--pack（语义+词法融合）不受此限。",
+   "example_en": "search '退款期限' --lexical shows the weak CJK lexical hits; hybrid --pack is unaffected.",
+   "code_refs": ["goldmine/lexical_store.py — FTS5 表与 tokenizer DDL"],
+   "analogy_zh": "切词机不认中文，中文靠语义腿", "analogy_en": "No CJK splitting; semantics carries it",
+   "dig_deeper": [
+    {"to": "inverted-index", "why_zh": "分词器喂给的结构", "why_en": "The structure the tokenizer feeds"},
+    {"to": "unicode", "why_zh": "文本进分词器前的规范化", "why_en": "Normalization before tokenization"}
+   ]
+  },
+  {
+   "id": "vector-matrix", "cluster": "search", "layer": 2,
+   "term_zh": "全库向量矩阵", "term_en": "The Whole-Library Vector Matrix",
+   "one_liner_zh": "查询向量 × 库矩阵 = 一排余弦；fp16 存储 7 万向量约 108MB，查询 +2ms",
+   "one_liner_en": "Query vector × library matrix = a row of cosines; fp16 stores ~70k vectors in ~108MB, +2ms per query",
+   "professional_zh": "语义臂的物理形态：全库向量存成矩阵（SQLite BLOB 内 fp16，与行同库防 desync），查询时与查询向量做一次批量余弦。fp16 存储是 DigUp 实测迁移（70k 向量 108MB、查询 +2ms，精度损失在余弦后不可见）。z 分数标准化直接在这个余弦行上算：分模态均值 + 全局 std。mmap 缓存是 DigUp 残余项（Python 侧 malloc 行为不同，10 万+向量级先测再定）。",
+   "professional_en": "The semantic arm's physical form: the whole library's vectors live in one matrix (fp16 inside SQLite BLOBs, same database as the rows to prevent desync); each query is one batched cosine pass. fp16 is DigUp's measured migration (70k vectors ≈ 108MB, +2ms per query, precision loss invisible after cosine). z-score standardization runs directly on that cosine row: per-modality mean, global std. mmap caching remains a DigUp leftover (Python's malloc differs; test at 100k+ vectors first).",
+   "plain_zh": "全库的「意思坐标」排成一张大表，每次搜索就是拿你的问题坐标跟整张表比一遍距离——比完再标准化成可比的 z 分。",
+   "plain_en": "The whole library's meaning-coordinates in one big table; each search compares your query's coordinates against all of them, then standardizes into comparable z-scores.",
+   "example_zh": "tests 里钉着 z=5.0=√(n−1) 的手算矩阵夹具——26 行 1 真 25 填，一行鹤立鸡群 z=√25。",
+   "example_en": "A test pins the hand-computed matrix: 26 rows, one true, z=5.0=√(n−1).",
+   "code_refs": ["goldmine/search.py:589 — zscores 与矩阵余弦", "goldmine/vector_cache.py — 可选缓存层"],
+   "analogy_zh": "全库坐标表 + 一遍批量比距", "analogy_en": "One coordinate table, one batched compare",
+   "dig_deeper": [
+    {"to": "fp16-vector-store", "why_zh": "存储格式的取舍实测", "why_en": "The measured storage-format tradeoff"},
+    {"to": "z-score", "why_zh": "余弦行怎么变成可比分数", "why_en": "How the cosine row becomes comparable scores"}
+   ]
+  },
+  {
+   "id": "llama-server-process", "cluster": "models", "layer": 2,
+   "term_zh": "llama-server 子进程", "term_en": "The llama-server Child Process",
+   "one_liner_zh": "文本嵌入的 HTTP 服务：冷启动被 spawn、用完被杀、查询侧纯文本",
+   "one_liner_en": "Text embedding as an HTTP service: spawned cold, killed after, query-side text-only",
+   "professional_zh": "查询与文本嵌入走 llama-server（vendored llama.cpp 的 HTTP 服务形态）：CLI 冷启动时 spawn、close 时按 pid 收殓；查询侧永远是纯文本——图像/音频进不了它的 HTTP 面，这正是媒体边车独立存在的理由。冻结推理参数（ctx 2048/文本 512 等）在 spawn 参数里写死。",
+   "professional_en": "Query and text embedding run through llama-server (vendored llama.cpp in its HTTP-server shape): spawned cold by the CLI, reaped by pid at close; the query side is text-only forever — images/audio can't enter its HTTP surface, which is exactly why the media sidecar exists separately. Frozen inference params (ctx 2048 / 512 text) are pinned in the spawn arguments.",
+   "plain_zh": "文本嵌入是请来的短工：来干活时招之即来，干完就走，账本记着它的 pid。它只会处理文字，图片音频归边车管。",
+   "plain_en": "Text embedding is hired help: summoned for the job, gone when it ends, pid on the ledger. It handles text only — images and audio belong to the sidecar.",
+   "example_zh": "ps 在一次语义 search 期间能看到 llama-server 进程；命令结束后消失。",
+   "example_en": "ps during a semantic search shows llama-server; it's gone when the command exits.",
+   "code_refs": ["goldmine/backends/llama.py — spawn 参数与健康管理"],
+   "analogy_zh": "招之即来挥之即去的短工", "analogy_en": "Hired help, summoned and dismissed",
+   "dig_deeper": [
+    {"to": "llama-cpp", "why_zh": "它封装的引擎本体", "why_en": "The engine it wraps"},
+    {"to": "process-pipe", "why_zh": "它走 HTTP 但生命周期靠进程纪律", "why_en": "HTTP surface, process-discipline lifecycle"}
+   ]
+  },
+  {
+   "id": "c-sidecar-build", "cluster": "models", "layer": 2,
+   "term_zh": "边车静态构建", "term_en": "The Sidecar's Static Build",
+   "one_liner_zh": "1412 行纯 C11 静态链七个库+系统框架——无补丁、无运行时依赖",
+   "one_liner_en": "1,412 lines of plain C11 statically linked to seven libs + system frameworks — no patches, no runtime deps",
+   "professional_zh": "为什么是独立 C 程序而不是给 llama-server 打补丁：mtmd（多模态解码）没有暴露在 llama-server 的 HTTP 面；补丁路线=维护一个永久 fork（升级即地狱）。选择：纯 C11 单文件、cmake 目标加 llama+mtmd → libtool 合并 libllamacpp.a → 静态资产打包并校验（build_native.py）。同样的 recipe 照抄自 DigUp 的 build-llama.sh。产物 1412 行，图片缩放与参考实现逐位一致（黄金表测试）。",
+   "professional_en": "Why an independent C program instead of patching llama-server: mtmd (multimodal decode) isn't exposed on llama-server's HTTP surface; the patch route means maintaining a permanent fork (upgrade hell). The choice: one plain C11 file, cmake targets llama+mtmd → libtool-merged libllamacpp.a → packaged static asset with hash verification (build_native.py). The recipe mirrors DigUp's build-llama.sh. The product: 1,412 lines, image resize bit-identical to the reference (golden-table tests).",
+   "plain_zh": "不改装别人的服务器（改装一次，永世维护），自己写个小程序把需要的零件静态焊死——拷到别的机器就能跑。",
+   "plain_en": "Rather than fork someone's server forever, write a small program with the needed parts welded in statically — copy it anywhere and it runs.",
+   "example_zh": "python3 -m build_native.py 后产物带哈希清单；黄金表测试钉死缩放逐位一致。",
+   "example_en": "build_native.py emits a hashed manifest; golden-table tests pin bit-identical resizing.",
+   "code_refs": ["tools/embed/goldmine-embed.c — 全部 1412 行", "scripts/build_native.py — 构建与打包"],
+   "analogy_zh": "不改装别人的服务器，自己焊死零件", "analogy_en": "Weld your own parts; don't fork theirs",
+   "dig_deeper": [
+    {"to": "fixed-point", "why_zh": "逐位缩放的算术", "why_en": "The arithmetic of bit-identical resizing"},
+    {"to": "mmproj", "why_zh": "它加载的投影头", "why_en": "The projector it loads"}
+   ]
+  },
+  {
+   "id": "pmset-probe", "cluster": "systems", "layer": 2,
+   "term_zh": "pmset 探针", "term_en": "The pmset Probe",
+   "one_liner_zh": "用 macOS 电源管理接口读 thermal/电池/低电量三态",
+   "one_liner_en": "Reads thermal/battery/low-power states from macOS power management",
+   "professional_zh": "电源门控的机械层：pmset（macOS 电源管理 CLI）提供 thermal 受限级别、电源来源、低电量模式三态。watch 以自适应间隔轮询这些信号（不是事件流——电源状态没有回调），把结果映射进门控决策。探针失败按「未知状态」处理：不阻塞、记录原因——探针自己也要遵守诚实降级。",
+   "professional_en": "The mechanical layer of power gating: pmset (macOS's power-management CLI) reports thermal pressure level, power source, and low-power mode. watch polls these signals adaptively (not events — power state has no callback stream) and maps them into gating decisions. A failed probe means 'unknown state': no blocking, reason recorded — the probe itself obeys honest degradation.",
+   "plain_zh": "仪表盘读数器：隔一会儿看一眼电脑「发不发烧、插没插电、省电模式开没开」。读不了表就当没读，照常干活但记一笔。",
+   "plain_en": "A gauge reader: periodically checks whether the machine is hot, plugged in, or in low-power mode. Can't read the gauge? Note it and carry on.",
+   "example_zh": "pmset -g thermlog 或 watch 心跳输出里能看到探测到的三态。",
+   "example_en": "pmset -g thermlog or the watch heartbeat shows the probed states.",
+   "code_refs": ["goldmine/watch.py:771-792 — pmset 探测与解析"],
+   "analogy_zh": "隔窗读仪表，读不了就记录", "analogy_en": "Read the gauge through the window; log it if you can't",
+   "dig_deeper": [
+    {"to": "file-metadata", "why_zh": "同为「读系统状态」的亲戚", "why_en": "A sibling in reading system state"},
+    {"to": "process-pipe", "why_zh": "子进程调用的通信底座", "why_en": "The subprocess plumbing underneath"}
+   ]
+  },
+  {
+   "id": "eval-runner", "cluster": "eval", "layer": 2,
+   "term_zh": "评测执行器", "term_en": "The Eval Runner",
+   "one_liner_zh": "scripts/eval_real.py：装载冻结考卷、跑查询、算指标、裁决 --gate",
+   "one_liner_en": "scripts/eval_real.py: loads the frozen exam, runs queries, computes metrics, adjudicates --gate",
+   "professional_zh": "评测的执行机：按 --suite（legacy 109 题 / full-media 128 题 / 产品 420 题）装载冻结语料与基线，跑完每道查询，计算 s@5/MRR/nDCG/zero-hit 等指标，与基线做逐指标对比，最后按预注册阈值裁决 gate: green/red。基线身份校验（corpus_version+sha）在装载时执行——考卷不对直接罢工。这是「改坏了立刻知道」的自动化本体。",
+   "professional_en": "The machine that executes evaluation: loads frozen corpus and baselines per --suite (legacy 109 / full-media 128 / product 420), runs every query, computes s@5/MRR/nDCG/zero-hit etc., diffs each metric against the baseline, and adjudicates gate: green/red against preregistered thresholds. Baseline identity (corpus_version+sha) is checked at load — wrong exam, immediate strike. This is the automation behind 'you know immediately when something breaks'.",
+   "plain_zh": "自动监考官：发卷、收卷、按标准答案打分、跟上次成绩单对比、宣布过/不过。卷子不对它直接拒绝开考。",
+   "plain_en": "The automated proctor: hands out papers, collects, grades against the answer key, diffs the last report card, declares pass/fail. Wrong exam? It refuses to start.",
+   "example_zh": "python3 scripts/eval_real.py --suite legacy --backend llama --gate 结尾的 gate: green 是它的裁决输出（ANCHORS 第 4 条）。",
+   "example_en": "The trailing 'gate: green' from scripts/eval_real.py --suite legacy --gate is its verdict (ANCHORS #4).",
+   "code_refs": ["scripts/eval_real.py — 套件装载与 gate 裁决"],
+   "analogy_zh": "自动监考+对上张成绩单", "analogy_en": "Auto-proctor with last term's report card",
+   "dig_deeper": [
+    {"to": "eval-metrics", "why_zh": "它算的尺子们", "why_en": "The rulers it computes"},
+    {"to": "percentile", "why_zh": "时延报告里的分位数", "why_en": "Percentiles in its latency reports"}
+   ]
+  },
+  {
+   "id": "chunking", "cluster": "search", "layer": 1,
+   "term_zh": "分块", "term_en": "Chunking",
+   "one_liner_zh": "长文切成约 450 token 的块——检索与证据的原子单位",
+   "one_liner_en": "Long text splits into ~450-token chunks — the atomic unit of retrieval and evidence",
+   "professional_zh": "块是检索的原子：嵌入按块算、命中按块报、证据窗按块选、邻块展开按块邻接。约 450 token（一段半）是「指路」与「自含」的折中。分块规则进指纹/身份体系：chunker 变更使存量行 chunker_stale，下次摄取重切。块切得不好（答案跨块）由邻块展开与证据窗仲裁兜底。",
+   "professional_en": "Chunks are retrieval's atoms: embeddings are per-chunk, hits report chunks, evidence windows select chunks, neighbor expansion walks chunk adjacency. ~450 tokens (about a paragraph and a half) balances 'a pointer' against 'self-contained'. Chunking rules live inside the identity system: a chunker change marks stored rows chunker_stale for re-chunking on next ingest. Bad cuts (answers straddling chunks) are papered over by neighbor expansion and window arbitration.",
+   "plain_zh": "书撕成页，页撕成段——每段约一段半正文。答案恰好被切在两段之间是常态，所以才有「带前后邻居」的补救。",
+   "plain_en": "Books tear into pages, pages into paragraphs — each chunk about 1.5 paragraphs. Answers straddling cuts are normal, hence the bring-the-neighbors fix.",
+   "example_zh": "render 输出里每条命中的位置标记就是块坐标；--context 1 直接演示块邻接。",
+   "example_en": "Each hit's location marker in render output is a chunk coordinate; --context 1 demonstrates adjacency directly.",
+   "code_refs": ["goldmine/chunker.py — 切块规则"],
+   "analogy_zh": "检索原子：约一段半一段", "analogy_en": "The atom: about 1.5 paragraphs",
+   "dig_deeper": [
+    {"to": "context-expand", "why_zh": "跨界答案的补救", "why_en": "The straddling-answer remedy"},
+    {"to": "evidence-selection", "why_zh": "块内再选段", "why_en": "Selecting segments within chunks"}
+   ]
+  },
+  {
+   "id": "fixed-denominator", "cluster": "eval", "layer": 1,
+   "term_zh": "固定分母", "term_en": "The Fixed Denominator",
+   "one_liner_zh": "缺席的请求计入分母、贡献零分——下界口径，不许悄悄缩小分母",
+   "one_liner_en": "Missing requests stay in the denominator and score zero — a lower-bound rule; no silent denominator shrinkage",
+   "professional_zh": "评测口径的诚实条款：某次请求失败/超时/解析失败，不能把它从分母里拿掉——它计入固定分母并贡献零分，产出「下界」聚合。对比框架里未知 URI 的命中同样计入分母并判零。反口径（只算成功的）是评测界最常见的自欺：分数随事故率波动而不是随质量波动。",
+   "professional_en": "The honesty clause of eval arithmetic: a request that fails/times-out/fails-to-parse may not leave the denominator — it stays counted and scores zero, yielding lower-bound aggregates. Unknown-URI hits in the comparison framework likewise count and score zero. The opposite bookkeeping (count only successes) is eval's most common self-deception: scores that track incident rate, not quality.",
+   "plain_zh": "缺考按零分算，不许「缺席的不算」。分数才有下限的意义。",
+   "plain_en": "Absentees score zero; 'absentees don't count' is banned. That's what makes a score mean anything.",
+   "example_zh": "COMPARISON.md 里 QMD 的 1/22 就是固定分母口径——失败的请求没有从 n=22 里消失。",
+   "example_en": "QMD's 1/22 in COMPARISON.md is fixed-denominator accounting — failed requests never left n=22.",
+   "code_refs": ["scripts/compare_search.py — 固定分母聚合"],
+   "analogy_zh": "缺考按零分", "analogy_en": "Absentees score zero",
+   "dig_deeper": [
+    {"to": "eval-metrics", "why_zh": "分母出现在哪些尺子里", "why_en": "Which rulers carry the denominator"},
+    {"to": "mean-std", "why_zh": "聚合背后的算术", "why_en": "The arithmetic under aggregation"}
+   ]
+  },
+  {
+   "id": "paired-bootstrap", "cluster": "eval", "layer": 1,
+   "term_zh": "成对 bootstrap", "term_en": "Paired Bootstrap",
+   "one_liner_zh": "同一道题两版成绩差做重抽样——不显著就回滚",
+   "one_liner_en": "Resample per-question deltas between two versions — insignificant means rollback",
+   "professional_zh": "与 McNemar 并用的显著性机器：对每道题的指标差值做 bootstrap 重抽样，得到差值置信区间。选成对设计是因为题目难度方差远大于改动效应——不配对的话信号全被「有的题本来就难」淹没。判定纪律：区间含零 = 不可采纳也不可宣称退化；这是回归门的两台裁判之一。",
+   "professional_en": "The significance machinery alongside McNemar: bootstrap-resample the per-question metric deltas to get a confidence interval on the change. Paired by question because question-difficulty variance dwarfs change effects — unpaired, the signal drowns in 'some questions are just hard'. Verdict discipline: an interval spanning zero means neither adopt nor claim regression; it's one of the regression gate's two referees.",
+   "plain_zh": "同一批学生前后两次考试，只看每人涨了多少分，再随机重排无数次看「纯靠运气能不能涨这么多」。运气解释不了才许说有效。",
+   "plain_en": "Same students, two exams: look only at each person's delta, then reshuffle at random thousands of times. Only if luck can't explain the gain may you claim the change worked.",
+   "example_zh": "回归门的输出里每项指标带区间；「区间含零」在 FEATURE_STATUS 的 current005 对照里逐项可见。",
+   "example_en": "Every gate metric ships with an interval; FEATURE_STATUS's current005 comparison shows zero-spanning cases metric by metric.",
+   "code_refs": ["scripts/eval_real.py — 显著性判定"],
+   "analogy_zh": "重排无数次，运气解释不了才算数", "analogy_en": "Reshuffle until luck is ruled out",
+   "dig_deeper": [
+    {"to": "significance-basics", "why_zh": "区间与 p 值的底层", "why_en": "Intervals and p-values underneath"},
+    {"to": "significance-testing", "why_zh": "另一台裁判 McNemar", "why_en": "The other referee, McNemar"}
+   ]
+  },
+  {
+   "id": "idempotency", "cluster": "systems", "layer": 1,
+   "term_zh": "幂等与续跑", "term_en": "Idempotency & Resume",
+   "one_liner_zh": "同样输入重跑一万次结果一样——Ctrl-C 安全、SIGKILL 重启零重复工作",
+   "one_liner_en": "Rerun a thousand times, same result — Ctrl-C safe, SIGKILL restart re-does zero work",
+   "professional_zh": "幂等是摄取管线的设计性质：内容 sha256 跳过使「重跑」几乎零成本（没变的文件直接略过）；一文件一事务使中断最坏丢一个文件的这一次；watch crash-only 设计实测 SIGKILL 重启零重复工作。幂等的价值是把「失败」从需要善后的事故降级为「再跑一遍就行」的普通事件——这是敢自动重试、敢断电续跑的底气。",
+   "professional_en": "Idempotency is a designed property of the ingest pipeline: content-sha256 skipping makes reruns nearly free (unchanged files pass through); one transaction per file caps an interrupt's loss at a single file's pass; watch's crash-only design measured zero duplicated work after SIGKILL. Idempotency demotes 'failure' from an incident needing cleanup to a mundane 'run it again' — the confidence behind auto-retry and power-loss resume.",
+   "plain_zh": "断电重开后接着干、绝不重做已完成的活——这不是运气，是「做过的活有收条、收条在就跳过」的设计。",
+   "plain_en": "Power loss resumes with zero duplicated work — not luck, but design: completed work leaves receipts, receipts mean skip.",
+   "example_zh": "ingest 大目录中途 Ctrl-C 再重跑：第二遍日志里绝大多数文件是 skipped。",
+   "example_en": "Ctrl-C a large ingest, rerun: the second log is mostly 'skipped'.",
+   "code_refs": ["goldmine/ingest/pipeline.py — sha 跳过与续传", "goldmine/watch.py — crash-only 续跑"],
+   "analogy_zh": "做过的活有收条，收条在就跳过", "analogy_en": "Receipts mean done; done means skip",
+   "dig_deeper": [
+    {"to": "transaction", "why_zh": "原子性是幂等的底座", "why_en": "Atomicity under idempotency"},
+    {"to": "wave-extraction", "why_zh": "跳过机制所在的主流程", "why_en": "The main flow hosting the skip"}
+   ]
+  },
+  {
+   "id": "file-descriptor", "cluster": "systems", "layer": 0,
+   "term_zh": "文件描述符", "term_en": "File Descriptors",
+   "one_liner_zh": "进程手里的「取号牌」：0/1/2 是 stdin/stdout/stderr",
+   "one_liner_en": "A process's ticket numbers: 0/1/2 are stdin/stdout/stderr",
+   "professional_zh": "Unix 进程通过小整数句柄引用打开的东西：0/1/2 固定是标准输入/输出/错误，其余按需分配。边车纪律②（裸 fd + os.read）正是绕开语言运行库的缓冲层、直接对句柄轮询——因为 BufferedReader 的预读会把管道数据吃进自己的缓冲区，level-triggered poll 永远等不到数据就绪。理解 fd 是理解「为什么 poll 醒不来」这类竞态的前提。",
+   "professional_en": "Unix processes reference open things by small integers: 0/1/2 are stdin/stdout/stderr, more allocated on demand. Sidecar rule 2 (raw fd + os.read) exists to bypass the language runtime's buffering and poll the handle directly — BufferedReader's lookahead swallows pipe data into its own buffer, so a level-triggered poll never sees readiness. Understanding fds is the prerequisite for understanding 'why doesn't poll wake up' races.",
+   "plain_zh": "每个进程一沓取号牌：几号牌是键盘、几号是屏幕、几号是管道。牌在数据没到就被人提前揣兜里了，广播（poll）自然永远叫不醒他。",
+   "plain_en": "Each process holds a stack of tickets: which is the keyboard, the screen, the pipe. If someone pockets the data before the announcement (poll), the broadcast never wakes them.",
+   "example_zh": "goldmine search | head 的干净退出（无 traceback）依赖对 fd 1 写入失败的显式处理。",
+   "example_en": "goldmine search | head exits cleanly (no traceback) because writes to fd 1 are handled explicitly.",
+   "code_refs": ["goldmine/backends/embed_helper.py — 裸 fd 轮询"],
+   "analogy_zh": "取号牌：0 键盘 1 屏幕 2 报错", "analogy_en": "Tickets: 0 keyboard, 1 screen, 2 errors",
+   "dig_deeper": [
+    {"to": "process-pipe", "why_zh": "fd 连接起来的东西", "why_en": "What fds connect"},
+    {"to": "poll-raw-read", "why_zh": "fd 纪律的实战版", "why_en": "The fd discipline in battle"}
+   ]
+  },
+  {
+   "id": "sigpipe-signals", "cluster": "systems", "layer": 0,
+   "term_zh": "信号与 SIGPIPE", "term_en": "Signals & SIGPIPE",
+   "one_liner_zh": "往没人读的管道写 = 进程收到 SIGPIPE——默认直接处死",
+   "one_liner_en": "Writing a pipe nobody reads = SIGPIPE, which kills the process by default",
+   "professional_zh": "信号是操作系统戳进程的机制，SIGPIPE 专管「写进没人读的管道」——默认行为是把进程直接杀掉。goldmine search | head 中 head 先退出后，goldmine 的下一次输出就会触发它；纪律是对已关闭管道的写出吞错（BrokenPipeError 处理 + SIGPIPE ignore + 解释器收尾 flush 探针 + devnull dup2），让「下游走了」成为正常结束而不是崩溃现场（DigUp main.swift:7 同源教训）。",
+   "professional_en": "Signals are the OS poking processes; SIGPIPE specifically means 'you wrote a pipe nobody reads' — default action: summary execution. After `goldmine search | head` exits, head's departure makes goldmine's next write trigger it. The discipline: swallow writes to closed pipes (BrokenPipeError handling + SIGPIPE ignore + an interpreter-teardown flush probe + devnull dup2), turning 'downstream left' into a normal exit instead of a crash scene (DigUp main.swift:7, same lesson).",
+   "plain_zh": "对着挂断的电话喊话，按默认规则你会被「处决」。goldmine 学会了先看一眼对方还在不在，不在就安静收工。",
+   "plain_en": "Shouting into a hung-up phone gets you executed by default. goldmine learned to check if the line's dead and end its shift quietly.",
+   "example_zh": "ANCHORS 之外的最简现场：goldmine search 常见词 | head -1 → 退出码干净、无 traceback。",
+   "example_en": "Simplest live check: goldmine search <common> | head -1 → clean exit code, no traceback.",
+   "code_refs": ["goldmine/cli.py — BrokenPipe 处理与收尾探针"],
+   "analogy_zh": "挂断的电话不再喊", "analogy_en": "Don't shout into hung-up phones",
+   "dig_deeper": [
+    {"to": "epipe-discipline", "why_zh": "工程化后的完整纪律", "why_en": "The engineered discipline"},
+    {"to": "process-pipe", "why_zh": "管道本体", "why_en": "The pipe itself"}
+   ]
+  },
+  {
+   "id": "race-condition", "cluster": "systems", "layer": 0,
+   "term_zh": "竞态", "term_en": "Race Conditions",
+   "one_liner_zh": "两个执行流抢同一份数据，结果取决于时序——最阴的 bug 族",
+   "one_liner_en": "Two execution streams racing one dataset; the outcome depends on timing — the sneakiest bug family",
+   "professional_zh": "真实案例：早期媒体边车给 stdout 和 stderr 各开一个排空线程，stderr 线程偶尔把协议响应抢先读走——请求永远等不到回包，且是否复现取决于毫秒级时序。四条边车纪律里至少三条是竞态的化石。通用防御：明确每条信道的唯一属主（stdout 归协议、stderr 归排空）、用裸 fd 消灭隐藏缓冲、坏输入丢弃不放大。",
+   "professional_en": "The live case: early on, the media sidecar ran one drain thread each for stdout and stderr, and the stderr thread would occasionally race ahead and swallow a protocol response — requests waited forever, reproducibility riding on millisecond timing. At least three of the four sidecar rules are race-condition fossils. Generic defenses: one unique owner per channel (stdout = protocol, stderr = drain), raw fds to kill hidden buffering, drop bad input instead of amplifying it.",
+   "plain_zh": "俩人同时守一个信箱，谁先拆信看运气——有时信就被读错了。解法是规矩：一个信箱只许一个人管。",
+   "plain_en": "Two people watching one mailbox: who opens the letter is luck, and sometimes it's opened wrong. The fix is a rule: one mailbox, one owner.",
+   "example_zh": "tests/ 的边车协议测试包含「stderr 噪声注入」夹具——把当年踩的坑变成常驻考题。",
+   "example_en": "The sidecar protocol tests include a stderr-noise fixture — yesterday's landmine as a permanent exam question.",
+   "code_refs": ["goldmine/backends/embed_helper.py — 单排空线程与信道属主"],
+   "analogy_zh": "一个信箱只许一个人管", "analogy_en": "One mailbox, one owner",
+   "dig_deeper": [
+    {"to": "sidecar-protocol", "why_zh": "信道属主规矩的出处", "why_en": "Where the channel-ownership rule lives"},
+    {"to": "poll-raw-read", "why_zh": "消灭隐藏缓冲的另一战", "why_en": "The other fight against hidden buffering"}
+   ]
+  },
+  {
+   "id": "percentile", "cluster": "eval", "layer": 0,
+   "term_zh": "分位数", "term_en": "Percentiles",
+   "one_liner_en": "p95 = 95% 的样本不慢于此——尾部比平均值诚实",
+   "one_liner_zh": "p95 是 95% 的样本不慢于它——尾部比平均值诚实",
+   "professional_zh": "把样本从小到大排，第 95 位取 p95。时延用分位数不用平均值，因为用户感受到的是尾部（那次 36.5 秒的查询），不是 200 次快查询的平均。对比报告同时报中位与 p95：中位是典型体验，p95 是糟糕体验的上界承诺。QMD query 臂 p95 36.5s vs goldmine 1.7s 的差距主要就在尾部。",
+   "professional_en": "Sort samples and take the 95th: that's p95. Latency reports percentiles, not averages, because users experience the tail — that one 36.5-second query — not the mean of 200 fast ones. Comparison reports show median and p95 together: median is the typical experience, p95 is a bound on the bad one. The QMD query arm's p95 36.5s vs goldmine's 1.7s gap lives mostly in the tail.",
+   "plain_zh": "全班平均身高说明不了最高的门框够不够用——p95 就是「95% 的人不碰头的门框高度」。",
+   "plain_en": "Average height says nothing about whether the tallest fit through the door — p95 is the door height 95% clear.",
+   "example_zh": "comparison-report-001 的速度表：中位与 p95 两行并列，来源是逐题回执可离线重算。",
+   "example_en": "The comparison speed table lists median and p95 side by side, recomputable from per-query receipts.",
+   "code_refs": ["scripts/compare_search.py — 分位数计算"],
+   "analogy_zh": "95% 的人不碰头的门框", "analogy_en": "The door 95% clear",
+   "dig_deeper": [
+    {"to": "mean-std", "why_zh": "均值std管分数，分位数管时延", "why_en": "Mean/std for scores, percentiles for latency"},
+    {"to": "eval-runner", "why_zh": "谁把这些数算出来", "why_en": "Who computes these numbers"}
+   ]
+  }
+ ],
+ "extra_edges": [
+  {"from": "admission-gate", "to": "vector-matrix", "why_zh": "语义臂的原料从这张矩阵来", "why_en": "The semantic arm's raw material comes from this matrix"},
+  {"from": "admission-gate", "to": "unicode61-tokenizer", "why_zh": "词覆盖路线的分词机制", "why_en": "The tokenizer behind the coverage route"},
+  {"from": "witness-rule", "to": "fts5-bm25", "why_zh": "见证读的就是 bm25 排名与覆盖", "why_en": "Witnessing reads bm25 rank and coverage"},
+  {"from": "vector-matrix", "to": "cosine", "why_zh": "余弦在矩阵上批量算出", "why_en": "Cosines are batched over the matrix"},
+  {"from": "vector-matrix", "to": "z-score", "why_zh": "z 分的原料是矩阵余弦分布", "why_en": "The z row comes from the matrix's cosine distribution"},
+  {"from": "vector-matrix", "to": "per-modality-mean", "why_zh": "均值按模态从矩阵分组算出", "why_en": "Means are grouped by modality over the matrix"},
+  {"from": "vector-matrix", "to": "hybrid-fusion", "why_zh": "语义臂进入融合的形态", "why_en": "The semantic arm's shape entering fusion"},
+  {"from": "fts5-bm25", "to": "lookup-inversion", "why_zh": "反转后吃权重的是词法臂", "why_en": "After inversion, the lexical arm eats the weight"},
+  {"from": "frozen-inference-params", "to": "q8-0-gguf", "why_zh": "冻结的模型与量化格式", "why_en": "The frozen model and its quantization format"},
+  {"from": "backend-lifecycle", "to": "llama-server-process", "why_zh": "生命周期管理的第一主角", "why_en": "The lifecycle's first protagonist"},
+  {"from": "media-sidecar", "to": "c-sidecar-build", "why_zh": "边车的构建配方与产物", "why_en": "The sidecar's build recipe and artifact"},
+  {"from": "power-gating", "to": "pmset-probe", "why_zh": "门控的机械层探针", "why_en": "The gating's mechanical probe"},
+  {"from": "frozen-suite", "to": "eval-runner", "why_zh": "考卷由执行器装载与裁决", "why_en": "The exam loads and adjudicates via the runner"},
+  {"from": "frozen-suite", "to": "fixed-denominator", "why_zh": "考卷口径里的诚实条款", "why_en": "The exam's honesty clause"},
+  {"from": "quality-gates", "to": "paired-bootstrap", "why_zh": "门的裁判机器之一", "why_en": "One of the gate's referees"},
+  {"from": "wave-extraction", "to": "idempotency", "why_zh": "内容哈希跳过是幂等的实现", "why_en": "Hash skipping is idempotency implemented"},
+  {"from": "poll-raw-read", "to": "file-descriptor", "why_zh": "裸 fd 纪律的底层数物", "why_en": "The raw-fd discipline's underlying object"},
+  {"from": "epipe-discipline", "to": "sigpipe-signals", "why_zh": "断管纪律的操作系统根源", "why_en": "The OS root of the broken-pipe discipline"},
+  {"from": "sidecar-protocol", "to": "race-condition", "why_zh": "双排空线程的真实竞态案例", "why_en": "The real two-drain-thread race case"},
+  {"from": "eval-runner", "to": "percentile", "why_zh": "时延报告里的分位数由它产出", "why_en": "It computes the latency percentiles"},
+  {"from": "evidence-selection", "to": "chunking", "why_zh": "证据在块里选", "why_en": "Evidence is selected among chunks"},
+  {"from": "preregistration", "to": "scientific-preregistration", "why_zh": "工程实践背后的科学方法原型", "why_en": "The scientific prototype behind the practice"},
+  {"from": "adversarial-review", "to": "peer-review", "why_zh": "对抗评审的同行评审原型", "why_en": "Peer review behind adversarial review"},
+  {"from": "one-session-one-branch", "to": "branching", "why_zh": "纪律背后的分支工具层", "why_en": "The branching tooling behind the rule"},
+  {"from": "audit-gate", "to": "baseline-identity", "why_zh": "第四层身份由审计门执行", "why_en": "The fourth identity layer enforced by the audit gate"},
+  {"from": "honesty-contract", "to": "claim-discipline", "why_zh": "对外版本的同一条宪法", "why_en": "The same constitution, public edition"},
+  {"from": "anchors-card", "to": "evidence-receipt", "why_zh": "锚点命令的输出就是回执", "why_en": "Anchor outputs are receipts"}
+ ]
+}

@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='2' transform='rotate(45 12 12)' fill='none' stroke='%23E3A94C' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='1.8' fill='%23E3A94C'/%3E%3C/svg%3E">
-<meta name="description" content="goldmine — 开源的 macOS 本地语义搜索引擎。按意思搜索文本、PDF、截图、录音、视频。零上传，索引是一个 SQLite 文件。">
+<meta name="description" content="goldmine — 开源的 macOS 本地搜索引擎。按意思搜索文本、PDF、截图、录音、视频；比过 QMD，赢在覆盖与速度。零上传，索引是一个 SQLite 文件。">
 <title>goldmine · 本地语义搜索</title>
 <link rel="canonical" href="https://goldmine-site.sixtycat2000.workers.dev/">
 <meta property="og:title" content="goldmine · 本地语义搜索">
-<meta property="og:description" content="开源、本地优先的 macOS 语义搜索引擎。按意思搜索文本、PDF、截图、录音、视频；零上传，索引是一个 SQLite 文件。">
+<meta property="og:description" content="开源、本地优先的 macOS 搜索引擎。按意思搜索文本、PDF、截图、录音、视频；零上传，索引是一个 SQLite 文件。">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="assets/goldmine.css">
@@ -43,13 +43,13 @@
   <canvas id="starfield" aria-hidden="true"></canvas>
   <div class="hero-scrim" aria-hidden="true"></div>
   <div class="hero-in">
-    <p class="kicker rv">OPEN SOURCE · MACOS · NO UPLOADS</p>
+    <p class="kicker rv">OPEN SOURCE · MACOS · LOCAL-FIRST</p>
     <h1 class="rv" data-zh="按意思搜索，文件不出这台 Mac。" data-en="Search by meaning. Files never leave your Mac.">按意思搜索，文件不出这台 Mac。</h1>
-    <p class="dek rv" data-zh="goldmine 是一个命令行搜索引擎。你指定文件夹，它索引文本、PDF、截图、录音、视频，把内容变成向量后在本地检索。索引是磁盘上的一个 SQLite 文件；唯一的网络请求是你自己执行的两条命令（装模型、摄取你给的 URL）。" data-en="goldmine is a command-line search engine. Point it at folders; it indexes text, PDFs, screenshots, audio and video into vectors and searches them locally. The index is one SQLite file on your disk; the only network traffic comes from two commands you run yourself.">goldmine 是一个命令行搜索引擎。你指定文件夹，它索引文本、PDF、截图、录音、视频，把内容变成向量后在本地检索。索引是磁盘上的一个 SQLite 文件；唯一的网络请求是你自己执行的两条命令（装模型、摄取你给的 URL）。</p>
+    <p class="dek rv" data-zh="你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。" data-en="You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist.">你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。</p>
     <div class="cta-row rv">
       <a class="btn btn-gold" href="/docs#start"><span data-zh="快速开始" data-en="Quickstart">快速开始</span> →</a>
       <a class="btn btn-ghost" href="https://github.com/sixtycat2000-ctrl/goldmine">GitHub</a>
-      <a class="btn btn-ghost" href="/learn"><span data-zh="概念地图 · 77 个概念" data-en="Concept map · 77 nodes">概念地图 · 77 个概念</span></a>
+      <a class="btn btn-ghost" href="/learn"><span data-zh="概念地图 · 145 个概念可下探" data-en="Concept map · 145 nodes to drill">概念地图 · 145 个概念可下探</span></a>
     </div>
     <div class="stats-strip rv">
       <!-- verify: 2026-10-25 suite run 3200/37/2; evals/product_v4_expansion manifest -->
@@ -68,11 +68,24 @@
 </header>
 
 <main>
-<section class="blk" id="compare">
+<section class="blk" id="scenarios">
   <div class="wrap">
     <span class="chno" aria-hidden="true">01</span>
-    <p class="kicker rv" data-zh="和现有方案比" data-en="COMPARISON">和现有方案比</p>
-    <h2 class="rv" data-zh="四个具体问题上的差异" data-en="Differences on four concrete questions">四个具体问题上的差异</h2>
+    <p class="kicker rv" data-zh="真实场景" data-en="REAL SCENARIOS">真实场景</p>
+    <h2 class="rv" data-zh="三件每天都会发生的事" data-en="Three things that happen every week">三件每天都会发生的事</h2>
+    <div class="grid3 stagger">
+      <div class="card rv"><h3 data-zh="上周说退款的会议录音" data-en="The meeting recording that mentioned refunds">上周说退款的会议录音</h3><p data-zh="whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。" data-en="whisper transcribes it with timestamps. Search 退款期限, open jumps to the second.">whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。</p></div>
+      <div class="card rv"><h3 data-zh="截图里的那段报错" data-en="The error message in a screenshot">截图里的那段报错</h3><p data-zh="Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。" data-en="Vision OCR reads the pixels into searchable text; the image vector adds a looks-like layer.">Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。</p></div>
+      <div class="card rv"><h3 data-zh="两百页 PDF 里的那个编号" data-en="The identifier inside that 200-page PDF">两百页 PDF 里的那个编号</h3><p data-zh="编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。" data-en="Identifier-like queries invert the weights: exact lexical hits beat semantics — numbers don't drown in vibes.">编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="blk" id="compare">
+  <div class="wrap">
+    <span class="chno" aria-hidden="true">02</span>
+    <p class="kicker rv" data-zh="和手里的工具比" data-en="AGAINST YOUR CURRENT TOOLS">和手里的工具比</p>
+    <h2 class="rv" data-zh="Spotlight、云搜索、grep 之外的那条路" data-en="The road beyond Spotlight, cloud search and grep">Spotlight、云搜索、grep 之外的那条路</h2>
     <div class="rv" style="overflow-x:auto">
       <table class="cmp" style="width:100%;border-collapse:collapse;font-size:var(--fs-small)">
         <thead><tr>
@@ -84,59 +97,60 @@
         </tr></thead>
         <tbody>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="换个说法还能搜到（语义）" data-en="Finds paraphrases (semantic)">换个说法还能搜到（语义）</td><td class="gm">✓</td><td>✗<sup><a href="#cmp-note" style="border:0;color:var(--sub-2)">*</a></sup></td><td>✓</td><td>✗</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="精确编号 / 路径 / 短语" data-en="Exact identifiers / paths / phrases">精确编号 / 路径 / 短语</td><td class="gm">✓</td><td>✓</td><td>部分</td><td>✓</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="精确编号 / 路径 / 短语" data-en="Exact identifiers / paths / phrases">精确编号 / 路径 / 短语</td><td class="gm">✓</td><td>✓</td><td data-zh="部分" data-en="partial">部分</td><td>✓</td></tr>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="图片、录音、视频按内容搜" data-en="Image / audio / video by content">图片、录音、视频按内容搜</td><td class="gm">✓ <span data-zh="本地" data-en="local">本地</span></td><td>✗</td><td><span data-zh="需上传" data-en="upload first">需上传</span></td><td>✗</td></tr>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="文件离开本机" data-en="Files leaving the machine">文件离开本机</td><td class="gm">0 <span data-zh="字节" data-en="bytes">字节</span></td><td data-zh="系统内" data-en="on-device">系统内</td><td data-zh="全量上传" data-en="full upload">全量上传</td><td>0</td></tr>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="离线可用" data-en="Works offline">离线可用</td><td class="gm">✓</td><td>✓</td><td>✗</td><td>✓</td></tr>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="每个文件读到没读到、为什么" data-en="Per-file what-was-read and why">每个文件读到没读到、为什么</td><td class="gm">✓ <span data-zh="能力行" data-en="capability row">能力行</span></td><td>✗</td><td>✗</td><td>—</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="换模型后旧索引的保护" data-en="Old index protected after model change">换模型后旧索引的保护</td><td class="gm">✓ <span data-zh="拒绝混库 exit 3" data-en="refuses, exit 3">拒绝混库 exit 3</span></td><td>—</td><td>—</td><td>—</td></tr>
           <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="检索质量有公开度量" data-en="Published retrieval-quality gates">检索质量有公开度量</td><td class="gm">✓ <span data-zh="420 题 + 统计检验" data-en="420 Qs + significance">420 题 + 统计检验</span></td><td>✗</td><td>✗</td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-    <p id="cmp-note" class="rv" style="font-size:var(--fs-xs);color:var(--sub-2);margin-top:var(--sp-3)" data-zh="* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里没有一项是营销话术——每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。" data-en="* Based on publicly documented behavior (2026-10). Every row is backed by docs/FEATURE_STATUS.md in the repository — none of it is marketing.">* 对比限于各产品公开行为（2026-10）。表里每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。</p>
+    <p id="cmp-note" class="rv" style="font-size:var(--fs-xs);color:var(--sub-2);margin-top:var(--sp-3)" data-zh="* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里没有一项是营销话术——每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。" data-en="* Based on publicly documented behavior (2026-10). Every row is backed by docs/FEATURE_STATUS.md in the repository — none of it is marketing.">* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。</p>
   </div>
 </section>
 
-<section class="blk" id="scenarios">
-  <div class="wrap">
-    <span class="chno" aria-hidden="true">02</span>
-    <p class="kicker rv" data-zh="真实场景" data-en="REAL SCENARIOS">真实场景</p>
-    <h2 class="rv" data-zh="四件每天都发生的事" data-en="Four things that happen every week">四件每天都发生的事</h2>
-    <div class="grid3 stagger">
-      <div class="card rv"><h3 data-zh="上周说退款的会议录音" data-en="The meeting recording that mentioned refunds">上周说退款的会议录音</h3><p data-zh="whisper 转录成带时间戳的文本——search 「退款期限」，命中直接跳到那一秒。" data-en="whisper transcribes it with timestamps — search 退款期限 and jump straight to the second.">whisper 转录成带时间戳的文本——search 「退款期限」，命中直接跳到那一秒。</p></div>
-      <div class="card rv"><h3 data-zh="截图里的那段报错" data-en="The error message in a screenshot">截图里的那段报错</h3><p data-zh="Vision OCR 读完截图文字，照原样可搜；图像向量再兜一层「长得像」的检索。" data-en="Vision OCR reads the pixels into searchable text; the image vector adds a looks-like layer on top.">Vision OCR 读完截图文字，照原样可搜；图像向量再兜一层。</p></div>
-      <div class="card rv"><h3 data-zh="那份 200 页 PDF 里的数字" data-en="The number inside that 200-page PDF">那份 200 页 PDF 里的数字</h3><p data-zh="Poppler 按页提取，编号类查询走词法精确命中——数字不会被语义淹没。" data-en="Poppler extracts page by page; identifier-style queries hit lexically — numbers don't drown in semantics.">Poppler 按页提取，编号类查询走词法精确命中。</p></div>
-    </div>
-  </div>
-</section>
-<section class="blk" id="numbers">
+<section class="blk" id="vsqmd">
   <div class="wrap">
     <span class="chno" aria-hidden="true">03</span>
+    <p class="kicker rv" data-zh="对上另一个本地引擎" data-en="HEAD-TO-HEAD WITH QMD">对上另一个本地引擎</p>
+    <h2 class="rv" data-zh="同 122 份真实文件、同 210 道题，回执公开" data-en="Same 122 real files, same 210 questions, receipts public">同 122 份真实文件、同 210 道题，回执公开</h2>
+    <div class="grid3 stagger">
+      <div class="card rv"><h3 class="num">78.3% <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 66.1%</h3><p data-zh="直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。" data-en="Native success@5 — PDFs, screenshots, recordings go in raw. QMD cannot read 62 of the 122 files at all; what it can't see, it can't find.">直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。</p></div>
+      <div class="card rv"><h3 class="num">1.4s <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 21.8s</h3><p data-zh="每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。" data-en="Median per-query time incl. model loading; p95 is 1.7s vs 36.5s — about 15×. Speed isn't vanity; it's what makes daily use possible.">每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。</p></div>
+      <div class="card rv"><h3 class="num">43–60% <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 0%</h3><p data-zh="30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。" data-en="On 30 noise queries with no right answer: we handed in a blank sheet half the time; QMD's hybrid mode never once did. Noticing 'no answer exists' is competence, not failure.">30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。</p></div>
+    </div>
+    <p class="lede rv" style="margin-top:var(--sp-5);font-size:var(--fs-small);color:var(--sub)" data-zh="诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。" data-en="For honesty's sake: QMD is stronger at pure-text precision — over the same pre-converted text it scores 100% success@5 to our 91.7%; that's battlefield two on the roadmap. Full matrix, failures and all: docs/COMPARISON.md and reports/execution/P2-08/ in the repository.">诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。</p>
+  </div>
+</section>
+
+<section class="blk" id="numbers">
+  <div class="wrap">
+    <span class="chno" aria-hidden="true">04</span>
     <p class="kicker rv" data-zh="实测数字" data-en="MEASURED NUMBERS">实测数字</p>
     <h2 class="rv" data-zh="这个项目自己给自己打的分" data-en="The scores we publish on ourselves">这个项目自己给自己打的分</h2>
     <div class="grid3 stagger">
-      <div class="card rv"><h3 class="num">3,200+ / 8 min</h3><p data-zh="离线测试数量与全量耗时（2026-10-25 当日基线：3200 过 / 37 跳 / 2 个已档案存量失败——当日回执见仓库 reports/execution/digup-p2-closeout-001/step-0-baseline.txt）。已知失败如实挂台账，不藏。" data-en="Offline tests and full-suite time (2026-10-25 same-day baseline: 3200 passed / 37 skipped / 2 archived known failures — receipt in the repo). Known failures stay on the ledger.">离线测试数量与全量耗时。已知失败如实挂在台账上，不藏。</p></div>
+      <div class="card rv"><h3 class="num">3,200+ / 8 min</h3><p data-zh="离线测试数量与全量耗时（2026-10-25 当日基线：3200 过 / 37 跳 / 2 个已档案存量失败——回执在仓库 reports/）。已知失败如实挂台账，不藏。" data-en="Offline tests and full-suite time (2026-10-25 baseline: 3200 passed / 37 skipped / 2 archived known failures — receipts in the repo). Known failures stay on the ledger.">离线测试数量与全量耗时。已知失败如实挂在台账上，不藏。</p></div>
       <div class="card rv"><h3 class="num">96 / 180 · 12 红</h3><p data-zh="最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。印在首页，因为没达标就是没达标——这是它和营销页的区别。" data-en="Latest 420-question dev run: strict success@5 96/180, 12 quality gates failing. Printed here because not meeting a gate is a fact.">最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。印在首页，因为没达标就是没达标。</p></div>
-      <div class="card rv"><h3 class="num">Δ 0.0000</h3><p data-zh="两个回归门（legacy 109 题 / 全媒体 128 题）最近一次全绿的逐指标差值。检索参数的任何改动都要过 McNemar / 成对 bootstrap 显著性检验，过不了就回滚。" data-en="Per-metric delta of the last green run of both regression gates (legacy 109 / full-media 128). Any admission-parameter change must pass McNemar / paired-bootstrap significance or roll back.">两个回归门最近一次全绿的逐指标差值。参数改动必须过显著性检验，过不了就回滚。</p></div>
-      <div class="card rv"><h3 class="num">1,412 行 C</h3><p data-zh="媒体嵌入边车 goldmine-embed 的全部代码：静态链 llama.cpp + mtmd，图片缩放与参考实现逐位一致（黄金表测试钉死）。文本与媒体两条嵌入管线互不干扰。" data-en="The entire media sidecar: static llama.cpp + mtmd, image resize bit-identical to the reference (pinned by a golden-table test).">媒体嵌入边车的全部代码：图片缩放与参考实现逐位一致（黄金表测试钉死）。</p></div>
-      <div class="card rv"><h3 class="num">3.88 s</h3><p data-zh="本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒（对比 macOS 原生 4.07 秒）；选型记录在案，含反例数据。" data-en="Measured locally: ffmpeg extracts keyframes from a 5-min 1080p H.264 in 3.88 s (vs 4.07 s native); the decision, including counterexamples, is on record.">本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒；选型记录在案，含反例数据。</p></div>
-      <div class="card rv"><h3 class="num">0 条</h3><p data-zh="静默降级。OCR 缺了写原因、模型没装写原因、页数截断写标记——每个文件的四种状态（可搜/仅名字/刻意跳过/失败）都带原因，status 一屏可见。" data-en="Silent degradations. Missing OCR says so; uninstalled model says so; every file's state carries its reason, visible in one status screen.">静默降级。每个文件的四种状态都带原因，status 一屏可见。</p></div>
+      <div class="card rv"><h3 class="num">Δ 0.0000</h3><p data-zh="两个回归门（legacy 109 题 / 全媒体 128 题）最近一次全绿的逐指标差值。参数改动必须过 McNemar / 成对 bootstrap 显著性检验，过不了就回滚。" data-en="Per-metric delta of the last green run of both regression gates. Any admission-parameter change must pass McNemar / paired-bootstrap significance or roll back.">两个回归门最近一次全绿的逐指标差值。参数改动必须过显著性检验，过不了就回滚。</p></div>
+      <div class="card rv"><h3 class="num">1,412 行 C</h3><p data-zh="媒体嵌入边车的全部代码：静态链 llama.cpp + mtmd，图片缩放与参考实现逐位一致（黄金表测试钉死）。文本与媒体两条嵌入管线互不干扰。" data-en="The entire media sidecar: static llama.cpp + mtmd, image resize bit-identical to the reference (golden-table tests). Text and media pipelines never mix.">媒体嵌入边车的全部代码：图片缩放与参考实现逐位一致（黄金表测试钉死）。</p></div>
+      <div class="card rv"><h3 class="num">3.88 s</h3><p data-zh="本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒（对照组 macOS 原生 4.07 秒）；选型记录在案，含反例数据。" data-en="Measured locally: ffmpeg extracts keyframes from a 5-min 1080p H.264 in 3.88 s (vs 4.07 s native); the decision, counterexamples included, is on record.">本机实测：ffmpeg 抽 5 分钟 1080p 关键帧 3.88 秒；选型记录在案，含反例数据。</p></div>
+      <div class="card rv"><h3 class="num">0 条</h3><p data-zh="静默降级。OCR 缺了写原因、模型没装写原因、页数截断写标记——每个文件四种状态都带原因，status 一屏可见。" data-en="Silent degradations. Missing OCR says so; uninstalled models say so; every file's four states carry their reason, visible in one status screen.">静默降级。每个文件的四种状态都带原因，status 一屏可见。</p></div>
     </div>
   </div>
 </section>
 
 <section class="blk" id="how">
   <div class="wrap">
-    <span class="chno" aria-hidden="true">04</span>
+    <span class="chno" aria-hidden="true">05</span>
     <p class="kicker rv" data-zh="工作原理" data-en="HOW IT WORKS">工作原理</p>
     <h2 class="rv" data-zh="从磁盘到可搜，四步" data-en="Disk to searchable, four steps">从磁盘到可搜，四步</h2>
     <div class="pipe">
       <div class="spine" aria-hidden="true"></div><div class="packet" aria-hidden="true"></div>
-      <div class="station rv"><span class="dot"></span><p class="n">01 · SCOPE</p><h3 data-zh="你指定文件夹，只索引这些" data-en="You choose folders; only those are indexed">你指定文件夹，只索引这些</h3><p data-zh="没有默认全盘扫描。roots 记录在配置里，status 告诉你它在看哪里。构建产物目录（build/target/dist 等）、密钥文件、iCloud 未下载占位一律跳过并留原因——索引不会触发一次 iCloud 下载。" data-en="No default whole-disk scan. Roots are recorded; status reports them. Build-output dirs, credential files and undownloaded iCloud placeholders are skipped with reasons — indexing never triggers an iCloud download.">没有默认全盘扫描。构建产物目录、密钥文件、iCloud 未下载占位一律跳过并留原因——索引不会触发一次 iCloud 下载。</p></div>
-      <div class="station rv"><span class="dot"></span><p class="n">02 · EMBED</p><h3 data-zh="内容变向量，每种媒体一条路" data-en="Content becomes vectors; one path per modality">内容变向量，每种媒体一条路</h3><p data-zh="文本走钉版 embeddinggemma-2（Q8_0，llama.cpp 本地推理，768 维）。装上可选边车后：图片/页图有图像向量（photo 140 / screenshot 280 / 帧 70 token 预算），无转录音频有音频向量，视频每约 3 秒采一帧（aHash 去重）；截图走 Vision OCR，录音走 whisper 转录成带时间戳文本，命中可跳到那一秒。" data-en="Text uses the pinned embeddinggemma-2 (Q8_0, local llama.cpp, 768-dim). With the optional sidecar: image vectors (140/280/70-token budgets), raw-audio vectors, ~3s video keyframes (aHash dedup); screenshots go through Vision OCR, recordings through whisper into timestamped text that jumps to the second.">文本走钉版 embeddinggemma-2。装上边车后：图像/音频向量、视频关键帧、OCR、whisper 转录（命中跳到那一秒）。</p></div>
-      <div class="station rv"><span class="dot"></span><p class="n">03 · HYBRID SEARCH</p><h3 data-zh="含义 + 精确词融合，过程可查" data-en="Meaning + exact words fused, inspectably">含义 + 精确词融合，过程可查</h3><p data-zh="score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；查询像编号时权重自动反转。准入门槛 z ≥ 3.0（A/B 实测定下，训练/留出集一致）。--why 把每条命中的算术摆出来。" data-en="score = 1.0·semantic z + 2.0·coverage^1.5 + kind bonus; identifier-like queries auto-invert the weights. Admission z ≥ 3.0 (set by A/B, train/holdout agreement). --why shows every hit's arithmetic.">score = 1.0·语义 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转。--why 把算术摆出来。</p></div>
-      <div class="station rv"><span class="dot"></span><p class="n">04 · ONE FILE</p><h3 data-zh="提交与存储：一文件一事务，一库一文件" data-en="Commits and storage: one transaction per file, one file per index">提交与存储：一文件一事务，一库一文件</h3><p data-zh="每个文件的写入是单个 SQLite 事务——中断最坏丢这一个文件的这一次，不留半个文件。整个索引（原文、词法 FTS5、fp16 向量、指纹身份）是一个 .sqlite 文件，备份/搬走/删除就是复制那一个文件。" data-en="Each file commits as one SQLite transaction — an interrupt loses at most that file's pass, never half a file. The whole index (text, FTS5, fp16 vectors, fingerprint) is a single .sqlite file.">每个文件单事务提交；整个索引是一个 .sqlite 文件，备份就是复制它。</p></div>
+      <div class="station rv"><span class="dot"></span><p class="n">01 · SCOPE</p><h3 data-zh="你指定文件夹，只索引这些" data-en="You choose folders; only those are indexed">你指定文件夹，只索引这些</h3><p data-zh="没有全盘扫描。构建产物、密钥、iCloud 未下载占位一律跳过并留原因——索引永远不会触发一次 iCloud 下载。" data-en="No whole-disk scan. Build outputs, secrets and undownloaded iCloud placeholders are skipped with reasons — indexing never triggers an iCloud download.">没有全盘扫描。构建产物、密钥、iCloud 未下载占位一律跳过并留原因——索引永远不会触发一次 iCloud 下载。</p></div>
+      <div class="station rv"><span class="dot"></span><p class="n">02 · EMBED</p><h3 data-zh="内容变向量，每种媒体一条路" data-en="Content becomes vectors; one path per modality">内容变向量，每种媒体一条路</h3><p data-zh="文本走钉版 embeddinggemma-2；装上可选边车后：图像/音频向量、视频约每 3 秒一帧（aHash 去重）、截图走 Vision OCR、录音走 whisper——命中直接跳到那一秒。" data-en="Text uses the pinned embeddinggemma-2. With the optional sidecar: image/audio vectors, a video frame every ~3 s (aHash dedup), Vision OCR for screenshots, whisper for recordings — hits jump to the second.">文本走钉版 embeddinggemma-2；装上可选边车后：图像/音频向量、视频约每 3 秒一帧、截图走 OCR、录音走 whisper——命中跳到那一秒。</p></div>
+      <div class="station rv"><span class="dot"></span><p class="n">03 · HYBRID SEARCH</p><h3 data-zh="含义 + 精确词融合，算术可查" data-en="Meaning + exact words fused, inspectably">含义 + 精确词融合，算术可查</h3><p data-zh="score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转权重。--why 把每条命中的算术一项项摆出来。" data-en="score = 1.0·semantic z + 2.0·coverage^1.5 + kind bonus; identifier queries auto-invert. --why prints every hit's arithmetic, line by line.">score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转权重。--why 把每条命中的算术摆出来。</p></div>
+      <div class="station rv"><span class="dot"></span><p class="n">04 · ONE FILE</p><h3 data-zh="一文件一事务，一库一文件" data-en="One transaction per file, one file per index">一文件一事务，一库一文件</h3><p data-zh="每个文件的写入是单个 SQLite 事务——中断最坏丢这一个文件的这一次。备份、搬家、删除，就是复制那一个文件。" data-en="Each file commits as one SQLite transaction — an interrupt loses at most that file's pass. Backup, moving, deletion: copy the one file.">每个文件的写入是单个 SQLite 事务——中断最坏丢这一个文件的这一次。备份就是复制那一个文件。</p></div>
     </div>
     <div class="term rv" style="max-width:720px;margin-top:var(--sp-6)">
       <div class="term-hd"><span>quickstart — 零模型也能跑</span><button class="copy-btn" aria-label="copy"><svg width="14" height="14"><use href="#i-copy"/></svg><span data-zh="复制" data-en="copy">复制</span></button></div>
@@ -151,30 +165,30 @@
 
 <section class="blk" id="traits">
   <div class="wrap">
-    <span class="chno" aria-hidden="true">05</span>
+    <span class="chno" aria-hidden="true">06</span>
     <p class="kicker rv" data-zh="特点" data-en="WHAT'S ACTUALLY DIFFERENT">特点</p>
-    <h2 class="rv" data-zh="六个工程决定，多数仓库没有" data-en="Six engineering decisions most repos don't make">六个工程决定，多数仓库没有</h2>
+    <h2 class="rv" data-zh="六个工程决定，多数仓库不做" data-en="Six engineering decisions most repos don't make">六个工程决定，多数仓库不做</h2>
     <div class="grid3 stagger">
-      <div class="card rv"><h3 data-zh="诚实是接口，不是口号" data-en="Honesty is an interface, not a slogan">诚实是接口，不是口号</h3><p data-zh="零命中打印 nothing found 加一步建议（退出码 0）；OCR/模型缺失逐文件写原因；换过嵌入模型的库直接拒绝服务（exit 3）并给出重建命令。降级永远大声。" data-en="Zero hits prints nothing found plus a next step (exit 0); missing tools record per-file reasons; an index from another model is refused (exit 3) with the exact rebuild command. Degradation is always loud.">零命中打印 nothing found 加一步建议；OCR/模型缺失逐文件写原因；换过模型的库直接拒绝服务（exit 3）。降级永远大声。</p></div>
-      <div class="card rv"><h3 data-zh="向量家族不混" data-en="Vector families never mix">向量家族不混</h3><p data-zh="模型、提示词、池化、媒体预处理、token 预算全部进一个指纹哈希。指纹一变，搜索拒绝混库而不是静默给你变差的结果。参考向量测试把模型输出钉到逐位。" data-en="Model, prompts, pooling, media preprocessing and budgets hash into one fingerprint. When it changes, search refuses rather than silently degrading; reference-vector tests pin model output bit-for-bit.">模型、提示词、媒体预处理、预算全进一个指纹哈希。指纹一变，搜索拒绝混库。参考向量测试把模型输出钉到逐位。</p></div>
-      <div class="card rv"><h3 data-zh="参数改动要过统计门" data-en="Parameter changes pass statistical gates">参数改动要过统计门</h3><p data-zh="搜索阈值与权重全部预注册。420 题冻结评测分 210/210 训练/留出，改动用 McNemar 与成对 bootstrap 判定，不显著就回滚。曾扫到 3.5 门更好但一次扫描不足采信，记录在案、不采纳。" data-en="Thresholds and weights are preregistered. The frozen 420-question suite splits 210/210 train/holdout; changes face McNemar and paired bootstrap — insignificant means rollback. A sweeper found 3.5 better; one sweep is not evidence, so it's recorded, not adopted.">阈值与权重全部预注册；改动用统计检验判定，不显著就回滚。曾扫到更好的 3.5 门，一次扫描不足采信——记录在案、不采纳。</p></div>
-      <div class="card rv"><h3 data-zh="证据先于主张" data-en="Evidence precedes claims">证据先于主张</h3><p data-zh="结论只有三态：PASS（附命令行、退出码、输出哈希）/ FAIL / MISSING，「基本通过」是禁语。结构性改动先冻结设计（预注册），再由独立评审攻击。别处测得的收益在这里复测为零，按规则回滚。" data-en="Verdicts come in exactly PASS (with command line, exit code, output hash) / FAIL / MISSING. Structural changes freeze their design first (preregistration), then face an independent adversarial review. A gain measured elsewhere that re-measures zero here rolls back.">结论只有三态，PASS 必须附原始回执，「基本通过」是禁语。结构改动先预注册再对抗评审。别处测得的收益复测为零，按规则回滚。</p></div>
-      <div class="card rv"><h3 data-zh="媒体管线是偏执的" data-en="The media pipeline is paranoid">媒体管线是偏执的</h3><p data-zh="图片缩放逐位复刻 mtmd 的 Pillow 风格双三次（22 位定点整数运算，黄金表测试）；音频尾窗只有带 ≥2 秒新音频才保留；关键帧 aHash 去重、至多 1200 帧。省掉的是向量之外的重复计算，保住的是向量家族的纯度。" data-en="Image resize replicates mtmd's Pillow-style bicubic bit-for-bit (22-bit fixed-point, golden-table tests); audio tail windows survive only with ≥2 s of new audio; keyframes dedup by aHash, max 1200. It saves redundant work and protects vector-family purity.">图片缩放逐位复刻（22 位定点 + 黄金表）；尾窗 ≥2 秒新音频才保留；关键帧去重封顶。保的是向量家族的纯度。</p></div>
-      <div class="card rv"><h3 data-zh="本地优先是代码事实" data-en="Local-first is a code fact">本地优先是代码事实</h3><p data-zh="上传路径不存在：产品代码里唯一的网络请求是显式的模型下载与你指定摄取的 URL。MCP 服务是四个只读工具，带预算与取消。watch/serve 都要显式启动，安装不注册任何后台服务。" data-en="There is no upload path: the only network requests in product code are the explicit model download and URLs you ingest. MCP is four read-only tools with budgets and cancellation. watch/serve start explicitly; nothing registers a background service.">上传路径不存在：唯一网络请求是显式模型下载与你指定的 URL。MCP 四个只读工具；守护进程全部显式启动。</p></div>
+      <div class="card rv"><h3 data-zh="诚实是接口，不是口号" data-en="Honesty is an interface, not a slogan">诚实是接口，不是口号</h3><p data-zh="零命中打印 nothing found 加一步建议（退出码 0）；OCR/模型缺失逐文件写原因；换过模型的库直接拒绝服务（exit 3）并给出修法。降级永远大声。" data-en="Zero hits prints nothing found plus a next step (exit 0); missing tools record per-file reasons; a foreign-model index is refused (exit 3) with the fix. Degradation is always loud.">零命中打印 nothing found 加一步建议；OCR/模型缺失逐文件写原因；换过模型的库直接拒绝服务（exit 3）。降级永远大声。</p></div>
+      <div class="card rv"><h3 data-zh="向量家族不混" data-en="Vector families never mix">向量家族不混</h3><p data-zh="模型、提示词、媒体预处理、预算全部进一个指纹哈希。指纹一变，搜索拒绝混库而不是静默给你变差的结果；参考向量测试把模型输出钉到逐位。" data-en="Model, prompts, media preprocessing and budgets hash into one fingerprint. When it changes, search refuses rather than silently degrading; reference-vector tests pin model output bit-for-bit.">模型、提示词、媒体预处理、预算全进一个指纹哈希。指纹一变，搜索拒绝混库；参考向量测试把输出钉到逐位。</p></div>
+      <div class="card rv"><h3 data-zh="参数改动要过统计门" data-en="Parameter changes pass statistical gates">参数改动要过统计门</h3><p data-zh="阈值与权重全部预注册：改动用 McNemar 与成对 bootstrap 判定，train/holdout 一致才算数。曾扫到 3.5 门更好，一次扫描不足采信——记录在案，不采纳。" data-en="Thresholds and weights are preregistered: changes face McNemar and paired bootstrap, and must agree across train/holdout. A sweeper once found 3.5 better; one sweep is not evidence — recorded, not adopted.">阈值与权重全部预注册：改动用统计检验判定，不显著就回滚。曾扫到更好的 3.5 门，一次扫描不足采信——记录在案，不采纳。</p></div>
+      <div class="card rv"><h3 data-zh="证据先于主张" data-en="Evidence precedes claims">证据先于主张</h3><p data-zh="结论只有三态：PASS（附命令行、退出码、输出哈希）/ FAIL / MISSING，「基本通过」是禁语。结构性改动先冻结设计，再由独立评审攻击。" data-en="Verdicts come in exactly PASS (with argv, exit code, output hash) / FAIL / MISSING. 'Basically passed' is banned vocabulary. Structural changes freeze their design first, then face adversarial review.">结论只有三态，PASS 必须附原始回执，「基本通过」是禁语。结构改动先预注册再对抗评审。</p></div>
+      <div class="card rv"><h3 data-zh="媒体管线是偏执的" data-en="The media pipeline is paranoid">媒体管线是偏执的</h3><p data-zh="图片缩放逐位复刻 mtmd 的双三次（22 位定点 + 黄金表测试）；音频尾窗只有带 ≥2 秒新音频才保留；关键帧 aHash 去重、至多 1200 帧。省的是重复计算，保的是向量家族的纯度。" data-en="Image resize replicates mtmd's bicubic bit-for-bit (22-bit fixed-point, golden tables); audio tail windows survive only with ≥2 s of new audio; keyframes dedup by aHash, capped at 1200. It protects vector-family purity.">图片缩放逐位复刻（22 位定点 + 黄金表）；尾窗 ≥2 秒新音频才保留；关键帧去重封顶。保的是向量家族的纯度。</p></div>
+      <div class="card rv"><h3 data-zh="本地优先是代码事实" data-en="Local-first is a code fact">本地优先是代码事实</h3><p data-zh="产品代码里唯一的网络请求是显式的模型下载与你指定摄取的 URL。MCP 是四个只读工具，带预算与取消；watch/serve 都要显式启动，安装不注册任何后台服务。" data-en="The only network requests in product code are the explicit model download and URLs you ingest. MCP is four read-only tools with budgets and cancellation; watch/serve start explicitly; nothing registers a background service.">唯一网络请求是显式模型下载与你指定的 URL。MCP 四个只读工具；守护进程全部显式启动。</p></div>
     </div>
   </div>
 </section>
 
 <section class="blk" id="opensource">
   <div class="wrap">
-    <span class="chno" aria-hidden="true">06</span>
+    <span class="chno" aria-hidden="true">07</span>
     <p class="kicker rv" data-zh="开源" data-en="OPEN SOURCE">开源</p>
     <h2 class="rv" data-zh="MIT。仓库里最值钱的是证据链。" data-en="MIT. The repo's most valuable asset is the evidence chain.">MIT。仓库里最值钱的是证据链。</h2>
-    <p class="lede rv" data-zh="代码之外，仓库带着完整的工作记录：能力与质量台账（FEATURE_STATUS）、五讲子系统走读、术语考古词典（JOURNEY）、锚点命令卡（一分钟亲手验证）、逐提交的执行档案。会话协作规则在 AGENTS.md。想审计，从这里开始。" data-en="Beyond code, the repo carries its full working record: the capability ledger (FEATURE_STATUS), five subsystem walkthroughs, a term-archaeology glossary (JOURNEY), anchor command cards (verify by hand in a minute), and per-commit execution archives. Collaboration rules live in AGENTS.md. Start an audit there.">代码之外，仓库带着完整工作记录：台账、五讲走读、术语考古、锚点命令卡、逐提交档案。想审计，从这里开始。</p>
+    <p class="lede rv" data-zh="代码之外，仓库带着完整的工作记录：能力与质量台账（FEATURE_STATUS）、五讲子系统走读、术语考古词典（JOURNEY）、锚点命令卡（一分钟亲手验证）、逐提交的执行档案。想审计，从这里开始。" data-en="Beyond code, the repo carries its full working record: the capability ledger (FEATURE_STATUS), five subsystem walkthroughs, a term-archaeology glossary (JOURNEY), anchor command cards (verify by hand in a minute), and per-commit execution archives. Start an audit there.">代码之外，仓库带着完整工作记录：台账、五讲走读、术语考古、锚点命令卡、逐提交档案。想审计，从这里开始。</p>
     <div class="cta-row rv" style="margin-top:var(--sp-6)">
       <a class="btn btn-gold" href="https://github.com/sixtycat2000-ctrl/goldmine">GitHub ↗</a>
-      <a class="btn btn-ghost" href="/docs"><span data-zh="文档" data-en="Docs">文档</span> →</a>
-      <a class="btn btn-ghost" href="/learn"><span data-zh="Learn：从项目机制下探四层到基础概念" data-en="Learn: drill four layers from our mechanisms to fundamentals">Learn：从项目机制下探四层到基础概念</span></a>
+      <a class="btn btn-ghost" href="/docs"><span data-zh="文档与路线图" data-en="Docs & roadmap">文档与路线图</span> →</a>
+      <a class="btn btn-ghost" href="/learn"><span data-zh="Learn：145 个概念，逐层下探" data-en="Learn: 145 concepts, drill layer by layer">Learn：145 个概念，逐层下探</span></a>
     </div>
   </div>
 </section>

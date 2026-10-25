@@ -358,3 +358,20 @@ kbd-chip{display:none}
   font:11px var(--mono);color:var(--sub-2);border:1px solid var(--line);border-radius:var(--r-full);
   padding:4px 12px;background:rgb(15 14 12 / .6)}
 @media (max-width:760px){.demo-note{display:none}}
+
+/* depth rail (v3 drill-down) */
+.clusterbar{display:none}
+.depth-rail{position:absolute;left:var(--sp-5);bottom:calc(var(--sp-5) + 8px);z-index:10;
+  display:flex;flex-direction:column;gap:6px}
+.depth-rail button{font:10px var(--mono);letter-spacing:.08em;color:var(--sub-2);text-align:left;
+  background:rgb(15 14 12 / .55);border:1px solid var(--line);border-radius:var(--r-full);
+  padding:5px 10px;cursor:pointer;transition:color .15s,border-color .15s}
+.depth-rail button:hover{color:var(--ink)}
+.depth-rail button.on{color:#F0C578;border-color:rgb(227 169 76 / .7)}
+@media (max-width:760px){.depth-rail{left:var(--sp-3);bottom:calc(var(--sp-3) + 58px);gap:4px}.depth-rail button{padding:4px 7px;font-size:9px}}
+
+/* drill chips in the panel */
+.deep-chip.kid{border-color:rgb(227 169 76 / .45)}
+.deep-chip.kid:hover{border-color:rgb(227 169 76 / .8)}
+.deep-chip .why{font:10px var(--mono);color:var(--sub-2);margin-left:4px}
+.leaf-note{font:12px var(--mono);color:var(--sub-2);margin:4px 0 2px}

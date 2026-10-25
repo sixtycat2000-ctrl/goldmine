@@ -48,7 +48,11 @@
 
   /* reveal system --------------------------------------------------- */
   function initReveals() {
-    var els = document.querySelectorAll(".rv");
+    var els = [].slice.call(document.querySelectorAll(".rv"));
+    function inView(el) {
+      var r = el.getBoundingClientRect();
+      return r.top < window.innerHeight && r.bottom > 0;
+    }
     if (!("IntersectionObserver" in window)) {
       els.forEach(function (el) { el.classList.add("in"); });
       return;
@@ -63,6 +67,14 @@
       if (sib) el.style.transitionDelay = (Math.min(i, 8) * 70) + "ms";
       io.observe(el);
     });
+    /* safety net: if IO callbacks stall (occluded panes, exotic embeds),
+       anything sitting inside the viewport still gets revealed — content
+       must never stay invisible because an animation queue froze */
+    setInterval(function () {
+      els.forEach(function (el) {
+        if (!el.classList.contains("in") && inView(el)) el.classList.add("in");
+      });
+    }, 1500);
   }
 
   /* copy buttons ---------------------------------------------------- */
