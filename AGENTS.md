@@ -34,9 +34,13 @@
 ## 理解密度制度（所有者学习用，会话负责供货）
 
 - 轮讲：每周一个子系统，走一遍后**用户复述**；缺口进下一讲。
-  已完成：[第一讲 · 搜索打分](docs/WALKTHROUGH-search.md)、
-  [第二讲 · 指纹与身份模型](docs/WALKTHROUGH-fingerprint.md)（各含十问）。
-  排队：摄取管线（walk→extract→commit）/ 诚实契约 / 双常驻进程。
+  已完成（全部五讲，各含十问）：
+  [1 · 搜索打分](docs/WALKTHROUGH-search.md) ·
+  [2 · 指纹与身份模型](docs/WALKTHROUGH-fingerprint.md) ·
+  [3 · 摄取管线](docs/WALKTHROUGH-ingest.md) ·
+  [4 · 诚实契约](docs/WALKTHROUGH-honesty.md) ·
+  [5 · 双常驻进程](docs/WALKTHROUGH-processes.md)。
+  复述补课随时可加；新子系统落地时追加新讲。
 - 判断权归用户：预注册与源码冲突、gate 阈值、基线重建、产品语义变化
   ——停下来给冲突原文 + 建议 + 反方，**不自己决定后报备**。
 
@@ -51,7 +55,7 @@
 | 测试分层计划 | [docs/TEST_PLAN.md](docs/TEST_PLAN.md) |
 | 锚点命令卡 | [docs/ANCHORS.md](docs/ANCHORS.md) |
 | 提交摘要档案 | [docs/COMMIT_DIGESTS.md](docs/COMMIT_DIGESTS.md) |
-| 轮讲系列 | [搜索打分](docs/WALKTHROUGH-search.md) · [指纹与身份](docs/WALKTHROUGH-fingerprint.md) |
+| 轮讲系列 | [1 搜索打分](docs/WALKTHROUGH-search.md) · [2 指纹与身份](docs/WALKTHROUGH-fingerprint.md) · [3 摄取管线](docs/WALKTHROUGH-ingest.md) · [4 诚实契约](docs/WALKTHROUGH-honesty.md) · [5 双常驻进程](docs/WALKTHROUGH-processes.md) |
 
 执行记录：reports/execution/<任务名>/（本地留档、按惯例不入库——回执
 在那里面，摘要在这里）。
