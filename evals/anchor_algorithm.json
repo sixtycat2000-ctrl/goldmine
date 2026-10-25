@@ -104,7 +104,10 @@
  },
  "quality_results": null,
  "schema": 1,
- "search_behavior_version": "search.v6-quote-provenance",
+ "search_behavior_notes": [
+  "2026-10-25 search.v7-evidence-window-witness: evidence-side only — select_evidence window dominance (W=200, margin 2) and hybrid semantic admission requires a lexical witness (coverage>0 or FTS rank); anchor algorithm, z_gate, coverage_quorum and parameter_registration unchanged; preregistration reports/execution/P0-05/evidence-window-witness-001/preregistration.json"
+ ],
+ "search_behavior_version": "search.v7-evidence-window-witness",
  "semantic_remainder": "structural_quote_provenance",
  "status": "UNVALIDATED",
  "work_bounds": {

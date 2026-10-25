@@ -350,6 +350,7 @@ EXTRACTOR_VERSIONS: dict[str, str] = {
     "docx": "docx-stdlib.v1",
     "html": "html-stdlib.v1",
     "code": "code-stdlib.v1",
+    "ipynb": "ipynb-stdlib.v1",  # P2: cells-only extraction, outputs never read
     "url": "url-stdlib.v1",
     # 02-ingestion F1: eml/epub were missing here, so every plain ingest
     # re-extracted AND re-embedded all .eml/.epub rows forever (their stored

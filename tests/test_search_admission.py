@@ -82,7 +82,8 @@ def test_one_modality_tiny_group_remains_finite_and_gated(index):
 
 
 def test_optional_margin_is_explicit_and_never_changes_control():
-    args = dict(scorer="hybrid", z=4.0, coverage=0, segment_margin=0.01)
+    # search.v7: a hybrid semantic standout needs a lexical witness (FTS rank here).
+    args = dict(scorer="hybrid", z=4.0, coverage=0, lexical_match=True, segment_margin=0.01)
     assert decide_admission(**args) == "semantic_standout"
     assert decide_admission(**args, parameters=AdmissionParameters(semantic_segment_margin=0.25)) is None
     assert decide_admission(**{**args, "segment_margin": 0.3}, parameters=AdmissionParameters(semantic_segment_margin=0.25)) == "semantic_standout"
@@ -101,7 +102,7 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     # Historical numeric trials retain their original v3 bytes/status.
     assert registered["search_behavior_version"] == "search.v3-evidence-control"
     structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
-    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v6-quote-provenance"
+    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v7-evidence-window-witness"
     assert structural["algorithm_version"] == "anchor.v3-quote-provenance"
     assert structural["status"] == "UNVALIDATED" and structural["quality_results"] is None
     assert structural["semantic_remainder"] == "structural_quote_provenance"

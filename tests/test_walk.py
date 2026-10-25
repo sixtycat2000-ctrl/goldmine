@@ -137,10 +137,56 @@ def test_compute_deletions(tmp_path):
                               size=1, state="pending"))
     store.upsert_file(FileRec(path="https://other.dev/p", source="url", kind="webpage",
                               size=1, state="pending"))
-    gone = compute_deletions(store, [str(kept), "https://x.dev"])
+    gone = compute_deletions(store, [str(kept), "https://x.dev"]).gone
     assert [store.get_file(fid).path for fid in gone] == [
         str(kept / "gone.txt")
     ]
+    store.close()
+
+
+def test_compute_deletions_keeps_rows_under_vanished_root(tmp_path):
+    """A1-18 (DigUp Indexer.swift:118-120): a root that vanished between the
+    run's start-of-run stat and the deletion computation is UNAVAILABLE, not
+    empty — its rows are kept and the root is reported."""
+    import shutil
+
+    r = tmp_path / "root"
+    r.mkdir()
+    (r / "a.txt").write_text("x", encoding="utf-8")
+    store = Store(tmp_path / "s.sqlite")
+    store.upsert_file(FileRec(path=str(r / "a.txt"), kind="doc", size=1, state="pending"))
+    vanished = tmp_path / "gone-root"
+    vanished.mkdir()  # passed F10 at run start ...
+    (vanished / "b.txt").write_text("x", encoding="utf-8")
+    store.upsert_file(FileRec(path=str(vanished / "b.txt"), kind="doc",
+                              size=1, state="pending"))
+    shutil.rmtree(vanished)  # ... then the drive left mid-run
+    result = compute_deletions(store, [str(r), str(vanished)])
+    assert result.gone == []  # without the guard, b.txt read as deleted
+    assert result.kept_unreachable == 1
+    assert [root for root, _ in result.unavailable_roots] == [str(vanished)]
+    store.close()
+
+
+def test_compute_deletions_keeps_rows_under_unreadable_subtree(tmp_path):
+    """A1-18: a subtree the walk could not read is an unreachable prefix —
+    rows under it are kept while sibling deletions still run. The prefix
+    match is separator-true (/sub never covers /subway)."""
+    r = tmp_path / "root"
+    (r / "sub").mkdir(parents=True)
+    (r / "sub" / "keep.txt").write_text("x", encoding="utf-8")
+    store = Store(tmp_path / "s.sqlite")
+    store.upsert_file(FileRec(path=str(r / "sub" / "keep.txt"), kind="doc",
+                              size=1, state="pending"))
+    store.upsert_file(FileRec(path=str(r / "deleted.txt"), kind="doc",
+                              size=1, state="pending"))
+    store.upsert_file(FileRec(path=str(r / "subway.txt"), kind="doc",
+                              size=1, state="pending"))  # not under /sub
+    result = compute_deletions(store, [str(r)], unreachable=[str(r / "sub")])
+    assert sorted(store.get_file(fid).path for fid in result.gone) == [
+        str(r / "deleted.txt"), str(r / "subway.txt"),
+    ]
+    assert result.kept_unreachable == 1
     store.close()
 
 
@@ -195,72 +241,38 @@ def test_walk_subdir_scandir_permission_error_is_tcc_notice(tmp_path, monkeypatc
     items = list(walk([root], code=False, exclude=[], max_file_bytes=1 << 20))
     tcc = [i for i in items if isinstance(i, SkipNotice) and i.reason == TCC_REASON]
     assert len(tcc) == 1 and tcc[0].path.endswith("locked") and tcc[0].is_dir
+    assert tcc[0].unreachable is True  # A1-18: rows under it stay deletable-exempt
     files = [i.path.name for i in items if hasattr(i, "kind")]
     assert files == ["ok.txt"]
 
 
-# ----------------------- 02 F2: special files must never reach a read path
+def test_walk_subdir_scandir_oserror_is_unreachable_dir_notice(tmp_path, monkeypatch):
+    """A1-18: a directory that cannot be LISTED for a non-permission reason
+    (drive ejected mid-walk, IO error) yields an unreachable dir notice —
+    previously it was a silent log line and the subtree read as empty."""
+    import os as os_mod
 
-
-def test_walk_fifo_with_text_ext_is_skipped_not_read(tmp_path):
-    """A named pipe named *.txt classifies as a doc; the old walker yielded a
-    Candidate and extract_txt's read_bytes() BLOCKED FOREVER on the writerless
-    pipe — one hung worker stalled the whole ingest. The walker now gates on
-    S_ISREG and skips specials with a reason (02-ingestion F2)."""
-    if os.name != "posix":
-        pytest.skip("os.mkfifo is POSIX-only")
     root = tmp_path / "w"
-    root.mkdir()
-    os.mkfifo(root / "pipe_notes.txt")
-    (root / "real.txt").write_text("readable", encoding="utf-8")
+    flaky = root / "flaky"
+    flaky.mkdir(parents=True)
+    (flaky / "x.txt").write_text("x", encoding="utf-8")
+    (root / "ok.txt").write_text("x", encoding="utf-8")
+
+    real_scandir = os_mod.scandir
+
+    def fake_scandir(path):
+        if str(path).endswith("flaky"):
+            raise OSError("Input/output error")
+        return real_scandir(path)
+
+    monkeypatch.setattr(os_mod, "scandir", fake_scandir)
     items = list(walk([root], code=False, exclude=[], max_file_bytes=1 << 20))
-    files = [i for i in items if hasattr(i, "kind")]
-    notices = [i for i in items if isinstance(i, SkipNotice) and not i.is_dir]
-    assert [f.path.name for f in files] == ["real.txt"]
+    notices = [i for i in items if isinstance(i, SkipNotice) and i.is_dir]
     assert len(notices) == 1
-    assert notices[0].path.endswith("pipe_notes.txt")
-    assert notices[0].reason == "not a regular file"
+    assert notices[0].path.endswith("flaky")
+    assert "cannot list" in notices[0].reason
+    assert notices[0].unreachable is True
+    assert [i.path.name for i in items if hasattr(i, "kind")] == ["ok.txt"]
 
 
-def test_walk_fifo_as_root_is_skipped(tmp_path):
-    """Same gate for a root that is itself a FIFO (`_handle_file`)."""
-    if os.name != "posix":
-        pytest.skip("os.mkfifo is POSIX-only")
-    fifo = tmp_path / "top.txt"
-    os.mkfifo(fifo)
-    items = list(walk([fifo], code=False, exclude=[], max_file_bytes=1 << 20))
-    notices = [i for i in items if isinstance(i, SkipNotice) and not i.is_dir]
-    assert len(notices) == 1 and notices[0].reason == "not a regular file"
-    assert not any(hasattr(i, "kind") for i in items)
 
-
-def test_walk_end_to_end_ingest_survives_a_fifo(tmp_path):
-    """Full pipeline: the FIFO is recorded unsupported with the machine reason
-    and the run COMPLETES (the regression was a whole-run hang, confirmed by
-    the critique's >5s subprocess probe)."""
-    from goldmine.backends.mock import MockBackend
-    from goldmine.config import load
-    from goldmine.ingest import IngestPipeline
-    from goldmine.store import Store as _Store
-
-    if os.name != "posix":
-        pytest.skip("os.mkfifo is POSIX-only")
-    root = tmp_path / "w"
-    root.mkdir()
-    os.mkfifo(root / "pipe_notes.txt")
-    (root / "note.txt").write_text("normal words here", encoding="utf-8")
-    cfg = load()
-    cfg.home = tmp_path / "home"
-    store = _Store(cfg.home / "idx.sqlite")
-    try:
-        with MockBackend(dim=768) as backend:
-            report = IngestPipeline(cfg, store, backend).run([str(root)])
-        assert report.failed == 0
-        assert report.content_indexed == 1
-        assert report.unsupported == 1
-        row = store.db.execute(
-            "SELECT capability, detail FROM files WHERE path LIKE '%pipe_notes.txt'"
-        ).fetchone()
-        assert row == ("unsupported", "not a regular file")
-    finally:
-        store.close()

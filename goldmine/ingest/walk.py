@@ -12,7 +12,7 @@ import fnmatch
 import logging
 import os
 import stat
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Iterator
 
@@ -37,6 +37,10 @@ class SkipNotice:
     path: str
     reason: str
     is_dir: bool = False   # folder-level notices are counted, not recorded as files
+    #: DigUp A1-18: a folder the walk could not read is UNAVAILABLE, not empty.
+    #: Callers treat these paths as deletion-exempt prefixes (rows under them
+    #: are kept), so a TCC prompt or an ejected drive never reads as "deleted".
+    unreachable: bool = False
 
 
 #: F8 (v2 item 21): a stat/scandir refused with EPERM/EACCES is macOS privacy
@@ -83,10 +87,14 @@ def walk_files(
         except PermissionError:
             # F8: EPERM/EACCES on the root itself — TCC-protected, never
             # "empty". Surfaced, not swallowed.
-            yield SkipNotice(str(root), TCC_REASON, is_dir=True)
+            yield SkipNotice(str(root), TCC_REASON, is_dir=True, unreachable=True)
             continue
         except OSError as exc:
+            # A1-18: the root passed the caller's start-of-run stat (F10) but
+            # vanished before the walk reached it — unavailable, not empty.
             logger.warning("walk: cannot stat %s (%s)", root, exc)
+            yield SkipNotice(str(root), f"cannot stat: {exc}", is_dir=True,
+                             unreachable=True)
             continue
         if (root_stat.st_dev, root_stat.st_ino) in visited:
             continue
@@ -145,10 +153,15 @@ def _walk_dir(
             entries = sorted(it, key=lambda e: e.name)
     except PermissionError:
         # F8: unreadable directory (TCC) — a notice with the fix, not silence
-        yield SkipNotice(str(directory), TCC_REASON, is_dir=True)
+        yield SkipNotice(str(directory), TCC_REASON, is_dir=True, unreachable=True)
         return
     except OSError as exc:
+        # A1-18 (DigUp Indexer.swift:118-120): a directory that cannot be
+        # listed (drive ejected mid-walk, IO error) must not read as empty —
+        # the notice marks the subtree unreachable so callers keep its rows.
         logger.warning("walk: cannot list %s (%s)", directory, exc)
+        yield SkipNotice(str(directory), f"cannot list: {exc}", is_dir=True,
+                         unreachable=True)
         return
     for entry in entries:
         name = entry.name
@@ -167,10 +180,12 @@ def _walk_dir(
             try:
                 st_dir = entry.stat(follow_symlinks=False)
             except PermissionError:
-                yield SkipNotice(abs_path, TCC_REASON, is_dir=True)
+                yield SkipNotice(abs_path, TCC_REASON, is_dir=True, unreachable=True)
                 continue
             except OSError as exc:
                 logger.warning("walk: cannot stat %s (%s)", abs_path, exc)
+                yield SkipNotice(abs_path, f"cannot stat: {exc}", is_dir=True,
+                                 unreachable=True)
                 continue
             if (st_dir.st_dev, st_dir.st_ino) in visited:
                 continue
@@ -244,7 +259,23 @@ def _read_head(path: Path, n: int = TS_READ_BYTES) -> bytes:
         return b""
 
 
-def compute_deletions(store: Store, roots: list[str]) -> list[int]:
+@dataclass(frozen=True)
+class Deletions:
+    """compute_deletions result: ids to prune + the A1-18 guard accounting.
+
+    `kept_unreachable` counts rows kept because their root (or a subtree the
+    walk could not read) was UNAVAILABLE at deletion time — surfaced, never
+    silently skipped; `unavailable_roots` lists (root, reason) pairs.
+    """
+
+    gone: list[int]
+    kept_unreachable: int = 0
+    unavailable_roots: list[tuple[str, str]] = field(default_factory=list)
+
+
+def compute_deletions(
+    store: Store, roots: list[str], *, unreachable: list[str] | None = None
+) -> Deletions:
     """Files under the CURRENT roots whose path vanished from disk
     (ARCHITECTURE §2.1 deletions).
 
@@ -253,16 +284,49 @@ def compute_deletions(store: Store, roots: list[str]) -> list[int]:
     A run only speaks for the roots it was given; removing a root from the
     rotation is `goldmine reset` territory. URL rows are never pruned here
     (a page missing from disk is meaningless for them).
+
+    A1-18 guard (DigUp Indexer.swift:118-120, IndexService.swift:22-23): a
+    root that vanished between the run's start-of-run stat (F10) and THIS
+    point — or a subtree the walk reported unreachable (TCC, cannot-list) —
+    is unavailable, NOT empty. Its rows are kept and counted, so an ejected
+    drive never reads as "all deleted". Availability is re-checked here, not
+    once at run start.
     """
     from ..store import _split_roots, _under_roots
 
     file_roots, url_roots = _split_roots(roots)
+    unavailable_roots: list[tuple[str, str]] = []
+    for r in file_roots:
+        try:
+            os.stat(r)
+        except OSError as exc:
+            unavailable_roots.append((r, str(exc)))
+    # Prefix match with a real separator so /a/b never matches /a/bcd.
+    keep_prefixes = sorted(
+        {p if p.endswith(os.sep) else p + os.sep for p in (unreachable or [])}
+    )
+
+    def _kept_prefix(path: str) -> bool:
+        return any(path.startswith(p) for p in keep_prefixes)
+
     out: list[int] = []
+    kept = 0
+    root_set = {root for root, _ in unavailable_roots}
     for fid, path, source in store.db.execute(
         "SELECT id, path, source FROM files ORDER BY id"
     ).fetchall():
         if source != "file":
             continue
-        if _under_roots(path, source, file_roots, url_roots) and not os.path.exists(path):
+        if not _under_roots(path, source, file_roots, url_roots):
+            continue
+        if _kept_prefix(path):
+            kept += 1
+            continue
+        if any(_under_roots(path, source, [r], []) for r in root_set):
+            kept += 1
+            continue
+        if not os.path.exists(path):
             out.append(fid)
-    return out
+    return Deletions(
+        gone=out, kept_unreachable=kept, unavailable_roots=unavailable_roots
+    )

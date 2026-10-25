@@ -141,6 +141,8 @@ def test_snippet_missing_body_falls_back_to_stored_excerpt(store):
     ])
     for i in range(25):
         add_file(store, f"/f/f{i}.txt", ["filler text here"], [evec(1)])
+    # search.v7: a pure-vector image has no textual surface, so the hybrid
+    # lexical-witness rule exempts it and it still qualifies on z alone.
     hits = Searcher(store, FixedBackend(evec(0))).search("qqq zzq")  # no lexical overlap
     by_path = {h.path: h for h in hits}
     h = by_path["/img/pic2.png"]
@@ -185,7 +187,9 @@ def test_near_dup_vector_fold_identical_vectors(store):
     add_file(store, "/b/two.txt", ["second wording of the note"], [evec(0)])
     for i in range(25):
         add_file(store, f"/f/f{i}.txt", ["unrelated content"], [evec(i % 20 + 1)])
-    hits = Searcher(store, FixedBackend(evec(0))).search("qqq zzq")  # semantic only
+    # search.v7: text files with zero query-word overlap are not admitted by the
+    # hybrid witness rule; the fold mechanics are exercised on the semantic ablation.
+    hits = Searcher(store, FixedBackend(evec(0))).search("qqq zzq", scorer="semantic")
     assert len(hits) == 2
     assert hits[0].path == "/a/one.txt"  # tie broken by file id
     assert hits[1].duplicate_of == hits[0].rank
@@ -342,11 +346,19 @@ def test_z_gate_refuses_midband_candidates_on_noise(store):
 
 
 def test_z_gate_keeps_standouts(store):
-    """The gate's whole point: z >= 3.0 with zero coverage still qualifies."""
+    """z >= 3.0 qualifies a text file once it shares a single query word; with
+    zero overlap the hybrid witness rule (search.v7) refuses it, while the pure
+    semantic ablation still admits it on z alone."""
     add_file(store, "/t/target.txt", ["needle unique sentence"], [evec(0)])
     for i in range(25):
         add_file(store, f"/f/f{i}.txt", ["filler text here"], [evec(1)])
-    hits = Searcher(store, FixedBackend(evec(0))).search("qqq zzq")  # no lexical match
+    searcher = Searcher(store, FixedBackend(evec(0)))
+    assert searcher.search("qqq zzq") == []                       # no lexical witness
+    hits = searcher.search("qqq needle")                           # one shared word, cov 0.5 -> quorum
+    assert len(hits) == 1 and hits[0].path == "/t/target.txt"
+    hits = searcher.search("qqq zzq needle")                       # cov 1/3 < quorum: z + witness
+    assert len(hits) == 1 and hits[0].admission_reason == "semantic_standout"
+    hits = searcher.search("qqq zzq", scorer="semantic")
     assert len(hits) == 1 and hits[0].path == "/t/target.txt"
 
 

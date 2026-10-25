@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import math
+import re
 
 import numpy as np
 
@@ -16,6 +17,67 @@ from .deadline import check_deadline
 from .read_source import fts_projection
 from .evidence import segment_evidence_types
 from .lexical import normalize
+
+#: search.v7 window dominance (evidence-window-witness-001): the semantic
+#: primary yields only to a candidate that concentrates at least WINDOW_MARGIN
+#: more distinct query units inside one WINDOW_CHARS-character window of its
+#: stored text while carrying at least as many body units. The matching rule
+#: below is frozen by the preregistration; FTS/stem positions are not used.
+WINDOW_CHARS = 200
+WINDOW_MARGIN = 2
+WINDOW_POSITION_CAP = 64
+_LATIN_TOKEN = re.compile(r"[0-9a-z]+")
+
+
+def window_units(text, units):
+    """Most distinct query units whose occurrences fit in one WINDOW_CHARS window.
+
+    Latin units match whole [0-9a-z]+ tokens of the normalized text (the last
+    latin unit also by prefix, mirroring its FTS prefix pattern); CJK units match
+    any of their grams and phrase units their text by substring. At most
+    WINDOW_POSITION_CAP positions per unit are considered.
+    """
+    if not text or not units:
+        return 0
+    body = normalize(text)
+    tokens = None
+    positions = []
+    for index, unit in enumerate(units):
+        found = []
+        if unit.kind == "latin":
+            if tokens is None:
+                tokens = [(m.start(), m.group(0)) for m in _LATIN_TOKEN.finditer(body)]
+            prefix = bool(unit.patterns) and unit.patterns[0].endswith("*")
+            for start, token in tokens:
+                if token == unit.text or (prefix and token.startswith(unit.text)):
+                    found.append(start)
+                    if len(found) >= WINDOW_POSITION_CAP:
+                        break
+        else:
+            needles = ([p[1:-1].replace('""', '"') for p in unit.patterns]
+                       if unit.kind == "cjk" and unit.patterns else [unit.text])
+            for needle in needles:
+                at = body.find(needle) if needle else -1
+                while at >= 0 and len(found) < WINDOW_POSITION_CAP:
+                    found.append(at)
+                    at = body.find(needle, at + 1)
+                if len(found) >= WINDOW_POSITION_CAP:
+                    break
+        positions.extend((offset, index) for offset in found)
+    if not positions:
+        return 0
+    positions.sort()
+    best, start, inside = 0, 0, {}
+    for end, (offset, index) in enumerate(positions):
+        inside[index] = inside.get(index, 0) + 1
+        while offset - positions[start][0] >= WINDOW_CHARS:
+            first = positions[start][1]
+            inside[first] -= 1
+            if not inside[first]:
+                del inside[first]
+            start += 1
+        best = max(best, len(inside))
+    return best
 
 
 def collect_body_units(db, units, rows):
@@ -93,6 +155,10 @@ class EvidenceSelection:
     supporting: tuple[int, ...] = ()
     evidence_type: str = "content"
     media_evidence_type: str | None = None
+    #: search.v7 disclosure: densest-window unit count of the primary and, when
+    #: window dominance replaced the semantic top, the segment it displaced.
+    window_units: int | None = None
+    demoted_semantic_primary: int | None = None
 
 
 def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=False, z_gate=3.0,
@@ -135,12 +201,23 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
     pure_metadata = (exact is not None and exact.segment_id in by_id
                      and by_id[exact.segment_id][1] == "name" and query_text is not None
                      and normalize(query_text.strip()) == normalize(exact.query_term))
+    windows, demoted = {}, None
     if semantic_only:
         primary = fallback
     elif body_exact or pure_metadata:
         primary = exact.segment_id
     elif semantic_order:
         primary = semantic_order[0]
+        query_units_meta = lexical.units if lexical is not None else []
+        if query_units_meta:
+            for row in content:
+                check_deadline()
+                windows[row[0]] = window_units(row[5], query_units_meta)
+            challenger = max((row[0] for row in content), key=lambda sid: (
+                windows[sid], len(units.get(sid, ())), semantic_z.get(sid, float("-inf")), -sid))
+            if (challenger != primary and windows[challenger] >= windows[primary] + WINDOW_MARGIN
+                    and len(units.get(challenger, ())) >= len(units.get(primary, ()))):
+                demoted, primary = primary, challenger
     elif content and units.get(content[0][0]):
         primary = content[0][0]
     elif fallback in semantic_z and semantic_z[fallback] >= z_gate:
@@ -184,4 +261,5 @@ def select_evidence(store, file, fallback, lexical, semantic, *, semantic_only=F
     evidence_type, media_type = segment_evidence_types(
         row[1], row[2], row[5], file.kind, file.extractor_version, file.info, row[3],
     )
-    return EvidenceSelection(primary, tuple(supporting), evidence_type, media_type)
+    return EvidenceSelection(primary, tuple(supporting), evidence_type, media_type,
+                             window_units=windows.get(primary), demoted_semantic_primary=demoted)

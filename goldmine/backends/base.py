@@ -16,6 +16,12 @@ import numpy as np
 
 # EmbeddingGemma 2 model-card prompts, VERBATIM (SPEC §3, D7). Versioned "v1" in
 # the fingerprint; changing either string forces a reindex.
+# P1-2 (code-retrieval query prompt) was measured and REJECTED on
+# 2026-10-25: goldmine's own code-corpus A/B (evals/code_queries.jsonl, n=21,
+# real llama backend) showed zero metric change — the hybrid's lexical exact
+# match already saturates identifier queries (receipt:
+# reports/execution/digup-plan-001/p1-code-title-prompt/). DigUp's prior
+# (MRR 0.79 vs 0.75) did not transfer; do not re-add without new evidence.
 QUERY_PROMPT = "task: search result | query: {text}"
 DOCUMENT_PROMPT = "title: {title} | text: {text}"
 PROMPT_SCHEME = (

@@ -24,7 +24,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .base import Capability, EmbeddingBackend, NotSupported, DOCUMENT_PROMPT_TEMPLATE
+from .base import Capability, EmbeddingBackend, NotSupported, DOCUMENT_PROMPT_TEMPLATE, PROMPT_SCHEME
 
 _TOKEN = re.compile(r"[a-z0-9]+")
 
@@ -68,7 +68,7 @@ class MockBackend(EmbeddingBackend):
             "model_id": f"mock-v1(seed={self.seed})",
             "model_sha256": "n/a",
             "dim": self._dim,
-            "prompts": "v1:q='task: search result | query: {}' d='title: {} | text: {}'",
+            "prompts": PROMPT_SCHEME,
             "pooling": "none",
             "normalization": "l2",
         }

@@ -407,7 +407,8 @@ def test_C1_37_semantic_remainder_marker_tracks_quote_provenance(index):
 
 
 def test_C1_38_private_unanchored_measurement_keeps_old_uncalibrated_route(index):
-    add(index, "generic related docs", vector=evec(0))
+    # search.v7: semantic standout needs one lexical witness ("deployment").
+    add(index, "generic related deployment docs", vector=evec(0))
     for i in range(25):
         add(index, "filler", path=f"/fill/{i}.txt", vector=evec(1))
     query = "private deployment measurement"

@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass
 
-SEARCH_BEHAVIOR_VERSION = "search.v6-quote-provenance"
+SEARCH_BEHAVIOR_VERSION = "search.v7-evidence-window-witness"
 
 
 @dataclass(frozen=True)
@@ -26,12 +26,14 @@ class AdmissionParameters:
 
 
 def decide_admission(*, scorer, z=None, coverage=0.0, lexical_match=False, exact=False,
-                     z_gate=3.0, parameters=None, segment_margin=None):
+                     z_gate=3.0, parameters=None, segment_margin=None, textless=False):
     """Return a machine reason or None; a highest cosine alone proves nothing.
 
     Lexical and RRF ablations retain their existing any-FTS-match rule. Hybrid
     uses the file coverage quorum; semantic uses only its explicit z gate.
-    Exact anchors have already verified the remaining query upstream.
+    Exact anchors have already verified the remaining query upstream. A hybrid
+    file that shares no query word at all (zero coverage and no FTS rank) is
+    not standing out ABOUT the query, however high its z (search.v7 witness).
     """
     params = parameters or AdmissionParameters()
     if exact and scorer != "semantic":
@@ -41,13 +43,16 @@ def decide_admission(*, scorer, z=None, coverage=0.0, lexical_match=False, exact
     if scorer == "hybrid" and math.isfinite(coverage) and coverage >= params.coverage_quorum:
         return "lexical_quorum"
     semantic = scorer in ("hybrid", "semantic", "rrf") and z is not None and math.isfinite(z) and z >= z_gate
+    if (semantic and scorer == "hybrid" and not textless and not lexical_match
+            and not (math.isfinite(coverage) and coverage > 0)):
+        semantic = False
     if semantic and params.semantic_segment_margin is not None and segment_margin is not None:
         semantic = math.isfinite(segment_margin) and segment_margin >= params.semantic_segment_margin
     return "semantic_standout" if semantic else None
 
 
 def admit_files(*, scorer, z_by_file, coverage, word_rank, exact, rejected_exact,
-                z_gate, parameters=None, segment_margins=None):
+                z_gate, parameters=None, segment_margins=None, textless=None):
     candidates = set(z_by_file) | set(coverage) | set(word_rank) | set(exact)
     out = {}
     for fid in sorted(candidates - set(rejected_exact)):
@@ -55,6 +60,7 @@ def admit_files(*, scorer, z_by_file, coverage, word_rank, exact, rejected_exact
             scorer=scorer, z=z_by_file.get(fid), coverage=coverage.get(fid, 0.0),
             lexical_match=fid in word_rank, exact=fid in exact, z_gate=z_gate,
             parameters=parameters, segment_margin=(segment_margins or {}).get(fid),
+            textless=fid in (textless or ()),
         )
         if reason:
             out[fid] = reason

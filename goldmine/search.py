@@ -8,7 +8,11 @@ Fusion (normative, SPEC §3 / V3):
   bm25 is LOWER-is-better: used for ordering/ranks only, never added to score.
 Missing vectors: vectorless chunks compete lexically only; zero-vector files can
 still qualify on coverage; their z/cosine render as None.
-The z gate is the SINGLE qualification rule. v2.1 calibration A/B (2026-10-17,
+search.v7 (evidence-window-witness-001): a hybrid file with zero coverage and
+no FTS rank is not admitted on z alone (lexical witness), and within an admitted
+file the semantic primary yields to a segment whose densest 200-char window
+holds >= 2 more distinct query units (retrieval_evidence.window_units).
+The z gate is otherwise the SINGLE qualification rule. v2.1 calibration A/B (2026-10-17,
 n=146 llama eval, scripts/eval_real.py harness): gate 2.0 + floor -> gate 3.0
 moves s@5 0.747 -> 0.781, MRR 0.646 -> 0.665, zero-hit honesty 0.4 -> 0.6 with
 zero per-tag regressions; train and holdout agree. The v2.0 two-bar spelling
@@ -25,6 +29,7 @@ import calendar
 from contextlib import nullcontext
 import datetime
 import hashlib
+import math
 import os
 import re
 import sqlite3
@@ -384,11 +389,20 @@ class Searcher:
         # -- candidates + fusion ------------------------------------------------
         if self.admission_parameters.semantic_segment_margin is not None and fids_arr is not None:
             margins = self._segment_margins(fids_arr, zvals, files=allowed)
+        # search.v7 witness: a hybrid file admitted on z alone must share at
+        # least one query word. A file with NO textual surface at all (a pure
+        # image/audio vector, no FTS body) can never witness, so it is exempt.
+        unwitnessed = {
+            fid for fid, z in z_by_file.items()
+            if math.isfinite(z) and z >= z_gate and fid not in word_rank and coverage.get(fid, 0.0) <= 0.0
+        }
+        textless = unwitnessed - self._files_with_text(unwitnessed) if unwitnessed else set()
         reasons = admit_files(
             scorer=scorer, z_by_file=z_by_file, coverage=coverage, word_rank=word_rank,
             exact=lexical.exact if lexical is not None else {},
             rejected_exact=lexical.rejected_exact if lexical is not None else set(),
             z_gate=z_gate, parameters=self.admission_parameters, segment_margins=margins,
+            textless=textless,
         )
         candidates = set(reasons) & allowed
         if not candidates:
@@ -518,6 +532,8 @@ class Searcher:
                     "query_units": lexical.unit_count if lexical is not None else 0,
                     "segment_z": local_vector[0] if local_vector is not None else None,
                     "segment_cosine": local_vector[1] if local_vector is not None else None,
+                    "window_units": evidence.window_units,
+                    "demoted_semantic_primary": evidence.demoted_semantic_primary,
                     "score_scope": "file",
                 }
                 if lexical is not None and fid in lexical.exact:
@@ -701,6 +717,25 @@ class Searcher:
             f"SELECT id FROM files WHERE {' AND '.join(where)}", tuple(params)
         ).fetchall()
         return {r[0] for r in rows}
+
+    def _files_with_text(self, file_ids) -> set[int]:
+        """Files owning at least one non-name segment with stored FTS text."""
+        from .read_source import fts_projection
+
+        ids = sorted(set(file_ids))
+        out: set[int] = set()
+        if not ids:
+            return out
+        text_sql, _ = fts_projection(self.store.db)
+        for start in range(0, len(ids), 400):
+            check_deadline()
+            batch = ids[start:start + 400]
+            marks = ",".join("?" for _ in batch)
+            rows = self.store.db.execute(
+                f"SELECT DISTINCT s.file FROM segments s JOIN fts t ON t.rowid=s.id "
+                f"WHERE s.file IN ({marks}) AND s.kind!='name' AND length(trim({text_sql}))>0", batch)
+            out |= {r[0] for r in rows}
+        return out
 
     def _kinds_of(self, file_ids: set[int]) -> dict[int, str]:
         if not file_ids:

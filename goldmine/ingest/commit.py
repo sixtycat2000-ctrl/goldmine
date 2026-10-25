@@ -42,6 +42,9 @@ class IngestReport:
     unchanged: int = 0
     deleted: int = 0
     partial: int = 0
+    #: A1-18 guard: rows kept because their root/subtree was unavailable at
+    #: deletion time (ejected drive, TCC prompt) — never read as deleted.
+    kept_unreachable: int = 0
     by_kind: dict[str, dict[str, int]] = field(default_factory=dict)
     failures: list[dict] = field(default_factory=list)          # [{"path","detail"}]
     metadata_reasons: list[dict] = field(default_factory=list)  # [{"reason","count"}]
@@ -68,6 +71,7 @@ class IngestReport:
                 "failed": self.failed,
                 "unchanged": self.unchanged,
                 "deleted": self.deleted,
+                "kept_unreachable": self.kept_unreachable,
                 "partial": self.partial,
             },
             "by_kind": self.by_kind,

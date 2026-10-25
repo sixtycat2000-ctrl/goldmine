@@ -139,3 +139,7 @@ class LexicalResult:
     segment_units: dict[int, frozenset[int]] = field(default_factory=dict)
     segment_files: dict[int, int] = field(default_factory=dict)
     unit_count: int = 0
+    #: The query units behind segment_units, in index order, so evidence
+    #: selection can locate them inside a candidate's stored text without
+    #: re-deriving them from a different query string (search.v7).
+    units: list["QueryUnit"] = field(default_factory=list)

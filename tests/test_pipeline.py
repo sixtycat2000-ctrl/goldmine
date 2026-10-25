@@ -233,6 +233,46 @@ def test_delete_last_file_then_add_new_no_fts_orphans(cfg, tmp_path):
     store.close()
 
 
+def test_unreadable_subtree_keeps_rows_then_normal_prune_resumes(cfg, tmp_path):
+    """A1-18 (DigUp Indexer.swift:118-120): a subtree that turns unreadable
+    between ingests (TCC prompt, permissions) keeps its rows — it is
+    unavailable, not empty — while genuinely deleted siblings still prune,
+    and pruning resumes normally once readability returns."""
+    import os
+
+    r = tmp_path / "r"
+    locked = r / "locked"
+    locked.mkdir(parents=True)
+    (locked / "in.txt").write_text("locked subtree words\n", encoding="utf-8")
+    (r / "out.txt").write_text("outside words\n", encoding="utf-8")
+    store = Store(cfg.home / "a118.sqlite")
+    IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+    assert store.find_by_path(str(locked / "in.txt")) is not None
+
+    os.chmod(locked, 0)
+    try:
+        report = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+        assert store.find_by_path(str(locked / "in.txt")) is not None
+        assert report.kept_unreachable == 1
+        assert report.deleted == 0
+        assert any(n["code"] == "kept_unreachable" for n in report.notices)
+
+        # a genuinely deleted sibling still prunes while the subtree is locked
+        (r / "out.txt").unlink()
+        report2 = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+        assert report2.deleted == 1
+        assert store.find_by_path(str(r / "out.txt")) is None
+        assert store.find_by_path(str(locked / "in.txt")) is not None
+    finally:
+        os.chmod(locked, 0o755)
+
+    # readability restored: the subtree is reachable again, nothing kept
+    report3 = IngestPipeline(cfg, store, MockBackend(dim=768)).run([str(r)])
+    assert report3.kept_unreachable == 0
+    assert store.find_by_path(str(locked / "in.txt")) is not None
+    store.close()
+
+
 def test_second_root_ingest_never_prunes_first_root(cfg, tmp_path):
     """P1-2: compute_deletions speaks only for the roots of THIS run —
     ingesting root B into a DB that has root A must not delete A's files."""

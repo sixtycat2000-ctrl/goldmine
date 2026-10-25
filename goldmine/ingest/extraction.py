@@ -122,6 +122,55 @@ class ExtractMixin:
 
     # ------------------------------------------------------------ extraction
 
+    def _extract_notebook(self, text: str, detail: str | None, max_chunks: int):
+        """P2 (DigUp CodeExtractor.swift:150-163): a Jupyter notebook's CELLS
+        (code and markdown alike) as their text; outputs are never read —
+        they are results, not what anyone wrote. nbformat 4 (cells[].source,
+        str or list) and nbformat 3 (worksheets[0].cells[].input) only."""
+        import json as _json
+
+        try:
+            doc = _json.loads(text)
+        except ValueError as exc:
+            return _Outcome(capability="failed", detail=f"not a valid notebook: {exc}")
+        sources: list[str] = []
+        if isinstance(doc.get("cells"), list):  # nbformat 4
+            for cell in doc["cells"]:
+                if not isinstance(cell, dict):
+                    continue
+                src = cell.get("source")
+                if isinstance(src, list):
+                    src = "".join(str(part) for part in src)
+                if isinstance(src, str) and src.strip():
+                    sources.append(src)
+        elif isinstance(doc.get("worksheets"), list) and doc["worksheets"]:  # nbformat 3
+            for cell in doc["worksheets"][0].get("cells", []):
+                src = cell.get("input") if isinstance(cell, dict) else None
+                if isinstance(src, list):
+                    src = "".join(str(part) for part in src)
+                if isinstance(src, str) and src.strip():
+                    sources.append(src)
+        else:
+            return _Outcome(capability="failed", detail="not a valid notebook")
+        if not sources:
+            return _Outcome(
+                capability="unsupported", detail="notebook without readable cells"
+            )
+        joined = "\n\n".join(sources)
+        chunks = chunk_code_tokens(
+            joined,
+            budget_tokens=self._token_budget(),
+            tokenize=self._tokenize_fn(),
+            max_chunks=max_chunks,
+        )
+        return _Outcome(
+            capability="content_indexed",
+            detail=detail,
+            extractor_version="ipynb-stdlib.v1",
+            chunks=[_Piece(c, _has_words(c.text)) for c in chunks],
+            info={"cells": len(sources)},
+        )
+
     def _extract(
         self,
         cand: walk.Candidate,
@@ -139,6 +188,15 @@ class ExtractMixin:
                     return _Outcome(capability="unsupported", detail="code size cap (>1 MB)")
                 data = path.read_bytes()
                 text, detail = decode_bytes(data, override=encoding_override)
+                if ext == "ipynb":
+                    # P2: notebooks are read as CELLS; outputs (base64
+                    # blobs, tables, logs) are results, not what anyone
+                    # wrote (DigUp CodeExtractor.swift:150-163) — they were
+                    # previously chunked as code text.
+                    return self._extract_notebook(text, detail, max_chunks)
+                refusal = rules.code_content_refusal(text)
+                if refusal:
+                    return _Outcome(capability="unsupported", detail=refusal)
                 chunks = chunk_code_tokens(
                     text,
                     budget_tokens=self._token_budget(),

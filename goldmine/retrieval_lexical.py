@@ -62,6 +62,7 @@ def collect_lexical(store, query: str, terms: list[str], phrases: list[str], ter
     cjk_patterns = [pattern for unit in units if unit.kind in ("cjk", "phrase") for pattern in unit.patterns]
     cjk_rows = _cjk_rows(store.db, cjk_patterns) if "fts_cjk" in tables else []
     result.unit_count = len(units)
+    result.units = list(units)
     result.segment_units, result.segment_files = collect_body_units(
         store.db, units,
         [(row.segment_id, row.file_id) for row in latin_rows] + [(sid, fid) for fid, sid, _ in cjk_rows],

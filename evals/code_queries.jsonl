@@ -1,0 +1,30 @@
+// Code-retrieval A/B query set (digup-plan-001 P1-1+P1-2). Fixture root is
+// evals/code_corpus/209e309 (85 tracked .py files of the package at commit
+// 209e309 + a pyproject.toml root marker + MANIFEST.sha256). Paths are
+// relative to that root. tags: ident (fires is_code_query under the changed
+// arm), words (natural-language code query; the ONLY arm difference there is
+// the P1-1 title), brand (camel-shaped identifier — the DigUp false-fire
+// class, measured here with a real corpus target), noise (zero-hit honesty).
+{"id": "cq-001", "q": "query_prompt", "expect": [{"path": "goldmine/backends/base.py", "grade": 3}, {"path": "goldmine/search.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-002", "q": "PROMPT_SCHEME", "expect": [{"path": "goldmine/backends/base.py", "grade": 3}, {"path": "goldmine/backends/llama.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-003", "q": "legacy_prompts_doc", "expect": [{"path": "goldmine/fingerprints.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-004", "q": "chunk_code_tokens", "expect": [{"path": "goldmine/chunker.py", "grade": 3}, {"path": "goldmine/ingest/extraction.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-005", "q": "is_project_root", "expect": [{"path": "goldmine/ingest/rules.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-006", "q": "_folder_words", "expect": [{"path": "goldmine/store.py", "grade": 3}, {"path": "goldmine/ingest/commit.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-007", "q": "FingerprintMismatch", "expect": [{"path": "goldmine/fingerprints.py", "grade": 3}, {"path": "goldmine/cli.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-008", "q": "embed_batched", "expect": [{"path": "goldmine/ingest/commit.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-009", "q": "zscores", "expect": [{"path": "goldmine/search.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-010", "q": "_ctx_guard_split", "expect": [{"path": "goldmine/ingest/commit.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-011", "q": "token_pieces", "expect": [{"path": "goldmine/backends/llama.py", "grade": 3}, {"path": "goldmine/backends/base.py", "grade": 2}], "tag": "ident"}
+{"id": "cq-012", "q": "is_lookup", "expect": [{"path": "goldmine/search.py", "grade": 3}], "tag": "ident"}
+{"id": "cq-013", "q": "split chunks that still exceed the token ceiling before embedding", "expect": [{"path": "goldmine/ingest/commit.py", "grade": 3}, {"path": "goldmine/chunker.py", "grade": 2}], "tag": "words"}
+{"id": "cq-014", "q": "per modality z score centering before ranking", "expect": [{"path": "goldmine/search.py", "grade": 3}], "tag": "words"}
+{"id": "cq-015", "q": "llama server startup retries on a fresh port when health fails", "expect": [{"path": "goldmine/backends/llama.py", "grade": 3}], "tag": "words"}
+{"id": "cq-016", "q": "screenshots share one OCR helper spawn per batch", "expect": [{"path": "goldmine/ingest/extraction.py", "grade": 3}], "tag": "words"}
+{"id": "cq-017", "q": "parse kind under after before filters out of the query text", "expect": [{"path": "goldmine/search.py", "grade": 3}], "tag": "words"}
+{"id": "cq-018", "q": "splitting a compound compare query into subqueries", "expect": [{"path": "goldmine/query_plan.py", "grade": 3}], "tag": "words"}
+{"id": "cq-019", "q": "live embed id derivation never parses the legacy prompt scheme", "expect": [{"path": "goldmine/fingerprints.py", "grade": 3}], "tag": "words"}
+{"id": "cq-020", "q": "walking up to the nearest directory that looks like a project root", "expect": [{"path": "goldmine/ingest/rules.py", "grade": 3}], "tag": "words"}
+{"id": "cq-021", "q": "ThreadPoolExecutor", "expect": [{"path": "goldmine/ingest/pipeline.py", "grade": 3}], "tag": "brand"}
+{"id": "cq-n01", "q": "quantum banana accounting", "expect": [], "tag": "noise"}
+{"id": "cq-n02", "q": "退款 policy", "expect": [], "tag": "noise"}

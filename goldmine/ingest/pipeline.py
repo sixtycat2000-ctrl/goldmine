@@ -214,6 +214,7 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 self._clear_vectors()
 
             candidates: list[walk.Candidate] = []
+            unreachable_prefixes: list[str] = []
             with self._metrics.stage("scan"):
                 for item in walk.walk_files(
                     [Path(r) for r in file_roots], code=code, exclude=exclude,
@@ -221,7 +222,12 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                 ):
                     if isinstance(item, walk.Candidate):
                         candidates.append(item)
-                    elif not item.is_dir:
+                    elif item.is_dir:
+                        # A1-18: an unreadable subtree is unavailable, not
+                        # empty — its rows are exempt from deletion below.
+                        if item.unreachable:
+                            unreachable_prefixes.append(item.path)
+                    else:
                         with self._metrics.stage("commit"):
                             self._record_unsupported(self.store, item.path, item.reason, report)
                 if not include_datasets:
@@ -310,12 +316,25 @@ class IngestPipeline(CommitMixin, ExtractMixin, UrlIngestMixin):
                     self._record_url_unimplemented(url, report)
 
             # Deletions: files under a root that vanished since the last ingest.
+            # A1-18 guard: roots/subtrees unavailable RIGHT NOW keep their rows
+            # (an ejected drive or a TCC prompt must not read as "all deleted").
             with self._metrics.stage("scan"):
-                gone = walk.compute_deletions(self.store, resolved_roots)
+                deletions = walk.compute_deletions(
+                    self.store, resolved_roots, unreachable=unreachable_prefixes
+                )
             with self._metrics.stage("commit"):
-                for fid in gone:
+                for fid in deletions.gone:
                     self.store.delete_file(fid)
-            report.deleted = len(gone)
+            report.deleted = len(deletions.gone)
+            report.kept_unreachable = deletions.kept_unreachable
+            if deletions.kept_unreachable or deletions.unavailable_roots:
+                roots_named = ", ".join(r for r, _ in deletions.unavailable_roots)
+                report.note(
+                    "kept_unreachable",
+                    f"{deletions.kept_unreachable} file row(s) kept: root or "
+                    "subtree unavailable (not read as deleted)"
+                    + (f" — {roots_named}" if roots_named else ""),
+                )
         finally:
             if self.backend is not None:
                 self.backend.close()
