@@ -21,7 +21,6 @@
     return;
   }
   var WORLD = G.meta.world, WW = WORLD[0], WH = WORLD[1];
-  var ROOM_W = G.meta.room_w || 620, TILE_Y = G.meta.tile_y || 96;
   var canvas = document.getElementById("map"), ctx = canvas.getContext("2d");
   var panel = document.getElementById("panel");
   var clusterColor = {}; G.meta.clusters.forEach(function (c) {
@@ -29,6 +28,8 @@
       .getPropertyValue("--cl-" + c.id).trim() || "#E3A94C";
   });
   var clusters = G.meta.clusters;
+  /* territory rooms (baked v4: two staggered bands, varied sizes) */
+  var ROOMS = {}; (G.meta.rooms || []).forEach(function (r) { ROOMS[r.id] = r; });
   var layerMeta = {}; (G.meta.layers || []).forEach(function (l) { layerMeta[l.n] = l; });
   var nodes = G.nodes.map(function (n, i) {
     return Object.assign({}, n, {
@@ -50,10 +51,24 @@
   var l3Of = {}; clusters.forEach(function (c) {
     l3Of[c.id] = membersOf[c.id].filter(function (n) { return n.layer === 3; });
   });
-  function tileX(cid) {
-    var i = clusters.findIndex(function (c) { return c.id === cid; });
-    return 140 + ROOM_W * i + ROOM_W / 2;
-  }
+  /* wells: soft radial territory shading under each cluster's full spread */
+  var wells = []; clusters.forEach(function (c) {
+    var ms = membersOf[c.id];
+    if (!ms.length) return;
+    var cx = 0, cy = 0;
+    ms.forEach(function (n) { cx += n.x; cy += n.y; });
+    cx /= ms.length; cy /= ms.length;
+    var rx = 0, ry = 0;
+    ms.forEach(function (n) {
+      rx = Math.max(rx, Math.abs(n.x - cx));
+      ry = Math.max(ry, Math.abs(n.y - cy));
+    });
+    var hex = clusterColor[c.id].replace("#", "");
+    var rgb = hex.length === 6
+      ? parseInt(hex.slice(0, 2), 16) + "," + parseInt(hex.slice(2, 4), 16) + "," + parseInt(hex.slice(4, 6), 16)
+      : "227,169,76";
+    wells.push({ c: c, cx: cx, cy: cy, rx: Math.max(rx * 0.95, 280), ry: Math.max(ry * 0.95, 210), rgb: rgb });
+  });
 
   /* visibility ---------------------------------------------------------- */
   var openClusters = {};   // cid -> true (L3 room revealed)
@@ -67,11 +82,34 @@
   var cam = { x: WW / 2, y: 520, scale: 0.2 };
   var boot = { scale: 0.2, x: WW / 2, y: 520 };
   var flight = null;
-  function surfaceH() { return 760; }
+  function territoryBox() {
+    var x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+    clusters.forEach(function (c) {
+      var r = ROOMS[c.id]; if (!r) return;
+      x0 = Math.min(x0, r.x0); y0 = Math.min(y0, r.y0);
+      x1 = Math.max(x1, r.x1); y1 = Math.max(y1, r.y1);
+    });
+    if (x0 > x1) { x0 = 0; y0 = 0; x1 = WW; y1 = WH; }
+    return { x0: x0, y0: y0, x1: x1, y1: y1 };
+  }
   function computeBoot() {
     var w = canvas.clientWidth, h = canvas.clientHeight;
-    boot.scale = Math.min(w / WW, h / surfaceH()) * 0.98;
-    boot.x = WW / 2; boot.y = surfaceH() * 0.42;
+    var b = territoryBox();
+    if (w > 0 && w < 760) {
+      /* phones: boot framed on the first two territories, not the whole map */
+      var rs = clusters.map(function (c) { return ROOMS[c.id]; }).filter(Boolean)
+        .sort(function (a, c) { return (a.y0 - c.y0) || (a.x0 - c.x0); }).slice(0, 2);
+      if (rs.length === 2) {
+        b = { x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9 };
+        rs.forEach(function (r) {
+          b.x0 = Math.min(b.x0, r.x0); b.y0 = Math.min(b.y0, r.y0);
+          b.x1 = Math.max(b.x1, r.x1); b.y1 = Math.max(b.y1, r.y1);
+        });
+      }
+    }
+    var pad = (w && w < 760) ? 36 : 90;
+    boot.scale = Math.max(0.05, Math.min(w / (b.x1 - b.x0 + pad * 2), h / (b.y1 - b.y0 + pad * 2)));
+    boot.x = (b.x0 + b.x1) / 2; boot.y = (b.y0 + b.y1) / 2;
   }
   function clampCam() {
     var minS = Math.min(boot.scale * 0.5, 0.06);
@@ -146,8 +184,9 @@
   }
 
   /* render -------------------------------------------------------------- */
+  var activity = 0; // 0 at rest — the map holds still; interaction wakes it
   function project(n, t) {
-    var amp = rm ? 0 : n.A * n.driftScale;
+    var amp = rm ? 0 : n.A * n.driftScale * activity;
     var dx = Math.sin(t * n.wx + n.ph) * amp;
     var dy = Math.sin(t * n.wy + n.ph * 1.3) * amp;
     var wx = n.x + dx, wy = n.y + dy;
@@ -156,55 +195,98 @@
     var base = (n.layer === 3 ? 10 : (n.layer === 2 ? 9 : (n.layer === 1 ? 8 : 7)));
     n.sr = Math.max(3, Math.min(20, base * cam.scale / (boot.scale || 0.2)));
   }
-  function tileSize() {
-    var kScale = cam.scale / boot.scale;
-    return {
-      w: Math.max(150, Math.min(420, (ROOM_W - 120) * cam.scale)),
-      h: 46,
-      show: kScale > 0.16,
-      kScale: kScale
-    };
+  function drawWells(kScale) {
+    var fade = Math.max(0, Math.min(1, 1.9 - kScale)); // wells dissolve as you dive
+    if (fade <= 0.02) return;
+    var cw = canvas.clientWidth, ch = canvas.clientHeight;
+    wells.forEach(function (w) {
+      var sx = (w.cx - cam.x) * cam.scale + cw / 2;
+      var sy = (w.cy - cam.y) * cam.scale + ch / 2;
+      var rx = w.rx * cam.scale, ry = w.ry * cam.scale;
+      if (sx + rx < 0 || sx - rx > cw || sy + ry < 0 || sy - ry > ch) return;
+      ctx.save();
+      ctx.translate(sx, sy);
+      ctx.scale(1, ry / rx);
+      var g = ctx.createRadialGradient(0, 0, 0, 0, 0, rx);
+      g.addColorStop(0, "rgba(" + w.rgb + "," + (0.13 * fade).toFixed(3) + ")");
+      g.addColorStop(0.62, "rgba(" + w.rgb + "," + (0.07 * fade).toFixed(3) + ")");
+      g.addColorStop(1, "rgba(" + w.rgb + ",0)");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(0, 0, rx, 0, 6.2832); ctx.fill();
+      ctx.restore();
+    });
   }
-  function drawTile(c, kScale) {
-    var ts = tileSize();
-    var tx = (tileX(c.id) - cam.x) * cam.scale + canvas.clientWidth / 2;
-    var ty = (TILE_Y - cam.y) * cam.scale + canvas.clientHeight / 2;
-    var w = ts.w, h = ts.h;
-    var open = !!openClusters[c.id];
+  function drawGhosts(kScale) {
+    /* at-rest density: every one of the 145 concepts is present as a faint
+       dot inside its well, whether or not its room is open */
+    var a = 0.3 * Math.max(0, Math.min(1, 1.5 - kScale));
+    if (a <= 0.01) return;
+    nodes.forEach(function (n) {
+      if (visible(n)) return;
+      ctx.globalAlpha = a;
+      ctx.fillStyle = clusterColor[n.cluster];
+      ctx.beginPath();
+      ctx.arc(n.sx, n.sy, Math.max(1.4, n.sr * 0.3), 0, 6.2832);
+      ctx.fill();
+    });
     ctx.globalAlpha = 1;
-    ctx.beginPath();
-    if (ctx.roundRect) ctx.roundRect(tx - w / 2, ty - h / 2, w, h, 10);
-    else ctx.rect(tx - w / 2, ty - h / 2, w, h);
-    ctx.fillStyle = open ? "rgba(227,169,76,.10)" : "rgba(237,231,220,.045)";
-    ctx.fill();
-    ctx.strokeStyle = open ? "rgba(227,169,76,.85)" : "rgba(237,231,220,.28)";
+  }
+  function siteWidth(c) {
+    var r = ROOMS[c.id];
+    if (!r) return 0;
+    return Math.min((r.x1 - r.x0) * cam.scale, 460);
+  }
+  function drawSite(c) {
+    var r = ROOMS[c.id]; if (!r) return;
+    var cw = canvas.clientWidth, ch = canvas.clientHeight;
+    var tx = (r.hx - cam.x) * cam.scale + cw / 2;
+    var ty = (r.hy - cam.y) * cam.scale + ch / 2;
+    var w = siteWidth(c);
+    if (w < 132) return; // too far out: the header collapses away
+    var open = !!openClusters[c.id];
+    /* hairline marking the territory's top edge */
+    ctx.strokeStyle = open ? "rgba(227,169,76,.8)" : "rgba(237,231,220,.3)";
     ctx.lineWidth = 1;
-    ctx.stroke();
-    var title = lang() === "en" ? c.label_en : c.label_zh;
-    ctx.font = "600 14px -apple-system,system-ui,'PingFang SC',sans-serif";
+    ctx.beginPath(); ctx.moveTo(tx - w / 2, ty + 24); ctx.lineTo(tx + w / 2, ty + 24); ctx.stroke();
+    var L = lang();
+    ctx.textAlign = "left";
+    ctx.font = "11px ui-monospace,Menlo,monospace";
+    ctx.fillStyle = open ? "rgba(240,197,120,.95)" : "#96907F";
+    ctx.fillText(c.token, tx - w / 2, ty + 2);
+    ctx.font = "600 15px -apple-system,'PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif";
     ctx.fillStyle = open ? "#F0C578" : "#EDE7DC";
-    ctx.textAlign = "center";
-    ctx.fillText(title, tx, ty - 1);
-    ctx.font = "10px ui-monospace,Menlo,monospace";
-    ctx.fillStyle = open ? "rgba(240,197,120,.8)" : "rgba(150,144,127,.95)";
-    ctx.fillText((lang() === "en" ? "enter · " : "进入 · ") + l3Of[c.id].length, tx, ty + 14);
+    var title = L === "en" ? c.label_en : c.label_zh;
+    ctx.fillText(title, tx - w / 2 + 20, ty + 3);
+    ctx.font = "11px ui-monospace,Menlo,monospace";
+    ctx.fillStyle = open ? "rgba(240,197,120,.8)" : "#96907F";
+    ctx.textAlign = "right";
+    ctx.fillText((L === "en" ? "enter · " : "进入 · ") + membersOf[c.id].length, tx + w / 2, ty + 2);
+  }
+  function drawUmbilical() {
+    /* 1px gold connector from the selected node toward the open panel */
+    if (!sel || !document.querySelector(".map-app").classList.contains("panel-open")) return;
+    var cw = canvas.clientWidth, ch = canvas.clientHeight;
+    var sx = sel.sx, sy = sel.sy, ex, ey;
+    if (cw > 1100) { ex = cw; ey = Math.max(28, Math.min(ch - 28, sy)); }
+    else { ex = Math.max(28, Math.min(cw - 28, sx)); ey = ch; }
+    ctx.strokeStyle = "rgba(227,169,76,.5)";
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+    ctx.fillStyle = "rgba(240,197,120,.9)";
+    ctx.beginPath(); ctx.arc(ex, ey, 2.5, 0, 6.2832); ctx.fill();
   }
   function draw(now) {
     var t = now / 1000;
     stepFlight(now);
+    var target = (hover || sel || flight) ? 1 : 0;
+    activity += (target - activity) * 0.05;
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
     var kScale = cam.scale / boot.scale;
     var placedLabels = [];
     var vis = nodes.filter(function (n) { return visible(n); });
-    vis.forEach(function (n) { project(n, t); });
-    /* surface grid line under tiles */
-    var gy = (TILE_Y + 62 - cam.y) * cam.scale + canvas.clientHeight / 2;
-    ctx.strokeStyle = "rgba(237,231,220,.08)"; ctx.lineWidth = 1;
-    ctx.setLineDash([2, 6]);
-    ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.clientWidth, gy); ctx.stroke();
-    ctx.setLineDash([]);
-    /* tiles */
-    if (tileSize().show) clusters.forEach(function (c) { drawTile(c, kScale); });
+    nodes.forEach(function (n) { project(n, t); });
+    drawWells(kScale);
+    drawGhosts(kScale);
     /* root edges: opened chains */
     ctx.strokeStyle = "rgba(237,231,220,.16)"; ctx.lineWidth = 1;
     vis.forEach(function (n) {
@@ -264,7 +346,7 @@
       var showLabel = st === "selected" || st === "hover" ||
                       (n.keystone && kScale > 0.5) || kScale >= 1.15;
       if (showLabel) {
-        ctx.font = (n.layer === 3 ? "12" : "11") + "px ui-monospace,Menlo,monospace";
+        ctx.font = "12px ui-monospace,Menlo,monospace";
         var title = lang() === "en" ? n.title_en : n.title_zh;
         ctx.textAlign = "center";
         var mkey = ctx.font + title;
@@ -286,6 +368,9 @@
       }
       ctx.globalAlpha = 1;
     });
+    /* territory headers on top */
+    clusters.forEach(function (c) { drawSite(c); });
+    drawUmbilical();
     /* vignette beyond world edge */
     var left = (0 - cam.x) * cam.scale + canvas.clientWidth / 2;
     var top = (0 - cam.y) * cam.scale + canvas.clientHeight / 2;
@@ -344,12 +429,13 @@
     return best;
   }
   function hitTile(x, y) {
-    if (!tileSize().show) return null;
     clusters.forEach(function (c) {
-      var tx = (tileX(c.id) - cam.x) * cam.scale + canvas.clientWidth / 2;
-      var ty = (TILE_Y - cam.y) * cam.scale + canvas.clientHeight / 2;
-      var ts = tileSize();
-      if (Math.abs(x - tx) <= ts.w / 2 && Math.abs(y - ty) <= ts.h / 2) hitTile._hit = c.id;
+      var r = ROOMS[c.id]; if (!r) return;
+      var tx = (r.hx - cam.x) * cam.scale + canvas.clientWidth / 2;
+      var ty = (r.hy - cam.y) * cam.scale + canvas.clientHeight / 2;
+      var w = siteWidth(c);
+      if (w < 132) return;
+      if (Math.abs(x - tx) <= w / 2 && y >= ty - 16 && y <= ty + 38) hitTile._hit = c.id;
     });
     var out = hitTile._hit; hitTile._hit = null;
     return out || null;
@@ -455,13 +541,17 @@
       renderTrail();
     }
     if (!viaFlight || first) {
-      var ks = l3Of[cid];
-      var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
-      ks.forEach(function (n) {
-        x0 = Math.min(x0, n.x - 100); x1 = Math.max(x1, n.x + 100);
-        y0 = Math.min(y0, TILE_Y - 40); y1 = Math.max(y1, n.y + 60);
-      });
-      flyToBox(x0, y0, x1, y1);
+      var r = ROOMS[cid];
+      if (r) flyToBox(r.x0 - 60, r.y0 - 80, r.x1 + 60, r.y1 + 110);
+      else {
+        var ks = l3Of[cid];
+        var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
+        ks.forEach(function (n) {
+          x0 = Math.min(x0, n.x - 100); x1 = Math.max(x1, n.x + 100);
+          y0 = Math.min(y0, n.y - 80); y1 = Math.max(y1, n.y + 60);
+        });
+        flyToBox(x0, y0, x1, y1);
+      }
     }
     announce((lang() === "en" ? "entered " : "进入 ") + (lang() === "en" ? enLabel(cid) : zhLabel(cid)));
   }
@@ -861,7 +951,7 @@
     if (best) { focusId = best.id; var b = twin.querySelector('[data-id="' + best.id + '"]'); if (b) b.focus(); }
   }
   document.addEventListener("keydown", function (e) {
-    if (e.target.tagName === "INPUT" || e.target.closest("#panel")) return;
+    if (e.target.tagName === "INPUT" || (e.target.closest && e.target.closest("#panel"))) return;
     var map = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] };
     if (!map[e.key]) return;
     e.preventDefault();

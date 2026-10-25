@@ -30,8 +30,24 @@ KEYSTONES = {  # one or two per site, visible before entering
     "systems": ["watch-serve", "walk-gates"],
     "process": ["honesty-contract", "three-state"],
 }
-ROOM_W, TILE_Y, GRID_Y0 = 620.0, 96.0, 250.0
-GRID_COLS, CELL_W, CELL_H = 3, 176.0, 128.0
+# Territory map (v4 layout): seven dig sites in two staggered bands —
+# three rooms upper-left, four lower-right, sizes driven by member count,
+# so the surface reads as a map of territories, not a pill row.
+ROOMS = {  # row 0 = upper band, row 1 = lower band (offset right + down)
+    "search":   {"row": 0, "cols": 4},
+    "identity": {"row": 0, "cols": 3},
+    "models":   {"row": 0, "cols": 2},
+    "media":    {"row": 1, "cols": 3},
+    "eval":     {"row": 1, "cols": 3},
+    "systems":  {"row": 1, "cols": 4},
+    "process":  {"row": 1, "cols": 3},
+}
+ROW_TILE_Y = {0: 110.0, 1: 690.0}   # header y per band
+ROW_X0 = {0: 140.0, 1: 500.0}       # band origin x (row 1 shifted right)
+ROOM_PAD = 64.0                     # horizontal padding inside a room
+ROOM_GAP = 110.0                    # gap between rooms in a band
+GRID_DY = 130.0                     # header -> first L3 row
+CELL_W, CELL_H = 176.0, 128.0
 TRANSITION = 380.0          # vertical px per layer crossed
 SIB_W = 156.0               # horizontal px between siblings in a row
 SIB_PER_ROW = 4
@@ -114,32 +130,45 @@ def main():
 
     # ---- positions -------------------------------------------------------
     positions = {}
-    # cluster tiles
-    tile_x = {}
-    for i, cid in enumerate(CLUSTER_ORDER):
-        tile_x[cid] = 140 + ROOM_W * i + ROOM_W / 2
-        positions["tile:" + cid] = (tile_x[cid], TILE_Y)
+    # territory rooms (two staggered bands); width from column count
+    rooms = {}
+    for row in (0, 1):
+        x = ROW_X0[row]
+        for cid in CLUSTER_ORDER:
+            spec = ROOMS[cid]
+            if spec["row"] != row:
+                continue
+            w = spec["cols"] * CELL_W + ROOM_PAD
+            tile_y = ROW_TILE_Y[row]
+            rooms[cid] = {
+                "x0": x, "y0": tile_y, "x1": x + w, "y1": tile_y,
+                "hx": x + w / 2, "hy": tile_y, "cols": spec["cols"],
+            }
+            x += w + ROOM_GAP
     # L3 room grids
-    room_nodes = {}
     for cid in CLUSTER_ORDER:
+        rm = rooms[cid]
         members = [n for n in nodes_in if n["cluster"] == cid and n["layer"] == 3]
         members.sort(key=lambda n: n["id"])
-        room_nodes[cid] = members
+        rows = math.ceil(len(members) / rm["cols"]) or 1
+        rm["y1"] = rm["y0"] + GRID_DY + rows * CELL_H
         for j, n in enumerate(members):
-            col, row = j % GRID_COLS, j // GRID_COLS
-            x = tile_x[cid] - (GRID_COLS * CELL_W) / 2 + CELL_W * (col + 0.5)
-            y = GRID_Y0 + CELL_H * row + CELL_H / 2
+            col, row = j % rm["cols"], j // rm["cols"]
+            x = rm["x0"] + ROOM_PAD / 2 + CELL_W * (col + 0.5)
+            y = rm["y0"] + GRID_DY + CELL_H * row + CELL_H / 2
             positions[n["id"]] = (x, y)
 
-    # child rows, depth-first down each parent
+    # child rows, depth-first down each parent; keep cones near their room
     for pid in sorted(tree_children, key=lambda p: (-by_id[p]["layer"], p)):
         kids = sorted(tree_children[pid], key=lambda k: (by_id[k]["layer"], k))
         px, py = positions[pid]
+        room = rooms[by_id[pid]["cluster"]]
         for j, kid in enumerate(kids):
             row, col = j // SIB_PER_ROW, j % SIB_PER_ROW
             span = min(len(kids) - row * SIB_PER_ROW, SIB_PER_ROW)
             x = px + (col - (span - 1) / 2) * SIB_W
             y = py + TRANSITION * (by_id[pid]["layer"] - by_id[kid]["layer"]) + row * CELL_H
+            x = max(room["x0"] - 80.0, min(room["x1"] + 80.0, x))
             positions[kid] = (x, y)
 
     # ---- overlap relaxation within same layer ----------------------------
@@ -171,7 +200,7 @@ def main():
         cid = n["cluster"]
         depth_y = positions[n["id"]][1]
         max_layer_by_room[cid] = max(max_layer_by_room.get(cid, 0), depth_y)
-    WORLD_W = 140 + ROOM_W * len(CLUSTER_ORDER) + 140
+    WORLD_W = max(r["x1"] for r in rooms.values()) + 140
     WORLD_H = max(max_layer_by_room.values()) + 170
     for nid, (x, y) in positions.items():
         positions[nid] = (max(80, min(WORLD_W - 80, x)), max(40, min(WORLD_H - 60, y)))
@@ -208,7 +237,12 @@ def main():
     out = {
         "meta": {
             "version": 3, "world": [round(WORLD_W, 1), round(WORLD_H, 1)],
-            "room_w": ROOM_W, "tile_y": TILE_Y,
+            "tile_y": ROW_TILE_Y[0],
+            "rooms": [{"id": cid,
+                       "x0": round(rooms[cid]["x0"], 1), "y0": round(rooms[cid]["y0"], 1),
+                       "x1": round(rooms[cid]["x1"], 1), "y1": round(rooms[cid]["y1"], 1),
+                       "hx": round(rooms[cid]["hx"], 1), "hy": round(rooms[cid]["hy"], 1)}
+                      for cid in CLUSTER_ORDER if cid in clusters_meta],
             "layers": [{"n": l["n"], "label_zh": l["label_zh"], "label_en": l["label_en"],
                         "blurb_zh": l.get("blurb_zh", ""), "blurb_en": l.get("blurb_en", "")}
                        for l in sorted(layers_meta, key=lambda x: -x["n"])],

@@ -20,6 +20,9 @@
   <symbol id="i-logo" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" transform="rotate(45 12 12)" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="9.5" r="1.8" fill="currentColor"/></symbol>
   <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 15V6a2 2 0 0 1 2-2h9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+  <symbol id="i-yes" viewBox="0 0 18 18"><circle cx="9" cy="9" r="8" fill="#E3A94C"/><path d="M5.2 9.4l2.5 2.5 5-5.6" fill="none" stroke="#141109" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 18 18"><path d="M4.5 9.6l3 3 6-6.6" fill="none" stroke="#CFC8B9" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-no" viewBox="0 0 18 18"><circle cx="9" cy="9" r="7.2" fill="none" stroke="#96907F" stroke-width="1.2"/><path d="M6.5 6.5l5 5M11.5 6.5l-5 5" fill="none" stroke="#96907F" stroke-width="1.2" stroke-linecap="round"/></symbol>
 </svg>
 
 <div class="progress" aria-hidden="true"></div>
@@ -49,22 +52,17 @@
     <div class="cta-row rv">
       <a class="btn btn-gold" href="/docs#start"><span data-zh="快速开始" data-en="Quickstart">快速开始</span> →</a>
       <a class="btn btn-ghost" href="https://github.com/sixtycat2000-ctrl/goldmine">GitHub</a>
-      <a class="btn btn-ghost" href="/learn"><span data-zh="概念地图 · 145 个概念可下探" data-en="Concept map · 145 nodes to drill">概念地图 · 145 个概念可下探</span></a>
     </div>
-    <div class="stats-strip rv">
+  </div>
+  <div class="hero-stats rv">
+    <div class="hs-in">
       <!-- verify: 2026-10-25 suite run 3200/37/2; evals/product_v4_expansion manifest -->
       <div class="stat"><b>3,200+</b><span data-zh="离线测试（全量 8 分钟）" data-en="OFFLINE TESTS (8-min suite)">离线测试（全量 8 分钟）</span></div>
       <div class="stat"><b>420</b><span data-zh="冻结评测题 · 122 来源" data-en="FROZEN EVAL QS · 122 SOURCES">冻结评测题 · 122 来源</span></div>
       <div class="stat"><b>1</b><span data-zh="个 SQLite 文件 = 全部索引" data-en="SQLITE FILE = WHOLE INDEX">个 SQLite 文件 = 全部索引</span></div>
-      <div class="stat"><b>0 B</b><span data-zh="上传（代码里没有这条路径）" data-en="UPLOADED (no such code path)">上传（代码里没有这条路径）</span></div>
+      <div class="stat zero"><b>0<i> B</i></b><span data-zh="上传（代码里没有这条路径）" data-en="UPLOADED (no such code path)">上传（代码里没有这条路径）</span></div>
     </div>
   </div>
-  <div class="legend-chips" aria-hidden="true">
-    <i><b style="background:#EDE7DC"></b>text</i><i><b style="background:#6FB3AA"></b>code</i>
-    <i><b style="background:#C9B8A0"></b>audio</i><i><b style="background:rgb(227 169 76 / .6)"></b>visual</i>
-    <i><b style="background:#F0C578"></b>query</i>
-  </div>
-  <div class="scroll-cue" aria-hidden="true"></div>
 </header>
 
 <main>
@@ -73,11 +71,11 @@
     <span class="chno" aria-hidden="true">01</span>
     <p class="kicker rv" data-zh="真实场景" data-en="REAL SCENARIOS">真实场景</p>
     <h2 class="rv" data-zh="三件每天都会发生的事" data-en="Three things that happen every week">三件每天都会发生的事</h2>
-    <div class="grid3 stagger">
-      <div class="card rv"><h3 data-zh="上周说退款的会议录音" data-en="The meeting recording that mentioned refunds">上周说退款的会议录音</h3><p data-zh="whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。" data-en="whisper transcribes it with timestamps. Search 退款期限, open jumps to the second.">whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。</p></div>
-      <div class="card rv"><h3 data-zh="截图里的那段报错" data-en="The error message in a screenshot">截图里的那段报错</h3><p data-zh="Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。" data-en="Vision OCR reads the pixels into searchable text; the image vector adds a looks-like layer.">Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。</p></div>
-      <div class="card rv"><h3 data-zh="两百页 PDF 里的那个编号" data-en="The identifier inside that 200-page PDF">两百页 PDF 里的那个编号</h3><p data-zh="编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。" data-en="Identifier-like queries invert the weights: exact lexical hits beat semantics — numbers don't drown in vibes.">编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。</p></div>
-    </div>
+    <ol class="scenarios stagger">
+      <li class="rv"><span class="sc-no" aria-hidden="true">01</span><div class="sc-body"><h3 data-zh="上周说退款的会议录音" data-en="The meeting recording that mentioned refunds">上周说退款的会议录音</h3><p data-zh="whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。" data-en="whisper transcribes it with timestamps. Search 退款期限, open jumps to the second.">whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。</p></div></li>
+      <li class="rv"><span class="sc-no" aria-hidden="true">02</span><div class="sc-body"><h3 data-zh="截图里的那段报错" data-en="The error message in a screenshot">截图里的那段报错</h3><p data-zh="Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。" data-en="Vision OCR reads the pixels into searchable text; the image vector adds a looks-like layer.">Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。</p></div></li>
+      <li class="rv"><span class="sc-no" aria-hidden="true">03</span><div class="sc-body"><h3 data-zh="两百页 PDF 里的那个编号" data-en="The identifier inside that 200-page PDF">两百页 PDF 里的那个编号</h3><p data-zh="编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。" data-en="Identifier-like queries invert the weights: exact lexical hits beat semantics — numbers don't drown in vibes.">编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。</p></div></li>
+    </ol>
   </div>
 </section>
 
@@ -86,41 +84,52 @@
     <span class="chno" aria-hidden="true">02</span>
     <p class="kicker rv" data-zh="和手里的工具比" data-en="AGAINST YOUR CURRENT TOOLS">和手里的工具比</p>
     <h2 class="rv" data-zh="Spotlight、云搜索、grep 之外的那条路" data-en="The road beyond Spotlight, cloud search and grep">Spotlight、云搜索、grep 之外的那条路</h2>
-    <div class="rv" style="overflow-x:auto">
-      <table class="cmp" style="width:100%;border-collapse:collapse;font-size:var(--fs-small)">
+    <div class="cmp-scroll rv">
+      <table class="cmp">
         <thead><tr>
-          <th scope="col" style="text-align:left;padding:10px 12px;color:var(--sub);font:11px var(--mono);letter-spacing:.1em"></th>
+          <th scope="col" style="width:30%" data-zh="能力" data-en="CAPABILITY">能力</th>
           <th scope="col" class="gm" data-zh="goldmine" data-en="goldmine">goldmine</th>
           <th scope="col" data-zh="Spotlight" data-en="Spotlight">Spotlight</th>
           <th scope="col" data-zh="云端 AI 搜索" data-en="Cloud AI search">云端 AI 搜索</th>
           <th scope="col" data-zh="grep / ripgrep" data-en="grep / ripgrep">grep / ripgrep</th>
         </tr></thead>
         <tbody>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="换个说法还能搜到（语义）" data-en="Finds paraphrases (semantic)">换个说法还能搜到（语义）</th><td class="gm">✓</td><td>✗<sup><a href="#cmp-note" style="border:0;color:var(--sub-2)">*</a></sup></td><td>✓</td><td>✗</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="精确编号 / 路径 / 短语" data-en="Exact identifiers / paths / phrases">精确编号 / 路径 / 短语</th><td class="gm">✓</td><td>✓</td><td data-zh="部分" data-en="partial">部分</td><td>✓</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="图片、录音、视频按内容搜" data-en="Image / audio / video by content">图片、录音、视频按内容搜</th><td class="gm">✓ <span data-zh="本地" data-en="local">本地</span></td><td>✗</td><td><span data-zh="需上传" data-en="upload first">需上传</span></td><td>✗</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="文件离开本机" data-en="Files leaving the machine">文件离开本机</th><td class="gm">0 <span data-zh="字节" data-en="bytes">字节</span></td><td data-zh="系统内" data-en="on-device">系统内</td><td data-zh="全量上传" data-en="full upload">全量上传</td><td>0</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="离线可用" data-en="Works offline">离线可用</th><td class="gm">✓</td><td>✓</td><td>✗</td><td>✓</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="每个文件读到没读到、为什么" data-en="Per-file what-was-read and why">每个文件读到没读到、为什么</th><td class="gm">✓ <span data-zh="能力行" data-en="capability row">能力行</span></td><td>✗</td><td>✗</td><td>—</td></tr>
-          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="检索质量有公开度量" data-en="Published retrieval-quality gates">检索质量有公开度量</th><td class="gm">✓ <span data-zh="420 题 + 统计检验" data-en="420 Qs + significance">420 题 + 统计检验</span></td><td>✗</td><td>✗</td><td>—</td></tr>
+          <tr><th scope="row" data-zh="换个说法还能搜到（语义）" data-en="Finds paraphrases (semantic)">换个说法还能搜到（语义）</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span><sup><a href="#cmp-note" style="border:0;color:var(--sub-2);text-decoration:none">*</a></sup></td><td><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-ok"/></svg></span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td></tr>
+          <tr><th scope="row" data-zh="精确编号 / 路径 / 短语" data-en="Exact identifiers / paths / phrases">精确编号 / 路径 / 短语</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span></td><td><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-ok"/></svg></span></td><td><span class="t-sm" data-zh="部分" data-en="partial">部分</span></td><td><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-ok"/></svg></span></td></tr>
+          <tr><th scope="row" data-zh="图片、录音、视频按内容搜" data-en="Image / audio / video by content">图片、录音、视频按内容搜</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span> <span data-zh="本地" data-en="local">本地</span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td><span class="t-sm" data-zh="需上传" data-en="upload first">需上传</span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td></tr>
+          <tr><th scope="row" data-zh="文件离开本机" data-en="Files leaving the machine">文件离开本机</th><td class="gm">0 <span data-zh="字节" data-en="bytes">字节</span></td><td><span class="t-sm" data-zh="系统内" data-en="on-device">系统内</span></td><td><span class="t-sm" data-zh="全量上传" data-en="full upload">全量上传</span></td><td>0</td></tr>
+          <tr><th scope="row" data-zh="离线可用" data-en="Works offline">离线可用</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span></td><td><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-ok"/></svg></span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-ok"/></svg></span></td></tr>
+          <tr><th scope="row" data-zh="每个文件读到没读到、为什么" data-en="Per-file what-was-read and why">每个文件读到没读到、为什么</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span> <span data-zh="能力行" data-en="capability row">能力行</span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td>—</td></tr>
+          <tr><th scope="row" data-zh="检索质量有公开度量" data-en="Published retrieval-quality gates">检索质量有公开度量</th><td class="gm"><span class="g" role="img" aria-label="✓"><svg width="18" height="18"><use href="#i-yes"/></svg></span> <span data-zh="420 题 + 统计检验" data-en="420 Qs + significance">420 题 + 统计检验</span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td><span class="g" role="img" aria-label="✗"><svg width="18" height="18"><use href="#i-no"/></svg></span></td><td>—</td></tr>
         </tbody>
       </table>
     </div>
-    <p id="cmp-note" class="rv" style="font-size:var(--fs-xs);color:var(--sub-2);margin-top:var(--sp-3)" data-zh="* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里没有一项是营销话术——每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。" data-en="* Based on publicly documented behavior (2026-10). Every row is backed by docs/FEATURE_STATUS.md in the repository — none of it is marketing.">* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。</p>
+    <p id="cmp-note" class="cmp-note rv" data-zh="* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里没有一项是营销话术——每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。" data-en="* Based on publicly documented behavior (2026-10). Every row is backed by docs/FEATURE_STATUS.md in the repository — none of it is marketing.">* 对比限于各产品公开行为（2026-10）。Spotlight 的语义能力限于个别 App 内的智能搜索；云搜索指主流「上传后 AI 检索」类产品。表里每一行都能在仓库 docs/FEATURE_STATUS.md 里找到依据。</p>
   </div>
 </section>
 
-<section class="blk" id="vsqmd">
+<section class="blk monument" id="vsqmd">
   <div class="wrap">
     <span class="chno" aria-hidden="true">03</span>
     <p class="kicker rv" data-zh="对上另一个本地引擎" data-en="HEAD-TO-HEAD WITH QMD">对上另一个本地引擎</p>
     <h2 class="rv" data-zh="同 122 份真实文件、同 210 道题，回执公开" data-en="Same 122 real files, same 210 questions, receipts public">同 122 份真实文件、同 210 道题，回执公开</h2>
-    <div class="grid3 stagger">
-      <div class="card rv"><h3 class="num">78.3% <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 66.1%</h3><p data-zh="直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。" data-en="Native success@5 — PDFs, screenshots, recordings go in raw. QMD cannot read 62 of the 122 files at all; what it can't see, it can't find.">直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。</p></div>
-      <div class="card rv"><h3 class="num">1.4s <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 21.8s</h3><p data-zh="每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。" data-en="Median per-query time incl. model loading; p95 is 1.7s vs 36.5s — about 15×. Speed isn't vanity; it's what makes daily use possible.">每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。</p></div>
-      <div class="card rv"><h3 class="num">43–60% <span style="color:var(--sub);font-size:.5em" data-zh="对" data-en="vs">对</span> 0%</h3><p data-zh="30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。" data-en="On 30 noise queries with no right answer: we handed in a blank sheet half the time; QMD's hybrid mode never once did. Noticing 'no answer exists' is competence, not failure.">30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。</p></div>
+  </div>
+  <div class="monument-band stagger">
+    <div class="mb-col rv">
+      <div class="mb-num"><b>78.3<i>%</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 66.1%</span></div>
+      <p data-zh="直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。" data-en="Native success@5 — PDFs, screenshots, recordings go in raw. QMD cannot read 62 of the 122 files at all; what it can't see, it can't find.">直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。</p>
     </div>
-    <p class="lede rv" style="margin-top:var(--sp-5);font-size:var(--fs-small);color:var(--sub)" data-zh="诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。" data-en="For honesty's sake: QMD is stronger at pure-text precision — over the same pre-converted text it scores 100% success@5 to our 91.7%; that's battlefield two on the roadmap. Full matrix, failures and all: docs/COMPARISON.md and reports/execution/P2-08/ in the repository.">诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。</p>
+    <div class="mb-col rv">
+      <div class="mb-num"><b>1.4<i>s</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 21.8s</span></div>
+      <p data-zh="每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。" data-en="Median per-query time incl. model loading; p95 is 1.7s vs 36.5s — about 15×. Speed isn't vanity; it's what makes daily use possible.">每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。</p>
+    </div>
+    <div class="mb-col rv">
+      <div class="mb-num"><b>43–60<i>%</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 0%</span></div>
+      <p data-zh="30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。" data-en="On 30 noise queries with no right answer: we handed in a blank sheet half the time; QMD's hybrid mode never once did. Noticing 'no answer exists' is competence, not failure.">30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <blockquote class="confess rv" data-zh="诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。" data-en="For honesty's sake: QMD is stronger at pure-text precision — over the same pre-converted text it scores 100% success@5 to our 91.7%; that's battlefield two on the roadmap. Full matrix, failures and all: docs/COMPARISON.md and reports/execution/P2-08/ in the repository.">诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。</blockquote>
   </div>
 </section>
 
@@ -129,13 +138,22 @@
     <span class="chno" aria-hidden="true">04</span>
     <p class="kicker rv" data-zh="实测数字" data-en="MEASURED NUMBERS">实测数字</p>
     <h2 class="rv" data-zh="数字与回执" data-en="Numbers, with receipts">数字与回执</h2>
-    <div class="grid3 stagger">
-      <div class="card rv"><h3 class="num">3,200+ / 8 min</h3><p data-zh="2026-10-25 全量：3200 过 / 37 跳 / 2 个已档案存量失败。回执在仓库 reports/execution/。" data-en="2026-10-25 full suite: 3200 passed / 37 skipped / 2 archived known failures. Receipts in repo reports/execution/.">2026-10-25 全量：3200 过 / 37 跳 / 2 个已档案存量失败。回执在仓库 reports/execution/。</p></div>
-      <div class="card rv"><h3 class="num" data-zh="96 / 180 · 12 红" data-en="96 / 180 · 12 FAILING">96 / 180 · 12 红</h3><p data-zh="最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。明细在 docs/FEATURE_STATUS.md。" data-en="Latest 420-question dev run: strict success@5 96/180, 12 quality gates failing. Details in docs/FEATURE_STATUS.md.">最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。明细在 docs/FEATURE_STATUS.md。</p></div>
-      <div class="card rv"><h3 class="num">Δ 0.0000</h3><p data-zh="两个回归门（legacy 109 题 / 全媒体 128 题）最近一次全绿的逐指标差值。参数改动必须过 McNemar / 成对 bootstrap 显著性检验，过不了就回滚。" data-en="Per-metric delta of the last green run of both regression gates. Any admission-parameter change must pass McNemar / paired-bootstrap significance or roll back.">两个回归门最近一次全绿的逐指标差值。参数改动必须过显著性检验，过不了就回滚。</p></div>
-      <div class="card rv"><h3 class="num" data-zh="1,412 行 C" data-en="1,412 LINES OF C">1,412 行 C</h3><p data-zh="媒体嵌入边车的全部代码：静态链 llama.cpp + mtmd，图片缩放与参考实现逐位一致（黄金表测试钉死）。文本与媒体两条嵌入管线互不干扰。" data-en="The media sidecar in full. Image resize is bit-identical to the reference (golden-table test).">媒体嵌入边车的全部代码：图片缩放与参考实现逐位一致（黄金表测试钉死）。</p></div>
-      <div class="card rv"><h3 class="num">3.88 s</h3><p data-zh="本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒（对照组 macOS 原生 4.07 秒）；选型记录在案，含反例数据。" data-en="Measured locally: ffmpeg extracts keyframes from a 5-min 1080p H.264 in 3.88 s (vs 4.07 s native); the decision, counterexamples included, is on record.">本机实测：ffmpeg 抽 5 分钟 1080p 关键帧 3.88 秒；选型记录在案，含反例数据。</p></div>
-      <div class="card rv"><h3 class="num" data-zh="0 条" data-en="0">0 条</h3><p data-zh="静默降级。OCR 缺了写原因、模型没装写原因、页数截断写标记——每个文件四种状态都带原因，status 一屏可见。" data-en="Silent degradations. Every file is in one of four states, each with its reason, visible in one status screen.">静默降级。每个文件的四种状态都带原因，status 一屏可见。</p></div>
+    <div class="ledger-scroll rv">
+      <table class="ledger">
+        <thead><tr>
+          <th scope="col" data-zh="编号" data-en="NO.">编号</th>
+          <th scope="col" style="text-align:right" data-zh="实测" data-en="MEASURED">实测</th>
+          <th scope="col" data-zh="回执与说明" data-en="RECEIPT &amp; NOTE">回执与说明</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="lg-i">01</td><td class="lg-v">3,200+ / 8 min</td><td class="lg-n" data-zh="2026-10-25 全量：3200 过 / 37 跳 / 2 个已档案存量失败。回执在仓库 reports/execution/。" data-en="2026-10-25 full suite: 3200 passed / 37 skipped / 2 archived known failures. Receipts in repo reports/execution/.">2026-10-25 全量：3200 过 / 37 跳 / 2 个已档案存量失败。回执在仓库 reports/execution/。</td></tr>
+          <tr><td class="lg-i">02</td><td class="lg-v" data-zh="96 / 180 · 12 红" data-en="96 / 180 · 12 FAILING">96 / 180 · 12 红</td><td class="lg-n" data-zh="最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。明细在 docs/FEATURE_STATUS.md。" data-en="Latest 420-question dev run: strict success@5 96/180, 12 quality gates failing. Details in docs/FEATURE_STATUS.md.">最近一次 420 题开发跑分：strict success@5 96/180，12 项质量门未过。明细在 docs/FEATURE_STATUS.md。</td></tr>
+          <tr><td class="lg-i">03</td><td class="lg-v">Δ 0.0000</td><td class="lg-n" data-zh="两个回归门（legacy 109 题 / 全媒体 128 题）最近一次全绿的逐指标差值。参数改动必须过 McNemar / 成对 bootstrap 显著性检验，过不了就回滚。" data-en="Per-metric delta of the last green run of both regression gates. Any admission-parameter change must pass McNemar / paired-bootstrap significance or roll back.">两个回归门最近一次全绿的逐指标差值。参数改动必须过显著性检验，过不了就回滚。</td></tr>
+          <tr><td class="lg-i">04</td><td class="lg-v" data-zh="1,412 行 C" data-en="1,412 LINES OF C">1,412 行 C</td><td class="lg-n" data-zh="媒体嵌入边车的全部代码：静态链 llama.cpp + mtmd，图片缩放与参考实现逐位一致（黄金表测试钉死）。文本与媒体两条嵌入管线互不干扰。" data-en="The media sidecar in full. Image resize is bit-identical to the reference (golden-table test).">媒体嵌入边车的全部代码：图片缩放与参考实现逐位一致（黄金表测试钉死）。</td></tr>
+          <tr><td class="lg-i">05</td><td class="lg-v">3.88 s</td><td class="lg-n" data-zh="本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒（对照组 macOS 原生 4.07 秒）；选型记录在案，含反例数据。" data-en="Measured locally: ffmpeg extracts keyframes from a 5-min 1080p H.264 in 3.88 s (vs 4.07 s native); the decision, counterexamples included, is on record.">本机实测：ffmpeg 抽 5 分钟 1080p 关键帧 3.88 秒；选型记录在案，含反例数据。</td></tr>
+          <tr><td class="lg-i">06</td><td class="lg-v" data-zh="0 条" data-en="0">0 条</td><td class="lg-n" data-zh="静默降级。OCR 缺了写原因、模型没装写原因、页数截断写标记——每个文件四种状态都带原因，status 一屏可见。" data-en="Silent degradations. Every file is in one of four states, each with its reason, visible in one status screen.">静默降级。每个文件的四种状态都带原因，status 一屏可见。</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
@@ -170,7 +188,7 @@
     <p class="kicker rv" data-zh="开源" data-en="OPEN SOURCE">开源</p>
     <h2 class="rv" data-zh="MIT。代码、文档、评测与执行记录都在仓库里。" data-en="MIT. Code, docs, evals and execution records live in the repo.">MIT。代码、文档、评测与执行记录都在仓库里。</h2>
     <p class="lede rv" data-zh="代码之外，仓库带着完整的工作记录：能力与质量台账（FEATURE_STATUS）、五讲子系统走读、术语考古词典（JOURNEY）、锚点命令卡（一分钟亲手验证）、逐提交的执行档案。想审计，从这里开始。" data-en="Beyond code, the repo carries its full working record: the capability ledger (FEATURE_STATUS), five subsystem walkthroughs, a term-archaeology glossary (JOURNEY), anchor command cards (verify by hand in a minute), and per-commit execution archives. Start an audit there.">代码之外，仓库带着完整工作记录：台账、五讲走读、术语考古、锚点命令卡、逐提交档案。想审计，从这里开始。</p>
-    <div class="cta-row rv" style="margin-top:var(--sp-6)">
+    <div class="cta-row rv" style="margin-top:var(--sp-5)">
       <a class="btn btn-gold" href="https://github.com/sixtycat2000-ctrl/goldmine">GitHub ↗</a>
       <a class="btn btn-ghost" href="/docs"><span data-zh="文档与路线图" data-en="Docs & roadmap">文档与路线图</span> →</a>
       <a class="btn btn-ghost" href="/learn"><span data-zh="Learn：145 个概念，逐层下探" data-en="Learn: 145 concepts, drill layer by layer">Learn：145 个概念，逐层下探</span></a>
