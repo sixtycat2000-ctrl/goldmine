@@ -513,7 +513,12 @@ class CommitMixin:
             pieces = self._ctx_guard_split([_Piece(chunk, m.embed_text, kind="ocr") for chunk in chunks], title)
             for piece in pieces:
                 chunk = piece.chunk
-                segs.append(replace(m, text_for_fts=chunk.text, excerpt=excerpt(chunk.text),
+                # ocr-rehydrate-001: chunk over the RAW lines (true locations),
+                # store the rehydrated prose — raw line breaks would split every
+                # aligned readback run at line boundaries.
+                from .extraction import rehydrate_ocr
+                text = rehydrate_ocr(chunk.text)
+                segs.append(replace(m, text_for_fts=text, excerpt=excerpt(text),
                                     loc=chunk.loc, loc_end=chunk.loc_end))
         out: list[SegmentRec] = []
         for m in segs:

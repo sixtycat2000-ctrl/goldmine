@@ -10,6 +10,7 @@ and hands results to the commit helpers in goldmine.ingest.commit."""
 from __future__ import annotations
 
 import logging
+import re
 import tempfile
 import threading
 import time
@@ -31,6 +32,21 @@ from .extract_text import (
     extract_txt,
     extract_via_textutil,
 )
+
+
+def rehydrate_ocr(raw: str) -> str:
+    """ocr-rehydrate-001: OCR text as readable prose for exact-readback.
+
+    Dehyphenate word splits across line breaks, join intra-paragraph line
+    breaks into single spaces (paragraph breaks survive as a blank line),
+    collapse space runs. The frozen evaluation corpora store their reference
+    text in exactly this rehydrated form; raw OCR line breaks would split
+    every aligned readback run at line boundaries."""
+    text = raw.replace("-\n", "")
+    text = re.sub(r"\s*\n\s*\n\s*", "\n\n", text)   # paragraph breaks survive
+    text = re.sub(r"\n", " ", text)                  # line breaks join
+    text = re.sub(r"[ \t]+", " ", text)
+    return text.strip()
 
 logger = logging.getLogger("goldmine.ingest")
 
@@ -714,7 +730,10 @@ class ExtractMixin:
         a TEXT vector only when the backend cannot embed the image itself
         (llama) and ingest.ocr_text_vector is on. Where an image vector
         exists (multimodal backends) the words stay keyword-only — DigUp
-        measured a text vector making screenshots outrank better matches."""
+        measured a text vector making screenshots outrank better matches.
+
+        The RAW text flows onward: the commit stage chunks it with true
+        line locations and stores each chunk rehydrated (ocr-rehydrate-001)."""
         embed_text = (
             (cap is None or not cap.image)
             and bool(self.cfg.ingest.ocr_text_vector)

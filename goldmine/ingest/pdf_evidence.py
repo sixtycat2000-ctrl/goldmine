@@ -95,7 +95,8 @@ def extract_pdf_outcome(pipeline, path, max_chunks):
             # unchanged; is_thin falls out False since the check passed
             # >= THIN_PAGE_CHARS).
             stripped = ar_recovered[number]
-        upgraded = recovered.get(number, ("", None))[0].strip()
+        from .extraction import rehydrate_ocr
+        upgraded = rehydrate_ocr(recovered.get(number, ("", None))[0]).strip()
         is_thin = len(stripped) < extract_pdf.THIN_PAGE_CHARS
         text = stripped
         if is_thin:
