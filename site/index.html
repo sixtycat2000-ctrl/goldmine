@@ -119,24 +119,25 @@
   <div class="wrap">
     <span class="chno" aria-hidden="true">03</span>
     <p class="kicker rv" data-zh="对上另一个本地引擎" data-en="HEAD-TO-HEAD WITH QMD">对上另一个本地引擎</p>
-    <h2 class="rv" data-zh="同 122 份真实文件、同 210 道题，回执公开" data-en="Same 122 real files, same 210 questions, receipts public">同 122 份真实文件、同 210 道题，回执公开</h2>
-  </div>
-  <div class="monument-band stagger">
-    <div class="mb-col rv">
-      <div class="mb-num"><b>78.3<i>%</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 66.1%</span></div>
-      <p data-zh="直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。" data-en="Native success@5 — PDFs, screenshots, recordings go in raw. QMD cannot read 62 of the 122 files at all; what it can't see, it can't find.">直接搜原件的成功@5：PDF、截图、录音不预处理直接扔进去。QMD 原生读不了其中 62 份——它看不见的文件，搜不回来。</p>
+    <h2 class="rv" data-zh="同 122 份真实文件、同 210 道题" data-en="Same 122 real files, same 210 questions">同 122 份真实文件、同 210 道题</h2>
+    <div class="rv" style="overflow-x:auto">
+      <table class="cmp" style="width:100%;border-collapse:collapse;font-size:var(--fs-small)">
+        <thead><tr>
+          <th scope="col" style="text-align:left;padding:10px 12px;color:var(--sub);font:11px var(--mono);letter-spacing:.1em"></th>
+          <th scope="col" class="gm">goldmine</th>
+          <th scope="col" data-zh="QMD 2.8.3" data-en="QMD 2.8.3">QMD 2.8.3</th>
+        </tr></thead>
+        <tbody>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="直接搜原件 · 成功@5" data-en="Raw files · success@5">直接搜原件 · 成功@5</th><td class="gm"><b>78.3%</b></td><td>66.1%</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="122 份里读得了的" data-en="Of the 122 files, can read">122 份里读得了的</th><td class="gm"><b>122</b></td><td>60<span style="color:var(--sub)">（62 份原生读不了）</span></td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="每题中位耗时（含模型加载）" data-en="Median per-query time (incl. model load)">每题中位耗时（含模型加载）</th><td class="gm"><b>1.4s</b></td><td>21.8s</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="每题 p95 耗时" data-en="Per-query p95">每题 p95 耗时</th><td class="gm"><b>1.7s</b></td><td>36.5s</td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="纯文本精搜 · 成功@5（同一份预处理文本）" data-en="Pure-text precision · success@5 (same pre-converted text)">纯文本精搜 · 成功@5（同一份预处理文本）</th><td class="gm">91.7%</td><td><b>100%</b></td></tr>
+          <tr><th scope="row" style="text-align:left;font-weight:400" data-zh="捣乱查询敢交白卷（30 题无答案）" data-en="Dares to return zero hits on noise queries (30 with no answer)">捣乱查询敢交白卷（30 题无答案）</th><td class="gm"><b>43–60%</b></td><td>0%</td></tr>
+        </tbody>
+      </table>
     </div>
-    <div class="mb-col rv">
-      <div class="mb-num"><b>1.4<i>s</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 21.8s</span></div>
-      <p data-zh="每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。" data-en="Median per-query time incl. model loading; p95 is 1.7s vs 36.5s — about 15×. Speed isn't vanity; it's what makes daily use possible.">每题中位耗时（含模型加载），p95 是 1.7s 对 36.5s——约 15 倍。快不是赌气，是「敢天天用」的前提。</p>
-    </div>
-    <div class="mb-col rv">
-      <div class="mb-num"><b>43–60<i>%</i></b><span class="mb-vs"><span data-zh="对" data-en="vs">对</span> 0%</span></div>
-      <p data-zh="30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。" data-en="On 30 noise queries with no right answer: we handed in a blank sheet half the time; QMD's hybrid mode never once did. Noticing 'no answer exists' is competence, not failure.">30 条没有答案的捣乱查询：我们交了一半白卷，QMD 的混合模式一条没敢空过。识别「没有答案」是能力，不是失败。</p>
-    </div>
-  </div>
-  <div class="wrap">
-    <blockquote class="confess rv" data-zh="诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。" data-en="For honesty's sake: QMD is stronger at pure-text precision — over the same pre-converted text it scores 100% success@5 to our 91.7%; that's battlefield two on the roadmap. Full matrix, failures and all: docs/COMPARISON.md and reports/execution/P2-08/ in the repository.">诚实起见：纯文本精搜 QMD 更强——大家搜同一份预处理好的文字时，它成功@5 100%、我们 91.7%，这是路线图的下一个战场。完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。</blockquote>
+    <p id="qmd-note" class="rv" style="font-size:var(--fs-xs);color:var(--sub-2);margin-top:var(--sp-3)" data-zh="完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。" data-en="Full matrix, failures and all: docs/COMPARISON.md and reports/execution/P2-08/ in the repository.">完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。</p>
   </div>
 </section>
 
