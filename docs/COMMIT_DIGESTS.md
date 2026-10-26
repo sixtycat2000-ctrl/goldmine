@@ -443,3 +443,59 @@ Cache-Control max-age=3600 同样可能让回访者 1 小时内看不到 v5；�
 右侧星空，点群应让开再回位。
 
 ---
+
+## (site v4) — 全站重设计「Refined Digital Alchemy」：Vite+React MPA，Home/Learn 动效换血
+
+分支 `session/site-redesign-20261026`，四个提交（6864fd5 → a11d35b → c0f2043 → dd8a7e6）。
+按用户 2026-10-26 的 Master redesign 指令执行（三阶段 + 五路专家子代理终审 + 修复 + 部署）。
+
+### 关键行
+
+- `web/` 新增 Vite + React 19 + TS MPA（`index.html` + `learn.template.html` 两个入口），
+  Tailwind v4 CSS-first tokens、framer-motion（layoutId/FLIP/springs）、GSAP ScrollTrigger、
+  Lenis、three.js——全部按指令清单；`wrangler.jsonc` 切到 `./web/dist`，`site/` 原样保留
+  （内容管线 + 旧皮肤 docs 用），`build_learn.py` 加 --graph/--template/--out 参数（旧默认逐字节不变）。
+- Home：三幕 WebGL 粒子场（语义/词法/多模态三种编队 = 真实机制示意，光标速度斥力 + 滚动景深，
+  idle 后懒加载、RM 静帧）；k=120/d=20 逐字 spring 标题；40px 磁性 CTA + liquid fill；
+  六卡非对称 bento（光标辉光边 + 3D tilt + 自演微演示）；GSAP scrub 叠卡叙事（sticky，RM 自动降级）；
+  计数器条 + 回执台账；对比表 + QMD 头对头。
+- Learn：145 概念从内联 `#gm-graph` 启动（零运行时 fetch、no-JS 全量目录与损坏 banner 契约保留）；
+  簇/层 pills（layoutId 滑动指示）+ 搜索；FLIP 筛选网格；卡片 → 抽屉 shared-layout 展开
+  （左教案右目录、scroll-spy 进度轨、深入/相关 chips、前后翻页、已读进度持久化 `gm-learn-visited`）。
+- 诚实契约全保：metrics.ts 每数带 verify 锚点、双语 zh/en（`gm-lang` key 不变）、
+  「gold is earned」纪律、演示数值要么真实要么标「示意」（终审 P0 修掉：假 sha/假命中数/虚构 MCP 接口
+  已替换为真实接口 `goldmine mcp --db` + search/get/context/status）。
+- 终审：5 个领域专家子代理（动效性能/无障碍/创意总监/架构/诚实审计），6 个 P0 + ~20 个 P1 全部修复
+  （详情见提交 dd8a7e6 信息）。Lighthouse（生产）：a11y 100/100，BP 96/100，SEO 100/100，
+  TBT ≤20ms，CLS ≤0.04；perf 移动节流 87/87、桌面 97。
+
+### 每行的风险
+
+- **Learn 交互语义变更**：v3 的 canvas 下钻地图被「筛选网格 + 抽屉」取代（指令明确如此）。
+  地图在 git 历史（c0f2043^ 的 site/）随时可回滚；但这是产品语义变化，owner 应过目。
+- **移动节流 perf 87 < 指令的 90 目标**：瓶颈是慢速 4G 下传输规定栈的固字节数
+  （React+FM vendor ~116KB gz + 字体 + learn 550KB 烘焙正文），运行时零阻塞
+  （TBT 0–20ms）。要上 90 只能砍 FM 或烘焙正文——两者都是指令要求，留 owner 决断。
+- **部署自分支**：生产当前跑的是本分支内容，main 尚未合并（一会话一分支，合并经用户）。
+- `web/learn.html`（550KB 生成物）入库沿用旧惯例；每次 rebake 会产生大 diff。
+- `data:` 加入 font-src CSP（Fontsource 度量回退字体需要）；脚本白名单未放宽。
+
+### 我不确定的地方
+
+- 演示微动效的节奏（bento 循环周期、粒子点火周期 7s）未经观感校准。
+- 「示意」标签的字级（9px mono）是否足够显眼，由 owner 判断是否要更显式的免责声明。
+- docs.html/404 里 docs 保持旧皮肤（指令范围只有 Home/Learn）；404 已换新皮肤。
+
+### 用户 90 秒怎么验
+
+- 打开 https://goldmine-site.sixtycat2000.workers.dev/ → 看星空 + 三幕 tab 切换 →
+  鼠标扫过粒子让路；滚动看叠卡叙事与计数器。
+- 打开 /learn → 搜「退款」看 FLIP → 点任意卡看抽屉 morph → ←/→ 翻页、
+  TOC 点击、Esc 关闭并回焦；刷新后已读进度保留。
+- 中/EN 切换全站即时；键盘：Tab 走卡片、/ 聚焦搜索、抽屉内 Tab 被困。
+- 数字抽查：首页 03 区块 vs `docs/FEATURE_STATUS.md`；QMD 表 vs
+  `reports/execution/P2-08/comparison-report-001/REPORT.md`。
+- 部署版本：`009f78ab-6fe4-4ad9-80bf-4b7ce1222feb`（wrangler deploy 于 2026-10-27 ~00:40）；
+  Lighthouse 原始 JSON 在本地 `reports/execution/site-redesign-20261026/lh-*.json`。
+
+---
