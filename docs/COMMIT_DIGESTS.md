@@ -499,3 +499,18 @@ Cache-Control max-age=3600 同样可能让回访者 1 小时内看不到 v5；�
   Lighthouse 原始 JSON 在本地 `reports/execution/site-redesign-20261026/lh-*.json`。
 
 ---
+
+### 追记（perf 收口，commit 77c37ca，部署 1eeccfd5）
+
+上节「移动节流 perf 87 < 90」已解决，不再是 owner 决断项。trace 定位：LCP
+是首页让步句（最大文本节点，入场动画把最终绘制顶到 3.8s）——让步句改静态
+渲染（与预挂壳逐字一致，h1 保留弹簧逐字动画）；预挂壳补齐双语精确文案
+（预绘 html[lang] 切换，React 重渲染不再超越早期 LCP）；Noto Serif SC 的
+122KB @font-face 表移出阻塞 CSS（原 167KB→30KB，zh 读者立即加载、其余
+idle 加载）；三只 latin 主力字体 preload + font-display:block；learn 的
+modulepreload 降优先级；WebGL 先探测后建渲染器（无 GPU 环境零控制台错误）。
+
+**Lighthouse（mobile 节流，production-parity brotli）：首页 97/100/100/100，
+Learn 93/100/100/100**；TBT ≤30ms，CLS ≤0.018。四项全部 ≥90，指令门槛达成。
+遗留：Noto 异步包装是 363KB（117KB gz）JS chunk（非阻塞、idle 后加载），
+未来可换 <link> 直注省 ~105KB——不影响门槛，记录备查。
