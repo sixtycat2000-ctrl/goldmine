@@ -411,3 +411,35 @@ python3 -m goldmine search --help   # 无新旗标（配置项在 goldmine.toml 
 - 首页滚到 03 区块看 QMD 三卡与让步句；docs 页滚到「路线图」区块。
 - 亲手验数字：仓库 `reports/execution/P2-08/comparison-report-001/REPORT.md` 对表；锚点 `python3 -m goldmine status --db evals/eval.sqlite --json`（staleness 全 0）与 `python3 -m goldmine search "copper gasket" --db evals/eval.sqlite.pre-p2b.sqlite`（rc=3 指纹拒）本会话已跑过。
 - 部署版本：`2e05cc65-2c90-488f-a037-2c76ec0b9762`（wrangler deploy 于 2026-10-26 ~06:00）。
+
+---
+
+## (hero v5) — 首页动效换血：paseo.sh 单缓动教条 + 三幕产品演示
+
+### 关键行
+
+hero.js 全量重写（v4 领地几何保留）：（1）三幕场景 tabs（语义/词法/多模态）
++ 滑动金 pill（340ms，全站唯一缓动 cubic-bezier(.22,.61,.36,1)）——每幕演示
+该模式的真实机制：语义=查询星点亮余弦最近 6 点；词法=ZT-84 只有精确 token
+节点青色点亮（精确性一眼读懂）；多模态=四个带标签示例（会议纪要/main.py/
+standup.m4a/Screen Shot.png）依次接入同一查询空间。（2）光标斥力物理
+（paseo butterfly 常数：150px 内平方反比、回位弹簧、摩擦 0.92、限速）——
+指针一动整个空间让路。（3）RM=当前场景静态合成，tab 切换瞬时。
+
+### 每行的风险
+
+浏览器启发式缓存曾让验证读到旧 JS（本地服务器无 cache 头）——线上
+Cache-Control max-age=3600 同样可能让回访者 1 小时内看不到 v5；可接受
+（版本化部署会随下次 any-deploy 失效）。
+
+### 我不确定的地方
+
+多模态幕的 stagger 周期（约 1.4s/领地）未经多人观感校准；光标斥力在触屏
+上无效果（无指针）——桌面增强、移动端无损。
+
+### 你 90 秒怎么验
+
+线上首页：点三个 tab——pill 滑动、查询串重打、点火对象切换；鼠标划过
+右侧星空，点群应让开再回位。
+
+---
