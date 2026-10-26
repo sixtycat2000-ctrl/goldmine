@@ -13,7 +13,6 @@ export const SUITE = {
   frozenSources: 122,
   // verify: 2026-10-26 official run product-current-017, 210-question dev fold
   strictSuccess: "155 / 180",
-  strictSuccessPct: "86.1%",
   gatesPassed: 17,
   gatesTotal: 19,
   sqliteFiles: 1,

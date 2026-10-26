@@ -97,11 +97,15 @@ export function SceneTabs({ scene, onScene }: { scene: Scene; onScene: (s: Scene
           </button>
         ))}
       </div>
-      <p className="mt-3 font-mono text-[12px] text-ink2" aria-live="polite">
+      <p className="mt-3 font-mono text-[12px] text-ink2" aria-hidden="true">
         <span className="text-gold">›</span> {query}
         <span className="ml-2 text-sub">
           <span className="text-teal">→</span> {pick(lang, active.mech.zh, active.mech.en)}
         </span>
+      </p>
+      {/* static, per-scene announcement — the typewriter must not churn live regions */}
+      <p className="sr-only" aria-live="polite">
+        {`${pick(lang, active.label.zh, active.label.en)}: ${pick(lang, active.query.zh, active.query.en)} — ${pick(lang, active.mech.zh, active.mech.en)}`}
       </p>
       <p className="sr-only">{pick(lang, "背景粒子场为机制示意演示", "the background particle field is a stylized mechanism demo")}</p>
     </div>

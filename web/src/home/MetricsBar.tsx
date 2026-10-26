@@ -13,7 +13,7 @@ export function MetricsBar() {
   const lang = useLang();
   const zh = lang === "zh";
 
-  const tiles: { value: React.ReactNode; label: string }[] = [
+  const tiles: { value: React.ReactNode; label: string; gold?: boolean }[] = [
     {
       value: <><Counter end={3200} />+</>,
       label: zh ? "离线测试 · 全量 8 分钟" : "OFFLINE TESTS · 8-MIN SUITE",
@@ -25,6 +25,7 @@ export function MetricsBar() {
     {
       value: <><Counter end={17} />/<Counter end={19} /></>,
       label: zh ? "质量门通过 · 2 门写明原因" : "GATES PASSING · 2 REASONED",
+      gold: true,
     },
     {
       value: <><Counter end={420} /> · {SUITE.frozenSources}</>,
@@ -37,6 +38,7 @@ export function MetricsBar() {
     {
       value: <>0 <span className="text-base">B</span></>,
       label: zh ? "上传 · 代码里没有这条路径" : "UPLOADED · NO SUCH CODE PATH",
+      gold: true,
     },
   ];
 
@@ -48,14 +50,14 @@ export function MetricsBar() {
           kicker={{ zh: "实测数字", en: "MEASURED NUMBERS" }}
           title={{ zh: "数字与回执", en: "Numbers, with receipts" }}
           lede={{
-            zh: "这里没有一行营销数字——每一项都能在仓库 docs/FEATURE_STATUS.md 里对到原始回执。",
-            en: "No marketing numbers here — every figure traces back to a raw receipt in docs/FEATURE_STATUS.md.",
+            zh: "这里没有一行营销数字——每一项都能在仓库文档与执行回执（docs/FEATURE_STATUS.md、docs/COMPARISON.md、reports/execution/）里对到原始出处。",
+            en: "No marketing numbers here — every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
           }}
         />
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
           {tiles.map((t, i) => (
             <Reveal key={t.label} delay={i * 0.07}>
-              <div className="font-display text-3xl text-gold lg:text-[2rem]">{t.value}</div>
+              <div className={`font-display text-3xl lg:text-[2rem] ${t.gold ? "text-gold" : "text-ink"}`}>{t.value}</div>
               <div className="mt-2 font-mono text-[10px] leading-relaxed tracking-[0.12em] text-sub uppercase">
                 {t.label}
               </div>
@@ -63,7 +65,7 @@ export function MetricsBar() {
           ))}
         </div>
 
-        <div className="mt-16 overflow-x-auto">
+        <div className="no-scrollbar hscroll mt-16 overflow-x-auto" tabIndex={0} role="region" aria-label={zh ? "实测数字台账" : "measured-numbers ledger"}>
           <table className="w-full min-w-[46rem] border-collapse text-left">
             <thead>
               <tr className="hairline-b">
@@ -82,7 +84,7 @@ export function MetricsBar() {
               {LEDGER.map((row) => (
                 <tr key={row.no} className="hairline-b align-top transition-colors hover:bg-bg2/60">
                   <td className="py-4 pr-4 font-mono text-[12px] text-sub">{row.no}</td>
-                  <td className="py-4 pr-4 text-right font-mono text-[13px] whitespace-nowrap text-gold">
+                  <td className="py-4 pr-4 text-right font-mono text-[13px] whitespace-nowrap text-ink">
                     {typeof row.value === "string" ? row.value : pick(lang, row.value.zh, row.value.en)}
                   </td>
                   <td className="max-w-[42em] py-4 text-[13px] leading-relaxed text-ink2">

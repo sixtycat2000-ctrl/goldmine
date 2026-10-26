@@ -7,17 +7,34 @@ import { SectionHead } from "../components/SectionHead";
 import { Counter } from "../components/motion/Counter";
 
 /* ------------------------------------------------------------------ */
-/* micro-demos — all values are the product's real, published numbers  */
+/* micro-demos — stylized mechanism illustrations. Values are either   */
+/* the published eval figures or clearly tagged 示意 (illustrative);    */
+/* official numbers live in MetricsBar with their receipts.            */
 /* ------------------------------------------------------------------ */
+
+function DemoTag() {
+  const lang = useLang();
+  return (
+    <span
+      className="mt-2 inline-block rounded border border-line px-1.5 py-0.5 font-mono text-[9px] tracking-[0.14em] text-sub uppercase"
+      aria-hidden="true"
+    >
+      {pick(lang, "示意 · 简化演示", "demo · stylized")}
+    </span>
+  );
+}
 
 function HybridDemo() {
   const lang = useLang();
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.5 });
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  // internally consistent illustration of the real formula:
+  // 1.0·z + 2.0·cov^1.5 + kind = 0.83 + 1.71 + 0.10 = 2.64
+  // (cov = 0.90 → cov^1.5 = 0.854); bars are each term over its own max.
   const rows = [
-    { w: "1.0 · z", v: 0.83, c: "var(--color-gold)" },
-    { w: "2.0 · cov^1.5", v: 0.87, c: "var(--color-goldbright)" },
-    { w: "+ kind", v: 0.1, c: "var(--color-teal)" },
+    { w: "1.0 · z", frac: 0.83, c: "var(--color-gold)" },
+    { w: "2.0 · cov^1.5", frac: 0.854, c: "var(--color-goldbright)" },
+    { w: "+ kind", frac: 0.5, c: "var(--color-teal)" },
   ];
   return (
     <div ref={ref} className="mt-5" aria-hidden="true">
@@ -28,20 +45,21 @@ function HybridDemo() {
             <span className="w-24 shrink-0 font-mono text-[10px] text-sub">{r.w}</span>
             <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-bg3">
               <motion.div
-                className="h-full rounded-full"
-                style={{ background: r.c }}
-                initial={{ width: 0 }}
-                animate={inView ? { width: `${r.v * 100}%` } : { width: 0 }}
-                transition={{ duration: 0.9, delay: i * 0.18, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full w-full origin-left rounded-full"
+                style={{ background: r.c, opacity: i === 1 ? 0.8 : 1 }}
+                initial={{ scaleX: 0 }}
+                animate={inView ? { scaleX: r.frac } : { scaleX: 0 }}
+                transition={{ duration: 0.9, delay: 0.15 + i * 0.18, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
           </div>
         ))}
       </div>
       <p className="mt-3 font-mono text-[11px] text-ink2">
-        → <Counter end={2.63} decimals={2} className="text-gold" />{" "}
+        → <Counter end={2.64} decimals={2} className="text-gold" />{" "}
         <span className="text-sub">{pick(lang, "每条命中都摆得开这行算术", "every hit's arithmetic, line by line")}</span>
       </p>
+      <DemoTag />
     </div>
   );
 }
@@ -54,15 +72,21 @@ function MultimodalDemo() {
     { zh: "视频", en: "frames" },
   ];
   const lang = useLang();
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.4 });
   return (
-    <div className="mt-5" aria-hidden="true">
+    <div ref={ref} className="mt-5" aria-hidden="true">
       <div className="flex flex-wrap gap-2">
         {chips.map((c, i) => (
           <motion.span
             key={c.en}
             className="rounded-full border border-line px-3 py-1 font-mono text-[10px] tracking-[0.1em] text-ink2 uppercase"
-            animate={{ opacity: [0.35, 1, 0.35], borderColor: ["var(--color-line)", "rgba(245,176,65,0.55)", "var(--color-line)"] }}
-            transition={{ duration: 3.2, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" }}
+            animate={
+              inView
+                ? { opacity: [0.35, 1, 0.35], borderColor: ["var(--color-line)", "rgba(245,176,65,0.55)", "var(--color-line)"] }
+                : { opacity: 0.6 }
+            }
+            transition={inView ? { duration: 3.2, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" } : { duration: 0.3 }}
           >
             {pick(lang, c.zh, c.en)}
           </motion.span>
@@ -70,13 +94,13 @@ function MultimodalDemo() {
       </div>
       <div className="mt-4 flex h-8 items-end gap-1" aria-hidden="true">
         {[0.4, 0.9, 0.55, 1, 0.65, 0.85, 0.45, 0.75, 0.5, 0.95, 0.6, 0.8].map((h, i) => (
-            <motion.span
-              key={i}
-              className="w-1.5 flex-1 rounded-sm bg-teal/70"
-              style={{ height: `${h * 100}%`, originY: 1 }}
-              animate={{ scaleY: [0.25, 1, 0.25] }}
-              transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.13, ease: "easeInOut" }}
-            />
+          <motion.span
+            key={i}
+            className="w-1.5 flex-1 rounded-sm bg-teal/70"
+            style={{ height: `${h * 100}%`, originY: 1 }}
+            animate={inView ? { scaleY: [0.25, 1, 0.25] } : { scaleY: 0.6 }}
+            transition={inView ? { duration: 1.6, repeat: Infinity, delay: i * 0.13, ease: "easeInOut" } : { duration: 0.3 }}
+          />
         ))}
       </div>
     </div>
@@ -84,52 +108,46 @@ function MultimodalDemo() {
 }
 
 function GatesDemo() {
-  // verify: 2026-10-26 official run product-current-017 — 17/19 gates; fails: noise 20/30, media-OCR 6/9
-  const fails: Record<number, string> = { 17: "noise 20/30", 18: "media-OCR 6/9" };
+  // verify: 2026-10-26 official run product-current-017 — 17/19 gates; the two
+  // unresolved ones are named, not position-coded.
+  const lang = useLang();
   return (
     <div className="mt-5" aria-hidden="true">
-      <div className="grid grid-cols-10 gap-1.5">
-        {Array.from({ length: 19 }, (_, i) => (
-          <motion.span
-            key={i}
-            className={`h-2.5 rounded-full ${i in fails ? "bg-fail" : "bg-gold"}`}
-            title={i in fails ? fails[i] : undefined}
-            initial={{ scaleX: 0, opacity: 0 }}
-            whileInView={{ scaleX: 1, opacity: 1 }}
-            viewport={{ amount: 0.6 }}
-            transition={{ delay: i * 0.045, duration: 0.3, ease: "easeOut" }}
-          />
-        ))}
-      </div>
-      <p className="mt-3 font-mono text-[11px] text-ink2">
+      <p className="font-mono text-[11px] text-ink2">
         <Counter end={17} className="text-gold" />
         <span className="text-sub"> / 19 </span>
         <span className="text-fail">· 2</span>{" "}
-        <span className="text-sub">unresolved, reasons on record</span>
+        <span className="text-sub">{pick(lang, "未过，原因在档", "unresolved, reasons on record")}</span>
       </p>
+      <div className="mt-2.5 space-y-1.5">
+        <p className="font-mono text-[10px] text-fail">noise 20/30</p>
+        <p className="font-mono text-[10px] text-fail">media-OCR 6/9</p>
+      </div>
     </div>
   );
 }
 
 function LocalDemo() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { amount: 0.5 });
+  const reduced = useReducedMotion();
+  const live = inView && !reduced;
+  const lang = useLang();
   return (
-    <div className="mt-5" aria-hidden="true">
+    <div ref={ref} className="mt-5" aria-hidden="true">
       <div className="relative h-16">
-        {/* track */}
         <div className="absolute top-1/2 left-0 h-px w-full bg-line" />
-        {/* local vault */}
         <div className="absolute top-1/2 left-0 h-9 w-16 -translate-y-1/2 rounded-md border border-line-strong bg-bg3" />
-        {/* cloud, never reached */}
         <div className="absolute top-1/2 right-0 h-9 w-16 -translate-y-1/2 rounded-full border border-dashed border-line" />
         <motion.span
           className="absolute top-1/2 left-16 h-2 w-2 -translate-y-1/2 rounded-full bg-gold"
-          animate={{ x: [0, 132, 0], opacity: [1, 0.9, 1] }}
-          transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut", times: [0, 0.62, 1] }}
+          animate={live ? { x: [0, 132, 0], opacity: [1, 0.9, 1] } : { x: 0, opacity: 1 }}
+          transition={live ? { duration: 2.8, repeat: Infinity, ease: "easeInOut", times: [0, 0.62, 1] } : { duration: 0.3 }}
         />
         <span className="absolute top-1/2 right-20 font-mono text-[10px] text-fail">✕</span>
       </div>
       <p className="mt-2 font-mono text-[10px] tracking-[0.12em] text-sub uppercase">
-        0 bytes leave your machine
+        {pick(lang, "0 字节离开你的机器", "0 bytes leave your machine")}
       </p>
     </div>
   );
@@ -137,11 +155,13 @@ function LocalDemo() {
 
 function ReceiptDemo() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.5 });
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const lang = useLang();
+  // All claims here are real published figures or repo pointers — no invented receipts.
   const lines = [
     { t: "$ goldmine search '退款期限' --why", c: "text-ink2" },
-    { t: "exit 0 · 3 hits · 1.4s", c: "text-teal" },
-    { t: "sha256 e3b0…9b12 ✓  receipt archived", c: "text-gold" },
+    { t: pick(lang, "exit 0 · 每题中位 1.4s（官方跑实测）", "exit 0 · 1.4s median (official run)"), c: "text-teal" },
+    { t: pick(lang, "回执在档：reports/execution/ ✓", "receipts archived: reports/execution/ ✓"), c: "text-gold" },
   ];
   return (
     <div ref={ref} className="mt-5 space-y-1.5 font-mono text-[11px] leading-relaxed" aria-hidden="true">
@@ -156,17 +176,19 @@ function ReceiptDemo() {
           {l.t}
         </motion.p>
       ))}
+      <DemoTag />
     </div>
   );
 }
 
 function ServeDemo() {
   const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.5 });
-  const tools = ["search", "open", "status", "audit"];
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  // real interface: goldmine/mcp_contracts.py — search / get / context / status
+  const tools = ["goldmine_search", "goldmine_get", "goldmine_context", "goldmine_status"];
   return (
     <div ref={ref} className="mt-5 font-mono text-[11px]" aria-hidden="true">
-      <p className="text-ink2">$ goldmine serve --mcp</p>
+      <p className="text-ink2">$ goldmine mcp --db library.sqlite</p>
       <div className="mt-2 grid grid-cols-2 gap-1.5">
         {tools.map((t, i) => (
           <motion.span
@@ -221,8 +243,8 @@ export function Bento() {
           en: "One index, four media, zero bytes of cloud",
         }}
         lede={{
-          zh: "每张卡片里的演示都是真实机制的缩影——数字全部来自公开评测，没有一个是为好看编的。",
-          en: "Every demo on these cards is a scaled-down real mechanism — every number comes from the published evals, none invented for looks.",
+          zh: "每张卡片里的演示都是真实机制的缩影：标注「示意」的数值经过简化；正式数字全部来自公开评测，见下方「数字与回执」。",
+          en: "Every demo is a scaled-down real mechanism: values tagged “demo” are simplified illustrations, while official figures all come from the published evals — see “Numbers, with receipts” below.",
         }}
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
@@ -278,10 +300,10 @@ export function Bento() {
         </Card>
         <Card
           className="lg:col-span-4"
-          title={{ zh: "常驻索引 + 本地 MCP", en: "Resident indexing + local MCP" }}
+          title={{ zh: "本地 MCP 服务", en: "Local MCP server" }}
           sub={{
-            zh: "watch 增量索引、serve 常驻免加载；MCP 让 search / open / status 直接成为你 Agent 的工具。",
-            en: "watch indexes incrementally, serve stays resident; MCP turns search / open / status into tools for your Agent.",
+            zh: "goldmine mcp 把四个只读工具——search / get / context / status——直接挂进你的 Agent 工具箱。",
+            en: "goldmine mcp exposes four read-only tools — search / get / context / status — straight into your Agent's toolbox.",
           }}
         >
           <ServeDemo />

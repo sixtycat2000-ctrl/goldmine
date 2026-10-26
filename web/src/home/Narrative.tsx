@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { usePrefersReducedMotion } from "../lib/hooks";
+import { useFirstScrollIntent } from "../lib/useFirstScrollIntent";
 import { useLang, pick } from "../lib/lang";
 import { SectionHead } from "../components/SectionHead";
 import { CopyButton } from "../components/CopyButton";
@@ -43,13 +44,14 @@ const STEPS = [
 /** Pinned stacked-card scroll narrative (GSAP scrub + CSS sticky). */
 export function Narrative() {
   const reduced = usePrefersReducedMotion();
+  const scrollIntent = useFirstScrollIntent();
   const lang = useLang();
   const containerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
 
   useEffect(() => {
-    if (reduced) return;
+    if (reduced || !scrollIntent) return;
     let ctx: { revert: () => void } | null = null;
     let cancelled = false;
 
@@ -73,9 +75,9 @@ export function Narrative() {
           },
         });
         for (let i = 1; i < cards.length; i++) {
-          tl.to(cards[i - 1], { yPercent: -12, scale: 0.95, opacity: 0.22, ease: "none" }, i).to(
+          tl.to(cards[i - 1], { yPercent: -12, scale: 0.95, opacity: 0.22, duration: 1, ease: "none" }, i).to(
             cards[i],
-            { yPercent: 0, opacity: 1, ease: "none", immediateRender: false },
+            { yPercent: 0, opacity: 1, duration: 1, ease: "none", immediateRender: false },
             i + 0.05,
           );
         }
@@ -86,7 +88,7 @@ export function Narrative() {
       cancelled = true;
       ctx?.revert();
     };
-  }, [reduced]);
+  }, [reduced, scrollIntent]);
 
   return (
     <section id="how" className="relative">

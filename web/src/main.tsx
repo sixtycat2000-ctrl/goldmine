@@ -1,7 +1,9 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { MotionConfig } from "framer-motion";
 import "@fontsource-variable/inter";
 import "@fontsource/instrument-serif";
+import "@fontsource/noto-serif-sc/400.css";
 import "@fontsource-variable/jetbrains-mono";
 import "./styles/global.css";
 import { LangProvider } from "./lib/lang";
@@ -10,10 +12,12 @@ import { HomeApp } from "./home/HomeApp";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <LangProvider>
-      <SmoothScrollProvider>
-        <HomeApp />
-      </SmoothScrollProvider>
-    </LangProvider>
+    <MotionConfig reducedMotion="user">
+      <LangProvider>
+        <SmoothScrollProvider>
+          <HomeApp />
+        </SmoothScrollProvider>
+      </LangProvider>
+    </MotionConfig>
   </StrictMode>,
 );

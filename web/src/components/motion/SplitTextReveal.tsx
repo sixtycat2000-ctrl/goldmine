@@ -47,25 +47,28 @@ export function SplitTextReveal({ text, className, delay = 0, stagger = 0.022 }:
 
   let idx = 0;
   return (
-    <span className={className} aria-label={text} style={{ perspective: 600 }}>
-      {words.map((word, wi) => (
-        <span key={wi} aria-hidden="true" className="inline-block whitespace-pre">
-          {word.chars.map((ch, ci) => {
-            const d = delay + Math.min(idx++ * stagger, 1.1);
-            return (
-              <motion.span
-                key={ci}
-                className="inline-block will-change-[transform,opacity]"
-                initial={{ opacity: 0, y: "0.85em" }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: d, type: "spring", stiffness: 120, damping: 20 }}
-              >
-                {ch}
-              </motion.span>
-            );
-          })}
-        </span>
-      ))}
+    <span className={className} style={{ perspective: 600 }}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {words.map((word, wi) => (
+          <span key={wi} className="inline-block whitespace-pre">
+            {word.chars.map((ch, ci) => {
+              const d = delay + Math.min(idx++ * stagger, 0.6);
+              return (
+                <motion.span
+                  key={ci}
+                  className="inline-block"
+                  initial={{ opacity: 0, y: "0.85em" }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: d, type: "spring", stiffness: 120, damping: 20 }}
+                >
+                  {ch}
+                </motion.span>
+              );
+            })}
+          </span>
+        ))}
+      </span>
     </span>
   );
 }

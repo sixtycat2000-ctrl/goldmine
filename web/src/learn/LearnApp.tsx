@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
@@ -25,6 +25,9 @@ export function LearnApp({ data }: { data: Ok }) {
   const [cluster, setCluster] = useState<string>("all");
   const [layer, setLayer] = useState<number | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  // which card the drawer expanded from — its slot stays reserved (invisible,
+  // exact height) until the drawer closes, so the morph has a stable anchor
+  const [openedId, setOpenedId] = useState<string | null>(null);
   const [visited, setVisited] = useState<Set<string>>(() => loadVisited());
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -34,17 +37,32 @@ export function LearnApp({ data }: { data: Ok }) {
     return m;
   }, [graph.clusters]);
 
+  const sortedClusters = useMemo(
+    () => [...graph.clusters].sort((a, b) => a.token.localeCompare(b.token)),
+    [graph.clusters],
+  );
+
   const total = graph.nodes.length;
 
-  const toggleVisited = (id: string) => {
-    setVisited((prev) => {
-      const nextSet = new Set(prev);
+  const toggleVisited = useCallback((id: string) => {
+    setVisited((prevSet) => {
+      const nextSet = new Set(prevSet);
       if (nextSet.has(id)) nextSet.delete(id);
       else nextSet.add(id);
       saveVisited(nextSet);
       return nextSet;
     });
-  };
+  }, []);
+
+  const handleOpen = useCallback((id: string) => {
+    setOpenedId(id);
+    setSelectedId(id);
+  }, []);
+  const handleClose = useCallback(() => {
+    setSelectedId(null);
+    setOpenedId(null);
+  }, []);
+  const handleNavigate = useCallback((id: string) => setSelectedId(id), []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -68,6 +86,18 @@ export function LearnApp({ data }: { data: Ok }) {
   const selectedIdx = selected ? filtered.findIndex((n) => n.id === selected.id) : -1;
   const prev = selectedIdx > 0 ? filtered[selectedIdx - 1] : undefined;
   const next = selectedIdx >= 0 && selectedIdx < filtered.length - 1 ? filtered[selectedIdx + 1] : undefined;
+  const handlePrev = useCallback(() => {
+    setSelectedId((cur) => {
+      const idx = cur ? filtered.findIndex((n) => n.id === cur) : -1;
+      return idx > 0 ? filtered[idx - 1].id : cur;
+    });
+  }, [filtered]);
+  const handleNext = useCallback(() => {
+    setSelectedId((cur) => {
+      const idx = cur ? filtered.findIndex((n) => n.id === cur) : -1;
+      return idx >= 0 && idx < filtered.length - 1 ? filtered[idx + 1].id : cur;
+    });
+  }, [filtered]);
 
   // "/" focuses search (when no drawer is open)
   useEffect(() => {
@@ -76,7 +106,7 @@ export function LearnApp({ data }: { data: Ok }) {
     const onKey = (e: KeyboardEvent) => {
       if (selectedId) return;
       const t = e.target as HTMLElement;
-      if (e.key === "/" && t.tagName !== "INPUT" && t.tagName !== "TEXTAREA") {
+      if (e.key === "/" && !e.metaKey && !e.ctrlKey && !e.altKey && t.tagName !== "INPUT" && t.tagName !== "TEXTAREA" && !t.isContentEditable) {
         e.preventDefault();
         searchRef.current?.focus();
       }
@@ -140,7 +170,7 @@ export function LearnApp({ data }: { data: Ok }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={zh ? "搜概念、别名、簇……（按 / 聚焦）" : "Search concepts, aliases, clusters… ( / to focus )"}
                 aria-label={zh ? "搜索概念" : "Search concepts"}
-                className="w-full rounded-full border border-line bg-bg1/80 py-2 pr-9 pl-9 font-mono text-[12px] text-ink placeholder:text-sub focus:border-gold/60 focus:outline-none"
+                className="w-full rounded-full border border-line bg-bg1/80 py-2 pr-9 pl-9 font-mono text-[12px] text-ink placeholder:text-sub focus:border-gold/60"
               />
               {query && (
                 <button
@@ -154,13 +184,18 @@ export function LearnApp({ data }: { data: Ok }) {
               )}
             </div>
             <p className="font-mono text-[11px] text-sub" aria-live="polite">
+              <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
               {filtered.length} / {total}
             </p>
           </div>
 
-          <div className="mt-2.5 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按簇筛选" : "filter by cluster"}>
+          <div
+            className="no-scrollbar hscroll mt-2.5 flex items-center gap-2 overflow-x-auto pb-1"
+            role="group"
+            aria-label={zh ? "按簇筛选" : "filter by cluster"}
+          >
             <Pill active={cluster === "all"} onClick={() => setCluster("all")} layoutId="cluster-pill" label={zh ? "全部" : "All"} />
-            {graph.clusters.map((c) => (
+            {sortedClusters.map((c) => (
               <Pill
                 key={c.id}
                 active={cluster === c.id}
@@ -172,7 +207,11 @@ export function LearnApp({ data }: { data: Ok }) {
             ))}
           </div>
 
-          <div className="mt-1.5 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按层筛选" : "filter by layer"}>
+          <div
+            className="no-scrollbar hscroll mt-1.5 flex items-center gap-2 overflow-x-auto pb-1"
+            role="group"
+            aria-label={zh ? "按层筛选" : "filter by layer"}
+          >
             <Pill small active={layer === "all"} onClick={() => setLayer("all")} layoutId="layer-pill" label={zh ? "所有层" : "All layers"} />
             {graph.layers.map((l) => (
               <Pill
@@ -218,8 +257,8 @@ export function LearnApp({ data }: { data: Ok }) {
                   cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
                   lang={lang}
                   visited={visited.has(c.id)}
-                  selected={selectedId === c.id}
-                  onOpen={setSelectedId}
+                  dimmed={openedId === c.id}
+                  onOpen={handleOpen}
                 />
               ))}
             </AnimatePresence>
@@ -241,10 +280,10 @@ export function LearnApp({ data }: { data: Ok }) {
             prev={prev}
             next={next}
             onToggleVisited={toggleVisited}
-            onClose={() => setSelectedId(null)}
-            onNavigate={setSelectedId}
-            onPrev={() => prev && setSelectedId(prev.id)}
-            onNext={() => next && setSelectedId(next.id)}
+            onClose={handleClose}
+            onNavigate={handleNavigate}
+            onPrev={handlePrev}
+            onNext={handleNext}
           />
         )}
       </AnimatePresence>

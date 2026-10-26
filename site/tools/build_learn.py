@@ -60,6 +60,8 @@ fallback = ('<div class="banner" hidden style="font:12px var(--mono);color:var(-
             + "".join(groups_html))
 
 graph_json = json.dumps(graph, ensure_ascii=False, separators=(",", ":"))
+# a literal "</" inside inline JSON would close the <script> element early
+graph_json = graph_json.replace("</", "<\\/")
 out = tpl.replace("{{GRAPH_JSON}}", graph_json)
 out = out.replace('<div class="fallback" hidden></div>',
                   '<div class="fallback" data-fb>' + fallback + "</div>")

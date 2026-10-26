@@ -44,8 +44,8 @@ export function Nav({ page }: { page: Page }) {
     <>
       <div className="fixed inset-x-0 top-0 z-[90] h-[2px] bg-transparent" aria-hidden="true">
         <div
-          className="h-full origin-left bg-gradient-to-r from-gold to-goldbright"
-          style={{ transform: `scaleX(${reduced ? 1 : progress})`, width: "100%" }}
+          className="h-full w-full origin-left bg-gradient-to-r from-gold to-goldbright"
+          style={{ transform: `scaleX(${reduced ? 1 : progress})` }}
         />
       </div>
       <nav
@@ -53,12 +53,12 @@ export function Nav({ page }: { page: Page }) {
           scrolled ? "glass" : "bg-transparent"
         }`}
       >
-        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-5">
-          <a href="/" className="flex items-center gap-2 text-ink" aria-label="goldmine home">
+        <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-5">
+          <a href="/" className="flex items-center gap-2 text-ink" aria-label={lang === "zh" ? "goldmine 首页" : "goldmine home"}>
             <IconLogo size={20} className="text-gold" />
             <b className="text-[15px] tracking-wide">goldmine</b>
           </a>
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex items-center gap-3 sm:gap-6">
             <a href="/" className={linkCls("home")} aria-current={page === "home" ? "page" : undefined}>
               <T zh="首页" en="Home" />
             </a>
@@ -74,7 +74,7 @@ export function Nav({ page }: { page: Page }) {
             >
               GitHub <IconExt size={11} />
             </a>
-            <div className="flex overflow-hidden rounded-full border border-line" role="group" aria-label="language">
+            <div className="flex overflow-hidden rounded-full border border-line" role="group" aria-label={lang === "zh" ? "语言" : "language"}>
               {(["zh", "en"] as const).map((l) => (
                 <button
                   key={l}

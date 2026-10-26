@@ -27,6 +27,8 @@ type Props = {
   onNext: () => void;
 };
 
+type SecMeta = { id: string; zh: string; en: string };
+
 export function LessonDrawer({
   c,
   cluster,
@@ -43,14 +45,19 @@ export function LessonDrawer({
 }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
+  // The morph id is frozen for the drawer's whole open session: navigating to
+  // another concept must not hand the layoutId stack back to a remounting card
+  // (that crossfaded the drawer to invisible — the bug this ref fixes).
+  const morphIdRef = useRef(`c-${c.id}`);
   const [active, setActive] = useState(0);
   const readMarked = useRef(false);
 
   const title = pick(lang, c.title_zh, c.title_en);
   const color = cluster ? clusterColor(cluster.token) : "var(--color-gold)";
 
-  const sections = useMemo(() => {
-    const s = [{ id: "ov", zh: "概览", en: "Overview" }];
+  const sections = useMemo<SecMeta[]>(() => {
+    const s: SecMeta[] = [{ id: "ov", zh: "概览", en: "Overview" }];
     if (c.def_zh || c.def_en) s.push({ id: "def", zh: "定义", en: "Definition" });
     if (c.plain_zh || c.plain_en) s.push({ id: "plain", zh: "大白话", en: "In plain words" });
     if (c.example_zh || c.example_en) s.push({ id: "ex", zh: "实例", en: "Example" });
@@ -75,14 +82,22 @@ export function LessonDrawer({
     return { children: kids, related: rel };
   }, [c, data]);
 
-  // focus + scroll lock + keyboard
+  // mount-only: capture opener, initial focus, scroll lock
   useEffect(() => {
-    const opener = document.activeElement as HTMLElement | null;
+    openerRef.current = document.activeElement as HTMLElement | null;
     panelRef.current?.focus();
     const html = document.documentElement;
     const prevOverflow = html.style.overflow;
     html.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevOverflow;
+      openerRef.current?.focus?.();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  // keyboard: Esc, prev/next, focus trap (repairs focus that leaves the panel)
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
@@ -92,12 +107,19 @@ export function LessonDrawer({
       if (e.key === "ArrowLeft" && prev) onPrev();
       if (e.key === "ArrowRight" && next) onNext();
       if (e.key === "Tab") {
-        const focusables = panelRef.current?.querySelectorAll<HTMLElement>(
+        const panel = panelRef.current;
+        if (!panel) return;
+        const focusables = panel.querySelectorAll<HTMLElement>(
           'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
         );
-        if (!focusables || !focusables.length) return;
+        if (!focusables.length) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
+        if (!panel.contains(document.activeElement)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+          return;
+        }
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();
@@ -108,11 +130,7 @@ export function LessonDrawer({
       }
     };
     document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      html.style.overflow = prevOverflow;
-      opener?.focus?.();
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [onClose, onPrev, onNext, prev, next]);
 
   // scroll-spy + auto read-mark on the lesson scroller
@@ -123,20 +141,21 @@ export function LessonDrawer({
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const top = el.scrollTop;
+        const elTop = el.getBoundingClientRect().top;
         let idx = 0;
         sections.forEach((s, i) => {
           const target = el.querySelector<HTMLElement>(`[data-sec="${s.id}"]`);
-          if (target && target.offsetTop - 90 <= top) idx = i;
+          if (target && target.getBoundingClientRect().top - elTop <= 120) idx = i;
         });
         setActive(idx);
-        const ratio = top / Math.max(1, el.scrollHeight - el.clientHeight);
+        const ratio = el.scrollTop / Math.max(1, el.scrollHeight - el.clientHeight);
         if (ratio > 0.65 && !readMarked.current && !visited) {
           readMarked.current = true;
           onToggleVisited(c.id);
         }
       });
     };
+    onScroll();
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       cancelAnimationFrame(raf);
@@ -151,21 +170,20 @@ export function LessonDrawer({
     setActive(0);
   }, [c.id]);
 
-  const heading = (id: string) => sections.find((s) => s.id === id);
-  const Sec = ({ id, children }: { id: string; children: React.ReactNode }) => (
-    <section data-sec={id} className="scroll-mt-6">
-      {heading(id) && (
-        <h3 className="mb-3 flex items-center gap-3 font-mono text-[10px] tracking-[0.16em] text-gold uppercase">
-          {pick(lang, heading(id)!.zh, heading(id)!.en)}
-          <span className="h-px flex-1 bg-line" />
-        </h3>
-      )}
-      {children}
+  const renderSec = (meta: SecMeta, body: React.ReactNode) => (
+    <section data-sec={meta.id} className="scroll-mt-6">
+      <h3 className="mb-3 flex items-center gap-3 font-mono text-[10px] tracking-[0.16em] text-gold uppercase">
+        {pick(lang, meta.zh, meta.en)}
+        <span className="h-px flex-1 bg-line" />
+      </h3>
+      {body}
     </section>
   );
 
   return (
-    <div className="fixed inset-0 z-[95]" role="dialog" aria-modal="true" aria-label={title} data-lesson={c.id}>
+    // data-lenis-prevent: the lesson scroller keeps native wheel while Lenis
+    // owns the page behind the backdrop
+    <div className="fixed inset-0 z-[95]" role="dialog" aria-modal="true" aria-label={title} data-lesson={c.id} data-lenis-prevent="">
       <motion.div
         className="absolute inset-0 bg-bg0/75 backdrop-blur-sm"
         initial={{ opacity: 0 }}
@@ -175,7 +193,7 @@ export function LessonDrawer({
       />
       <motion.div
         ref={panelRef}
-        layoutId={`c-${c.id}`}
+        layoutId={morphIdRef.current}
         tabIndex={-1}
         transition={{ type: "spring", stiffness: 300, damping: 34 }}
         className="absolute inset-2 flex flex-col overflow-hidden rounded-2xl border border-line-strong bg-bg1 shadow-[0_24px_80px_rgba(0,0,0,0.6)] outline-none lg:inset-x-[max(1.5rem,calc(50%-36rem))] lg:inset-y-[4vh]"
@@ -238,38 +256,42 @@ export function LessonDrawer({
               </p>
 
               <div className="mt-7 space-y-8">
-                <Sec id="ov">
-                  <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.one_zh, c.one_en)}</p>
-                  {(c.analogy_zh || c.analogy_en) && (
-                    <p className="mt-3 rounded-xl border border-line bg-bg2/60 p-4 text-[13px] leading-relaxed text-ink2">
-                      <span className="mr-2 font-mono text-[10px] tracking-[0.14em] text-teal uppercase">
-                        {lang === "zh" ? "比喻" : "ANALOGY"}
-                      </span>
-                      {pick(lang, c.analogy_zh, c.analogy_en)}
-                    </p>
+                {renderSec(
+                  sections[0],
+                  <>
+                    <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.one_zh, c.one_en)}</p>
+                    {(c.analogy_zh || c.analogy_en) && (
+                      <p className="mt-3 rounded-xl border border-line bg-bg2/60 p-4 text-[13px] leading-relaxed text-ink2">
+                        <span className="mr-2 font-mono text-[10px] tracking-[0.14em] text-teal uppercase">
+                          {lang === "zh" ? "比喻" : "ANALOGY"}
+                        </span>
+                        {pick(lang, c.analogy_zh, c.analogy_en)}
+                      </p>
+                    )}
+                  </>,
+                )}
+
+                {(c.def_zh || c.def_en) &&
+                  renderSec(
+                    sections[1],
+                    <p className="text-[15px] leading-relaxed text-ink">{pick(lang, c.def_zh, c.def_en)}</p>,
                   )}
-                </Sec>
 
-                {(c.def_zh || c.def_en) && (
-                  <Sec id="def">
-                    <p className="text-[15px] leading-relaxed text-ink">{pick(lang, c.def_zh, c.def_en)}</p>
-                  </Sec>
-                )}
+                {(c.plain_zh || c.plain_en) &&
+                  renderSec(
+                    sections[2],
+                    <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.plain_zh, c.plain_en)}</p>,
+                  )}
 
-                {(c.plain_zh || c.plain_en) && (
-                  <Sec id="plain">
-                    <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.plain_zh, c.plain_en)}</p>
-                  </Sec>
-                )}
+                {(c.example_zh || c.example_en) &&
+                  renderSec(
+                    sections[3],
+                    <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.example_zh, c.example_en)}</p>,
+                  )}
 
-                {(c.example_zh || c.example_en) && (
-                  <Sec id="ex">
-                    <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.example_zh, c.example_en)}</p>
-                  </Sec>
-                )}
-
-                {c.refs.length > 0 && (
-                  <Sec id="refs">
+                {c.refs.length > 0 &&
+                  renderSec(
+                    sections[4],
                     <ul className="space-y-2">
                       {c.refs.slice(0, 5).map((r, i) => (
                         <li
@@ -284,9 +306,8 @@ export function LessonDrawer({
                           <CopyButton text={`${r.path}${r.lines ? `:${r.lines}` : ""}`} label={{ zh: "复制", en: "copy" }} />
                         </li>
                       ))}
-                    </ul>
-                  </Sec>
-                )}
+                    </ul>,
+                  )}
               </div>
 
               {/* pager */}

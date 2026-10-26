@@ -37,17 +37,19 @@ export function Scenarios() {
       />
       <ol className="grid gap-4 md:grid-cols-3">
         {ITEMS.map((it, i) => (
-          <Reveal key={it.title.zh} delay={i * 0.12}>
-            <li className="group relative h-full list-none overflow-hidden rounded-2xl border border-line bg-bg1/60 p-6">
-              <span className="font-display text-5xl text-gold/25 transition-colors duration-500 group-hover:text-gold/50" aria-hidden="true">
-                0{i + 1}
-              </span>
-              <h3 className="mt-4 font-display text-title leading-snug text-ink">
-                {pick(lang, it.title.zh, it.title.en)}
-              </h3>
-              <p className="mt-3 text-[13px] leading-relaxed text-ink2">{pick(lang, it.body.zh, it.body.en)}</p>
-            </li>
-          </Reveal>
+          <li key={it.title.zh} className="list-none">
+            <Reveal delay={i * 0.12} className="h-full">
+              <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-bg1/60 p-6">
+                <span className="font-display text-5xl text-gold/25 transition-colors duration-500 group-hover:text-gold/50" aria-hidden="true">
+                  0{i + 1}
+                </span>
+                <h3 className="mt-4 font-display text-title leading-snug text-ink">
+                  {pick(lang, it.title.zh, it.title.en)}
+                </h3>
+                <p className="mt-3 text-[13px] leading-relaxed text-ink2">{pick(lang, it.body.zh, it.body.en)}</p>
+              </div>
+            </Reveal>
+          </li>
         ))}
       </ol>
     </section>

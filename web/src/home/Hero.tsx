@@ -15,9 +15,18 @@ export function Hero() {
   const lang = useLang();
 
   // Defer the WebGL chunk until after first paint + idle: LCP is text.
+  // (Safari < 17 has no requestIdleCallback — fall back to a timeout.)
   useEffect(() => {
-    const id = requestIdleCallback(() => setReady(true), { timeout: 1500 });
-    return () => cancelIdleCallback(id);
+    const w = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (id: number) => void;
+    };
+    if (typeof w.requestIdleCallback === "function") {
+      const id = w.requestIdleCallback(() => setReady(true), { timeout: 2200 });
+      return () => w.cancelIdleCallback?.(id);
+    }
+    const t = window.setTimeout(() => setReady(true), 900);
+    return () => window.clearTimeout(t);
   }, []);
 
   const zh = lang === "zh";
@@ -35,7 +44,7 @@ export function Hero() {
         aria-hidden="true"
         style={{
           background:
-            "linear-gradient(90deg, rgba(8,8,10,0.82) 0%, rgba(8,8,10,0.55) 38%, rgba(8,8,10,0.08) 68%, rgba(8,8,10,0) 100%), radial-gradient(70% 55% at 50% 42%, rgba(8,8,10,0) 30%, rgba(8,8,10,0.55) 100%), linear-gradient(to bottom, rgba(8,8,10,0.25), rgba(8,8,10,0) 22%, rgba(8,8,10,0) 62%, #08080A 96%)",
+            "linear-gradient(90deg, rgba(8,8,10,0.9) 0%, rgba(8,8,10,0.72) 42%, rgba(8,8,10,0.4) 68%, rgba(8,8,10,0.12) 86%, rgba(8,8,10,0) 100%), radial-gradient(70% 55% at 50% 42%, rgba(8,8,10,0) 30%, rgba(8,8,10,0.55) 100%), linear-gradient(to bottom, rgba(8,8,10,0.25), rgba(8,8,10,0) 22%, rgba(8,8,10,0) 62%, #08080A 96%)",
         }}
       />
 
@@ -46,11 +55,15 @@ export function Hero() {
         <h1 className="mt-5 max-w-[13em] font-display text-hero leading-[1.04] text-ink">
           <SplitTextReveal
             text={zh ? "按意思搜索，文件不出这台 Mac。" : "Search by meaning. Files never leave your Mac."}
-            delay={0.25}
+            delay={0.1}
+            stagger={0.016}
           />
         </h1>
         <Reveal delay={0.9} className="mt-6 max-w-[44em]">
-          <p className="text-[15px] leading-relaxed text-ink2 sm:text-base">
+          <p
+            className="text-[15px] leading-relaxed text-ink2 sm:text-base"
+            style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}
+          >
             {zh
               ? "你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。"
               : "You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist."}
@@ -67,7 +80,9 @@ export function Hero() {
           </div>
         </Reveal>
         <Reveal delay={1.2}>
-          <SceneTabs scene={scene} onScene={setScene} />
+          <div style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}>
+            <SceneTabs scene={scene} onScene={setScene} />
+          </div>
         </Reveal>
       </div>
 

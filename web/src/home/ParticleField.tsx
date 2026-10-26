@@ -255,9 +255,10 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     let lastY = 0;
     let lastT = 0;
     let vel = 0;
-    let scroll01 = 0;
+    let scroll01 = Math.min(1.2, window.scrollY / Math.max(1, window.innerHeight));
     let inView = true;
     let igniteT0 = -1;
+    let raf = 0;
 
     const onPointerMove = (e: PointerEvent) => {
       const now = performance.now();
@@ -273,12 +274,8 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     const onScroll = () => {
       scroll01 = Math.min(1.2, window.scrollY / Math.max(1, window.innerHeight));
     };
-    const onVis = () => {
-      if (document.hidden) return; // rAF is throttled by the browser anyway
-    };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    document.addEventListener("visibilitychange", onVis);
     const io = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
     });
@@ -318,7 +315,6 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("scroll", onScroll);
-      document.removeEventListener("visibilitychange", onVis);
       ro.disconnect();
       io.disconnect();
       geo.dispose();
@@ -348,7 +344,6 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     }
 
     const clock = new THREE.Clock();
-    let raf = 0;
     const tick = () => {
       raf = requestAnimationFrame(tick);
       if (!inView || document.hidden) return; // paused when offscreen / tab hidden

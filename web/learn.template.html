@@ -16,17 +16,25 @@
 <script>
 document.documentElement.classList.add("js");
 try{var l=localStorage.getItem("gm-lang");if(l)document.documentElement.setAttribute("lang",l==="en"?"en":"zh-CN")}catch(e){}
-window.__earlyErr=function(e){try{document.documentElement.setAttribute("data-corrupt","")}catch(_){}};
+// if the app chunk (or its CSS) fails to load, reveal the baked glossary
+window.addEventListener("error",function(e){
+  var t=e.target;
+  if(t&&(t.tagName==="SCRIPT"||t.tagName==="LINK")){
+    try{document.documentElement.setAttribute("data-corrupt","")}catch(_){}
+  }
+},true);
 </script>
 </head>
 <body>
 <h1 class="sr-only" data-zh="goldmine 概念地图：145 个概念，四层逐层下探" data-en="goldmine concept map: 145 concepts across four layers">goldmine 概念地图：145 个概念，四层逐层下探</h1>
 <div id="root"></div>
 <!--
-  Baked by site/tools/build_learn.py: {{GRAPH_JSON}} → inline graph JSON
-  (<script id="gm-graph">, consumed by the app at boot — no runtime fetch),
-  the marker below → the full 145-card no-JS glossary (kept in the DOM for
-  crawlers and JS-less clients; hidden by CSS once the app mounts cleanly).
+  Baked by site/tools/build_learn.py: the graph JSON is inlined into the
+  <script id="gm-graph"> data block below (consumed by the app at boot — no
+  runtime fetch), and the marker div becomes the full 145-card no-JS glossary
+  (kept in the DOM for crawlers and JS-less clients; hidden by CSS once the
+  app mounts cleanly). Keep this comment free of the graph-substitution
+  marker itself — Python str.replace replaces every occurrence of it.
 -->
 <script type="application/json" id="gm-graph">{{GRAPH_JSON}}</script>
 <div class="fallback" hidden></div>

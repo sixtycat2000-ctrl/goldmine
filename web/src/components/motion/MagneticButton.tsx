@@ -1,4 +1,4 @@
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { useFinePointer } from "../../lib/hooks";
 
@@ -16,10 +16,10 @@ type Props = {
 
 /**
  * Magnetic CTA: pulls up to ~6px toward the cursor within a 40px zone (spring
- * return), with a liquid gold fill sweeping in on hover. The 40px zone is a
- * transparent padding ring compensated by negative margin, so layout is
- * unchanged. Pointer FX are gated to fine pointers and skipped under
- * reduced motion; keyboard focus gets the standard gold ring.
+ * return), with a liquid gold fill sweeping in on hover. Tracking happens at
+ * the window level and the shell is pointer-events-none, so the invisible
+ * magnet zone never steals clicks from neighbors (a11y/touch safe). Pointer FX
+ * skip under reduced motion; keyboard focus gets the standard gold ring.
  */
 export function MagneticButton({
   href,
@@ -30,7 +30,8 @@ export function MagneticButton({
   external,
   children,
 }: Props) {
-  const ref = useRef<HTMLSpanElement>(null);
+  const shellRef = useRef<HTMLSpanElement>(null);
+  const frame = useRef(0);
   const fine = useFinePointer();
   const reduced = useReducedMotion();
   const mx = useMotionValue(0);
@@ -40,31 +41,43 @@ export function MagneticButton({
 
   const active = fine && !reduced;
 
-  const onMove = (e: React.PointerEvent) => {
-    if (!active || !ref.current) return;
-    const r = ref.current.getBoundingClientRect();
-    const cx = r.left + r.width / 2;
-    const cy = r.top + r.height / 2;
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
-    const dist = Math.hypot(dx, dy);
-    const zone = Math.max(r.width, r.height) / 2 + MAGNET_RADIUS;
-    if (dist > zone) return;
-    const pull = Math.min(6, (1 - dist / zone) * 9);
-    mx.set((dx / (dist || 1)) * pull);
-    my.set((dy / (dist || 1)) * pull);
-  };
-  const onLeave = () => {
-    mx.set(0);
-    my.set(0);
-  };
+  useEffect(() => {
+    if (!active) return;
+    const onMove = (e: PointerEvent) => {
+      const shell = shellRef.current;
+      if (!shell) return;
+      const r = shell.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      const dx = e.clientX - cx;
+      const dy = e.clientY - cy;
+      const dist = Math.hypot(dx, dy);
+      const zone = Math.max(r.width, r.height) / 2 + MAGNET_RADIUS;
+      cancelAnimationFrame(frame.current);
+      frame.current = requestAnimationFrame(() => {
+        if (dist > zone) {
+          mx.set(0);
+          my.set(0);
+          return;
+        }
+        const pull = Math.min(6, (1 - dist / zone) * 9);
+        mx.set((dx / (dist || 1)) * pull);
+        my.set((dy / (dist || 1)) * pull);
+      });
+    };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      cancelAnimationFrame(frame.current);
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, [active, mx, my]);
 
   const base =
     variant === "gold"
       ? "bg-gold text-bg0 border border-gold hover:text-bg0"
       : "text-gold border border-line-strong hover:border-gold/60";
 
-  const cls = `group/mag relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 font-mono text-[13px] tracking-[0.08em] uppercase transition-colors duration-300 ${base} ${className}`;
+  const cls = `pointer-events-auto group/mag relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 font-mono text-[13px] tracking-[0.08em] uppercase transition-colors duration-300 ${base} ${className}`;
 
   const inner = (
     <>
@@ -77,11 +90,9 @@ export function MagneticButton({
 
   return (
     <motion.span
-      ref={ref}
+      ref={shellRef}
       style={{ x, y, display: "inline-block" }}
-      className="-m-10 p-10"
-      onPointerMove={active ? onMove : undefined}
-      onPointerLeave={active ? onLeave : undefined}
+      className="pointer-events-none"
     >
       {href ? (
         <motion.a

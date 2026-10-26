@@ -1,16 +1,19 @@
 import { useEffect, type ReactNode } from "react";
+import { useFirstScrollIntent } from "../../lib/useFirstScrollIntent";
 import { usePrefersReducedMotion } from "../../lib/hooks";
 
 /*
  * Lenis inertia scrolling wired into the GSAP ticker so ScrollTrigger stays in
- * sync. Both libraries load lazily (they're only needed on capable, reduced-
- * motion-free clients) and everything is torn down on unmount.
+ * sync. Both libraries stay unloaded until the first scroll intent (nothing
+ * above the fold needs them) and everything is torn down on unmount.
  */
 export function SmoothScrollProvider({ children }: { children: ReactNode }) {
   const reduced = usePrefersReducedMotion();
+  const intent = useFirstScrollIntent();
+  const active = !reduced && intent;
 
   useEffect(() => {
-    if (reduced) return;
+    if (!active) return;
     let teardown: (() => void) | null = null;
     let cancelled = false;
 
@@ -22,7 +25,8 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       ]);
       if (cancelled) return;
       gsap.registerPlugin(ScrollTrigger);
-      const lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+      // allowNestedScroll: inner scrollers (lesson drawer, chip rows) keep native wheel
+      const lenis = new Lenis({ lerp: 0.11, smoothWheel: true, allowNestedScroll: true });
       lenis.on("scroll", ScrollTrigger.update);
       const raf = (time: number) => lenis.raf(time * 1000);
       gsap.ticker.add(raf);
@@ -37,7 +41,7 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
       cancelled = true;
       teardown?.();
     };
-  }, [reduced]);
+  }, [active]);
 
   return <>{children}</>;
 }

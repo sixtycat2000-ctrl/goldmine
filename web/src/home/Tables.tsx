@@ -8,9 +8,12 @@ type Cell = string | { zh: string; en: string };
 
 function CellView({ cell }: { cell: Cell }) {
   const lang = useLang();
-  if (cell === "yes") return <IconYes size={17} className="text-gold" />;
-  if (cell === "ok") return <IconOk size={17} className="text-ink2" />;
-  if (cell === "no") return <IconNo size={17} className="text-sub" />;
+  if (cell === "yes")
+    return <IconYes size={17} className="text-gold" label={lang === "zh" ? "支持" : "yes"} />;
+  if (cell === "ok")
+    return <IconOk size={17} className="text-ink2" label={lang === "zh" ? "部分支持" : "partial"} />;
+  if (cell === "no")
+    return <IconNo size={17} className="text-sub" label={lang === "zh" ? "不支持" : "no"} />;
   if (cell === "—") return <span className="text-sub">—</span>;
   return <span className="text-[12px] text-ink2">{pick(lang, (cell as { zh: string; en: string }).zh, (cell as { zh: string; en: string }).en)}</span>;
 }
@@ -18,7 +21,12 @@ function CellView({ cell }: { cell: Cell }) {
 function CompareTable() {
   const lang = useLang();
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line bg-bg1/60">
+    <div
+      className="no-scrollbar hscroll overflow-x-auto rounded-2xl border border-line bg-bg1/60"
+      tabIndex={0}
+      role="region"
+      aria-label={lang === "zh" ? "能力对比表" : "capability comparison"}
+    >
       <table className="w-full min-w-[44rem] border-collapse text-left text-[13px]">
         <thead>
           <tr className="hairline-b">
@@ -70,7 +78,12 @@ function CompareTable() {
 function QmdTable() {
   const lang = useLang();
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line bg-bg1/60">
+    <div
+      className="no-scrollbar hscroll overflow-x-auto rounded-2xl border border-line bg-bg1/60"
+      tabIndex={0}
+      role="region"
+      aria-label={lang === "zh" ? "QMD 对比表" : "QMD head-to-head"}
+    >
       <table className="w-full min-w-[36rem] border-collapse text-left text-[13px]">
         <thead>
           <tr className="hairline-b">
@@ -91,6 +104,7 @@ function QmdTable() {
               </th>
               <td className={`px-4 py-3.5 text-right font-mono ${r.winner === "goldmine" ? "font-bold text-gold" : "text-ink2"}`}>
                 {r.goldmine}
+                {r.winner === "goldmine" && <span className="sr-only">{lang === "zh" ? "（更优）" : " (wins)"}</span>}
               </td>
               <td className="px-4 py-3.5 text-right font-mono">
                 <span className={r.winner === "qmd" ? "font-bold text-ink" : "text-sub"}>
@@ -99,6 +113,7 @@ function QmdTable() {
                     <span className="ml-2 text-[10px]">{pick(lang, r.qmdNote.zh, r.qmdNote.en)}</span>
                   )}
                 </span>
+                {r.winner === "qmd" && <span className="sr-only">{lang === "zh" ? "（更优）" : " (wins)"}</span>}
               </td>
             </tr>
           ))}
