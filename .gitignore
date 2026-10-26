@@ -6,6 +6,9 @@ __pycache__/
 build/
 *.egg-info/
 
+# node (web/ Vite app)
+node_modules/
+
 # downloaded assets — see `goldmine model install`
 models/
 
@@ -24,3 +27,4 @@ eval.sqlite*
 
 # Rebuildable execution evidence (commit compact summaries, not raw private inputs)
 reports/execution/**
+.wrangler/

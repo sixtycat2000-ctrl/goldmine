@@ -1,0 +1,247 @@
+@import "tailwindcss";
+
+/*
+ * goldmine — "Refined Digital Alchemy" design tokens.
+ * Obsidian base, luminous gold accents, off-white ink.
+ * Discipline carried over from the v1–v3 site: gold is earned (semantic accent:
+ * active/selection/verified), never a blanket decoration. Teal stays the
+ * lexical leg's color. Every contrast pair below holds WCAG AA on bg0/bg1.
+ */
+@theme {
+  --color-bg0: #08080a;
+  --color-bg1: #0c0c10;
+  --color-bg2: #121216;
+  --color-bg3: #1a1a21;
+
+  --color-ink: #f3f4f6;
+  --color-ink2: #a9afb8;
+  --color-sub: #7e8794;
+
+  --color-gold: #f5b041;
+  --color-goldbright: #ffd700;
+  --color-teal: #6fb3aa;
+  --color-fail: #e06c55;
+
+  --color-line: rgb(243 244 246 / 0.08);
+  --color-line-strong: rgb(243 244 246 / 0.16);
+
+  /* 7-cluster palette (learn map territories), tokened A–G like bake v3 */
+  --color-cl-a: #f5b041;
+  --color-cl-b: #6fb3aa;
+  --color-cl-c: #b8a7e8;
+  --color-cl-d: #e8a0a0;
+  --color-cl-e: #9fc46f;
+  --color-cl-f: #d9b06f;
+  --color-cl-g: #7fa8d9;
+
+  --font-display: "Instrument Serif", "Songti SC", "Noto Serif SC", "STSong", serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Noto Sans SC", sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", "Cascadia Mono", "Menlo", monospace;
+
+  --text-hero: clamp(2.75rem, 1.3rem + 6vw, 6.25rem);
+  --text-display: clamp(2rem, 1.1rem + 3.4vw, 3.5rem);
+  --text-title: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --animate-pulse-soft: pulse-soft 3.2s ease-in-out infinite;
+  --animate-ticker: ticker 26s linear infinite;
+
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+/* Legacy aliases — the baked no-JS fallback (build_learn.py) inlines styles
+   that reference the v3 token names (--gold/--line/--mono). Keep them valid. */
+:root {
+  --gold: var(--color-gold);
+  --line: var(--color-line);
+  --mono: var(--font-mono);
+  --sans: var(--font-sans);
+  --serif: var(--font-display);
+  color-scheme: dark;
+}
+
+html {
+  background: var(--color-bg0);
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+body {
+  background:
+    radial-gradient(52rem 30rem at 82% -8%, rgb(245 176 65 / 0.05), transparent 62%),
+    radial-gradient(40rem 26rem at 8% 12%, rgb(111 179 170 / 0.035), transparent 60%),
+    var(--color-bg0);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+  font-feature-settings: "tnum" 1; /* tabular numerals, ledger discipline */
+}
+
+/* SVG grain, 3.5% — the spec's noise overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgb(245 176 65 / 0.28);
+  color: var(--color-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* ---------- shared surface treatments ---------- */
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.glass {
+  background: color-mix(in oklab, var(--color-bg2) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
+  border: 1px solid var(--color-line);
+}
+
+/* cursor-tracked interior wash (SpotlightCard sets --mx/--my) */
+.spot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgb(245 176 65 / 0.13), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-expo);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .spot:hover::before { opacity: 1; }
+}
+
+/* cursor-tracked 1px border glow, masked to the border only */
+.glow-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(255 215 0 / 0.55), transparent 70%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-expo);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .glow-border:hover::after { opacity: 1; }
+}
+
+.hairline-t { border-top: 1px solid var(--color-line); }
+.hairline-b { border-bottom: 1px solid var(--color-line); }
+
+/* liquid fill for MagneticButton: a gold layer scaling from the entry point */
+.liquid {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(120deg, var(--color-gold), var(--color-goldbright));
+  transform: translateY(101%);
+  transition: transform 0.5s var(--ease-expo);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .group\/mag:hover .liquid { transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .liquid { transition: none; }
+}
+
+/* ---------- baked no-JS fallback glossary (contract of build_learn.py) ---------- */
+
+.js .fallback { display: none; }
+.js[data-corrupt] .fallback { display: block; }
+
+.fallback { max-width: 56rem; margin: 0 auto; padding: 7rem 1.5rem 5rem; }
+.fgroup { margin-bottom: 1.5rem; }
+.fgroup > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--color-ink2);
+  padding: 0.6rem 0;
+}
+.fcard {
+  border: 1px solid var(--color-line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin: 0.6rem 0;
+  background: var(--color-bg1);
+}
+.fcard h4 { font-size: 1.02rem; color: var(--color-ink); }
+.fcard .en { font-size: 0.8rem; color: var(--color-sub); margin-bottom: 0.4rem; }
+.fcard .lbl {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--color-gold);
+  margin-right: 0.5rem;
+}
+.fcard p { font-size: 0.86rem; color: var(--color-ink2); margin: 0.25rem 0; }
+.fcard ul.refs { margin: 0.4rem 0 0; padding-left: 1rem; }
+.fcard ul.refs li { font-size: 0.74rem; }
+.fcard ul.refs code {
+  font-family: var(--font-mono);
+  color: var(--color-teal);
+  font-size: 0.72rem;
+  word-break: break-all;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- global reduced-motion floor (CSS side; JS checks the query too) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
