@@ -30,10 +30,21 @@ No final quality milestone, release candidate, hosted CI success or publication 
 
 The [frozen product suite](../evals/product_v4_expansion/README.md) contains 420
 questions from 122 real sources, including PDF, OCR, audio and EXIF evidence.
-Its grouped dev/holdout split is 210/210; holdout remains unopened. The latest checked-in
-420-question development summary, current005 (2026-10-22), has strict success@5 96/180 answerable questions,
-all-facts PACK 97/180, and correct empty results on 20/30 noise questions. It fails
-12 quality gates with no missing evaluation evidence. Compared with current004,
+Its grouped dev/holdout split is 210/210; holdout remains unopened. The
+terminal development run, product-current-017 (2026-10-26, after the six
+preregistered quality battles of all-gates-program-001), has strict success@5
+155/180 answerable questions and passes 17 of 19 quality gates:
+semantic@5 0.867, cjk@5 0.867, lookup@1 0.933, pdf-page@5 0.667,
+media-text@5 0.867, media.metadata 10/10, media.asr 10/11. The two failing
+gates are archived hard limits: noise-correct-empty 20/30 (the fabricated
+premises carry no verbatim token; the retrieval-layer gate idea was disproven
+by simulation in `reports/execution/P0-05/verbatim-gate-sim-001/`) and
+media.ocr 6/9 (two questions sit under the frozen evaluator's 32-character
+alignment floor and one under an OCR content gap). An independent audit
+re-scored 840 row-metrics across runs 011-015 with zero mismatches
+(`reports/execution/P0-05/all-gates-program-001/independent-audit-001/`).
+The earlier checked-in summary, current005 (2026-10-22), had strict
+success@5 96/180 and 12 failing gates. Compared with current004,
 noise rejection improves while answerable retrieval and PACK point estimates fall;
 the paired intervals for answerable metrics include zero. That historical 465-file
 checkpoint passed four CI profiles: 2,821 tests, zero skips. These counts do not
