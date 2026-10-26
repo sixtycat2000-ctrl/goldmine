@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='2' transform='rotate(45 12 12)' fill='none' stroke='%23F5B041' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='1.8' fill='%23F5B041'/%3E%3C/svg%3E">
+<title>404 · goldmine</title>
+<style>
+  :root{color-scheme:dark}
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{min-height:100svh;display:grid;place-items:center;background:radial-gradient(52rem 30rem at 82% -8%,rgba(245,176,65,.05),transparent 62%),#08080A;color:#F3F4F6;font:16px/1.62 "Inter Variable",ui-sans-serif,system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;-webkit-font-smoothing:antialiased}
+  .in{max-width:34rem;padding:2rem;text-align:center}
+  .kicker{font:11px/1 "JetBrains Mono Variable",ui-monospace,monospace;letter-spacing:.18em;color:#F5B041;text-transform:uppercase}
+  h1{font:400 clamp(2rem,6vw,3.2rem)/1.15 "Instrument Serif","Songti SC","Noto Serif SC",serif;margin:1rem 0}
+  p{color:#A9AFB8;font-size:14px;margin:0 0 2rem}
+  .row{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+  a{display:inline-block;padding:.7rem 1.4rem;border-radius:999px;font:12px "JetBrains Mono Variable",ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+  .gold{background:#F5B041;color:#08080A}
+  .ghost{border:1px solid rgba(243,244,246,.16);color:#F5B041}
+  a:focus-visible{outline:2px solid #F5B041;outline-offset:3px}
+</style>
+</head>
+<body>
+<main class="in">
+  <p class="kicker">404</p>
+  <h1 data-zh="这一页没有索引。" data-en="This page isn't indexed.">这一页没有索引。</h1>
+  <p data-zh="这个站一共三个页面，这不是其中之一。" data-en="We have exactly three pages, and this isn't one of them.">这个站一共三个页面，这不是其中之一。</p>
+  <div class="row">
+    <a class="gold" href="/">index</a>
+    <a class="ghost" href="/learn">learn</a>
+    <a class="ghost" href="/docs">docs</a>
+  </div>
+</main>
+<script>try{var l=localStorage.getItem("gm-lang");var els=document.querySelectorAll("[data-zh]");if(l==="en")els.forEach(function(e){e.textContent=e.getAttribute("data-en")});document.documentElement.lang=l==="en"?"en":"zh-CN"}catch(e){}</script>
+</body>
+</html>

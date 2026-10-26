@@ -1,12 +1,28 @@
 #!/usr/bin/env python3
-"""Build site/learn.html: inline the baked graph JSON and render the
-no-JS static glossary fallback (all nodes, three layers, refs)."""
-import html, json
+"""Build learn.html: inline the baked graph JSON and render the
+no-JS static glossary fallback (all nodes, layers, refs).
+
+Defaults preserve the v1–v3 flow (site/learn.template.html → site/learn.html).
+The web/ app (Vite + React) calls this with its own template/out paths:
+    python3 site/tools/build_learn.py \
+      --template web/learn.template.html --out web/learn.html
+"""
+import argparse, html, json
 from pathlib import Path
 
 SITE = Path(__file__).resolve().parents[1]
-graph = json.loads((SITE / "content/graph.baked.json").read_text(encoding="utf-8"))
-tpl = (SITE / "learn.template.html").read_text(encoding="utf-8")
+
+ap = argparse.ArgumentParser(description=__doc__)
+ap.add_argument("--graph", type=Path, default=SITE / "content/graph.baked.json",
+                help="baked graph JSON (default: site/content/graph.baked.json)")
+ap.add_argument("--template", type=Path, default=SITE / "learn.template.html",
+                help="HTML template with {{GRAPH_JSON}} + fallback marker")
+ap.add_argument("--out", type=Path, default=SITE / "learn.html",
+                help="output path")
+args = ap.parse_args()
+
+graph = json.loads(args.graph.read_text(encoding="utf-8"))
+tpl = args.template.read_text(encoding="utf-8")
 
 def esc(s):
     return html.escape(str(s or ""), quote=True)
@@ -47,7 +63,8 @@ graph_json = json.dumps(graph, ensure_ascii=False, separators=(",", ":"))
 out = tpl.replace("{{GRAPH_JSON}}", graph_json)
 out = out.replace('<div class="fallback" hidden></div>',
                   '<div class="fallback" data-fb>' + fallback + "</div>")
-(SITE / "learn.html").write_text(out, encoding="utf-8")
+args.out.parent.mkdir(parents=True, exist_ok=True)
+args.out.write_text(out, encoding="utf-8")
 kb = (len(out) + len(graph_json)) / 1024
 print(f"learn.html built: {len(graph['nodes'])} nodes inlined, "
-      f"{len(out)/1024:.0f} KB total")
+      f"{len(out)/1024:.0f} KB total -> {args.out}")
