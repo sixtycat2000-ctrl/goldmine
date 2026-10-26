@@ -71,14 +71,16 @@ def test_long_ocr_text_embeds_in_legal_chunks_and_keeps_ocr_line_locations(setup
     monkeypatch.setattr(pipeline, "_ocr_screenshot", lambda p, **kw: (text, 1.0, "ok"))
     rec = commit(pipeline, cand, pipeline._extract_image(cand, backend.capability()))
     rows = store.db.execute("SELECT loc,loc_end FROM segments WHERE file=? AND kind='ocr' ORDER BY id", (rec.id,)).fetchall()
-    # ocr-rehydrate-001: the stored text is rehydrated (line breaks join into
-    # spaces), so the split count halves; the loc span still records the RAW
-    # line count of the OCR output, and multiple legal chunks still exist.
-    # ocr-rehydrate-001: stored text is rehydrated (lines join into spaces),
-    # so 100 raw OCR lines produce ~51 chunks of joined prose; the span
-    # still starts at line 1 and spans the material.
+    # ocr-rehydrate-001: the stored BODY is rehydrated per chunk (line breaks
+    # join into spaces) while loc ranges keep the raw OCR lines: 100 raw lines
+    # produce ~51 chunks; the span starts at line 1 and stays true.
     assert len(rows) > 1 and rows[0][0] == 1 and rows[-1][1] >= 50
     assert all(start >= 1 and end >= start for start, end in rows)
+    bodies = [r[0] for r in store.db.execute(
+        "SELECT coalesce(f.body, '') FROM fts f JOIN segments s ON s.id=f.rowid "
+        "WHERE s.file=? AND s.kind='ocr'", (rec.id,))]
+    assert bodies and all(
+        b.count("\n") == 2 * b.count("\n\n") for b in bodies)  # only paragraph breaks remain
 
 
 def test_photo_name_and_actual_date_work_without_semantic_backend(setup, tmp_path, monkeypatch):
@@ -196,3 +198,16 @@ def test_empty_reextract_removes_previous_content_instead_of_claiming_it(setup, 
     rec = commit(pipeline, cand, _Outcome(capability="metadata_only", detail="no speech", info={"asr_status": "no_speech"}))
     assert rec.info["evidence_types"] == ["name_metadata"]
     assert Searcher(store, None).search("old transcript", scorer="lexical") == []
+
+
+def test_rehydrate_ocr_unit_semantics():
+    from goldmine.ingest.extraction import rehydrate_ocr as rehy
+    # dehyphenation welds OCR line-split words
+    assert rehy("vibra-\ntory") == "vibratory"
+    # line breaks join into single spaces
+    assert rehy("one\ntwo") == "one two"
+    # paragraph breaks genuinely survive (sentinel, not erased by the join)
+    assert rehy("para one.\n\npara two.") == "para one.\n\npara two."
+    assert rehy("para one.\n \n \npara two.") == "para one.\n\npara two."
+    # space runs collapse; edges trim
+    assert rehy("  a   b  ") == "a b"

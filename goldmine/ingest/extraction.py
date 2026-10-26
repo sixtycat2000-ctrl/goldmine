@@ -38,15 +38,15 @@ def rehydrate_ocr(raw: str) -> str:
     """ocr-rehydrate-001: OCR text as readable prose for exact-readback.
 
     Dehyphenate word splits across line breaks, join intra-paragraph line
-    breaks into single spaces (paragraph breaks survive as a blank line),
-    collapse space runs. The frozen evaluation corpora store their reference
+    breaks into single spaces (paragraph breaks genuinely survive as a blank
+    line via a sentinel), collapse space runs. The frozen evaluation corpora store their reference
     text in exactly this rehydrated form; raw OCR line breaks would split
     every aligned readback run at line boundaries."""
     text = raw.replace("-\n", "")
-    text = re.sub(r"\s*\n\s*\n\s*", "\n\n", text)   # paragraph breaks survive
-    text = re.sub(r"\n", " ", text)                  # line breaks join
+    text = re.sub(r"\s*\n\s*\n[\s\n]*", "\x00", text)  # paragraph break marker
+    text = re.sub(r"\n", " ", text)                           # line breaks join
     text = re.sub(r"[ \t]+", " ", text)
-    return text.strip()
+    return text.replace("\x00", "\n\n").strip()
 
 logger = logging.getLogger("goldmine.ingest")
 
