@@ -82,6 +82,16 @@ KIND_WORDS: dict[str, str] = {
 _MEANING_WEIGHT = 1.0
 _WORDS_WEIGHT = 2.0
 _LOOKUP_MEANING_WEIGHT = 0.5
+
+#: search.v8 (name-concentration-001): a file whose NAME surface carries at
+#: least NAME_UNIT_FLOOR distinct latin query units is called for by name —
+#: it admits via name_quorum and takes a flat NAME_HINT score bonus (in place
+#: of the kind hint; one hint per file). Floor 3 is the minimum that admits
+#: name-named files; the dev census has noise topping out at 1 unit. The hint
+#: sits mid-interval of the measured working range (1.31, 4.18); 3.0 would
+#: move an additional file's rank set (review F6).
+NAME_UNIT_FLOOR = 3
+NAME_HINT = 2.5
 _LOOKUP_WORDS_WEIGHT = 4.0
 _TINY_GROUP = 20
 _STD_FLOOR = 0.02
@@ -409,12 +419,15 @@ class Searcher:
             if math.isfinite(z) and z >= z_gate and fid not in word_rank and coverage.get(fid, 0.0) <= 0.0
         }
         textless = unwitnessed - self._files_with_text(unwitnessed) if unwitnessed else set()
+        # search.v8 (name-concentration-001): files whose NAME surface carries
+        # >= NAME_UNIT_FLOOR distinct latin query units are called for by name.
+        name_hits = self._name_concentrated(lexical, allowed) if scorer == "hybrid" else set()
         reasons = admit_files(
             scorer=scorer, z_by_file=z_by_file, coverage=coverage, word_rank=word_rank,
             exact=lexical.exact if lexical is not None else {},
             rejected_exact=lexical.rejected_exact if lexical is not None else set(),
             z_gate=z_gate, parameters=self.admission_parameters, segment_margins=margins,
-            textless=textless,
+            textless=textless, name_hits=name_hits,
         )
         candidates = set(reasons) & allowed
         self._drop_deleted(candidates, stats)
@@ -426,6 +439,10 @@ class Searcher:
         w_c = _LOOKUP_WORDS_WEIGHT if lookup else _WORDS_WEIGHT
         hints = self.kind_hints(query)
         kind_by_file = self._kinds_of(candidates)
+        # One hint per file at most: a name call supersedes the kind hint.
+        hinted = lambda f: (  # noqa: E731
+            NAME_HINT if f in name_hits else (1.0 if kind_by_file.get(f) in hints else 0.0)
+        )
 
         if scorer == "lexical":
             ordered = sorted(candidates, key=lambda f: word_rank.get(f, 10**9))
@@ -451,8 +468,7 @@ class Searcher:
                 z = z_by_file.get(f)
                 score = w_m * max(z, 0.0) if z is not None else 0.0
                 score += w_c * (coverage.get(f, 0.0) ** 1.5)
-                if kind_by_file.get(f) in hints:
-                    score += 1.0  # flat kind hint, capped, never stacks
+                score += hinted(f)  # flat, capped, never stacks: name call OR kind
                 scored[f] = score
             ordered = sorted(candidates, key=lambda f: (-scored[f], f))
 
@@ -656,6 +672,30 @@ class Searcher:
             and (any(ch.isalpha() for ch in t) or len(t) >= 4)
             for t in terms
         )
+
+    def _name_concentrated(self, lexical, allowed):
+        """Files whose NAME surface matches >= NAME_UNIT_FLOOR distinct latin
+        query units (search.v8). Counted with the runtime matcher semantics:
+        column-filtered FTS on the units' own patterns, whole-name-surface
+        (the fts name column), latin units only — CJK units never count
+        toward the floor."""
+        if lexical is None or not lexical.units:
+            return set()
+        latin = [u for u in lexical.units if u.kind == "latin"]
+        if len(latin) < NAME_UNIT_FLOOR:
+            return set()
+        counts: dict[int, set[int]] = {}
+        for index, unit in enumerate(latin):
+            pattern = unit.patterns[0] if unit.patterns else '"' + unit.text.replace('"', '""') + '"'
+            rows = self.store.db.execute(
+                "SELECT s.file FROM fts f JOIN segments s ON s.id=f.rowid "
+                "WHERE s.kind='name' AND fts MATCH ?",
+                ("name : (" + pattern + ")",),
+            )
+            for (fid,) in rows:
+                if fid in allowed:
+                    counts.setdefault(fid, set()).add(index)
+        return {fid for fid, hits in counts.items() if len(hits) >= NAME_UNIT_FLOOR}
 
     @staticmethod
     def zscores(scores: "np.ndarray", modalities: "np.ndarray") -> "np.ndarray":

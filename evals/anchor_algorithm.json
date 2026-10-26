@@ -84,6 +84,11 @@
     "distinct_mandatory_anchors": 32,
     "inspected_source_rows": 2000
    }
+  },
+  {
+   "version": "search.v8-name-concentration",
+   "change": "name-concentration-001: name_quorum admission (>=3 distinct latin query units on the name surface) and a flat NAME_HINT=2.5 replacing the kind hint for name-named files; reason precedence exact > name_quorum(_standout) > lexical_quorum > semantic_standout",
+   "preregistration": "reports/execution/P0-05/name-concentration-001/preregistration.json"
   }
  ],
  "limitations": [
@@ -122,7 +127,7 @@
  "search_behavior_notes": [
   "2026-10-25 search.v7-evidence-window-witness: evidence-side only — select_evidence window dominance (W=200, margin 2) and hybrid semantic admission requires a lexical witness (coverage>0 or FTS rank); anchor algorithm, z_gate, coverage_quorum and parameter_registration unchanged; preregistration reports/execution/P0-05/evidence-window-witness-001/preregistration.json"
  ],
- "search_behavior_version": "search.v7-evidence-window-witness",
+ "search_behavior_version": "search.v8-name-concentration",
  "semantic_remainder": "structural_quote_provenance",
  "status": "ADOPTED",
  "work_bounds": {

@@ -102,13 +102,16 @@ def test_candidate_registration_is_finite_and_does_not_claim_calibration():
     # Historical numeric trials retain their original v3 bytes/status.
     assert registered["search_behavior_version"] == "search.v3-evidence-control"
     structural = json.loads((Path(__file__).parents[1] / "evals/anchor_algorithm.json").read_text())
-    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION == "search.v7-evidence-window-witness"
+    # search.v8 (name-concentration-001): the structural registry moves with
+    # SEARCH_BEHAVIOR_VERSION; v7 was the window-witness adoption, v8 adds the
+    # name-concentration admission/hint (preregistered).
+    assert structural["search_behavior_version"] == SEARCH_BEHAVIOR_VERSION
     assert structural["algorithm_version"] == "anchor.v3-quote-provenance"
     assert structural["status"] == "ADOPTED"
     assert structural["quality_results"]["public_current_010"]["status"] == "PASS"
     assert structural["semantic_remainder"] == "structural_quote_provenance"
     # The v1 and v2 registrations are preserved verbatim as immutable history.
-    v1_entry, v2_entry = structural["history"]
+    v1_entry, v2_entry = structural["history"][:2]  # immutable; later entries append
     assert v1_entry["algorithm_version"] == "anchor.v1-lexical"
     assert v1_entry["search_behavior_version"] == "search.v4-anchor-contract"
     assert v1_entry["parameter_registration"]["sha256"] == \
