@@ -32,6 +32,8 @@ type Props = {
   stagger?: number;
 };
 
+const STAGGER_CAP = 0.35;
+
 /**
  * Staggered per-character spring reveal (stiffness 120, damping 20 per spec).
  * Screen readers get the plain string via aria-label; glyphs are aria-hidden.
@@ -53,7 +55,7 @@ export function SplitTextReveal({ text, className, delay = 0, stagger = 0.022 }:
         {words.map((word, wi) => (
           <span key={wi} className="inline-block whitespace-pre">
             {word.chars.map((ch, ci) => {
-              const d = delay + Math.min(idx++ * stagger, 0.6);
+              const d = delay + Math.min(idx++ * stagger, STAGGER_CAP);
               return (
                 <motion.span
                   key={ci}

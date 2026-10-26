@@ -59,17 +59,18 @@ export function Hero() {
             stagger={0.016}
           />
         </h1>
-        <Reveal delay={0.9} className="mt-6 max-w-[44em]">
-          <p
-            className="text-[15px] leading-relaxed text-ink2 sm:text-base"
-            style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}
-          >
-            {zh
-              ? "你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。"
-              : "You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist."}
-          </p>
-        </Reveal>
-        <Reveal delay={1.05} className="mt-8">
+        {/* the dek renders statically (identical to the pre-mount shell): it is
+            the page's largest text node, and animating it would push the LCP
+            to animation end. The h1 keeps the spring choreography. */}
+        <p
+          className="mt-6 max-w-[44em] text-[15px] leading-relaxed text-ink2 sm:text-base"
+          style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}
+        >
+          {zh
+            ? "你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。"
+            : "You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist."}
+        </p>
+        <Reveal delay={0.45} className="mt-8">
           <div className="flex flex-wrap items-center gap-2">
             <MagneticButton variant="gold" href="/docs#start">
               {zh ? "快速开始" : "Quickstart"} →
@@ -79,7 +80,7 @@ export function Hero() {
             </MagneticButton>
           </div>
         </Reveal>
-        <Reveal delay={1.2}>
+        <Reveal delay={0.55}>
           <div style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}>
             <SceneTabs scene={scene} onScene={setScene} />
           </div>

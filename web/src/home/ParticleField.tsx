@@ -192,6 +192,10 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
 
     let renderer: THREE.WebGLRenderer;
     try {
+      // probe first: in GPU-less environments (headless audits, hardening
+      // configs) THREE would console.error before our catch runs
+      const probe = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+      if (!probe) throw new Error("webgl unavailable");
       renderer = new THREE.WebGLRenderer({
         canvas,
         alpha: true,

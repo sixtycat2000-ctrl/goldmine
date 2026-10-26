@@ -3,13 +3,15 @@ import { createRoot } from "react-dom/client";
 import { MotionConfig } from "framer-motion";
 import "@fontsource-variable/inter";
 import "@fontsource/instrument-serif";
-import "@fontsource/noto-serif-sc/400.css";
 import "@fontsource-variable/jetbrains-mono";
 import "../styles/global.css";
 import { LangProvider, useLang } from "../lib/lang";
 import { SmoothScrollProvider } from "../components/motion/SmoothScrollProvider";
+import { loadNotoSerifSc } from "../lib/notoSerifSc";
 import { loadLearnData } from "../lib/learn-data";
 import { LearnApp } from "./LearnApp";
+
+loadNotoSerifSc();
 
 const data = loadLearnData();
 

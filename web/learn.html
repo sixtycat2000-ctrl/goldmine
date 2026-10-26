@@ -24,10 +24,22 @@ window.addEventListener("error",function(e){
   }
 },true);
 </script>
+<style>
+  /* pre-paint lang switch: the head boot script sets <html lang> before body */
+  html[lang="en"] .sh-zh { display: none; }
+  html[lang="zh-CN"] .sh-en { display: none; }
+</style>
 </head>
 <body>
 <h1 class="sr-only" data-zh="goldmine 概念地图：145 个概念，四层逐层下探" data-en="goldmine concept map: 145 concepts across four layers">goldmine 概念地图：145 个概念，四层逐层下探</h1>
-<div id="root"></div>
+<div id="root"><!--
+  Pre-mount shell: paints while the 388KB inline graph streams in; React
+  replaces it with the interactive app (same header content, same type).
+--><main style="max-width:72rem;margin:0 auto;padding:7rem 1.25rem 2rem">
+  <p style="font:11px var(--font-mono,ui-monospace,monospace);letter-spacing:.18em;color:#F5B041;text-transform:uppercase">Learn · Concept Map</p>
+  <h2 style="font:400 clamp(2rem,1.1rem + 3.4vw,3.5rem)/1.14 var(--font-display,'Instrument Serif','Noto Serif SC','Songti SC',serif);color:#F3F4F6;max-width:14em;margin:.75rem 0 0"><span class="sh-zh">145 个真实概念，四层逐层下探</span><span class="sh-en">145 real concepts, four layers deep</span></h2>
+  <p style="color:#A9AFB8;font:15px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);max-width:46em;margin:1rem 0 0"><span class="sh-zh">从机制层到基础层：每张卡都有定义、大白话、实例和真实代码出处。按簇筛选、按层进阶；读过的概念会被记住，进度条就是你自己的。</span><span class="sh-en">From mechanisms to fundamentals: every card carries a definition, plain words, an example and real code refs. Filter by cluster, advance by layer; what you read is remembered — the progress bar is yours.</span></p>
+</main></div>
 <!--
   Baked by site/tools/build_learn.py: the graph JSON is inlined into the
   <script id="gm-graph"> data block below (consumed by the app at boot — no

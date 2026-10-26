@@ -7,7 +7,7 @@
     "dev": "npm run bake && vite",
     "bake": "python3 ../site/tools/build_learn.py --template learn.template.html --out learn.html",
     "typecheck": "tsc --noEmit",
-    "build": "npm run typecheck && npm run bake && vite build",
+    "build": "npm run typecheck && npm run bake && vite build && node scripts/add-font-preloads.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
