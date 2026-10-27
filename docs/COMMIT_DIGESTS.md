@@ -514,3 +514,19 @@ modulepreload 降优先级；WebGL 先探测后建渲染器（无 GPU 环境零�
 Learn 93/100/100/100**；TBT ≤30ms，CLS ≤0.018。四项全部 ≥90，指令门槛达成。
 遗留：Noto 异步包装是 363KB（117KB gz）JS chunk（非阻塞、idle 后加载），
 未来可换 <link> 直注省 ~105KB——不影响门槛，记录备查。
+
+### 追记 2（打磨轮，commit 2e2a60a，部署 25bf2c60）
+
+owner 反馈「滚动 + 性能 + 粒子光太亮/糊」→ 三位专家子代理（WebGL 艺术指导 /
+滚动工程师 / 运行时性能）开方，全部落地。粒子：32px 加色精灵 + 1.77× 增益
+（必然白裁）→ 3-8px 离散光点、增益天花板 0.83、星团间距拉开、尘埃 18%→10%、
+DPR 上限 1.5/1.25——填充率降约一个数量级，正文区遮罩随之减为轻纱。滚动：
+修复 Narrative 卡片从未升起的 GSAP 百分比解析 bug + 末卡零停留 + 步进轨超前
+（HOLD/SWAP 时间线 + scrub:true 去掉双重滞后）；Nav 进度条改 MotionValue
+直写（滚动零 React 渲染）；Lenis anchors/ignoreMobileResize/fonts.ready 加固；
+英雄滚动退场编排（RM 安全）。运行时：打字机/计数器改 DOM 直写、磁性按钮共享
+指针监听、Bento 无限循环改 IO 门控 CSS 关键帧、Noto 中文条件 preload。
+
+**Lighthouse（mobile）首页 P96/A100/BP100/SEO100**（LCP 2.7s、TBT 10ms、
+CLS 0.023）。风险：粒子密度/亮度是新艺术方向，owner 观感为准；three.js 换
+手写渲染器（省 119KB gz）评估过、本轮刻意不做。
