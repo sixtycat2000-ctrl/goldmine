@@ -1,8 +1,76 @@
 import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useReducedMotion, type MotionValue } from "framer-motion";
 import { useFinePointer } from "../../lib/hooks";
 
 const MAGNET_RADIUS = 40; // px of pull zone around the button (spec)
+
+/*
+ * One shared window pointermove listener + one rAF for every MagneticButton on
+ * the page: rects are read for all subscribers first, then all transforms are
+ * written (no read/write interleaving). Each button's spring/motion values are
+ * its own; the shell is pointer-events-none so the magnet zone never steals
+ * clicks. Skipped entirely for coarse pointers and reduced motion.
+ */
+
+type Sub = {
+  el: HTMLElement;
+  mx: MotionValue<number>;
+  my: MotionValue<number>;
+};
+
+const subs = new Set<Sub>();
+let listening = false;
+let frame = 0;
+let px = -1;
+let py = -1;
+
+function flush() {
+  frame = 0;
+  if (!subs.size) return;
+  const rects = new Map<Sub, DOMRect>();
+  for (const s of subs) rects.set(s, s.el.getBoundingClientRect()); // reads first
+  for (const s of subs) {
+    const r = rects.get(s)!;
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const dx = px - cx;
+    const dy = py - cy;
+    const dist = Math.hypot(dx, dy);
+    const zone = Math.max(r.width, r.height) / 2 + MAGNET_RADIUS;
+    if (dist > zone) {
+      s.mx.set(0);
+      s.my.set(0);
+      continue;
+    }
+    const pull = Math.min(6, (1 - dist / zone) * 9);
+    s.mx.set((dx / (dist || 1)) * pull);
+    s.my.set((dy / (dist || 1)) * pull);
+  }
+}
+
+function subscribe(s: Sub) {
+  subs.add(s);
+  if (!listening) {
+    listening = true;
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        px = e.clientX;
+        py = e.clientY;
+        if (!frame) frame = requestAnimationFrame(flush);
+      },
+      { passive: true },
+    );
+  }
+}
+
+function unsubscribe(s: Sub) {
+  subs.delete(s);
+  if (!subs.size && frame) {
+    cancelAnimationFrame(frame);
+    frame = 0;
+  }
+}
 
 type Props = {
   href?: string;
@@ -14,13 +82,6 @@ type Props = {
   children: ReactNode;
 };
 
-/**
- * Magnetic CTA: pulls up to ~6px toward the cursor within a 40px zone (spring
- * return), with a liquid gold fill sweeping in on hover. Tracking happens at
- * the window level and the shell is pointer-events-none, so the invisible
- * magnet zone never steals clicks from neighbors (a11y/touch safe). Pointer FX
- * skip under reduced motion; keyboard focus gets the standard gold ring.
- */
 export function MagneticButton({
   href,
   onClick,
@@ -31,7 +92,6 @@ export function MagneticButton({
   children,
 }: Props) {
   const shellRef = useRef<HTMLSpanElement>(null);
-  const frame = useRef(0);
   const fine = useFinePointer();
   const reduced = useReducedMotion();
   const mx = useMotionValue(0);
@@ -42,34 +102,11 @@ export function MagneticButton({
   const active = fine && !reduced;
 
   useEffect(() => {
-    if (!active) return;
-    const onMove = (e: PointerEvent) => {
-      const shell = shellRef.current;
-      if (!shell) return;
-      const r = shell.getBoundingClientRect();
-      const cx = r.left + r.width / 2;
-      const cy = r.top + r.height / 2;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.hypot(dx, dy);
-      const zone = Math.max(r.width, r.height) / 2 + MAGNET_RADIUS;
-      cancelAnimationFrame(frame.current);
-      frame.current = requestAnimationFrame(() => {
-        if (dist > zone) {
-          mx.set(0);
-          my.set(0);
-          return;
-        }
-        const pull = Math.min(6, (1 - dist / zone) * 9);
-        mx.set((dx / (dist || 1)) * pull);
-        my.set((dy / (dist || 1)) * pull);
-      });
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      cancelAnimationFrame(frame.current);
-      window.removeEventListener("pointermove", onMove);
-    };
+    const el = shellRef.current;
+    if (!active || !el) return;
+    const sub: Sub = { el, mx, my };
+    subscribe(sub);
+    return () => unsubscribe(sub);
   }, [active, mx, my]);
 
   const base =
@@ -89,11 +126,7 @@ export function MagneticButton({
   );
 
   return (
-    <motion.span
-      ref={shellRef}
-      style={{ x, y, display: "inline-block" }}
-      className="pointer-events-none"
-    >
+    <motion.span ref={shellRef} style={{ x, y, display: "inline-block" }} className="pointer-events-none">
       {href ? (
         <motion.a
           href={href}

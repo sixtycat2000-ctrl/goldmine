@@ -1,4 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from "react";
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
 import { SplitTextReveal } from "../components/motion/SplitTextReveal";
 import { Reveal } from "../components/motion/Reveal";
 import { MagneticButton } from "../components/motion/MagneticButton";
@@ -13,6 +14,13 @@ export function Hero() {
   const [scene, setScene] = useState<Scene>(0);
   const [ready, setReady] = useState(false);
   const lang = useLang();
+  const reduced = useReducedMotion();
+
+  // exit choreography: content drifts up slowly, fades faster — depth without
+  // fighting the particle camera. Post-mount only, so the LCP is untouched.
+  const { scrollY } = useScroll();
+  const heroY = useTransform(scrollY, [0, 900], [0, -140], { clamp: true });
+  const heroFade = useTransform(scrollY, [0, 520], [1, 0], { clamp: true });
 
   // Defer the WebGL chunk until after first paint + idle: LCP is text.
   // (Safari < 17 has no requestIdleCallback — fall back to a timeout.)
@@ -38,17 +46,21 @@ export function Hero() {
           <ParticleField scene={scene} />
         </Suspense>
       )}
-      {/* scrims: keep text legible over the field, melt into bg0 below */}
+      {/* scrims: light left wash for the copy column (the field is re-graded
+          dim at the source), bottom melt into bg0 for the stats strip */}
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
         style={{
           background:
-            "linear-gradient(90deg, rgba(8,8,10,0.9) 0%, rgba(8,8,10,0.72) 42%, rgba(8,8,10,0.4) 68%, rgba(8,8,10,0.12) 86%, rgba(8,8,10,0) 100%), radial-gradient(70% 55% at 50% 42%, rgba(8,8,10,0) 30%, rgba(8,8,10,0.55) 100%), linear-gradient(to bottom, rgba(8,8,10,0.25), rgba(8,8,10,0) 22%, rgba(8,8,10,0) 62%, #08080A 96%)",
+            "linear-gradient(90deg, rgba(8,8,10,0.62) 0%, rgba(8,8,10,0.30) 36%, rgba(8,8,10,0.08) 56%, rgba(8,8,10,0) 70%), linear-gradient(to bottom, rgba(8,8,10,0) 55%, rgba(8,8,10,0.4) 78%, #08080A 97%)",
         }}
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pt-28 pb-16">
+      <motion.div
+        className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pt-28 pb-16 will-change-transform"
+        style={reduced ? undefined : { y: heroY, opacity: heroFade }}
+      >
         <Reveal y={12}>
           <p className="kicker">OPEN SOURCE · MACOS · LOCAL-FIRST</p>
         </Reveal>
@@ -85,13 +97,13 @@ export function Hero() {
             <SceneTabs scene={scene} onScene={setScene} />
           </div>
         </Reveal>
-      </div>
+      </motion.div>
 
       <div className="relative z-10 hairline-t">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 px-5 py-6 md:grid-cols-4">
           <div>
             <div className="font-display text-3xl text-gold">
-              <Counter end={3200} />+
+              <Counter end={3200} delay={500} duration={1100} />+
             </div>
             <div className="mt-1 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
               {zh ? "离线测试（全量 8 分钟）" : "OFFLINE TESTS (8-MIN SUITE)"}

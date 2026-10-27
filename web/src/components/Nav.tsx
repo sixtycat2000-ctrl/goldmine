@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import { useLangState, T } from "../lib/lang";
 import { REPO_URL } from "../lib/metrics";
 import { IconLogo, IconExt } from "./Icons";
@@ -8,32 +8,17 @@ export type Page = "home" | "learn" | "docs";
 
 /**
  * Fixed shell nav: transparent until 24px of scroll, then glass. Top progress
- * bar tracks document scroll (transform-only). Same routes as v1–v3.
+ * bar is a MotionValue-driven transform write — zero React renders per frame.
  */
 export function Nav({ page }: { page: Page }) {
   const { lang, setLang } = useLangState();
   const reduced = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const { scrollY, scrollYProgress } = useScroll();
 
-  useEffect(() => {
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const y = window.scrollY;
-        setScrolled(y > 24);
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        setProgress(max > 0 ? Math.min(1, y / max) : 0);
-      });
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => {
-      cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", onScroll);
-    };
-  }, []);
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled((s) => (y > 24 !== s ? !s : s));
+  });
 
   const linkCls = (p: Page) =>
     `font-mono text-[12px] tracking-[0.1em] uppercase transition-colors ${
@@ -43,9 +28,9 @@ export function Nav({ page }: { page: Page }) {
   return (
     <>
       <div className="fixed inset-x-0 top-0 z-[90] h-[2px] bg-transparent" aria-hidden="true">
-        <div
-          className="h-full w-full origin-left bg-gradient-to-r from-gold to-goldbright"
-          style={{ transform: `scaleX(${reduced ? 1 : progress})` }}
+        <motion.div
+          className="h-full w-full origin-left bg-gradient-to-r from-gold to-goldbright will-change-transform"
+          style={{ scaleX: reduced ? 1 : scrollYProgress }}
         />
       </div>
       <nav

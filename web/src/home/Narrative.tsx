@@ -61,24 +61,38 @@ export function Narrative() {
       gsap.registerPlugin(ScrollTrigger);
       const cards = cardsRef.current;
       if (!cards.length) return;
+
+      // pacing: each card holds a full unit of scroll; swaps take 0.5 units.
+      const HOLD = 1;
+      const SWAP = 0.5;
+      const DUR = STEPS.length * HOLD + (STEPS.length - 1) * SWAP;
+
       ctx = gsap.context(() => {
+        // GSAP parses computed matrices — the CSS translateY(45%) would become
+        // px `y`, leaving yPercent at 0 and the rise a no-op. Set it in GSAP.
+        cards.forEach((c, i) => i > 0 && gsap.set(c, { yPercent: 45 }));
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
             end: "bottom bottom",
-            scrub: 0.6,
+            scrub: true, // Lenis already smooths; a second lag layer floats
             onUpdate(self) {
-              const idx = Math.min(STEPS.length - 1, Math.floor(self.progress * STEPS.length));
+              const t = self.progress * DUR;
+              const idx = Math.min(
+                STEPS.length - 1,
+                Math.max(0, Math.floor((t + SWAP / 2) / (HOLD + SWAP) + 1e-4)),
+              );
               setActive((prevA) => (prevA === idx ? prevA : idx));
             },
           },
         });
         for (let i = 1; i < cards.length; i++) {
-          tl.to(cards[i - 1], { yPercent: -12, scale: 0.95, opacity: 0.22, duration: 1, ease: "none" }, i).to(
+          const at = HOLD + (i - 1) * (HOLD + SWAP);
+          tl.to(cards[i - 1], { yPercent: -14, scale: 0.95, opacity: 0.22, duration: SWAP, ease: "power2.in" }, at).to(
             cards[i],
-            { yPercent: 0, opacity: 1, duration: 1, ease: "none", immediateRender: false },
-            i + 0.05,
+            { yPercent: 0, opacity: 1, duration: SWAP, ease: "power2.out", immediateRender: false },
+            at,
           );
         }
       }, containerRef);
@@ -107,9 +121,9 @@ export function Narrative() {
       <div
         ref={containerRef}
         className="relative"
-        style={reduced ? undefined : { height: `${(STEPS.length + 1) * 100}vh` }}
+        style={reduced ? undefined : { height: `${STEPS.length * 150}svh` }}
       >
-        <div className={reduced ? "" : "sticky top-0 flex h-screen items-center overflow-hidden"}>
+        <div className={reduced ? "" : "sticky top-0 flex h-svh items-center overflow-hidden"}>
           {/* step rail */}
           <div className="pointer-events-none absolute top-1/2 left-4 hidden -translate-y-1/2 flex-col gap-3 lg:flex" aria-hidden="true">
             {STEPS.map((s, i) => (
@@ -129,7 +143,6 @@ export function Narrative() {
                 className={`glass rounded-3xl p-8 sm:p-10 ${
                   reduced ? "relative mb-4" : "absolute inset-x-5 inset-y-0"
                 } ${!reduced && i > 0 ? "opacity-0" : ""}`}
-                style={reduced ? undefined : { transform: i > 0 ? "translateY(45%)" : undefined }}
               >
                 <p className="kicker">{s.n}</p>
                 <h3 className="mt-4 font-display text-title leading-snug text-ink sm:text-3xl">

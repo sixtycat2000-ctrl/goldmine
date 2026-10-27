@@ -136,7 +136,7 @@ export function HeadToHead() {
           en: "Nothing here is marketing. The QMD comparison is pinned to 2.8.3: same 122 real files, same 210 questions.",
         }}
       />
-      <Reveal>
+      <Reveal y={16}>
         <CompareTable />
         <p className="mt-4 max-w-[52em] text-[12px] leading-relaxed text-sub">
           {pick(lang, COMPARE_TABLE.footnote.zh, COMPARE_TABLE.footnote.en)}

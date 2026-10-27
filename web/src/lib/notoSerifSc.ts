@@ -20,6 +20,10 @@ export function loadNotoSerifSc(): void {
     document.head.appendChild(link);
   };
 
+  // a zh-conditional preload may already be in head (injected at build) —
+  // the sheet is then in flight, so attach immediately
+  const preloaded = document.querySelector('link[rel="preload"][as="style"]');
+
   let zhPref = false;
   try {
     zhPref =
@@ -29,7 +33,7 @@ export function loadNotoSerifSc(): void {
     zhPref = navigator.language?.toLowerCase().startsWith("zh");
   }
 
-  if (zhPref) {
+  if (zhPref || preloaded) {
     kick();
     return;
   }

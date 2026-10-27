@@ -56,7 +56,7 @@ export function MetricsBar() {
         />
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
           {tiles.map((t, i) => (
-            <Reveal key={t.label} delay={i * 0.07}>
+            <Reveal key={t.label} delay={i * 0.05} y={14}>
               <div className={`font-display text-3xl lg:text-[2rem] ${t.gold ? "text-gold" : "text-ink"}`}>{t.value}</div>
               <div className="mt-2 font-mono text-[10px] leading-relaxed tracking-[0.12em] text-sub uppercase">
                 {t.label}
@@ -65,7 +65,13 @@ export function MetricsBar() {
           ))}
         </div>
 
-        <div className="no-scrollbar hscroll mt-16 overflow-x-auto" tabIndex={0} role="region" aria-label={zh ? "实测数字台账" : "measured-numbers ledger"}>
+        <Reveal y={0} duration={0.5} className="mt-16 overflow-x-auto">
+          <div
+            className="no-scrollbar hscroll overflow-x-auto"
+            tabIndex={0}
+            role="region"
+            aria-label={zh ? "实测数字台账" : "measured-numbers ledger"}
+          >
           <table className="w-full min-w-[46rem] border-collapse text-left">
             <thead>
               <tr className="hairline-b">
@@ -94,7 +100,8 @@ export function MetricsBar() {
               ))}
             </tbody>
           </table>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

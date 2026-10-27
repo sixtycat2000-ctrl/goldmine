@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useLang, pick } from "../lib/lang";
 import { SpotlightCard } from "../components/motion/SpotlightCard";
 import { TiltCard } from "../components/motion/TiltCard";
+import { Reveal } from "../components/motion/Reveal";
 import { SectionHead } from "../components/SectionHead";
 import { Counter } from "../components/motion/Counter";
 
@@ -74,32 +75,34 @@ function MultimodalDemo() {
   const lang = useLang();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.4 });
+  // compositor-only CSS loops, IO-gated via the .demo-live class — no JS
+  // animation drivers while the card is on screen
   return (
-    <div ref={ref} className="mt-5" aria-hidden="true">
+    <div ref={ref} className={`mt-5 ${inView ? "demo-live" : ""}`} data-demo aria-hidden="true">
       <div className="flex flex-wrap gap-2">
         {chips.map((c, i) => (
-          <motion.span
+          <span
             key={c.en}
-            className="rounded-full border border-line px-3 py-1 font-mono text-[10px] tracking-[0.1em] text-ink2 uppercase"
-            animate={
-              inView
-                ? { opacity: [0.35, 1, 0.35], borderColor: ["var(--color-line)", "rgba(245,176,65,0.55)", "var(--color-line)"] }
-                : { opacity: 0.6 }
-            }
-            transition={inView ? { duration: 3.2, repeat: Infinity, delay: i * 0.8, ease: "easeInOut" } : { duration: 0.3 }}
+            className="gm-anim rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.1em] text-ink2 uppercase"
+            style={{
+              animation: `gm-chip-pulse 3.2s ease-in-out ${i * 0.8}s infinite`,
+              opacity: 0.6,
+            }}
           >
             {pick(lang, c.zh, c.en)}
-          </motion.span>
+          </span>
         ))}
       </div>
       <div className="mt-4 flex h-8 items-end gap-1" aria-hidden="true">
         {[0.4, 0.9, 0.55, 1, 0.65, 0.85, 0.45, 0.75, 0.5, 0.95, 0.6, 0.8].map((h, i) => (
-          <motion.span
+          <span
             key={i}
-            className="w-1.5 flex-1 rounded-sm bg-teal/70"
-            style={{ height: `${h * 100}%`, originY: 1 }}
-            animate={inView ? { scaleY: [0.25, 1, 0.25] } : { scaleY: 0.6 }}
-            transition={inView ? { duration: 1.6, repeat: Infinity, delay: i * 0.13, ease: "easeInOut" } : { duration: 0.3 }}
+            className="gm-anim w-1.5 flex-1 rounded-sm bg-teal/70"
+            style={{
+              height: `${h * 100}%`,
+              transformOrigin: "bottom",
+              animation: `gm-wave 1.6s ease-in-out ${i * 0.13}s infinite`,
+            }}
           />
         ))}
       </div>
@@ -130,19 +133,19 @@ function GatesDemo() {
 function LocalDemo() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { amount: 0.5 });
-  const reduced = useReducedMotion();
-  const live = inView && !reduced;
   const lang = useLang();
   return (
-    <div ref={ref} className="mt-5" aria-hidden="true">
+    <div ref={ref} className={`mt-5 ${inView ? "demo-live" : ""}`} data-demo aria-hidden="true">
       <div className="relative h-16">
         <div className="absolute top-1/2 left-0 h-px w-full bg-line" />
         <div className="absolute top-1/2 left-0 h-9 w-16 -translate-y-1/2 rounded-md border border-line-strong bg-bg3" />
         <div className="absolute top-1/2 right-0 h-9 w-16 -translate-y-1/2 rounded-full border border-dashed border-line" />
-        <motion.span
-          className="absolute top-1/2 left-16 h-2 w-2 -translate-y-1/2 rounded-full bg-gold"
-          animate={live ? { x: [0, 132, 0], opacity: [1, 0.9, 1] } : { x: 0, opacity: 1 }}
-          transition={live ? { duration: 2.8, repeat: Infinity, ease: "easeInOut", times: [0, 0.62, 1] } : { duration: 0.3 }}
+        <span
+          className="gm-anim absolute top-1/2 left-16 h-2 w-2 rounded-full bg-gold"
+          style={{
+            marginTop: "-4px",
+            animation: "gm-dot-ping 2.8s ease-in-out infinite",
+          }}
         />
         <span className="absolute top-1/2 right-20 font-mono text-[10px] text-fail">✕</span>
       </div>
@@ -212,16 +215,14 @@ function Card({
   title,
   sub,
   children,
-  className,
 }: {
   title: { zh: string; en: string };
   sub: { zh: string; en: string };
   children: React.ReactNode;
-  className?: string;
 }) {
   const lang = useLang();
   return (
-    <TiltCard className={className}>
+    <TiltCard className="h-full">
       <SpotlightCard className="flex h-full flex-col p-6">
         <h3 className="font-display text-title leading-snug text-ink">{pick(lang, title.zh, title.en)}</h3>
         <p className="mt-2 text-[13px] leading-relaxed text-ink2">{pick(lang, sub.zh, sub.en)}</p>
@@ -248,66 +249,70 @@ export function Bento() {
         }}
       />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
-        <Card
-          className="lg:col-span-4"
-          title={{ zh: "混合搜索，算术可查", en: "Hybrid search, inspectable arithmetic" }}
-          sub={{
-            zh: "语义 z 分与词精确覆盖融合打分，编号查询自动反转权重。--why 把每条命中的算术一项项摆出来。",
-            en: "Semantic z-score fused with exact word coverage; identifier queries auto-invert. --why prints every hit's arithmetic, line by line.",
-          }}
-        >
-          <HybridDemo />
-        </Card>
-        <Card
-          className="lg:col-span-2"
-          title={{ zh: "全媒体，本地索引", en: "All media, indexed locally" }}
-          sub={{
-            zh: "录音转写命中到秒，截图 OCR 按内容搜，视频按关键帧——模型都在你机器上跑。",
-            en: "Recordings hit to the second, screenshots searched by content, video by keyframes — models run on your machine.",
-          }}
-        >
-          {!reduced && <MultimodalDemo />}
-        </Card>
-        <Card
-          className="lg:col-span-2"
-          title={{ zh: "诚实契约", en: "The honesty contract" }}
-          sub={{
-            zh: "没有静默降级：每个文件四种状态都带原因；两门未过的质量门写明为什么。",
-            en: "No silent degradations: every file carries its state and reason; the two unresolved gates are explained, not hidden.",
-          }}
-        >
-          <GatesDemo />
-        </Card>
-        <Card
-          className="lg:col-span-2"
-          title={{ zh: "零上传", en: "Zero upload" }}
-          sub={{
-            zh: "索引是一个 SQLite 文件。备份、搬家、删除——复制那一个文件就好。",
-            en: "The index is one SQLite file. Backup, move, delete — copy the one file.",
-          }}
-        >
-          <LocalDemo />
-        </Card>
-        <Card
-          className="lg:col-span-2"
-          title={{ zh: "证据纪律", en: "Evidence discipline" }}
-          sub={{
-            zh: "回执（argv/退出码/sha）、预注册冻结、对抗评审——独立审计 840 项重评分零错配。",
-            en: "Receipts (argv/exit/sha), frozen preregistrations, adversarial review — an independent audit re-scored 840 metrics, zero mismatches.",
-          }}
-        >
-          <ReceiptDemo />
-        </Card>
-        <Card
-          className="lg:col-span-4"
-          title={{ zh: "本地 MCP 服务", en: "Local MCP server" }}
-          sub={{
-            zh: "goldmine mcp 把四个只读工具——search / get / context / status——直接挂进你的 Agent 工具箱。",
-            en: "goldmine mcp exposes four read-only tools — search / get / context / status — straight into your Agent's toolbox.",
-          }}
-        >
-          <ServeDemo />
-        </Card>
+        {(
+          [
+            {
+              span: "lg:col-span-4",
+              title: { zh: "混合搜索，算术可查", en: "Hybrid search, inspectable arithmetic" },
+              sub: {
+                zh: "语义 z 分与词精确覆盖融合打分，编号查询自动反转权重。--why 把每条命中的算术一项项摆出来。",
+                en: "Semantic z-score fused with exact word coverage; identifier queries auto-invert. --why prints every hit's arithmetic, line by line.",
+              },
+              demo: <HybridDemo />,
+            },
+            {
+              span: "lg:col-span-2",
+              title: { zh: "全媒体，本地索引", en: "All media, indexed locally" },
+              sub: {
+                zh: "录音转写命中到秒，截图 OCR 按内容搜，视频按关键帧——模型都在你机器上跑。",
+                en: "Recordings hit to the second, screenshots searched by content, video by keyframes — models run on your machine.",
+              },
+              demo: !reduced ? <MultimodalDemo /> : null,
+            },
+            {
+              span: "lg:col-span-2",
+              title: { zh: "诚实契约", en: "The honesty contract" },
+              sub: {
+                zh: "没有静默降级：每个文件四种状态都带原因；两门未过的质量门写明为什么。",
+                en: "No silent degradations: every file carries its state and reason; the two unresolved gates are explained, not hidden.",
+              },
+              demo: <GatesDemo />,
+            },
+            {
+              span: "lg:col-span-2",
+              title: { zh: "零上传", en: "Zero upload" },
+              sub: {
+                zh: "索引是一个 SQLite 文件。备份、搬家、删除——复制那一个文件就好。",
+                en: "The index is one SQLite file. Backup, move, delete — copy the one file.",
+              },
+              demo: <LocalDemo />,
+            },
+            {
+              span: "lg:col-span-2",
+              title: { zh: "证据纪律", en: "Evidence discipline" },
+              sub: {
+                zh: "回执（argv/退出码/sha）、预注册冻结、对抗评审——独立审计 840 项重评分零错配。",
+                en: "Receipts (argv/exit/sha), frozen preregistrations, adversarial review — an independent audit re-scored 840 metrics, zero mismatches.",
+              },
+              demo: <ReceiptDemo />,
+            },
+            {
+              span: "lg:col-span-4",
+              title: { zh: "本地 MCP 服务", en: "Local MCP server" },
+              sub: {
+                zh: "goldmine mcp 把四个只读工具——search / get / context / status——直接挂进你的 Agent 工具箱。",
+                en: "goldmine mcp exposes four read-only tools — search / get / context / status — straight into your Agent's toolbox.",
+              },
+              demo: <ServeDemo />,
+            },
+          ] as const
+        ).map((card, i) => (
+          <Reveal key={card.title.en} y={18} delay={(i % 3) * 0.06} className={card.span}>
+            <Card title={card.title} sub={card.sub}>
+              {card.demo}
+            </Card>
+          </Reveal>
+        ))}
       </div>
     </section>
   );

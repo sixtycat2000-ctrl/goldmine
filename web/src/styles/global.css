@@ -206,6 +206,26 @@ body::after {
   .liquid { transition: none; }
 }
 
+/* ---------- bento micro-demo keyframes (compositor-friendly) ----------
+   Runs only while the demo container has .demo-live (IO-gated in Bento.tsx);
+   the global reduced-motion floor neuters them for RM users. */
+@keyframes gm-chip-pulse {
+  0%, 100% { opacity: 0.35; border-color: var(--color-line); }
+  50% { opacity: 1; border-color: rgb(245 176 65 / 0.55); }
+}
+@keyframes gm-wave {
+  0%, 100% { transform: scaleY(0.25); }
+  50% { transform: scaleY(1); }
+}
+@keyframes gm-dot-ping {
+  0% { transform: translateX(0); opacity: 1; }
+  62% { transform: translateX(132px); opacity: 0.9; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+[data-demo]:not(.demo-live) .gm-anim {
+  animation-play-state: paused !important;
+}
+
 /* ---------- baked no-JS fallback glossary (contract of build_learn.py) ---------- */
 
 .js .fallback { display: none; }

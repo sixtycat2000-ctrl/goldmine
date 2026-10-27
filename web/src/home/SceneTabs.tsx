@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { useReducedMotion } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useLang, pick } from "../lib/lang";
 
 export type Scene = 0 | 1 | 2;
@@ -40,24 +39,27 @@ const SCENES: {
   },
 ];
 
-function useTypewriter(text: string, speed = 55): string {
+/** Types into a dedicated leaf span via direct DOM writes — zero re-renders. */
+function useTypewriterRef(text: string, speed = 55) {
+  const ref = useRef<HTMLSpanElement>(null);
   const reduced = useReducedMotion();
-  const [n, setN] = useState(reduced ? text.length : 0);
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     if (reduced) {
-      setN(text.length);
+      el.textContent = text;
       return;
     }
-    setN(0);
+    el.textContent = "";
     const t0 = performance.now();
     const id = window.setInterval(() => {
       const k = Math.floor((performance.now() - t0) / speed);
-      setN(Math.min(text.length, k));
+      el.textContent = text.slice(0, Math.min(text.length, k));
       if (k >= text.length) window.clearInterval(id);
     }, speed);
     return () => window.clearInterval(id);
   }, [text, speed, reduced]);
-  return text.slice(0, n);
+  return ref;
 }
 
 /**
@@ -67,7 +69,7 @@ function useTypewriter(text: string, speed = 55): string {
 export function SceneTabs({ scene, onScene }: { scene: Scene; onScene: (s: Scene) => void }) {
   const lang = useLang();
   const active = SCENES[scene];
-  const query = useTypewriter(pick(lang, active.query.zh, active.query.en));
+  const queryRef = useTypewriterRef(pick(lang, active.query.zh, active.query.en));
 
   return (
     <div className="mt-10">
@@ -98,7 +100,7 @@ export function SceneTabs({ scene, onScene }: { scene: Scene; onScene: (s: Scene
         ))}
       </div>
       <p className="mt-3 font-mono text-[12px] text-ink2" aria-hidden="true">
-        <span className="text-gold">›</span> {query}
+        <span className="text-gold">›</span> <span ref={queryRef} />
         <span className="ml-2 text-sub">
           <span className="text-teal">→</span> {pick(lang, active.mech.zh, active.mech.en)}
         </span>

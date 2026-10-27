@@ -62,3 +62,25 @@ for (const f of cssFiles) {
   writeFileSync(f, src.replaceAll("font-display:swap", "font-display:block"));
   console.log(`font-display:block patched -> ${f}`);
 }
+
+// zh visitors: start fetching the Noto sheet before the app JS parses. The
+// inline boot script already knows the language pre-paint; preload is
+// non-blocking so FCP/LCP are untouched, and notoSerifSc.ts attaches the
+// stylesheet immediately when it sees the preload.
+const notoCss = cssFiles.find((f) => /assets\/400-.*\.css$/.test(f));
+if (notoCss) {
+  const href = "/" + notoCss.split("/").slice(-2).join("/");
+  const sniffer =
+    `<script>try{var zh=localStorage.getItem("gm-lang")==="zh"||` +
+    `(!localStorage.getItem("gm-lang")&&navigator.language.toLowerCase().startsWith("zh"));` +
+    `if(zh){var l=document.createElement("link");l.rel="preload";l.as="style";l.href="${href}";document.head.appendChild(l);}` +
+    `}catch(e){}</script>`;
+  for (const file of ["index.html", "learn.html"]) {
+    const p = join(dist, file);
+    let html = readFileSync(p, "utf8");
+    if (html.includes(`l.href="${href}"`)) continue;
+    html = html.replace(/(<head[^>]*>\s*)/, `$1${sniffer}\n`);
+    writeFileSync(p, html);
+    console.log(`noto zh preload injected -> ${file}`);
+  }
+}
