@@ -46,6 +46,9 @@ export function LearnApp({ data }: { data: Ok }) {
   const searchRef = useRef<HTMLInputElement>(null);
   // stage scroll position, saved on entering a panel and restored on exit (B5)
   const stageScrollRef = useRef(0);
+  // cold-boot guard: syncHash must not clobber a deep-linked hash with the
+  // pre-boot (empty) state under StrictMode's double mount
+  const bootedRef = useRef(false);
 
   const view: View = query.trim()
     ? { kind: "search" }
@@ -91,6 +94,7 @@ export function LearnApp({ data }: { data: Ok }) {
     if (location.hash) applyHash();
     const c = location.hash.match(/^#c=([a-z0-9_-]+)/);
     if (c && byId.has(c[1])) setSelectedId(c[1]);
+    bootedRef.current = true;
     const onPop = () => applyHash();
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
@@ -113,6 +117,7 @@ export function LearnApp({ data }: { data: Ok }) {
   );
 
   useEffect(() => {
+    if (!bootedRef.current) return;
     if (selectedId && byId.has(selectedId)) pushHash(`#c=${selectedId}`);
     else syncHash(view, null);
     // eslint-disable-next-line react-hooks/exhaustive-deps

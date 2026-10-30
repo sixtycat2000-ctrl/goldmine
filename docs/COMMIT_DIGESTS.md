@@ -589,3 +589,46 @@ gate 名单），inspector 按几何把它们配对到下一卡标题——辩�
 **90 秒验证**：cd web && npm run preview -- --port 4173 → 首页无眉题、统计说明
 句首大写、按钮无衬线；/learn 卡片无描边、无全大写微标签；lint FAIL 116→88（剩余
 全在保留清单）。
+
+## (web) — learn 舞台一期：管线可视化 + 四级下钻（learn-stage-plan-001）
+
+预注册 reports/execution/learn-stage-plan-001/（prereg + design + 4 路对抗
+评审 amendments-001 + 用户直导 amendments-002「视觉优先」）。
+
+**关键行**：/learn 重构为「一台可以拆开看的机器」——四工位（走盘 31/身份
+16/理解 33/检索 31）+ 质检线（34）非对称舱；文件芯片传送带（金只在处理瞬间）、
+主角芯片每站换形态、文件止于 1×lib.sqlite 索引块、查询只从检索进、L1 指纹门
+在带起点（不符即拒 exit 3）；单时间基 7s 波驱动全部演示（IO 暂停、RM 静态）；
+工位舱纯视觉（名称+计数+演示图形），文字全部下钻：面板（放大演示+职责+教学
+注记）→概念卡→详解抽屉，DepthRail（舞台→工位→概念→详解）常驻；hash 路由
+#stage/#q/#l0/#c + 冷启动深链（StrictMode 双挂载下 pushHash 清 hash 的 bug
+已修：bootedRef 守卫）；全站簇/层 pill 退役，质检线三仪表（17/19、3,200+、
+0 B，均带最短可见备注）；learn.template.html 预挂壳=静态机器（LCP/无JS/RM
+三合一）。检索演示含零命中终态（exit 0 也是合法答案）。
+
+**门禁**：G1 145/145 映射 PASS（g1-coverage.mjs）；G2 inspect 10F=基线 8
+（品牌档不变）+ eyebrow(DOM 相邻误报) + off-centre@390(本机 headless
+innerWidth 虚报 581 伪影，clientWidth 390 实测边距 20/20)；G3 Lighthouse
+brotli 同位 perf **91**（基线 93，门槛 90；LCP 3.5s 受 388KB 内联 doc 的
+TTFB 主导）；G5 '/' 聚焦 PASS；G6 无 JS 术语表在档；G7 文案审计 PASS
+（g7-copy-audit.mjs：数字白名单+备注不可分+1.4s 对比数字禁入 learn）；
+G9 冷启动 #stage/#c 深链 PASS（注意：本地验证必须加 ?v= 击穿 learn.html
+浏览器缓存，生产部署同样要走既有 cache-bust 流程）；G10 新手路径 1 次交互
+到「向量与坐标」。G8 morph 链（面板→卡→prev/next→关→归位）人工走查通过；
+滚动还原存/复逻辑在档（Lenis 缓动下 instant 滚动会渐进，Δ 断言未严格 3 位
+置执行——记 MISSING）。
+
+**风险/不确定**：舞台挂载期间几乎无法完全滚出视口（页面其余太矮），IO 暂停
+门实际很少触发——belt 为纯合成器动画（transform+will-change），成本本就
+趋近零；@390 真机复核仍未做（本机仿真不可信）；focal-point 由 h1 升 hero
+字号缓解但未复测；「跟一条查询走一遍」引导剧 DEFER（amendments-001 D5）。
+
+**⚠ 会话撞车记录**：另一会话于 23:59–00:02 在同一分支提交 4 条
+（humanizer 安装 + home 文案去噪 + learn 壳样式 + 356136a），其中
+`git add -A` 把本任务在飞的 Stage/LearnApp/LessonDrawer 半成品卷入其提交。
+内容无损（全部在树），但 356136a 的提交信息不覆盖 learn 舞台工作；分支未
+推送，是否拆分历史由 owner 定（铁律 6 事故重演，已留档）。
+
+**90 秒验证**：cd web && npm run preview -- --port 4173 → /learn.html?v=x
+（?v= 必加）看舞台；点「身份裁决」开面板；点卡开抽屉看 DepthRail；
+URL 直贴 #stage=identity 冷启动。

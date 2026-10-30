@@ -36,7 +36,7 @@ export function IdentityDemo({ beat, lang }: { beat: number; lang: Lang }) {
   const active = beat === 1;
   return (
     <div className="mt-3 rounded-xl bg-bg1/70 p-3" aria-hidden="true">
-      <div className="space-y-1.5">
+      <div className="space-y-1">
         {ID_LAYERS.map((row, i) => (
           <div
             key={row.l}
@@ -119,7 +119,7 @@ export function UnderstandQuiet({ lang }: { lang: Lang }) {
   const dots = [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1];
   return (
     <div className="mt-3 rounded-xl bg-bg1/70 p-3" aria-hidden="true">
-      <div className="grid grid-cols-8 gap-1.5" aria-hidden="true">
+      <div className="grid grid-cols-12 gap-1.5" aria-hidden="true">
         {dots.map((d, i) => (
           <span key={i} className={`h-2.5 w-2.5 rounded-[3px] ${d ? "bg-cl-b/60" : "border border-line bg-transparent"}`} />
         ))}

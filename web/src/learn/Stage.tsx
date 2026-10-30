@@ -101,7 +101,7 @@ export function Stage(props: StageProps) {
       {/* machine caption — slim (A1 + E4): kicker, h1, depth rail, progress, L0, locality */}
       <header className="mx-auto max-w-6xl px-5 pt-24 pb-6">
         <p className="kicker">LEARN · THE MACHINE</p>
-        <h1 className="mt-3 max-w-[16em] font-display text-display leading-[1.08] text-ink">
+        <h1 className="mt-3 max-w-[16em] font-display text-hero leading-[1.06] text-ink">
           {zh ? "一台可以拆开看的机器" : "A machine you can open up"}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
