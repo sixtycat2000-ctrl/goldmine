@@ -59,7 +59,7 @@ function HybridDemo() {
       </div>
       <p className="mt-3 font-mono text-[12px] text-ink2">
         → <Counter end={2.64} decimals={2} className="text-gold" />{" "}
-        <span className="text-sub">{pick(lang, "每条命中都摆得开这行算术", "every hit's arithmetic, line by line")}</span>
+        <span className="text-sub">{pick(lang, "每条命中的打分明细", "the score breakdown for every hit")}</span>
       </p>
       <DemoTag />
     </div>

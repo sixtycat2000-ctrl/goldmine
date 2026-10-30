@@ -11,6 +11,7 @@ import {
 import { pick, type Lang } from "../lib/lang";
 import { CopyButton } from "../components/CopyButton";
 import { stationMeta, stationOf } from "../lib/learn-data";
+import { DepthRail } from "./Stage";
 import { IconClose, IconOk } from "../components/Icons";
 
 type Props = {
@@ -252,6 +253,7 @@ export function LessonDrawer({
               animate={{ opacity: 1, transition: { delay: 0.12, duration: 0.3 } }}
               className="max-w-[46em]"
             >
+              <div className="mb-3"><DepthRail lang={lang} at="lesson" /></div>
               {c.parent && data.byId.get(c.parent) && (
                 <button
                   type="button"

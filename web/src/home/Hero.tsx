@@ -78,12 +78,12 @@ export function Hero() {
           {zh ? (
             <>
               <strong className="font-semibold text-ink">文件不出这台 Mac。</strong>
-              你记得内容，不记得文件名：会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件，文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。
+              你记得内容，不记得文件名。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。
             </>
           ) : (
             <>
               <strong className="font-semibold text-ink">Files never leave your Mac. </strong>
-              You remember the content, not the filename: meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file. Text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist.
+              You remember the content, not the filename. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist.
             </>
           )}
         </p>

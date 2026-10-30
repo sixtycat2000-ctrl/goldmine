@@ -4,7 +4,8 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ConceptCard } from "./ConceptCard";
 import { LessonDrawer } from "./LessonDrawer";
-import { Stage } from "./Stage";
+import { Stage, DepthRail } from "./Stage";
+import { IdentityDemo, SearchDemo, WalkQuiet, UnderstandQuiet } from "./station-visuals";
 import { useLang, pick } from "../lib/lang";
 import {
   STATIONS,
@@ -140,12 +141,6 @@ export function LearnApp({ data }: { data: Ok }) {
     for (const n of graph.nodes) if (visited.has(n.id)) by[stationOf(n.cluster)]++;
     return by;
   }, [graph.nodes, visited]);
-  const keystones = useMemo(() => {
-    const by = Object.fromEntries(STATIONS.map((s) => [s.id, [] as string[]])) as Record<StationId, string[]>;
-    for (const n of graph.nodes)
-      if (n.keystone) by[stationOf(n.cluster)].push(pick(lang, n.title_zh, n.title_en));
-    return by;
-  }, [graph.nodes, lang]);
   const l0Count = useMemo(() => graph.nodes.filter((n) => n.layer === 0).length, [graph.nodes]);
   const total = graph.nodes.length;
   const totalVisited = useMemo(() => graph.nodes.filter((n) => visited.has(n.id)).length, [graph.nodes, visited]);
@@ -302,7 +297,6 @@ export function LearnApp({ data }: { data: Ok }) {
           lang={lang}
           counts={counts}
           visitedCounts={visitedCounts}
-          keystones={keystones}
           l0Count={l0Count}
           total={total}
           totalVisited={totalVisited}
@@ -318,19 +312,46 @@ export function LearnApp({ data }: { data: Ok }) {
             ← {zh ? "返回舞台" : "back to the machine"}
           </button>
           {view.kind === "station" && (
-            <div className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
-              <h1 className="font-display text-display leading-[1.1] text-ink">
-                {pick(lang, stationMeta(view.id).label_zh, stationMeta(view.id).label_en)}
-                <span className="ml-3 align-middle text-[13px] text-sub">
-                  {view.id} × {counts[view.id]}
-                </span>
-              </h1>
-              <p className="w-full text-[14px] text-ink2">{pick(lang, stationMeta(view.id).role_zh, stationMeta(view.id).role_en)}</p>
+            <div className="mt-4">
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                <h1 className="font-display text-display leading-[1.1] text-ink">
+                  {pick(lang, stationMeta(view.id).label_zh, stationMeta(view.id).label_en)}
+                  <span className="ml-3 align-middle text-[13px] text-sub">
+                    {view.id} × {counts[view.id]}
+                  </span>
+                </h1>
+                <DepthRail lang={lang} at="station" />
+              </div>
+              <p className="mt-1 max-w-[52ch] text-[14px] text-ink2">{pick(lang, stationMeta(view.id).role_zh, stationMeta(view.id).role_en)}</p>
+              {/* teaching notes that used to live on the stage (E2) */}
+              {view.id === "understand" && (
+                <p className="mt-2 max-w-[52ch] font-mono text-[12px] leading-relaxed text-sub">
+                  {zh ? "有转录的音频走文字向量；无转录才走原始音频边车（逐行标记 asr_status）" : "audio with a transcript rides text vectors; raw-audio sidecar only without one (asr_status per row)"}
+                </p>
+              )}
+              {view.id === "walk" && (
+                <p className="mt-2 max-w-[52ch] font-mono text-[12px] leading-relaxed text-sub">
+                  {zh ? "walk 门：iCloud dataless 跳过 · inode 移动检测" : "walk gates: iCloud dataless skip · inode move detection"}
+                </p>
+              )}
+              {/* the clicked part becomes the hero (E3) */}
+              <div className="mt-4 max-w-xl rounded-2xl border border-line bg-bg1/40 p-4">
+                {view.id === "walk" && <WalkQuiet lang={lang} />}
+                {view.id === "identity" && <IdentityDemo beat={1} lang={lang} />}
+                {view.id === "understand" && <UnderstandQuiet lang={lang} />}
+                {view.id === "search" && <SearchDemo beat={4} cycle={0} lang={lang} />}
+                {view.id === "rail" && (
+                  <p className="font-mono text-[12px] leading-relaxed text-sub">
+                    {zh ? "冻结评测 · 预注册 · 对抗评审 · 三态判定 · 诚实契约" : "frozen evals · preregistration · adversarial review · three-state verdicts · honesty contract"}
+                  </p>
+                )}
+              </div>
             </div>
           )}
           {view.kind === "l0" && (
             <div className="mt-4">
-              <h1 className="font-display text-display leading-[1.1] text-ink">
+              <DepthRail lang={lang} at="concept" />
+              <h1 className="mt-2 font-display text-display leading-[1.1] text-ink">
                 {zh ? "基础层 L0" : "Layer L0"}
                 <span className="ml-3 align-middle text-[13px] text-sub">{l0Count} · {zh ? "跨工位" : "across stations"}</span>
               </h1>
@@ -341,7 +362,8 @@ export function LearnApp({ data }: { data: Ok }) {
           )}
           {view.kind === "search" && (
             <div className="mt-4">
-              <h1 className="font-display text-display leading-[1.1] text-ink">
+              <DepthRail lang={lang} at="concept" />
+              <h1 className="mt-2 font-display text-display leading-[1.1] text-ink">
                 {zh ? "搜索结果" : "Search"}
                 <span className="ml-3 align-middle text-[13px] text-sub">
                   {filtered.length} / {total}

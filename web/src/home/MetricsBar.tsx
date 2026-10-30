@@ -48,8 +48,8 @@ export function MetricsBar() {
         <SectionHead
           title={{ zh: "数字与回执", en: "Numbers, with receipts" }}
           lede={{
-            zh: "这里没有一行营销数字——每一项都能在仓库文档与执行回执（docs/FEATURE_STATUS.md、docs/COMPARISON.md、reports/execution/）里对到原始出处。",
-            en: "No marketing numbers here. Every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
+            zh: "每一项都能在仓库文档与执行回执（docs/FEATURE_STATUS.md、docs/COMPARISON.md、reports/execution/）里对到原始出处。",
+            en: "Every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
           }}
         />
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
