@@ -1,14 +1,17 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { usePrefersReducedMotion } from "../lib/hooks";
-import { useFirstScrollIntent } from "../lib/useFirstScrollIntent";
 import { useLang, pick } from "../lib/lang";
 import { SectionHead } from "../components/SectionHead";
 import { CopyButton } from "../components/CopyButton";
+import { Reveal } from "../components/motion/Reveal";
+
+/* Four steps in plain document flow. The old pinned 600svh GSAP scrub
+   corridor made the page fight the scroll wheel; steps read top to bottom
+   now, each revealed as it enters. */
 
 const STEPS = [
   {
-    n: "01 · SCOPE",
+    tag: { zh: "划定范围", en: "SCOPE" },
     title: { zh: "你指定文件夹，只索引这些", en: "You choose folders; only those are indexed" },
     body: {
       zh: "没有全盘扫描。构建产物、密钥、iCloud 未下载占位一律跳过并留原因——索引永远不会触发一次 iCloud 下载。",
@@ -16,7 +19,7 @@ const STEPS = [
     },
   },
   {
-    n: "02 · EMBED",
+    tag: { zh: "向量化", en: "EMBED" },
     title: { zh: "内容变向量，每种媒体一条路", en: "Content becomes vectors; one path per modality" },
     body: {
       zh: "文本走钉版 embeddinggemma-2；装上可选边车后：图像/音频向量、视频约每 3 秒一帧（aHash 去重）、截图走 Vision OCR、录音走 whisper——命中直接跳到那一秒。",
@@ -24,15 +27,15 @@ const STEPS = [
     },
   },
   {
-    n: "03 · HYBRID SEARCH",
+    tag: { zh: "融合检索", en: "FUSE" },
     title: { zh: "含义 + 精确词融合，算术可查", en: "Meaning + exact words fused, inspectably" },
     body: {
-      zh: "score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转权重。--why 把每条命中的算术一项项摆出来。",
-      en: "score = 1.0·semantic z + 2.0·coverage^1.5 + kind bonus; identifier queries auto-invert. --why prints every hit's arithmetic, line by line.",
+      zh: "score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转权重。--why 把每条命中的打分明细摆出来。",
+      en: "score = 1.0·semantic z + 2.0·coverage^1.5 + kind bonus; identifier queries auto-invert. --why prints the score breakdown for every hit.",
     },
   },
   {
-    n: "04 · ONE FILE",
+    tag: { zh: "落库", en: "COMMIT" },
     title: { zh: "一文件一事务，一库一文件", en: "One transaction per file, one file per index" },
     body: {
       zh: "每个文件的写入是单个 SQLite 事务——中断最坏丢这一个文件的这一次。备份、搬家、删除，就是复制那一个文件。",
@@ -41,117 +44,39 @@ const STEPS = [
   },
 ];
 
-/** Pinned stacked-card scroll narrative (GSAP scrub + CSS sticky). */
 export function Narrative() {
-  const reduced = usePrefersReducedMotion();
-  const scrollIntent = useFirstScrollIntent();
   const lang = useLang();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    if (reduced || !scrollIntent) return;
-    let ctx: { revert: () => void } | null = null;
-    let cancelled = false;
-
-    (async () => {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([import("gsap"), import("gsap/ScrollTrigger")]);
-      if (cancelled) return;
-      gsap.registerPlugin(ScrollTrigger);
-      const cards = cardsRef.current;
-      if (!cards.length) return;
-
-      // pacing: each card holds a full unit of scroll; swaps take 0.5 units.
-      const HOLD = 1;
-      const SWAP = 0.5;
-      const DUR = STEPS.length * HOLD + (STEPS.length - 1) * SWAP;
-
-      ctx = gsap.context(() => {
-        // GSAP parses computed matrices — the CSS translateY(45%) would become
-        // px `y`, leaving yPercent at 0 and the rise a no-op. Set it in GSAP.
-        cards.forEach((c, i) => i > 0 && gsap.set(c, { yPercent: 45 }));
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: true, // Lenis already smooths; a second lag layer floats
-            onUpdate(self) {
-              const t = self.progress * DUR;
-              const idx = Math.min(
-                STEPS.length - 1,
-                Math.max(0, Math.floor((t + SWAP / 2) / (HOLD + SWAP) + 1e-4)),
-              );
-              setActive((prevA) => (prevA === idx ? prevA : idx));
-            },
-          },
-        });
-        for (let i = 1; i < cards.length; i++) {
-          const at = HOLD + (i - 1) * (HOLD + SWAP);
-          tl.to(cards[i - 1], { yPercent: -14, scale: 0.95, opacity: 0.22, duration: SWAP, ease: "power2.in" }, at).to(
-            cards[i],
-            { yPercent: 0, opacity: 1, duration: SWAP, ease: "power2.out", immediateRender: false },
-            at,
-          );
-        }
-      }, containerRef);
-    })();
-
-    return () => {
-      cancelled = true;
-      ctx?.revert();
-    };
-  }, [reduced, scrollIntent]);
-
   return (
     <section id="how" className="relative">
       <div className="mx-auto max-w-6xl px-5 pt-24 sm:pt-32">
         <SectionHead
           title={{ zh: "从磁盘到可搜，四步", en: "Disk to searchable, four steps" }}
           lede={{
-            zh: "跟着滚动走完这条流水线——每一步都停在真实机制上，没有魔法。",
-            en: "Scroll through the pipeline: every step lands on a real mechanism.",
+            zh: "四步走完：每一步都是可查的真实机制。",
+            en: "Four steps, each one a checkable mechanism.",
           }}
         />
-      </div>
-
-      <div
-        ref={containerRef}
-        className="relative"
-        style={reduced ? undefined : { height: `${STEPS.length * 150}svh` }}
-      >
-        <div className={reduced ? "" : "sticky top-0 flex h-svh items-center overflow-hidden"}>
-          {/* step rail */}
-          <div className="pointer-events-none absolute top-1/2 left-4 hidden -translate-y-1/2 flex-col gap-3 lg:flex" aria-hidden="true">
-            {STEPS.map((s, i) => (
-              <span
-                key={s.n}
-                className={`h-8 w-px transition-colors duration-500 ${i <= active ? "bg-gold" : "bg-line-strong"}`}
-              />
-            ))}
-          </div>
-          <div className="relative mx-auto h-[26rem] w-full max-w-3xl px-5 sm:h-[24rem]">
-            {STEPS.map((s, i) => (
-              <div
-                key={s.n}
-                ref={(el) => {
-                  cardsRef.current[i] = el;
-                }}
-                className={`glass rounded-3xl p-8 sm:p-10 ${
-                  reduced ? "relative mb-4" : "absolute inset-x-5 inset-y-0"
-                } ${!reduced && i > 0 ? "opacity-0" : ""}`}
-              >
-                <h3 className="mt-4 font-display text-title leading-snug text-ink sm:text-3xl">
-                  {pick(lang, s.title.zh, s.title.en)}
-                </h3>
-                <p className="mt-4 max-w-[30em] text-[15px] leading-relaxed text-ink2">
-                  {pick(lang, s.body.zh, s.body.en)}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ol className="mt-4">
+          {STEPS.map((s) => (
+            <li key={s.tag.en}>
+              <Reveal y={20}>
+                <div className="grid gap-2 py-8 sm:grid-cols-[11rem_1fr] sm:gap-10 sm:py-10">
+                  <div className="font-display text-2xl leading-none text-gold sm:text-3xl">
+                    {pick(lang, s.tag.zh, s.tag.en)}
+                  </div>
+                  <div>
+                    <h3 className="font-display text-title leading-snug text-ink">
+                      {pick(lang, s.title.zh, s.title.en)}
+                    </h3>
+                    <p className="mt-3 max-w-[34em] text-[15px] leading-relaxed text-ink2">
+                      {pick(lang, s.body.zh, s.body.en)}
+                    </p>
+                  </div>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </div>
 
       <Quickstart />

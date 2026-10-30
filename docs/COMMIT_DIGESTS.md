@@ -632,3 +632,20 @@ G9 冷启动 #stage/#c 深链 PASS（注意：本地验证必须加 ?v= 击穿 l
 **90 秒验证**：cd web && npm run preview -- --port 4173 → /learn.html?v=x
 （?v= 必加）看舞台；点「身份裁决」开面板；点卡开抽屉看 DepthRail；
 URL 直贴 #stage=identity 冷启动。
+
+### 追记 4（四步区重做：拆滚动走廊，owner 拍板「特别难受」）
+
+Narrative 原为 GSAP scrub + sticky 的 600svh pin 走廊（4 步 × 150svh，HOLD/SWAP
+交叉淡切）。体感问题：滚动距离巨大、换卡滞后于手势、产生 lopsided/空白带实测项。
+重做为普通文档流的步骤列表：金色衬线 stage 词列（SCOPE / EMBED / FUSE / COMMIT，
+zh：划定范围/向量化/融合检索/落库）+ 标题 + 正文，Reveal 逐条入场；GSAP 在本节
+退场（依赖保留——SmoothScrollProvider 的 Lenis 集成仍用），页面净短约 5 屏。
+顺带：step 3 文案同步 humanizer 后的「打分明细」句。
+
+**每行的风险**：失去 pin 的「舞台感」，四步从演出降级为清单——这是 owner 点名
+要的取舍；ScrollTrigger chunk（18KB gz）仍随 SmoothScrollProvider 加载，若日后
+无任何 ScrollTrigger 用户可一并摘除。
+**我不确定的地方**：无。inspect home FAIL 10→9，空白带 636px→全部 <300px（阈值下），
+lopsided 清零。
+**90 秒验证**：npm run preview → 首页滚到「从磁盘到可搜，四步」：无粘滞、无淡切
+等待，四步一屏半读完，quickstart 终端块不变。
