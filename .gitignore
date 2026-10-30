@@ -28,3 +28,4 @@ eval.sqlite*
 # Rebuildable execution evidence (commit compact summaries, not raw private inputs)
 reports/execution/**
 .wrangler/
+.taste-skill/
