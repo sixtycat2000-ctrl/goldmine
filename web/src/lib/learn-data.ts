@@ -136,6 +136,86 @@ export function readingMinutes(c: Concept, lang: "zh" | "en"): number {
 
 /* ---------------- visited-progress store (localStorage) ---------------- */
 
+/*
+ * Pipeline stations (learn-stage-plan-001): the learn page's first tier is a
+ * machine stage, not a database. station = f(cluster) is a FROZEN pure mapping
+ * (reports/execution/learn-stage-plan-001/amendments-001.md C8): an unknown
+ * cluster throws — no silent default bucket, ever. The mirror of this rule in
+ * the G1 gate script must be updated in the same change.
+ */
+export type StationId = "walk" | "identity" | "understand" | "search" | "rail";
+
+export type StationMeta = {
+  id: StationId;
+  clusters: string[];
+  label_zh: string;
+  label_en: string;
+  role_zh: string;
+  role_en: string;
+};
+
+export const STATIONS: StationMeta[] = [
+  {
+    id: "walk",
+    clusters: ["systems"],
+    label_zh: "走盘",
+    label_en: "Walk",
+    role_zh: "磁盘→候选：确定性走盘、波次抽取、一文件一事务",
+    role_en: "Disk to candidates: deterministic walk, wave extraction, one transaction per file",
+  },
+  {
+    id: "identity",
+    clusters: ["identity"],
+    label_zh: "身份裁决",
+    label_en: "Identity",
+    // amended C1: the gate's consequences are per-layer, copy says so
+    role_zh: "索引级指纹门（不符即拒，exit 3）+ 逐文件 sha 不变跳过",
+    role_en: "Index-level fingerprint gate (mismatch refuses, exit 3) + per-file sha skip",
+  },
+  {
+    id: "understand",
+    clusters: ["media", "models"],
+    label_zh: "理解",
+    label_en: "Understand",
+    // amended IA-F2: copy describes what these clusters actually hold
+    role_zh: "媒体与模型：转录、OCR、边车、嵌入模型与预算",
+    role_en: "Media & models: transcripts, OCR, the sidecar, embedding models and budgets",
+  },
+  {
+    id: "search",
+    clusters: ["search"],
+    label_zh: "检索",
+    label_en: "Search",
+    role_zh: "查询生命周期：混合融合、准入门、见证规则、证据选择",
+    role_en: "Query lifecycle: hybrid fusion, admission gate, witness rule, evidence selection",
+  },
+  {
+    id: "rail",
+    clusters: ["eval", "process"],
+    label_zh: "质检线",
+    label_en: "QA Line",
+    role_zh: "冻结评测、质量门、诚实契约、三态判定——贯穿全程",
+    role_en: "Frozen evals, quality gates, the honesty contract, three-state verdicts",
+  },
+];
+
+const CLUSTER_TO_STATION: Record<string, StationId> = Object.fromEntries(
+  STATIONS.flatMap((s) => s.clusters.map((c) => [c, s.id] as const)),
+) as Record<string, StationId>;
+
+export function stationOf(cluster: string): StationId {
+  const s = CLUSTER_TO_STATION[cluster];
+  if (!s) throw new Error(`learn-data: unknown cluster "${cluster}" — update the frozen station mapping`);
+  return s;
+}
+
+export function stationMeta(id: StationId): StationMeta {
+  const s = STATIONS.find((x) => x.id === id);
+  if (!s) throw new Error(`learn-data: unknown station "${id}"`);
+  return s;
+}
+
+
 const KEY = "gm-learn-visited";
 
 export function loadVisited(): Set<string> {

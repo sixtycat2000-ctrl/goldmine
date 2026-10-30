@@ -64,7 +64,7 @@ export const QMD_HEAD_TO_HEAD = {
 
 export const LEDGER = [
   {
-    no: "01",
+    no: "1",
     value: "3,200+ / 8 min",
     note: {
       zh: "2026-10-25 全量：3200 过 / 37 跳 / 2 个已档案存量失败。回执在仓库 reports/execution/。",
@@ -72,7 +72,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "02",
+    no: "2",
     value: { zh: "155 / 180 · 17/19 门", en: "155 / 180 · 17/19 GATES" },
     note: {
       zh: "2026-10-26 终局官方跑（product-current-017，210 题开发折）：严格成功@5 155/180，19 项质量门 17 过。两门未过均为已归档硬上限：noise 20/30（陷阱虚构在问题前提层，无词可查——闸门方案被仿真证伪后放弃）、media-OCR 6/9（冻结评测器 32 字符对齐最小窗×2 + OCR 内容缺口×1）。明细在 docs/FEATURE_STATUS.md。",
@@ -80,7 +80,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "03",
+    no: "3",
     value: "Δ 0.0000",
     note: {
       zh: "两个回归门（legacy 109 题 / 全媒体 128 题）最近一次全绿的逐指标差值。参数改动必须过 McNemar / 成对 bootstrap 显著性检验，过不了就回滚。",
@@ -88,7 +88,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "04",
+    no: "4",
     value: { zh: "1,412 行 C", en: "1,412 LINES OF C" },
     note: {
       zh: "媒体嵌入边车的全部代码：静态链 llama.cpp + mtmd，图片缩放与参考实现逐位一致（黄金表测试钉死）。文本与媒体两条嵌入管线互不干扰。",
@@ -96,7 +96,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "05",
+    no: "5",
     value: "3.88 s",
     note: {
       zh: "本机实测：ffmpeg 对 5 分钟 1080p H.264 抽关键帧 3.88 秒（对照组 macOS 原生 4.07 秒）；选型记录在案，含反例数据。",
@@ -104,7 +104,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "06",
+    no: "6",
     value: { zh: "0 条", en: "0" },
     note: {
       zh: "静默降级。OCR 缺了写原因、模型没装写原因、页数截断写标记——每个文件四种状态都带原因，status 一屏可见。",
@@ -112,7 +112,7 @@ export const LEDGER = [
     },
   },
   {
-    no: "07",
+    no: "7",
     value: { zh: "11 → 17 门", en: "11 → 17 GATES" },
     note: {
       zh: "质量六仗（2026-10-25/26，两天）：窗口两级裁决、元数据绑定、交叉编码器窗口仲裁、点号定义优先、名字浓度准入、OCR 再水合——每仗先对抗评审后预注册冻结再实现再官方重跑，六轮零门回退；公共基准三连在界内（|Δ|≤0.02）；独立审计 840 项重评分零错配。每仗证据链在仓库 reports/execution/P0-05/。",
@@ -123,7 +123,7 @@ export const LEDGER = [
 
 export const COMPARE_TABLE = {
   columns: [
-    { key: "cap", label: { zh: "能力", en: "CAPABILITY" } },
+    { key: "cap", label: { zh: "能力", en: "Capability" } },
     { key: "gm", label: { zh: "goldmine", en: "goldmine" } },
     { key: "spot", label: { zh: "Spotlight", en: "Spotlight" } },
     { key: "cloud", label: { zh: "云端 AI 搜索", en: "Cloud AI search" } },

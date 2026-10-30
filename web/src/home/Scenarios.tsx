@@ -21,7 +21,7 @@ const ITEMS = [
     title: { zh: "两百页 PDF 里的那个编号", en: "The identifier inside that 200-page PDF" },
     body: {
       zh: "编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。",
-      en: "Identifier-like queries invert the weights: exact lexical hits beat semantics — numbers don't drown in vibes.",
+      en: "Identifier-like queries invert the weights: exact lexical hits beat semantics, so numbers don't drown in vibes.",
     },
   },
 ];
@@ -31,22 +31,17 @@ export function Scenarios() {
   return (
     <section id="scenarios" className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
       <SectionHead
-        no="04"
-        kicker={{ zh: "真实场景", en: "REAL SCENARIOS" }}
         title={{ zh: "三件每天都会发生的事", en: "Three things that happen every week" }}
       />
       <ol className="grid gap-4 md:grid-cols-3">
         {ITEMS.map((it, i) => (
           <li key={it.title.zh} className="list-none">
             <Reveal delay={i * 0.12} y={32} duration={0.75} className="h-full">
-              <div className="group relative h-full overflow-hidden rounded-2xl border border-line bg-bg1/60 p-6">
-                <span className="font-display text-5xl text-gold/25 transition-colors duration-500 group-hover:text-gold/50" aria-hidden="true">
-                  0{i + 1}
-                </span>
-                <h3 className="mt-4 font-display text-title leading-snug text-ink">
+              <div className="group relative h-full overflow-hidden rounded-2xl bg-bg1 p-6">
+                <h3 className="font-display text-title leading-snug text-ink">
                   {pick(lang, it.title.zh, it.title.en)}
                 </h3>
-                <p className="mt-3 text-[13px] leading-relaxed text-ink2">{pick(lang, it.body.zh, it.body.en)}</p>
+                <p className="mt-3 text-[14px] leading-relaxed text-ink2">{pick(lang, it.body.zh, it.body.en)}</p>
               </div>
             </Reveal>
           </li>

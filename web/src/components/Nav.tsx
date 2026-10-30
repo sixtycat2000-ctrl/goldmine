@@ -21,7 +21,7 @@ export function Nav({ page }: { page: Page }) {
   });
 
   const linkCls = (p: Page) =>
-    `font-mono text-[12px] tracking-[0.1em] uppercase transition-colors ${
+    `text-[13px] transition-colors ${
       page === p ? "text-gold" : "text-ink2 hover:text-ink"
     }`;
 
@@ -29,7 +29,7 @@ export function Nav({ page }: { page: Page }) {
     <>
       <div className="fixed inset-x-0 top-0 z-[90] h-[2px] bg-transparent" aria-hidden="true">
         <motion.div
-          className="h-full w-full origin-left bg-gradient-to-r from-gold to-goldbright will-change-transform"
+          className="h-full w-full origin-left bg-gold will-change-transform"
           style={{ scaleX: reduced ? 1 : scrollYProgress }}
         />
       </div>
@@ -55,7 +55,7 @@ export function Nav({ page }: { page: Page }) {
             </a>
             <a
               href={REPO_URL}
-              className="hidden items-center gap-1 font-mono text-[12px] uppercase tracking-[0.1em] text-ink2 transition-colors hover:text-ink sm:flex"
+              className="hidden items-center gap-1 text-[13px] text-ink2 transition-colors hover:text-ink sm:flex"
             >
               GitHub <IconExt size={11} />
             </a>
@@ -66,7 +66,7 @@ export function Nav({ page }: { page: Page }) {
                   type="button"
                   onClick={() => setLang(l)}
                   aria-pressed={lang === l}
-                  className={`relative px-3 py-1 font-mono text-[12px] transition-colors ${
+                  className={`relative px-3 py-1 text-[12px] transition-colors ${
                     lang === l ? "text-bg0" : "text-ink2 hover:text-ink"
                   }`}
                 >

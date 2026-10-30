@@ -18,10 +18,10 @@ function DemoTag() {
   const lang = useLang();
   return (
     <span
-      className="mt-2 inline-block rounded border border-line px-1.5 py-0.5 font-mono text-[12px] tracking-[0.14em] text-sub uppercase"
+      className="absolute top-6 right-6 text-[12px] text-sub"
       aria-hidden="true"
     >
-      {pick(lang, "示意 · 简化演示", "demo · stylized")}
+      {pick(lang, "示意", "demo")}
     </span>
   );
 }
@@ -84,7 +84,7 @@ function MultimodalDemo() {
         {chips.map((c, i) => (
           <span
             key={c.en}
-            className="gm-anim rounded-full border px-3 py-1 font-mono text-[12px] tracking-[0.1em] text-ink2 uppercase"
+            className="gm-anim rounded-full bg-bg2 px-3 py-1 text-[12px] text-ink2"
             style={{
               animation: `gm-chip-pulse 3.2s ease-in-out ${i * 0.8}s infinite`,
               opacity: 0.6,
@@ -123,10 +123,10 @@ function GatesDemo() {
         <span className="text-fail">· 2</span>{" "}
         <span className="text-sub">{pick(lang, "未过，原因在档", "unresolved, reasons on record")}</span>
       </p>
-      <div className="mt-2.5 space-y-1.5">
-        <p className="font-mono text-[12px] text-fail">noise 20/30</p>
-        <p className="font-mono text-[12px] text-fail">media-OCR 6/9</p>
-      </div>
+      <p className="mt-2.5 font-mono text-[12px] text-fail">
+        noise 20/30 · media-OCR 6/9
+        <span className="ml-2 text-sub">{pick(lang, "官方跑，原因在档", "official run, reasons on record")}</span>
+      </p>
     </div>
   );
 }
@@ -152,7 +152,7 @@ function LocalDemo() {
           <IconNo size={11} label="blocked" />
         </span>
       </div>
-      <p className="mt-2 font-mono text-[12px] tracking-[0.12em] text-sub uppercase">
+      <p className="mt-2 text-[13px] text-sub">
         {pick(lang, "0 字节离开你的机器", "0 bytes leave your machine")}
       </p>
     </div>
@@ -240,8 +240,6 @@ export function Bento() {
   return (
     <section id="features" className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
       <SectionHead
-        no="01"
-        kicker={{ zh: "平台能力", en: "PLATFORM CAPABILITIES" }}
         title={{
           zh: "一个索引，四种媒体，零字节的云",
           en: "One index, four media, zero bytes of cloud",

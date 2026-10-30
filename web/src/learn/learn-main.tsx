@@ -25,11 +25,10 @@ function CorruptBanner() {
   }, []);
   return (
     <div className="mx-auto max-w-3xl px-5 pt-28 pb-10">
-      <p className="kicker">LEARN · DEGRADED</p>
       <h1 className="mt-3 font-display text-3xl text-ink">
         {zh ? "地图数据损坏 — 已降级为目录视图" : "Map data invalid — downgraded to the list view"}
       </h1>
-      <p className="mt-3 font-mono text-[12px] text-sub">
+      <p className="mt-3 font-mono text-[13px] text-sub">
         {zh ? "数据校验未通过" : "data check failed"} ({data!.ok ? "" : data!.reason}) —{" "}
         {zh ? "完整目录在下方" : "the full glossary is below"} ·{" "}
         <a href="/" className="text-gold underline underline-offset-4">

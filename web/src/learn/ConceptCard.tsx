@@ -35,8 +35,8 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
             }
           : undefined
       }
-      className={`group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-line bg-bg1/70 p-5 transition-colors duration-300 ${
-        interactive ? "hover:border-gold/40 focus-visible:border-gold" : ""
+      className={`group relative flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl bg-bg1 p-5 transition-colors duration-300 hover:bg-bg2 ${
+        interactive ? "focus-visible:outline-2 focus-visible:outline-gold" : ""
       }`}
     >
       {/* layer depth: honest progress = how deep into the stack this concept sits */}
@@ -51,11 +51,11 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
         }}
       />
       <div className="flex items-center justify-between gap-2">
-        <span className="inline-flex items-center gap-1.5 font-mono text-[12px] tracking-[0.12em] uppercase" style={{ color }}>
+        <span className="inline-flex items-center gap-1.5 text-[13px]" style={{ color }}>
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
           {cluster ? `${cluster.token} · ${pick(lang, cluster.label_zh, cluster.label_en)}` : c.cluster}
         </span>
-        <span className="font-mono text-[12px] text-sub">
+        <span className="text-[13px] text-sub">
           {visited ? (
             <>
               <IconYes size={12} className="text-gold" label={lang === "zh" ? "已读" : "read"} />
@@ -67,13 +67,13 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
       </div>
       <h2 className="mt-3 font-display text-[1.35rem] leading-snug text-ink">
         {title}
-        <span className="mt-0.5 block font-sans text-[12px] tracking-wide text-sub">{otherTitle}</span>
+        <span className="mt-0.5 block text-[13px] text-sub">{otherTitle}</span>
       </h2>
       <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-ink2">{one}</p>
-      <div className="mt-4 flex items-center justify-between border-t border-line pt-3">
-        <span className="font-mono text-[12px] tracking-[0.12em] text-sub uppercase">{layerBadge(c.layer, lang)}</span>
+      <div className="mt-5 flex items-center justify-between">
+        <span className="text-[13px] text-sub">{layerBadge(c.layer, lang)}</span>
         <span
-          className="font-mono text-[12px] text-sub opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+          className="text-[13px] text-sub opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
           aria-hidden="true"
         >
           {lang === "zh" ? "打开 →" : "open →"}

@@ -564,3 +564,28 @@ before/after 双份报告留档 .taste-skill/（已 gitignore）。
 **90 秒验证**：cd web && npm run preview -- --port 4173 → 首页首屏看单行标题+
   加粗让步句；/learn 头部金色 Start at L0 键点击应过滤 L0 并滚到网格；/docs
   顶部大标题「goldmine 文档」+ 居中栏；手机宽度 /docs 无贴边截断。
+
+### 追记 3（选项一去噪 + humanizer 文案轮，分支 session/web-taste-review-20261030）
+
+owner 拍板「中度去噪」；humanizer skill（blader/humanizer，MIT）repo-local 装
+于 .zcode/skills/humanizer/，对首页文案跑一遍。
+
+**关键行**：① 眉题全删（SectionHead 去 kicker/no props，Hero/LearnApp/learn-main/
+Stage 手删）；② 01-07 幽灵数字、场景卡 0N、台账行号前导零清零；③ learn/Scenarios
+卡片 1px 描边→色阶（bg-bg1，hover 加深）；④ 卡内分隔线 border-t/h-px→间距或色阶；
+⑤ mono 69→56 处且全部落在批准保留清单（终端演示/代码/公式/gate id/<code>/复制钮），
+导航、按钮、统计说明、卡片标签、抽屉控件、页脚全部转无衬线句首大写（源码里的
+全大写字符串同步改写 14 处）；⑥ learn 12px 层整体抬到 13px，卡片正文 14px 成主流；
+⑦ humanizer §8：首页 EN 破折号 8 处改冒号/句号/分号，zh 破折号按标准中文标点保留；
+⑧ Bento 诚实芯片由盒式改角标句式（「示意」/demo），media-OCR 门行合并，契约语义不丢。
+
+**每行的风险**：卡片描边→色阶让 learn 网格的「档案盒」感变柔，喜欢硬边可单独
+revert ConceptCard/Scenarios 两个 className；按钮 sans 化丢了 mono CTA 腔（视觉
+评审员曾点赞 mono CTA，此为取舍）；gate 行合并后 "official gate" 字样缩进 mono 行。
+**我不确定的地方**：inspect 剩余 eyebrow 2 条实为卡片尾部的演示输出行（2.64 算术、
+gate 名单），inspector 按几何把它们配对到下一卡标题——辩护保留；learn body-size
+13px 仍 FLAG（工具理想值 16px），learn 是检索式参考网格而非阅读文，抽屉内阅读
+体验 14-15px，同样辩护保留；em-dash 65 处为 zh 破折号与代码注释。
+**90 秒验证**：cd web && npm run preview -- --port 4173 → 首页无眉题、统计说明
+句首大写、按钮无衬线；/learn 卡片无描边、无全大写微标签；lint FAIL 116→88（剩余
+全在保留清单）。

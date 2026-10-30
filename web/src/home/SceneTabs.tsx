@@ -16,7 +16,7 @@ const SCENES: {
     query: { zh: "退款期限还有几天？", en: "how long is the refund window?" },
     mech: {
       zh: "按意思唤起最近的邻居——同义、改写都算",
-      en: "nearest neighbors by meaning — paraphrases count",
+      en: "nearest neighbors by meaning; paraphrases count",
     },
   },
   {
@@ -34,7 +34,7 @@ const SCENES: {
     query: { zh: "截图里的那段报错", en: "that error in a screenshot" },
     mech: {
       zh: "文本、OCR、音频、图像——四路证据合流",
-      en: "text, OCR, audio, image — four evidence paths converge",
+      en: "text, OCR, audio, image; four evidence paths converge",
     },
   },
 ];
@@ -107,7 +107,7 @@ export function SceneTabs({ scene, onScene }: { scene: Scene; onScene: (s: Scene
       </p>
       {/* static, per-scene announcement — the typewriter must not churn live regions */}
       <p className="sr-only" aria-live="polite">
-        {`${pick(lang, active.label.zh, active.label.en)}: ${pick(lang, active.query.zh, active.query.en)} — ${pick(lang, active.mech.zh, active.mech.en)}`}
+        {`${pick(lang, active.label.zh, active.label.en)}: ${pick(lang, active.query.zh, active.query.en)}; ${pick(lang, active.mech.zh, active.mech.en)}`}
       </p>
       <p className="sr-only">{pick(lang, "背景粒子场为机制示意演示", "the background particle field is a stylized mechanism demo")}</p>
     </div>

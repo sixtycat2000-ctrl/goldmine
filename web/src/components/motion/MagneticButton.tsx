@@ -114,7 +114,7 @@ export function MagneticButton({
       ? "bg-gold text-bg0 border border-gold hover:text-bg0"
       : "text-gold border border-line-strong hover:border-gold/60";
 
-  const cls = `pointer-events-auto group/mag relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 font-mono text-[13px] tracking-[0.08em] uppercase transition-colors duration-300 ${base} ${className}`;
+  const cls = `pointer-events-auto group/mag relative inline-flex items-center gap-2 overflow-hidden rounded-full px-6 py-3 text-[14px] font-medium transition-colors duration-300 ${base} ${className}`;
 
   const inner = (
     <>

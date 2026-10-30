@@ -136,19 +136,28 @@ body::after {
 
 /* ---------- shared surface treatments ---------- */
 
-.kicker {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--color-gold);
-}
-
 .glass {
   background: color-mix(in oklab, var(--color-bg2) 72%, transparent);
   backdrop-filter: blur(16px) saturate(1.15);
   -webkit-backdrop-filter: blur(16px) saturate(1.15);
   border: 1px solid var(--color-line);
+}
+
+/* ---------- learn stage belt (learn-stage-plan-001 A2/A4) ----------
+   Ambient file-chips are neutral (ink2/sub on line); gold is earned only by
+   the protagonist while processed. One ticker, paused off-screen via
+   .stage-paused and frozen under reduced motion. */
+@keyframes belt-ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.belt-track {
+  animation: belt-ticker 14s linear infinite;
+  will-change: transform;
+}
+.stage-paused .belt-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .belt-track { animation: none; }
 }
 
 /* cursor-tracked interior wash (SpotlightCard sets --mx/--my) */

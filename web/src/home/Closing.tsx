@@ -12,9 +12,7 @@ export function Closing() {
       <section id="limits" className="hairline-t bg-bg1/40">
         <div className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
           <SectionHead
-            no="06"
-            kicker={{ zh: "诚实的边界", en: "HONEST LIMITS" }}
-            title={{ zh: "0.2.0 · development——把未过的门写出来", en: "0.2.0 · development — the failed gates are published" }}
+            title={{ zh: "0.2.0 · development——把未过的门写出来", en: "0.2.0 · development: the failed gates are published" }}
             lede={{
               zh: "严格成功@5 155/180；19 项质量门过 17。两门未过都是已归档的硬上限：noise 20/30（陷阱虚构在问题前提层，无词可查）、media-OCR 6/9（冻结评测器 32 字符对齐最小窗 + OCR 内容缺口）。我们认为「敢把失败写清楚」本身就是检索质量的证据。",
               en: "Strict success@5 155/180; 17 of 19 quality gates pass. Both fails are archived hard limits: noise 20/30 (the fabricated premise has no verbatim token to check) and media-OCR 6/9 (frozen-evaluator 32-char alignment floor + an OCR content gap). We believe publishing failures plainly is itself evidence of retrieval quality.",
@@ -25,8 +23,6 @@ export function Closing() {
 
       <section id="opensource" className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <SectionHead
-          no="07"
-          kicker={{ zh: "开源", en: "OPEN SOURCE" }}
           title={{
             zh: "MIT。代码、文档、评测与执行记录都在仓库里。",
             en: "MIT. Everything is in the repo.",

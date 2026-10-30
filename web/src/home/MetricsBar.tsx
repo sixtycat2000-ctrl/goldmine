@@ -16,28 +16,28 @@ export function MetricsBar() {
   const tiles: { value: React.ReactNode; label: string; gold?: boolean }[] = [
     {
       value: <><Counter end={3200} />+</>,
-      label: zh ? "离线测试 · 全量 8 分钟" : "OFFLINE TESTS · 8-MIN SUITE",
+      label: zh ? "离线测试 · 全量 8 分钟" : "Offline tests · 8-min suite",
     },
     {
       value: <><Counter end={155} />/<Counter end={180} /></>,
-      label: zh ? "严格成功@5（官方跑）" : "STRICT SUCCESS@5 (OFFICIAL)",
+      label: zh ? "严格成功@5（官方跑）" : "Strict success@5 (official run)",
     },
     {
       value: <><Counter end={17} />/<Counter end={19} /></>,
-      label: zh ? "质量门通过 · 2 门写明原因" : "GATES PASSING · 2 REASONED",
+      label: zh ? "质量门通过 · 2 门写明原因" : "Quality gates passing · 2 reasoned",
       gold: true,
     },
     {
       value: <><Counter end={420} /> · {SUITE.frozenSources}</>,
-      label: zh ? "冻结评测题 · 来源文件" : "FROZEN EVAL QS · SOURCE FILES",
+      label: zh ? "冻结评测题 · 来源文件" : "Frozen eval questions · source files",
     },
     {
       value: <><Counter end={1.4} decimals={1} />s</>,
-      label: zh ? "每题中位耗时（QMD 21.8s）" : "MEDIAN PER QUERY (QMD 21.8s)",
+      label: zh ? "每题中位耗时（QMD 21.8s）" : "Median per query (QMD 21.8s)",
     },
     {
       value: <>0 <span className="text-base">B</span></>,
-      label: zh ? "上传 · 代码里没有这条路径" : "UPLOADED · NO SUCH CODE PATH",
+      label: zh ? "上传 · 代码里没有这条路径" : "Uploaded · no such code path",
       gold: true,
     },
   ];
@@ -46,19 +46,17 @@ export function MetricsBar() {
     <section id="numbers" className="hairline-t hairline-b bg-bg1/40">
       <div className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <SectionHead
-          no="03"
-          kicker={{ zh: "实测数字", en: "MEASURED NUMBERS" }}
           title={{ zh: "数字与回执", en: "Numbers, with receipts" }}
           lede={{
             zh: "这里没有一行营销数字——每一项都能在仓库文档与执行回执（docs/FEATURE_STATUS.md、docs/COMPARISON.md、reports/execution/）里对到原始出处。",
-            en: "No marketing numbers here — every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
+            en: "No marketing numbers here. Every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
           }}
         />
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
           {tiles.map((t, i) => (
             <Reveal key={t.label} delay={i * 0.05} y={14}>
               <div className={`font-display text-3xl lg:text-[2rem] ${t.gold ? "text-gold" : "text-ink"}`}>{t.value}</div>
-              <div className="mt-2 font-mono text-[12px] leading-relaxed tracking-[0.12em] text-sub uppercase">
+              <div className="mt-2 text-[13px] leading-relaxed text-sub">
                 {t.label}
               </div>
             </Reveal>
@@ -75,22 +73,22 @@ export function MetricsBar() {
           <table className="w-full min-w-[46rem] border-collapse text-left">
             <thead>
               <tr className="hairline-b">
-                <th scope="col" className="py-3 pr-4 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
+                <th scope="col" className="py-3 pr-4 text-[12px] text-sub">
                   {zh ? "编号" : "NO."}
                 </th>
-                <th scope="col" className="py-3 pr-4 text-right font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
-                  {zh ? "实测" : "MEASURED"}
+                <th scope="col" className="py-3 pr-4 text-right text-[12px] text-sub">
+                  {zh ? "实测" : "Measured"}
                 </th>
-                <th scope="col" className="py-3 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
-                  {zh ? "回执与说明" : "RECEIPT & NOTE"}
+                <th scope="col" className="py-3 text-[12px] text-sub">
+                  {zh ? "回执与说明" : "Receipt & note"}
                 </th>
               </tr>
             </thead>
             <tbody>
               {LEDGER.map((row) => (
                 <tr key={row.no} className="hairline-b align-top transition-colors hover:bg-bg2/60">
-                  <td className="py-4 pr-4 font-mono text-[12px] text-sub">{row.no}</td>
-                  <td className="py-4 pr-4 text-right font-mono text-[13px] whitespace-nowrap text-ink">
+                  <td className="py-4 pr-4 text-[12px] text-sub">{row.no}</td>
+                  <td className="py-4 pr-4 text-right text-[13px] whitespace-nowrap text-ink">
                     {typeof row.value === "string" ? row.value : pick(lang, row.value.zh, row.value.en)}
                   </td>
                   <td className="py-4 text-[13px] leading-relaxed text-ink2">

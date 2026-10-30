@@ -4,18 +4,28 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ConceptCard } from "./ConceptCard";
 import { LessonDrawer } from "./LessonDrawer";
+import { Stage } from "./Stage";
 import { useLang, pick } from "../lib/lang";
 import {
+  STATIONS,
   clusterColor,
   layerBadge,
   loadVisited,
   saveVisited,
+  stationMeta,
+  stationOf,
+  type Concept,
   type LearnData,
+  type StationId,
 } from "../lib/learn-data";
 import { IconSearch, IconClose } from "../components/Icons";
-import { MagneticButton } from "../components/motion/MagneticButton";
 
 type Ok = Extract<LearnData, { ok: true }>;
+type View =
+  | { kind: "stage" }
+  | { kind: "station"; id: StationId }
+  | { kind: "l0" }
+  | { kind: "search" };
 
 export function LearnApp({ data }: { data: Ok }) {
   const lang = useLang();
@@ -23,14 +33,91 @@ export function LearnApp({ data }: { data: Ok }) {
   const { graph, byId } = data;
 
   const [query, setQuery] = useState("");
+  const [station, setStation] = useState<StationId | null>(null);
+  const [l0open, setL0open] = useState(false);
+  // sub-cluster filter, only meaningful inside understand / rail panels (B1)
   const [cluster, setCluster] = useState<string>("all");
-  const [layer, setLayer] = useState<number | "all">("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   // which card the drawer expanded from — its slot stays reserved (invisible,
   // exact height) until the drawer closes, so the morph has a stable anchor
   const [openedId, setOpenedId] = useState<string | null>(null);
   const [visited, setVisited] = useState<Set<string>>(() => loadVisited());
   const searchRef = useRef<HTMLInputElement>(null);
+  // stage scroll position, saved on entering a panel and restored on exit (B5)
+  const stageScrollRef = useRef(0);
+
+  const view: View = query.trim()
+    ? { kind: "search" }
+    : station
+      ? { kind: "station", id: station }
+      : l0open
+        ? { kind: "l0" }
+        : { kind: "stage" };
+
+  /* ---------------- hash routes: #stage= / #l0 / #q= / #c= (B3) ---------------- */
+
+  const applyHash = useCallback(() => {
+    const h = decodeURIComponent(location.hash || "");
+    let m: RegExpMatchArray | null;
+    if ((m = h.match(/^#stage=([a-z]+)/))) {
+      const id = m[1] as StationId;
+      if (STATIONS.some((s) => s.id === id)) {
+        setQuery("");
+        setL0open(false);
+        setStation(id);
+        return;
+      }
+    }
+    if (h.startsWith("#l0")) {
+      setQuery("");
+      setStation(null);
+      setL0open(true);
+      return;
+    }
+    if ((m = h.match(/^#q=([^&]*)/))) {
+      setStation(null);
+      setL0open(false);
+      setQuery(m[1]);
+      return;
+    }
+    setStation(null);
+    setL0open(false);
+    setQuery("");
+  }, []);
+
+  useEffect(() => {
+    // cold boot: restore deep-linked state (G9)
+    if (location.hash) applyHash();
+    const c = location.hash.match(/^#c=([a-z0-9_-]+)/);
+    if (c && byId.has(c[1])) setSelectedId(c[1]);
+    const onPop = () => applyHash();
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const pushHash = useCallback((h: string) => {
+    if (location.hash !== h) history.pushState(null, "", h || location.pathname);
+  }, []);
+
+  const syncHash = useCallback(
+    (v: View, cardId: string | null) => {
+      if (cardId) pushHash(`#c=${cardId}`);
+      else if (v.kind === "station") pushHash(`#stage=${v.id}`);
+      else if (v.kind === "l0") pushHash("#l0");
+      else if (v.kind === "search") pushHash(`#q=${encodeURIComponent(query.trim())}`);
+      else pushHash("");
+    },
+    [pushHash, query],
+  );
+
+  useEffect(() => {
+    if (selectedId && byId.has(selectedId)) pushHash(`#c=${selectedId}`);
+    else syncHash(view, null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view.kind, station, l0open, query, selectedId]);
+
+  /* ---------------- station aggregates for the stage ---------------- */
 
   const tokenOf = useMemo(() => {
     const m = new Map<string, string>();
@@ -38,22 +125,71 @@ export function LearnApp({ data }: { data: Ok }) {
     return m;
   }, [graph.clusters]);
 
-  const sortedClusters = useMemo(
-    () => [...graph.clusters].sort((a, b) => a.token.localeCompare(b.token)),
-    [graph.clusters],
+  const stationNodes = useMemo(() => {
+    const by: Record<StationId, Concept[]> = { walk: [], identity: [], understand: [], search: [], rail: [] };
+    for (const n of graph.nodes) by[stationOf(n.cluster)].push(n);
+    return by;
+  }, [graph.nodes]);
+
+  const counts = useMemo(
+    () => Object.fromEntries(STATIONS.map((s) => [s.id, stationNodes[s.id].length])) as Record<StationId, number>,
+    [stationNodes],
+  );
+  const visitedCounts = useMemo(() => {
+    const by: Record<StationId, number> = { walk: 0, identity: 0, understand: 0, search: 0, rail: 0 };
+    for (const n of graph.nodes) if (visited.has(n.id)) by[stationOf(n.cluster)]++;
+    return by;
+  }, [graph.nodes, visited]);
+  const keystones = useMemo(() => {
+    const by = Object.fromEntries(STATIONS.map((s) => [s.id, [] as string[]])) as Record<StationId, string[]>;
+    for (const n of graph.nodes)
+      if (n.keystone) by[stationOf(n.cluster)].push(pick(lang, n.title_zh, n.title_en));
+    return by;
+  }, [graph.nodes, lang]);
+  const l0Count = useMemo(() => graph.nodes.filter((n) => n.layer === 0).length, [graph.nodes]);
+  const total = graph.nodes.length;
+  const totalVisited = useMemo(() => graph.nodes.filter((n) => visited.has(n.id)).length, [graph.nodes, visited]);
+
+  /* ---------------- open/close with scroll save/restore (B5) ---------------- */
+
+  const scrollTo = useCallback((top: number) => {
+    const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top, behavior: instant ? "instant" : "smooth" });
+  }, []);
+
+  const openStation = useCallback(
+    (id: StationId | "l0") => {
+      stageScrollRef.current = window.scrollY;
+      if (id === "l0") setL0open(true);
+      else {
+        // entering a panel resets the sub-filter unless it belongs to the station
+        setCluster((c) => {
+          if (c !== "all" && !stationMeta(id).clusters.includes(c)) return "all";
+          return c;
+        });
+        setStation(id);
+      }
+      requestAnimationFrame(() => {
+        const grid = document.getElementById("grid");
+        if (grid) scrollTo(grid.getBoundingClientRect().top + window.scrollY - 80);
+      });
+    },
+    [scrollTo],
   );
 
-  const total = graph.nodes.length;
-
-  const toggleVisited = useCallback((id: string) => {
-    setVisited((prevSet) => {
-      const nextSet = new Set(prevSet);
-      if (nextSet.has(id)) nextSet.delete(id);
-      else nextSet.add(id);
-      saveVisited(nextSet);
-      return nextSet;
+  const backToStage = useCallback(() => {
+    setStation(null);
+    setL0open(false);
+    setCluster("all");
+    requestAnimationFrame(() => {
+      scrollTo(stageScrollRef.current);
+      // focus returns to the pod we came from (G5)
+      const btn = document.querySelector<HTMLElement>(`[data-station="${station ?? ""}"] button`);
+      btn?.focus?.();
     });
-  }, []);
+  }, [scrollTo, station]);
+
+  /* ---------------- card open / visited ---------------- */
 
   const handleOpen = useCallback((id: string) => {
     setOpenedId(id);
@@ -64,24 +200,48 @@ export function LearnApp({ data }: { data: Ok }) {
     setOpenedId(null);
   }, []);
   const handleNavigate = useCallback((id: string) => setSelectedId(id), []);
+  const toggleVisited = useCallback(
+    (id: string) => {
+      setVisited((prev) => {
+        const next = new Set(prev);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        saveVisited(next);
+        return next;
+      });
+    },
+    [],
+  );
+
+  /* ---------------- the one filtered list, per view (B4: keyed remount) ---------------- */
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const out = graph.nodes.filter((n) => {
-      if (cluster !== "all" && n.cluster !== cluster) return false;
-      if (layer !== "all" && n.layer !== layer) return false;
-      if (q) {
+    let list: Concept[];
+    if (view.kind === "search") {
+      list = graph.nodes.filter((n) => {
         const cl = graph.clusters.find((c) => c.id === n.cluster);
         const hay = `${n.title_zh} ${n.title_en} ${n.one_zh} ${n.one_en} ${cl?.label_zh ?? ""} ${cl?.label_en ?? ""}`.toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    });
-    out.sort((a, b) =>
-      (tokenOf.get(a.cluster) ?? "Z").localeCompare(tokenOf.get(b.cluster) ?? "Z") || a.layer - b.layer || a.id.localeCompare(b.id),
-    );
-    return out;
-  }, [graph, query, cluster, layer, tokenOf]);
+        return hay.includes(q);
+      });
+      list.sort((a, b) =>
+        (tokenOf.get(a.cluster) ?? "Z").localeCompare(tokenOf.get(b.cluster) ?? "Z") || a.layer - b.layer || a.id.localeCompare(b.id),
+      );
+    } else if (view.kind === "station") {
+      list = graph.nodes.filter(
+        (n) => stationOf(n.cluster) === view.id && (cluster === "all" || n.cluster === cluster),
+      );
+      // keystones lead the panel, then deepest mechanisms first (design §工位面板)
+      list.sort((a, b) => Number(b.keystone) - Number(a.keystone) || b.layer - a.layer || a.id.localeCompare(b.id));
+    } else if (view.kind === "l0") {
+      list = graph.nodes.filter((n) => n.layer === 0);
+      const order = (c: string) => STATIONS.findIndex((s) => s.id === stationOf(c));
+      list.sort((a, b) => order(a.cluster) - order(b.cluster) || a.id.localeCompare(b.id));
+    } else {
+      list = [];
+    }
+    return list;
+  }, [view, query, cluster, graph, tokenOf]);
 
   const selected = selectedId ? byId.get(selectedId) : undefined;
   const selectedIdx = selected ? filtered.findIndex((n) => n.id === selected.id) : -1;
@@ -120,7 +280,12 @@ export function LearnApp({ data }: { data: Ok }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [selectedId]);
 
-  const visitedCount = useMemo(() => graph.nodes.filter((n) => visited.has(n.id)).length, [graph.nodes, visited]);
+  const gridModeKey = view.kind === "station" ? `station-${view.id}-${cluster}` : view.kind === "l0" ? "l0" : view.kind === "search" ? "search" : "none";
+  const showBadge = view.kind === "search" || view.kind === "l0";
+  const subClusters =
+    view.kind === "station" && (view.id === "understand" || view.id === "rail")
+      ? graph.clusters.filter((c) => stationMeta(view.id).clusters.includes(c.id))
+      : [];
 
   return (
     <>
@@ -132,47 +297,64 @@ export function LearnApp({ data }: { data: Ok }) {
       </a>
       <Nav page="learn" />
 
-      <header className="mx-auto max-w-6xl px-5 pt-28 pb-8">
-        <p className="kicker">LEARN · CONCEPT MAP</p>
-        <h1 className="mt-3 max-w-[14em] font-display text-display leading-[1.08] text-ink">
-          {zh ? `${total} 个真实概念，四层逐层下探` : `${total} real concepts, four layers deep`}
-        </h1>
-        <p className="mt-4 max-w-[46em] text-[15px] leading-relaxed text-ink2">
-          {zh
-            ? "从机制层到基础层：每张卡都有定义、大白话、实例和真实代码出处。按簇筛选、按层进阶；读过的概念会被记住，进度条就是你自己的。"
-            : "From mechanisms to fundamentals: every card carries a definition, plain words, an example and real code refs. Filter by cluster, advance by layer; what you read is remembered — the progress bar is yours."}
-        </p>
-
-        <div className="mt-6 flex items-center gap-4">
-          <div className="h-1 flex-1 overflow-hidden rounded-full bg-bg3" role="progressbar" aria-valuenow={visitedCount} aria-valuemin={0} aria-valuemax={total} aria-label={zh ? "学习进度" : "study progress"}>
-            <motion.div
-              className="h-full rounded-full bg-gold"
-              initial={false}
-              animate={{ width: `${(visitedCount / total) * 100}%` }}
-              transition={{ type: "spring", stiffness: 120, damping: 20 }}
-            />
-          </div>
-          <span className="font-mono text-[12px] whitespace-nowrap text-sub">
-            <span className="text-gold">{visitedCount}</span> / {total} {zh ? "已读" : "read"}
-          </span>
-        </div>
-
-        {/* first-screen action: the page said how much there is, never where to
-            start — send the reader to the fundamentals layer (taste-skill review) */}
-        <div className="mt-6">
-          <MagneticButton
-            variant="gold"
-            onClick={() => {
-              setLayer(0);
-              document.getElementById("grid")?.scrollIntoView({ behavior: "smooth" });
-            }}
+      {view.kind === "stage" ? (
+        <Stage
+          lang={lang}
+          counts={counts}
+          visitedCounts={visitedCounts}
+          keystones={keystones}
+          l0Count={l0Count}
+          total={total}
+          totalVisited={totalVisited}
+          onOpen={openStation}
+        />
+      ) : (
+        <header className="mx-auto max-w-6xl px-5 pt-24 pb-4">
+          <button
+            type="button"
+            onClick={backToStage}
+            className="rounded-full border border-line px-4 py-1.5 text-[13px] text-ink2 transition-colors hover:border-gold/60 hover:text-gold"
           >
-            {zh ? "从 L0 基础层开始" : "Start at layer L0"} →
-          </MagneticButton>
-        </div>
-      </header>
+            ← {zh ? "返回舞台" : "back to the machine"}
+          </button>
+          {view.kind === "station" && (
+            <div className="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+              <h1 className="font-display text-display leading-[1.1] text-ink">
+                {pick(lang, stationMeta(view.id).label_zh, stationMeta(view.id).label_en)}
+                <span className="ml-3 align-middle text-[13px] text-sub">
+                  {view.id} × {counts[view.id]}
+                </span>
+              </h1>
+              <p className="w-full text-[14px] text-ink2">{pick(lang, stationMeta(view.id).role_zh, stationMeta(view.id).role_en)}</p>
+            </div>
+          )}
+          {view.kind === "l0" && (
+            <div className="mt-4">
+              <h1 className="font-display text-display leading-[1.1] text-ink">
+                {zh ? "基础层 L0" : "Layer L0"}
+                <span className="ml-3 align-middle text-[13px] text-sub">{l0Count} · {zh ? "跨工位" : "across stations"}</span>
+              </h1>
+              <p className="mt-1 max-w-[34em] text-[14px] text-ink2">
+                {zh ? "机器底下的地基：每张卡标注它属于哪个工位。" : "The ground under the machine: each card carries its home station."}
+              </p>
+            </div>
+          )}
+          {view.kind === "search" && (
+            <div className="mt-4">
+              <h1 className="font-display text-display leading-[1.1] text-ink">
+                {zh ? "搜索结果" : "Search"}
+                <span className="ml-3 align-middle text-[13px] text-sub">
+                  {filtered.length} / {total}
+                </span>
+              </h1>
+            </div>
+          )}
+        </header>
+      )}
 
-      {/* sticky filter toolbar */}
+      {/* sticky toolbar — search always; sub-cluster pills only where a panel
+          actually merges clusters (understand / rail). The global A–G and
+          L0–L3 pill rows are retired (amendments B1). */}
       <div className="sticky top-14 z-40 glass">
         <div className="mx-auto max-w-6xl px-5 py-3">
           <div className="flex flex-wrap items-center gap-3">
@@ -185,7 +367,7 @@ export function LearnApp({ data }: { data: Ok }) {
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={zh ? "搜概念、别名、簇……（按 / 聚焦）" : "Search concepts, aliases, clusters… ( / to focus )"}
                 aria-label={zh ? "搜索概念" : "Search concepts"}
-                className="w-full rounded-full border border-line bg-bg1/80 py-2 pr-9 pl-9 font-mono text-[12px] text-ink placeholder:text-sub focus:border-gold/60"
+                className="w-full rounded-full border border-line bg-bg1/80 py-2 pr-9 pl-9 font-mono text-[13px] text-ink placeholder:text-sub focus:border-gold/60"
               />
               {query && (
                 <button
@@ -198,56 +380,41 @@ export function LearnApp({ data }: { data: Ok }) {
                 </button>
               )}
             </div>
-            <p className="font-mono text-[12px] text-sub" aria-live="polite">
-              <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
-              {filtered.length} / {total}
-            </p>
+            {view.kind !== "search" && (
+              <p className="text-[13px] text-sub" aria-live="polite">
+                <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
+                {view.kind === "stage" ? total : `${filtered.length} / ${total}`}
+              </p>
+            )}
           </div>
 
-          <div
-            className="no-scrollbar hscroll mt-2.5 flex items-center gap-2 overflow-x-auto pb-1"
-            role="group"
-            aria-label={zh ? "按簇筛选" : "filter by cluster"}
-          >
-            <Pill active={cluster === "all"} onClick={() => setCluster("all")} layoutId="cluster-pill" label={zh ? "全部" : "All"} />
-            {sortedClusters.map((c) => (
-              <Pill
-                key={c.id}
-                active={cluster === c.id}
-                onClick={() => setCluster(cluster === c.id ? "all" : c.id)}
-                layoutId="cluster-pill"
-                label={`${c.token} · ${pick(lang, c.label_zh, c.label_en)}`}
-                dot={clusterColor(c.token)}
-              />
-            ))}
-          </div>
-
-          <div
-            className="no-scrollbar hscroll mt-1.5 flex items-center gap-2 overflow-x-auto pb-1"
-            role="group"
-            aria-label={zh ? "按层筛选" : "filter by layer"}
-          >
-            <Pill small active={layer === "all"} onClick={() => setLayer("all")} layoutId="layer-pill" label={zh ? "所有层" : "All layers"} />
-            {graph.layers.map((l) => (
-              <Pill
-                key={l.n}
-                small
-                active={layer === l.n}
-                onClick={() => setLayer(layer === l.n ? "all" : l.n)}
-                layoutId="layer-pill"
-                label={layerBadge(l.n, lang)}
-                title={pick(lang, l.blurb_zh, l.blurb_en)}
-              />
-            ))}
-          </div>
+          {subClusters.length > 0 && (
+            <div className="no-scrollbar hscroll mt-2.5 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按子簇筛选" : "filter by sub-cluster"}>
+              <Pill active={cluster === "all"} onClick={() => setCluster("all")} layoutId="cluster-pill" label={zh ? "全部" : "All"} />
+              {subClusters.map((c) => (
+                <Pill
+                  key={c.id}
+                  active={cluster === c.id}
+                  onClick={() => setCluster(cluster === c.id ? "all" : c.id)}
+                  layoutId="cluster-pill"
+                  label={`${c.token} · ${pick(lang, c.label_zh, c.label_en)}`}
+                  dot={clusterColor(c.token)}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       <main id="grid" className="mx-auto max-w-6xl px-5 py-10">
-        {filtered.length === 0 ? (
+        {view.kind === "stage" ? (
+          <p className="text-[13px] text-sub">
+            {zh ? "点一个工位，拆开看它的机制与概念。" : "Open a station to see its mechanisms and concepts."}
+          </p>
+        ) : filtered.length === 0 ? (
           <div className="rounded-2xl border border-line bg-bg1/60 p-12 text-center">
             <p className="font-display text-2xl text-ink">{zh ? "这个组合没有概念" : "No concepts match this combination"}</p>
-            <p className="mt-2 font-mono text-[12px] text-sub">
+            <p className="mt-2 text-[13px] text-sub">
               {zh ? "换一个词，或者" : "Try another term, or "}
               <button
                 type="button"
@@ -255,7 +422,6 @@ export function LearnApp({ data }: { data: Ok }) {
                 onClick={() => {
                   setQuery("");
                   setCluster("all");
-                  setLayer("all");
                 }}
               >
                 {zh ? "清空筛选" : "clear filters"}
@@ -263,11 +429,12 @@ export function LearnApp({ data }: { data: Ok }) {
             </p>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <AnimatePresence mode="popLayout" initial={false}>
-              {filtered.map((c) => (
+          /* keyed by mode: station↔panel remounts the list instead of
+             projecting 34 cards through a layout change (B4) */
+          <div key={gridModeKey} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((c, i) => {
+              const card = (
                 <ConceptCard
-                  key={c.id}
                   c={c}
                   cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
                   lang={lang}
@@ -275,9 +442,26 @@ export function LearnApp({ data }: { data: Ok }) {
                   dimmed={openedId === c.id}
                   onOpen={handleOpen}
                 />
-              ))}
-            </AnimatePresence>
-          </motion.div>
+              );
+              if (!showBadge) {
+                return (
+                  <div key={c.id} className={i === 0 && filtered[0].keystone ? "lg:col-span-2" : undefined}>
+                    {card}
+                  </div>
+                );
+              }
+              const st = stationMeta(stationOf(c.cluster));
+              return (
+                <div key={c.id}>
+                  <p className="mb-1 text-[13px] text-sub">
+                    <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: clusterColor(tokenOf.get(c.cluster) ?? "A") }} />
+                    {pick(lang, st.label_zh, st.label_en)} · {layerBadge(c.layer, lang)}
+                  </p>
+                  {card}
+                </div>
+              );
+            })}
+          </div>
         )}
       </main>
 
@@ -330,8 +514,8 @@ function Pill({
       aria-pressed={active}
       title={title}
       className={`relative shrink-0 rounded-full border transition-colors ${
-        small ? "px-2.5 py-0.5 text-[12px]" : "px-3.5 py-1 text-[12px]"
-      } font-mono tracking-[0.06em] ${active ? "text-bg0" : "border-line text-ink2 hover:border-gold/40 hover:text-ink"}`}
+        small ? "px-2.5 py-0.5 text-[13px]" : "px-3.5 py-1 text-[13px]"
+      } text-[13px] ${active ? "text-bg0" : "border-line text-ink2 hover:border-gold/40 hover:text-ink"}`}
     >
       {active && (
         <motion.span
