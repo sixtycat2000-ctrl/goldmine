@@ -5,7 +5,7 @@ import { Footer } from "../components/Footer";
 import { ConceptCard } from "./ConceptCard";
 import { LessonDrawer } from "./LessonDrawer";
 import { Stage, DepthRail } from "./Stage";
-import { IdentityDemo, SearchDemo, WalkQuiet, UnderstandQuiet } from "./station-visuals";
+import { IdentityDemo, SearchDemo, WalkDemo, UnderstandDemo } from "./station-visuals";
 import { useLang, pick } from "../lib/lang";
 import {
   STATIONS,
@@ -341,9 +341,9 @@ export function LearnApp({ data }: { data: Ok }) {
               )}
               {/* the clicked part becomes the hero (E3) */}
               <div className="mt-4 max-w-xl rounded-2xl border border-line bg-bg1/40 p-4">
-                {view.id === "walk" && <WalkQuiet lang={lang} />}
+                {view.id === "walk" && <WalkDemo beat={0} lang={lang} />}
                 {view.id === "identity" && <IdentityDemo beat={1} lang={lang} />}
-                {view.id === "understand" && <UnderstandQuiet lang={lang} />}
+                {view.id === "understand" && <UnderstandDemo beat={2} lang={lang} />}
                 {view.id === "search" && <SearchDemo beat={4} cycle={0} lang={lang} />}
                 {view.id === "rail" && (
                   <p className="font-mono text-[12px] leading-relaxed text-sub">

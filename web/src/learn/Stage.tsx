@@ -18,7 +18,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { pick, type Lang } from "../lib/lang";
 import { STATIONS, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
-import { IdentityDemo, SearchDemo, WalkQuiet, UnderstandQuiet, DemoTag, DemoFootnote } from "./station-visuals";
+import { IdentityDemo, SearchDemo, WalkDemo, UnderstandDemo, DemoTag, DemoFootnote } from "./station-visuals";
 
 export type StageProps = {
   lang: Lang;
@@ -280,10 +280,10 @@ function StationPod({
           {count} · <span className="text-gold">{read}</span> →
         </p>
       </button>
-      <div className="mt-auto pt-3">
-        {s.id === "walk" && <WalkQuiet lang={lang} />}
+      <div className="mt-auto flex flex-1 items-center pt-2">
+        {s.id === "walk" && <WalkDemo beat={beat} lang={lang} />}
         {s.id === "identity" && <IdentityDemo beat={beat} lang={lang} />}
-        {s.id === "understand" && <UnderstandQuiet lang={lang} />}
+        {s.id === "understand" && <UnderstandDemo beat={beat} lang={lang} />}
         {s.id === "search" && <SearchDemo beat={beat} cycle={cycle} lang={lang} />}
       </div>
     </div>

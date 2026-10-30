@@ -296,3 +296,50 @@ body::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------- learn stage pod visuals (amendments-003) ----------
+   Hand-drawn SVG schematics, loops paused off-screen (.stage-paused) and
+   frozen under reduced motion. Gold only where the machine earns it. */
+.podviz g,
+.podviz rect,
+.podviz circle,
+.podviz path,
+.podviz line { transform-box: fill-box; }
+@keyframes pv-travel { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; } 70% { transform: translateX(112px); opacity: 1; } 78% { transform: translateX(112px); opacity: 0; } 79%, 100% { transform: translateX(0); opacity: 0; } }
+.pv-file { animation: pv-travel 5.7s linear infinite; }
+.pv-f2 { animation-delay: 1.9s; }
+.pv-f3 { animation-delay: 3.8s; }
+@keyframes pv-stamp { 0%, 88%, 100% { opacity: 0.25; transform: scale(1); } 92% { opacity: 1; transform: scale(1.5); } 96% { opacity: 0.7; transform: scale(1); } }
+.pv-stamp { animation: pv-stamp 5.7s ease-in-out infinite; transform-origin: center; }
+@keyframes pv-bounce { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; } 30% { transform: translateX(40px); } 34% { transform: translateX(44px); } 52% { transform: translateX(0); opacity: 1; } 60%, 100% { opacity: 0; } }
+.pv-bounce { animation: pv-bounce 5.7s ease-in-out infinite; }
+@keyframes pv-refuse { 0%, 28%, 100% { opacity: 0; transform: scale(0.6); } 34% { opacity: 1; transform: scale(1.25); } 46% { opacity: 0.9; transform: scale(1); } 58% { opacity: 0; } }
+.pv-refuse { animation: pv-refuse 5.7s ease-in-out infinite; transform-origin: center; }
+@keyframes pv-pass { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 1; } 52% { transform: translateX(144px); opacity: 1; } 60% { transform: translateX(144px); opacity: 0; } 61%, 100% { transform: translateX(0); opacity: 0; } }
+.pv-pass { animation: pv-pass 5.7s linear infinite; }
+@keyframes pv-layer { 0%, 62%, 100% { opacity: 0.25; } 68%, 86% { opacity: 1; fill: var(--color-gold); } 92% { opacity: 0.4; } }
+.pv-layer { animation: pv-layer 5.7s ease-in-out infinite; transform-origin: center; }
+@keyframes pv-chunk { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 46% { transform: translateX(46px); opacity: 1; } 56%, 100% { transform: translateX(46px); opacity: 0; } }
+.pv-chunk { animation: pv-chunk 5.4s ease-in-out infinite; }
+@keyframes pv-cell { 0%, 45% { opacity: 0; } 55%, 88% { opacity: 0.85; } 96%, 100% { opacity: 0; } }
+.pv-cell { animation: pv-cell 5.4s ease-in-out infinite; }
+@keyframes pv-wave { 0%, 40% { opacity: 0.9; } 70%, 86% { opacity: 0.15; } 96%, 100% { opacity: 0.9; } }
+.pv-wave { animation: pv-wave 5.4s ease-in-out infinite; }
+@keyframes pv-query { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 38% { transform: translateX(-96px); opacity: 1; } 46%, 100% { transform: translateX(-96px); opacity: 0; } }
+.pv-query { animation: pv-query 5.7s ease-in-out infinite; }
+@keyframes pv-ray { 0%, 30% { opacity: 0; } 38%, 62% { opacity: 0.8; } 72%, 100% { opacity: 0; } }
+.pv-ray { animation: pv-ray 5.7s ease-in-out infinite; }
+@keyframes pv-bar { 0%, 34% { transform: scaleX(0); } 46%, 66% { transform: scaleX(1); } 78%, 100% { transform: scaleX(0); } }
+.pv-bar { animation: pv-bar 5.7s cubic-bezier(0.2, 0.8, 0.3, 1) infinite; transform-origin: left; }
+@keyframes pv-evidence { 0%, 42%, 74%, 100% { opacity: 0; } 52%, 66% { opacity: 1; } }
+.pv-evidence { animation: pv-evidence 5.7s ease-in-out infinite; }
+@keyframes pv-zero { 0%, 12%, 74%, 100% { opacity: 0; } 24%, 62% { opacity: 1; } }
+.pv-zero { animation: pv-zero 5.7s ease-in-out infinite; }
+.stage-paused .podviz * { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .podviz .pv-file, .podviz .pv-stamp, .podviz .pv-bounce, .podviz .pv-refuse, .podviz .pv-pass,
+  .podviz .pv-layer, .podviz .pv-chunk, .podviz .pv-cell, .podviz .pv-wave, .podviz .pv-query,
+  .podviz .pv-ray, .podviz .pv-bar, .podviz .pv-evidence, .podviz .pv-zero { animation: none; }
+  .podviz .pv-cell { opacity: 0.85; }
+  .podviz .pv-bar { transform: scaleX(1); }
+}
