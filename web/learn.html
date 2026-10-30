@@ -31,14 +31,23 @@ window.addEventListener("error",function(e){
 </style>
 </head>
 <body>
-<h1 class="sr-only" data-zh="goldmine 概念地图：145 个概念，四层逐层下探" data-en="goldmine concept map: 145 concepts across four layers">goldmine 概念地图：145 个概念，四层逐层下探</h1>
+<h1 class="sr-only" data-zh="goldmine 学习：一台可以拆开看的机器——145 个概念按管线工位逐级下探" data-en="goldmine learn: a machine you can open up — 145 concepts drilled down by pipeline station">goldmine 学习：一台可以拆开看的机器——145 个概念按管线工位逐级下探</h1>
 <div id="root"><!--
-  Pre-mount shell: paints while the 388KB inline graph streams in; React
-  replaces it with the interactive app (same header content, same type).
---><main style="max-width:72rem;margin:0 auto;padding:7rem 1.25rem 2rem">
-  <p style="font:11px var(--font-mono,ui-monospace,monospace);letter-spacing:.18em;color:#F5B041;text-transform:uppercase">Learn · Concept Map</p>
-  <h2 style="font:400 clamp(2rem,1.1rem + 3.4vw,3.5rem)/1.14 var(--font-display,'Instrument Serif','Noto Serif SC','Songti SC',serif);color:#F3F4F6;max-width:14em;margin:.75rem 0 0"><span class="sh-zh">145 个真实概念，四层逐层下探</span><span class="sh-en">145 real concepts, four layers deep</span></h2>
-  <p style="color:#A9AFB8;font:15px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);max-width:46em;margin:1rem 0 0"><span class="sh-zh">从机制层到基础层：每张卡都有定义、大白话、实例和真实代码出处。按簇筛选、按层进阶；读过的概念会被记住，进度条就是你自己的。</span><span class="sh-en">From mechanisms to fundamentals: every card carries a definition, plain words, an example and real code refs. Filter by cluster, advance by layer; what you read is remembered — the progress bar is yours.</span></p>
+  Pre-mount shell (learn-stage-plan-001 D3): the static machine paints while
+  the 388KB inline graph streams in; React replaces it with the interactive
+  stage. This same markup is the reduced-motion frame and the no-JS view.
+--><main style="max-width:72rem;margin:0 auto;padding:6rem 1.25rem 2rem">
+  <p style="font:12px var(--font-mono,ui-monospace,monospace);letter-spacing:.18em;color:#F5B041;text-transform:uppercase">Learn · The Machine</p>
+  <h2 style="font:400 clamp(2rem,1.1rem + 3.4vw,3.5rem)/1.14 var(--font-display,'Instrument Serif','Noto Serif SC','Songti SC',serif);color:#F3F4F6;max-width:16em;margin:.75rem 0 0"><span class="sh-zh">一台可以拆开看的机器</span><span class="sh-en">A machine you can open up</span></h2>
+  <p style="color:#A9AFB8;font:15px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);max-width:46em;margin:1rem 0 0"><span class="sh-zh">文件从走盘进、验身份、被理解、入库；查询只从检索进。全部在本机完成，无网络传输。</span><span class="sh-en">Files enter at the walk, are identity-checked, understood, and land in one SQLite file; queries enter at search only. Everything runs locally, nothing is uploaded.</span></p>
+  <div style="display:grid;grid-template-columns:31fr 16fr 33fr 5.5rem 31fr;gap:.75rem;margin-top:2rem;font:12px/1.5 var(--font-mono,ui-monospace,monospace)">
+    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">走盘</b><br><span style="color:#A9AFB8">31 概念 · 确定性走盘、波次、一文件一事务</span></div>
+    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">身份裁决</b><br><span style="color:#A9AFB8">16 · 指纹门 exit 3 · sha 跳过</span></div>
+    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">理解</b><br><span style="color:#A9AFB8">33 · 转录、OCR、边车、嵌入与预算</span></div>
+    <div style="border:1px solid #3a3a42;border-radius:12px;padding:.85rem;color:#A9AFB8">1 ×<br>lib.sqlite</div>
+    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">检索</b><br><span style="color:#A9AFB8">31 · 混合融合、准入门、证据选择</span></div>
+  </div>
+  <p style="border:1px solid rgba(111,179,170,.4);background:rgba(111,179,170,.05);border-radius:12px;padding:.85rem;margin-top:.75rem;font:12px/1.6 var(--font-mono,ui-monospace,monospace);color:#A9AFB8"><b style="color:#F3F4F6;font-weight:400;font-family:var(--font-display,'Instrument Serif',serif);font-size:1.35rem">质检线</b> · 34 概念 · 17/19 质量门（两门未过已归档） · 3,200+ 离线测试 · 0 B 上传</p>
 </main></div>
 <!--
   Baked by site/tools/build_learn.py: the graph JSON is inlined into the
