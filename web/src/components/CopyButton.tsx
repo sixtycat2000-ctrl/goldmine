@@ -36,7 +36,7 @@ export function CopyButton({ text, label }: { text: string; label?: { zh: string
     <button
       type="button"
       onClick={copy}
-      className="inline-flex items-center gap-1.5 font-mono text-[11px] text-sub transition-colors hover:text-gold"
+      className="inline-flex items-center gap-1.5 font-mono text-[12px] text-sub transition-colors hover:text-gold"
       aria-live="polite"
     >
       <IconCopy size={13} />

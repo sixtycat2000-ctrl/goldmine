@@ -4,7 +4,7 @@ import { REPO_URL } from "../lib/metrics";
 export function Footer() {
   return (
     <footer className="hairline-t">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 font-mono text-[11px] tracking-[0.08em] text-sub sm:flex-row">
+      <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 font-mono text-[12px] tracking-[0.08em] text-sub sm:flex-row">
         <span>
           goldmine · <T zh="本地优先语义搜索" en="local-first semantic search" /> · MIT
         </span>

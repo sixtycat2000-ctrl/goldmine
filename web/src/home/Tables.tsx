@@ -34,7 +34,7 @@ function CompareTable() {
               <th
                 key={c.key}
                 scope="col"
-                className={`px-4 py-3.5 font-mono text-[10px] tracking-[0.14em] uppercase ${c.key === "gm" ? "text-gold" : "text-sub"}`}
+                className={`px-4 py-3.5 font-mono text-[12px] tracking-[0.14em] uppercase ${c.key === "gm" ? "text-gold" : "text-sub"}`}
               >
                 {pick(lang, c.label.zh, c.label.en)}
               </th>
@@ -51,14 +51,14 @@ function CompareTable() {
                 <span className="inline-flex items-center gap-2">
                   <CellView cell={"gm" in r ? r.gm : "—"} />
                   {"gmNote" in r && r.gmNote && (
-                    <span className="font-mono text-[10px] text-sub">{pick(lang, r.gmNote.zh, r.gmNote.en)}</span>
+                    <span className="font-mono text-[12px] text-sub">{pick(lang, r.gmNote.zh, r.gmNote.en)}</span>
                   )}
                 </span>
               </td>
               <td className="px-4 py-3.5">
                 <span className="inline-flex items-center gap-2">
                   <CellView cell={r.spot} />
-                  {"spotNote" in r && r.spotNote && <span className="font-mono text-[10px] text-sub">*</span>}
+                  {"spotNote" in r && r.spotNote && <span className="font-mono text-[12px] text-sub">*</span>}
                 </span>
               </td>
               <td className="px-4 py-3.5">
@@ -88,10 +88,10 @@ function QmdTable() {
         <thead>
           <tr className="hairline-b">
             <th scope="col" className="px-4 py-3.5" />
-            <th scope="col" className="px-4 py-3.5 text-right font-mono text-[10px] tracking-[0.14em] text-gold uppercase">
+            <th scope="col" className="px-4 py-3.5 text-right font-mono text-[12px] tracking-[0.14em] text-gold uppercase">
               goldmine
             </th>
-            <th scope="col" className="px-4 py-3.5 text-right font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+            <th scope="col" className="px-4 py-3.5 text-right font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
               QMD 2.8.3
             </th>
           </tr>
@@ -110,7 +110,7 @@ function QmdTable() {
                 <span className={r.winner === "qmd" ? "font-bold text-ink" : "text-sub"}>
                   {r.qmd}
                   {"qmdNote" in r && r.qmdNote && (
-                    <span className="ml-2 text-[10px]">{pick(lang, r.qmdNote.zh, r.qmdNote.en)}</span>
+                    <span className="ml-2 text-[12px]">{pick(lang, r.qmdNote.zh, r.qmdNote.en)}</span>
                   )}
                 </span>
                 {r.winner === "qmd" && <span className="sr-only">{lang === "zh" ? "（更优）" : " (wins)"}</span>}
@@ -138,14 +138,14 @@ export function HeadToHead() {
       />
       <Reveal y={16}>
         <CompareTable />
-        <p className="mt-4 max-w-[52em] text-[12px] leading-relaxed text-sub">
+        <p className="mt-4 max-w-[38em] text-[13px] leading-relaxed text-sub">
           {pick(lang, COMPARE_TABLE.footnote.zh, COMPARE_TABLE.footnote.en)}
         </p>
       </Reveal>
       <div className="h-12" />
       <Reveal>
         <QmdTable />
-        <p className="mt-4 font-mono text-[11px] text-sub">
+        <p className="mt-4 font-mono text-[12px] text-sub">
           {pick(
             lang,
             "完整矩阵、失败与岔子、逐行回执：仓库 docs/COMPARISON.md 与 reports/execution/P2-08/。",

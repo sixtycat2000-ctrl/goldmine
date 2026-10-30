@@ -6,6 +6,7 @@ import { TiltCard } from "../components/motion/TiltCard";
 import { Reveal } from "../components/motion/Reveal";
 import { SectionHead } from "../components/SectionHead";
 import { Counter } from "../components/motion/Counter";
+import { IconNo } from "../components/Icons";
 
 /* ------------------------------------------------------------------ */
 /* micro-demos — stylized mechanism illustrations. Values are either   */
@@ -17,7 +18,7 @@ function DemoTag() {
   const lang = useLang();
   return (
     <span
-      className="mt-2 inline-block rounded border border-line px-1.5 py-0.5 font-mono text-[9px] tracking-[0.14em] text-sub uppercase"
+      className="mt-2 inline-block rounded border border-line px-1.5 py-0.5 font-mono text-[12px] tracking-[0.14em] text-sub uppercase"
       aria-hidden="true"
     >
       {pick(lang, "示意 · 简化演示", "demo · stylized")}
@@ -39,11 +40,11 @@ function HybridDemo() {
   ];
   return (
     <div ref={ref} className="mt-5" aria-hidden="true">
-      <p className="font-mono text-[11px] text-sub">score = 1.0·z + 2.0·cov^1.5 + kind</p>
+      <p className="font-mono text-[12px] text-sub">score = 1.0·z + 2.0·cov^1.5 + kind</p>
       <div className="mt-3 space-y-2.5">
         {rows.map((r, i) => (
           <div key={r.w} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 font-mono text-[10px] text-sub">{r.w}</span>
+            <span className="w-24 shrink-0 font-mono text-[12px] text-sub">{r.w}</span>
             <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-bg3">
               <motion.div
                 className="h-full w-full origin-left rounded-full"
@@ -56,7 +57,7 @@ function HybridDemo() {
           </div>
         ))}
       </div>
-      <p className="mt-3 font-mono text-[11px] text-ink2">
+      <p className="mt-3 font-mono text-[12px] text-ink2">
         → <Counter end={2.64} decimals={2} className="text-gold" />{" "}
         <span className="text-sub">{pick(lang, "每条命中都摆得开这行算术", "every hit's arithmetic, line by line")}</span>
       </p>
@@ -83,7 +84,7 @@ function MultimodalDemo() {
         {chips.map((c, i) => (
           <span
             key={c.en}
-            className="gm-anim rounded-full border px-3 py-1 font-mono text-[10px] tracking-[0.1em] text-ink2 uppercase"
+            className="gm-anim rounded-full border px-3 py-1 font-mono text-[12px] tracking-[0.1em] text-ink2 uppercase"
             style={{
               animation: `gm-chip-pulse 3.2s ease-in-out ${i * 0.8}s infinite`,
               opacity: 0.6,
@@ -116,15 +117,15 @@ function GatesDemo() {
   const lang = useLang();
   return (
     <div className="mt-5" aria-hidden="true">
-      <p className="font-mono text-[11px] text-ink2">
+      <p className="font-mono text-[12px] text-ink2">
         <Counter end={17} className="text-gold" />
         <span className="text-sub"> / 19 </span>
         <span className="text-fail">· 2</span>{" "}
         <span className="text-sub">{pick(lang, "未过，原因在档", "unresolved, reasons on record")}</span>
       </p>
       <div className="mt-2.5 space-y-1.5">
-        <p className="font-mono text-[10px] text-fail">noise 20/30</p>
-        <p className="font-mono text-[10px] text-fail">media-OCR 6/9</p>
+        <p className="font-mono text-[12px] text-fail">noise 20/30</p>
+        <p className="font-mono text-[12px] text-fail">media-OCR 6/9</p>
       </div>
     </div>
   );
@@ -147,9 +148,11 @@ function LocalDemo() {
             animation: "gm-dot-ping 2.8s ease-in-out infinite",
           }}
         />
-        <span className="absolute top-1/2 right-20 font-mono text-[10px] text-fail">✕</span>
+        <span className="absolute top-1/2 right-20 text-fail" aria-hidden="true">
+          <IconNo size={11} label="blocked" />
+        </span>
       </div>
-      <p className="mt-2 font-mono text-[10px] tracking-[0.12em] text-sub uppercase">
+      <p className="mt-2 font-mono text-[12px] tracking-[0.12em] text-sub uppercase">
         {pick(lang, "0 字节离开你的机器", "0 bytes leave your machine")}
       </p>
     </div>
@@ -164,10 +167,10 @@ function ReceiptDemo() {
   const lines = [
     { t: "$ goldmine search '退款期限' --why", c: "text-ink2" },
     { t: pick(lang, "exit 0 · 每题中位 1.4s（官方跑实测）", "exit 0 · 1.4s median (official run)"), c: "text-teal" },
-    { t: pick(lang, "回执在档：reports/execution/ ✓", "receipts archived: reports/execution/ ✓"), c: "text-gold" },
+    { t: pick(lang, "回执在档：reports/execution/", "receipts archived: reports/execution/"), c: "text-gold" },
   ];
   return (
-    <div ref={ref} className="mt-5 space-y-1.5 font-mono text-[11px] leading-relaxed" aria-hidden="true">
+    <div ref={ref} className="mt-5 space-y-1.5 font-mono text-[12px] leading-relaxed" aria-hidden="true">
       {lines.map((l, i) => (
         <motion.p
           key={l.t}
@@ -190,7 +193,7 @@ function ServeDemo() {
   // real interface: goldmine/mcp_contracts.py — search / get / context / status
   const tools = ["goldmine_search", "goldmine_get", "goldmine_context", "goldmine_status"];
   return (
-    <div ref={ref} className="mt-5 font-mono text-[11px]" aria-hidden="true">
+    <div ref={ref} className="mt-5 font-mono text-[12px]" aria-hidden="true">
       <p className="text-ink2">$ goldmine mcp --db library.sqlite</p>
       <div className="mt-2 grid grid-cols-2 gap-1.5">
         {tools.map((t, i) => (

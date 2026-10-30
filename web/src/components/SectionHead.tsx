@@ -29,7 +29,7 @@ export function SectionHead({
           {pick(lang, title.zh, title.en)}
         </h2>
         {lede && (
-          <p className="mt-4 max-w-[46em] text-[15px] text-ink2">{pick(lang, lede.zh, lede.en)}</p>
+          <p className="mt-4 max-w-[34em] text-[15px] text-ink2">{pick(lang, lede.zh, lede.en)}</p>
         )}
       </Reveal>
     </div>

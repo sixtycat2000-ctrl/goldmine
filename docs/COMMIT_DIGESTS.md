@@ -530,3 +530,37 @@ DPR 上限 1.5/1.25——填充率降约一个数量级，正文区遮罩随之�
 **Lighthouse（mobile）首页 P96/A100/BP100/SEO100**（LCP 2.7s、TBT 10ms、
 CLS 0.023）。风险：粒子密度/亮度是新艺术方向，owner 观感为准；three.js 换
 手写渲染器（省 119KB gz）评估过、本轮刻意不做。
+
+## (web) — taste-skill 评审轮：结构性/可读性修复（分支 session/web-taste-review-20261030）
+
+评审工具：Leonxlnx/taste-skill v2（repo-local 安装于 .zcode/skills/taste-skill，
+MIT）。方法：lint + inspect.mjs 实测（1440/768/390）×3 页 + 截图视觉评审，
+before/after 双份报告留档 .taste-skill/（已 gitignore）。
+
+**关键行**（FAIL 计数 home 15→12、learn 8→8（质变项清除）、docs 12→8）：
+- Hero：h1 拆句——「Search by meaning.」独立成行（16 词→3 词，手机三行→一行），
+  「Files never leave your Mac.」加粗降为 dek 首句；「0 B」去混排 i 标签。
+- 字号地板：全站 text-[9/10/11px]→12px（69 处）、kicker 11→12、learn 卡片正文
+  13→14px、docs label 档 11.5→12px。
+- Learn：首屏行动按钮「Start at layer L0」（金键，设层+滚动到网格，first-action
+  FAIL 清除）；进度条渐变→纯金色。
+- Docs：sr-only h1→可见大标题 + lede 说明句；docs-grid 光学居中
+  （220px+62ch 双轨 justify-content:center）；≤880 toc/prose 共用居中 62ch；
+  ≤760 CLI pre 换行不贴边；term 注释色 sub→ink-body；body overflow-x:clip。
+- 去噪：MagneticButton liquid 渐变→纯金；✓/✕ emoji→SVG 图标（4 处）；
+  阅读段落 measure 收窄（dek 44→34em、lede 46→34em、回执 td 套 36em 内衬、
+  脚注 52→38em，113-119ch→≤80ch）。
+- Closing EN 标题 61 字符→「MIT. Everything is in the repo.」（细节在 lede，
+  手机三行→两行内）。
+
+**每行的风险**：h1 拆句改动首页第一语义面（zh「按意思搜索。」同步拆分），
+  owner 若不喜欢可一行 revert；字号地板让 mono 标签视觉变重（设计密度变化）；
+  docs 居中改变 880-1100px 区间的栏位观感；MIT 标题短化是文案取舍。
+**我不确定的地方**：@390 全系发现（off-centre 20/211、headline-lines、side-scroll、
+  blank-gap@mobile）经 CDP 三路实证为本机 headless 仿真 innerWidth 虚报 581 所致
+  （clientWidth/媒体查询均正确 390），已按伪影记档不修——真机复核仍值得做一次；
+  blank-gap@1440（636px）证实为 inspect 走查 11 屏上限 < 页长 14 屏的 reveal
+  未触发伪影（全页滚动后消失）。
+**90 秒验证**：cd web && npm run preview -- --port 4173 → 首页首屏看单行标题+
+  加粗让步句；/learn 头部金色 Start at L0 键点击应过滤 L0 并滚到网格；/docs
+  顶部大标题「goldmine 文档」+ 居中栏；手机宽度 /docs 无贴边截断。

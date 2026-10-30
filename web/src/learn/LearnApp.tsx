@@ -13,6 +13,7 @@ import {
   type LearnData,
 } from "../lib/learn-data";
 import { IconSearch, IconClose } from "../components/Icons";
+import { MagneticButton } from "../components/motion/MagneticButton";
 
 type Ok = Extract<LearnData, { ok: true }>;
 
@@ -145,15 +146,29 @@ export function LearnApp({ data }: { data: Ok }) {
         <div className="mt-6 flex items-center gap-4">
           <div className="h-1 flex-1 overflow-hidden rounded-full bg-bg3" role="progressbar" aria-valuenow={visitedCount} aria-valuemin={0} aria-valuemax={total} aria-label={zh ? "学习进度" : "study progress"}>
             <motion.div
-              className="h-full rounded-full bg-gradient-to-r from-gold to-goldbright"
+              className="h-full rounded-full bg-gold"
               initial={false}
               animate={{ width: `${(visitedCount / total) * 100}%` }}
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
             />
           </div>
-          <span className="font-mono text-[11px] whitespace-nowrap text-sub">
+          <span className="font-mono text-[12px] whitespace-nowrap text-sub">
             <span className="text-gold">{visitedCount}</span> / {total} {zh ? "已读" : "read"}
           </span>
+        </div>
+
+        {/* first-screen action: the page said how much there is, never where to
+            start — send the reader to the fundamentals layer (taste-skill review) */}
+        <div className="mt-6">
+          <MagneticButton
+            variant="gold"
+            onClick={() => {
+              setLayer(0);
+              document.getElementById("grid")?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            {zh ? "从 L0 基础层开始" : "Start at layer L0"} →
+          </MagneticButton>
         </div>
       </header>
 
@@ -183,7 +198,7 @@ export function LearnApp({ data }: { data: Ok }) {
                 </button>
               )}
             </div>
-            <p className="font-mono text-[11px] text-sub" aria-live="polite">
+            <p className="font-mono text-[12px] text-sub" aria-live="polite">
               <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
               {filtered.length} / {total}
             </p>
@@ -315,7 +330,7 @@ function Pill({
       aria-pressed={active}
       title={title}
       className={`relative shrink-0 rounded-full border transition-colors ${
-        small ? "px-2.5 py-0.5 text-[10px]" : "px-3.5 py-1 text-[11px]"
+        small ? "px-2.5 py-0.5 text-[12px]" : "px-3.5 py-1 text-[12px]"
       } font-mono tracking-[0.06em] ${active ? "text-bg0" : "border-line text-ink2 hover:border-gold/40 hover:text-ink"}`}
     >
       {active && (

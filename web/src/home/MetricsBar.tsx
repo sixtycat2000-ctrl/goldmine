@@ -58,7 +58,7 @@ export function MetricsBar() {
           {tiles.map((t, i) => (
             <Reveal key={t.label} delay={i * 0.05} y={14}>
               <div className={`font-display text-3xl lg:text-[2rem] ${t.gold ? "text-gold" : "text-ink"}`}>{t.value}</div>
-              <div className="mt-2 font-mono text-[10px] leading-relaxed tracking-[0.12em] text-sub uppercase">
+              <div className="mt-2 font-mono text-[12px] leading-relaxed tracking-[0.12em] text-sub uppercase">
                 {t.label}
               </div>
             </Reveal>
@@ -75,13 +75,13 @@ export function MetricsBar() {
           <table className="w-full min-w-[46rem] border-collapse text-left">
             <thead>
               <tr className="hairline-b">
-                <th scope="col" className="py-3 pr-4 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+                <th scope="col" className="py-3 pr-4 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
                   {zh ? "编号" : "NO."}
                 </th>
-                <th scope="col" className="py-3 pr-4 text-right font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+                <th scope="col" className="py-3 pr-4 text-right font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
                   {zh ? "实测" : "MEASURED"}
                 </th>
-                <th scope="col" className="py-3 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+                <th scope="col" className="py-3 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
                   {zh ? "回执与说明" : "RECEIPT & NOTE"}
                 </th>
               </tr>
@@ -93,8 +93,10 @@ export function MetricsBar() {
                   <td className="py-4 pr-4 text-right font-mono text-[13px] whitespace-nowrap text-ink">
                     {typeof row.value === "string" ? row.value : pick(lang, row.value.zh, row.value.en)}
                   </td>
-                  <td className="max-w-[42em] py-4 text-[13px] leading-relaxed text-ink2">
-                    {pick(lang, row.note.zh, row.note.en)}
+                  <td className="py-4 text-[13px] leading-relaxed text-ink2">
+                    {/* the auto table layout ignores max-w on the cell itself; cap
+                        the prose inside so receipt notes stay at a readable measure */}
+                    <div className="max-w-[36em] leading-relaxed">{pick(lang, row.note.zh, row.note.en)}</div>
                   </td>
                 </tr>
               ))}

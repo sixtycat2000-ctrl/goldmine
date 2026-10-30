@@ -29,7 +29,7 @@ export function Closing() {
           kicker={{ zh: "开源", en: "OPEN SOURCE" }}
           title={{
             zh: "MIT。代码、文档、评测与执行记录都在仓库里。",
-            en: "MIT. Code, docs, evals and execution records live in the repo.",
+            en: "MIT. Everything is in the repo.",
           }}
           lede={{
             zh: "代码之外，仓库带着完整的工作记录：能力与质量台账（FEATURE_STATUS）、五讲子系统走读、术语考古词典（JOURNEY）、锚点命令卡（一分钟亲手验证）、逐提交的执行档案。想审计，从这里开始。",

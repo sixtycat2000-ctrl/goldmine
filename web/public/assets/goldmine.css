@@ -30,7 +30,7 @@
   --fs-body:1rem;
   --fs-small:.875rem;        /* 14px secondary prose */
   --fs-code:.8125rem;        /* 13px mono content */
-  --fs-label:.71875rem;      /* 11.5px — THE mono label tier */
+  --fs-label:.75rem;         /* 12px — THE mono label tier (taste-skill floor) */
   --fs-chno:clamp(7.5rem,22vw,14.375rem);
   --lh-lang:1.85;
   /* space */
@@ -57,7 +57,7 @@ html[lang="en"]{--lh-lang:1.62}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--ink-body);
-  font:16px/var(--lh-lang) var(--sans);-webkit-font-smoothing:antialiased}
+  font:16px/var(--lh-lang) var(--sans);-webkit-font-smoothing:antialiased;overflow-x:clip}
 ::selection{background:var(--gold);color:#141109}
 a{color:var(--gold-bright);text-decoration:none;border-bottom:1px solid rgb(227 169 76 / .35);transition:border-color var(--t-1) var(--ease-out)}
 a:hover{border-bottom-color:var(--gold)}
@@ -232,14 +232,18 @@ section.blk{padding:var(--sp-section) 0;position:relative}
 .copy-btn:hover{color:var(--gold-bright);border-color:var(--gold-dim)}
 .copy-btn.ok{color:var(--gold-bright)}
 .term pre{margin:0;padding:var(--sp-5) var(--sp-6);font:var(--fs-code)/1.95 var(--mono);color:var(--ink-body);overflow:auto}
-.term .cmd{color:var(--gold-bright)} .term .out{color:var(--sub-2)}
+.term .cmd{color:var(--gold-bright)} .term .out{color:var(--ink-body)}
 
 /* ---------- docs ---------- */
-.docs-grid{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--sp-8);padding-top:calc(var(--nav-h) + var(--sp-8))}
+/* [toc | readable column] centered as a unit: the reading column keeps its
+   680ch-capped measure without hugging the left rail (taste-skill off-centre fix) */
+.docs-grid{display:grid;grid-template-columns:220px minmax(0,var(--w-readable));justify-content:center;gap:var(--sp-8);padding-top:calc(var(--nav-h) + var(--sp-8))}
 .toc{position:sticky;top:calc(var(--nav-h) + var(--sp-5));align-self:start;border-right:1px solid var(--line);padding-right:var(--sp-5)}
 .toc a{display:block;border:0;font:var(--fs-label) var(--mono);color:var(--sub);padding:6px 0;transition:color var(--t-1)}
 .toc a.on{color:var(--gold-bright)}
-.prose{max-width:var(--w-readable)}
+.prose{max-width:none;overflow-wrap:anywhere}
+.prose h1{font:400 clamp(2.125rem,5vw,4.25rem)/1.12 var(--serif);color:var(--ink);margin:0 0 var(--sp-2)}
+.prose h1 + h2{padding-top:var(--sp-4)}
 .prose h2{padding-top:var(--sp-7);margin-top:var(--sp-4);scroll-margin-top:calc(var(--nav-h) + 12px)}
 .prose p{margin:0 0 var(--sp-4)}
 
@@ -355,6 +359,9 @@ kbd-chip{display:none}
 }
 @media (max-width:880px){
   .docs-grid{grid-template-columns:1fr}
+  /* stacked toc and prose share one centered measure, so the page keeps
+     equal outer margins when the sidebar rail is gone */
+  .docs-grid > *{max-width:62ch;margin-inline:auto}
   .toc{position:static;border:0;padding:0 0 var(--sp-5)}
   .monument-band{grid-template-columns:1fr}
   .mb-col + .mb-col{border-left:0;border-top:1px solid var(--line)}
@@ -362,6 +369,8 @@ kbd-chip{display:none}
   .confess{padding-left:var(--sp-5);margin-top:var(--sp-6)}
 }
 @media (max-width:760px){
+  /* CLI cheatsheet lines wrap instead of scraping the screen edge */
+  .term pre{white-space:pre-wrap;overflow-wrap:anywhere}
   /* hero: starfield becomes a dim full-bleed backdrop under the text */
   #starfield{left:0;width:100%;opacity:.55}
   #starfield.on{opacity:.55}

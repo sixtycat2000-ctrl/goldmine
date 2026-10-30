@@ -66,7 +66,7 @@ export function Hero() {
         </Reveal>
         <h1 className="mt-5 max-w-[13em] font-display text-hero leading-[1.04] text-ink">
           <SplitTextReveal
-            text={zh ? "按意思搜索，文件不出这台 Mac。" : "Search by meaning. Files never leave your Mac."}
+            text={zh ? "按意思搜索。" : "Search by meaning."}
             delay={0.1}
             stagger={0.016}
           />
@@ -75,12 +75,20 @@ export function Hero() {
             the page's largest text node, and animating it would push the LCP
             to animation end. The h1 keeps the spring choreography. */}
         <p
-          className="mt-6 max-w-[44em] text-[15px] leading-relaxed text-ink2 sm:text-base"
+          className="mt-6 max-w-[34em] text-[15px] leading-relaxed text-ink2 sm:text-base"
           style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}
         >
-          {zh
-            ? "你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。"
-            : "You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist."}
+          {zh ? (
+            <>
+              <strong className="font-semibold text-ink">文件不出这台 Mac。</strong>
+              你记得内容，不记得文件名——会议录音、截图、两百页 PDF 都一样。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。
+            </>
+          ) : (
+            <>
+              <strong className="font-semibold text-ink">Files never leave your Mac. </strong>
+              You remember the content, not the filename — meeting recordings, screenshots, 200-page PDFs, all the same. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist.
+            </>
+          )}
         </p>
         <Reveal delay={0.45} className="mt-8">
           <div className="flex flex-wrap items-center gap-2">
@@ -105,7 +113,7 @@ export function Hero() {
             <div className="font-display text-3xl text-gold">
               <Counter end={3200} delay={500} duration={1100} />+
             </div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+            <div className="mt-1 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
               {zh ? "离线测试（全量 8 分钟）" : "OFFLINE TESTS (8-MIN SUITE)"}
             </div>
           </div>
@@ -113,21 +121,19 @@ export function Hero() {
             <div className="font-display text-3xl text-ink">
               <Counter end={420} />
             </div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+            <div className="mt-1 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
               {zh ? `冻结评测题 · ${SUITE.frozenSources} 来源` : `FROZEN EVAL QS · ${SUITE.frozenSources} SOURCES`}
             </div>
           </div>
           <div>
             <div className="font-display text-3xl text-ink">1</div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+            <div className="mt-1 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
               {zh ? "个 SQLite 文件 = 全部索引" : "SQLITE FILE = WHOLE INDEX"}
             </div>
           </div>
           <div>
-            <div className="font-display text-3xl text-gold">
-              0<i className="font-sans text-base"> B</i>
-            </div>
-            <div className="mt-1 font-mono text-[10px] tracking-[0.14em] text-sub uppercase">
+            <div className="font-display text-3xl text-gold">0 B</div>
+            <div className="mt-1 font-mono text-[12px] tracking-[0.14em] text-sub uppercase">
               {zh ? "上传（代码里没有这条路径）" : "UPLOADED (no such code path)"}
             </div>
           </div>

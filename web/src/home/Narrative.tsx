@@ -148,7 +148,7 @@ export function Narrative() {
                 <h3 className="mt-4 font-display text-title leading-snug text-ink sm:text-3xl">
                   {pick(lang, s.title.zh, s.title.en)}
                 </h3>
-                <p className="mt-4 max-w-[36em] text-[15px] leading-relaxed text-ink2">
+                <p className="mt-4 max-w-[30em] text-[15px] leading-relaxed text-ink2">
                   {pick(lang, s.body.zh, s.body.en)}
                 </p>
               </div>
@@ -182,7 +182,7 @@ function Quickstart() {
         className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-line bg-bg1"
       >
         <div className="hairline-b flex items-center justify-between px-4 py-2.5">
-          <span className="font-mono text-[11px] tracking-[0.1em] text-sub">
+          <span className="font-mono text-[12px] tracking-[0.1em] text-sub">
             {pick(lang, "quickstart — 零模型也能跑", "quickstart — runs with zero models")}
           </span>
           <CopyButton text={QUICKSTART.join("\n")} />
