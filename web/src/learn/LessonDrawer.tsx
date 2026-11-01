@@ -174,7 +174,7 @@ export function LessonDrawer({
 
   const renderSec = (meta: SecMeta, body: React.ReactNode) => (
     <section data-sec={meta.id} className="scroll-mt-6">
-      <h3 className="mb-3 text-[13px] font-medium text-gold">
+      <h3 className="mb-3 text-[14px] font-medium text-gold">
         {pick(lang, meta.zh, meta.en)}
       </h3>
       {body}
@@ -203,16 +203,16 @@ export function LessonDrawer({
         <div className="hairline-b flex items-center justify-between gap-4 px-5 py-3">
           <div className="flex min-w-0 items-center gap-3">
             <span
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[13px]"
+              className="inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[14px]"
               style={{ color, borderColor: color }}
             >
               {cluster ? `${cluster.token} · ${pick(lang, cluster.label_zh, cluster.label_en)}` : c.cluster}
             </span>
-            <span className="truncate text-[13px] text-sub">
+            <span className="truncate text-[14px] text-sub">
               {layerBadge(c.layer, lang)} · ≈{readingMinutes(c, lang)} min
             </span>
             {/* station breadcrumb (learn-stage-plan-001 A8): names only */}
-            <span className="hidden truncate text-[13px] text-sub sm:inline">
+            <span className="hidden truncate text-[14px] text-sub sm:inline">
               · {(() => { const st = stationMeta(stationOf(c.cluster)); return lang === "zh" ? `管线 · ${st.label_zh}` : `pipeline · ${st.label_en}`; })()}
             </span>
           </div>
@@ -221,7 +221,7 @@ export function LessonDrawer({
               type="button"
               onClick={() => onToggleVisited(c.id)}
               aria-pressed={visited}
-              className={`rounded-full border px-3 py-1 text-[13px] transition-colors ${
+              className={`rounded-full border px-3 py-1 text-[14px] transition-colors ${
                 visited ? "border-gold bg-gold/10 text-gold" : "border-line text-sub hover:text-ink"
               }`}
             >
@@ -258,13 +258,13 @@ export function LessonDrawer({
                 <button
                   type="button"
                   onClick={() => onNavigate(c.parent!)}
-                  className="mb-4 inline-flex items-center gap-1.5 text-[13px] text-sub transition-colors hover:text-gold"
+                  className="mb-4 inline-flex items-center gap-1.5 text-[14px] text-sub transition-colors hover:text-gold"
                 >
                   ↑ {pick(lang, data.byId.get(c.parent)!.title_zh, data.byId.get(c.parent)!.title_en)}
                 </button>
               )}
               <h2 className="font-display text-3xl leading-tight text-ink sm:text-4xl">{title}</h2>
-              <p className="mt-1 font-sans text-[13px] tracking-wide text-sub">
+              <p className="mt-1 font-sans text-[14px] tracking-wide text-sub">
                 {pick(lang, c.title_en, c.title_zh)}
               </p>
 
@@ -274,8 +274,8 @@ export function LessonDrawer({
                   <>
                     <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.one_zh, c.one_en)}</p>
                     {(c.analogy_zh || c.analogy_en) && (
-                      <p className="mt-3 rounded-xl border border-line bg-bg2/60 p-4 text-[13px] leading-relaxed text-ink2">
-                        <span className="mr-2 text-[13px] text-teal">
+                      <p className="mt-3 rounded-xl border border-line bg-bg2/60 p-4 text-[14px] leading-relaxed text-ink2">
+                        <span className="mr-2 text-[14px] text-teal">
                           {lang === "zh" ? "比喻" : "Analogy"}
                         </span>
                         {pick(lang, c.analogy_zh, c.analogy_en)}
@@ -311,7 +311,7 @@ export function LessonDrawer({
                           key={`${r.path}-${i}`}
                           className="flex items-center justify-between gap-3 rounded-lg border border-line bg-bg2/60 px-3 py-2"
                         >
-                          <code className="min-w-0 truncate font-mono text-[13px] text-teal">
+                          <code className="min-w-0 truncate font-mono text-[14px] text-teal">
                             {r.path}
                             {r.lines ? `:${r.lines}` : ""}
                             {r.note ? <span className="ml-2 text-sub">— {r.note}</span> : null}
@@ -329,7 +329,7 @@ export function LessonDrawer({
                   type="button"
                   onClick={onPrev}
                   disabled={!prev}
-                  className="max-w-[45%] truncate rounded-lg border border-line px-3 py-2 text-left text-[13px] text-ink2 transition-colors enabled:hover:border-gold/50 enabled:hover:text-gold disabled:opacity-30"
+                  className="max-w-[45%] truncate rounded-lg border border-line px-3 py-2 text-left text-[14px] text-ink2 transition-colors enabled:hover:border-gold/50 enabled:hover:text-gold disabled:opacity-30"
                 >
                   ← {prev ? pick(lang, prev.title_zh, prev.title_en) : lang === "zh" ? "没有上一个" : "none"}
                 </button>
@@ -337,7 +337,7 @@ export function LessonDrawer({
                   type="button"
                   onClick={onNext}
                   disabled={!next}
-                  className="max-w-[45%] truncate rounded-lg border border-line px-3 py-2 text-right text-[13px] text-ink2 transition-colors enabled:hover:border-gold/50 enabled:hover:text-gold disabled:opacity-30"
+                  className="max-w-[45%] truncate rounded-lg border border-line px-3 py-2 text-right text-[14px] text-ink2 transition-colors enabled:hover:border-gold/50 enabled:hover:text-gold disabled:opacity-30"
                 >
                   {next ? pick(lang, next.title_zh, next.title_en) : lang === "zh" ? "没有下一个" : "none"} →
                 </button>
@@ -355,7 +355,7 @@ export function LessonDrawer({
                 />
               </div>
               <nav aria-label={lang === "zh" ? "本页目录" : "on this page"}>
-                <p className="mb-2 text-[13px] text-sub">
+                <p className="mb-2 text-[14px] text-sub">
                   {lang === "zh" ? "目录" : "Contents"}
                 </p>
                 <ul className="space-y-1.5">
@@ -368,7 +368,7 @@ export function LessonDrawer({
                           el?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }}
                         aria-current={active === i ? "true" : undefined}
-                        className={`text-[13px] transition-colors ${
+                        className={`text-[14px] transition-colors ${
                           active === i ? "text-gold" : "text-sub hover:text-ink"
                         }`}
                       >
@@ -382,7 +382,7 @@ export function LessonDrawer({
 
             {children.length > 0 && (
               <div className="mb-6">
-                <p className="mb-2 text-[13px] text-sub">
+                <p className="mb-2 text-[14px] text-sub">
                   {lang === "zh" ? "深入下探" : "Drill deeper"}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -391,7 +391,7 @@ export function LessonDrawer({
                       key={k.id}
                       type="button"
                       onClick={() => onNavigate(k.id)}
-                      className="rounded-full border border-line px-2.5 py-1 font-mono text-[13px] text-ink2 transition-colors hover:border-gold/50 hover:text-gold"
+                      className="rounded-full border border-line px-2.5 py-1 font-mono text-[14px] text-ink2 transition-colors hover:border-gold/50 hover:text-gold"
                     >
                       ↓ {pick(lang, k.title_zh, k.title_en)} · L{k.layer}
                     </button>
@@ -402,7 +402,7 @@ export function LessonDrawer({
 
             {related.length > 0 && (
               <div className="mb-6">
-                <p className="mb-2 text-[13px] text-sub">
+                <p className="mb-2 text-[14px] text-sub">
                   {lang === "zh" ? "相关概念" : "Related"}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -411,7 +411,7 @@ export function LessonDrawer({
                       key={k.id}
                       type="button"
                       onClick={() => onNavigate(k.id)}
-                      className="rounded-full border border-line px-2.5 py-1 font-mono text-[13px] text-ink2 transition-colors hover:border-teal/60 hover:text-teal"
+                      className="rounded-full border border-line px-2.5 py-1 font-mono text-[14px] text-ink2 transition-colors hover:border-teal/60 hover:text-teal"
                     >
                       ↔ {pick(lang, k.title_zh, k.title_en)}
                     </button>
@@ -420,7 +420,7 @@ export function LessonDrawer({
               </div>
             )}
 
-            <p className="font-mono text-[13px] leading-relaxed text-sub">
+            <p className="font-mono text-[14px] leading-relaxed text-sub">
               {lang === "zh" ? "内容为项目真实概念体系 · 出处可审计" : "Real concept system · auditable sources"}
             </p>
           </aside>

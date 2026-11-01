@@ -35,7 +35,7 @@ export function Nav({ page }: { page: Page }) {
       </div>
       <nav
         className={`fixed inset-x-0 top-0 z-[80] transition-colors duration-500 ${
-          scrolled ? "glass" : "bg-transparent"
+          scrolled ? (page === "learn" ? "bg-bg0 border-b border-line/60" : "glass") : "bg-transparent"
         }`}
       >
         <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-5">

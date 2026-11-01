@@ -51,11 +51,11 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
         }}
       />
       <div className="flex items-center justify-between gap-2">
-        <span className="inline-flex items-center gap-1.5 text-[13px]" style={{ color }}>
+        <span className="inline-flex items-center gap-1.5 text-[14px]" style={{ color }}>
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
           {cluster ? `${cluster.token} · ${pick(lang, cluster.label_zh, cluster.label_en)}` : c.cluster}
         </span>
-        <span className="text-[13px] text-sub">
+        <span className="text-[14px] text-sub">
           {visited ? (
             <>
               <IconYes size={12} className="text-gold" label={lang === "zh" ? "已读" : "read"} />
@@ -71,9 +71,9 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
       </h2>
       <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-ink2">{one}</p>
       <div className="mt-5 flex items-center justify-between">
-        <span className="text-[13px] text-sub">{layerBadge(c.layer, lang)}</span>
+        <span className="text-[14px] text-sub">{layerBadge(c.layer, lang)}</span>
         <span
-          className="text-[13px] text-sub opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
+          className="text-[14px] text-sub opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
           aria-hidden="true"
         >
           {lang === "zh" ? "打开 →" : "open →"}

@@ -19,8 +19,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { pick, type Lang } from "../lib/lang";
 import { STATIONS, stationMeta, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
-import { DemoTag, DemoFootnote, IdentityDemo, SearchDemo } from "./station-visuals";
-import { MachineSVG, BELT_TOP, BELT_MID } from "./machine-drawing";
+import { SearchDemo } from "./station-visuals";
+import { MachineSVG, BELT_MID, REGION_DESC } from "./machine-drawing";
 
 export type StageProps = {
   lang: Lang;
@@ -40,7 +40,6 @@ export type StageProps = {
 
 const BEATS = 5;
 const BEAT_MS = 1400;
-const AMBIENT_FILES = ["notes/2026-04.md", "receipts/q3.xlsx", "scans/manual.pdf", "meetings/amex-call.m4a", "img/whiteboard.png"];
 /* protagonist lane positions per beat (machine v2 region geometry) */
 const BELT_LEFT = ["9%", "31%", "53%", "70%"];
 
@@ -55,7 +54,7 @@ export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | 
   ];
   const idx = levels.findIndex(([, k]) => k === at);
   return (
-    <p className="flex items-center gap-2 font-mono text-[12px] tracking-[0.1em] text-sub uppercase" aria-label={zh ? "下钻层级" : "drill depth"}>
+    <p className="flex items-center gap-2 font-mono text-[14px] text-sub" aria-label={zh ? "下钻层级" : "drill depth"}>
       {levels.map(([label, k], i) => (
         <span key={k} className="flex items-center gap-2">
           {i > 0 && <span aria-hidden="true">→</span>}
@@ -208,17 +207,17 @@ export function Stage(props: StageProps) {
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
           <DepthRail lang={lang} at={isolated ? "station" : "stage"} />
-          <p className="font-mono text-[12px] text-sub">
+          <p className="font-mono text-[14px] text-sub">
             <span className="text-gold">{totalVisited}</span> / {total}
           </p>
           <button
             type="button"
             onClick={() => onOpen("l0")}
-            className="rounded-full border border-line px-4 py-1.5 font-mono text-[12px] tracking-[0.06em] text-ink2 transition-colors hover:border-gold/60 hover:text-gold"
+            className="rounded-full border border-line px-4 py-1.5 font-mono text-[14px] text-ink2 transition-colors hover:border-gold/60 hover:text-gold"
           >
             L0 · {l0Count} →
           </button>
-          <p className="font-mono text-[12px] text-sub">{zh ? "本机运行 · 无网络传输" : "runs locally · no network"}</p>
+          <p className="font-mono text-[14px] text-sub">{zh ? "本机运行 · 无网络传输" : "runs locally · no network"}</p>
         </div>
         <p className="sr-only">{zh ? "舞台动画为机制示意演示，处理全部发生在本机" : "the stage animation is a stylized mechanism demo; all processing happens locally"}</p>
       </header>
@@ -227,13 +226,13 @@ export function Stage(props: StageProps) {
       <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto hidden max-w-6xl px-5 lg:block">
         <div
           ref={machineRef}
-          className="machine relative rounded-2xl border border-line bg-bg1/40 p-4 pb-2"
+          className={`machine relative rounded-2xl bg-bg1/40 p-4 pb-2 ${tourOn ? "touring" : ""}`}
           style={{ contain: "layout" }}
           onClick={() => {
             if (isolated) onCloseIsolate();
           }}
         >
-          <p className="font-mono text-[12px] tracking-[0.08em] text-ink2">
+          <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">
             {zh ? "起点 · L1 指纹门" : "start · L1 fingerprint gate"}
           </p>
           {/* overlays live in a box that contains ONLY the svg, so %-positions
@@ -250,37 +249,19 @@ export function Stage(props: StageProps) {
                 className="absolute z-10"
                 style={{ top: `${(BELT_MID / 470) * 100}%` }}
               >
-                <span className={`flex -translate-y-1/2 items-center gap-2 rounded border px-2 py-0.5 font-mono text-[12px] transition-colors duration-500 ${liveBeat <= 2 ? "border-gold/70 bg-gold/15 text-ink" : "border-line-strong bg-bg2 text-sub"}`}>
+                <span className={`flex -translate-y-1/2 items-center gap-2 rounded border px-2 py-0.5 font-mono text-[13px] transition-colors duration-500 ${liveBeat <= 2 ? "border-gold/70 bg-gold/15 text-ink" : "border-line-strong bg-bg2 text-sub"}`}>
                   <ProtagonistGlyph beat={liveBeat} />
                 </span>
               </motion.span>
-              {liveBeat >= 3 && (
-                <span className="absolute right-2 -translate-y-1/2 rounded border border-teal/50 bg-cl-b/10 px-2 py-0.5 font-mono text-[12px] text-teal" style={{ top: `${(BELT_MID / 470) * 100}%` }}>
-                  {zh ? "› 查询从这进" : "› queries enter here"}
-                </span>
-              )}
             </div>
 
-            {/* belt chips ride just above the SVG lane (HTML overlay, % of drawing) */}
-            <div className={`pointer-events-none absolute inset-x-0 transition-opacity duration-500 ${isolated ? "opacity-20" : "opacity-100"}`} style={{ top: `calc(${(BELT_TOP / 470) * 100}% - 34px)` }} aria-hidden="true">
-              <div
-                className="h-7 overflow-hidden"
-                style={{ maskImage: "linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent)" }}
-              >
-                <div className="belt-track flex w-max gap-8 pr-8 pt-1">
-                  {[0, 1].map((copy) => (
-                    <div key={copy} className="flex gap-8">
-                      {AMBIENT_FILES.map((f) => (
-                        <span key={f} className="belt-chip rounded border border-line bg-bg1/80 px-2 py-0.5 font-mono text-[12px] text-sub">{f}</span>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
 
             <TourCursor pos={cursor} on={tourOn} lang={lang} />
           </div>
+
+          {isolated && isolated !== "rail" && (
+            <p className="machine-desc">{pick(lang, REGION_DESC[isolated].zh, REGION_DESC[isolated].en)}</p>
+          )}
 
           <MachineMeta lang={lang} />
         </div>
@@ -290,41 +271,28 @@ export function Stage(props: StageProps) {
 
       {/* ---------- mobile: vertical subway + teaching demos + tray ---------- */}
       <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto max-w-6xl px-5 lg:hidden">
-        <div className="rounded-2xl border border-line bg-bg1/40 p-5">
-          <p className="font-mono text-[12px] tracking-[0.08em] text-ink2">{zh ? "起点 · L1 指纹门" : "start · L1 gate"}</p>
+        <div className="rounded-2xl bg-bg1/40 p-5">
+          <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">{zh ? "起点 · L1 指纹门" : "start · L1 gate"}</p>
           <ul className="mt-3 space-y-1 border-l border-line-strong pl-4">
             {STATIONS.filter((s) => s.id !== "rail").map((s) => (
-              <li key={s.id}>
+              <li key={s.id} className="relative">
+                <span aria-hidden="true" className="absolute top-1/2 -left-[21px] h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-line-strong bg-bg1" />
                 <button
                   type="button"
                   onClick={() => onOpen(s.id)}
                   className="flex w-full items-baseline justify-between gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-bg2/60"
                 >
                   <span className="font-display text-xl text-ink">{pick(lang, s.label_zh, s.label_en)}</span>
-                  <span className="font-mono text-[12px] text-sub">
+                  <span className="font-mono text-[13px] text-sub">
                     {counts[s.id]} · <span className="text-gold">{visitedCounts[s.id]}</span> →
                   </span>
                 </button>
               </li>
             ))}
           </ul>
-          <button
-            type="button"
-            onClick={() => onOpen("l0")}
-            className="mt-3 w-full rounded-lg border border-line px-3 py-2 text-left font-mono text-[12px] text-ink2 hover:border-gold/60 hover:text-gold"
-          >
-            L0 · {l0Count} →
-          </button>
-          <p className="mt-3 font-mono text-[12px] text-sub">{zh ? "本机运行 · 无网络传输" : "runs locally · no network"}</p>
-          <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1">
-            <DemoTag lang={lang} />
-            <DemoFootnote lang={lang} />
-          </div>
+          <p className="mt-3 font-mono text-[14px] text-sub">{zh ? "示意：固定示例数据，非实时运行" : "demo: fixed sample data, not a live run"}</p>
         </div>
-        <div className="mt-3 rounded-2xl border border-line bg-bg1/40 p-4">
-          <IdentityDemo beat={reduced ? -1 : beat} lang={lang} onPart={onOpenPart} />
-        </div>
-        <div className="mt-3 rounded-2xl border border-line bg-bg1/40 p-4">
+        <div className="mt-3 rounded-2xl bg-bg1/40 p-3">
           <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} onPart={onOpenPart} />
         </div>
         <div className="mt-3">
@@ -341,10 +309,9 @@ export function Stage(props: StageProps) {
 /* demo tag + footnote, shortest honest form, pinned to the machine footer */
 function MachineMeta({ lang }: { lang: Lang }) {
   return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 px-1 pb-2">
-      <DemoTag lang={lang} />
-      <DemoFootnote lang={lang} />
-    </div>
+    <p className="px-1 pb-2 font-mono text-[14px] text-sub">
+      {pick(lang, "示意：固定示例数据，非实时运行", "demo: fixed sample data, not a live run")}
+    </p>
   );
 }
 
@@ -400,27 +367,27 @@ function QARuler({
 }: { lang: Lang; count: number; read: number; onOpen: (id: StationId | "l0") => void }) {
   const zh = lang === "zh";
   return (
-    <div className="qa-ruler mt-3 rounded-xl border border-cl-b/40 bg-cl-b/5">
+    <div className="qa-ruler mt-3 rounded-xl bg-cl-b/5">
       <div className="flex flex-wrap items-center justify-between gap-2 px-4 pt-3">
         <button type="button" onClick={() => onOpen("rail")} className="group text-left">
           <span className="font-display text-lg leading-tight text-ink group-hover:text-gold">{zh ? "质检线" : "QA Line"}</span>
         </button>
-        <p className="font-mono text-[12px] text-sub">
+        <p className="font-mono text-[13px] text-sub">
           {count} · <span className="text-gold">{read}</span> →
         </p>
       </div>
       <div className="grid grid-cols-1 gap-px overflow-hidden px-4 pb-3 pt-2 sm:grid-cols-3">
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-xl text-gold">{SUITE.gatesPassed}/{SUITE.gatesTotal}</span>
-          <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "质量门 · 两门已归档 → 首页" : "gates · fails archived → home"}</span>
+          <span className="font-display text-xl text-ink">{SUITE.gatesPassed} / {SUITE.gatesTotal}</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "质量门 · 两门已归档 → 首页" : "gates · fails archived → home"}</span>
         </p>
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-xl text-gold">{SUITE.tests}</span>
-          <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "测试 · 全量 8 分钟" : "tests · 8-min suite"}</span>
+          <span className="font-display text-xl text-ink">{SUITE.tests}</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "测试 · 全量 8 分钟" : "tests · 8-min suite"}</span>
         </p>
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-xl text-gold">{SUITE.bytesUploaded} B</span>
-          <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "上传 · 无此代码路径" : "uploaded · no such path"}</span>
+          <span className="font-display text-xl text-ink">{SUITE.bytesUploaded} B</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "上传 · 无此代码路径" : "uploaded · no such path"}</span>
         </p>
       </div>
     </div>

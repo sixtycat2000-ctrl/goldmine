@@ -293,7 +293,7 @@ export function LearnApp({ data }: { data: Ok }) {
 
   const tray =
     view.kind === "station" ? (
-      <div id="station-tray" className="mt-4 rounded-2xl border border-line bg-bg1/40 p-5">
+      <div id="station-tray" className="mt-4 rounded-2xl bg-bg1/40 p-5">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
@@ -426,7 +426,7 @@ export function LearnApp({ data }: { data: Ok }) {
               )}
             </div>
             {view.kind !== "search" && (
-              <p className="text-[13px] text-sub" aria-live="polite">
+              <p className="text-[14px] text-sub" aria-live="polite">
                 <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
                 {view.kind === "stage" ? total : `${filtered.length} / ${total}`}
               </p>
@@ -482,7 +482,7 @@ export function LearnApp({ data }: { data: Ok }) {
               const st = stationMeta(stationOf(c.cluster));
               return (
                 <div key={c.id}>
-                  <p className="mb-1 text-[13px] text-sub">
+                  <p className="mb-1 text-[14px] text-sub">
                     <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: clusterColor(tokenOf.get(c.cluster) ?? "A") }} />
                     {pick(lang, st.label_zh, st.label_en)} · {layerBadge(c.layer, lang)}
                   </p>
@@ -543,8 +543,8 @@ function Pill({
       aria-pressed={active}
       title={title}
       className={`relative shrink-0 rounded-full border transition-colors ${
-        small ? "px-2.5 py-0.5 text-[13px]" : "px-3.5 py-1 text-[13px]"
-      } text-[13px] ${active ? "text-bg0" : "border-line text-ink2 hover:border-gold/40 hover:text-ink"}`}
+        small ? "px-2.5 py-0.5 text-[14px]" : "px-3.5 py-1 text-[14px]"
+      } text-[14px] ${active ? "text-bg0" : "border-line text-ink2 hover:border-gold/40 hover:text-ink"}`}
     >
       {active && (
         <motion.span

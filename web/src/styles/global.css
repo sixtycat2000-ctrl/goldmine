@@ -358,14 +358,20 @@ body::after {
 .machine .region-bg.region-active { stroke: var(--color-gold); stroke-opacity: 0.55; }
 .machine .region-isolated .region-bg { stroke: var(--color-gold); stroke-opacity: 0.9; fill: rgba(255, 255, 255, 0.03); }
 .machine .step-aside { pointer-events: none; }
+.machine .step-aside .region-label { opacity: 0; }
 .machine .region-label { cursor: pointer; outline-offset: 4px; }
 .machine .region-label:focus-visible { outline: 2px solid var(--color-gold); }
-.machine .machine-name { font-family: var(--font-display, "Noto Serif SC", serif); font-size: 19px; }
-.machine .machine-count { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; }
-.machine .machine-index-caption { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.12em; }
+.machine .machine-name { font-family: var(--font-display, "Noto Serif SC", serif); font-size: 20px; }
+.machine .machine-count { font-family: var(--font-mono, ui-monospace, monospace); font-size: 13px; }
+.machine .machine-index-caption { font-family: var(--font-mono, ui-monospace, monospace); font-size: 13px; letter-spacing: 0.08em; }
 .machine .belt-lane { transition: opacity 0.5s; }
+/* touring: only the protagonist and the lane stay alive (two systems max) */
+.touring .pv-march, .touring .pv-through, .touring .pv-fall { opacity: 0.25; }
 
 /* machine loops (composited transforms + opacity only) */
+@keyframes pv-lift { 0%, 16% { transform: translateY(0); } 28%, 58% { transform: translateY(-15px); } 72%, 100% { transform: translateY(0); } }
+.machine .pv-lift { animation: pv-lift 5.7s ease-in-out infinite; }
+.machine-desc { font-family: var(--font-mono, ui-monospace, monospace); font-size: 14px; line-height: 1.55; color: var(--color-sub); text-align: center; max-width: 92ch; margin: 2px auto 0; }
 @keyframes pv-spin { to { stroke-dashoffset: -96; } }
 .machine .pv-spin { animation: pv-spin 3.2s linear infinite; }
 @keyframes pv-wavearc { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.75; } }
@@ -408,6 +414,7 @@ body::after {
 
 /* stage-paused + reduced motion cover the machine scope */
 .stage-paused .machine .step-aside { pointer-events: none; }
+.machine .step-aside .region-label { opacity: 0; }
 @media (prefers-reduced-motion: reduce) {
   .machine .pv-spin, .machine .pv-wavearc, .machine .pv-march, .machine .pv-fall,
   .machine .pv-through, .machine .pv-drop, .machine .pv-flatten, .machine .pv-wal,

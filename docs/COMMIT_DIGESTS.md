@@ -706,3 +706,32 @@ brotli 同位的绝对 91 未复测（LCP 由 388KB 内联文档主导，v2 仅 
 看光标自己走完一条查询（动一下即接管）② 点 Understanding 区：放大居中、
 其余让位、下方托盘出 33 张卡 ③ 点 INDEX 区里的竖条（WAL）开「SQLite 与
 WAL」抽屉 ④ 等第 7 秒看 search 区只剩虚线圈（零命中 exit 0）。
+
+### 追记 7（/learn 视觉返工：两轮 subagent 评审 + taste-skill 诊断）
+
+用户判词「太差了。混乱不堪。看看 skill 里的 example 找原因」→ 两个独立
+subagent 桌面/移动评审（3.6 / 4.3 / 10）+ taste-skill inspect（6 FAIL）+
+critique.md/tells.md 对照。**根因：结构弱于交通**——五个分离圆角卡（间隙
+=gutter）+ 车道 8 套运动系统（芯片 ticker 横穿 5+ 接缝）；线稿无填充 =
+skill 的 "unfinished wireframe"；13px 以下 15 处；金 12+ 角色；isolate =
+幽灵空卡；移动首屏附录堆。amendments-005（A1-A9）返工：单 chassis 填充板
++接缝、实心剪影（鼓/门柱/抽屉/intake port/拍门横杆）、删芯片 ticker
+（2 movers）、金预算（QA 转白、计数器金仅>0、门方块白闪、红只剩拒收环+
+托盘）、字阶地板（句子 14px/计数器 13px、DepthRail 去 uppercase）、isolate
+改滑动+aside 标签隐藏+隔离语义 14px 可见 caption、移动真节点轨+去重+
+单全宽 demo、learn 导航全实底、示意+脚注合并一行、托盘头两行。
+**第二眼复评：加权 3.6→5.7**（design 3→6、content 5→7），余 5 缺陷
+patch2 全清。inspect FAIL 6→3（余：mono=品牌、few-pictures=0 raster
+（defend：图解页）、body-size=隐藏词汇表污染直方图——可见文本实测 ≥14px）。
+
+**每行的风险**：isolate 时隐藏 aside 标签——键盘用户 Tab 到 aside 区仍可
+focus（pointer-events none 但 tabIndex 仍在，focus 即现 label）；region-
+active 标记从背板类挪到金 bracket 线，G11 探针曾失灵（教训：挪语义标记
+必须同步探针）；QA 数值金色→白是 C3 之外的新决定（注仍在）。
+**我不确定的地方**：G3 brotli 口径绝对分未复测；few-pictures（0 实景图）
+是本轮最大的 defended 缺口——若 owner 要冲 Awwwards 级，下一步应给
+learn 配真实 CLI 终端条/真实 sqlite 截图类实物；移动端只留 SearchDemo
+（IdentityDemo 语义走 subway→托盘路径）。
+**90 秒验证**：/learn.html?v=y —— ① 滚动任意处：nav 全实底不透字 ② 等
+6s 看 tour 光标走机器 ③ 点 Identity 区：它放大居中、邻居滑开、机器下方出
+两行说明+托盘 16 卡 ④ search 区看 INDEX 下方刻度行与右缘入口。
