@@ -15,12 +15,12 @@
 import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import { pick, type Lang } from "../lib/lang";
 
-const GOLD = "var(--color-gold)";
-const TEAL = "var(--color-cl-b)";
-const SUB = "var(--color-sub)";
-const LINE = "var(--color-line-strong)";
-const FAIL = "var(--color-fail)";
-const INK2 = "var(--color-ink2)";
+export const GOLD = "var(--color-gold)";
+export const TEAL = "var(--color-cl-b)";
+export const SUB = "var(--color-sub)";
+export const LINE = "var(--color-line-strong)";
+export const FAIL = "var(--color-fail)";
+export const INK2 = "var(--color-ink2)";
 
 export function DemoTag({ lang }: { lang: Lang }) {
   return (
@@ -42,7 +42,7 @@ const FRAME = { width: "100%", height: "auto", display: "block" } as const;
 
 export type PartHandler = (conceptId: string) => void;
 
-function Part({
+export function Part({
   id, zh, en, lang, onPart, className, children,
 }: {
   id: string;
@@ -67,6 +67,7 @@ function Part({
   return (
     <g
       className={`pv-part${className ? ` ${className}` : ""}`}
+      data-part={id}
       role="button"
       tabIndex={0}
       aria-label={pick(lang, `打开概念：${zh}`, `open concept: ${en}`)}

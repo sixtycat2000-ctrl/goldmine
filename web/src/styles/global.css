@@ -321,7 +321,7 @@ body::after {
 .pv-layer { animation: pv-layer 5.7s ease-in-out infinite; transform-origin: center; }
 @keyframes pv-chunk { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 46% { transform: translateX(46px); opacity: 1; } 56%, 100% { transform: translateX(46px); opacity: 0; } }
 .pv-chunk { animation: pv-chunk 5.4s ease-in-out infinite; }
-@keyframes pv-cell { 0%, 45% { opacity: 0; } 55%, 88% { opacity: 0.85; } 96%, 100% { opacity: 0; } }
+@keyframes pv-cell { 0%, 14% { opacity: 0; } 24%, 84% { opacity: 0.85; } 94%, 100% { opacity: 0; } }
 .pv-cell { animation: pv-cell 5.4s ease-in-out infinite; }
 @keyframes pv-wave { 0%, 40% { opacity: 0.9; } 70%, 86% { opacity: 0.15; } 96%, 100% { opacity: 0.9; } }
 .pv-wave { animation: pv-wave 5.4s ease-in-out infinite; }
@@ -335,9 +335,9 @@ body::after {
 .pv-evidence { animation: pv-evidence 5.7s ease-in-out infinite; }
 @keyframes pv-zero { 0%, 12%, 74%, 100% { opacity: 0; } 24%, 62% { opacity: 1; } }
 .pv-zero { animation: pv-zero 5.7s ease-in-out infinite; }
-.stage-paused .podviz * { animation-play-state: paused !important; }
+.stage-paused :is(.podviz, .machine) * { animation-play-state: paused !important; }
 @media (prefers-reduced-motion: reduce) {
-  .podviz .pv-file, .podviz .pv-stamp, .podviz .pv-bounce, .podviz .pv-refuse, .podviz .pv-pass,
+  :is(.podviz, .machine) .pv-file, .podviz .pv-stamp, .podviz .pv-bounce, .podviz .pv-refuse, .podviz .pv-pass,
   .podviz .pv-layer, .podviz .pv-chunk, .podviz .pv-cell, .podviz .pv-wave, .podviz .pv-query,
   .podviz .pv-ray, .podviz .pv-bar, .podviz .pv-evidence, .podviz .pv-zero { animation: none; }
   .podviz .pv-cell { opacity: 0.85; }
@@ -350,3 +350,72 @@ body::after {
 .podviz .pv-part { cursor: pointer; outline-offset: 3px; }
 .podviz .pv-part:hover { filter: brightness(1.18) saturate(1.15); }
 .podviz .pv-part:focus-visible { outline: 2px solid var(--color-gold); }
+
+/* ---------- the machine v2 (learn-machine-v2-001) ----------
+   One integrated drawing. Regions isolate while the rest steps aside;
+   parts stay buttons; the tour cursor walks on the single timebase. */
+.machine .region-bg { fill: rgba(255, 255, 255, 0.015); stroke: var(--color-line); stroke-width: 1; transition: stroke 0.5s; }
+.machine .region-bg.region-active { stroke: var(--color-gold); stroke-opacity: 0.55; }
+.machine .region-isolated .region-bg { stroke: var(--color-gold); stroke-opacity: 0.9; fill: rgba(255, 255, 255, 0.03); }
+.machine .step-aside { pointer-events: none; }
+.machine .region-label { cursor: pointer; outline-offset: 4px; }
+.machine .region-label:focus-visible { outline: 2px solid var(--color-gold); }
+.machine .machine-name { font-family: var(--font-display, "Noto Serif SC", serif); font-size: 19px; }
+.machine .machine-count { font-family: var(--font-mono, ui-monospace, monospace); font-size: 12px; }
+.machine .machine-index-caption { font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.12em; }
+.machine .belt-lane { transition: opacity 0.5s; }
+
+/* machine loops (composited transforms + opacity only) */
+@keyframes pv-spin { to { stroke-dashoffset: -96; } }
+.machine .pv-spin { animation: pv-spin 3.2s linear infinite; }
+@keyframes pv-wavearc { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.75; } }
+.machine .pv-wavearc { animation: pv-wavearc 2.6s ease-in-out infinite; }
+@keyframes pv-march { 0% { transform: translateX(0); opacity: 0; } 6% { opacity: 0.9; } 88% { opacity: 0.9; } 98%, 100% { transform: translateX(596px); opacity: 0; } }
+.machine .pv-march { animation: pv-march 6.6s linear infinite; }
+@keyframes pv-fall { 0% { transform: translate(0, 0); opacity: 0; } 8% { opacity: 1; } 30% { transform: translate(16px, 60px) rotate(14deg); } 46% { transform: translate(33px, 152px) rotate(24deg); opacity: 1; } 58%, 100% { transform: translate(33px, 152px) rotate(24deg); opacity: 0; } }
+.machine .pv-fall { animation: pv-fall 5.7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes pv-through { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 70% { transform: translateX(130px); opacity: 1; } 84%, 100% { transform: translateX(140px); opacity: 0; } }
+.machine .pv-through { animation: pv-through 5.7s ease-in-out infinite; }
+@keyframes pv-drop { 0% { transform: translateY(0); opacity: 0; } 12% { opacity: 1; } 58% { transform: translateY(72px); opacity: 1; } 72%, 100% { transform: translateY(76px); opacity: 0; } }
+.machine .pv-drop { animation: pv-drop 5.4s ease-in-out infinite; }
+@keyframes pv-flatten { 0%, 30% { transform: scaleY(1); opacity: 0.9; } 62%, 86% { transform: scaleY(0.12); opacity: 0.9; } 96%, 100% { transform: scaleY(1); opacity: 0.9; } }
+.machine .pv-flatten { animation: pv-flatten 5.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes pv-wal { 0%, 100% { opacity: 0.45; } 50% { opacity: 0.95; } }
+.machine .pv-wal { animation: pv-wal 4.2s ease-in-out infinite; }
+@keyframes pv-ride { 0% { transform: translateX(0); opacity: 0; } 10% { opacity: 1; } 74% { transform: translateX(-126px); opacity: 1; } 86%, 100% { transform: translateX(-134px); opacity: 0; } }
+.machine .pv-ride { animation: pv-ride 5.7s ease-in-out infinite; }
+
+/* machine equivalents of the pod loops that ride on reused pv-* classes */
+.machine .pv-stamp { animation: pv-stamp 5.7s ease-in-out infinite; }
+.machine .pv-layer { animation: pv-layer 5.7s ease-in-out infinite; }
+.machine .pv-cell { animation: pv-cell 5.4s ease-in-out infinite; }
+.machine .pv-ray { animation: pv-ray 5.7s ease-in-out infinite; }
+.machine .pv-bar { animation: pv-bar 5.7s cubic-bezier(0.2, 0.8, 0.3, 1) infinite; transform-origin: left; transform-box: fill-box; }
+.machine .pv-evidence { animation: pv-evidence 5.7s ease-in-out infinite; }
+.machine .pv-zero { animation: pv-zero 5.7s ease-in-out infinite; }
+.machine .pv-refuse { animation: pv-refuse 5.7s ease-in-out infinite; }
+
+/* teardown tour: gold ring cursor + pulse chip; any input takes over */
+.tour-cursor { top: 0; left: 0; width: 22px; height: 22px; border-radius: 9999px; border: 2px solid var(--color-gold); box-shadow: 0 0 0 3px rgba(230, 168, 24, 0.15); }
+.tour-cursor::after { content: ""; position: absolute; inset: 7px; border-radius: 9999px; background: var(--color-gold); }
+@keyframes tourchip-blink { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.tourchip { display: inline-flex; align-items: center; gap: 6px; }
+.tourchip i { display: block; width: 7px; height: 7px; border-radius: 50%; background: var(--color-gold); animation: tourchip-blink 1.4s steps(2) infinite; }
+
+/* QA ruler: readout strip with measuring ticks (values carry shortest notes) */
+.qa-ruler { position: relative; }
+.qa-ruler::before { content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 7px; background: repeating-linear-gradient(90deg, var(--color-line) 0 1px, transparent 1px 24px); opacity: 0.7; }
+
+/* stage-paused + reduced motion cover the machine scope */
+.stage-paused .machine .step-aside { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .machine .pv-spin, .machine .pv-wavearc, .machine .pv-march, .machine .pv-fall,
+  .machine .pv-through, .machine .pv-drop, .machine .pv-flatten, .machine .pv-wal,
+  .machine .pv-ride, .machine .pv-stamp, .machine .pv-layer, .machine .pv-cell,
+  .machine .pv-ray, .machine .pv-bar, .machine .pv-evidence, .machine .pv-zero,
+  .machine .pv-refuse { animation: none; }
+  .machine .pv-cell { opacity: 0.85; }
+  .machine .pv-bar { transform: scaleX(1); }
+  .machine .pv-flatten { transform: none; }
+  .tour-cursor { display: none; }
+}

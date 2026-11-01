@@ -1,24 +1,26 @@
 /*
- * The machine stage (learn-stage-plan-001): first tier of /learn.
+ * The machine stage (learn-machine-v2-001): first tier of /learn.
  *
- * amendments-002 (user-directed): the stage is VISUAL FIRST — station pods
- * carry name + count + the demo graphic only; every sentence of explanation
- * lives one level down (station panel), every concept two levels down (card),
- * the full lesson three levels down (drawer). The DepthRail makes the level
- * down explicit: 舞台 · 工位 · 概念 · 详解.
+ * One integrated machine replaces the four-pod grid (amendments-001 A5 is
+ * repealed): disk → belt → L1 gate → chunk/embed → INDEX, queries entering
+ * only at the right end, QA as a ruler strip. teardown grammar: a region
+ * isolates while the rest steps aside (framer springs on the SVG groups),
+ * every part is a button, and a self-driving tour walks one query's life —
+ * any input takes over, 25s of quiet hands it back (D5 lands here).
  *
- * Frozen mechanics (amendments-001, unchanged): asymmetric pods ∝ counts (A5),
- * neutral file chips earning gold only while processed (A2), files terminate
- * at the index and queries enter at search only (A3), ONE timebase (A4) paused
- * off-screen / reduced-motion, names only (A8), QA rail values carry notes
- * in their shortest visible form (C3), locality caption visible (C7).
+ * Frozen invariants: ONE timebase (beat × BEAT_MS) IO-gated and now also
+ * tab-visibility-gated (amendments-004 T3); files terminate at the index and
+ * queries enter at search only (A3); QA values keep their shortest notes
+ * (C3); locality caption visible (C7); zero visible text inside the machine
+ * beyond region names/counts and the terminus caption (E1/V2).
  */
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { pick, type Lang } from "../lib/lang";
-import { STATIONS, type StationId } from "../lib/learn-data";
+import { STATIONS, stationMeta, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
-import { IdentityDemo, SearchDemo, WalkDemo, UnderstandDemo, DemoTag, DemoFootnote } from "./station-visuals";
+import { DemoTag, DemoFootnote, IdentityDemo, SearchDemo } from "./station-visuals";
+import { MachineSVG, BELT_TOP, BELT_MID } from "./machine-drawing";
 
 export type StageProps = {
   lang: Lang;
@@ -27,18 +29,20 @@ export type StageProps = {
   l0Count: number;
   total: number;
   totalVisited: number;
+  /* isolate state lives in LearnApp so #stage=<id> deep links land here (G9) */
+  isolated: StationId | null;
   onOpen: (id: StationId | "l0") => void;
-  /* amendments-004 T1/T2: a machine part opens the concept it belongs to */
+  onCloseIsolate: () => void;
   onOpenPart: (conceptId: string) => void;
+  /* the station tray (role, notes, pills, cards) rendered under the machine */
+  tray?: ReactNode;
 };
 
 const BEATS = 5;
 const BEAT_MS = 1400;
-const GRID_COLS = "grid-cols-[31fr_16fr_33fr_5.5rem_31fr]";
 const AMBIENT_FILES = ["notes/2026-04.md", "receipts/q3.xlsx", "scans/manual.pdf", "meetings/amex-call.m4a", "img/whiteboard.png"];
-/* protagonist lane positions per station (beat 0..2 walk/identity/understand,
-   beat>=3 parked at the index) — % of the belt width, matching the pod grid */
-const BELT_LEFT = ["2%", "29%", "43%", "66%"];
+/* protagonist lane positions per beat (machine v2 region geometry) */
+const BELT_LEFT = ["9%", "31%", "53%", "70%"];
 
 /* the four depths of /learn — names only, no numbers (A8) */
 export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | "concept" | "lesson" }) {
@@ -62,19 +66,36 @@ export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | 
   );
 }
 
+/* tour script: one query's life, as teardown operator moves — targets are
+   real machine parts; the cursor only walks, the loops stay honest */
+const TOUR: Array<{ part: string }> = [
+  { part: "walk-gates" },
+  { part: "fingerprint-gate" },
+  { part: "chunking" },
+  { part: "one-transaction" },
+  { part: "admission-gate" },
+  { part: "evidence-selection" },
+];
+const TOUR_FIRST_DELAY = 6000;
+const TOUR_IDLE_RETURN = 25000;
+
 export function Stage(props: StageProps) {
-  const { lang, counts, visitedCounts, l0Count, total, totalVisited, onOpen, onOpenPart } = props;
+  const { lang, counts, visitedCounts, l0Count, total, totalVisited, isolated, onOpen, onCloseIsolate, onOpenPart, tray } = props;
   const zh = lang === "zh";
   const reduced = useReducedMotion();
   const hostRef = useRef<HTMLDivElement>(null);
+  const machineRef = useRef<HTMLDivElement>(null);
   const [beat, setBeat] = useState(0);
   const [cycle, setCycle] = useState(0);
   const [inView, setInView] = useState(false);
-  // amendments-004 T3: a hidden tab must not run the machine either
   const [tabVisible, setTabVisible] = useState(true);
+  const [desktop, setDesktop] = useState(false);
+  const [tourOn, setTourOn] = useState(false);
+  const [tourStep, setTourStep] = useState(0);
+  const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
   const running = inView && tabVisible;
 
-  // one timebase, IO-gated: the wave only ticks while the stage is on screen
+  /* one timebase, IO-gated + tab-gated */
   useEffect(() => {
     const el = hostRef.current;
     if (!el || reduced || typeof IntersectionObserver === "undefined") return;
@@ -104,20 +125,89 @@ export function Stage(props: StageProps) {
     return () => window.clearInterval(t);
   }, [reduced, running]);
 
-  const pods = STATIONS.filter((s) => s.id !== "rail");
+  /* tour eligibility: desktop, motion allowed, whole machine on stage (D5) */
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.matchMedia === "undefined") return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const on = () => setDesktop(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  const tourEligible = !reduced && desktop && isolated === null;
+
+  /* any input takes over; quiet hands it back */
+  useEffect(() => {
+    if (!tourEligible) {
+      setTourOn(false);
+      return;
+    }
+    let timer = window.setTimeout(() => setTourOn(true), TOUR_FIRST_DELAY);
+    const take = () => {
+      setTourOn(false);
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => setTourOn(true), TOUR_IDLE_RETURN);
+    };
+    const root = hostRef.current;
+    root?.addEventListener("pointerdown", take);
+    root?.addEventListener("wheel", take, { passive: true });
+    root?.addEventListener("touchstart", take, { passive: true });
+    window.addEventListener("keydown", take);
+    return () => {
+      window.clearTimeout(timer);
+      root?.removeEventListener("pointerdown", take);
+      root?.removeEventListener("wheel", take);
+      root?.removeEventListener("touchstart", take);
+      window.removeEventListener("keydown", take);
+    };
+  }, [tourEligible]);
+
+  /* the cursor walks one step per two beats — same single timebase */
+  useEffect(() => {
+    if (!tourOn) {
+      setCursor(null);
+      return;
+    }
+    const step = TOUR[tourStep % TOUR.length];
+    // every other cycle the honest answer is empty — walk to the zero circle
+    const zeroCycle = cycle % 2 === 1;
+    const sel = zeroCycle && step.part === "evidence-selection" ? '[data-part="zero-hit-honesty"]' : `[data-part="${step.part}"]`;
+    const host = machineRef.current;
+    const el = host?.querySelector(sel);
+    if (!host || !el) return;
+    const h = host.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    setCursor({ x: r.left - h.left + r.width / 2 - 11, y: r.top - h.top + r.height / 2 - 11 });
+  }, [tourOn, tourStep, beat, cycle]);
+
+  useEffect(() => {
+    if (!tourOn || !running) return;
+    if (beat % 2 === 1) setTourStep((s) => s + 1);
+  }, [beat, tourOn, running]);
+
+  /* Esc reassembles the machine */
+  useEffect(() => {
+    if (!isolated) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onCloseIsolate();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isolated, onCloseIsolate]);
+
   const liveBeat = reduced ? 3 : beat;
   const liveCycle = reduced ? 0 : cycle;
 
   return (
     <div ref={hostRef} className={`relative ${running ? "" : "stage-paused"}`}>
-      {/* machine caption — slim (A1 + E4): kicker, h1, depth rail, progress, L0, locality */}
+      {/* machine caption — slim (A1 + E4) */}
       <header className="mx-auto max-w-6xl px-5 pt-24 pb-6">
         <p className="kicker">LEARN · THE MACHINE</p>
         <h1 className="mt-3 max-w-[16em] font-display text-hero leading-[1.06] text-ink">
           {zh ? "一台可以拆开看的机器" : "A machine you can open up"}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <DepthRail lang={lang} at="stage" />
+          <DepthRail lang={lang} at={isolated ? "station" : "stage"} />
           <p className="font-mono text-[12px] text-sub">
             <span className="text-gold">{totalVisited}</span> / {total}
           </p>
@@ -133,34 +223,46 @@ export function Stage(props: StageProps) {
         <p className="sr-only">{zh ? "舞台动画为机制示意演示，处理全部发生在本机" : "the stage animation is a stylized mechanism demo; all processing happens locally"}</p>
       </header>
 
-      {/* desktop stage: belt + asymmetric pods + index terminus (lg+) */}
-      <section aria-label={zh ? "管线舞台" : "pipeline stage"} className="mx-auto hidden max-w-6xl px-5 lg:block">
-        <div className="relative rounded-2xl border border-line bg-bg1/40 p-6 pb-4">
+      {/* ---------- the machine (desktop, one integrated drawing) ---------- */}
+      <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto hidden max-w-6xl px-5 lg:block">
+        <div
+          ref={machineRef}
+          className="machine relative rounded-2xl border border-line bg-bg1/40 p-4 pb-2"
+          style={{ contain: "layout" }}
+          onClick={() => {
+            if (isolated) onCloseIsolate();
+          }}
+        >
           <p className="font-mono text-[12px] tracking-[0.08em] text-ink2">
             {zh ? "起点 · L1 指纹门" : "start · L1 fingerprint gate"}
           </p>
+          {/* overlays live in a box that contains ONLY the svg, so %-positions
+              resolve against the drawing itself */}
+          <div className="relative">
+            <MachineSVG lang={lang} beat={liveBeat} cycle={liveCycle} counts={counts} visitedCounts={visitedCounts} isolated={isolated} onOpen={onOpen} onOpenPart={onOpenPart} />
 
-          <div className={`mt-4 grid ${GRID_COLS} items-end gap-x-3`}>
-            {/* row 1 spans all: the belt. Protagonist rides its own lane above
-                the ambient ticker (never overlapping). */}
-            <div className="col-span-full" aria-hidden="true">
-              <div className="relative h-8 border-b border-line">
-                <motion.span
-                  animate={{ left: BELT_LEFT[liveBeat >= 3 ? 3 : liveBeat] }}
-                  transition={{ type: "spring", stiffness: 210, damping: 28 }}
-                  className="absolute top-0 z-10"
-                >
-                  <span className={`flex items-center gap-2 rounded border px-2 py-0.5 font-mono text-[12px] transition-colors duration-500 ${liveBeat <= 2 ? "border-gold/70 bg-gold/15 text-ink" : "border-line-strong bg-bg2 text-sub"}`}>
-                    <ProtagonistGlyph beat={liveBeat} />
-                  </span>
-                </motion.span>
-                {liveBeat >= 3 && (
-                  <span className="absolute top-0 right-0 z-10 rounded border border-teal/50 bg-cl-b/10 px-2 py-0.5 font-mono text-[12px] text-teal">
-                    {zh ? "› 查询从这进" : "› queries enter here"}
-                  </span>
-                )}
-              </div>
-              {/* ambient ticker with edge fades so the loop reads as a belt */}
+            {/* the protagonist rides its own lane above the belt (A2): filename →
+                fingerprint → vector grid → parked in the index */}
+            <div className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${isolated ? "opacity-20" : "opacity-100"}`} aria-hidden="true">
+              <motion.span
+                animate={{ left: BELT_LEFT[liveBeat >= 3 ? 3 : liveBeat] }}
+                transition={{ type: "spring", stiffness: 210, damping: 28 }}
+                className="absolute z-10"
+                style={{ top: `${(BELT_MID / 470) * 100}%` }}
+              >
+                <span className={`flex -translate-y-1/2 items-center gap-2 rounded border px-2 py-0.5 font-mono text-[12px] transition-colors duration-500 ${liveBeat <= 2 ? "border-gold/70 bg-gold/15 text-ink" : "border-line-strong bg-bg2 text-sub"}`}>
+                  <ProtagonistGlyph beat={liveBeat} />
+                </span>
+              </motion.span>
+              {liveBeat >= 3 && (
+                <span className="absolute right-2 -translate-y-1/2 rounded border border-teal/50 bg-cl-b/10 px-2 py-0.5 font-mono text-[12px] text-teal" style={{ top: `${(BELT_MID / 470) * 100}%` }}>
+                  {zh ? "› 查询从这进" : "› queries enter here"}
+                </span>
+              )}
+            </div>
+
+            {/* belt chips ride just above the SVG lane (HTML overlay, % of drawing) */}
+            <div className={`pointer-events-none absolute inset-x-0 transition-opacity duration-500 ${isolated ? "opacity-20" : "opacity-100"}`} style={{ top: `calc(${(BELT_TOP / 470) * 100}% - 34px)` }} aria-hidden="true">
               <div
                 className="h-7 overflow-hidden"
                 style={{ maskImage: "linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent)", WebkitMaskImage: "linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent)" }}
@@ -177,29 +279,21 @@ export function Stage(props: StageProps) {
               </div>
             </div>
 
-            {/* row 2: pods at A5 proportions — name, count, demo. No prose (E1). */}
-            {pods.slice(0, 3).map((s) => (
-              <StationPod key={s.id} s={s} lang={lang} count={counts[s.id]} read={visitedCounts[s.id]} beat={liveBeat} onOpen={onOpen} onOpenPart={onOpenPart} />
-            ))}
-            <IndexBlock lang={lang} onOpenPart={onOpenPart} />
-            <StationPod s={pods[3]} lang={lang} count={counts.search} read={visitedCounts.search} beat={liveBeat} cycle={liveCycle} onOpen={onOpen} onOpenPart={onOpenPart} />
+            <TourCursor pos={cursor} on={tourOn} lang={lang} />
           </div>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1">
-            <DemoTag lang={lang} />
-            <DemoFootnote lang={lang} />
-          </div>
+          <MachineMeta lang={lang} />
         </div>
 
-        <QARail lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
+        <QARuler lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
       </section>
 
-      {/* mobile: vertical subway map + the two teaching demos (A6) */}
-      <section aria-label={zh ? "管线舞台" : "pipeline stage"} className="mx-auto max-w-6xl px-5 lg:hidden">
+      {/* ---------- mobile: vertical subway + teaching demos + tray ---------- */}
+      <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto max-w-6xl px-5 lg:hidden">
         <div className="rounded-2xl border border-line bg-bg1/40 p-5">
           <p className="font-mono text-[12px] tracking-[0.08em] text-ink2">{zh ? "起点 · L1 指纹门" : "start · L1 gate"}</p>
           <ul className="mt-3 space-y-1 border-l border-line-strong pl-4">
-            {pods.map((s) => (
+            {STATIONS.filter((s) => s.id !== "rail").map((s) => (
               <li key={s.id}>
                 <button
                   type="button"
@@ -213,15 +307,6 @@ export function Stage(props: StageProps) {
                 </button>
               </li>
             ))}
-            <li>
-              <button
-                type="button"
-                onClick={() => onOpenPart("sqlite-wal")}
-                className="flex w-full items-baseline px-2 py-2 text-left font-mono text-[12px] text-sub transition-colors hover:text-gold"
-              >
-                1 × lib.sqlite
-              </button>
-            </li>
           </ul>
           <button
             type="button"
@@ -243,9 +328,22 @@ export function Stage(props: StageProps) {
           <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} onPart={onOpenPart} />
         </div>
         <div className="mt-3">
-          <QARail lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
+          <QARuler lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
         </div>
       </section>
+
+      {/* the tray mounts ONCE (duplicate layoutIds crossfade to opacity 0) */}
+      {tray}
+    </div>
+  );
+}
+
+/* demo tag + footnote, shortest honest form, pinned to the machine footer */
+function MachineMeta({ lang }: { lang: Lang }) {
+  return (
+    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 px-1 pb-2">
+      <DemoTag lang={lang} />
+      <DemoFootnote lang={lang} />
     </div>
   );
 }
@@ -273,89 +371,88 @@ function ProtagonistGlyph({ beat }: { beat: number }) {
   return <span className="text-sub">lib.sqlite</span>;
 }
 
-/* visual-first pod (E1): name, count, demo — nothing else.
-   amendments-004 T1: parts inside the demo open their concept. */
-function StationPod({
-  s, lang, count, read, beat, cycle = 0, onOpen, onOpenPart,
-}: {
-  s: (typeof STATIONS)[number];
-  lang: Lang;
-  count: number;
-  read: number;
-  beat: number;
-  cycle?: number;
-  onOpen: (id: StationId | "l0") => void;
-  onOpenPart: (conceptId: string) => void;
-}) {
-  const active =
-    (beat === 1 && s.id === "identity") ||
-    (beat >= 3 && s.id === "search") ||
-    (beat === 0 && s.id === "walk") ||
-    (beat === 2 && s.id === "understand");
+/* teardown tour cursor: a gold ring that walks the machine by itself */
+function TourCursor({ pos, on, lang }: { pos: { x: number; y: number } | null; on: boolean; lang: Lang }) {
   return (
-    <div data-station={s.id} className={`flex h-full flex-col rounded-xl border p-4 transition-colors duration-500 ${active ? "border-gold/50 bg-bg2/60" : "border-line bg-bg1/40"}`}>
-      <button type="button" onClick={() => onOpen(s.id)} className="group text-left">
-        <h2 className="font-display text-2xl leading-tight text-ink group-hover:text-gold">
-          {pick(lang, s.label_zh, s.label_en)}
-        </h2>
-        <p className="mt-2 font-mono text-[12px] text-sub">
-          {count} · <span className="text-gold">{read}</span> →
-        </p>
-      </button>
-      <div className="mt-auto flex flex-1 items-center pt-2">
-        {s.id === "walk" && <WalkDemo beat={beat} lang={lang} onPart={onOpenPart} />}
-        {s.id === "identity" && <IdentityDemo beat={beat} lang={lang} onPart={onOpenPart} />}
-        {s.id === "understand" && <UnderstandDemo beat={beat} lang={lang} onPart={onOpenPart} />}
-        {s.id === "search" && <SearchDemo beat={beat} cycle={cycle} lang={lang} onPart={onOpenPart} />}
-      </div>
-    </div>
+    <>
+      {on && (
+        <span className="tourchip absolute top-2 right-3 z-10" aria-hidden="true">
+          <i />
+        </span>
+      )}
+      {on && <span className="sr-only" aria-live="polite">{lang === "zh" ? "自动导览中，任意操作即可接管" : "auto tour — any input takes over"}</span>}
+      {pos && on && (
+        <motion.span
+          className="tour-cursor pointer-events-none absolute z-10"
+          initial={{ opacity: 0 }}
+          animate={{ x: pos.x, y: pos.y, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 120, damping: 20 }}
+          aria-hidden="true"
+        />
+      )}
+    </>
   );
 }
 
-/* amendments-004 T2: the terminus opens too — cut the index open */
-function IndexBlock({ lang, onOpenPart }: { lang: Lang; onOpenPart: (conceptId: string) => void }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onOpenPart("sqlite-wal")}
-      aria-label={pick(lang, "打开概念：SQLite 与 WAL", "open concept: SQLite and WAL")}
-      className="flex h-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-line-strong bg-bg2/50 p-3 text-center transition-colors hover:border-gold/60"
-    >
-      <span className="font-mono text-[12px] tracking-[0.14em] text-sub uppercase">index</span>
-      <span className="font-mono text-[12px] leading-relaxed text-ink2">1 ×<br />lib.sqlite</span>
-    </button>
-  );
-}
-
-/* QA rail (E1): three gauges, notes in their shortest visible form (C3) */
-function QARail({
+/* QA as a ruler under the machine (values + shortest notes, C3) */
+function QARuler({
   lang, count, read, onOpen,
 }: { lang: Lang; count: number; read: number; onOpen: (id: StationId | "l0") => void }) {
   const zh = lang === "zh";
   return (
-    <div className="mt-3 rounded-2xl border border-cl-b/40 bg-cl-b/5 p-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
+    <div className="qa-ruler mt-3 rounded-xl border border-cl-b/40 bg-cl-b/5">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 pt-3">
         <button type="button" onClick={() => onOpen("rail")} className="group text-left">
-          <h2 className="font-display text-2xl leading-tight text-ink group-hover:text-gold">{zh ? "质检线" : "QA Line"}</h2>
+          <span className="font-display text-lg leading-tight text-ink group-hover:text-gold">{zh ? "质检线" : "QA Line"}</span>
         </button>
         <p className="font-mono text-[12px] text-sub">
           {count} · <span className="text-gold">{read}</span> →
         </p>
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-2">
-        <p className="rounded-lg bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-3xl text-gold">{SUITE.gatesPassed}/{SUITE.gatesTotal}</span>
+      <div className="grid grid-cols-1 gap-px overflow-hidden px-4 pb-3 pt-2 sm:grid-cols-3">
+        <p className="rounded bg-bg1/70 px-3 py-2 text-center">
+          <span className="font-display text-xl text-gold">{SUITE.gatesPassed}/{SUITE.gatesTotal}</span>
           <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "质量门 · 两门已归档 → 首页" : "gates · fails archived → home"}</span>
         </p>
-        <p className="rounded-lg bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-3xl text-gold">{SUITE.tests}</span>
+        <p className="rounded bg-bg1/70 px-3 py-2 text-center">
+          <span className="font-display text-xl text-gold">{SUITE.tests}</span>
           <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "测试 · 全量 8 分钟" : "tests · 8-min suite"}</span>
         </p>
-        <p className="rounded-lg bg-bg1/70 px-3 py-2 text-center">
-          <span className="font-display text-3xl text-gold">{SUITE.bytesUploaded} B</span>
+        <p className="rounded bg-bg1/70 px-3 py-2 text-center">
+          <span className="font-display text-xl text-gold">{SUITE.bytesUploaded} B</span>
           <span className="mt-0.5 block font-mono text-[12px] text-sub">{zh ? "上传 · 无此代码路径" : "uploaded · no such path"}</span>
         </p>
       </div>
+    </div>
+  );
+}
+
+/* the station tray: role, teaching notes, pills, cards — under the machine */
+export function StationTrayHeader({ lang, id, count }: { lang: Lang; id: StationId; count: number }) {
+  const zh = lang === "zh";
+  const meta = stationMeta(id);
+  return (
+    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+      <h2 className="font-display text-3xl leading-[1.1] text-ink">
+        {pick(lang, meta.label_zh, meta.label_en)}
+        <span className="ml-3 align-middle font-mono text-[13px] text-sub">
+          {id} × {count}
+        </span>
+      </h2>
+      <DepthRail lang={lang} at="station" />
+      <p className="w-full text-[14px] text-ink2" style={{ maxWidth: "52ch" }}>
+        {pick(lang, meta.role_zh, meta.role_en)}
+      </p>
+      {id === "understand" && (
+        <p className="w-full font-mono text-[12px] leading-relaxed text-sub" style={{ maxWidth: "52ch" }}>
+          {zh ? "有转录的音频走文字向量；无转录才走原始音频边车（逐行标记 asr_status）" : "audio with a transcript rides text vectors; raw-audio sidecar only without one (asr_status per row)"}
+        </p>
+      )}
+      {id === "walk" && (
+        <p className="w-full font-mono text-[12px] leading-relaxed text-sub" style={{ maxWidth: "52ch" }}>
+          {zh ? "walk 门：iCloud dataless 跳过 · inode 移动检测" : "walk gates: iCloud dataless skip · inode move detection"}
+        </p>
+      )}
     </div>
   );
 }

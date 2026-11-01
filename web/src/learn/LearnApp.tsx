@@ -4,8 +4,7 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ConceptCard } from "./ConceptCard";
 import { LessonDrawer } from "./LessonDrawer";
-import { Stage, DepthRail } from "./Stage";
-import { IdentityDemo, SearchDemo, WalkDemo, UnderstandDemo } from "./station-visuals";
+import { Stage, StationTrayHeader } from "./Stage";
 import { useLang, pick } from "../lib/lang";
 import {
   STATIONS,
@@ -34,9 +33,10 @@ export function LearnApp({ data }: { data: Ok }) {
   const { graph, byId } = data;
 
   const [query, setQuery] = useState("");
+  // isolate state — rendered by Stage as the machine tray (machine-v2)
   const [station, setStation] = useState<StationId | null>(null);
   const [l0open, setL0open] = useState(false);
-  // sub-cluster filter, only meaningful inside understand / rail panels (B1)
+  // sub-cluster filter, only meaningful inside understand / rail trays (B1)
   const [cluster, setCluster] = useState<string>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   // which card the drawer expanded from — its slot stays reserved (invisible,
@@ -44,7 +44,7 @@ export function LearnApp({ data }: { data: Ok }) {
   const [openedId, setOpenedId] = useState<string | null>(null);
   const [visited, setVisited] = useState<Set<string>>(() => loadVisited());
   const searchRef = useRef<HTMLInputElement>(null);
-  // stage scroll position, saved on entering a panel and restored on exit (B5)
+  // scroll position across the l0 page swap (the machine never scrolls away)
   const stageScrollRef = useRef(0);
   // cold-boot guard: syncHash must not clobber a deep-linked hash with the
   // pre-boot (empty) state under StrictMode's double mount
@@ -123,7 +123,7 @@ export function LearnApp({ data }: { data: Ok }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [view.kind, station, l0open, query, selectedId]);
 
-  /* ---------------- station aggregates for the stage ---------------- */
+  /* ---------------- station aggregates for the machine ---------------- */
 
   const tokenOf = useMemo(() => {
     const m = new Map<string, string>();
@@ -148,9 +148,9 @@ export function LearnApp({ data }: { data: Ok }) {
   }, [graph.nodes, visited]);
   const l0Count = useMemo(() => graph.nodes.filter((n) => n.layer === 0).length, [graph.nodes]);
   const total = graph.nodes.length;
-  const totalVisited = useMemo(() => graph.nodes.filter((n) => visited.has(n.id)).length, [graph.nodes, visited]);
+  const totalVisited = useMemo(() => graph.nodes.filter((n) => n.id && visited.has(n.id)).length, [graph.nodes, visited]);
 
-  /* ---------------- open/close with scroll save/restore (B5) ---------------- */
+  /* ---------------- open / close: isolate + tray (machine-v2) ---------------- */
 
   const scrollTo = useCallback((top: number) => {
     const instant = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -159,35 +159,38 @@ export function LearnApp({ data }: { data: Ok }) {
 
   const openStation = useCallback(
     (id: StationId | "l0") => {
-      stageScrollRef.current = window.scrollY;
-      if (id === "l0") setL0open(true);
-      else {
-        // entering a panel resets the sub-filter unless it belongs to the station
-        setCluster((c) => {
-          if (c !== "all" && !stationMeta(id).clusters.includes(c)) return "all";
-          return c;
-        });
-        setStation(id);
+      if (id === "l0") {
+        stageScrollRef.current = window.scrollY;
+        setL0open(true);
+        return;
       }
-      requestAnimationFrame(() => {
-        const grid = document.getElementById("grid");
-        if (grid) scrollTo(grid.getBoundingClientRect().top + window.scrollY - 80);
+      // entering a tray resets the sub-filter unless it belongs to the station
+      setCluster((c) => {
+        if (c !== "all" && !stationMeta(id).clusters.includes(c)) return "all";
+        return c;
       });
+      // the machine stays put; the tray appears just below it (teardown: the
+      // body never leaves the view while a part opens)
+      setStation(id);
     },
-    [scrollTo],
+    [],
   );
 
   const backToStage = useCallback(() => {
+    const fromL0 = l0open;
     setStation(null);
     setL0open(false);
     setCluster("all");
     requestAnimationFrame(() => {
-      scrollTo(stageScrollRef.current);
-      // focus returns to the pod we came from (G5)
-      const btn = document.querySelector<HTMLElement>(`[data-station="${station ?? ""}"] button`);
-      btn?.focus?.();
+      if (fromL0) {
+        scrollTo(stageScrollRef.current);
+        return;
+      }
+      // focus returns to the region we came from (G5)
+      const label = document.querySelector<SVGGElement>(`[data-station="${station ?? ""}"] .region-label`);
+      label?.focus?.();
     });
-  }, [scrollTo, station]);
+  }, [scrollTo, l0open, station]);
 
   /* ---------------- card open / visited ---------------- */
 
@@ -231,7 +234,7 @@ export function LearnApp({ data }: { data: Ok }) {
       list = graph.nodes.filter(
         (n) => stationOf(n.cluster) === view.id && (cluster === "all" || n.cluster === cluster),
       );
-      // keystones lead the panel, then deepest mechanisms first (design §工位面板)
+      // keystones lead the tray, then deepest mechanisms first (design §工位面板)
       list.sort((a, b) => Number(b.keystone) - Number(a.keystone) || b.layer - a.layer || a.id.localeCompare(b.id));
     } else if (view.kind === "l0") {
       list = graph.nodes.filter((n) => n.layer === 0);
@@ -281,11 +284,61 @@ export function LearnApp({ data }: { data: Ok }) {
   }, [selectedId]);
 
   const gridModeKey = view.kind === "station" ? `station-${view.id}-${cluster}` : view.kind === "l0" ? "l0" : view.kind === "search" ? "search" : "none";
-  const showBadge = view.kind === "search" || view.kind === "l0";
   const subClusters =
     view.kind === "station" && (view.id === "understand" || view.id === "rail")
       ? graph.clusters.filter((c) => stationMeta(view.id).clusters.includes(c.id))
       : [];
+
+  /* ---------------- the station tray (under the machine, never a page swap) ---------------- */
+
+  const tray =
+    view.kind === "station" ? (
+      <div id="station-tray" className="mt-4 rounded-2xl border border-line bg-bg1/40 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={backToStage}
+            className="rounded-full border border-line px-4 py-1.5 text-[13px] text-ink2 transition-colors hover:border-gold/60 hover:text-gold"
+          >
+            ← {zh ? "返回整台机器" : "back to the machine"}
+          </button>
+        </div>
+        <div className="mt-4">
+          <StationTrayHeader lang={lang} id={view.id} count={filtered.length} />
+        </div>
+        {subClusters.length > 0 && (
+          <div className="no-scrollbar hscroll mt-4 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按子簇筛选" : "filter by sub-cluster"}>
+            <Pill active={cluster === "all"} onClick={() => setCluster("all")} layoutId="cluster-pill" label={zh ? "全部" : "All"} />
+            {subClusters.map((c) => (
+              <Pill
+                key={c.id}
+                active={cluster === c.id}
+                onClick={() => setCluster(cluster === c.id ? "all" : c.id)}
+                layoutId="cluster-pill"
+                label={`${c.token} · ${pick(lang, c.label_zh, c.label_en)}`}
+                dot={clusterColor(c.token)}
+              />
+            ))}
+          </div>
+        )}
+        {filtered.length > 0 && (
+          <div key={gridModeKey} className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {filtered.map((c, i) => (
+              <div key={c.id} className={i === 0 && filtered[0].keystone ? "xl:col-span-2" : undefined}>
+                <ConceptCard
+                  c={c}
+                  cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
+                  lang={lang}
+                  visited={visited.has(c.id)}
+                  dimmed={openedId === c.id}
+                  onOpen={handleOpen}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ) : null;
 
   return (
     <>
@@ -297,7 +350,7 @@ export function LearnApp({ data }: { data: Ok }) {
       </a>
       <Nav page="learn" />
 
-      {view.kind === "stage" ? (
+      {(view.kind === "stage" || view.kind === "station") && (
         <Stage
           lang={lang}
           counts={counts}
@@ -305,10 +358,15 @@ export function LearnApp({ data }: { data: Ok }) {
           l0Count={l0Count}
           total={total}
           totalVisited={totalVisited}
+          isolated={view.kind === "station" ? view.id : null}
           onOpen={openStation}
+          onCloseIsolate={backToStage}
           onOpenPart={handleOpen}
+          tray={tray}
         />
-      ) : (
+      )}
+
+      {(view.kind === "l0" || view.kind === "search") && (
         <header className="mx-auto max-w-6xl px-5 pt-24 pb-4">
           <button
             type="button"
@@ -317,47 +375,9 @@ export function LearnApp({ data }: { data: Ok }) {
           >
             ← {zh ? "返回舞台" : "back to the machine"}
           </button>
-          {view.kind === "station" && (
-            <div className="mt-4">
-              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-                <h1 className="font-display text-display leading-[1.1] text-ink">
-                  {pick(lang, stationMeta(view.id).label_zh, stationMeta(view.id).label_en)}
-                  <span className="ml-3 align-middle text-[13px] text-sub">
-                    {view.id} × {counts[view.id]}
-                  </span>
-                </h1>
-                <DepthRail lang={lang} at="station" />
-              </div>
-              <p className="mt-1 max-w-[52ch] text-[14px] text-ink2">{pick(lang, stationMeta(view.id).role_zh, stationMeta(view.id).role_en)}</p>
-              {/* teaching notes that used to live on the stage (E2) */}
-              {view.id === "understand" && (
-                <p className="mt-2 max-w-[52ch] font-mono text-[12px] leading-relaxed text-sub">
-                  {zh ? "有转录的音频走文字向量；无转录才走原始音频边车（逐行标记 asr_status）" : "audio with a transcript rides text vectors; raw-audio sidecar only without one (asr_status per row)"}
-                </p>
-              )}
-              {view.id === "walk" && (
-                <p className="mt-2 max-w-[52ch] font-mono text-[12px] leading-relaxed text-sub">
-                  {zh ? "walk 门：iCloud dataless 跳过 · inode 移动检测" : "walk gates: iCloud dataless skip · inode move detection"}
-                </p>
-              )}
-              {/* the clicked part becomes the hero (E3); parts open concepts (amendments-004 T1) */}
-              <div className="mt-4 max-w-xl rounded-2xl border border-line bg-bg1/40 p-4">
-                {view.id === "walk" && <WalkDemo beat={0} lang={lang} onPart={handleOpen} />}
-                {view.id === "identity" && <IdentityDemo beat={1} lang={lang} onPart={handleOpen} />}
-                {view.id === "understand" && <UnderstandDemo beat={2} lang={lang} onPart={handleOpen} />}
-                {view.id === "search" && <SearchDemo beat={4} cycle={0} lang={lang} onPart={handleOpen} />}
-                {view.id === "rail" && (
-                  <p className="font-mono text-[12px] leading-relaxed text-sub">
-                    {zh ? "冻结评测 · 预注册 · 对抗评审 · 三态判定 · 诚实契约" : "frozen evals · preregistration · adversarial review · three-state verdicts · honesty contract"}
-                  </p>
-                )}
-              </div>
-            </div>
-          )}
           {view.kind === "l0" && (
             <div className="mt-4">
-              <DepthRail lang={lang} at="concept" />
-              <h1 className="mt-2 font-display text-display leading-[1.1] text-ink">
+              <h1 className="font-display text-display leading-[1.1] text-ink">
                 {zh ? "基础层 L0" : "Layer L0"}
                 <span className="ml-3 align-middle text-[13px] text-sub">{l0Count} · {zh ? "跨工位" : "across stations"}</span>
               </h1>
@@ -368,8 +388,7 @@ export function LearnApp({ data }: { data: Ok }) {
           )}
           {view.kind === "search" && (
             <div className="mt-4">
-              <DepthRail lang={lang} at="concept" />
-              <h1 className="mt-2 font-display text-display leading-[1.1] text-ink">
+              <h1 className="font-display text-display leading-[1.1] text-ink">
                 {zh ? "搜索结果" : "Search"}
                 <span className="ml-3 align-middle text-[13px] text-sub">
                   {filtered.length} / {total}
@@ -380,9 +399,7 @@ export function LearnApp({ data }: { data: Ok }) {
         </header>
       )}
 
-      {/* sticky toolbar — search always; sub-cluster pills only where a panel
-          actually merges clusters (understand / rail). The global A–G and
-          L0–L3 pill rows are retired (amendments B1). */}
+      {/* sticky toolbar — search always; sub-cluster pills live in the tray now */}
       <div className="sticky top-14 z-40 glass">
         <div className="mx-auto max-w-6xl px-5 py-3">
           <div className="flex flex-wrap items-center gap-3">
@@ -415,31 +432,15 @@ export function LearnApp({ data }: { data: Ok }) {
               </p>
             )}
           </div>
-
-          {subClusters.length > 0 && (
-            <div className="no-scrollbar hscroll mt-2.5 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按子簇筛选" : "filter by sub-cluster"}>
-              <Pill active={cluster === "all"} onClick={() => setCluster("all")} layoutId="cluster-pill" label={zh ? "全部" : "All"} />
-              {subClusters.map((c) => (
-                <Pill
-                  key={c.id}
-                  active={cluster === c.id}
-                  onClick={() => setCluster(cluster === c.id ? "all" : c.id)}
-                  layoutId="cluster-pill"
-                  label={`${c.token} · ${pick(lang, c.label_zh, c.label_en)}`}
-                  dot={clusterColor(c.token)}
-                />
-              ))}
-            </div>
-          )}
         </div>
       </div>
 
       <main id="grid" className="mx-auto max-w-6xl px-5 py-10">
         {view.kind === "stage" ? (
           <p className="text-[13px] text-sub">
-            {zh ? "点一个工位，拆开看它的机制与概念。" : "Open a station to see its mechanisms and concepts."}
+            {zh ? "点机器上的区域拆开工位；点零件直达概念；点 INDEX 剖开索引。" : "Click a region to isolate it; click a part for its concept; click the index to cut it open."}
           </p>
-        ) : filtered.length === 0 ? (
+        ) : view.kind === "station" ? null : filtered.length === 0 ? (
           <div className="rounded-2xl border border-line bg-bg1/60 p-12 text-center">
             <p className="font-display text-2xl text-ink">{zh ? "这个组合没有概念" : "No concepts match this combination"}</p>
             <p className="mt-2 text-[13px] text-sub">
@@ -457,10 +458,10 @@ export function LearnApp({ data }: { data: Ok }) {
             </p>
           </div>
         ) : (
-          /* keyed by mode: station↔panel remounts the list instead of
-             projecting 34 cards through a layout change (B4) */
+          /* keyed by mode: l0 ↔ search remounts the list instead of projecting
+             cards through a layout change (B4) */
           <div key={gridModeKey} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((c, i) => {
+            {filtered.map((c) => {
               const card = (
                 <ConceptCard
                   c={c}
@@ -471,9 +472,9 @@ export function LearnApp({ data }: { data: Ok }) {
                   onOpen={handleOpen}
                 />
               );
-              if (!showBadge) {
+              if (view.kind === "l0") {
                 return (
-                  <div key={c.id} className={i === 0 && filtered[0].keystone ? "lg:col-span-2" : undefined}>
+                  <div key={c.id} className={c === filtered[0] && filtered[0].keystone ? "lg:col-span-2" : undefined}>
                     {card}
                   </div>
                 );

@@ -39,13 +39,10 @@ window.addEventListener("error",function(e){
 --><main style="max-width:72rem;margin:0 auto;padding:6rem 1.25rem 2rem">
   <p style="font:12px var(--font-mono,ui-monospace,monospace);letter-spacing:.18em;color:#F5B041;text-transform:uppercase">Learn · The Machine</p>
   <h2 style="font:400 clamp(2rem,1.1rem + 3.4vw,3.5rem)/1.14 var(--font-display,'Instrument Serif','Noto Serif SC','Songti SC',serif);color:#F3F4F6;max-width:16em;margin:.75rem 0 0"><span class="sh-zh">一台可以拆开看的机器</span><span class="sh-en">A machine you can open up</span></h2>
-  <p style="color:#A9AFB8;font:15px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);max-width:46em;margin:1rem 0 0"><span class="sh-zh">文件从走盘进、验身份、被理解、入库；查询只从检索进。全部在本机完成，无网络传输。</span><span class="sh-en">Files enter at the walk, are identity-checked, understood, and land in one SQLite file; queries enter at search only. Everything runs locally, nothing is uploaded.</span></p>
-  <div style="display:grid;grid-template-columns:31fr 16fr 33fr 5.5rem 31fr;gap:.75rem;margin-top:2rem;font:12px/1.5 var(--font-mono,ui-monospace,monospace)">
-    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">走盘</b><br><span style="color:#A9AFB8">31 概念 · 确定性走盘、波次、一文件一事务</span></div>
-    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">身份裁决</b><br><span style="color:#A9AFB8">16 · 指纹门 exit 3 · sha 跳过</span></div>
-    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">理解</b><br><span style="color:#A9AFB8">33 · 转录、OCR、边车、嵌入与预算</span></div>
-    <div style="border:1px solid #3a3a42;border-radius:12px;padding:.85rem;color:#A9AFB8">1 ×<br>lib.sqlite</div>
-    <div style="border:1px solid #232329;border-radius:12px;padding:.85rem;color:#F3F4F6"><b style="font:400 1.35rem/1.2 var(--font-display,'Instrument Serif',serif)">检索</b><br><span style="color:#A9AFB8">31 · 混合融合、准入门、证据选择</span></div>
+  <p style="color:#A9AFB8;font:15px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);max-width:46em;margin:1rem 0 0"><span class="sh-zh">一台连续的机器：文件从磁盘上带，过指纹门，切块嵌入，落进唯一索引；查询只从右端进入。点区域拆开看，点零件直达概念。全部在本机完成，无网络传输。</span><span class="sh-en">One continuous machine: files leave the disk on a belt, pass the fingerprint gate, get chunked and embedded, and land in one index; queries enter only at the right end. Click a region to isolate it, a part for its concept. Everything runs locally, nothing is uploaded.</span></p>
+  <div style="border:1px solid #232329;border-radius:14px;padding:1rem;margin-top:2rem;font:12px/1.6 var(--font-mono,ui-monospace,monospace);color:#A9AFB8">
+    <span style="color:#F3F4F6">磁盘 ── 传送带 ──▶ L1 指纹门 ──▶ 切块/嵌入 ──▶ <b style="color:#F3F4F6;font-weight:400">INDEX · 1 × lib.sqlite</b> ◀── 查询只从这进</span><br>
+    <span style="color:#A9AFB8">走盘 31 · 身份裁决 16 · 理解嵌入 33 · 检索求证 31 —— 零命中也是合法答案（exit 0）</span>
   </div>
   <p style="border:1px solid rgba(111,179,170,.4);background:rgba(111,179,170,.05);border-radius:12px;padding:.85rem;margin-top:.75rem;font:12px/1.6 var(--font-mono,ui-monospace,monospace);color:#A9AFB8"><b style="color:#F3F4F6;font-weight:400;font-family:var(--font-display,'Instrument Serif',serif);font-size:1.35rem">质检线</b> · 34 概念 · 17/19 质量门（两门未过已归档） · 3,200+ 离线测试 · 0 B 上传</p>
 </main></div>
