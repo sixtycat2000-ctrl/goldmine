@@ -161,6 +161,8 @@ export function LearnApp({ data }: { data: Ok }) {
     (id: StationId | "l0") => {
       if (id === "l0") {
         stageScrollRef.current = window.scrollY;
+        // view precedence puts station above l0open — an isolate must step down
+        setStation(null);
         setL0open(true);
         return;
       }
@@ -304,7 +306,7 @@ export function LearnApp({ data }: { data: Ok }) {
           </button>
         </div>
         <div className="mt-4">
-          <StationTrayHeader lang={lang} id={view.id} count={filtered.length} />
+          <StationTrayHeader lang={lang} id={view.id} count={filtered.length} onOpen={openStation} />
         </div>
         {subClusters.length > 0 && (
           <div className="no-scrollbar hscroll mt-4 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按子簇筛选" : "filter by sub-cluster"}>
@@ -437,7 +439,7 @@ export function LearnApp({ data }: { data: Ok }) {
 
       <main id="grid" className="mx-auto max-w-6xl px-5 py-10">
         {view.kind === "stage" ? (
-          <p className="text-[13px] text-sub">
+          <p className="hidden text-[14px] text-sub lg:block">
             {zh ? "点机器上的区域拆开工位；点零件直达概念；点 INDEX 剖开索引。" : "Click a region to isolate it; click a part for its concept; click the index to cut it open."}
           </p>
         ) : view.kind === "station" ? null : filtered.length === 0 ? (

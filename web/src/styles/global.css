@@ -426,3 +426,7 @@ body::after {
   .machine .pv-flatten { transform: none; }
   .tour-cursor { display: none; }
 }
+
+/* the machine invites touching: region hover lights its name */
+.machine [data-station] { cursor: pointer; }
+.machine [data-station]:hover .machine-name tspan:first-of-type { fill: var(--color-gold); }

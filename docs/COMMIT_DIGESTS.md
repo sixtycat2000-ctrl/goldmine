@@ -735,3 +735,27 @@ learn 配真实 CLI 终端条/真实 sqlite 截图类实物；移动端只留 Se
 **90 秒验证**：/learn.html?v=y —— ① 滚动任意处：nav 全实底不透字 ② 等
 6s 看 tour 光标走机器 ③ 点 Identity 区：它放大居中、邻居滑开、机器下方出
 两行说明+托盘 16 卡 ④ search 区看 INDEX 下方刻度行与右缘入口。
+
+### 追记 8（终轮：顶级对抗评审双 agent → SHIP，真 bug 一枚）
+
+第三轮两 agent：艺术指导 **6.8/10（SHIP AFTER FIXING 3）**、冷启动
+（trust 7，诚实数字=最强资产；clarity 5 因交互不可发现）。终批手术：
+understand 上排下移出标签线、隔离区最后绘制（SVG 绘制序=DOM 序，Region
+提变量排序渲染）、bracket 隔离时隐藏、aside 0.42、导览按钮（data-tour-btn
+防自取消）、提示行进首屏（桌面/移动分文案）、isolate 显式退出钮、托盘
+前后站（‹走盘 / 检索求证›）、hover 金名、INDEX 刻度行、embed 槽、
+search 出口刻度、title 工具提示、learn 导航全实底。
+**真 bug**：view 优先级 station>l0open——isolate 态点 L0 静默无效
+（冷启动组的 l0.png=tray.png 由此而来），修复后 isolate→L0=#l0+15 卡。
+「51 vs 31」数字矛盾证实为评审员误读（DOM 实测 31；31+16+33+31+34=145）。
+G7/G1/G11 全 PASS。
+
+**每行的风险**：隔离区最后绘制改变了 SVG DOM 顺序——任何按 DOM 序做断言
+的门禁需注意（G11 探针按 data-station 类查找，不受影响）；导览按钮
+data-tour-btn 防自取消依赖 closest() 查找——移出 machine 容器即失效。
+**我不确定的地方**：Few-pictures（0 实景图）仍然 defended——是评审两轮
+都点名却未修的最大缺口。
+**90 秒验证**：/learn.html?v=z —— ① 首屏机器下沿即见「点区域拆开…」+
+「▶ 看它自己走一遍」② 点 ▶：光标立即走机器 ③ 点 Walk 区：隔离 + 右下
+「× 返回整台机器」④ 隔离态点 L0 → Layer L0 页 15 卡 ⑤ 托盘头有
+‹上一站/下一站›。

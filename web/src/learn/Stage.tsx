@@ -54,7 +54,8 @@ export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | 
   ];
   const idx = levels.findIndex(([, k]) => k === at);
   return (
-    <p className="flex items-center gap-2 font-mono text-[14px] text-sub" aria-label={zh ? "下钻层级" : "drill depth"}>
+    <p className="flex items-center gap-2 font-mono text-[14px] text-sub" aria-label={zh ? "下钻层级" : "drill depth"}
+      title={zh ? "下钻层级：你现在在哪一层" : "drill depth: where you are"}>
       {levels.map(([label, k], i) => (
         <span key={k} className="flex items-center gap-2">
           {i > 0 && <span aria-hidden="true">→</span>}
@@ -142,7 +143,8 @@ export function Stage(props: StageProps) {
       return;
     }
     let timer = window.setTimeout(() => setTourOn(true), TOUR_FIRST_DELAY);
-    const take = () => {
+    const take = (e?: Event) => {
+      if (e && (e.target as HTMLElement)?.closest?.('[data-tour-btn]')) return;
       setTourOn(false);
       window.clearTimeout(timer);
       timer = window.setTimeout(() => setTourOn(true), TOUR_IDLE_RETURN);
@@ -151,7 +153,7 @@ export function Stage(props: StageProps) {
     root?.addEventListener("pointerdown", take);
     root?.addEventListener("wheel", take, { passive: true });
     root?.addEventListener("touchstart", take, { passive: true });
-    window.addEventListener("keydown", take);
+    window.addEventListener("keydown", (e) => { if (!e.metaKey && e.key !== "Escape") take(e); });
     return () => {
       window.clearTimeout(timer);
       root?.removeEventListener("pointerdown", take);
@@ -207,7 +209,7 @@ export function Stage(props: StageProps) {
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
           <DepthRail lang={lang} at={isolated ? "station" : "stage"} />
-          <p className="font-mono text-[14px] text-sub">
+          <p className="font-mono text-[14px] text-sub" title={zh ? "已读概念 / 全部概念" : "concepts read / total"}>
             <span className="text-gold">{totalVisited}</span> / {total}
           </p>
           <button
@@ -232,9 +234,22 @@ export function Stage(props: StageProps) {
             if (isolated) onCloseIsolate();
           }}
         >
-          <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">
-            {zh ? "起点 · L1 指纹门" : "start · L1 fingerprint gate"}
-          </p>
+          <div className="flex items-center justify-between gap-3">
+            <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">
+              {zh ? "起点 · L1 指纹门" : "start · L1 fingerprint gate"}
+            </p>
+            <button
+              type="button"
+              data-tour-btn
+              onClick={() => {
+                setTourOn(true);
+                setTourStep(0);
+              }}
+              className="rounded-full border border-line px-3 py-1 font-mono text-[13px] text-ink2 transition-colors hover:border-gold/60 hover:text-gold"
+            >
+              {zh ? "▶ 看它自己走一遍" : "▶ take the tour"}
+            </button>
+          </div>
           {/* overlays live in a box that contains ONLY the svg, so %-positions
               resolve against the drawing itself */}
           <div className="relative">
@@ -262,6 +277,21 @@ export function Stage(props: StageProps) {
           {isolated && isolated !== "rail" && (
             <p className="machine-desc">{pick(lang, REGION_DESC[isolated].zh, REGION_DESC[isolated].en)}</p>
           )}
+
+          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 px-1 pb-2">
+            <p className="font-mono text-[14px] text-sub">
+              {zh ? "点区域拆开 · 点零件直达概念 · 点 INDEX 剖开索引" : "Click a region to isolate it · a part for its concept · the index to cut it open"}
+            </p>
+            {isolated && isolated !== "rail" && (
+              <button
+                type="button"
+                onClick={onCloseIsolate}
+                className="rounded-full border border-gold/50 px-3 py-1 font-mono text-[13px] text-gold transition-colors hover:border-gold"
+              >
+                {zh ? "× 返回整台机器" : "× back to the machine"}
+              </button>
+            )}
+          </div>
 
           <MachineMeta lang={lang} />
         </div>
@@ -292,6 +322,9 @@ export function Stage(props: StageProps) {
           </ul>
           <p className="mt-3 font-mono text-[14px] text-sub">{zh ? "示意：固定示例数据，非实时运行" : "demo: fixed sample data, not a live run"}</p>
         </div>
+        <p className="mt-2 px-1 font-mono text-[14px] text-sub lg:hidden">
+          {zh ? "点站点行拆开机制，点卡片直达概念。" : "Tap a station to open it; tap a card for its concept."}
+        </p>
         <div className="mt-3 rounded-2xl bg-bg1/40 p-3">
           <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} onPart={onOpenPart} />
         </div>
@@ -395,19 +428,39 @@ function QARuler({
 }
 
 /* the station tray: role, teaching notes, pills, cards — under the machine */
-export function StationTrayHeader({ lang, id, count }: { lang: Lang; id: StationId; count: number }) {
+export function StationTrayHeader({ lang, id, count, onOpen }: { lang: Lang; id: StationId; count: number; onOpen: (id: StationId | "l0") => void }) {
   const zh = lang === "zh";
   const meta = stationMeta(id);
+  const order: StationId[] = ["walk", "identity", "understand", "search", "rail"];
+  const i = order.indexOf(id);
+  const prevId = i > 0 ? order[i - 1] : null;
+  const nextId = i < order.length - 1 ? order[i + 1] : null;
   return (
-    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
-      <h2 className="font-display text-3xl leading-[1.1] text-ink">
-        {pick(lang, meta.label_zh, meta.label_en)}
-        <span className="ml-3 align-middle font-mono text-[13px] text-sub">
+    <div>
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+        <h2 className="font-display text-3xl leading-[1.1] text-ink">
+          {pick(lang, meta.label_zh, meta.label_en)}
+        </h2>
+        <span className="font-mono text-[14px] text-sub">
           {id} × {count}
         </span>
-      </h2>
-      <DepthRail lang={lang} at="station" />
-      <p className="w-full text-[14px] text-ink2" style={{ maxWidth: "52ch" }}>
+      </div>
+      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
+        <DepthRail lang={lang} at="station" />
+        <span className="flex items-center gap-3 font-mono text-[14px]">
+          {prevId && (
+            <button type="button" onClick={() => onOpen(prevId)} className="text-sub transition-colors hover:text-gold">
+              ‹ {pick(lang, stationMeta(prevId).label_zh, stationMeta(prevId).label_en)}
+            </button>
+          )}
+          {nextId && (
+            <button type="button" onClick={() => onOpen(nextId)} className="text-sub transition-colors hover:text-gold">
+              {pick(lang, stationMeta(nextId).label_zh, stationMeta(nextId).label_en)} ›
+            </button>
+          )}
+        </span>
+      </div>
+      <p className="mt-2 text-[14px] text-ink2" style={{ maxWidth: "52ch" }}>
         {pick(lang, meta.role_zh, meta.role_en)}
       </p>
       {id === "understand" && (

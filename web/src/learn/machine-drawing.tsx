@@ -91,14 +91,14 @@ function Region({ id, x, w, zh, en, lang, count, visited, active, isolated, onOp
         x: me ? off.dx : slide,
         y: me ? off.dy : 0,
         scale: me ? 1.18 : aside ? 0.96 : 1,
-        opacity: aside ? 0.3 : 1,
+        opacity: aside ? 0.42 : 1,
       }}
       transition={SPRING}
       style={{ transformBox: "fill-box", transformOrigin: "center" }}
       onClick={() => onOpen(id)}
     >
       {/* active bracket on the chassis top edge */}
-      {active && <line className="region-active" x1={x + 14} y1={65} x2={x + w - 14} y2={65} stroke={GOLD} strokeWidth={2.5} />}
+      {active && !me && <line className="region-active" x1={x + 14} y1={65} x2={x + w - 14} y2={65} stroke={GOLD} strokeWidth={2.5} />}
       <g
         className="region-label"
         role="button"
@@ -171,24 +171,8 @@ export function MachineSVG({
   const activeRegion: StationId = beat >= 3 ? "search" : beat === 2 ? "understand" : beat === 1 ? "identity" : "walk";
   const zero = cycle % 2 === 1;
   const dim = isolated !== null;
-  return (
-    <svg viewBox={MACHINE_VB} style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }} role="group" aria-label={pick(lang, "整台机器：从磁盘到可搜", "the whole machine: disk to searchable")}>
-      <desc>
-        {pick(
-          lang,
-          "一台连续的机器：文件从磁盘上带，过 L1 指纹门（一件被拒弹入托盘 exit 3，一件四层全过），切块嵌入点亮向量点阵，落进唯一索引盖事务章；查询只从右端入口进入，射线打进索引按分亮条，最长一条连到证据卡；隔一轮全空——零命中也是合法答案 exit 0。底部标尺是质检线：质量门、测试、上传字节。",
-          "one continuous machine: files leave the disk on a belt, meet the L1 fingerprint gate (one refused into the tray, exit 3; one through, lighting the four layers), get chunked and embedded into a vector grid, land in the one index with transaction stamps; queries enter only at the intake port on the right, ray into the index, score as bars, top one links to an evidence card; every other round is empty — zero-hit is a legal answer, exit 0. The ruler below is the QA line: gates, tests, uploaded bytes.",
-        )}
-      </desc>
-
-      {/* one chassis, seams instead of gutters */}
-      <rect x="8" y="64" width="1024" height="400" rx="20" fill="rgba(255,255,255,0.028)" stroke={LINE} strokeWidth="1" />
-      {[242, 470, 698, 884].map((x) => (
-        <line key={x} x1={x} y1="84" x2={x} y2="444" stroke="var(--color-line)" strokeWidth="1" opacity="0.55" />
-      ))}
-
-      {/* walk: drum + gate marks + wave arcs + skipped files */}
-      <Region id="walk" x={8} w={234} zh="走盘" en="Walk" lang={lang} count={counts.walk} visited={visitedCounts.walk} active={activeRegion === "walk"} isolated={isolated} onOpen={onOpen}>
+  const regionWalk = (
+          <Region id="walk" x={8} w={234} zh="走盘" en="Walk" lang={lang} count={counts.walk} visited={visitedCounts.walk} active={activeRegion === "walk"} isolated={isolated} onOpen={onOpen}>
         <Part id="walk-gates" zh="行走门禁" en="walk gates" lang={lang} onPart={onOpenPart}>
           <Disk dim={dim} />
           <path d="M148 214 l7 6 -7 6 M160 214 l7 6 -7 6" fill="none" stroke={SUB} strokeWidth="1.3" />
@@ -208,9 +192,9 @@ export function MachineSVG({
           ))}
         </Part>
       </Region>
-
-      {/* identity: filled gate posts, lifting crossbar, refusal tray, passing file */}
-      <Region id="identity" x={242} w={228} zh="身份裁决" en="Identity" lang={lang} count={counts.identity} visited={visitedCounts.identity} active={activeRegion === "identity"} isolated={isolated} onOpen={onOpen}>
+  );
+  const regionIdentity = (
+          <Region id="identity" x={242} w={228} zh="身份裁决" en="Identity" lang={lang} count={counts.identity} visited={visitedCounts.identity} active={activeRegion === "identity"} isolated={isolated} onOpen={onOpen}>
         <Part id="fingerprint-gate" zh="指纹门" en="fingerprint gate" lang={lang} onPart={onOpenPart}>
           {[300, 396].map((gx) => (
             <g key={gx}>
@@ -230,29 +214,29 @@ export function MachineSVG({
           <path d="M262 348 h34 M262 362 h46 M262 376 h28" stroke={FAIL} strokeWidth="1.1" opacity="0.6" />
         </Part>
       </Region>
-
-      {/* understand: filled cutter doc, chunks drop, vector grid, waveform */}
-      <Region id="understand" x={470} w={228} zh="理解嵌入" en="Understand" lang={lang} count={counts.understand} visited={visitedCounts.understand} active={activeRegion === "understand"} isolated={isolated} onOpen={onOpen}>
+  );
+  const regionUnderstand = (
+          <Region id="understand" x={470} w={228} zh="理解嵌入" en="Understand" lang={lang} count={counts.understand} visited={visitedCounts.understand} active={activeRegion === "understand"} isolated={isolated} onOpen={onOpen}>
         <Part id="chunking" zh="分块" en="chunking" lang={lang} onPart={onOpenPart}>
-          <rect x="500" y="84" width="60" height="84" rx="6" fill="rgba(255,255,255,0.05)" stroke={beat === 2 ? GOLD : INK2} strokeWidth="1.6" />
-          <line x1="500" y1="112" x2="560" y2="112" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
-          <line x1="500" y1="140" x2="560" y2="140" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
+          <rect x="500" y="118" width="60" height="84" rx="6" fill="rgba(255,255,255,0.05)" stroke={beat === 2 ? GOLD : "rgba(255,255,255,0.55)"} strokeWidth="1.6" />
+          <line x1="500" y1="146" x2="560" y2="146" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
+          <line x1="500" y1="174" x2="560" y2="174" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
           {[0, 1, 2].map((i) => (
-            <rect key={i} className="pv-drop" style={{ animationDelay: `${i * 0.9}s` }} x={506 + i * 18} y={92} width="26" height="18" rx="3" fill="rgba(255,255,255,0.06)" stroke={INK2} strokeWidth="1.3" />
+            <rect key={i} className="pv-drop" style={{ animationDelay: `${i * 0.9}s` }} x={506 + i * 18} y={126} width="26" height="18" rx="3" fill="rgba(255,255,255,0.06)" stroke={INK2} strokeWidth="1.3" />
           ))}
         </Part>
         <Part id="vector-space" zh="向量与坐标" en="vectors and coordinates" lang={lang} onPart={onOpenPart}>
-          <rect x="592" y="76" width="106" height="96" rx="8" fill="rgba(255,255,255,0.03)" />
+          <rect x="592" y="108" width="106" height="88" rx="8" fill="rgba(255,255,255,0.03)" />
           {Array.from({ length: 12 }, (_, k) => {
             const r = Math.floor(k / 4), c = k % 4;
             const hollow = k % 5 === 4;
             return (
-              <rect key={k} className={hollow ? "" : "pv-cell"} style={hollow ? undefined : { animationDelay: `${1.6 + k * 0.28}s` }} x={600 + c * 24} y={84 + r * 30} width="14" height="14" rx="2.5" fill={hollow ? "none" : TEAL} stroke={hollow ? SUB : "none"} strokeWidth="1.4" opacity={hollow ? 0.9 : 0} />
+              <rect key={k} className={hollow ? "" : "pv-cell"} style={hollow ? undefined : { animationDelay: `${1.6 + k * 0.28}s` }} x={600 + c * 24} y={120 + r * 28} width="14" height="14" rx="2.5" fill={hollow ? "none" : TEAL} stroke={hollow ? SUB : "none"} strokeWidth="1.4" opacity={hollow ? 0.9 : 0} />
             );
           })}
-          <rect x="602" y="190" width="96" height="16" rx="6" fill="rgba(255,255,255,0.05)" stroke={INK2} strokeWidth="1.2" />
+          <rect x="602" y="198" width="96" height="14" rx="6" fill="rgba(255,255,255,0.05)" stroke={INK2} strokeWidth="1.2" />
           {[610, 655, 684].map((x) => (
-            <line key={x} x1={x} y1="176" x2={x} y2="216" stroke={SUB} strokeWidth="1" strokeDasharray="2 5" opacity="0.6" />
+            <line key={x} x1={x} y1="196" x2={x} y2="218" stroke={SUB} strokeWidth="1" strokeDasharray="2 5" opacity="0.6" />
           ))}
         </Part>
         <Part id="whisper-asr" zh="whisper 转录" en="whisper transcription" lang={lang} onPart={onOpenPart}>
@@ -265,6 +249,69 @@ export function MachineSVG({
           />
         </Part>
       </Region>
+  );
+  const regionSearch = (
+          <Region id="search" x={884} w={148} zh="检索求证" en="Search" lang={lang} count={counts.search} visited={visitedCounts.search} active={activeRegion === "search"} isolated={isolated} onOpen={onOpen}>
+        {zero ? (
+          <Part id="zero-hit-honesty" zh="零命中诚实" en="zero-hit honesty" lang={lang} onPart={onOpenPart} className="pv-zero">
+            <circle cx="955" cy="356" r="20" fill="none" stroke={SUB} strokeWidth="1.5" strokeDasharray="5 6" />
+            <line x1="941" y1="370" x2="969" y2="342" stroke={SUB} strokeWidth="1.5" />
+          </Part>
+        ) : (
+          <g>
+            <Part id="admission-gate" zh="准入门槛" en="admission gate" lang={lang} onPart={onOpenPart} className="pv-ride">
+              <circle cx="1026" cy="236" r="6" fill={TEAL} />
+            </Part>
+            <Part id="hybrid-fusion" zh="混合融合" en="hybrid fusion" lang={lang} onPart={onOpenPart}>
+              {[250, 272, 294].map((y, i) => (
+                <line key={y} className="pv-ray" style={{ animationDelay: `${0.5 + i * 0.25}s` }} x1="900" y1="236" x2="866" y2={y} stroke={i === 0 ? GOLD : SUB} strokeWidth={i === 0 ? 1.6 : 1} opacity="0.75" />
+              ))}
+            </Part>
+            <Part id="local-rerank" zh="本地重排" en="local rerank" lang={lang} onPart={onOpenPart}>
+              {[110, 58, 16].map((w, i) => (
+                <rect key={i} className="pv-bar" style={{ animationDelay: `${1.3 + i * 0.25}s` }} x="900" y={330 + i * 26} height="7" rx="3" width={w} fill={i === 0 ? GOLD : SUB} opacity={i === 0 ? 0.9 : 0.45} />
+              ))}
+            </Part>
+            {[340, 366, 392].map((y, i) => (
+              <rect key={y} x="1016" y={y} width="9" height="7" rx="2" fill={i === 0 ? TEAL : "rgba(255,255,255,0.14)"} opacity="0.8" />
+            ))}
+            <Part id="evidence-selection" zh="证据选择" en="evidence selection" lang={lang} onPart={onOpenPart}>
+              <rect className="pv-evidence" x="900" y="408" width="110" height="26" rx="6" fill="rgba(255,255,255,0.04)" stroke={GOLD} strokeWidth="1.6" />
+              <line x1="952" y1="344" x2="952" y2="406" stroke={GOLD} strokeWidth="1.1" strokeDasharray="3 4" opacity="0.65" />
+            </Part>
+          </g>
+        )}
+        {/* the intake port: queries enter here, on the chassis edge */}
+        <g fill="rgba(255,255,255,0.05)" stroke={INK2} strokeWidth="1.4" opacity="0.95">
+          <rect x="1000" y="206" width="26" height="60" rx="9" />
+          <line x1="1006" y1="222" x2="1020" y2="222" stroke={SUB} strokeWidth="1.2" />
+          <line x1="1006" y1="236" x2="1020" y2="236" stroke={SUB} strokeWidth="1.2" />
+          <line x1="1006" y1="250" x2="1020" y2="250" stroke={SUB} strokeWidth="1.2" />
+        </g>
+      </Region>
+  );
+
+  return (
+    <svg viewBox={MACHINE_VB} style={{ width: "100%", height: "auto", display: "block", overflow: "visible" }} role="group" aria-label={pick(lang, "整台机器：从磁盘到可搜", "the whole machine: disk to searchable")}>
+      <desc>
+        {pick(
+          lang,
+          "一台连续的机器：文件从磁盘上带，过 L1 指纹门（一件被拒弹入托盘 exit 3，一件四层全过），切块嵌入点亮向量点阵，落进唯一索引盖事务章；查询只从右端入口进入，射线打进索引按分亮条，最长一条连到证据卡；隔一轮全空——零命中也是合法答案 exit 0。底部标尺是质检线：质量门、测试、上传字节。",
+          "one continuous machine: files leave the disk on a belt, meet the L1 fingerprint gate (one refused into the tray, exit 3; one through, lighting the four layers), get chunked and embedded into a vector grid, land in the one index with transaction stamps; queries enter only at the intake port on the right, ray into the index, score as bars, top one links to an evidence card; every other round is empty — zero-hit is a legal answer, exit 0. The ruler below is the QA line: gates, tests, uploaded bytes.",
+        )}
+      </desc>
+
+      {/* one chassis, seams instead of gutters */}
+      <rect x="8" y="64" width="1024" height="400" rx="20" fill="rgba(255,255,255,0.028)" stroke={LINE} strokeWidth="1" />
+      {[242, 470, 698, 884].map((x) => (
+        <line key={x} x1={x} y1="84" x2={x} y2="444" stroke="var(--color-line)" strokeWidth="1" opacity="0.55" />
+      ))}
+
+
+
+
+
+
 
       {/* index: filled drawer stack — WAL, rows, stamps inside the block */}
       <motion.g
@@ -300,42 +347,17 @@ export function MachineSVG({
         ))}
       </motion.g>
 
-      {/* search: filled intake port on the chassis edge → rays → bars → evidence | zero */}
-      <Region id="search" x={884} w={148} zh="检索求证" en="Search" lang={lang} count={counts.search} visited={visitedCounts.search} active={activeRegion === "search"} isolated={isolated} onOpen={onOpen}>
-        {zero ? (
-          <Part id="zero-hit-honesty" zh="零命中诚实" en="zero-hit honesty" lang={lang} onPart={onOpenPart} className="pv-zero">
-            <circle cx="955" cy="356" r="20" fill="none" stroke={SUB} strokeWidth="1.5" strokeDasharray="5 6" />
-            <line x1="941" y1="370" x2="969" y2="342" stroke={SUB} strokeWidth="1.5" />
-          </Part>
-        ) : (
-          <g>
-            <Part id="admission-gate" zh="准入门槛" en="admission gate" lang={lang} onPart={onOpenPart} className="pv-ride">
-              <circle cx="1026" cy="236" r="6" fill={TEAL} />
-            </Part>
-            <Part id="hybrid-fusion" zh="混合融合" en="hybrid fusion" lang={lang} onPart={onOpenPart}>
-              {[250, 272, 294].map((y, i) => (
-                <line key={y} className="pv-ray" style={{ animationDelay: `${0.5 + i * 0.25}s` }} x1="900" y1="236" x2="866" y2={y} stroke={i === 0 ? GOLD : SUB} strokeWidth={i === 0 ? 1.6 : 1} opacity="0.75" />
-              ))}
-            </Part>
-            <Part id="local-rerank" zh="本地重排" en="local rerank" lang={lang} onPart={onOpenPart}>
-              {[110, 58, 16].map((w, i) => (
-                <rect key={i} className="pv-bar" style={{ animationDelay: `${1.3 + i * 0.25}s` }} x="900" y={330 + i * 26} height="7" rx="3" width={w} fill={i === 0 ? GOLD : SUB} opacity={i === 0 ? 0.9 : 0.45} />
-              ))}
-            </Part>
-            <Part id="evidence-selection" zh="证据选择" en="evidence selection" lang={lang} onPart={onOpenPart}>
-              <rect className="pv-evidence" x="900" y="408" width="110" height="26" rx="6" fill="rgba(255,255,255,0.04)" stroke={GOLD} strokeWidth="1.6" />
-              <line x1="952" y1="344" x2="952" y2="406" stroke={GOLD} strokeWidth="1.1" strokeDasharray="3 4" opacity="0.65" />
-            </Part>
-          </g>
-        )}
-        {/* the intake port: queries enter here, on the chassis edge */}
-        <g fill="rgba(255,255,255,0.05)" stroke={INK2} strokeWidth="1.4" opacity="0.95">
-          <rect x="1000" y="206" width="26" height="60" rx="9" />
-          <line x1="1006" y1="222" x2="1020" y2="222" stroke={SUB} strokeWidth="1.2" />
-          <line x1="1006" y1="236" x2="1020" y2="236" stroke={SUB} strokeWidth="1.2" />
-          <line x1="1006" y1="250" x2="1020" y2="250" stroke={SUB} strokeWidth="1.2" />
-        </g>
-      </Region>
+
+
+      {/* regions in pipeline order; the isolated one paints last (SVG paint order = DOM order) */}
+      {(() => {
+        const list = [regionWalk, regionIdentity, regionUnderstand, regionSearch];
+        if (isolated && isolated !== "rail") {
+          const i = list.findIndex((el) => el.props.id === isolated);
+          if (i >= 0) list.push(list.splice(i, 1)[0]);
+        }
+        return list;
+      })()}
 
       {/* the belt: one continuous bed, files march disk → index */}
       <g className="belt-lane" aria-hidden="true">
