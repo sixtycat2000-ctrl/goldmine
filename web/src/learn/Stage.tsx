@@ -28,6 +28,8 @@ export type StageProps = {
   total: number;
   totalVisited: number;
   onOpen: (id: StationId | "l0") => void;
+  /* amendments-004 T1/T2: a machine part opens the concept it belongs to */
+  onOpenPart: (conceptId: string) => void;
 };
 
 const BEATS = 5;
@@ -61,22 +63,32 @@ export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | 
 }
 
 export function Stage(props: StageProps) {
-  const { lang, counts, visitedCounts, l0Count, total, totalVisited, onOpen } = props;
+  const { lang, counts, visitedCounts, l0Count, total, totalVisited, onOpen, onOpenPart } = props;
   const zh = lang === "zh";
   const reduced = useReducedMotion();
   const hostRef = useRef<HTMLDivElement>(null);
   const [beat, setBeat] = useState(0);
   const [cycle, setCycle] = useState(0);
-  const [running, setRunning] = useState(false);
+  const [inView, setInView] = useState(false);
+  // amendments-004 T3: a hidden tab must not run the machine either
+  const [tabVisible, setTabVisible] = useState(true);
+  const running = inView && tabVisible;
 
   // one timebase, IO-gated: the wave only ticks while the stage is on screen
   useEffect(() => {
     const el = hostRef.current;
     if (!el || reduced || typeof IntersectionObserver === "undefined") return;
-    const io = new IntersectionObserver((es) => es.forEach((e) => setRunning(e.isIntersecting)), { threshold: 0.15 });
+    const io = new IntersectionObserver((es) => es.forEach((e) => setInView(e.isIntersecting)), { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
   }, [reduced]);
+
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const onVis = () => setTabVisible(document.visibilityState === "visible");
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, []);
 
   useEffect(() => {
     if (reduced || !running) return;
@@ -167,10 +179,10 @@ export function Stage(props: StageProps) {
 
             {/* row 2: pods at A5 proportions — name, count, demo. No prose (E1). */}
             {pods.slice(0, 3).map((s) => (
-              <StationPod key={s.id} s={s} lang={lang} count={counts[s.id]} read={visitedCounts[s.id]} beat={liveBeat} onOpen={onOpen} />
+              <StationPod key={s.id} s={s} lang={lang} count={counts[s.id]} read={visitedCounts[s.id]} beat={liveBeat} onOpen={onOpen} onOpenPart={onOpenPart} />
             ))}
-            <IndexBlock />
-            <StationPod s={pods[3]} lang={lang} count={counts.search} read={visitedCounts.search} beat={liveBeat} cycle={liveCycle} onOpen={onOpen} />
+            <IndexBlock lang={lang} onOpenPart={onOpenPart} />
+            <StationPod s={pods[3]} lang={lang} count={counts.search} read={visitedCounts.search} beat={liveBeat} cycle={liveCycle} onOpen={onOpen} onOpenPart={onOpenPart} />
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1">
@@ -201,7 +213,15 @@ export function Stage(props: StageProps) {
                 </button>
               </li>
             ))}
-            <li className="px-2 py-2 font-mono text-[12px] text-sub">1 × lib.sqlite</li>
+            <li>
+              <button
+                type="button"
+                onClick={() => onOpenPart("sqlite-wal")}
+                className="flex w-full items-baseline px-2 py-2 text-left font-mono text-[12px] text-sub transition-colors hover:text-gold"
+              >
+                1 × lib.sqlite
+              </button>
+            </li>
           </ul>
           <button
             type="button"
@@ -217,10 +237,10 @@ export function Stage(props: StageProps) {
           </div>
         </div>
         <div className="mt-3 rounded-2xl border border-line bg-bg1/40 p-4">
-          <IdentityDemo beat={reduced ? -1 : beat} lang={lang} />
+          <IdentityDemo beat={reduced ? -1 : beat} lang={lang} onPart={onOpenPart} />
         </div>
         <div className="mt-3 rounded-2xl border border-line bg-bg1/40 p-4">
-          <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} />
+          <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} onPart={onOpenPart} />
         </div>
         <div className="mt-3">
           <QARail lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
@@ -253,9 +273,10 @@ function ProtagonistGlyph({ beat }: { beat: number }) {
   return <span className="text-sub">lib.sqlite</span>;
 }
 
-/* visual-first pod (E1): name, count, demo — nothing else */
+/* visual-first pod (E1): name, count, demo — nothing else.
+   amendments-004 T1: parts inside the demo open their concept. */
 function StationPod({
-  s, lang, count, read, beat, cycle = 0, onOpen,
+  s, lang, count, read, beat, cycle = 0, onOpen, onOpenPart,
 }: {
   s: (typeof STATIONS)[number];
   lang: Lang;
@@ -264,6 +285,7 @@ function StationPod({
   beat: number;
   cycle?: number;
   onOpen: (id: StationId | "l0") => void;
+  onOpenPart: (conceptId: string) => void;
 }) {
   const active =
     (beat === 1 && s.id === "identity") ||
@@ -281,21 +303,27 @@ function StationPod({
         </p>
       </button>
       <div className="mt-auto flex flex-1 items-center pt-2">
-        {s.id === "walk" && <WalkDemo beat={beat} lang={lang} />}
-        {s.id === "identity" && <IdentityDemo beat={beat} lang={lang} />}
-        {s.id === "understand" && <UnderstandDemo beat={beat} lang={lang} />}
-        {s.id === "search" && <SearchDemo beat={beat} cycle={cycle} lang={lang} />}
+        {s.id === "walk" && <WalkDemo beat={beat} lang={lang} onPart={onOpenPart} />}
+        {s.id === "identity" && <IdentityDemo beat={beat} lang={lang} onPart={onOpenPart} />}
+        {s.id === "understand" && <UnderstandDemo beat={beat} lang={lang} onPart={onOpenPart} />}
+        {s.id === "search" && <SearchDemo beat={beat} cycle={cycle} lang={lang} onPart={onOpenPart} />}
       </div>
     </div>
   );
 }
 
-function IndexBlock() {
+/* amendments-004 T2: the terminus opens too — cut the index open */
+function IndexBlock({ lang, onOpenPart }: { lang: Lang; onOpenPart: (conceptId: string) => void }) {
   return (
-    <div className="flex h-full flex-col items-center justify-center gap-1 rounded-xl border border-line-strong bg-bg2/50 p-3 text-center">
-      <p className="font-mono text-[12px] tracking-[0.14em] text-sub uppercase">index</p>
-      <p className="font-mono text-[12px] leading-relaxed text-ink2">1 ×<br />lib.sqlite</p>
-    </div>
+    <button
+      type="button"
+      onClick={() => onOpenPart("sqlite-wal")}
+      aria-label={pick(lang, "打开概念：SQLite 与 WAL", "open concept: SQLite and WAL")}
+      className="flex h-full cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-line-strong bg-bg2/50 p-3 text-center transition-colors hover:border-gold/60"
+    >
+      <span className="font-mono text-[12px] tracking-[0.14em] text-sub uppercase">index</span>
+      <span className="font-mono text-[12px] leading-relaxed text-ink2">1 ×<br />lib.sqlite</span>
+    </button>
   );
 }
 

@@ -649,3 +649,34 @@ zh：划定范围/向量化/融合检索/落库）+ 标题 + 正文，Reveal 逐
 lopsided 清零。
 **90 秒验证**：npm run preview → 首页滚到「从磁盘到可搜，四步」：无粘滞、无淡切
 等待，四步一屏半读完，quickstart 终端块不变。
+
+### 追记 5（learn 舞台：零件=按钮——teardown skill 参考轮）
+
+teardown（elvarofficial/teardown，MIT）以 repo-local 安装于
+`.zcode/skills/teardown/`（1.3M，剔 14M 演示 gif；未装全局、未跑其
+npm install——参考用途只需源码）。挖矿与映射表：
+reports/execution/learn-stage-plan-001/teardown-reference.md。
+采纳四项（amendments-004 预注册，冻结 sha256 在案）：
+T1 四张 SVG 原理图 14 个零件变按钮（Part 助手：role=button + sr-only
+aria + Enter/Space，`.pv-part` hover/focus）→ 点零件直开其概念抽屉，
+映射全为真 graph 节点（walk 盘→行走门禁、章→一文件一事务、库块→幂等、
+identity 门→指纹门、出口圈→四层身份、understand 块→分块、点阵→向量与
+坐标、波形→whisper、search 脉冲→准入、射线→混合融合、条→本地重排、
+证据卡→证据选择、零命中圈→零命中诚实）；T2 IndexBlock 与移动端 subway
+的 1×lib.sqlite 变按钮 → sqlite-wal；T3 `running = inView &&
+tabVisible`（隐藏标签页不再空转）；T4 新门 G11（teardown review loop
+采纳）：零件目标必须存在于 graph.baked.json（假按钮即 FAIL）+ CDP 真
+Chrome 真帧捕获（轮询金亮舱翻转后 600ms 截图，1440/390 各四态+零命中帧）
++ 人工逐帧 checklist。
+
+**每行的风险**：零件点击绕过四级轨（舞台直跳详解）——DepthRail 仍在抽屉
+头，方位不丢；aria-hidden 随 onPart 撤除，屏幕阅读器多出 ~4 按钮/图，是
+功能不是噪音；G11 依赖 taste-skill 的零依赖 CDP 客户端（路径耦合
+.zcode/skills/taste-skill，两 skill 同仓在位即成立）。
+**我不确定的地方**：T3 恢复方向无动态回执——CDP 仿真证伪
+（'active' 后 visibilityState 仍 hidden），恢复走同一监听器反向路径，仅
+代码结构保证；search 演示循环间隙会短暂全空（读帧备注 1，不判 FAIL）；
+@390 仍为仿真帧，真机复核维持待办。
+**90 秒验证**：cd web && npm run preview → /learn.html?v=x →
+hover 舱内零件（提亮）→ 点「库块」开「幂等与续跑」抽屉 → 点 INDEX 块开
+「SQLite 与 WAL」→ 切走标签页再回来（后台不闪跳拍）。

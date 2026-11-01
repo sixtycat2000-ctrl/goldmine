@@ -5,7 +5,14 @@
  * live in sr-only strings (<desc> + Stage footer tags); all loops are CSS
  * (pv-*) paused by .stage-paused and frozen under reduced motion; `beat`
  * only lights the active pod.
+ *
+ * amendments-004 (teardown borrow): every subsystem inside a schematic is a
+ * button — key parts open the concept drawer they belong to (Part below,
+ * mapping frozen in reports/execution/learn-stage-plan-001/teardown-
+ * reference.md; every id is a real graph node, checked by gate G11). Labels
+ * are sr-only aria-labels, so the visible face stays text-free (V2).
  */
+import type { KeyboardEvent, MouseEvent, ReactNode } from "react";
 import { pick, type Lang } from "../lib/lang";
 
 const GOLD = "var(--color-gold)";
@@ -31,9 +38,49 @@ export function DemoFootnote({ lang }: { lang: Lang }) {
 
 const FRAME = { width: "100%", height: "auto", display: "block" } as const;
 
+/* ---------- parts are buttons (amendments-004 T1) ---------- */
+
+export type PartHandler = (conceptId: string) => void;
+
+function Part({
+  id, zh, en, lang, onPart, className, children,
+}: {
+  id: string;
+  zh: string;
+  en: string;
+  lang: Lang;
+  onPart?: PartHandler;
+  className?: string;
+  children: ReactNode;
+}) {
+  if (!onPart) return <>{children}</>;
+  const open = (e: MouseEvent<SVGGElement>) => {
+    e.stopPropagation();
+    onPart(id);
+  };
+  const key = (e: KeyboardEvent<SVGGElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onPart(id);
+    }
+  };
+  return (
+    <g
+      className={`pv-part${className ? ` ${className}` : ""}`}
+      role="button"
+      tabIndex={0}
+      aria-label={pick(lang, `打开概念：${zh}`, `open concept: ${en}`)}
+      onClick={open}
+      onKeyDown={key}
+    >
+      {children}
+    </g>
+  );
+}
+
 /* ---------- walk: disk → three wave lanes → transaction stamps ---------- */
 
-export function WalkDemo({ beat, lang }: { beat: number; lang: Lang }) {
+export function WalkDemo({ beat, lang, onPart }: { beat: number; lang: Lang; onPart?: PartHandler }) {
   const active = beat === 0;
   const file = (y: number, cls: string, d: number) => (
     <g className={`pv-file ${cls}`} style={{ animationDelay: `${d}s` }} transform={`translate(36 ${y})`}>
@@ -44,18 +91,26 @@ export function WalkDemo({ beat, lang }: { beat: number; lang: Lang }) {
     </g>
   );
   return (
-    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden="true" className="podviz">
-      <rect x="4" y="28" width="28" height="94" rx="5" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.6" />
-      {[42, 60, 78, 96].map((y) => (
-        <line key={y} x1="10" y1={y} x2="26" y2={y} stroke={SUB} strokeWidth="1.2" />
-      ))}
-      {[52, 75, 98].map((y) => (
-        <path key={y} d={`M36 ${y} H148`} stroke={SUB} strokeWidth="1" strokeDasharray="3 5" fill="none" opacity="0.6" />
-      ))}
-      <rect x="150" y="46" width="62" height="58" rx="9" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.8" />
-      {[62, 75, 88].map((y, i) => (
-        <circle key={y} className="pv-stamp" style={{ animationDelay: `${1.9 + i * 1.9}s` }} cx={i === 1 ? 181 : 168 + i * 12} cy={y} r="5" fill="none" stroke={TEAL} strokeWidth="1.6" />
-      ))}
+    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden={onPart ? undefined : "true"} className="podviz">
+      <Part id="walk-gates" zh="行走门禁" en="walk gates" lang={lang} onPart={onPart}>
+        <rect x="4" y="28" width="28" height="94" rx="5" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.6" />
+        {[42, 60, 78, 96].map((y) => (
+          <line key={y} x1="10" y1={y} x2="26" y2={y} stroke={SUB} strokeWidth="1.2" />
+        ))}
+      </Part>
+      <Part id="wave-extraction" zh="波次抽取" en="wave extraction" lang={lang} onPart={onPart}>
+        {[52, 75, 98].map((y) => (
+          <path key={y} d={`M36 ${y} H148`} stroke={SUB} strokeWidth="1" strokeDasharray="3 5" fill="none" opacity="0.6" />
+        ))}
+      </Part>
+      <Part id="idempotency" zh="幂等与续跑" en="idempotency and resume" lang={lang} onPart={onPart}>
+        <rect x="150" y="46" width="62" height="58" rx="9" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.8" />
+      </Part>
+      <Part id="one-transaction" zh="一文件一事务" en="one file, one transaction" lang={lang} onPart={onPart}>
+        {[62, 75, 88].map((y, i) => (
+          <circle key={y} className="pv-stamp" style={{ animationDelay: `${1.9 + i * 1.9}s` }} cx={i === 1 ? 181 : 168 + i * 12} cy={y} r="5" fill="none" stroke={TEAL} strokeWidth="1.6" />
+        ))}
+      </Part>
       {file(40, "pv-f1", 0)}
       {file(63, "pv-f2", 1.9)}
       {file(86, "pv-f3", 3.8)}
@@ -66,7 +121,7 @@ export function WalkDemo({ beat, lang }: { beat: number; lang: Lang }) {
 
 /* ---------- identity: two files, four gates; one refused at L1, one passes ---------- */
 
-export function IdentityDemo({ beat, lang }: { beat: number; lang: Lang }) {
+export function IdentityDemo({ beat, lang, onPart }: { beat: number; lang: Lang; onPart?: PartHandler }) {
   const active = beat === 1;
   const gate = (x: number) => (
     <g>
@@ -77,12 +132,14 @@ export function IdentityDemo({ beat, lang }: { beat: number; lang: Lang }) {
     </g>
   );
   return (
-    <svg viewBox="14 16 200 118" style={FRAME} aria-hidden="true" className="podviz">
+    <svg viewBox="14 16 200 118" style={FRAME} aria-hidden={onPart ? undefined : "true"} className="podviz">
       <line x1="20" y1="51" x2="192" y2="51" stroke={LINE} strokeWidth="1" strokeDasharray="2 5" />
       <line x1="20" y1="99" x2="192" y2="99" stroke={LINE} strokeWidth="1" strokeDasharray="2 5" />
-      {gate(70)}
-      {gate(104)}
-      {gate(138)}
+      <Part id="fingerprint-gate" zh="指纹门" en="fingerprint gate" lang={lang} onPart={onPart}>
+        {gate(70)}
+        {gate(104)}
+        {gate(138)}
+      </Part>
       <g className="pv-bounce">
         <rect x="26" y="38" width="22" height="26" rx="3" fill="none" stroke={FAIL} strokeWidth="1.6" />
       </g>
@@ -90,9 +147,11 @@ export function IdentityDemo({ beat, lang }: { beat: number; lang: Lang }) {
       <g className="pv-pass">
         <rect x="26" y="86" width="22" height="26" rx="3" fill="none" stroke={TEAL} strokeWidth="1.6" />
       </g>
-      {[42, 62, 82, 102].map((y, i) => (
-        <circle key={y} className="pv-layer" style={{ animationDelay: `${2.7 + i * 0.35}s` }} cx="198" cy={y} r="5.5" fill="none" stroke={active ? GOLD : INK2} strokeWidth="1.8" />
-      ))}
+      <Part id="four-layer-identity" zh="四层身份模型" en="four-layer identity" lang={lang} onPart={onPart}>
+        {[42, 62, 82, 102].map((y, i) => (
+          <circle key={y} className="pv-layer" style={{ animationDelay: `${2.7 + i * 0.35}s` }} cx="198" cy={y} r="5.5" fill="none" stroke={active ? GOLD : INK2} strokeWidth="1.8" />
+        ))}
+      </Part>
       <desc>{pick(lang, "两个文件过四层身份门：一个在第一层被拒（整库拒收 exit 3），一个四层全过、逐层点亮——拒收、逐行重嵌、重抽文本、评测分母各不相同", "two files meet four identity gates: one refused at layer 1 (whole index refused, exit 3), one passes all four — refusal, row re-embed, re-extract and eval denominator all differ")}</desc>
     </svg>
   );
@@ -100,7 +159,7 @@ export function IdentityDemo({ beat, lang }: { beat: number; lang: Lang }) {
 
 /* ---------- understand: doc → three chunks → vector grid; waveform → text ---------- */
 
-export function UnderstandDemo({ beat, lang }: { beat: number; lang: Lang }) {
+export function UnderstandDemo({ beat, lang, onPart }: { beat: number; lang: Lang; onPart?: PartHandler }) {
   const active = beat === 2;
   const cells = [];
   for (let r = 0; r < 3; r++)
@@ -124,21 +183,27 @@ export function UnderstandDemo({ beat, lang }: { beat: number; lang: Lang }) {
       );
     }
   return (
-    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden="true" className="podviz">
-      <rect x="8" y="26" width="34" height="88" rx="4" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.6" />
-      <line x1="8" y1="55" x2="42" y2="55" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
-      <line x1="8" y1="84" x2="42" y2="84" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
-      {[0, 1, 2].map((i) => (
-        <rect key={i} className="pv-chunk" style={{ animationDelay: `${i * 0.9}s` }} x="52" y={34 + i * 30} width="30" height="22" rx="3" fill="none" stroke={INK2} strokeWidth="1.4" />
-      ))}
-      {cells}
-      <path
-        className="pv-wave"
-        d="M8 138 q6 -12 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"
-        fill="none"
-        stroke={TEAL}
-        strokeWidth="1.4"
-      />
+    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden={onPart ? undefined : "true"} className="podviz">
+      <Part id="chunking" zh="分块" en="chunking" lang={lang} onPart={onPart}>
+        <rect x="8" y="26" width="34" height="88" rx="4" fill="none" stroke={active ? GOLD : LINE} strokeWidth="1.6" />
+        <line x1="8" y1="55" x2="42" y2="55" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
+        <line x1="8" y1="84" x2="42" y2="84" stroke={SUB} strokeWidth="1" strokeDasharray="4 4" />
+        {[0, 1, 2].map((i) => (
+          <rect key={i} className="pv-chunk" style={{ animationDelay: `${i * 0.9}s` }} x="52" y={34 + i * 30} width="30" height="22" rx="3" fill="none" stroke={INK2} strokeWidth="1.4" />
+        ))}
+      </Part>
+      <Part id="vector-space" zh="向量与坐标" en="vectors and coordinates" lang={lang} onPart={onPart}>
+        {cells}
+      </Part>
+      <Part id="whisper-asr" zh="whisper 转录" en="whisper transcription" lang={lang} onPart={onPart}>
+        <path
+          className="pv-wave"
+          d="M8 138 q6 -12 12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0 t12 0"
+          fill="none"
+          stroke={TEAL}
+          strokeWidth="1.4"
+        />
+      </Part>
       <desc>{pick(lang, "一份文档切成三块，逐块点亮向量点阵；空框=部分页只有词法索引不生成向量；底部音频波形压平成文字（有转录走文字向量，MM-D3）", "a document splits into three chunks lighting up a vector grid; hollow = lexical-only pages get no vector; the audio waveform flattens into text (transcript rides text vectors, MM-D3)")}</desc>
     </svg>
   );
@@ -146,51 +211,57 @@ export function UnderstandDemo({ beat, lang }: { beat: number; lang: Lang }) {
 
 /* ---------- search: query pulse → rays → score bars → evidence | zero ---------- */
 
-export function SearchDemo({ beat, cycle, lang }: { beat: number; lang: Lang; cycle: number }) {
+export function SearchDemo({ beat, cycle, lang, onPart }: { beat: number; lang: Lang; cycle: number; onPart?: PartHandler }) {
   const active = beat >= 3;
   const zero = cycle % 2 === 1;
   return (
-    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden="true" className="podviz">
+    <svg viewBox="0 0 220 150" style={FRAME} aria-hidden={onPart ? undefined : "true"} className="podviz">
       {zero ? (
-        <g className="pv-zero">
+        <Part id="zero-hit-honesty" zh="零命中诚实" en="zero-hit honesty" lang={lang} onPart={onPart} className="pv-zero">
           <circle cx="110" cy="72" r="20" fill="none" stroke={SUB} strokeWidth="1.5" strokeDasharray="5 6" />
           <line x1="96" y1="86" x2="124" y2="58" stroke={SUB} strokeWidth="1.5" />
-        </g>
+        </Part>
       ) : (
         <g>
-          <g className="pv-query">
+          <Part id="admission-gate" zh="准入门槛" en="admission gate" lang={lang} onPart={onPart} className="pv-query">
             <circle cx="206" cy="72" r="6" fill={TEAL} />
-          </g>
-          {[44, 72, 100].map((y, i) => (
-            <line
-              key={y}
-              className="pv-ray"
-              style={{ animationDelay: `${0.5 + i * 0.25}s` }}
-              x1="200"
-              y1="72"
-              x2={52 + i * 6}
-              y2={y}
-              stroke={i === 0 ? GOLD : SUB}
-              strokeWidth={i === 0 ? 1.6 : 1}
-              opacity="0.7"
-            />
-          ))}
-          {[110, 58, 16].map((w, i) => (
-            <rect
-              key={i}
-              className="pv-bar"
-              style={{ animationDelay: `${1.3 + i * 0.25}s` }}
-              x="44"
-              y={38 + i * 28}
-              height="7"
-              rx="3"
-              width={w}
-              fill={i === 0 ? GOLD : SUB}
-              opacity={i === 0 ? 0.9 : 0.45}
-            />
-          ))}
-          <rect className="pv-evidence" x="44" y="116" width="110" height="24" rx="5" fill="none" stroke={active ? GOLD : SUB} strokeWidth="1.6" />
-          <line x1="99" y1="45" x2="99" y2="114" stroke={GOLD} strokeWidth="1.2" strokeDasharray="3 4" opacity="0.7" />
+          </Part>
+          <Part id="hybrid-fusion" zh="混合融合" en="hybrid fusion" lang={lang} onPart={onPart}>
+            {[44, 72, 100].map((y, i) => (
+              <line
+                key={y}
+                className="pv-ray"
+                style={{ animationDelay: `${0.5 + i * 0.25}s` }}
+                x1="200"
+                y1="72"
+                x2={52 + i * 6}
+                y2={y}
+                stroke={i === 0 ? GOLD : SUB}
+                strokeWidth={i === 0 ? 1.6 : 1}
+                opacity="0.7"
+              />
+            ))}
+          </Part>
+          <Part id="local-rerank" zh="本地重排" en="local rerank" lang={lang} onPart={onPart}>
+            {[110, 58, 16].map((w, i) => (
+              <rect
+                key={i}
+                className="pv-bar"
+                style={{ animationDelay: `${1.3 + i * 0.25}s` }}
+                x="44"
+                y={38 + i * 28}
+                height="7"
+                rx="3"
+                width={w}
+                fill={i === 0 ? GOLD : SUB}
+                opacity={i === 0 ? 0.9 : 0.45}
+              />
+            ))}
+          </Part>
+          <Part id="evidence-selection" zh="证据选择" en="evidence selection" lang={lang} onPart={onPart}>
+            <rect className="pv-evidence" x="44" y="116" width="110" height="24" rx="5" fill="none" stroke={active ? GOLD : SUB} strokeWidth="1.6" />
+            <line x1="99" y1="45" x2="99" y2="114" stroke={GOLD} strokeWidth="1.2" strokeDasharray="3 4" opacity="0.7" />
+          </Part>
         </g>
       )}
       <desc>{pick(lang, "一个查询脉冲从右缘进入（查询只从检索进），射线打到三个候选按分亮条，最长一条连到证据卡；隔一轮全空——零命中也是合法答案（exit 0）", "a query pulse enters from the right (queries only enter at search), rays hit three candidates scored as bars, the top links to an evidence card; every other round is empty — zero-hit is a legal answer (exit 0)")}</desc>

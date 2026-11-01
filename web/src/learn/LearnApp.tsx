@@ -306,6 +306,7 @@ export function LearnApp({ data }: { data: Ok }) {
           total={total}
           totalVisited={totalVisited}
           onOpen={openStation}
+          onOpenPart={handleOpen}
         />
       ) : (
         <header className="mx-auto max-w-6xl px-5 pt-24 pb-4">
@@ -339,12 +340,12 @@ export function LearnApp({ data }: { data: Ok }) {
                   {zh ? "walk 门：iCloud dataless 跳过 · inode 移动检测" : "walk gates: iCloud dataless skip · inode move detection"}
                 </p>
               )}
-              {/* the clicked part becomes the hero (E3) */}
+              {/* the clicked part becomes the hero (E3); parts open concepts (amendments-004 T1) */}
               <div className="mt-4 max-w-xl rounded-2xl border border-line bg-bg1/40 p-4">
-                {view.id === "walk" && <WalkDemo beat={0} lang={lang} />}
-                {view.id === "identity" && <IdentityDemo beat={1} lang={lang} />}
-                {view.id === "understand" && <UnderstandDemo beat={2} lang={lang} />}
-                {view.id === "search" && <SearchDemo beat={4} cycle={0} lang={lang} />}
+                {view.id === "walk" && <WalkDemo beat={0} lang={lang} onPart={handleOpen} />}
+                {view.id === "identity" && <IdentityDemo beat={1} lang={lang} onPart={handleOpen} />}
+                {view.id === "understand" && <UnderstandDemo beat={2} lang={lang} onPart={handleOpen} />}
+                {view.id === "search" && <SearchDemo beat={4} cycle={0} lang={lang} onPart={handleOpen} />}
                 {view.id === "rail" && (
                   <p className="font-mono text-[12px] leading-relaxed text-sub">
                     {zh ? "冻结评测 · 预注册 · 对抗评审 · 三态判定 · 诚实契约" : "frozen evals · preregistration · adversarial review · three-state verdicts · honesty contract"}

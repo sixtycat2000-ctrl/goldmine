@@ -343,3 +343,10 @@ body::after {
   .podviz .pv-cell { opacity: 0.85; }
   .podviz .pv-bar { transform: scaleX(1); }
 }
+
+/* ---------- machine parts are buttons (amendments-004, teardown borrow) ----------
+   The part doing the work opens up: hover/focus light the part; visible face
+   stays text-free (aria-labels only). Click still works while .stage-paused. */
+.podviz .pv-part { cursor: pointer; outline-offset: 3px; }
+.podviz .pv-part:hover { filter: brightness(1.18) saturate(1.15); }
+.podviz .pv-part:focus-visible { outline: 2px solid var(--color-gold); }
