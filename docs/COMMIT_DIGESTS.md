@@ -781,3 +781,25 @@ real-run.ts）；滚动透视在低端机是合成器路径（transform），RM/
 **90 秒验证**：/learn.html?v=w —— ① 慢滚到机器：机身随滚动立起 ② 鼓/
 INDEX 有明暗与接地影 ③ 机器下方「real run」条：命令、逐字输出、teal 打分
 ④ 自己跑一遍同命令比对输出。
+
+### 追记 10（中文文案 + bottom-up 内容：三维度 subagent 评审与落地）
+
+用户「中文首页描述 + learn bottom-up 内容很差」→ 三个维度 subagent：
+文案质感（Hero 8 / L0 入口 5 / one_liner 均分 6.5，4 句不及格）、产品价值
+（10秒 7 / 差异化 6 / 语感 8；MCP 钩子被埋、语义收益没场景化）、教学法
+（认知负荷 3 / 丰富度 3；「砖好没砌」）。落地：Hero v2（场景首句三种介质
+实例 +「还能经 MCP 让 Claude 直接搜本机」+ 诚实招式保留；质量证据留证明
+线）；L0 入口重写（学习理由替换归档信息）+ 读法指引行；4 句 one_liner_zh
+重写（concepts.json → bake_graph → graph.baked）；**L0 页分组重排**——四组
+（表示与比较/读数与推断/一致与完整/进程与磁盘）各带「撑起哪里」、1-15
+连续编号、出口行接回舞台，L0 排序改路径序，工位徽标降级（组头已交代）。
+
+**每行的风险**：one_liner_zh 改的是 site/content/concepts.json（源头），
+graph.baked.json 由 bake_graph 重生成——若日后从 expansion 文件重建需再次
+bake；L0 分组硬编码在 LearnApp（L0_GROUPS），数据漂移时 15 外漏卡会不可见
+（排序兜底 999 但无组渲染）——新 L0 概念必须同步 L0_GROUPS；hero v2 变长
+（~150 字），34em 宽度下 4-5 行，移动端首屏占比上升。
+**我不确定的地方**：教学法建议的「vector-space/distance-vs-angle 兼挂理解
+嵌入徽标」未动（数据层归属变更，owner 决）；真实运行条 n=1 口径未变。
+**90 秒验证**：/ 首页看新 Hero（场景句+MCP）；/learn.html?v=6 点 L0 ——
+四组编号路径 + 每组「撑起哪里」+ 出口行；点 mean-std 卡看新一句话。

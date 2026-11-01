@@ -78,12 +78,12 @@ export function Hero() {
           {zh ? (
             <>
               <strong className="font-semibold text-ink">文件不出这台 Mac。</strong>
-              你记得内容，不记得文件名。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按精确搜、录音命中到秒、截图按内容搜。上传？这条代码路径不存在。
+              你记得说过什么，不记得存在哪份文件——一份没写「超时」两个字、却在讲超时的文档，一段两小时录音里的某句话，一张早找不到的报错截图。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按哈希搜、录音命中到秒、截图按画面搜，还能经 MCP 让 Claude 直接搜本机。上传？这条代码路径不存在。
             </>
           ) : (
             <>
               <strong className="font-semibold text-ink">Files never leave your Mac. </strong>
-              You remember the content, not the filename. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers verbatim, audio to the second, screenshots by content. Uploads? That code path does not exist.
+              You remember what you said, not which file it lives in — a document that never says “timeout” but is all about timeouts, one sentence inside a two-hour recording, a screenshot of an error you can’t find again. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers by hash, audio to the second, screenshots by what’s in them — and through MCP, Claude can search your machine directly. Uploads? That code path does not exist.
             </>
           )}
         </p>

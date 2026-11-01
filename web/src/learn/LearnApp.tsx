@@ -21,6 +21,16 @@ import {
 import { IconSearch, IconClose } from "../components/Icons";
 
 type Ok = Extract<LearnData, { ok: true }>;
+
+/* bottom-up path (pedagogy review): four natural groups, reading order,
+   and what each group holds up above — rendered as the L0 entry */
+const L0_GROUPS: Array<{ id: string; zh: string; en: string; ids: string[]; serves_zh: string; serves_en: string }> = [
+  { id: "repr", zh: "表示与比较", en: "Representation & comparison", ids: ["vector-space", "distance-vs-angle", "inverted-index"], serves_zh: "撑起检索求证：嵌入向量、相似度、关键词查找的底层词汇全在这三张里。", serves_en: "Holds up the search station: the vocabulary of embeddings, similarity and keyword lookup lives in these three." },
+  { id: "stats", zh: "读数与推断", en: "Readings & inference", ids: ["mean-std", "percentile", "significance-basics"], serves_zh: "撑起质检线：每一次 gate 判断——阈值、基线对比、holdout 差异——都是在这三种读数上做的裁决。", serves_en: "Holds up the QA line: every gate verdict — thresholds, baselines, holdout deltas — is a ruling on these three readings." },
+  { id: "integrity", zh: "一致与完整", en: "Consistency & integrity", ids: ["hash-function", "unicode", "fixed-point", "transaction"], serves_zh: "撑起身份裁决与走盘：同一份东西不因路径、编码、浮点抖动被认成两份；落库原子安全。", serves_en: "Holds up identity and the walk: the same thing never becomes two — and the index lands atomically." },
+  { id: "system", zh: "进程与磁盘", en: "Processes & disk", ids: ["process-pipe", "file-descriptor", "sigpipe-signals", "file-metadata", "race-condition"], serves_zh: "撑起双常驻进程与走盘可靠性：两个进程怎么说话、怎么认盘上的文件、一方挂掉或并发写时会发生什么。", serves_en: "Holds up the two resident processes and walk reliability: how processes talk, how files are recognized, what happens on death or concurrent writes." },
+];
+const L0_ORDER: string[] = L0_GROUPS.flatMap((g) => g.ids);
 type View =
   | { kind: "stage" }
   | { kind: "station"; id: StationId }
@@ -240,8 +250,8 @@ export function LearnApp({ data }: { data: Ok }) {
       list.sort((a, b) => Number(b.keystone) - Number(a.keystone) || b.layer - a.layer || a.id.localeCompare(b.id));
     } else if (view.kind === "l0") {
       list = graph.nodes.filter((n) => n.layer === 0);
-      const order = (c: string) => STATIONS.findIndex((s) => s.id === stationOf(c));
-      list.sort((a, b) => order(a.cluster) - order(b.cluster) || a.id.localeCompare(b.id));
+      const pos = (id: string) => { const i = L0_ORDER.indexOf(id); return i === -1 ? 999 : i; };
+      list.sort((a, b) => pos(a.id) - pos(b.id) || a.id.localeCompare(b.id));
     } else {
       list = [];
     }
@@ -384,7 +394,7 @@ export function LearnApp({ data }: { data: Ok }) {
                 <span className="ml-3 align-middle text-[13px] text-sub">{l0Count} · {zh ? "跨工位" : "across stations"}</span>
               </h1>
               <p className="mt-1 max-w-[34em] text-[14px] text-ink2">
-                {zh ? "机器底下的地基：每张卡标注它属于哪个工位。" : "The ground under the machine: each card carries its home station."}
+                {zh ? "往上每一层都默认你读过这层：每张卡一句话，讲清一个绕不开的底层概念。" : "Every layer above assumes you\u2019ve read this one: one sentence per card — a foundation you can\u2019t skip."}
               </p>
             </div>
           )}
@@ -462,25 +472,48 @@ export function LearnApp({ data }: { data: Ok }) {
         ) : (
           /* keyed by mode: l0 ↔ search remounts the list instead of projecting
              cards through a layout change (B4) */
+          view.kind === "l0" ? (
+            /* bottom-up entry (pedagogy review): four groups, numbered path,
+               each group says what it holds up above */
+            <div className="space-y-10">
+              {L0_GROUPS.map((g) => {
+                const cards = g.ids
+                  .map((id) => byId.get(id))
+                  .filter((c): c is Concept => !!c);
+                return (
+                  <section key={g.id}>
+                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                      <h2 className="font-display text-2xl text-ink">{pick(lang, g.zh, g.en)}</h2>
+                      <span className="font-mono text-[13px] text-sub">{g.ids.length}</span>
+                    </div>
+                    <p className="mt-1 max-w-[62ch] text-[14px] text-ink2">{pick(lang, g.serves_zh, g.serves_en)}</p>
+                    <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                      {cards.map((c) => (
+                        <div key={c.id}>
+                          <p className="mb-1 font-mono text-[13px] text-sub">
+                            {zh ? `第 ${L0_ORDER.indexOf(c.id) + 1} 张` : `no. ${L0_ORDER.indexOf(c.id) + 1}`}
+                          </p>
+                          <ConceptCard
+                            c={c}
+                            cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
+                            lang={lang}
+                            visited={visited.has(c.id)}
+                            dimmed={openedId === c.id}
+                            onOpen={handleOpen}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                );
+              })}
+              <p className="text-[14px] text-sub">
+                {zh ? `这 ${l0Count} 张读完，检索求证和走盘两条线从哪头往上走都行。` : `Read these ${l0Count} and both lines upward — search and the walk — open from either end.`}
+              </p>
+            </div>
+          ) : (
           <div key={gridModeKey} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((c) => {
-              const card = (
-                <ConceptCard
-                  c={c}
-                  cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
-                  lang={lang}
-                  visited={visited.has(c.id)}
-                  dimmed={openedId === c.id}
-                  onOpen={handleOpen}
-                />
-              );
-              if (view.kind === "l0") {
-                return (
-                  <div key={c.id} className={c === filtered[0] && filtered[0].keystone ? "lg:col-span-2" : undefined}>
-                    {card}
-                  </div>
-                );
-              }
               const st = stationMeta(stationOf(c.cluster));
               return (
                 <div key={c.id}>
@@ -488,11 +521,19 @@ export function LearnApp({ data }: { data: Ok }) {
                     <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: clusterColor(tokenOf.get(c.cluster) ?? "A") }} />
                     {pick(lang, st.label_zh, st.label_en)} · {layerBadge(c.layer, lang)}
                   </p>
-                  {card}
+                  <ConceptCard
+                    c={c}
+                    cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
+                    lang={lang}
+                    visited={visited.has(c.id)}
+                    dimmed={openedId === c.id}
+                    onOpen={handleOpen}
+                  />
                 </div>
               );
             })}
           </div>
+          )
         )}
       </main>
 
