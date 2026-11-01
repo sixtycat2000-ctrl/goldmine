@@ -430,3 +430,6 @@ body::after {
 /* the machine invites touching: region hover lights its name */
 .machine [data-station] { cursor: pointer; }
 .machine [data-station]:hover .machine-name tspan:first-of-type { fill: var(--color-gold); }
+
+/* real-run strip (amendments-006 R1): verbatim program output as substance */
+.real-run { border: 1px solid var(--color-line); }

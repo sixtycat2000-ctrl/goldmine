@@ -15,12 +15,13 @@
  * beyond region names/counts and the terminus caption (E1/V2).
  */
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import { pick, type Lang } from "../lib/lang";
 import { STATIONS, stationMeta, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
 import { SearchDemo } from "./station-visuals";
 import { MachineSVG, BELT_MID, REGION_DESC } from "./machine-drawing";
+import { REAL_RUN_META, REAL_RUN_LINES } from "./real-run";
 
 export type StageProps = {
   lang: Lang;
@@ -94,6 +95,11 @@ export function Stage(props: StageProps) {
   const [tourStep, setTourStep] = useState(0);
   const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
   const running = inView && tabVisible;
+  /* signature move (amendments-006 R3): the chassis sits up as it enters the view */
+  const tiltRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: tiltRef, offset: ["start end", "start 0.35"] });
+  const tiltRaw = useTransform(scrollYProgress, [0, 1], [6, 0]);
+  const tilt = useSpring(tiltRaw, { stiffness: 120, damping: 26 });
 
   /* one timebase, IO-gated + tab-gated */
   useEffect(() => {
@@ -226,10 +232,11 @@ export function Stage(props: StageProps) {
 
       {/* ---------- the machine (desktop, one integrated drawing) ---------- */}
       <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto hidden max-w-6xl px-5 lg:block">
-        <div
+        <div ref={tiltRef} style={{ perspective: 1400 }}>
+        <motion.div
           ref={machineRef}
           className={`machine relative rounded-2xl bg-bg1/40 p-4 pb-2 ${tourOn ? "touring" : ""}`}
-          style={{ contain: "layout" }}
+          style={{ contain: "layout", rotateX: reduced ? 0 : tilt, transformOrigin: "top center", transformPerspective: 1400 }}
           onClick={() => {
             if (isolated) onCloseIsolate();
           }}
@@ -294,7 +301,10 @@ export function Stage(props: StageProps) {
           </div>
 
           <MachineMeta lang={lang} />
+        </motion.div>
         </div>
+
+        <RealRunStrip lang={lang} />
 
         <QARuler lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
       </section>
@@ -422,6 +432,38 @@ function QARuler({
           <span className="font-display text-xl text-ink">{SUITE.bytesUploaded} B</span>
           <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "上传 · 无此代码路径" : "uploaded · no such path"}</span>
         </p>
+      </div>
+    </div>
+  );
+}
+
+/* amendments-006 R1: the machine, really running — verbatim CLI output from
+   the repo's own frozen eval library (read-only); provenance in real-run.ts */
+function RealRunStrip({ lang }: { lang: Lang }) {
+  const [l0, l1, l2] = REAL_RUN_LINES;
+  const parts = l1.split(/(score \S+|z \S+|cov \S+)/g).filter(Boolean);
+  return (
+    <div className="real-run mt-3 rounded-xl bg-bg0/70 p-4">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <p className="font-mono text-[14px] text-ink">
+          <span className="text-gold" aria-hidden="true">▌</span> {pick(lang, REAL_RUN_META.note_zh, REAL_RUN_META.note_en)}
+        </p>
+        <p className="font-mono text-[13px] text-sub" title={lang === "zh" ? "本页数字来自这条真实命令" : "the numbers on this page come from this real command"}>
+          {REAL_RUN_META.command}
+        </p>
+      </div>
+      <div className="mt-2 space-y-0.5 font-mono text-[13.5px] leading-relaxed">
+        <p className="text-sub">{l0}</p>
+        <p className="text-ink2">
+          {parts.map((p, i) =>
+            /^(score|z|cov)/.test(p) ? (
+              <span key={i} className="text-teal">{p}</span>
+            ) : (
+              <span key={i}>{p}</span>
+            ),
+          )}
+        </p>
+        <p className="whitespace-pre-wrap break-all text-sub">{l2}</p>
       </div>
     </div>
   );

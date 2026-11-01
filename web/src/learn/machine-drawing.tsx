@@ -138,7 +138,8 @@ function Disk({ dim }: { dim: boolean }) {
   const stroke = dim ? LINE : INK2;
   return (
     <g>
-      <path d="M18 202 v56 a42 13 0 0 0 84 0 v-56" fill="rgba(255,255,255,0.05)" stroke={stroke} strokeWidth="1.6" />
+      <ellipse cx="60" cy="276" rx="52" ry="8" fill="url(#g-shadow)" opacity="0.7" />
+      <path d="M18 202 v56 a42 13 0 0 0 84 0 v-56" fill="url(#g-drum)" stroke={stroke} strokeWidth="1.6" />
       <ellipse cx="60" cy="202" rx="42" ry="13" fill="rgba(255,255,255,0.07)" stroke={stroke} strokeWidth="1.6" />
       <path d="M28 197 a32 9 0 0 1 52 -4" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1.4" />
       <circle cx="60" cy="202" r="3.5" fill={stroke} />
@@ -198,7 +199,7 @@ export function MachineSVG({
         <Part id="fingerprint-gate" zh="指纹门" en="fingerprint gate" lang={lang} onPart={onOpenPart}>
           {[300, 396].map((gx) => (
             <g key={gx}>
-              <rect x={gx - 9} y="140" width="18" height="190" rx="4" fill="rgba(255,255,255,0.05)" stroke={INK2} strokeWidth="1.4" />
+              <rect x={gx - 9} y="140" width="18" height="190" rx="4" fill="url(#g-post)" stroke={INK2} strokeWidth="1.4" />
               {[168, 202, 262, 296].map((y, i) => (
                 <rect key={y} className="pv-layer" style={{ animationDelay: `${2.7 + i * 0.35}s` }} x={gx - 6} y={y - 5} width="12" height="10" rx="2" fill="none" stroke={beat === 1 ? "rgba(255,255,255,0.85)" : INK2} strokeWidth="1.4" />
               ))}
@@ -301,8 +302,32 @@ export function MachineSVG({
         )}
       </desc>
 
-      {/* one chassis, seams instead of gutters */}
-      <rect x="8" y="64" width="1024" height="400" rx="20" fill="rgba(255,255,255,0.028)" stroke={LINE} strokeWidth="1" />
+      {/* one chassis, seams instead of gutters; gradients + ground shadows for depth */}
+      <defs>
+        <linearGradient id="g-drum" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="rgba(255,255,255,0.11)" />
+          <stop offset="0.55" stopColor="rgba(255,255,255,0.05)" />
+          <stop offset="1" stopColor="rgba(255,255,255,0.02)" />
+        </linearGradient>
+        <linearGradient id="g-index" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="rgba(255,255,255,0.085)" />
+          <stop offset="1" stopColor="rgba(255,255,255,0.03)" />
+        </linearGradient>
+        <linearGradient id="g-post" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="rgba(255,255,255,0.09)" />
+          <stop offset="0.5" stopColor="rgba(255,255,255,0.04)" />
+          <stop offset="1" stopColor="rgba(255,255,255,0.08)" />
+        </linearGradient>
+        <radialGradient id="g-shadow" cx="0.5" cy="0.5" r="0.5">
+          <stop offset="0" stopColor="rgba(0,0,0,0.5)" />
+          <stop offset="1" stopColor="rgba(0,0,0,0)" />
+        </radialGradient>
+      </defs>
+      <rect x="8" y="64" width="1024" height="400" rx="20" fill="rgba(255,255,255,0.03)" stroke={LINE} strokeWidth="1" />
+      <line x1="22" y1="66" x2="1018" y2="66" stroke="rgba(255,255,255,0.07)" strokeWidth="1" />
+      {/* stepped floor */}
+      <rect x="10" y="396" width="1020" height="68" rx="0" fill="rgba(255,255,255,0.012)" />
+      <rect x="10" y="430" width="1020" height="34" rx="0" fill="rgba(255,255,255,0.014)" />
       {[242, 470, 698, 884].map((x) => (
         <line key={x} x1={x} y1="84" x2={x} y2="444" stroke="var(--color-line)" strokeWidth="1" opacity="0.55" />
       ))}
@@ -323,7 +348,8 @@ export function MachineSVG({
         }}
       >
         <Part id="idempotency" zh="幂等与续跑" en="idempotency and resume" lang={lang} onPart={onOpenPart}>
-          <rect x="726" y="150" width="136" height="162" rx="14" fill="rgba(255,255,255,0.055)" stroke={LINE} strokeWidth="1.8" />
+          <ellipse cx="794" cy="318" rx="78" ry="8" fill="url(#g-shadow)" opacity="0.6" />
+          <rect x="726" y="150" width="136" height="162" rx="14" fill="url(#g-index)" stroke={LINE} strokeWidth="1.8" />
         </Part>
         {[180, 205, 230, 255].map((y) => (
           <g key={y}>
