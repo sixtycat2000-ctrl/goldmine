@@ -9,7 +9,6 @@ import { useLang, pick } from "../lib/lang";
 import {
   STATIONS,
   clusterColor,
-  layerBadge,
   loadVisited,
   saveVisited,
   stationMeta,
@@ -24,11 +23,11 @@ type Ok = Extract<LearnData, { ok: true }>;
 
 /* bottom-up path (pedagogy review): four natural groups, reading order,
    and what each group holds up above — rendered as the L0 entry */
-const L0_GROUPS: Array<{ id: string; zh: string; en: string; ids: string[]; serves_zh: string; serves_en: string }> = [
-  { id: "repr", zh: "表示与比较", en: "Representation & comparison", ids: ["vector-space", "distance-vs-angle", "inverted-index"], serves_zh: "撑起检索求证：嵌入向量、相似度、关键词查找的底层词汇全在这三张里。", serves_en: "Holds up the search station: the vocabulary of embeddings, similarity and keyword lookup lives in these three." },
-  { id: "stats", zh: "读数与推断", en: "Readings & inference", ids: ["mean-std", "percentile", "significance-basics"], serves_zh: "撑起质检线：每一次 gate 判断——阈值、基线对比、holdout 差异——都是在这三种读数上做的裁决。", serves_en: "Holds up the QA line: every gate verdict — thresholds, baselines, holdout deltas — is a ruling on these three readings." },
-  { id: "integrity", zh: "一致与完整", en: "Consistency & integrity", ids: ["hash-function", "unicode", "fixed-point", "transaction"], serves_zh: "撑起身份裁决与走盘：同一份东西不因路径、编码、浮点抖动被认成两份；落库原子安全。", serves_en: "Holds up identity and the walk: the same thing never becomes two — and the index lands atomically." },
-  { id: "system", zh: "进程与磁盘", en: "Processes & disk", ids: ["process-pipe", "file-descriptor", "sigpipe-signals", "file-metadata", "race-condition"], serves_zh: "撑起双常驻进程与走盘可靠性：两个进程怎么说话、怎么认盘上的文件、一方挂掉或并发写时会发生什么。", serves_en: "Holds up the two resident processes and walk reliability: how processes talk, how files are recognized, what happens on death or concurrent writes." },
+const L0_GROUPS: Array<{ id: string; zh: string; en: string; ids: string[] }> = [
+  { id: "repr", zh: "表示与比较", en: "Representation & comparison", ids: ["vector-space", "distance-vs-angle", "inverted-index"] },
+  { id: "stats", zh: "读数与推断", en: "Readings & inference", ids: ["mean-std", "percentile", "significance-basics"] },
+  { id: "integrity", zh: "一致与完整", en: "Consistency & integrity", ids: ["hash-function", "unicode", "fixed-point", "transaction"] },
+  { id: "system", zh: "进程与磁盘", en: "Processes & disk", ids: ["process-pipe", "file-descriptor", "sigpipe-signals", "file-metadata", "race-condition"] },
 ];
 const L0_ORDER: string[] = L0_GROUPS.flatMap((g) => g.ids);
 type View =
@@ -158,7 +157,6 @@ export function LearnApp({ data }: { data: Ok }) {
   }, [graph.nodes, visited]);
   const l0Count = useMemo(() => graph.nodes.filter((n) => n.layer === 0).length, [graph.nodes]);
   const total = graph.nodes.length;
-  const totalVisited = useMemo(() => graph.nodes.filter((n) => n.id && visited.has(n.id)).length, [graph.nodes, visited]);
 
   /* ---------------- open / close: isolate + tray (machine-v2) ---------------- */
 
@@ -316,7 +314,7 @@ export function LearnApp({ data }: { data: Ok }) {
           </button>
         </div>
         <div className="mt-4">
-          <StationTrayHeader lang={lang} id={view.id} count={filtered.length} onOpen={openStation} />
+          <StationTrayHeader lang={lang} id={view.id} onOpen={openStation} />
         </div>
         {subClusters.length > 0 && (
           <div className="no-scrollbar hscroll mt-4 flex items-center gap-2 overflow-x-auto pb-1" role="group" aria-label={zh ? "按子簇筛选" : "filter by sub-cluster"}>
@@ -368,8 +366,6 @@ export function LearnApp({ data }: { data: Ok }) {
           counts={counts}
           visitedCounts={visitedCounts}
           l0Count={l0Count}
-          total={total}
-          totalVisited={totalVisited}
           isolated={view.kind === "station" ? view.id : null}
           onOpen={openStation}
           onCloseIsolate={backToStage}
@@ -391,20 +387,13 @@ export function LearnApp({ data }: { data: Ok }) {
             <div className="mt-4">
               <h1 className="font-display text-display leading-[1.1] text-ink">
                 {zh ? "基础层 L0" : "Layer L0"}
-                <span className="ml-3 align-middle text-[13px] text-sub">{l0Count} · {zh ? "跨工位" : "across stations"}</span>
               </h1>
-              <p className="mt-1 max-w-[34em] text-[14px] text-ink2">
-                {zh ? "往上每一层都默认你读过这层：每张卡一句话，讲清一个绕不开的底层概念。" : "Every layer above assumes you\u2019ve read this one: one sentence per card — a foundation you can\u2019t skip."}
-              </p>
             </div>
           )}
           {view.kind === "search" && (
             <div className="mt-4">
               <h1 className="font-display text-display leading-[1.1] text-ink">
                 {zh ? "搜索结果" : "Search"}
-                <span className="ml-3 align-middle text-[13px] text-sub">
-                  {filtered.length} / {total}
-                </span>
               </h1>
             </div>
           )}
@@ -422,7 +411,7 @@ export function LearnApp({ data }: { data: Ok }) {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder={zh ? "搜概念、别名、簇……（按 / 聚焦）" : "Search concepts, aliases, clusters… ( / to focus )"}
+                placeholder={zh ? "搜概念、别名、簇……" : "Search concepts, aliases, clusters…"}
                 aria-label={zh ? "搜索概念" : "Search concepts"}
                 className="w-full rounded-full border border-line bg-bg1/80 py-2 pr-9 pl-9 font-mono text-[13px] text-ink placeholder:text-sub focus:border-gold/60"
               />
@@ -438,8 +427,8 @@ export function LearnApp({ data }: { data: Ok }) {
               )}
             </div>
             {view.kind !== "search" && (
-              <p className="text-[14px] text-sub" aria-live="polite">
-                <span className="sr-only">{zh ? "当前在列：" : "concepts shown: "}</span>
+              <p className="sr-only" aria-live="polite">
+                {zh ? "当前在列：" : "concepts shown: "}
                 {view.kind === "stage" ? total : `${filtered.length} / ${total}`}
               </p>
             )}
@@ -448,33 +437,26 @@ export function LearnApp({ data }: { data: Ok }) {
       </div>
 
       <main id="grid" className="mx-auto max-w-6xl px-5 py-10">
-        {view.kind === "stage" ? (
-          <p className="hidden text-[14px] text-sub lg:block">
-            {zh ? "点机器上的区域拆开工位；点零件直达概念；点 INDEX 剖开索引。" : "Click a region to isolate it; click a part for its concept; click the index to cut it open."}
-          </p>
-        ) : view.kind === "station" ? null : filtered.length === 0 ? (
+        {view.kind === "stage" || view.kind === "station" ? null : filtered.length === 0 ? (
           <div className="rounded-2xl border border-line bg-bg1/60 p-12 text-center">
             <p className="font-display text-2xl text-ink">{zh ? "这个组合没有概念" : "No concepts match this combination"}</p>
-            <p className="mt-2 text-[13px] text-sub">
-              {zh ? "换一个词，或者" : "Try another term, or "}
-              <button
-                type="button"
-                className="text-gold underline underline-offset-4"
-                onClick={() => {
-                  setQuery("");
-                  setCluster("all");
-                }}
-              >
-                {zh ? "清空筛选" : "clear filters"}
-              </button>
-            </p>
+            <button
+              type="button"
+              className="mt-4 rounded-full border border-line px-4 py-1.5 text-[14px] text-gold transition-colors hover:border-gold/60"
+              onClick={() => {
+                setQuery("");
+                setCluster("all");
+              }}
+            >
+              {zh ? "清空筛选" : "clear filters"}
+            </button>
           </div>
         ) : (
           /* keyed by mode: l0 ↔ search remounts the list instead of projecting
              cards through a layout change (B4) */
           view.kind === "l0" ? (
-            /* bottom-up entry (pedagogy review): four groups, numbered path,
-               each group says what it holds up above */
+            /* bottom-up entry: four groups in path order (learn-content-001);
+               learn-copy-cut-001 strips the rationale prose — the cards carry it */
             <div className="space-y-10">
               {L0_GROUPS.map((g) => {
                 const cards = g.ids
@@ -482,56 +464,37 @@ export function LearnApp({ data }: { data: Ok }) {
                   .filter((c): c is Concept => !!c);
                 return (
                   <section key={g.id}>
-                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                      <h2 className="font-display text-2xl text-ink">{pick(lang, g.zh, g.en)}</h2>
-                      <span className="font-mono text-[13px] text-sub">{g.ids.length}</span>
-                    </div>
-                    <p className="mt-1 max-w-[62ch] text-[14px] text-ink2">{pick(lang, g.serves_zh, g.serves_en)}</p>
+                    <h2 className="font-display text-2xl text-ink">{pick(lang, g.zh, g.en)}</h2>
                     <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                       {cards.map((c) => (
-                        <div key={c.id}>
-                          <p className="mb-1 font-mono text-[13px] text-sub">
-                            {zh ? `第 ${L0_ORDER.indexOf(c.id) + 1} 张` : `no. ${L0_ORDER.indexOf(c.id) + 1}`}
-                          </p>
-                          <ConceptCard
-                            c={c}
-                            cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
-                            lang={lang}
-                            visited={visited.has(c.id)}
-                            dimmed={openedId === c.id}
-                            onOpen={handleOpen}
-                          />
-                        </div>
+                        <ConceptCard
+                          key={c.id}
+                          c={c}
+                          cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
+                          lang={lang}
+                          visited={visited.has(c.id)}
+                          dimmed={openedId === c.id}
+                          onOpen={handleOpen}
+                        />
                       ))}
                     </div>
                   </section>
                 );
               })}
-              <p className="text-[14px] text-sub">
-                {zh ? `这 ${l0Count} 张读完，检索求证和走盘两条线从哪头往上走都行。` : `Read these ${l0Count} and both lines upward — search and the walk — open from either end.`}
-              </p>
             </div>
           ) : (
           <div key={gridModeKey} className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {filtered.map((c) => {
-              const st = stationMeta(stationOf(c.cluster));
-              return (
-                <div key={c.id}>
-                  <p className="mb-1 text-[14px] text-sub">
-                    <span className="mr-1 inline-block h-1.5 w-1.5 rounded-full align-middle" style={{ background: clusterColor(tokenOf.get(c.cluster) ?? "A") }} />
-                    {pick(lang, st.label_zh, st.label_en)} · {layerBadge(c.layer, lang)}
-                  </p>
-                  <ConceptCard
-                    c={c}
-                    cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
-                    lang={lang}
-                    visited={visited.has(c.id)}
-                    dimmed={openedId === c.id}
-                    onOpen={handleOpen}
-                  />
-                </div>
-              );
-            })}
+            {filtered.map((c) => (
+              <ConceptCard
+                key={c.id}
+                c={c}
+                cluster={graph.clusters.find((cl) => cl.id === c.cluster)}
+                lang={lang}
+                visited={visited.has(c.id)}
+                dimmed={openedId === c.id}
+                onOpen={handleOpen}
+              />
+            ))}
           </div>
           )
         )}

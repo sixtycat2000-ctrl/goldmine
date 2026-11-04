@@ -9,8 +9,12 @@
  * amendments-005 (visual rework): regions are seams on one filled chassis
  * (≥35% solid silhouettes, no gutters); one lane, two live movers at most;
  * gold budget = protagonist + active region + QA values + focus; red only
- * where something is refused; type floor 13px; the opened region's honest
- * semantics become readable while isolated.
+ * where something is refused; type floor 13px.
+ *
+ * learn-copy-cut-001: the visible REGION_DESC isolate paragraph is repealed
+ * (owner rule: cut helper text) — the per-region narration lives on in each
+ * schematic's <desc> for screen readers; the machine's visible face stays
+ * names/counts + terminus caption only (E1/V2).
  */
 import { motion } from "framer-motion";
 import { pick, type Lang } from "../lib/lang";
@@ -56,27 +60,6 @@ const SLIDE: Partial<Record<StationId, Partial<Record<StationId, number>>>> = {
 };
 
 const SPRING = { type: "spring", stiffness: 210, damping: 28 } as const;
-
-/* visible one-line semantics, shown only while a region is isolated
-   (the closed machine keeps them sr-only — V2 zero visible text) */
-export const REGION_DESC: Record<Exclude<StationId, "rail">, { zh: string; en: string }> = {
-  walk: {
-    zh: "文件从磁盘上带：确定性走盘、波次抽取，跳过件不上带；每件落地盖事务章——中断不剩半个文件。",
-    en: "Files leave the disk on the belt: deterministic walk, wave extraction; skipped files never board. Each arrival is stamped — an interrupt leaves no half-file.",
-  },
-  identity: {
-    zh: "两道指纹门：一件在第一层被拒（整库拒收 exit 3），一件四层全过——拒收、逐行重嵌、重抽文本、评测分母各不相同。",
-    en: "Two fingerprint gates: one refused at layer 1 (whole index refused, exit 3), one passes all four — refusal, row re-embed, re-extract, eval denominator all differ.",
-  },
-  understand: {
-    zh: "文档切块、逐块嵌入向量点阵；空心格=纯词法页不生成向量；音频有转录走文字向量。",
-    en: "Documents chunk and embed into the vector grid; hollow cells = lexical-only pages get no vector; audio with a transcript rides text vectors.",
-  },
-  search: {
-    zh: "查询只从这里进：准入、混合融合、本地重排、证据选择；隔轮零命中——exit 0 也是合法答案。",
-    en: "Queries only enter here: admission, hybrid fusion, local rerank, evidence selection; every other round is zero-hit — exit 0 is a legal answer.",
-  },
-};
 
 function Region({ id, x, w, zh, en, lang, count, visited, active, isolated, onOpen, children }: RegionProps) {
   const me = isolated === id;

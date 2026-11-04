@@ -803,3 +803,37 @@ bake；L0 分组硬编码在 LearnApp（L0_GROUPS），数据漂移时 15 外漏
 嵌入徽标」未动（数据层归属变更，owner 决）；真实运行条 n=1 口径未变。
 **90 秒验证**：/ 首页看新 Hero（场景句+MCP）；/learn.html?v=6 点 L0 ——
 四组编号路径 + 每组「撑起哪里」+ 出口行；点 mean-std 卡看新一句话。
+
+### 追记 11（learn 编辑轮：剪 tagline / helper text / 次级标签，learn-copy-cut-001）
+
+业主规约「Cut taglines, helper text and secondary labels. If a screen needs
+them to make sense, fix the layout」+「elevate UX/DX/AX without breaking
+anything」。/learn 全剪（zh/en 同步）：eyebrow×2（React+模板）、DepthRail
+（组件+3 处）、裸进度数/站点计数/QA 旁计数、C7「本机运行 · 无网络传输」、
+三处操作提示行、隔离态 REGION_DESC 可见段（SVG <desc> 保 SR 叙述）、托盘
+role 行+两条工位脚注+`id × count`、移动端示意免责复本与提示行；卡片剪
+≈min/副语言标题/打开→；抽屉剪 min/面包屑/比喻签/目录标签与 01· 编号/
+深入下探/相关概念组标签/页脚标语；L0 剪引言/撑起行/序号/收尾；空态剪散文
+留按钮；搜索卡剪「站点 · 层」前缀；placeholder 剪「（按 / 聚焦）」；工具栏
+计数改纯 sr-only aria-live。DX：删死导出 Walk/Identity/Understand Demo、
+DemoTag/DemoFootnote、REGION_DESC、.machine-desc。首页静态壳对齐 Hero v2
+（修「按精确搜/按内容搜」，补 MCP 句）。保留不动：机器 SVG 本体与终点字幕
+（E1/V2）、QA 三磁贴及最短注解（G7 结构要求）、真实运行条、全部 aria-label、
+no-JS 145 卡降级目录、页脚「0 bytes 离开你的机器」。
+
+**每行的风险**：C7 是 amendments-005 冻结不变量，本轮废止（冲突原文：
+Stage.tsx 冻结注释「locality caption visible (C7)」vs 新规约「剪 tagline」
+——本地性主张现由 QA 磁贴「0 B 上传 · 无此代码路径」+页脚双处承载）；
+L0 学习理由文案是 learn-content-001 昨日批准件，本轮按新规约剪除（冲突
+原文：learn-content-001 判词「砖是好的，没砌」——撑起行正是砌浆；学习理由
+留 git 历史）；DepthRail 剪除后「舞台→工位→概念→详解」深度模型不再有显式
+文字陈述（布局承担：返回按钮/托盘头/抽屉目录各就各位）。web/learn.html 为
+bake 产物，本轮随库 a84988d 遗留的 1 行 gm-graph 待烧行。
+**我不确定的地方**：抽屉「比喻」盒去词签后仅靠盒样式区分（border+bg2），
+若 owner 觉得歧义可单独恢复两字签；移动端地铁行剪计数后「该站有几题/读了
+几题」只能进站看（信息可发现性 vs 标签噪音的取舍，owner 可翻）。
+**90 秒验证**：cd web && npm run preview -- --port 4173 → /learn.html?v=c
+① 首屏：只有大标题 + L0 按钮，机器本体无文字变化 ② 点理解嵌入：无灰色
+说明段，右下返回按钮 ③ 质检线三磁贴注解原样 ④ 点任一卡：抽屉头部只剩
+簇 chip，目录无编号 ⑤ / 首页壳与 React Hero 文案一致（哈希搜/画面搜/
+MCP）。门禁：typecheck 0 错；G7 PASS；G1 PASS（145/145）。

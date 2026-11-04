@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { memo } from "react";
-import { clusterColor, layerBadge, layerDepth, readingMinutes, type Concept, type ClusterMeta } from "../lib/learn-data";
+import { clusterColor, layerBadge, layerDepth, type Concept, type ClusterMeta } from "../lib/learn-data";
 import { pick, type Lang } from "../lib/lang";
 import { IconYes } from "../components/Icons";
 
@@ -16,7 +16,6 @@ type Props = {
 
 function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
   const title = pick(lang, c.title_zh, c.title_en);
-  const otherTitle = pick(lang, c.title_en, c.title_zh);
   const one = pick(lang, c.one_zh, c.one_en);
   const color = cluster ? clusterColor(cluster.token) : "var(--color-gold)";
 
@@ -55,29 +54,16 @@ function CardImpl({ c, cluster, lang, visited, dimmed, onOpen }: Props) {
           <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
           {cluster ? `${cluster.token} · ${pick(lang, cluster.label_zh, cluster.label_en)}` : c.cluster}
         </span>
-        <span className="text-[14px] text-sub">
-          {visited ? (
-            <>
-              <IconYes size={12} className="text-gold" label={lang === "zh" ? "已读" : "read"} />
-            </>
-          ) : (
-            `≈${readingMinutes(c, lang)} min`
-          )}
-        </span>
+        {visited && (
+          <span className="text-[14px] text-sub">
+            <IconYes size={12} className="text-gold" label={lang === "zh" ? "已读" : "read"} />
+          </span>
+        )}
       </div>
-      <h2 className="mt-3 font-display text-[1.35rem] leading-snug text-ink">
-        {title}
-        <span className="mt-0.5 block text-[13px] text-sub">{otherTitle}</span>
-      </h2>
+      <h2 className="mt-3 font-display text-[1.35rem] leading-snug text-ink">{title}</h2>
       <p className="mt-2 line-clamp-3 text-[14px] leading-relaxed text-ink2">{one}</p>
-      <div className="mt-5 flex items-center justify-between">
+      <div className="mt-5">
         <span className="text-[14px] text-sub">{layerBadge(c.layer, lang)}</span>
-        <span
-          className="text-[14px] text-sub opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100"
-          aria-hidden="true"
-        >
-          {lang === "zh" ? "打开 →" : "open →"}
-        </span>
       </div>
     </div>
   );

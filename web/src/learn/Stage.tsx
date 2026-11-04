@@ -11,8 +11,14 @@
  * Frozen invariants: ONE timebase (beat × BEAT_MS) IO-gated and now also
  * tab-visibility-gated (amendments-004 T3); files terminate at the index and
  * queries enter at search only (A3); QA values keep their shortest notes
- * (C3); locality caption visible (C7); zero visible text inside the machine
- * beyond region names/counts and the terminus caption (E1/V2).
+ * (C3); zero visible text inside the machine beyond region names/counts and
+ * the terminus caption (E1/V2).
+ *
+ * learn-copy-cut-001 (owner rule: cut taglines, helper text, secondary
+ * labels) repeals C7: the locality claim lives in the QA tile (0 B · no such
+ * code path, G7-required) and the site footer. The visible isolate
+ * REGION_DESC paragraph is repealed too — the SVG <desc> keeps the narration
+ * for screen readers.
  */
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
@@ -20,7 +26,7 @@ import { pick, type Lang } from "../lib/lang";
 import { STATIONS, stationMeta, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
 import { SearchDemo } from "./station-visuals";
-import { MachineSVG, BELT_MID, REGION_DESC } from "./machine-drawing";
+import { MachineSVG, BELT_MID } from "./machine-drawing";
 import { REAL_RUN_META, REAL_RUN_LINES } from "./real-run";
 
 export type StageProps = {
@@ -28,8 +34,6 @@ export type StageProps = {
   counts: Record<StationId, number>;
   visitedCounts: Record<StationId, number>;
   l0Count: number;
-  total: number;
-  totalVisited: number;
   /* isolate state lives in LearnApp so #stage=<id> deep links land here (G9) */
   isolated: StationId | null;
   onOpen: (id: StationId | "l0") => void;
@@ -43,29 +47,6 @@ const BEATS = 5;
 const BEAT_MS = 1400;
 /* protagonist lane positions per beat (machine v2 region geometry) */
 const BELT_LEFT = ["9%", "31%", "53%", "70%"];
-
-/* the four depths of /learn — names only, no numbers (A8) */
-export function DepthRail({ lang, at }: { lang: Lang; at: "stage" | "station" | "concept" | "lesson" }) {
-  const zh = lang === "zh";
-  const levels: Array<[string, typeof at]> = [
-    [zh ? "舞台" : "stage", "stage"],
-    [zh ? "工位" : "station", "station"],
-    [zh ? "概念" : "concept", "concept"],
-    [zh ? "详解" : "lesson", "lesson"],
-  ];
-  const idx = levels.findIndex(([, k]) => k === at);
-  return (
-    <p className="flex items-center gap-2 font-mono text-[14px] text-sub" aria-label={zh ? "下钻层级" : "drill depth"}
-      title={zh ? "下钻层级：你现在在哪一层" : "drill depth: where you are"}>
-      {levels.map(([label, k], i) => (
-        <span key={k} className="flex items-center gap-2">
-          {i > 0 && <span aria-hidden="true">→</span>}
-          <span className={k === at ? "text-gold" : i < idx ? "text-ink2" : ""}>{label}</span>
-        </span>
-      ))}
-    </p>
-  );
-}
 
 /* tour script: one query's life, as teardown operator moves — targets are
    real machine parts; the cursor only walks, the loops stay honest */
@@ -81,7 +62,7 @@ const TOUR_FIRST_DELAY = 6000;
 const TOUR_IDLE_RETURN = 25000;
 
 export function Stage(props: StageProps) {
-  const { lang, counts, visitedCounts, l0Count, total, totalVisited, isolated, onOpen, onCloseIsolate, onOpenPart, tray } = props;
+  const { lang, counts, visitedCounts, l0Count, isolated, onOpen, onCloseIsolate, onOpenPart, tray } = props;
   const zh = lang === "zh";
   const reduced = useReducedMotion();
   const hostRef = useRef<HTMLDivElement>(null);
@@ -207,17 +188,12 @@ export function Stage(props: StageProps) {
 
   return (
     <div ref={hostRef} className={`relative ${running ? "" : "stage-paused"}`}>
-      {/* machine caption — slim (A1 + E4) */}
+      {/* machine caption — the heading names it; the L0 button is the only control */}
       <header className="mx-auto max-w-6xl px-5 pt-24 pb-6">
-        <p className="kicker">LEARN · THE MACHINE</p>
-        <h1 className="mt-3 max-w-[16em] font-display text-hero leading-[1.06] text-ink">
+        <h1 className="max-w-[16em] font-display text-hero leading-[1.06] text-ink">
           {zh ? "一台可以拆开看的机器" : "A machine you can open up"}
         </h1>
-        <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <DepthRail lang={lang} at={isolated ? "station" : "stage"} />
-          <p className="font-mono text-[14px] text-sub" title={zh ? "已读概念 / 全部概念" : "concepts read / total"}>
-            <span className="text-gold">{totalVisited}</span> / {total}
-          </p>
+        <div className="mt-4">
           <button
             type="button"
             onClick={() => onOpen("l0")}
@@ -225,9 +201,7 @@ export function Stage(props: StageProps) {
           >
             L0 · {l0Count} →
           </button>
-          <p className="font-mono text-[14px] text-sub">{zh ? "本机运行 · 无网络传输" : "runs locally · no network"}</p>
         </div>
-        <p className="sr-only">{zh ? "舞台动画为机制示意演示，处理全部发生在本机" : "the stage animation is a stylized mechanism demo; all processing happens locally"}</p>
       </header>
 
       {/* ---------- the machine (desktop, one integrated drawing) ---------- */}
@@ -241,10 +215,7 @@ export function Stage(props: StageProps) {
             if (isolated) onCloseIsolate();
           }}
         >
-          <div className="flex items-center justify-between gap-3">
-            <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">
-              {zh ? "起点 · L1 指纹门" : "start · L1 fingerprint gate"}
-            </p>
+          <div className="flex items-center justify-end gap-3">
             <button
               type="button"
               data-tour-btn
@@ -282,14 +253,7 @@ export function Stage(props: StageProps) {
           </div>
 
           {isolated && isolated !== "rail" && (
-            <p className="machine-desc">{pick(lang, REGION_DESC[isolated].zh, REGION_DESC[isolated].en)}</p>
-          )}
-
-          <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 px-1 pb-2">
-            <p className="font-mono text-[14px] text-sub">
-              {zh ? "点区域拆开 · 点零件直达概念 · 点 INDEX 剖开索引" : "Click a region to isolate it · a part for its concept · the index to cut it open"}
-            </p>
-            {isolated && isolated !== "rail" && (
+            <div className="flex justify-end px-1 pb-2">
               <button
                 type="button"
                 onClick={onCloseIsolate}
@@ -297,8 +261,8 @@ export function Stage(props: StageProps) {
               >
                 {zh ? "× 返回整台机器" : "× back to the machine"}
               </button>
-            )}
-          </div>
+            </div>
+          )}
 
           <MachineMeta lang={lang} />
         </motion.div>
@@ -306,40 +270,32 @@ export function Stage(props: StageProps) {
 
         <RealRunStrip lang={lang} />
 
-        <QARuler lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
+        <QARuler lang={lang} onOpen={onOpen} />
       </section>
 
       {/* ---------- mobile: vertical subway + teaching demos + tray ---------- */}
       <section aria-label={zh ? "管线机器" : "the machine"} className="mx-auto max-w-6xl px-5 lg:hidden">
         <div className="rounded-2xl bg-bg1/40 p-5">
-          <p className="font-mono text-[14px] tracking-[0.02em] text-ink2">{zh ? "起点 · L1 指纹门" : "start · L1 gate"}</p>
-          <ul className="mt-3 space-y-1 border-l border-line-strong pl-4">
+          <ul className="space-y-1 border-l border-line-strong pl-4">
             {STATIONS.filter((s) => s.id !== "rail").map((s) => (
               <li key={s.id} className="relative">
                 <span aria-hidden="true" className="absolute top-1/2 -left-[21px] h-2.5 w-2.5 -translate-y-1/2 rounded-full border border-line-strong bg-bg1" />
                 <button
                   type="button"
                   onClick={() => onOpen(s.id)}
-                  className="flex w-full items-baseline justify-between gap-3 rounded-lg px-2 py-2 text-left transition-colors hover:bg-bg2/60"
+                  className="flex w-full items-baseline rounded-lg px-2 py-2 text-left transition-colors hover:bg-bg2/60"
                 >
                   <span className="font-display text-xl text-ink">{pick(lang, s.label_zh, s.label_en)}</span>
-                  <span className="font-mono text-[13px] text-sub">
-                    {counts[s.id]} · <span className="text-gold">{visitedCounts[s.id]}</span> →
-                  </span>
                 </button>
               </li>
             ))}
           </ul>
-          <p className="mt-3 font-mono text-[14px] text-sub">{zh ? "示意：固定示例数据，非实时运行" : "demo: fixed sample data, not a live run"}</p>
         </div>
-        <p className="mt-2 px-1 font-mono text-[14px] text-sub lg:hidden">
-          {zh ? "点站点行拆开机制，点卡片直达概念。" : "Tap a station to open it; tap a card for its concept."}
-        </p>
         <div className="mt-3 rounded-2xl bg-bg1/40 p-3">
           <SearchDemo beat={liveBeat} cycle={liveCycle} lang={lang} onPart={onOpenPart} />
         </div>
         <div className="mt-3">
-          <QARuler lang={lang} count={counts.rail} read={visitedCounts.rail} onOpen={onOpen} />
+          <QARuler lang={lang} onOpen={onOpen} />
         </div>
       </section>
 
@@ -405,19 +361,14 @@ function TourCursor({ pos, on, lang }: { pos: { x: number; y: number } | null; o
 }
 
 /* QA as a ruler under the machine (values + shortest notes, C3) */
-function QARuler({
-  lang, count, read, onOpen,
-}: { lang: Lang; count: number; read: number; onOpen: (id: StationId | "l0") => void }) {
+function QARuler({ lang, onOpen }: { lang: Lang; onOpen: (id: StationId | "l0") => void }) {
   const zh = lang === "zh";
   return (
     <div className="qa-ruler mt-3 rounded-xl bg-cl-b/5">
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 pt-3">
+      <div className="flex flex-wrap items-center px-4 pt-3">
         <button type="button" onClick={() => onOpen("rail")} className="group text-left">
           <span className="font-display text-lg leading-tight text-ink group-hover:text-gold">{zh ? "质检线" : "QA Line"}</span>
         </button>
-        <p className="font-mono text-[13px] text-sub">
-          {count} · <span className="text-gold">{read}</span> →
-        </p>
       </div>
       <div className="grid grid-cols-1 gap-px overflow-hidden px-4 pb-3 pt-2 sm:grid-cols-3">
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
@@ -469,52 +420,30 @@ function RealRunStrip({ lang }: { lang: Lang }) {
   );
 }
 
-/* the station tray: role, teaching notes, pills, cards — under the machine */
-export function StationTrayHeader({ lang, id, count, onOpen }: { lang: Lang; id: StationId; count: number; onOpen: (id: StationId | "l0") => void }) {
-  const zh = lang === "zh";
+/* the station tray header: name + station pager, pills and cards live below */
+export function StationTrayHeader({ lang, id, onOpen }: { lang: Lang; id: StationId; onOpen: (id: StationId | "l0") => void }) {
   const meta = stationMeta(id);
   const order: StationId[] = ["walk", "identity", "understand", "search", "rail"];
   const i = order.indexOf(id);
   const prevId = i > 0 ? order[i - 1] : null;
   const nextId = i < order.length - 1 ? order[i + 1] : null;
   return (
-    <div>
-      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h2 className="font-display text-3xl leading-[1.1] text-ink">
-          {pick(lang, meta.label_zh, meta.label_en)}
-        </h2>
-        <span className="font-mono text-[14px] text-sub">
-          {id} × {count}
-        </span>
-      </div>
-      <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1">
-        <DepthRail lang={lang} at="station" />
-        <span className="flex items-center gap-3 font-mono text-[14px]">
-          {prevId && (
-            <button type="button" onClick={() => onOpen(prevId)} className="text-sub transition-colors hover:text-gold">
-              ‹ {pick(lang, stationMeta(prevId).label_zh, stationMeta(prevId).label_en)}
-            </button>
-          )}
-          {nextId && (
-            <button type="button" onClick={() => onOpen(nextId)} className="text-sub transition-colors hover:text-gold">
-              {pick(lang, stationMeta(nextId).label_zh, stationMeta(nextId).label_en)} ›
-            </button>
-          )}
-        </span>
-      </div>
-      <p className="mt-2 text-[14px] text-ink2" style={{ maxWidth: "52ch" }}>
-        {pick(lang, meta.role_zh, meta.role_en)}
-      </p>
-      {id === "understand" && (
-        <p className="w-full font-mono text-[12px] leading-relaxed text-sub" style={{ maxWidth: "52ch" }}>
-          {zh ? "有转录的音频走文字向量；无转录才走原始音频边车（逐行标记 asr_status）" : "audio with a transcript rides text vectors; raw-audio sidecar only without one (asr_status per row)"}
-        </p>
-      )}
-      {id === "walk" && (
-        <p className="w-full font-mono text-[12px] leading-relaxed text-sub" style={{ maxWidth: "52ch" }}>
-          {zh ? "walk 门：iCloud dataless 跳过 · inode 移动检测" : "walk gates: iCloud dataless skip · inode move detection"}
-        </p>
-      )}
+    <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+      <h2 className="font-display text-3xl leading-[1.1] text-ink">
+        {pick(lang, meta.label_zh, meta.label_en)}
+      </h2>
+      <span className="flex items-center gap-3 font-mono text-[14px]">
+        {prevId && (
+          <button type="button" onClick={() => onOpen(prevId)} className="text-sub transition-colors hover:text-gold">
+            ‹ {pick(lang, stationMeta(prevId).label_zh, stationMeta(prevId).label_en)}
+          </button>
+        )}
+        {nextId && (
+          <button type="button" onClick={() => onOpen(nextId)} className="text-sub transition-colors hover:text-gold">
+            {pick(lang, stationMeta(nextId).label_zh, stationMeta(nextId).label_en)} ›
+          </button>
+        )}
+      </span>
     </div>
   );
 }
