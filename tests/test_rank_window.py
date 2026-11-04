@@ -176,7 +176,7 @@ def test_shared_ranker_lease_release_and_idle_close(monkeypatch):
     lease = rr._SharedReranker(rr.LocalReranker(None, "/nonexistent"), idle_release_s=0.0)
     lease.acquire()
     lease.close()
-    lease._reap()  # idle deadline elapsed with zero holders -> child close
+    lease._reap(lease._idle_token)  # elapsed current timer with zero holders -> child close
     # LocalReranker.close with no proc is a safe no-op; a fresh acquire cancels reaping
 
 

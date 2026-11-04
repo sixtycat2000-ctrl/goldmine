@@ -148,3 +148,57 @@ counter collection, preserving the original strict assertions.
 The installed-wheel upgrade smoke exercised original v4 → new v6, backup, citation
 staleness, future-schema refusal and restoration with the original program. It is
 a mechanical compatibility result, separate from retrieval accuracy.
+
+## Equivalent retrieval and ownership candidate (2026-11-05)
+
+The isolated `codex/high-confidence-optimizations-learn-20261104` candidate keeps
+the existing vector math, scoring weights, gate and admission policy. After exact
+full-corpus normalization and per-file maxima, it materializes semantic records
+only for the conservative possible-admission set. Lexical/coverage/exact/name
+records retain their complete semantic values; hybrid quorum zero and nonfinite
+inputs use the original full path. Empty evidence candidates skip posting SQL
+after the existing cancellation/deadline check.
+
+Pack-window reranker leases now return on every request outcome. Idle callbacks
+check generation identity, model operations serialize against close, and normal
+process exit closes only process-owned cached children. The registered live-process
+idle policy remains 300 seconds. SIGKILL cleanup is outside this guarantee.
+
+The captured core profiles are **PASS**: offline **3,046**, native **323**, optional
+MCP **9**, all without failures/required skips and with stable executable source.
+Independent scalar/frozen-function oracles cover complete hits, why, evidence,
+pack/citations, ties, sparse IDs, zero quorum and numeric fallbacks. Three unsafe
+mutants are retained as expected FAIL evidence.
+
+One preregistered synthetic experiment measured **RRF aggregate materialization
+plus admission**, with 30 paired observations per case and 3 excluded warmups.
+At 500k rows / one segment per file, phase p50 is **457.447 → 42.437 ms**
+(90.723% lower); the paired median difference's 95% bootstrap interval is
+**[-416.301, -413.695] ms**. Python file records drop from 500,000 to **662** on
+that fixed input. All nine sparse cases improved; the all-retained 100k stress
+case has **0.424% higher p50**. Its unadjusted 95% interval is positive while the
+ten-case Bonferroni interval includes zero. All samples are retained. Independent
+replay reproduces all quantiles/intervals exactly across 87 checks.
+
+These are phase measurements. Fresh whole-command CLI/MCP latency, model RSS
+and product-quality improvement remain **MISSING** for this candidate. Existing
+quality failures are not converted into passes. No baseline, evaluation question,
+fingerprint or sealed holdout was changed.
+
+Receipts, source hashes, mathematical reviews, registration revisions and replay
+are under `reports/execution/high-confidence-optimizations-learn-20261104/`.
+The learn-page candidate retains all 145 original concepts and adds five with
+interactive scoring, exact pruning, empty intersections, snapshots/cache and
+lease explanations. Its model/build/browser results have their own receipts;
+they do not establish retrieval quality.
+
+The final learning models received independent mathematical and ownership reviews:
+1,439 analytic/content checks, 3,905 snapshot transitions and 19,607 lease
+transitions pass against captured source identities. Subsequent UI-only amendments
+restore focus without scrolling and subscribe to live reduced-motion changes;
+they leave those teaching models unchanged. Browser evidence distinguishes native
+interaction checks from synthetic visibility events. Native background-tab
+visibility remains **MISSING** in Ego, whose controlled target keeps reporting
+visible. The original intermittent pointer-reopen timeout remains recorded as
+**FAIL**; fixed before/after probes both pass, so its causal explanation is still
+**MISSING**. These limits are retained in the final browser report.

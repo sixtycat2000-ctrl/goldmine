@@ -11,6 +11,14 @@ from goldmine.store import FileRec, SegmentRec, Store
 
 
 def test_quality_cli_sigterm_reaps_owned_reranker_process(tmp_path):
+    _quality_cli_sigterm_reaps_owned_reranker_process(tmp_path, shared=False)
+
+
+def test_quality_cli_sigterm_reaps_shared_reranker_process(tmp_path):
+    _quality_cli_sigterm_reaps_owned_reranker_process(tmp_path, shared=True)
+
+
+def _quality_cli_sigterm_reaps_owned_reranker_process(tmp_path, shared):
     db, ready = tmp_path / "index.sqlite", tmp_path / "owned-child.pid"
     store = Store(db)
     fid = store.upsert_file(FileRec(path="/explicit/neutral.txt", state="done", capability="content_indexed"))
@@ -27,13 +35,24 @@ class Waiting(LocalReranker):
         self._proc = subprocess.Popen([sys.executable,'-c','import time; time.sleep(60)'])
         Path(sys.argv[2]).write_text(str(self._proc.pid))
         time.sleep(60)
-module.shared_ranker=lambda cfg:Waiting(None,Path('/missing/model'))  # seam moved with the shared-lease factory (rank-window-001)
+if sys.argv[3] == 'shared':
+    model=Waiting(None,Path('/missing/model'))
+    module._FROM_CONFIG_CACHE[('test','test')]=model
+    owner=module._SharedReranker(model,module.IDLE_RELEASE_S)
+    module._SHARED[('test','test')]=owner
+    def factory(cfg):
+        owner.acquire()
+        return owner
+    module.shared_ranker=factory
+else:
+    module.shared_ranker=lambda cfg:Waiting(None,Path('/missing/model'))
 raise SystemExit(main(['search','needle','--db',sys.argv[1],'--backend','mock','--scorer','lexical',
                        '--mode','quality','--rerank','local']))
 '''
     env = {**os.environ, "GOLDMINE_HOME": str(tmp_path / "home"),
            "GOLDMINE_CONFIG": str(tmp_path / "empty.toml")}
-    parent = subprocess.Popen([sys.executable, "-c", bootstrap, str(db), str(ready)], env=env,
+    parent = subprocess.Popen([sys.executable, "-c", bootstrap, str(db), str(ready),
+                               "shared" if shared else "direct"], env=env,
                               stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     child = None
     try:

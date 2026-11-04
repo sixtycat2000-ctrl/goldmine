@@ -228,6 +228,8 @@ def main():
             "plain_zh": n.get("plain_zh", ""), "plain_en": n.get("plain_en", ""),
             "example_zh": n.get("example_zh", ""), "example_en": n.get("example_en", ""),
             "analogy_zh": n.get("analogy_zh", ""), "analogy_en": n.get("analogy_en", ""),
+            **{f"{section}_{lang}": n.get(f"{section}_{lang}", "")
+               for section in ("why", "how", "try") for lang in ("zh", "en")},
             "refs": [ref_of(r) for r in n.get("code_refs", [])],
             "deep": [{"to": d["to"], "rel_zh": d.get("why_zh", ""), "rel_en": d.get("why_en", "")}
                      for d in n.get("dig_deeper", [])],

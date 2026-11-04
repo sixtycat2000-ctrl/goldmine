@@ -104,7 +104,12 @@ def collect_body_units(db, units, rows):
     MATCH per 400-rowid batch re-evaluated the phrase for every candidate
     rowid and multiplied statement cost ~100x on long public queries.
     """
+    check_deadline()
     segment_files = dict(rows)
+    if not segment_files:
+        # P intersect empty is empty: there is no body evidence to verify.
+        # In particular, the optional anchor-witness pass often has no rows.
+        return {}, segment_files
     matched: dict[int, set[int]] = {}
     ids = set(segment_files)
     cjk_units = [(i, unit) for i, unit in enumerate(units) if unit.patterns and unit.kind != "latin"]

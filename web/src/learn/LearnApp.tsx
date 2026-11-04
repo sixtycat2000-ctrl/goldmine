@@ -4,12 +4,14 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ConceptCard } from "./ConceptCard";
 import { LessonDrawer } from "./LessonDrawer";
+import { MechanismLab } from "./MechanismLab";
 import { Stage, StationTrayHeader } from "./Stage";
 import { useLang, pick } from "../lib/lang";
 import {
   STATIONS,
   clusterColor,
   loadVisited,
+  parseLearnHash,
   saveVisited,
   stationMeta,
   stationOf,
@@ -58,6 +60,8 @@ export function LearnApp({ data }: { data: Ok }) {
   // cold-boot guard: syncHash must not clobber a deep-linked hash with the
   // pre-boot (empty) state under StrictMode's double mount
   const bootedRef = useRef(false);
+  const routeApplying = useRef(false);
+  const [routeRevision, setRouteRevision] = useState(0);
 
   const view: View = query.trim()
     ? { kind: "search" }
@@ -70,43 +74,32 @@ export function LearnApp({ data }: { data: Ok }) {
   /* ---------------- hash routes: #stage= / #l0 / #q= / #c= (B3) ---------------- */
 
   const applyHash = useCallback(() => {
-    const h = decodeURIComponent(location.hash || "");
-    let m: RegExpMatchArray | null;
-    if ((m = h.match(/^#stage=([a-z]+)/))) {
-      const id = m[1] as StationId;
-      if (STATIONS.some((s) => s.id === id)) {
-        setQuery("");
-        setL0open(false);
-        setStation(id);
-        return;
-      }
+    const route = parseLearnHash(location.hash, (id) => byId.has(id));
+    routeApplying.current = true;
+    // Force a route-sync pass even when the requested concept is already open.
+    setRouteRevision((revision) => revision + 1);
+    setOpenedId(null);
+    if (route.kind === "concept") {
+      setSelectedId(route.id);
+      return; // A valid same-document lesson link preserves its station/background.
     }
-    if (h.startsWith("#l0")) {
-      setQuery("");
-      setStation(null);
-      setL0open(true);
-      return;
-    }
-    if ((m = h.match(/^#q=([^&]*)/))) {
-      setStation(null);
-      setL0open(false);
-      setQuery(m[1]);
-      return;
-    }
-    setStation(null);
-    setL0open(false);
-    setQuery("");
-  }, []);
+    setSelectedId(null);
+    setStation(route.kind === "station" ? route.id : null);
+    setL0open(route.kind === "l0");
+    setQuery(route.kind === "search" ? route.query : "");
+  }, [byId]);
 
   useEffect(() => {
     // cold boot: restore deep-linked state (G9)
-    if (location.hash) applyHash();
-    const c = location.hash.match(/^#c=([a-z0-9_-]+)/);
-    if (c && byId.has(c[1])) setSelectedId(c[1]);
+    applyHash();
     bootedRef.current = true;
     const onPop = () => applyHash();
     window.addEventListener("popstate", onPop);
-    return () => window.removeEventListener("popstate", onPop);
+    window.addEventListener("hashchange", onPop);
+    return () => {
+      window.removeEventListener("popstate", onPop);
+      window.removeEventListener("hashchange", onPop);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -127,10 +120,13 @@ export function LearnApp({ data }: { data: Ok }) {
 
   useEffect(() => {
     if (!bootedRef.current) return;
+    // URL-driven navigation has already selected its history entry. Do not
+    // push another entry while applying Back, hashchange or an invalid hash.
+    if (routeApplying.current) { routeApplying.current = false; return; }
     if (selectedId && byId.has(selectedId)) pushHash(`#c=${selectedId}`);
     else syncHash(view, null);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [view.kind, station, l0open, query, selectedId]);
+  }, [view.kind, station, l0open, query, selectedId, routeRevision]);
 
   /* ---------------- station aggregates for the machine ---------------- */
 
@@ -372,6 +368,12 @@ export function LearnApp({ data }: { data: Ok }) {
           onOpenPart={handleOpen}
           tray={tray}
         />
+      )}
+
+      {view.kind === "stage" && (
+        <div className="mx-auto max-w-6xl px-5 pt-8 pb-12">
+          <MechanismLab lang={lang} suspended={!!selected} onOpenLesson={handleOpen} />
+        </div>
       )}
 
       {(view.kind === "l0" || view.kind === "search") && (

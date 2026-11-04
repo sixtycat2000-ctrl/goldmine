@@ -1,12 +1,15 @@
 """Optional local rank-head model; independent of the embedding fingerprint.
 
-One instance owns one localhost child. Requests never install assets. The caller
-closes it on success, failure and cancellation; no idle resident model is kept.
+One instance owns one localhost child. Requests never install assets. A direct
+caller closes its model; shared callers release leases and the owner applies
+the registered idle policy. Process exit closes only locally owned children.
 """
 from __future__ import annotations
 
+import atexit
 import json
 import math
+import os
 from pathlib import Path
 import socket
 import subprocess
@@ -14,7 +17,7 @@ import tempfile
 import threading
 import time
 
-from .deadline import check_deadline, deadline_sleep, remaining_timeout
+from .deadline import check_deadline, deadline_lock, deadline_sleep, remaining_timeout
 from .http_transport import request as http_request
 from .model_manifest import DEFAULT_RERANKER_KEY, by_key
 
@@ -25,6 +28,7 @@ class RerankError(RuntimeError):
 
 _FROM_CONFIG_CACHE: dict[tuple, LocalReranker] = {}
 _FROM_CONFIG_LOCK = threading.Lock()
+_REGISTRY_PID = os.getpid()
 
 
 def from_config(cfg):
@@ -72,6 +76,10 @@ class LocalReranker:
         self._proc = None
         self._log = None
         self._port = None
+        self._owner_pid = os.getpid()
+        # rank -> startup -> failure close may re-enter this lock. Request
+        # operations wait within their deadline; cleanup must work after it.
+        self._operation_lock = threading.RLock()
 
     def _post(self, endpoint, payload):
         check_deadline()
@@ -89,6 +97,10 @@ class LocalReranker:
         return result
 
     def startup(self):
+        with deadline_lock(self._operation_lock):
+            self._startup_locked()
+
+    def _startup_locked(self):
         check_deadline()
         if self._proc is not None and self._proc.poll() is None:
             return
@@ -104,6 +116,10 @@ class LocalReranker:
             reserved.bind(("127.0.0.1", 0))
             self._port = reserved.getsockname()[1]
         self._log = tempfile.TemporaryFile()
+        # A not-yet-started instance can have been created before a fork.
+        # Stamp ownership where this process is about to create its child.
+        self._proc = None
+        self._owner_pid = os.getpid()
         try:
             self._proc = subprocess.Popen([
                 str(self.server), "-m", str(self.model), "--embedding", "--reranking", "--pooling", "rank",
@@ -154,19 +170,28 @@ class LocalReranker:
     def rank(self, query: str, documents: list[str]) -> tuple[list[float], dict]:
         if not 1 <= len(documents) <= 20:
             raise RerankError("reranker accepts 1..20 admitted segments")
-        self.startup()
-        bounded_query, query_tokens = self._bounded_text(query, 256)
-        bounded = [self._bounded_text(text, 384) for text in documents]
-        payload = self._post("v1/rerank", {"query": bounded_query,
-            "documents": [text for text, _ in bounded], "top_n": len(documents)})
-        return validate_scores(payload, len(documents)), {
-            "model": DEFAULT_RERANKER_KEY, "query_tokens": query_tokens,
-            "document_tokens": [count for _, count in bounded],
-            "query_truncated": bounded_query != query,
-            "documents_truncated": [text != source for (text, _), source in zip(bounded, documents)],
-        }
+        with deadline_lock(self._operation_lock):
+            self.startup()
+            bounded_query, query_tokens = self._bounded_text(query, 256)
+            bounded = [self._bounded_text(text, 384) for text in documents]
+            payload = self._post("v1/rerank", {"query": bounded_query,
+                "documents": [text for text, _ in bounded], "top_n": len(documents)})
+            return validate_scores(payload, len(documents)), {
+                "model": DEFAULT_RERANKER_KEY, "query_tokens": query_tokens,
+                "document_tokens": [count for _, count in bounded],
+                "query_truncated": bounded_query != query,
+                "documents_truncated": [text != source for (text, _), source in zip(bounded, documents)],
+            }
 
     def close(self):
+        # A fork also copies Popen handles and potentially held locks. Neither
+        # the inherited process nor those locks belong to the child process.
+        if self._owner_pid != os.getpid():
+            return
+        with self._operation_lock:
+            self._close_locked()
+
+    def _close_locked(self):
         proc, self._proc = self._proc, None
         try:
             if proc is not None and proc.poll() is None:
@@ -192,38 +217,103 @@ class _SharedReranker:
         self._ranker = ranker
         self._idle_release_s = idle_release_s
         self._lock = threading.Lock()
+        self._operation_lock = threading.RLock()
         self._refs = 0
-        self._deadline: float | None = None
         self._timer: threading.Timer | None = None
+        self._idle_token: object | None = None
 
     def rank(self, query, documents):
-        return self._ranker.rank(query, documents)
+        with deadline_lock(self._operation_lock):
+            return self._ranker.rank(query, documents)
 
-    def _reap(self):
-        with self._lock:
-            if self._refs <= 0 and self._timer is not None:
+    def _cancel_idle(self):
+        # Caller holds the state lock; a token, rather than cancel() alone,
+        # also invalidates a callback that already started on another thread.
+        self._idle_token = None
+        if self._timer is not None:
+            self._timer.cancel()
+            self._timer = None
+
+    def _reap(self, token):
+        # Order: shared operation -> shared state; model operations follow
+        # the model's own operation lock. Never hold state during model I/O.
+        with self._operation_lock:
+            with self._lock:
+                if token is None or token is not self._idle_token or self._refs != 0:
+                    return
                 self._timer = None
-                self._ranker.close()
+                self._idle_token = None
+            # Closing linearizes at the token check. A later acquire may
+            # return a lease, but its rank waits and can restart the model.
+            self._ranker.close()
+
+    def shutdown(self):
+        """Process-owner cleanup, independent of any expired request budget."""
+        with self._operation_lock:
+            with self._lock:
+                self._cancel_idle()
+            self._ranker.close()
 
     def acquire(self):
-        with self._lock:
+        with deadline_lock(self._lock):
             self._refs += 1
-            if self._timer is not None:
-                self._timer.cancel()
-                self._timer = None
+            self._cancel_idle()
 
     def close(self):
         with self._lock:
-            self._refs = max(0, self._refs - 1)
+            if self._refs == 0:
+                return
+            self._refs -= 1
             if self._refs == 0 and self._idle_release_s >= 0:
-                timer = threading.Timer(self._idle_release_s, self._reap)
+                token = object()
+                timer = threading.Timer(self._idle_release_s, self._reap, args=(token,))
                 timer.daemon = True
-                timer.start()
+                self._idle_token = token
                 self._timer = timer
+                timer.start()
 
 
 _SHARED: dict[tuple, _SharedReranker] = {}
 _SHARED_LOCK = threading.Lock()
+
+
+def _close_cached_rankers():
+    """Close snapshots of this process's owners, outside registry locks."""
+    process_id = os.getpid()
+    if process_id == _REGISTRY_PID:
+        with _SHARED_LOCK:
+            owners = tuple(_SHARED.values())
+        with _FROM_CONFIG_LOCK:
+            configured = tuple(_FROM_CONFIG_CACHE.values())
+    else:
+        # Only the forking thread survives. Inherited registry/owner locks
+        # may belong to vanished threads; inherited timers cannot run here.
+        # Close only raw instances that established a new child in this PID.
+        owners = ()
+        configured = (*_FROM_CONFIG_CACHE.values(), *(o._ranker for o in _SHARED.values()))
+    closed = set()
+    errors = []
+    for owner in owners:
+        if getattr(owner._ranker, "_owner_pid", process_id) != process_id:
+            continue  # do not acquire inherited owner/model operation locks
+        try:
+            owner.shutdown()
+        except Exception as exc:
+            errors.append(exc)
+        closed.add(id(owner._ranker))
+    for ranker in configured:
+        if id(ranker) in closed or getattr(ranker, "_owner_pid", process_id) != process_id:
+            continue
+        try:
+            ranker.close()
+        except Exception as exc:
+            errors.append(exc)
+        closed.add(id(ranker))
+    if errors:
+        raise errors[0]  # atexit reports the error after other owners close
+
+
+atexit.register(_close_cached_rankers)
 
 #: Registered rank-head idle policy (acceptance targets reranker_idle_release_s).
 IDLE_RELEASE_S = 300.0

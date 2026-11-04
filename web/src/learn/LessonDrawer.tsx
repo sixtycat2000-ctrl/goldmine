@@ -9,6 +9,8 @@ import {
 import { pick, type Lang } from "../lib/lang";
 import { CopyButton } from "../components/CopyButton";
 import { IconClose, IconOk } from "../components/Icons";
+import { MechanismLab } from "./MechanismLab";
+import { LESSON_MODES } from "./mechanism-model";
 
 type Props = {
   c: Concept;
@@ -53,15 +55,21 @@ export function LessonDrawer({
 
   const title = pick(lang, c.title_zh, c.title_en);
   const color = cluster ? clusterColor(cluster.token) : "var(--color-gold)";
+  const mechanism = LESSON_MODES[c.id];
 
   const sections = useMemo<SecMeta[]>(() => {
     const s: SecMeta[] = [{ id: "ov", zh: "概览", en: "Overview" }];
     if (c.def_zh || c.def_en) s.push({ id: "def", zh: "定义", en: "Definition" });
+    if (c.why_zh || c.why_en) s.push({ id: "why", zh: "为什么", en: "Why" });
+    if (mechanism) s.push({ id: "lab", zh: "动手实验", en: "Experiment" });
+    if (c.how_zh || c.how_en) s.push({ id: "how", zh: "怎么做", en: "How" });
     if (c.plain_zh || c.plain_en) s.push({ id: "plain", zh: "大白话", en: "In plain words" });
     if (c.example_zh || c.example_en) s.push({ id: "ex", zh: "实例", en: "Example" });
+    if (c.try_zh || c.try_en) s.push({ id: "try", zh: "自己验证", en: "Try it" });
     if (c.refs.length) s.push({ id: "refs", zh: "真实代码", en: "Real code" });
     return s;
-  }, [c]);
+  }, [c, mechanism]);
+  const sectionOf = (id: string) => sections.find((s) => s.id === id)!;
 
   const { children, related } = useMemo(() => {
     const layerOf = (id: string) => data.byId.get(id)?.layer;
@@ -89,7 +97,7 @@ export function LessonDrawer({
     html.style.overflow = "hidden";
     return () => {
       html.style.overflow = prevOverflow;
-      openerRef.current?.focus?.();
+      openerRef.current?.focus?.({ preventScroll: true });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -102,14 +110,17 @@ export function LessonDrawer({
         onClose();
         return;
       }
-      if (e.key === "ArrowLeft" && prev) onPrev();
-      if (e.key === "ArrowRight" && next) onNext();
+      const target = e.target instanceof Element ? e.target : null;
+      const ownsKeys = !!target?.closest('input, select, textarea, [contenteditable="true"], [data-learning-control]');
+      const navigation = !e.defaultPrevented && !e.metaKey && !e.ctrlKey && !e.altKey && !ownsKeys;
+      if (navigation && e.key === "ArrowLeft" && prev) onPrev();
+      if (navigation && e.key === "ArrowRight" && next) onNext();
       if (e.key === "Tab") {
         const panel = panelRef.current;
         if (!panel) return;
-        const focusables = panel.querySelectorAll<HTMLElement>(
-          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-        );
+        const focusables = [...panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        )].filter((el) => el.tabIndex >= 0 && el.getClientRects().length > 0 && getComputedStyle(el).visibility !== "hidden");
         if (!focusables.length) return;
         const first = focusables[0];
         const last = focusables[focusables.length - 1];
@@ -169,7 +180,7 @@ export function LessonDrawer({
   }, [c.id]);
 
   const renderSec = (meta: SecMeta, body: React.ReactNode) => (
-    <section data-sec={meta.id} className="scroll-mt-6">
+    <section key={meta.id} data-sec={meta.id} className="scroll-mt-6">
       <h3 className="mb-3 text-[14px] font-medium text-gold">
         {pick(lang, meta.zh, meta.en)}
       </h3>
@@ -255,7 +266,7 @@ export function LessonDrawer({
 
               <div className="mt-7 space-y-8">
                 {renderSec(
-                  sections[0],
+                  sectionOf("ov"),
                   <>
                     <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.one_zh, c.one_en)}</p>
                     {(c.analogy_zh || c.analogy_en) && (
@@ -268,25 +279,37 @@ export function LessonDrawer({
 
                 {(c.def_zh || c.def_en) &&
                   renderSec(
-                    sections[1],
+                    sectionOf("def"),
                     <p className="text-[15px] leading-relaxed text-ink">{pick(lang, c.def_zh, c.def_en)}</p>,
                   )}
 
+                {(c.why_zh || c.why_en) && renderSec(sectionOf("why"),
+                  <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.why_zh ?? "", c.why_en ?? "")}</p>)}
+
+                {mechanism && renderSec(sectionOf("lab"),
+                  <MechanismLab key={c.id} lang={lang} initialMode={mechanism} compact />)}
+
+                {(c.how_zh || c.how_en) && renderSec(sectionOf("how"),
+                  <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.how_zh ?? "", c.how_en ?? "")}</p>)}
+
                 {(c.plain_zh || c.plain_en) &&
                   renderSec(
-                    sections[2],
+                    sectionOf("plain"),
                     <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.plain_zh, c.plain_en)}</p>,
                   )}
 
                 {(c.example_zh || c.example_en) &&
                   renderSec(
-                    sections[3],
+                    sectionOf("ex"),
                     <p className="text-[15px] leading-relaxed text-ink2">{pick(lang, c.example_zh, c.example_en)}</p>,
                   )}
 
+                {(c.try_zh || c.try_en) && renderSec(sectionOf("try"),
+                  <p className="rounded-xl border border-teal/20 bg-teal/5 p-4 text-[15px] leading-relaxed text-ink">{pick(lang, c.try_zh ?? "", c.try_en ?? "")}</p>)}
+
                 {c.refs.length > 0 &&
                   renderSec(
-                    sections[4],
+                    sectionOf("refs"),
                     <ul className="space-y-2">
                       {c.refs.slice(0, 5).map((r, i) => (
                         <li
@@ -344,7 +367,7 @@ export function LessonDrawer({
                         type="button"
                         onClick={() => {
                           const el = scrollRef.current?.querySelector<HTMLElement>(`[data-sec="${s.id}"]`);
-                          el?.scrollIntoView({ behavior: "smooth", block: "start" });
+                          el?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
                         }}
                         aria-current={active === i ? "true" : undefined}
                         className={`text-[14px] transition-colors ${

@@ -3,7 +3,7 @@
   "version": 3,
   "world": [
    3514.0,
-   2706.0
+   2578.0
   ],
   "tile_y": 110.0,
   "rooms": [
@@ -169,26 +169,36 @@
    "parent": null,
    "reveal": [
     "fts5-bm25",
-    "vector-matrix",
     "unicode61-tokenizer"
    ],
    "title_zh": "准入门槛",
    "title_en": "Admission Gate",
-   "one_zh": "z ≥ 3.0 或词覆盖够才进候选",
-   "one_en": "Enter only at z ≥ 3.0 or solid coverage",
-   "def_zh": "候选池的唯一硬规则：z ≥ 3.0（z_gate）；词覆盖率 ≥ 0.5 的文件也进。3.0 由 v2.1 校准 A/B 定下（n=146 真模型评测）：从 2.0 提到 3.0，s@5 0.747→0.781、MRR 0.646→0.665、零命中诚实度 0.4→0.6，train 与 holdout 一致、零单题回归。扫描中 3.5 更好（0.822）但故意不采纳——一次扫描、过拟合风险，记录在案（「不做质量重试」纪律的来源）。",
-   "def_en": "The one hard rule into the candidate pool: z ≥ 3.0 (z_gate); files with word coverage ≥ 0.5 also enter. The 3.0 came from a v2.1 calibration A/B (n=146, real-model eval): raising 2.0→3.0 moved s@5 0.747→0.781, MRR 0.646→0.665, zero-hit honesty 0.4→0.6, consistent across train and holdout with zero per-query regressions. Scanning found 3.5 even better (0.822) — deliberately not adopted: one scan, overfitting risk, on the record. This is where the 'no quality retries' discipline comes from.",
+   "one_zh": "有资格返回，才参与最后排序",
+   "one_en": "Qualify before final ranking",
+   "def_zh": "准入发生在完整候选召回与义务核验之后。hybrid 可经词覆盖率 ≥0.5、已验证精确锚点、名字单元集中命中，或有限 z≥3 的语义路线入选。语义路线还需要词证；没有可见文本的纯媒体向量有明确例外。semantic、lexical 与 RRF 对照各用自己的准入规则，不能把「z≥3 或覆盖够」当成所有模式的完整合同。",
+   "def_en": "Admission follows recall and obligation verification. Hybrid can qualify by coverage≥0.5, a verified exact anchor, concentrated name matches, or a finite semantic z≥3. Its semantic route also requires lexical witness, with an explicit exception for textless media vectors. Semantic, lexical and RRF ablations have their own rules; “z≥3 or enough coverage” is not the full contract of every mode.",
    "plain_zh": "海选。不是所有自称「有点像」的文件都能进下一轮：要么语义上真的鹤立鸡群，要么查询词真的出现在它身上。门槛是拿 146 道真题做 A/B 试验定下来的，不是拍脑袋。曾看到 3.5 更好看，但只试了一次不敢信，忍住没改。",
    "plain_en": "Auditions. Not every file claiming 'kind of similar' gets to the next round: either it stands clearly above the crowd semantically, or the query words actually appear in it. The bar was set by an A/B test on 146 real questions, not by gut. A higher bar of 3.5 looked better once — one try, not trusted, left alone.",
-   "example_zh": "A/B 记录：z_gate 2.0→3.0 使 s@5 0.747→0.781、MRR 0.646→0.665、zero-hit honesty 0.4→0.6；3.5 得 0.822 但弃用。对照回归门：python3 scripts/eval_real.py --suite legacy --backend llama --gate 应见 gate: green。",
-   "example_en": "The A/B record: z_gate 2.0→3.0 moved s@5 0.747→0.781, MRR 0.646→0.665, zero-hit honesty 0.4→0.6; 3.5 scored 0.822 but was rejected. Check the regression gate yourself: python3 scripts/eval_real.py --suite legacy --backend llama --gate should print 'gate: green'.",
+   "example_zh": "实验台的简化 RRF 例子：文件 1 以 z=5 入池；文件 3 通过词法命中入池，即使它的 z 为负。入池不等于最终名次。真实 hybrid 还要执行词证、名字、锚点等规则。",
+   "example_en": "In the toy RRF example, file 1 enters at z=5; file 3 enters through a lexical hit despite a negative z. Retention is not a final rank. Production hybrid also applies witness, name and anchor rules.",
    "analogy_zh": "海选的硬门槛，靠真题 A/B 定分数线",
    "analogy_en": "An audition bar set by a real-question A/B test",
+   "why_zh": "返回一个最高分很容易；确认这个文件真正满足查询、并能拿出原文证据更难。准入让「看起来像」和「有资格返回」成为不同判断。",
+   "why_en": "Returning the highest score is easy; establishing that a file satisfies the query and has source evidence is harder. Admission separates similarity from eligibility.",
+   "how_zh": "先解析过滤器与锚点义务、验证实际来源，再按 scorer 执行固定准入。精确筛选优化只剔除不可能通过这些规则的向量文件对象，不修改规则或阈值。",
+   "how_en": "Parse filters and anchor obligations, verify stored sources, then apply the fixed scorer-specific admission. Exact pruning removes impossible vector-file objects without changing the policy or thresholds.",
+   "try_zh": "在精确筛选模式保留文件 3 的词法路线。它的 z 低于 3，为什么仍必须留在后续候选池？",
+   "try_en": "Keep file 3’s lexical route in exact-pruning mode. Its z is below3; why must it remain in the downstream pool?",
    "refs": [
     {
      "path": "goldmine/admission.py",
      "lines": "",
-     "note": "z_gate=3.0 与 coverage 准入判定"
+     "note": "decide_admission()"
+    },
+    {
+     "path": "goldmine/anchor_admission.py",
+     "lines": "",
+     "note": "resolve_obligations()"
     }
    ],
    "deep": [
@@ -221,6 +231,11 @@
      "to": "unicode61-tokenizer",
      "rel_zh": "词覆盖路线的分词机制",
      "rel_en": "The tokenizer behind the coverage route"
+    },
+    {
+     "to": "exact-candidate-pruning",
+     "rel_zh": "为什么提前筛选不等于改门槛",
+     "rel_en": "Why early pruning does not change the gate"
     }
    ],
    "x": 260.0,
@@ -239,12 +254,18 @@
    "one_en": "High z alone cannot enter without word evidence",
    "def_zh": "search.v7 规则：混合模式查询下，一个文件若 z 分够高但没有任何词法证据（无 BM25 排名、coverage 为 0），不准进候选池。防的是语义模型的「空吸」——embedding 对某些查询天然亲近某些内容。例外：纯媒体文件（只有图片/音频向量、没有文字可沾）豁免——它们没资格提供见证，不能因此被判死刑。新增媒体段型时 _files_with_text 的口径要跟着审。",
    "def_en": "The search.v7 rule: under a hybrid-mode query, a file with a high z but zero lexical evidence (no BM25 rank, coverage 0) may not enter the pool. It guards against semantic 'vacuum suction' — embeddings are naturally chummy between certain queries and certain content. Exception: pure media files (only image/audio vectors, no text to match) are exempt — they cannot bear witnesses, so they cannot be condemned for lacking one. When a new media segment type appears, _files_with_text's definition must be re-audited.",
-   "plain_zh": "一个嫌疑人 DNA 匹配 99%，但案发现场、时间线、证人一样都对不上——光 DNA 一条孤证不放人。除非这个案子根本没有别的证据可查（比如纯图片文件，没文字可沾），那才破例。",
-   "plain_en": "A suspect's DNA matches 99%, but crime scene, timeline, and witnesses all disagree — one lonely piece of evidence doesn't convict. Unless the case has no other evidence to check at all (a pure image file with no text to touch) — then, and only then, the exception applies.",
+   "plain_zh": "一本书的整体风格很像你要找的，但正文里连一个查询词的线索都没有：对有正文的文件，hybrid 的语义路线还要求最基本的词证。没有正文的纯媒体向量按明确例外处理。",
+   "plain_en": "A book’s general style resembles the query, but its body has no lexical clue. For files with text, hybrid’s semantic route requires minimal lexical witness. Textless media vectors follow an explicit exception.",
    "example_zh": "z=4.5、coverage=0、无 BM25 排名的文本文件 → 拒。同一文件若是纯图片（无文本段）→ 豁免放行。这是第一讲十问第 4 题的原题。",
    "example_en": "A text file with z=4.5, coverage 0, no BM25 rank → refused. The same file if it were a pure image (no text segments) → exempt, admitted. This is question 4 of the search walkthrough's ten-question self-check.",
    "analogy_zh": "孤证不立：DNA 再像也要有人证物证",
    "analogy_en": "One clue alone never convicts, however convincing",
+   "why_zh": "向量相近可以是内容风格、常见结构或模型偏好造成；一个高 z 仍不等于它回答了查询。",
+   "why_en": "Similarity can arise from style, common structure or model bias. A high z alone does not establish that the file answers the query.",
+   "how_zh": "hybrid 中检查实际词法排名或正词覆盖。没有文本的向量文件单独判断；其他已验证精确、名字、覆盖路线仍按自己的合同处理。",
+   "how_en": "In hybrid, inspect actual lexical rank or positive coverage. Treat textless vector files separately; verified exact, name and coverage routes retain their own contracts.",
+   "try_zh": "比较有正文但词覆盖为 0 的高 z 文件，与没有正文的媒体文件。为什么相同的 z 不代表相同准入路线？",
+   "try_en": "Compare a high-z text file with coverage0 and a textless media file. Why does identical z not imply identical admission routes?",
    "refs": [
     {
      "path": "goldmine/admission.py",
@@ -274,7 +295,7 @@
      "rel_en": "The witness rule patches the admission gate"
     }
    ],
-   "x": 436.0,
+   "x": 788.0,
    "y": 688.0
   },
   {
@@ -288,24 +309,25 @@
    "title_en": "Evidence Selection",
    "one_zh": "每个命中给你看哪一段",
    "one_en": "Which passage each hit shows you",
-   "def_zh": "每个命中的文件内部再选一次证据段：z 够高时主证据 = 语义最佳段，否则 = 关键词命中段；精确短语命中强制做主证据。evidence-window 规则：某段里 200 字符窗口内聚着的查询词比语义最佳段多 ≥2 个不同词时，主证据让位——语义模型偶尔被标题党吸走，词证密集处更可信。supporting 段随行，之后近重复折叠（同文件近似段只展一条）、«» 高亮、渲染输出。",
-   "def_en": "Inside every hit, one more selection pass picks the evidence passage: with a high z the primary evidence is the semantically best segment, otherwise the keyword-hit segment; exact phrase hits force themselves primary. The evidence-window rule: when some segment concentrates ≥2 more distinct query words inside a 200-character window than the semantic best, it takes over — embeddings occasionally fall for clickbait titles, dense word evidence is more trustworthy. A supporting segment rides along; then near-duplicate folding (one display per near-identical group), «» highlighting, and rendering.",
-   "plain_zh": "找到一本书只是第一步，还得翻到最该给你看的那一页。通常翻到「意思最像」的那页；但如果有一页上你问的词密密麻麻挤在一起，就翻那一页——满页都是你问的词，比「感觉像」更实在。",
-   "plain_en": "Finding the book is step one; you must still open the right page. Usually the page that 'means most like the query'; but if some page has your words crowded together, open that one — a page dense with your words beats a page that merely 'feels right'.",
-   "example_zh": "goldmine search 加 --why 可见每个命中的 primary/supporting 段选择；标题党场景：标题含全部查询词但正文无关 → 词证密集窗口接管主证据。",
-   "example_en": "Run goldmine search with --why to see each hit's primary/supporting selection; the clickbait case: a title carrying all query words over an unrelated body → the dense word window takes the primary slot.",
+   "def_zh": "文件入选后仍要选择实际证据段。普通语义主段可让位给一个 200 字符窗口更集中的挑战段，但挑战段的整段查询单元数必须至少与主段相同。窗口多至少 2 个单元时可接管；只多 1 个时还需挑战者 z 过门，且不低于主段 z−1.5。已验证精确/纯元数据定位与纯语义对照有独立规则；pack 窗口仲裁也不能推翻已有窗口规则结论。",
+   "def_en": "An admitted file still needs an actual evidence segment. A concentrated200-character challenger window can replace the plain semantic primary only if its whole-segment query-unit count is at least the primary’s. A lead of at least two window units can take over; a one-unit lead also needs the challenger to pass the z gate and remain within1.5 z of the primary. Verified exact/pure metadata pointers and semantic-only ablation follow separate rules. Pack rank arbitration cannot overturn an existing window-rule verdict.",
+   "plain_zh": "找到书，再选页。更密的一小段不一定更好：它还必须保住整段的查询信息，不能只凭局部挤在一起的词就把原答案换掉。",
+   "plain_en": "Find the book, then select the page. A denser short passage is not automatically better: it must preserve whole-segment query information rather than win on a tiny cluster of words alone.",
+   "example_zh": "主段整段覆盖 4 个查询单元，挑战段只覆盖 3 个：即使挑战者的 200 字符窗多 2 个词，也不能接管。整段资格先于窗口密度。",
+   "example_en": "The primary covers four query units overall, the challenger only three. Even a two-unit lead inside the challenger’s200-character window cannot take over. Whole-segment qualification comes first.",
    "analogy_zh": "翻到最该给你看的那一页，不是第一页",
    "analogy_en": "Open the page that answers, not page one",
+   "why_zh": "文件级召回正确不代表交给用户的那段文字正确；证据选择需要同时保持整体问题覆盖与局部集中程度。",
+   "why_en": "Correct file recall does not guarantee the user receives the right text. Evidence selection must preserve overall query coverage alongside local concentration.",
+   "how_zh": "先确认特殊精确/元数据规则与候选段，计算整段单元数与窗口单元数，再按两级窗口门和可选仲裁选择主证据，保留互补支持段。",
+   "how_en": "Resolve exact/metadata cases and candidate segments, compute whole-segment and window units, apply the two-tier window rule and optional arbitration, then retain complementary supports.",
+   "try_zh": "设想一个很密的窗口却漏掉查询另一半：它为什么不能仅凭密度抢走主证据？用 --why 核对 display_evidence。",
+   "try_en": "Imagine a dense window that omits half the query. Why must density alone not steal the primary? Inspect display_evidence under --why.",
    "refs": [
     {
-     "path": "goldmine/search.py",
+     "path": "goldmine/retrieval_evidence.py",
      "lines": "",
-     "note": "evidence-window 规则与主证据判定"
-    },
-    {
-     "path": "goldmine/render.py",
-     "lines": "",
-     "note": "«» 高亮与近重复折叠的渲染"
+     "note": "select_evidence() 与 window_units()"
     }
    ],
    "deep": [
@@ -335,8 +357,8 @@
      "rel_en": "Evidence is selected among chunks"
     }
    ],
-   "x": 788.0,
-   "y": 304.0
+   "x": 260.0,
+   "y": 432.0
   },
   {
    "id": "pack-budget",
@@ -359,6 +381,12 @@
    "example_en": "python3 -m goldmine search 'copper gasket' --pack --budget 4000 --db evals/eval.sqlite; --budget requires --pack (--context clamps to ≤3). The header prints the token mode (tokenize or estimate); the footer prints used N and sources.",
    "analogy_zh": "有大小限额的资料袋：整篇装不下就换篇，不撕半页",
    "analogy_en": "A capped dossier: whole items or nothing, never half pages",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/pack.py",
@@ -398,7 +426,7 @@
      "rel_en": "Evidence selection comes before packing"
     }
    ],
-   "x": 436.0,
+   "x": 788.0,
    "y": 560.0
   },
   {
@@ -423,6 +451,12 @@
    "example_en": "Startup handshake: a --version probe plus mmproj sha verification; health failure → NotSupported/BackendStartupError (exit 2). The 1412-line source is tools/embed/goldmine-embed.c. Killing someone else's llama-server is an ancient accident — the pid ledger kills only its own.",
    "analogy_zh": "挎斗摩托：一次发动，随叫随到，纸条通信",
    "analogy_en": "A sidecar bike: started once, always ready, note-passing protocol",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "tools/embed/goldmine-embed.c",
@@ -486,6 +520,12 @@
    "example_en": "The price list: photo 140 / screenshot 280 / pdf_page 280 / video_frame 70. Changing any single number changes the fingerprint's media_budgets key ⇒ old libraries are refused at the gate with exit 3.",
    "analogy_zh": "不同图片不同功夫的价目表",
    "analogy_en": "A price list of looking-effort per image type",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -544,6 +584,12 @@
    "example_en": "Watch it fire yourself (ANCHORS card 2): python3 -m goldmine search 'copper gasket' --db evals/eval.sqlite.pre-p2b.sqlite; echo rc=$? → 'refused: ... different embedding fingerprint' (differs in: media) + rc=3; rerun with --lexical → rc=0 with results.",
    "analogy_zh": "配方指纹：换一样原料就换章",
    "analogy_en": "A recipe seal: swap one ingredient, get a new stamp",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/fingerprints.py",
@@ -608,6 +654,12 @@
    "example_en": "Ctrl-C mid-ingest → rc=130; rerun and every file whose sha256 is unchanged is skipped (the progress log shows the skipped count), rewriting only the interrupted one. The -wal/-shm companions next to the database are WAL mode's footprints.",
    "analogy_zh": "一张卡写完才盖章，绝无半张卡",
    "analogy_en": "Stamp only whole cards; half-cards don't exist",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/store.py",
@@ -666,6 +718,12 @@
    "example_en": "The live specimen, reports/execution/digup-p2-closeout-001/eval-rebuild-audit.md (batch B): 8 differences each attributed — the '+1 file' turned out to be a new command file landing in the ingest root, not smuggling; both gates at 0 delta, reference vectors reproduced bit-exactly, the old library backed up as audit evidence.",
    "analogy_zh": "重考可以，每处分差都要说明来历",
    "analogy_en": "Retake allowed, every point difference explained",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "scripts/eval_real.py",
@@ -727,6 +785,12 @@
    "example_en": "Live specimens: reports/execution/digup-plan-001/ and digup-plan-002/ (preregistration plus the rollback, fully on record). The zero-improvement rollback is its landmark precedent — not 'tune it some more'.",
    "analogy_zh": "动工前公证图纸和验收线",
    "analogy_en": "Notarize the blueprint and the pass bar first",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "reports/execution/digup-plan-001/",
@@ -785,6 +849,12 @@
    "example_en": "Interception one: the deleted-file filter's first draft (21 offline tests build libraries with fake paths) — adopted only after scoping to roots_json. Interception two: three drifting 'media-ffmpeg-mm.v2' literals caught, fixed into one shared constant plus an equality test.",
    "analogy_zh": "专唱反调的审图员，只给三种裁决",
    "analogy_en": "A professional contrarian with exactly three verdicts",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/execution-plan/REVIEW.md",
@@ -838,6 +908,12 @@
    "example_en": "Transcript present → text segments (FTS + text vectors); whisper absent → fallback audio window vectors with asr_status recorded per row. Verify media vectors are untouched: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_media_vectors.py.",
    "analogy_zh": "先抄成文字归档，抄不出才存声音指纹",
    "analogy_en": "Archive as text first; only untranscribable sound stays as sound",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/asr.py",
@@ -896,6 +972,12 @@
    "example_en": "Under 30s windows / 25s hop: a 62s file → windows [0,30), [25,55), tail [50,62) carrying 7s of new audio (beyond the prior window) → kept; a 56s file → tail [50,56) carrying only 1s new → dropped. Meanwhile 'tail shorter than 2s' literally cannot occur under these parameters (minimum 5s) — exactly the dead-code finding.",
    "analogy_zh": "交接班只续写真正多听到的部分",
    "analogy_en": "Handover logs only what the next shift actually heard new",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/media.py",
@@ -949,6 +1031,12 @@
    "example_en": "media.py's constant: SILENCE_RMS = 0.003 (≈ −50 dBFS, a DigUp prior); the v5 preprocessing string segment reads 'window30s,hop25s,rms-gate0.003,tail-min2s'.",
    "analogy_zh": "先量多安静，再决定要不要记",
    "analogy_en": "Measure the quiet before paying the stenographer",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/media.py",
@@ -997,6 +1085,12 @@
    "example_en": "Detection lives in extract_pdf.py: lostLetters means lam-ligature loss (a bare alef where a ligature belongs). Upgrade strings like pdftotext+arocr+visionocr@24.08.0 are assembled by one function in alphabetical order, with all four combinations registered — assembler and registry share a source.",
    "analogy_zh": "造不出病人就如实记「未验证」，用模特练手",
    "analogy_en": "Can't manufacture the patient? Record 'unverified', practice on mannequins",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/extract_pdf.py",
@@ -1053,6 +1147,12 @@
    "example_en": "See the counter: settings.deleted_filtered in python3 -m goldmine search x --db evals/eval.sqlite --json. Mirror on the ingest side: a path gone whose inode appears elsewhere counts as moved, not deleted (see move-detection) — symmetric semantics on both sides.",
    "analogy_zh": "端上桌的菜都得现在点得开",
    "analogy_en": "Only dishes currently in the kitchen reach the table",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/search.py",
@@ -1109,6 +1209,12 @@
    "example_en": "walk.py:63: SF_DATALESS = getattr(stat, 'SF_DATALESS', 0x40000000); the interception deliberately precedes format sniffing (which opens). Tests: python3 -m pytest -q tests/test_walk_dataless.py.",
    "analogy_zh": "只看标签不开盒的云盘空盒子",
    "analogy_en": "Cloud empty boxes: read the label, never open",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py",
@@ -1160,6 +1266,12 @@
    "example_en": "In pipeline.py's tail: moves = walk.detect_moves(...) — screenshot tools moving shots into project folders is routine, at zero re-embedding cost. The roots_json merge records this round's scope, which also feeds the query-time A2 filter's 'only within roots' rule.",
    "analogy_zh": "记车牌不记车位；车库门打不开不等于车卖了",
    "analogy_en": "Track the plate, not the spot; a jammed garage door isn't a sale",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -1216,6 +1328,12 @@
    "example_en": "walk.py's header: 'Deterministic (sorted), single-threaded on purpose'; directory symlinks hit continue (V5c symlink policy). rules.py's SKIP_FOLDERS / SECRET_EXTS / ARCHIVE_EXTS each carry their reason.",
    "analogy_zh": "门卫三规：免查清单、传送门只进一次、清点顺序固定",
    "analogy_en": "Doorman's three rules: no-audit list, each door once, fixed order",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py",
@@ -1267,6 +1385,12 @@
    "example_en": "pipeline.py: wave = max(int(self.cfg.ingest.workers) * 8, 16); hashes = [sha256_file(c.path) for c in wave_items] run before any skip decision. Rerun-ingest logs show the skipped/extracted counts.",
    "analogy_zh": "分批装车，先扫码：没变的箱子原样搬",
    "analogy_en": "Load by load, scan first: unchanged boxes move sealed",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -1325,6 +1449,12 @@
    "example_en": "python3 -m goldmine estimate ~/Documents: output counts and seconds broken down per image/screenshot/PDF page/audio second/video second/code stretch; constants like SECONDS_PER_IMAGE = 0.12 (140 tokens, decode included).",
    "analogy_zh": "搬家前上门报价：只带眼睛，不带笔",
    "analogy_en": "The surveyor quotes with eyes only, never a pen",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/commands/estimate.py",
@@ -1383,6 +1513,12 @@
    "example_en": "'python3 -m goldmine search x --db evals/eval.sqlite | head -1' should exit quietly (rc=0) — no traceback, not rc=120. Tests: python3 -m pytest -q tests/test_epipe.py.",
    "analogy_zh": "收货下班了，传送带还在转",
    "analogy_en": "The receiver went home; the belt keeps moving",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/cli.py",
@@ -1446,6 +1582,12 @@
    "example_en": "The comment in embed_helper.py says it outright: 'Raw os.read on the fd — NEVER the BufferedReader' (observed: ready line eaten by the buffer, poll starved, startup timeout). The one-JSON-per-line protocol reads through it.",
    "analogy_zh": "实习生把信先拿进屋，盯信箱的人永远等",
    "analogy_en": "The intern carries the mail in; the mailbox-watcher waits forever",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/embed_helper.py",
@@ -1499,6 +1641,12 @@
    "example_en": "Start it: .mcp-venv/bin/goldmine mcp --db /absolute/path/index.sqlite. Hard schema limits: query ≤8192 UTF-8 bytes, search limit 1–50, context radius 0–3, pack budget 512–32768. Protocol tests run against the real official client (stdio transport).",
    "analogy_zh": "只认取书条的阅览窗口",
    "analogy_en": "A reading-room window that honors only call slips",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/mcp_server.py",
@@ -1552,24 +1700,30 @@
    "title_en": "serve & watch Daemons",
    "one_zh": "两个可选常驻：快搜索与自动摄取",
    "one_en": "Two opt-in daemons: fast search, auto-ingest",
-   "def_zh": "serve（opt-in）：常驻后端 + 心跳 socket + linger 超时自动退；搜索从「每次起模型几秒」变「亚秒」；能力/指纹信息由静态探针合并——不起进程也能如实回答 visual_search。watch（opt-in）：FSEvents 文件事件 → 静默窗口合并 → 增量摄取（只重做变化的文件）；full_period_s 21600（6 小时）全量兜底扫；毒文件清单（delta 期反复失败的不再无限重试，全量扫时另计）；电源门控（电池模式不起后端）；后端起不来不崩、记录原因、下次再试。",
-   "def_en": "serve (opt-in): a resident backend plus heartbeat socket plus linger timeout auto-exit; search drops from 'spawn the model for seconds each time' to sub-second; capability/fingerprint info merges from static probes — visual_search is answered truthfully without spawning anything. watch (opt-in): FSEvents → quiet-window merging → incremental ingest (only changed files redone); a full_period_s of 21600 (6 hours) as the full-scan fallback; a poison-file list (repeated delta failures stop retrying; the full scan counts separately); power gating (no backend on battery); a backend that fails to start doesn't crash — reason recorded, retry next time.",
+   "def_zh": "serve 与 watch 都需要显式启动。serve 提供可复用的本地模型服务，带所有权、心跳、压力保护与空闲退出。watch 当前通过文件元数据轮询、动态节奏、静默窗口二次扫描和周期扫尾识别变化，再执行增量摄取；不是 FSEvents 事件订阅。共享服务的客户端不能在请求结束时杀掉他人持有的服务。",
+   "def_en": "Serve and watch are explicitly started. Serve provides reusable local model operations with ownership, heartbeat, pressure guards and idle exit. Watch currently detects changes by metadata polling, adaptive cadence, a settle/rescan window and periodic sweeps before incremental ingest; it is not an FSEvents subscription. A client must not kill a shared service when its request ends.",
    "plain_zh": "两个可选的住家服务员：一个随叫随到地查（不用每次现开机），一个盯着文件夹——你存了新文件，它等安静几秒后悄悄入库；每六小时再做一次大扫除兜底。用电池的时候不开机器，省电优先。",
    "plain_en": "Two optional live-in helpers: one answers lookups instantly (no booting the engine per question), the other watches the folders — you drop a new file, it waits a few quiet seconds, then files it away; every six hours a full house-cleaning as backup. On battery, machines stay off — power first.",
    "example_zh": "watch 的 6 小时全量兜底防事件丢失；静默窗防保存过程中的半成品被重复摄取；毒文件两层处理（delta 期记清单不再重试、全量扫另计）。serve 的搜索亚秒级来自常驻 llama-server + embed 边车。",
    "example_en": "watch's 6-hour full sweep guards against lost events; the quiet window avoids re-ingesting half-saved files mid-write; poison files are handled at two layers (listed and skipped during delta, recounted on full scans). serve's sub-second search comes from the resident llama-server plus the embed sidecar.",
    "analogy_zh": "一个管随叫随查，一个管盯着文件夹的住家服务员",
    "analogy_en": "One live-in helper answers lookups; the other watches the folders",
+   "why_zh": "模型冷启动与无变化的重复摄取都可能占资源。复用、增量与回收要一起设计，才能让服务长期可控。",
+   "why_en": "Model cold starts and repeated no-change ingest can consume resources. Reuse, incremental work and reclamation must be designed together.",
+   "how_zh": "显式运行 serve/watch。watch 用快照比较识别新增、修改、删除；serve 管自己的子进程。reranker 的借还与 300 秒空闲策略是另一条独立生命周期。",
+   "how_en": "Run serve/watch explicitly. Watch compares metadata snapshots for added, changed and deleted files; serve manages its own children. Reranker leases and the 300-second idle policy form a separate lifecycle.",
+   "try_zh": "用模型借还实验区分「请求归还一次租约」和「整个共享服务立即退出」：为什么它们不能是同一件事？",
+   "try_en": "Use the lease experiment to distinguish returning one request’s lease from immediately terminating a shared service. Why are these different?",
    "refs": [
     {
      "path": "goldmine/serve.py",
      "lines": "",
-     "note": "常驻 serve、心跳与 linger 超时"
+     "note": "ServeDaemon"
     },
     {
      "path": "goldmine/watch.py",
      "lines": "",
-     "note": "FSEvents 静默窗与 6 小时兜底扫描"
+     "note": "_tick()、_scan() 与静默窗口"
     }
    ],
    "deep": [
@@ -1616,6 +1770,12 @@
    "example_en": "See it live: python3 -m goldmine search zzqxjv --db evals/eval.sqlite → 'nothing found' plus a suggestion, rc=0. In evals, zero-hit honesty sits on the ADVISORY_METRICS list (scripts/eval_public.py), n=5, reported verbatim.",
    "analogy_zh": "没药就说没药的药店",
    "analogy_en": "A pharmacy that says 'out of stock' instead of lookalikes",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/commands/search.py",
@@ -1672,6 +1832,12 @@
    "example_en": "See them side by side: python3 -m goldmine search 'copper gasket' --db evals/eval.sqlite.pre-p2b.sqlite; echo rc=$? → rc=3 (fingerprint refusal); add --lexical → rc=0. After exit 5, 'goldmine status --failures' shows per-file reasons; a Ctrl-C interrupt gives rc=130, and rerun resumes via content hashes.",
    "analogy_zh": "每张出门字条都有固定编号",
    "analogy_en": "Every goodbye note has a fixed number",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/command_support.py",
@@ -1723,6 +1889,12 @@
    "example_en": "'goldmine status --failures' lists each failing file and why (the exit-5 bookkeeping outlet). Spot-check the eval library: python3 -m goldmine status --db evals/eval.sqlite --json shows capability distribution and the four staleness counts (all should be 0).",
    "analogy_zh": "档案标签四选一，不许「大概齐」",
    "analogy_en": "Four labels; 'more or less' isn't one",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/store.py",
@@ -1779,6 +1951,12 @@
    "example_en": "Loud degradations: estimate without pdfinfo says 'assumed 10 pages/PDF'; a watch backend that failed to start writes its reason into the report; an unsupported image gets a plain NotSupported (serve/mcp/llama share the wording verbatim, pinned by a comparison test). Spot-check: python3 -m goldmine status --db evals/eval.sqlite --json.",
    "analogy_zh": "没货就说没货的店，才经得起抽查",
    "analogy_en": "A shop that says 'out of stock' survives spot-checks",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/store.py",
@@ -1840,6 +2018,12 @@
    "example_en": "A live MISSING: the Arabic pathology reproduction — real assets recorded MISSING, synthetic pathology plus mechanism tests standing in. A live PASS: all six ANCHORS.md commands actually run, each with a 'how to read the output' note.",
    "analogy_zh": "验收章只有三种，没有模糊章",
    "analogy_en": "Three stamps only; no blurry stamp exists",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/evidence_status.py",
@@ -1898,6 +2082,12 @@
    "example_en": "The attribution drill: git stash the other session's changes → rerun the failing tests → all green means attribution confirmed. Today's version: on strange failures in the full suite, take the test name and demand attribution (docs/ANCHORS.md card 6).",
    "analogy_zh": "各刷各的墙，房东验收合并",
    "analogy_en": "Each painter a wall; the landlord merges",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "AGENTS.md",
@@ -1949,6 +2139,12 @@
    "example_en": "Run card 2 verbatim: python3 -m goldmine search 'copper gasket' --db evals/eval.sqlite.pre-p2b.sqlite; echo rc=$? → differs in: media + rc=3. Card 3: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_vectors.py tests/test_reference_media_vectors.py.",
    "analogy_zh": "导游发小锤：结实不结实，自己敲",
    "analogy_en": "The guide hands you a hammer: tap the wall yourself",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/ANCHORS.md",
@@ -2009,6 +2205,12 @@
    "example_en": "Search 'TRX50' (a motherboard model number): the semantic model doesn't know the number — only FTS5 hits it exactly. Run python3 -m goldmine search TRX50 --db evals/eval.sqlite; --why shows the BM25 rank, but it only orders the lexical arm and contributes exactly 0 to the final score.",
    "analogy_zh": "书后的索引页 + 生僻词更值钱的排队规矩",
    "analogy_en": "A book's back index, where rare words matter more",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/lexical_store.py",
@@ -2048,7 +2250,7 @@
      "rel_en": "After inversion, the lexical arm eats the weight"
     }
    ],
-   "x": 104.0,
+   "x": 182.0,
    "y": 684.0
   },
   {
@@ -2072,6 +2274,12 @@
    "example_en": "base.py: QUERY_PROMPT = 'task: search result | query: {text}'; DOCUMENT_PROMPT = 'title: {title} | text: {text}'. Receipt of the code-title-prompt A/B: reports/execution/digup-plan-001/p1-code-title-prompt/ (n=21, zero metric change).",
    "analogy_zh": "问题与资料各穿固定外衣，换衣全部重拍",
    "analogy_en": "Fixed outfits for questions and documents; new outfit, reshoot",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/base.py",
@@ -2125,6 +2333,12 @@
    "example_en": "Pinned at b11461 (source under vendor/). Upgrade discipline: first run GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_vectors.py tests/test_reference_media_vectors.py — if any bit of the reference vectors moved, the fingerprint identity chain must follow. Families never mix.",
    "analogy_zh": "自带源码、锁死版本的发动机",
    "analogy_en": "An engine shipped with its own locked source",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -2181,6 +2395,12 @@
    "example_en": "embeddinggemma-2-Q8_0 is about 800MB (F16 would be ~1.5GB). Verify the quantized model still reproduces reference vectors bit-exactly: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_vectors.py.",
    "analogy_zh": "大字号印的书换成紧凑排版",
    "analogy_en": "A large-print book reset in compact type",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/model_manifest.py",
@@ -2239,6 +2459,12 @@
    "example_en": "Bit-exact verification: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_vectors.py → 2 passed (the Q8_0 model's output matches the golden vectors bit for bit).",
    "analogy_zh": "全馆唯一的编目员，手法登记造册",
    "analogy_en": "The library's sole cataloger, method on file",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -2273,7 +2499,7 @@
      "rel_en": "Her quantized incarnation"
     }
    ],
-   "x": 436.0,
+   "x": 788.0,
    "y": 940.0
   },
   {
@@ -2297,6 +2523,12 @@
    "example_en": "mmproj-embeddinggemma-2-Q8_0: machines with it gain four extra fingerprint keys (media, mmproj_sha256, …); text-only machines keep the byte-identical fingerprint. See the gate fire: python3 -m goldmine search 'copper gasket' --db evals/eval.sqlite.pre-p2b.sqlite; echo rc=$? → 'differs in: media', rc=3.",
    "analogy_zh": "把图片和声音翻译进文字坐标系的翻译官",
    "analogy_en": "An interpreter moving images and sound into words' coordinates",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -2340,24 +2572,35 @@
    "title_en": "SQLite & WAL",
    "one_zh": "单文件数据库与预写日志",
    "one_en": "One-file database with write-ahead log",
-   "def_zh": "SQLite 是单文件数据库——整个索引（段表、FTS5 表、向量 BLOB、元数据）就是一个 .sqlite 文件。WAL（预写日志）模式让读写不互相阻塞：写先落到 -wal 伴生文件，读方看稳定的主文件，检查点时再合并——扫描进行中也能随时搜索。事务在这之上提供原子性：本项目一文件一事务，崩溃最坏丢一个文件的这一次。",
-   "def_en": "SQLite is a single-file database — the whole index (segments, FTS5 tables, vector BLOBs, metadata) is one .sqlite file. WAL (write-ahead logging) lets readers and writers not block each other: writes land in the -wal companion first while readers see the stable main file, merging at checkpoints — search works mid-scan. Transactions add atomicity on top: one transaction per file here, so a crash at worst loses one file's current pass.",
-   "plain_zh": "整个图书馆的目录卡片装在一个抽屉里，搬家只需端走一个抽屉。WAL 是「先在便签上记一笔、稍后正式誊写」的记账法——有人查账时不必等誊写完。",
-   "plain_en": "The whole library catalog lives in one drawer — moving house means carrying one drawer. WAL is bookkeeping on sticky notes first, formal ledger later — nobody reading the ledger waits for the scribe.",
-   "example_zh": "库目录下能看到 eval.sqlite-wal / -shm 伴生文件（WAL 模式的痕迹）。就算此刻断电，最坏损失 = 正在写的那个文件本次摄取；重跑摄取时内容 sha256 未变的文件直接跳过。",
-   "example_en": "You can see eval.sqlite-wal / -shm companions next to the database — WAL mode's footprints. Cut power right now and the worst loss is the one file being written this pass; rerun ingest and every file whose sha256 hasn't changed is skipped.",
-   "analogy_zh": "先记便签再誊账的图书馆卡片抽屉",
-   "analogy_en": "A catalog drawer that drafts on sticky notes before the ledger",
+   "def_zh": "SQLite 把索引的权威表放在同一个数据库中。WAL 模式的已提交修改可以暂存在 -wal 文件；一个读事务看到的是固定的已提交快照，可能同时取自主文件和 WAL。并发写入发布新版本，不会让同一次请求的排名、原文和引用各自切换到不同版本。WAL 不代表完全没有锁或检查点争用。",
+   "def_en": "SQLite keeps authoritative index tables in one database. In WAL mode, committed changes can remain in the -wal file. A read transaction sees a fixed committed snapshot that can include both main-file pages and WAL frames. Concurrent publication does not make one request’s ranks, original text and citations switch versions independently. WAL does not eliminate every lock or checkpoint conflict.",
+   "plain_zh": "把主文件想成账本，WAL 想成已经签字、尚未誊回账本的便签。一次读快照按同一个截止点合看账本与已提交便签，不会因为便签还没誊写就忽略它。要做可恢复副本，使用 SQLite 备份流程，不只拿走账本。",
+   "plain_en": "Think of the main file as a ledger and WAL as signed entries not yet copied back. A read snapshot consults the ledger and committed notes at one cutoff; it does not ignore entries still in the notes. For a recoverable copy, use SQLite backup rather than taking only the ledger.",
+   "example_zh": "库旁可以有 -wal / -shm 伴生文件。使用 goldmine backup --db library.sqlite --out backup.sqlite 创建验证过的备份；不要把「一个逻辑数据库」误读成只复制主文件就一定完整。",
+   "example_en": "A database can have -wal/-shm companions. Use goldmine backup --db library.sqlite --out backup.sqlite for a verified backup. One logical database does not mean copying only its main file is necessarily complete.",
+   "analogy_zh": "同一截止点的账本与已签字便签一起构成读视图",
+   "analogy_en": "A ledger and committed notes share one read cutoff",
+   "why_zh": "写入可以继续，读者仍需自洽。把快照与「只读主文件」混为一谈，会误解并发下的数据来源。",
+   "why_en": "Writes can continue while each reader stays consistent. Equating a snapshot with reading only the main file misstates how concurrent reads work.",
+   "how_zh": "Application 为一次请求开启只读 Store 和读事务，让排名、取证、邻块与打包共用它。写入方仍通过注册写事务原子发布。",
+   "how_en": "Application opens one read-only Store and transaction per request; ranking, evidence, neighbors and packing share it. Writers publish atomically through the registered writer transaction.",
+   "try_zh": "在快照实验中发布下一版：当前请求的 rank/text/citation 三个版本应该变吗？再开始新请求验证。",
+   "try_en": "Publish a new version in the snapshot experiment. Should this request’s rank/text/citation stamps change? Begin a new request and check.",
    "refs": [
     {
-     "path": "goldmine/store.py",
+     "path": "goldmine/application.py",
      "lines": "",
-     "note": "库连接与 write_transaction()"
+     "note": "Application._snapshot()"
+    },
+    {
+     "path": "goldmine/storage_connections.py",
+     "lines": "",
+     "note": "read_snapshot()"
     },
     {
      "path": "goldmine/storage_writes.py",
      "lines": "",
-     "note": "段/FTS/向量行的原子替换"
+     "note": "writer_scope()"
     }
    ],
    "deep": [
@@ -2375,6 +2618,11 @@
      "to": "fts5-bm25",
      "rel_zh": "FTS5 表也住在这个抽屉里",
      "rel_en": "The FTS5 tables live in this drawer too"
+    },
+    {
+     "to": "read-snapshot",
+     "rel_zh": "一次请求怎样保持自洽",
+     "rel_en": "Keep an entire request consistent"
     }
    ],
    "x": 2094.0,
@@ -2391,24 +2639,35 @@
    "title_en": "fp16 Vector Store",
    "one_zh": "768 个浮点压成 1536 字节存库",
    "one_en": "Vectors stored as half-precision blobs",
-   "def_zh": "存储合同（D7）：768 个 float32 向量压成 1536 字节的小端 float16 BLOB 落库（util.pack_fp16 / unpack_fp16），检索时按 8192 行的块批量还原成 float32 再算余弦。权衡：存储减半、缓存更友好，fp16 的 10 位尾数对归一化向量的余弦排序无影响——这是「存储侧量化」，与模型权重的 Q8_0 是同一家族的两个决定，各自独立钉进合同。",
-   "def_en": "The storage contract (D7): each 768-float32 vector packs into a 1536-byte little-endian float16 BLOB (util.pack_fp16 / unpack_fp16); at query time it unpacks back to float32 in 8192-row blocks before the cosine. The tradeoff: half the storage and friendlier caching, while fp16's 10-bit mantissa leaves cosine ordering of normalized vectors untouched — a 'storage-side quantization' in the same family as the model weights' Q8_0, each pinned independently into the contract.",
-   "plain_zh": "仓库里每件行李用真空袋压缩一半再上架——省一半货架，需要用时拆开还原。日常清点按 8192 件一批拆。压缩是「有损但无损到点子上」：省掉的那几位小数，根本影响不了谁排前面。",
-   "plain_en": "Every suitcase in storage goes into a vacuum bag, halved on the shelf — half the racks, unpacked on demand, 8192 items to a batch. The compression 'loses bits that don't matter': the trimmed decimal digits can't change who ranks first.",
+   "def_zh": "存储合同把每个 768 维 float32 向量转为 1536 字节的小端 float16 BLOB，查询时按 8192 行的块恢复为 float32。相对原始 float32 向量，向量 payload 字节数减半；不是整个索引文件减半。fp16 是有损量化：恢复不会找回丢掉的位，也没有再次归一化。相近分数可能换序或变成并列，是否可接受需要参考向量与检索回归证据。它与模型权重量化 Q8_0 是独立的决定。",
+   "def_en": "The storage contract converts each 768-dimensional float32 vector into a 1536-byte little-endian float16 BLOB, restoring float32 in 8192-row blocks at query time. Vector payload bytes halve relative to float32; the whole index does not necessarily halve. fp16 is lossy: restoring cannot recover discarded bits, and vectors are not renormalized. Near-tied scores can change order or become ties, so acceptability requires reference-vector and retrieval-regression evidence. This is independent of model-weight Q8_0 quantization.",
+   "plain_zh": "像把测量值保留更少的小数位来节省账本空间。相差很远的两项通常容易区分，原本只差一点的两项却可能被写成同一个数，甚至换序。省空间是确定的 payload 权衡，排名不变不是数学保证。",
+   "plain_en": "Like recording measurements with fewer decimal places to save ledger space. Well-separated values can stay easy to distinguish, while close values may round into a tie or change order. Smaller payloads are a defined tradeoff; unchanged ranking is not a mathematical guarantee.",
    "example_zh": "util.py: _FP16_ITEMSIZE = 2 — 768 × 2 = 1536 字节 BLOB 合同；store.py: BLOCK_ROWS = 8192（fp16→f32 批量还原块，DigUp 模式）。repair.py 重写向量也走 pack_fp16。",
    "example_en": "util.py: _FP16_ITEMSIZE = 2 — the 768 × 2 = 1536-byte BLOB contract; store.py: BLOCK_ROWS = 8192 (the fp16→f32 conversion block, a DigUp pattern). repair.py rewrites vectors through pack_fp16 too.",
-   "analogy_zh": "真空袋压缩一半上架，用时拆开还原",
-   "analogy_en": "Vacuum-bagged on the shelf, unpacked on demand",
+   "analogy_zh": "用更少的小数位记录测量值，近似不等于无损",
+   "analogy_en": "Fewer decimal places: approximate storage is not lossless",
+   "why_zh": "向量常占大量存储；减少 payload 有价值，但不能把量化误差当成不存在。正确性证据必须与具体模型、提示词和索引版本绑定。",
+   "why_en": "Vectors can occupy substantial storage. Smaller payloads matter, but quantization error still exists. Correctness evidence must bind the actual model, prompts and index version.",
+   "how_zh": "写入用 pack_fp16，读取批量还原。对固定参考输入检查向量身份，再按冻结查询执行检索回归；近分数必须保留固定并列规则，不能宣称所有语料永远不换序。",
+   "how_en": "Pack with pack_fp16 and restore in blocks. Check vector identities on fixed reference inputs, then run frozen retrieval regressions. Preserve deterministic tie rules for close scores; do not promise ordering invariance for every corpus.",
+   "try_zh": "两项得分原本只差最后几位小数时，把精度减掉会怎样？区别「这批参考通过」与「任何输入都不会换序」。",
+   "try_en": "What can happen when two scores differ only in their final decimal places and precision is reduced? Distinguish this reference set passing from every possible input preserving order.",
    "refs": [
     {
      "path": "goldmine/util.py",
-     "lines": "",
-     "note": "pack_fp16/unpack_fp16 的 1536 字节合同"
+     "lines": "120",
+     "note": "pack_fp16() · 有损 fp16 存储"
+    },
+    {
+     "path": "goldmine/util.py",
+     "lines": "128",
+     "note": "unpack_fp16() · 恢复不等于找回原位"
     },
     {
      "path": "goldmine/store.py",
-     "lines": "",
-     "note": "fp16 BLOB 的读写与 8192 行还原块"
+     "lines": "601",
+     "note": "_load_vectors_sqlite() · 批量还原"
     }
    ],
    "deep": [
@@ -2452,6 +2711,12 @@
    "example_en": "Each wave hashes candidates first; a matching stored hash with fresh versions means skip — that's 'Ctrl-C safe, rerun resumes'. See identity at work: in python3 -m goldmine status --db evals/eval.sqlite --json, current.embed_id is derived from exactly these shas.",
    "analogy_zh": "多一个逗号都认不出的指纹照",
    "analogy_en": "A fingerprint photo unrecognizable after one comma",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -2481,7 +2746,7 @@
      "rel_en": "How one file's hash grows into a family identity"
     }
    ],
-   "x": 1840.0,
+   "x": 1830.0,
    "y": 812.0
   },
   {
@@ -2503,6 +2768,12 @@
    "example_en": "Model registry: whisper-large-v3-turbo-q5_0 (model_manifest). Drop thresholds MIN_SEGMENT_MEAN_P = 0.50 and MIN_CHARS_PER_MINUTE = 20.0; merge caps MERGE_MAX_S = 40.0 / MERGE_MAX_TOKENS ≈ 450.",
    "analogy_zh": "自带两道自查的本地速记员",
    "analogy_en": "A local stenographer with two self-checks",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/asr.py",
@@ -2559,6 +2830,12 @@
    "example_en": "asr.py: VAD_MODEL_KEY = 'silero-vad-v5.1.2'; the command line reads whisper-cli -m <model> --vad -vm <vad> -l auto -ojf. Contrast the energy version: SILENCE_RMS = 0.003 in media.py.",
    "analogy_zh": "速记员上岗前指段的引导员",
    "analogy_en": "The usher pointing out speech before the stenographer writes",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/asr.py",
@@ -2605,6 +2882,12 @@
    "example_en": "The batching saver (F7): N screenshots → one batch → one helper spawn. See whether OCR landed: info.ocr_status / ocr_page_states in python3 -m goldmine status --json (goldmine/evidence_status.py's stored_evidence_status aggregates ocr/asr states).",
    "analogy_zh": "请读图员把截图里的字抄进档案",
    "analogy_en": "A reader transcribing screenshots into the archive",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ocr.py",
@@ -2658,6 +2941,12 @@
    "example_en": "The asr pipeline's first step: ffmpeg -i X -ac 1 -ar 16000 -f wav (streamed to a tmp dir, capped at asr_max_minutes). estimate converts audio/video time via ffprobe_duration.",
    "analogy_zh": "什么格式都打得开的万能料理机",
    "analogy_en": "The universal blender that opens any format",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/asr.py",
@@ -2709,6 +2998,12 @@
    "example_en": "Extractor identity: extractor_version = pdftotext@24.08.0 (tool version on the books; behavior change → string change). estimate's page counts come from pdf_info/pdfinfo_path (extract_pdf.py).",
    "analogy_zh": "拆 PDF 信封的三把刀：抽字、拍照、数页",
    "analogy_en": "Three blades for the PDF envelope: text, photo, count",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/extract_pdf.py",
@@ -2760,6 +3055,12 @@
    "example_en": "media.py's extraction string reads 'frames=fps1/3,ahash4bit,jpeg1024,max1200' — a third of a frame per second, aHash dedup, JPEG 1024, max 1200 frames. A static scene sampled 100 times keeps exactly one.",
    "analogy_zh": "八乘八黑白格子的像素指纹卡",
    "analogy_en": "An 8×8 dot-pattern ID card for each frame",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/media.py",
@@ -2806,6 +3107,12 @@
    "example_en": "A comment in goldmine-embed.c names the choice: a=−0.5 follows Pillow (GGML/PyTorch use −0.75). Verify: python3 -m pytest -q tests/test_embed_helper_unit.py (bit-exact golden-table comparison of the resize).",
    "analogy_zh": "显影工序必须和老师傅分毫不差",
    "analogy_en": "Darkroom work must match the master to the letter",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "tools/embed/goldmine-embed.c",
@@ -2864,6 +3171,12 @@
    "example_en": "The query 'how to index pagination for long books' hits a section about 'resuming long files' — zero shared words, nearby vectors. Verify the embedder yourself: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_vectors.py tests/test_reference_media_vectors.py → expect '2 passed, 2 skipped' (bit-exact).",
    "analogy_zh": "每个意思一张门牌号，门牌号是 768 个数字组成的坐标",
    "analogy_en": "Every idea gets an address made of 768 numbers",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -2898,15 +3211,32 @@
    "title_en": "Cosine Similarity",
    "one_zh": "只看方向不看长度的夹角",
    "one_en": "Vector angle; length ignored",
-   "def_zh": "两个向量夹角的余弦，等于点积除以模长之积（本项目向量已归一化，点积即余弦）。值域 [0,1]，1 = 方向完全一致。选它而非欧氏距离：文本长短只改变向量长度（幅度），方向才编码含义。这是向量检索的标准比较法——从学术 IR 到工业 ANN 索引通吃。",
-   "def_en": "The cosine of the angle between two vectors — dot product over length product (vectors here are normalized, so the dot product is the cosine). Range [0,1]; 1 means identical direction. Chosen over Euclidean distance because text length only changes vector magnitude; direction encodes meaning. This is the standard comparison of vector retrieval — academic IR and industrial ANN indexes alike.",
-   "plain_zh": "两支手电筒从同一点照出去：照向同一个东西，光柱方向几乎重合；照向不同的东西，光柱张开一个角。余弦就是量这个张角——零度得满分 1，九十度得 0。光柱本身多长（文章多长）不重要。",
-   "plain_en": "Two flashlights beam from the same spot: aimed at the same object the beams nearly overlap; aimed at different objects they spread apart. Cosine measures that spread — 0 degrees scores 1, 90 degrees scores 0. How long each beam is (how long each text is) doesn't matter.",
-   "example_zh": "z 分数手算锚点的起点：26 个向量行，1 个目标行余弦 = 1、其余 25 行 = 0（见 z-score 条目，最终 z = √(26−1) = 5）。goldmine search 加 --why 会把每个命中的余弦与 z 分解打印出来。",
-   "example_en": "The anchor for the z-score hand computation: 26 vector rows, one target with cosine 1 and 25 filler rows at 0 (see z-score: the final z = √(26−1) = 5). Run goldmine search with --why to see the cosine and z breakdown printed for every hit.",
+   "def_zh": "余弦相似度 cos(θ) = (u·v)/(‖u‖‖v‖)，数学值域是 [−1,1]。单位向量的点积等于余弦：同向为 1，正交为 0，反向为 −1。项目使用归一化嵌入的矩阵点积；fp16 持久化会带来量化误差。归一化去掉长度的影响，并不保证改变文本长度只改变向量长度，也不把相似度变成相关概率。",
+   "def_en": "Cosine similarity is (u·v)/(‖u‖‖v‖), with mathematical range [−1,1]. The dot product of unit vectors equals cosine: 1 for the same direction, 0 for orthogonal vectors, −1 for opposite directions. Goldmine uses matrix dot products of normalized embeddings; fp16 persistence introduces quantization error. Normalization removes vector magnitude, but changing text length can also change its embedding direction. Similarity is not a relevance probability.",
+   "plain_zh": "两支手电筒的方向越重合，余弦越接近 1；正交为 0；朝反方向为 −1。光柱的幅度被归一化掉。这个类比只说明几何，不说明文章加长后模型会怎样重新编码。",
+   "plain_en": "Overlapping flashlight directions approach cosine1; orthogonal beams give0; opposite directions give−1. Normalize away beam magnitude. The analogy explains geometry, not how a model re-encodes a longer text.",
+   "example_zh": "单位向量 u=(1,0)，v=(0,1)：点积为 0。v=(−1,0) 时点积为 −1。实验台演示这两个方向都合法。",
+   "example_en": "For unit vectors u=(1,0), v=(0,1), the dot product is 0. With v=(−1,0), it is −1. Both are valid directions in the workbench.",
    "analogy_zh": "手电筒光柱的夹角，不是光柱的长短",
    "analogy_en": "The angle between flashlight beams, not their length",
-   "refs": [],
+   "why_zh": "我们希望比较表示的方向，避免向量幅度直接主导打分；一个余弦值仍需要结合当前语料分布与真实词证解释。",
+   "why_en": "Compare representation directions without letting magnitude dominate. Interpret the result alongside this corpus distribution and real lexical evidence.",
+   "how_zh": "给理想查询与文档向量归一化，再计算点积。实验台用二维单位向量说明这件事；生产模型有 768 维。实际库里的 fp16 向量恢复为 fp32 后没有再次归一化，因此量化后的点积可以略大于 1；这不改变理想余弦的 [−1,1] 几何定义。",
+   "how_en": "Normalize ideal query/document vectors and take their dot product. This demo uses2-D unit vectors; production has 768 dimensions. Stored fp16 vectors are restored to fp32 without renormalizing, so a quantized query dot product can slightly exceed1. That does not change ideal cosine geometry’s[−1,1] range.",
+   "try_zh": "把夹角依次设为 0°、90°、180°，读数应接近 1、0、−1。再保持夹角，切换邻居分布：余弦不变，z 可以改变。",
+   "try_en": "Set 0°, 90° and 180°; read approximately 1, 0 and −1. Keep the angle fixed and change the neighbors: cosine stays fixed while z can change.",
+   "refs": [
+    {
+     "path": "goldmine/search.py",
+     "lines": "327",
+     "note": "_search() · 矩阵点积"
+    },
+    {
+     "path": "goldmine/backends/llama.py",
+     "lines": "223",
+     "note": "_l2_normalize() · 归一化"
+    }
+   ],
    "deep": [
     {
      "to": "distance-vs-angle",
@@ -2924,8 +3254,8 @@
      "rel_en": "A raw cosine means nothing alone; turn it into a z"
     }
    ],
-   "x": 116.0,
-   "y": 1064.0
+   "x": 202.0,
+   "y": 1192.0
   },
   {
    "id": "z-score",
@@ -2940,15 +3270,27 @@
    "title_en": "z-score",
    "one_zh": "这个分数今天有多出众",
    "one_en": "How outstanding this score is today",
-   "def_zh": "z = (单个余弦 − 均值) / 标准差。原始余弦没有绝对意义——同一模型对不同查询的分数分布完全不同（A 查询全体 0.8，B 查询全体 0.3），标准化后「出众程度」才可跨查询、跨模态比较。这是统计学最老牌的标准化手法在检索里的应用；准入门槛建在 z 上而非余弦上，正因为 z 随库大小自适应。",
-   "def_en": "z = (one cosine − mean) / standard deviation. A raw cosine has no absolute meaning — the same model may score a whole query's results around 0.8 and another's around 0.3 — so standardization is what makes 'how outstanding' comparable across queries and modalities. It is statistics' oldest normalization move applied to retrieval; the admission threshold sits on z, not cosine, precisely because z adapts to corpus size.",
+   "def_zh": "z 描述一个余弦在本次查询、当前索引中的相对突出程度。项目先按模态减均值（模态不足 20 行时用全局均值），再对全部居中值统一减去全局均值，并除以全局总体标准差与 0.02 中较大的值。它没有假定分数服从正态分布，也不是相关概率、置信度或 p 值；同一目标余弦在不同语料中可以得到不同 z。",
+   "def_en": "z measures how much a cosine stands out for this query in this index. Goldmine first subtracts each modality mean (using the global mean below 20 rows), recenters all resulting values, then divides by the larger of their global population standard deviation and 0.02. No normal score distribution is assumed. z is not a relevance probability, confidence or p-value; the same target cosine can receive different z values in different corpora.",
    "plain_zh": "考试 90 分算高吗？要看全班的平均分和分数波动。平均 85、波动 2 分，你的 90 就非常突出；平均 89、波动 5 分，90 分平平无奇。z 分数就是「你比平均分高出几个波动单位」。",
    "plain_en": "Is 90 on a test a good score? It depends on the class average and the spread. Average 85 with a spread of 2 — your 90 is remarkable. Average 89 with a spread of 5 — your 90 is nothing special. The z-score counts how many 'spread units' you stand above the average.",
-   "example_zh": "手算（测试里钉死）：26 个向量行，1 个目标行余弦 = 1、25 个填充行 = 0。均值 = 1/26，目标偏离 = 25/26，全局 std = 5/26。z = (25/26)/(5/26) = 5 = √(26−1)。通用规律：一行鹤立鸡群时 z ≈ √(n−1)——库越大，同样的领先换来越大的 z。",
-   "example_en": "Hand computation (pinned in tests): 26 vector rows, one target with cosine 1, 25 fillers at 0. Mean = 1/26, deviation = 25/26, global std = 5/26. z = (25/26)/(5/26) = 5 = √(26−1). General rule: one standout row gives z ≈ √(n−1) — the bigger the library, the bigger the z for the same lead.",
+   "example_zh": "单一模态的 26 行：目标 1，其余 25 行为 0。均值 1/26，标准差 5/26，目标 z=(25/26)/(5/26)=5。对这个两点分布，z=√(n−1) 仅在 0.02 标准差下限未生效时成立；它不是语料越大搜索就越准的定律。",
+   "example_en": "For one modality with 26 rows, target 1 and 25 zeros, mean=1/26 and population standard deviation=5/26, so target z=5. In this two-level construction z=√(n−1) only while the 0.02 spread floor is inactive. It is not a law that larger corpora yield better search.",
    "analogy_zh": "高出平均分几个「波动单位」",
    "analogy_en": "How many spread-units above the class average",
-   "refs": [],
+   "why_zh": "只有原始分数，无法看出它是在一群相似文档里略高一点，还是明显突出。标准化提供对比分布的尺度，但不替代相关性评测。",
+   "why_en": "A raw score does not show whether it barely leads similar documents or stands far apart. Standardization adds a distribution-relative scale, not a substitute for relevance evaluation.",
+   "how_zh": "保持完整的全库余弦输入，执行模态居中与全局尺度计算，再在文件内取最大 z。优化可以减少后续对象创建，不能提前抽样掉参与均值与标准差的行。",
+   "how_en": "Retain every corpus cosine for modality centering and global scaling, then take a per-file maximum. An optimization can avoid later object creation; it must not sample away rows used by the mean and spread.",
+   "try_zh": "先用 26 行、目标余弦 1、其余为 0 的例子得到 z=5。切到相似邻居，解释为什么不是目标变差了，而是参照群体变了。",
+   "try_en": "Start with 26 rows, one cosine 1 and the rest 0: target z=5. Switch to similar neighbors and explain why the reference population changed even though the target did not.",
+   "refs": [
+    {
+     "path": "goldmine/search.py",
+     "lines": "709",
+     "note": "zscores() · 模态居中与全局尺度"
+    }
+   ],
    "deep": [
     {
      "to": "mean-std",
@@ -2966,8 +3308,8 @@
      "rel_en": "What raw material is being standardized"
     }
    ],
-   "x": 706.0,
-   "y": 1064.0
+   "x": 670.0,
+   "y": 1192.0
   },
   {
    "id": "per-modality-mean",
@@ -2980,15 +3322,27 @@
    "title_en": "Per-modality Mean",
    "one_zh": "文本图片音频各算各的平均分",
    "one_en": "Each modality gets its own mean",
-   "def_zh": "z 分数的均值按模态分组计算（文本一组、图片一组、音频一组……），但标准差用全库统一。这是被 DigUp 实测教育出的折中：全按模态分组会让窄组（如 PDF 页）被吹爆——同组一个高分除以极小的组内 std，z 虚高，实测 91→94/105 变差，于是退回全局 std。新增模态组行数 <20 时均值不稳，是维护者要盯的点。多模态检索系统做分数标准化时的通用难题：不同模态的分数基线天然不同。",
-   "def_en": "The z-score mean is computed per modality group (text, images, audio, …) while the standard deviation stays global. This compromise was taught by DigUp's measurements: fully per-modality grouping lets narrow groups (like PDF pages) blow up — one high score divided by a tiny within-group std inflates z — and measurably made results worse (91→94 out of 105), so the global std came back. Modality groups under 20 rows have unstable means; maintainers watch for that. A universal puzzle of multimodal retrieval: score baselines differ by nature across modalities.",
+   "def_zh": "文本、图片、音频的余弦基线可能不同。对至少 20 行的模态，先减去该模态均值；不足 20 行的组减全库均值。之后对所有居中值再统一居中，并用同一个全局标准差（下限 0.02）换算成 z。不是每个模态单独除自己的标准差。",
+   "def_en": "Text, image and audio cosines can have different baselines. A modality with at least 20 rows subtracts its own mean; a smaller group subtracts the corpus mean. All centered values are then recentered and scaled by one global standard deviation with a 0.02 floor. Each modality does not divide by its own spread.",
    "plain_zh": "班级平均分怎么算才公平？把体育特长班和普通班混在一起算一个平均，普通班全显得很差。所以平均分分班算，各班跟各班的均值比；但「分数波动的幅度」用全校同一把尺——尺子也分班的话，小班随便一次起伏都被放大成惊天动地。",
    "plain_en": "How should class averages be computed fairly? Mix the athletes' class with the regular class into one average and everyone in the regular class looks bad. So averages are per class — but the 'spread ruler' is school-wide. If the ruler were per class too, any tiny wobble in a small class would look like an earthquake.",
-   "example_zh": "一次搜索里文本行均值 0.42、图片行均值 0.31：同一个余弦 0.40 在图片里「高于平均」，在文本里「低于平均」，z 的符号因此不同。DigUp 全按模态分组的实测代价：91→94/105（变差）。",
-   "example_en": "In one search the text rows average 0.42 while image rows average 0.31: the same cosine 0.40 is above average among images but below average among text, flipping the sign of z. DigUp's measured cost of fully per-modality grouping: 91→94 out of 105 — worse.",
+   "example_zh": "只有文本与图片两个模态，且每组至少 20 行：文本均值 0.42、图片均值 0.31 时，同样的余弦 0.40 相对各自均值一负一正。所有组均按自身均值居中，统一再居中项为 0，因此这两个 z 的符号不同；若某组不足 20 行，就不能套这个例子。",
+   "example_en": "With only text and image modalities, each containing at least20 rows, a text mean0.42 and image mean0.31 make cosine0.40 below one mean and above the other. Each group centers on its own mean, so global recentering is zero and the two z signs differ. This example does not apply when either group has fewer than 20 rows.",
    "analogy_zh": "平均分分班算，评分波动全校一把尺",
    "analogy_en": "Averages per class, one spread ruler school-wide",
-   "refs": [],
+   "why_zh": "小模态组的均值容易不稳，组内标准差也可能过小。共享尺度减少窄组把分数放大的问题；是否有用仍要用冻结评测判断。",
+   "why_en": "Small groups have unstable means and can have tiny within-group spread. Sharing the scale avoids a small group inflating its scores; frozen evaluations still determine retrieval quality.",
+   "how_zh": "先统计每个模态的行数与均值，再按 20 行边界选择减数。所有行都保留到全局尺度计算之后。",
+   "how_en": "Count rows and compute means by modality, choose the subtraction mean at the 20-row boundary, and retain every row through the global-scale calculation.",
+   "try_zh": "在实验台选「20 文本行 + 6 图片行」。为什么文本用自己的均值，而 6 张图片不能各自形成一个独立 z 尺度？",
+   "try_en": "Choose 20 text rows plus 6 image rows. Why can text use its own mean while the six image rows do not get an independent z scale?",
+   "refs": [
+    {
+     "path": "goldmine/search.py",
+     "lines": "709",
+     "note": "zscores() · 20 行边界与全局标准差"
+    }
+   ],
    "deep": [
     {
      "to": "mean-std",
@@ -3001,8 +3355,8 @@
      "rel_en": "Back to the full z formula"
     }
    ],
-   "x": 588.0,
-   "y": 1064.0
+   "x": 514.0,
+   "y": 1192.0
   },
   {
    "id": "hybrid-fusion",
@@ -3015,15 +3369,32 @@
    "title_en": "Hybrid Fusion",
    "one_zh": "语义分加词证分，词证更重",
    "one_en": "Semantic plus heavier word-evidence score",
-   "def_zh": "score = 1.0·max(z,0) + 2.0·coverage^1.5（+ 类型命中加 1.0，平坦封顶不叠）。词证权重刻意更重；查询含「字母数字混合带数字」或 ≥4 位纯数字（发票号、工单号）时反转为 (0.5, 4.0)，词法压倒。为什么混合：两条臂各有盲区——纯语义抓不住精确编号，纯词法抓不住同义改写。这是检索领域「hybrid search」的标准命题；融合方式本身也经过实证选择：DigUp 自己的数据里 RRF 融合输给加法融合，故不用 RRF。",
-   "def_en": "score = 1.0·max(z,0) + 2.0·coverage^1.5 (+1.0 for a kind match, flat and capped). Word evidence is deliberately heavier; queries containing alphanumeric-with-digit tokens or plain numbers of 4+ digits (invoice or ticket numbers) flip the weights to (0.5, 4.0) so lexical dominates. Why fuse at all: each arm is blind where the other sees — pure semantics misses exact model numbers, pure lexical misses paraphrases. This is the field's standard 'hybrid search' problem; the fusion style itself was chosen empirically — DigUp's own data showed RRF losing to additive fusion, so RRF is out.",
-   "plain_zh": "断案同时听两个证人：一个懂「意思」，一个记性好、认得每个编号。平时更信记性好的那个；问到一串编号时，干脆几乎全听他的。",
-   "plain_en": "A case heard by two witnesses: one understands 'meaning', the other has a photographic memory for exact numbers. Normally the memory witness weighs more; ask about a serial number and the verdict is almost entirely theirs.",
-   "example_zh": "常态权重 (w_m, w_c) = (1.0, 2.0)；查询含 TRX50 或 1234567 这类编号时自动翻转为 (0.5, 4.0)。goldmine search TRX50 --why 逐项打印每个命中的 z、coverage 与最终 score 分解。",
-   "example_en": "Normal weights (w_m, w_c) = (1.0, 2.0); a query containing 'TRX50' or '1234567' flips them to (0.5, 4.0). goldmine search TRX50 --why prints the z, coverage and final score breakdown for every hit.",
+   "def_zh": "默认加法融合：1.0·max(z,0)+2.0·coverage^1.5，再加一个不叠加的提示项。查找型查询把前两项权重改为 (0.5,4.0)。类型提示为 1.0；名字集中命中提示为 2.5，取代而不叠加类型提示。RRF 仍作为可选对照 scorer 存在，不能从某次试验推出一种融合永远更好。",
+   "def_en": "Default additive fusion is 1.0·max(z,0)+2.0·coverage^1.5 plus one non-stacking hint. Lookup queries use weights(0.5,4.0). A kind hint contributes1.0; a concentrated-name hint contributes2.5 and replaces rather than stacks with it. RRF remains an available ablation scorer; one experiment cannot establish universal superiority for either method.",
+   "plain_zh": "两个证人交出不同单位的线索：一个给出 z，一个给出词覆盖。先按公式逐项计算再相加，不能只看系数 2 比 1 大，就认定词法在每道题里都贡献更多。",
+   "plain_en": "Two witnesses supply different signals: z and word coverage. Compute each term before adding them. A coefficient2 versus1 does not mean the lexical term contributes more for every query.",
+   "example_zh": "z=4、coverage=0.5 时，常态语义项为 4，词法项为 2×0.5^1.5≈0.707；系数较大仍可能贡献较小。查找型权重 (0.5,4.0) 改变倾向，不保证词法项永远压过语义项。",
+   "example_en": "At z=4 and coverage0.5, the semantic term is 4 while the lexical term is 2×0.5^1.5≈0.707. The larger coefficient still yields a smaller contribution. Lookup weights(0.5,4.0) shift emphasis without guaranteeing lexical dominance.",
    "analogy_zh": "懂意思的证人和记编号的证人一起作证",
    "analogy_en": "Two witnesses: one for meaning, one for exact numbers",
-   "refs": [],
+   "why_zh": "语义能连接同义表达，词法能约束标识符与原文。融合要保留两条证据路线；更改权重需要冻结的 A/B 与独立评测。",
+   "why_en": "Semantics can connect paraphrases; lexical evidence constrains identifiers and exact text. Fusion retains both routes. Weight changes require frozen A/B and independent evaluation.",
+   "how_zh": "先各自召回与准入，再按既定 scorer 产生文件级分数。BM25 只提供词法排序，不把它的原始低分直接加到高分为好的融合结果。",
+   "how_en": "Recall and admit through each route, then compute file-level scores with the chosen scorer. BM25 supplies lexical order; its lower-is-better raw value is not added directly to a higher-is-better fusion score.",
+   "try_zh": "把文件 3 的词法证据关掉再打开：只按语义 z 提前丢文件，会遗漏哪条融合路线？",
+   "try_en": "Toggle file 3’s lexical evidence. Which route would be lost by dropping files solely on semantic z?",
+   "refs": [
+    {
+     "path": "goldmine/search.py",
+     "lines": "",
+     "note": "_search() 的融合与 _name_concentrated()"
+    },
+    {
+     "path": "goldmine/admission.py",
+     "lines": "",
+     "note": "scorer 专属准入"
+    }
+   ],
    "deep": [
     {
      "to": "bm25-theory",
@@ -3041,8 +3412,8 @@
      "rel_en": "When lexical flattens everything"
     }
    ],
-   "x": 352.0,
-   "y": 1064.0
+   "x": 358.0,
+   "y": 1192.0
   },
   {
    "id": "lookup-inversion",
@@ -3057,14 +3428,20 @@
    "title_en": "Lookup Inversion",
    "one_zh": "编号类查询词法压倒一切",
    "one_en": "ID-like queries let lexical dominate",
-   "def_zh": "检索领域的老洞察：查询分两种意图——「描述型」（找意思相近的）与「查找型」（找精确编号/代号：TRX50、1234567、CVE-2021-44228）。查找型查询里语义向量几乎无信息量（模型不认识编号），词法精确命中才是唯一可靠证据。落地为权重反转：查询里任一词是「字母数字混合含数字」或 ≥4 位纯数字时，(w_m, w_c) 从 (1.0, 2.0) 翻成 (0.5, 4.0)。这是 query understanding 的最小实现：先判意图，再选打分策略。",
-   "def_en": "An old insight of the retrieval field: queries come in two intents — 'descriptive' (find similar meaning) and 'lookup' (find an exact code: TRX50, 1234567, CVE-2021-44228). In lookup queries the semantic vector carries almost no information (models don't know codes); exact lexical hits are the only reliable evidence. Implemented as a weight flip: when any query token is alphanumeric-with-digits or a plain number of 4+ digits, (w_m, w_c) flips from (1.0, 2.0) to (0.5, 4.0). Query understanding in its minimal form: judge intent first, then pick the scoring strategy.",
-   "plain_zh": "问「讲垫片密封的书」和问「编号 TRX50 的主板」是两种问题：前者要懂意思的书，后者要那块板子本身。接待员先听清你问的是哪种，再决定派谁去找——问编号时，记忆型店员一锤定音。",
-   "plain_en": "'Books about gasket sealing' and 'the TRX50 motherboard' are different kinds of asks: the first wants meaning, the second wants that exact board. The clerk listens for which kind you're asking before dispatching — for codes, the memory clerk decides alone.",
+   "def_zh": "查找型查询用固定词法启发式识别：任一词含字母和数字，或是至少 4 位纯数字，就把语义/词覆盖系数从 (1.0,2.0) 改为 (0.5,4.0)。这是对编号、代号查询的权重倾向，不是可靠的意图分类器，也不保证模型完全不理解编号，或词法项在每个结果中必然更大。",
+   "def_en": "A fixed lexical heuristic recognizes lookup queries: a token mixes letters and digits, or contains at least four digits only. Semantic/coverage coefficients change from(1.0,2.0) to(0.5,4.0). This favors identifier/code queries; it is not a reliable intent classifier, proof that embeddings cannot represent codes, or a guarantee that lexical contribution always wins.",
+   "plain_zh": "问意思和问编号，往往需要不同侧重。系统看到编号线索后调低语义系数、调高词覆盖系数；最后谁贡献多少，仍由实际 z 与 coverage 共同决定。",
+   "plain_en": "Meaning and identifiers often need different emphasis. An identifier-shaped token lowers the semantic coefficient and raises coverage’s coefficient. Actual z and coverage still determine each contribution.",
    "example_zh": "判定规则可跟算：'TRX50' 含字母+数字 → 反转；'gasket' 纯字母 → 不反转；'1234567' 七位纯数字 → 反转。用 goldmine search TRX50 --why 对照 goldmine search 垫片 --why，看权重分解的差异。",
    "example_en": "The rule is hand-checkable: 'TRX50' mixes letters and digits → flip; 'gasket' is pure letters → no flip; '1234567' is a seven-digit number → flip. Compare goldmine search TRX50 --why against goldmine search gasket --why and watch the weight breakdown change.",
    "analogy_zh": "先听清是「找书」还是「找货号」，再派店员",
    "analogy_en": "Hear 'find a book' vs 'find part number' first, then dispatch",
+   "why_zh": "模型对精确标识符的表现未必稳定；明确保留词面信号可避免只看语义相近。",
+   "why_en": "Embedding behavior on exact identifiers can vary. Preserving lexical signals avoids relying solely on semantic similarity.",
+   "how_zh": "按 is_lookup() 的固定 token 规则选系数，然后仍执行原有准入、融合与精确锚点核验。",
+   "how_en": "Choose coefficients using is_lookup()’s fixed token rule, then retain normal admission, fusion and exact-anchor verification.",
+   "try_zh": "对 TRX50 和 gasket 分别看 --why。比较最终贡献项，不要只比较权重数字。",
+   "try_en": "Inspect --why for TRX50 and gasket. Compare actual score contributions, not just coefficient sizes.",
    "refs": [],
    "deep": [
     {
@@ -3083,7 +3460,7 @@
      "rel_en": "Which two weights get flipped"
     }
    ],
-   "x": 234.0,
+   "x": 328.0,
    "y": 1064.0
   },
   {
@@ -3105,6 +3482,12 @@
    "example_en": "A taste of hand-computed IDF: a word in 1/1000 documents pays roughly log-multiples more than one in 1/10. FTS5 ships it built-in, no training data; the bm25 rank in --why output is this function's ordering.",
    "analogy_zh": "稀有词金贵、密排递减、薄书占优的排队规矩",
    "analogy_en": "Rare words precious, density saturating, thin books favored",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3123,7 +3506,7 @@
      "rel_en": "How this project uses it"
     }
    ],
-   "x": 80,
+   "x": 182.0,
    "y": 1064.0
   },
   {
@@ -3145,6 +3528,12 @@
    "example_en": "embeddinggemma-2 + MEAN pooling is one of the fingerprint's eight canonical fields ('pooling', llama-server --pooling mean). Changing MEAN to CLS changes every stored vector ⇒ the fingerprint changes ⇒ search refuses with exit 3 until the index is rebuilt.",
    "analogy_zh": "每段各打分，一格只放总分",
    "analogy_en": "Every paragraph scored, one cell for the total",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3185,6 +3574,12 @@
    "example_en": "goldmine search 'a cat on a keyboard' hits the photo of a cat on a keyboard: the query's text vector and the photo's vector sit at a small angle in the same 768-dim space. Verify: GOLDMINE_LIVE=1 python3 -m pytest -q tests/test_reference_media_vectors.py (media and text vectors under one contract).",
    "analogy_zh": "文字图片声音登记在同一张地图上",
    "analogy_en": "Text, images, sound registered on one map",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3227,6 +3622,12 @@
    "example_en": "Three quantizations to trace here: weights Q8_0 (1.5GB→800MB), whisper Q5_0, and fp16 vector storage (1536 bytes each). Each has a measured boundary on record (the F16 ban / the Q4 warning / ordering unaffected).",
    "analogy_zh": "真空压缩行李：省空间，压过头会毁西装",
    "analogy_en": "Vacuum-packed luggage: saves space; overdo it and ruin the suit",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3267,6 +3668,12 @@
    "example_en": "The z_gate 2.0→3.0 A/B was recorded with these rulers: s@5 0.747→0.781, MRR 0.646→0.665 (n=146, real-model eval). Run the gate yourself: python3 scripts/eval_real.py --suite legacy --backend llama --gate → ends with 'gate: green' and every metric delta at +0.0000.",
    "analogy_zh": "及格线、名次、整个榜单的排版分",
    "analogy_en": "Pass mark, ranking, and layout score of the whole list",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3309,6 +3716,12 @@
    "example_en": "digup-plan-001's A/B showing zero improvement was rolled back per preregistration — not 'let's try other knobs'. On the 128-question suite, any ±0.8% wobble passes a statistical test before anyone talks about adopting it.",
    "analogy_zh": "只看一增一失的题，再看班级正常波动",
    "analogy_en": "Count only discordant questions, then weigh class wobble",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3349,6 +3762,12 @@
    "example_en": "Adopting z_gate=3.0 leaned on 'train and holdout agree'; 3.5 looked better on train (0.822) after a single scan and was not trusted. Guard tests: python3 -m pytest -q tests/test_joint_holdout.py tests/test_joint_holdout_freeze.py.",
    "analogy_zh": "复习题随便看，考试卷锁柜子里",
    "analogy_en": "Practice papers open, final exam locked away",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3389,6 +3808,12 @@
    "example_en": "python3 scripts/eval_real.py --suite legacy --backend llama --gate: metric-by-metric comparison against the frozen baseline, ending 'gate: green' or red. Both gates (legacy 109 + the all-media suite) must pass for a no-regression claim.",
    "analogy_zh": "贴在墙上不许改的体测成绩单",
    "analogy_en": "Fitness scores posted on the wall, uneditable",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3429,6 +3854,12 @@
    "example_en": "The field's landmark finding: the same hypotheses studied with and without preregistration show systematically different effect sizes (many p<0.05 results failed replication) — the methodological root of goldmine writing 'a loss is a rollback' into its process.",
    "analogy_zh": "开奖前把判定规则押在公证处",
    "analogy_en": "Deposit the winning rule at the notary before the draw",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3471,6 +3902,12 @@
    "example_en": "goldmine/fingerprints.py's canonical(): keys=sorted plus whitespace-free separators, yielding bytes for sha256. The test test_id_stable_across_key_order explicitly verifies different key orders → identical fingerprint.",
    "analogy_zh": "先按字母排序再比对的购物清单",
    "analogy_en": "Alphabetize the shopping lists before comparing",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3508,6 +3945,12 @@
    "example_en": "The collision's attribution drill is branching applied: git stash the other session's changes → rerun tests → all green means attribution confirmed — isolation turns 'whose change broke it' into an experiment.",
    "analogy_zh": "各占一面墙刷，房东逐面验收",
    "analogy_en": "One painter per wall; the landlord inspects each",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3548,6 +3991,12 @@
    "example_en": "This project's two key interceptions (the 21 offline tests, the version-literal drift) were both flaws 'other-review' caught and 'self-review' missed — the reviewer's independence matters more than cleverness.",
    "analogy_zh": "请三位陌生专家专门找茬，不请朋友捧场",
    "analogy_en": "Three strangers hired to find flaws, not friends for applause",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3588,6 +4037,12 @@
    "example_en": "Hand computation: the point (3,4) sits at distance √(3²+4²) = 5 from the origin (Pythagoras). 768 dimensions work the same — sum 768 squares, take the root; the formula never changed, only the axes multiplied.",
    "analogy_zh": "「第几排第几列」问 768 遍",
    "analogy_en": "'Which row, which seat' asked 768 times",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3618,6 +4073,12 @@
    "example_en": "Hand computation: vectors (1,0) and (2,0) — distance = 1, angle = 0° (cosine 1). Same direction, different length: distance moved, angle didn't. That is the geometric version of 'length doesn't change meaning'.",
    "analogy_zh": "大手电小手电都照同一棵树：比方向不比亮度",
    "analogy_en": "Big and small flashlights on one tree: compare aim, not brightness",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3626,8 +4087,8 @@
      "rel_en": "Both live on the same map"
     }
    ],
-   "x": 167.3,
-   "y": 1444.0
+   "x": 202.0,
+   "y": 1572.0
   },
   {
    "id": "inverted-index",
@@ -3648,9 +4109,21 @@
    "example_en": "Hand computation: three docs D1={a,b}, D2={b,c}, D3={a,c}. Inverted: a→{D1,D3}, b→{D1,D2}, c→{D2,D3}. Querying 'b' touches two postings and never D3 — the bigger the corpus, the bigger the saving.",
    "analogy_zh": "书后的索引页就是它本尊",
    "analogy_en": "The book's back index, in person",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
-   "deep": [],
-   "x": 285.3,
+   "deep": [
+    {
+     "to": "empty-posting-intersection",
+     "rel_zh": "一个空交集怎样省掉查询",
+     "rel_en": "How an empty intersection avoids a lookup"
+    }
+   ],
+   "x": 338.0,
    "y": 1444.0
   },
   {
@@ -3672,6 +4145,12 @@
    "example_en": "Hand computation: scores [80, 82, 84, 86, 88]. Mean = 84; deviations [−4,−2,0,2,4], mean square = (16+4+0+4+16)/5 = 8, std = √8 ≈ 2.83. A score of 90 sits about 2.1 standard deviations above the mean.",
    "analogy_zh": "平均分是「平常」，标准差是「波幅」",
    "analogy_en": "The mean is 'usual'; the std is 'bumpiness'",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3680,8 +4159,8 @@
      "rel_en": "'Spread units' ground the language of significance"
     }
    ],
-   "x": 650.0,
-   "y": 1444.0
+   "x": 670.0,
+   "y": 1572.0
   },
   {
    "id": "significance-basics",
@@ -3702,6 +4181,12 @@
    "example_en": "Hand computation: a fair coin's five straight heads = (1/2)^5 = 1/32 ≈ 0.031. With a significance level fixed at 0.05 beforehand, p=0.031 < 0.05 counts as 'luck strains to explain'. Mind the direction: small p ≠ the claim is true; it only means luck is suspect.",
    "analogy_zh": "先算好硬币连出五次正面的概率，再谈偏心",
    "analogy_en": "Compute the fair coin's streak first, then accuse bias",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [
     {
@@ -3732,6 +4217,12 @@
    "example_en": "A taste of avalanche: sha256('hello') = 2cf24d... while sha256('hellp') is utterly different. Try it: compare 'printf hello | shasum -a 256' with 'printf hellp | shasum -a 256'.",
    "analogy_zh": "给钻石和山盖一样大的章，改一点全变样",
    "analogy_en": "One seal size for diamond and mountain; nudge it, all changes",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 1840.0,
@@ -3756,6 +4247,12 @@
    "example_en": "Thought experiment: a transfer = debit A 100 + credit B 100. Without transactions, power fails after step one → A is poorer, B unchanged (money vanished). With transactions, the failure voids both steps — the books always balance.",
    "analogy_zh": "换零钱：递出与收进必须同时发生",
    "analogy_en": "Breaking a note: handing over and receiving happen together",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 3254.0,
@@ -3780,6 +4277,12 @@
    "example_en": "Hand computation: 22-bit fixed-point 0.5 → 0.5 × 2²¹ = 1048576 (half of 2097152). The point isn't the exact number: the same formula on the same integers always yields the same bits — how goldmine-embed.c's bicubic stays bit-exact.",
    "analogy_zh": "全部用「分」记账，只算整数",
    "analogy_en": "Keep the books in cents; integers only",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 1565.0,
@@ -3804,6 +4307,12 @@
    "example_en": "Try it: python3 -c \"print(len('é'), len('é'))\" — two identical-looking é's measure 1 and 2 (combining mark); only NFC normalization makes them equal. That is why normalize_text exists.",
    "analogy_zh": "全世界文字共用一本编号账本，账本会缺页",
    "analogy_en": "One numbered ledger for all writing — with missing pages",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 80,
@@ -3828,6 +4337,12 @@
    "example_en": "Exit-code drill: python3 -c 'import sys; sys.exit(7)'; echo $? → 7. Ctrl-C a foreground process → echo $? gives 130 (128 + signal 2). Pipe demo: 'yes | head -1' returns instantly — head reads once and leaves; yes's next write hits EPIPE.",
    "analogy_zh": "车间传送带 + 车内暂存货架 + 班车编号字条",
    "analogy_en": "Workshop belts, an internal staging rack, and numbered shift notes",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 796.0,
@@ -3852,6 +4367,12 @@
    "example_en": "Try it: run 'ls -i a.txt' before and after 'mv a.txt b.txt' — the inode number holds. stat vs lstat: make 'ln -s real link', then 'stat link' versus 'ls -l link' — one reports the real file, the other the link itself.",
    "analogy_zh": "车架号不动，车牌随便换",
    "analogy_en": "The VIN never moves; plates come and go",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [],
    "deep": [],
    "x": 2024.0,
@@ -3876,6 +4397,12 @@
    "example_en": "search '\"z_gate=3.0\"' --db evals/eval.sqlite — files containing the literal string come first; semantic cousins follow.",
    "analogy_zh": " quoted 的意思就是「我要逐字」",
    "analogy_en": "Quotes are a verbatim contract",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/search.py",
@@ -3895,7 +4422,7 @@
      "rel_en": "The lexical arm verifies verbatim hits"
     }
    ],
-   "x": 260.0,
+   "x": 612.0,
    "y": 432.0
   },
   {
@@ -3917,6 +4444,12 @@
    "example_en": "Search a long manual reusing one phrase — human mode shows one row per near-dup cluster.",
    "analogy_zh": "同一句话说了五遍，屏幕只念一遍",
    "analogy_en": "Said five times, shown once",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/render.py",
@@ -3936,7 +4469,7 @@
      "rel_en": "Whose cosine is 0.97"
     }
    ],
-   "x": 260.0,
+   "x": 612.0,
    "y": 560.0
   },
   {
@@ -3958,6 +4491,12 @@
    "example_en": "Run the ANCHORS #2 scenario with and without --json — the row-count delta is this rule working.",
    "analogy_zh": "演唱会名单只登台唱过的人",
    "analogy_en": "Only performers make the setlist",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/render.py:147-197",
@@ -3977,8 +4516,8 @@
      "rel_en": "The pool gate runs before folding"
     }
    ],
-   "x": 788.0,
-   "y": 560.0
+   "x": 436.0,
+   "y": 688.0
   },
   {
    "id": "kind-hint",
@@ -3999,6 +4538,12 @@
    "example_en": "search 'parse config' --kind code — --kinds is the explicit filter; kind hints are the implicit scoring version.",
    "analogy_zh": "对口型加一分，不多加",
    "analogy_en": "One point for matching the category",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/search.py",
@@ -4023,7 +4568,7 @@
      "rel_en": "What survives the weight inversion"
     }
    ],
-   "x": 436.0,
+   "x": 788.0,
    "y": 432.0
   },
   {
@@ -4045,6 +4590,12 @@
    "example_en": "search 'why does admission reject' --mode quality --multi-query — the JSON shows the derived clauses.",
    "analogy_zh": "第一遍没找到，换个问法再问一次——换法写死在规则里",
    "analogy_en": "Ask again, rephrased — the rephrasing is rulebook-fixed",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/search.py",
@@ -4069,8 +4620,8 @@
      "rel_en": "The rulers that would measure the benefit"
     }
    ],
-   "x": 788.0,
-   "y": 432.0
+   "x": 436.0,
+   "y": 560.0
   },
   {
    "id": "local-rerank",
@@ -4081,21 +4632,32 @@
    "reveal": [],
    "title_zh": "本地重排",
    "title_en": "Local Reranking",
-   "one_zh": "可选的钉版 639MB 重排模型，只对前 20 条入选段重排，默认关",
-   "one_en": "An optional pinned 639MB reranker reorders the top-20 admitted segments; off by default",
-   "def_zh": "quality 模式可选（--rerank local，默认关）：钉版 639MB 交叉编码器，只对准入后的前 20 段、每段 384 token 重排。六个真实端点探针与有界输入/清理测试已过；开发 A/B 与资源门未跑完，所以不默认开——证据没齐的开关不替用户做主。",
-   "def_en": "Optional in quality mode (--rerank local, off by default): a pinned 639MB cross-encoder reranks only the top-20 admitted segments at 384 tokens each. Six real endpoint probes and bounded-input/cleanup tests pass; the dev A/B and resource gates haven't run, so it ships off — an unproven switch doesn't get to default on.",
-   "plain_zh": "第二名愿意请一位更挑剔的评委来重打分——但这位评委 639MB，请一次不便宜，所以默认不请。",
-   "plain_en": "A pickier judge re-scores the finalists — but the judge is 639MB and slow to summon, so by default nobody calls it.",
+   "one_zh": "quality 重排默认关闭；pack 窗口仲裁独立武装",
+   "one_en": "Quality rerank is off by default; pack-window arming is independent",
+   "def_zh": "quality 模式的 --rerank local 默认关闭；它用钉版交叉编码器对已准入的前 20 段重排，每段输入上限 384 token。另有独立的 pack 窗口仲裁，也会使用这个本地模型。两者作用位置、武装条件与证据合同不同，不能用「默认重排关」推断所有 pack 请求都不用 rank head。",
+   "def_en": "Quality-mode --rerank local is off by default. It uses a pinned cross-encoder on the top 20 admitted segments with a 384-token per-document cap. Separate pack-window arbitration can use the same local model. The two mechanisms operate at different points under different arming conditions; “quality rerank off” does not imply every pack request avoids the rank head.",
+   "plain_zh": "quality 模式的候选重排像复赛时额外请一位评委，这个显式开关默认关闭。同一模型还可独立参与 pack 内的证据窗口仲裁；「复赛开关关着」不代表这位评委在其他机制中永远不出场。",
+   "plain_en": "Quality-mode finalist reranking is like inviting an extra judge to the finals; that explicit switch is off by default. The same model can independently arbitrate evidence windows inside packs, so the finals switch being off does not mean the judge never works elsewhere.",
    "example_zh": "search '退款条款' --mode quality --rerank local --db …：对比开关前后的排序差异。",
    "example_en": "search '退款条款' --mode quality --rerank local — diff the ordering with it on and off.",
-   "analogy_zh": "复赛请更严的评委，默认不请",
-   "analogy_en": "A stricter judge for the finals — on request",
+   "analogy_zh": "显式复赛评委，与 pack 内部窗口评委是不同使用点",
+   "analogy_en": "Explicit finalist reranking and internal pack-window judging are distinct uses",
+   "why_zh": "较贵的模型只应解决明确的排序或窗口歧义；资源借用必须在成功、失败、取消时都归还。",
+   "why_en": "An expensive model should address a defined ranking or window ambiguity. Its resource lease must return after success, failure or cancellation.",
+   "how_zh": "先取得按 server/model 共享的租约，实际 rank 时才懒启动。请求结束归还；所有持有者都归还后按登记的 300 秒空闲策略回收。",
+   "how_en": "Acquire a lease shared by server/model; actual rank use starts lazily. Return it when the request ends. After all holders return, the registered 300-second idle policy can reclaim the model.",
+   "try_zh": "先只点「借用」，再点「调用」：指示灯应什么时候亮？为什么失败的新请求不会拿走另一个请求的租约？",
+   "try_en": "Acquire without using, then press Use. When should the model light up? Why must a failed new request release its own lease rather than another request’s?",
    "refs": [
     {
+     "path": "goldmine/quality.py",
+     "lines": "50",
+     "note": "rerank_candidates() · quality 独立重排"
+    },
+    {
      "path": "goldmine/rerank.py",
-     "lines": "",
-     "note": "本地重排与子进程租约"
+     "lines": "322",
+     "note": "shared_ranker() · 懒调用租约"
     }
    ],
    "deep": [
@@ -4110,8 +4672,8 @@
      "rel_en": "Where 639MB comes from"
     }
    ],
-   "x": 612.0,
-   "y": 432.0
+   "x": 260.0,
+   "y": 560.0
   },
   {
    "id": "rank-window",
@@ -4124,24 +4686,35 @@
    "title_en": "Cross-Encoder Window Arbitration",
    "one_zh": "本地重排器可以在同文件内改判证据窗口，2026-10-26 落地，cjk@5 0.77→0.87",
    "one_en": "The local reranker may re-decide the evidence window within a file; landed 2026-10-26, cjk@5 0.77→0.87",
-   "def_zh": "rank-window-001（提交 863fcb7）：在入选文件内部，若主证据来自普通语义阶梯，本地 Qwen3-Reranker 可在词法共资格的候选窗（单元数 ≥ 主证据、按句单元浓度排序）中改判——改判需要 0.01 分差领先；Tier-1/2 窗口结论永不被推翻；只在 pack 构建请求武装（裸列表搜索与时延基准不开）；重排器按 (server, model) 记忆化，评测循环共享一个懒拉起的子进程。013 真库回放：cjk@5 0.7667→0.8667、semantic@5 0.80→0.8667，双双过 0.85 门。",
-   "def_en": "rank-window-001 (commit 863fcb7): inside an admitted file whose primary came from the plain semantic ladder, a local Qwen3-Reranker may re-decide the window among lexically co-qualified candidates (unit count ≥ the primary's, ordered by sentence-unit concentration); takeover needs a 0.01 score lead; Tier-1/2 window verdicts are never overturned; it arms only for pack-building requests (bare listing searches and the latency bench stay off); the reranker is memoized per (server, model) so evaluation loops share one lazily-spawned child. Real-code replay on the 013 index: cjk@5 0.7667→0.8667, semantic@5 0.80→0.8667 — both past the 0.85 gate.",
+   "def_zh": "pack 请求可为已入选文件内部的普通语义主窗口启用本地交叉编码器仲裁。挑战窗口必须至少覆盖主窗口同样多的查询单元；改判需要 0.01 分差领先，已有 Tier-1/2 窗口结论不会被推翻。它不改变文件级打分，也不在裸列表搜索中武装；与 quality 模式的整批候选重排不同。",
+   "def_en": "A pack request can arm local cross-encoder arbitration for the plain-semantic primary window inside an admitted file. A challenger must cover at least as many query units, and takeover requires a 0.01 score lead. Existing Tier1/2 window verdicts remain protected. This does not change file scores or arm in bare listing search; it differs from quality-mode candidate reranking.",
    "plain_zh": "语义模型有时被「标题党」段落吸走，真正答案挤在同文件另一段。现在允许一位更仔细的评委在同文件内改判「给你看哪段」——但只改判这一件事，且必须有分差优势才许改。",
    "plain_en": "Semantic models occasionally fall for a clickbait segment while the answer sits in the next one. A stricter judge may now overturn which segment you see — within the same file, only that one decision, and only with a score lead.",
-   "example_zh": "scripts/eval_real.py 的 013 回放记录在提交 863fcb7 的提交说明里；pack 输出中同文件的证据窗与关掉仲裁的版本对比可复现该增益。",
-   "example_en": "The 013 replay is recorded in commit 863fcb7's message; diffing pack output with arbitration on/off reproduces the gain.",
+   "example_zh": "同一个入选文件中，若窗口规则已经改判主段，交叉编码器不会再推翻它。只有仍处普通语义阶梯的共资格候选，才进入有预算的仲裁。",
+   "example_en": "If a window rule has already replaced the primary, the cross-encoder cannot overturn it. Bounded arbitration applies only to co-qualified candidates still on the plain semantic ladder.",
    "analogy_zh": "同文件内允许改判「看哪段」，但要有分差优势",
    "analogy_en": "Overturn the window, not the verdict — and only with a lead",
+   "why_zh": "找对文件后仍可能拿错段落。窗口仲裁只处理词汇信号无法消除的局部歧义，并把额外模型工作限制在明确范围内。",
+   "why_en": "Finding the correct file can still yield the wrong paragraph. Window arbitration addresses local ambiguity left by lexical signals, with explicitly bounded model work.",
+   "how_zh": "Application 持有一次请求的 ranker 租约，证据选择器在预算内调用；最后一次自有使用结束时归还。独立 quality 重排取得并归还自己的租约。",
+   "how_en": "Application owns the request’s ranker lease while evidence selection uses it within budget, then releases after its final owned use. Independent quality reranking acquires and releases its own lease.",
+   "try_zh": "模拟两个持有者：归还其中一个后，空闲计时器为什么不能启动？",
+   "try_en": "Simulate two holders. Why must returning just one not begin idle cleanup?",
    "refs": [
     {
-     "path": "goldmine/rerank.py",
-     "lines": "",
-     "note": "窗口仲裁武装与 0.01 领先规则"
+     "path": "goldmine/application.py",
+     "lines": "148",
+     "note": "_retrieve() · 窗口租约所有权"
     },
     {
      "path": "goldmine/retrieval_evidence.py",
-     "lines": "",
-     "note": "候选窗资格与改判"
+     "lines": "229",
+     "note": "_rank_challenge() · 有界窗口仲裁"
+    },
+    {
+     "path": "goldmine/retrieval_evidence.py",
+     "lines": "264",
+     "note": "select_evidence() · 窗口资格"
     }
    ],
    "deep": [
@@ -4159,10 +4732,15 @@
      "to": "shared-embedding-space",
      "rel_zh": "为什么重排分数不能直接混进余弦",
      "rel_en": "Why rerank scores can't mix into cosine"
+    },
+    {
+     "to": "reranker-lease",
+     "rel_zh": "模型用完后谁归还",
+     "rel_en": "Who releases the model after use"
     }
    ],
-   "x": 612.0,
-   "y": 560.0
+   "x": 260.0,
+   "y": 688.0
   },
   {
    "id": "distill-cards",
@@ -4183,6 +4761,12 @@
    "example_en": "scripts/eval_distill.py --report-real — the real-library card view; gates report mock and hard variants separately.",
    "analogy_zh": "自动剪报师：按主题剪，只贴原文",
    "analogy_en": "A clipping service: by topic, verbatim only",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/distill.py",
@@ -4231,6 +4815,12 @@
    "example_en": "search '退款期限' --context 2 — two neighbors on each side ride along.",
    "analogy_zh": "复印时多印前后各一页",
    "analogy_en": "Photocopy the page before and after",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/pack.py",
@@ -4277,6 +4867,12 @@
    "example_en": "search 'z_gate' --why --db evals/eval.sqlite — compare two hits' breakdowns; watch coverage beat semantics.",
    "analogy_zh": "成绩单分项给分，不报总分了事",
    "analogy_en": "Itemized grading, not just a total",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/search.py",
@@ -4301,7 +4897,7 @@
      "rel_en": "The constitution behind the flag"
     }
    ],
-   "x": 260.0,
+   "x": 612.0,
    "y": 688.0
   },
   {
@@ -4325,6 +4921,12 @@
    "example_en": "A changed current.embed_id in status --json means these params changed; rolling back needs a backup library.",
    "analogy_zh": "菜谱锁死，改一味料就要重做全锅",
    "analogy_en": "The recipe is locked; one changed spice re-cooks the pot",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -4371,6 +4973,12 @@
    "example_en": "The per-query time delta before/after serve (seconds → sub-second) is mostly this load.",
    "analogy_zh": "常驻省的是通勤，不是备菜",
    "analogy_en": "Residency saves the commute, not the prep",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -4406,19 +5014,30 @@
    "title_en": "Backend Lifecycle",
    "one_zh": "spawn → 握手 → 服务 → close 只杀自己拉起的子进程",
    "one_en": "spawn → handshake → serve → close kills only its own children",
-   "def_zh": "后端生命周期四段：冷启动 spawn（llama-server / embed 边车）、--version + 模型 sha 握手、服务期健康监督、close 按 pid 记账只杀自己 spawn 的进程。「只杀自己的」是血泪纪律——杀掉别人家的 llama-server 是上古事故；健康失败走 NotSupported/BackendStartupError（exit 2）诚实降级，不崩、记录原因、下次再试。",
-   "def_en": "Four phases: cold spawn (llama-server / embed sidecar), a --version + model-sha handshake, supervised serving, then close — which kills only processes it spawned, by pid. 'Only your own children' is scar tissue: killing someone else's llama-server is an ancient incident. A failed handshake degrades honestly via NotSupported/BackendStartupError (exit 2): no crash, reason recorded, retry next time.",
+   "def_zh": "本地模型生命周期包括解析与身份验证、按需启动、受限调用、归还与回收。冷后端管理自己 spawn 的子进程；连接共享 serve 的客户端只关闭自己的连接，不杀共享服务。重排器以 server/model 共享本地拥有者与请求租约；登记持有者不等于已经启动模型。",
+   "def_en": "Local model lifecycle covers resolution and identity checks, lazy startup, bounded calls, release and cleanup. A cold backend owns the child it spawned. A shared-serve client closes its own connection without killing the shared service. Reranking shares a server/model owner through request leases; registering a holder does not itself start the model.",
    "plain_zh": "进程家用账本：生了谁、谁还活着、关门前一个个点名送走。别人家的孩子绝对不碰。",
    "plain_en": "A household ledger: who was spawned, who's alive, and a roll call at closing. Other people's children are never touched.",
    "example_zh": "goldmine serve 启动后 ps 看得到子进程；Ctrl-C 后子进程随之消失且只消失自己的。",
    "example_en": "Start goldmine serve, watch the children in ps; Ctrl-C reaps them — only ours.",
    "analogy_zh": "关门前点名，只送自己家的孩子",
    "analogy_en": "Roll call at closing; only our kids go home",
+   "why_zh": "性能复用不能模糊所有权。否则退出一个请求会误杀别人，或者漏掉归还导致后台常驻。",
+   "why_en": "Reuse must preserve ownership. Otherwise one request can kill another user’s service or a missing release can leave memory resident.",
+   "how_zh": "用 try/finally 对称借还；空闲回调验证代号，重新借用使旧回调失效；进程退出只清理精确持有的本地子进程句柄。",
+   "how_en": "Pair acquisitions and releases through try/finally. Validate idle callback generations so reacquisition invalidates older callbacks. Process exit cleans only exact locally owned child handles.",
+   "try_zh": "触发「新请求失败」，比较借用数与归还数；再触发旧代回调，检查仍在使用的模型不会被关闭。",
+   "try_en": "Fail a new request and compare acquisition/release counts. Fire a stale callback and verify it cannot close a model still in use.",
    "refs": [
     {
-     "path": "goldmine/backends/llama.py",
-     "lines": "",
-     "note": "spawn/握手/close 记账"
+     "path": "goldmine/rerank.py",
+     "lines": "210",
+     "note": "_SharedReranker() · 本地拥有者与请求借还"
+    },
+    {
+     "path": "goldmine/backends/serve.py",
+     "lines": "354",
+     "note": "RemoteBackend() · 共享服务客户端边界"
     }
    ],
    "deep": [
@@ -4436,6 +5055,11 @@
      "to": "llama-server-process",
      "rel_zh": "生命周期管理的第一主角",
      "rel_en": "The lifecycle's first protagonist"
+    },
+    {
+     "to": "reranker-lease",
+     "rel_zh": "把资源借还实际走一遍",
+     "rel_en": "Walk through resource ownership"
     }
    ],
    "x": 1138.0,
@@ -4460,6 +5084,12 @@
    "example_en": "media_budgets shows up in the fingerprint extras in status --json; a library built under different budgets gets refused.",
    "analogy_zh": "每类图一张定额餐券",
    "analogy_en": "A fixed meal ticket per media class",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/media.py",
@@ -4506,6 +5136,12 @@
    "example_en": "Ingest a screenshot-heavy folder; the log shows one helper spawn instead of one per image.",
    "analogy_zh": "攒一单请一次师傅",
    "analogy_en": "Batch the order, summon the expert once",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/extraction.py",
@@ -4552,6 +5188,12 @@
    "example_en": "Ingest an image-only PDF and search its words; the failing-checks path has fixtures in the mechanism tests.",
    "analogy_zh": "照片先过安检再上岗当文本",
    "analogy_en": "The photo passes security before working as text",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pdf_evidence.py",
@@ -4600,6 +5242,12 @@
    "example_en": "The full-media suite has 8 keyframe questions (moment-level verdicts), historically 8/8 — a mechanics proof, not a natural-query claim.",
    "analogy_zh": "把视频摊成一摞定时快照",
    "analogy_en": "Spread the video into timed snapshots",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/media.py",
@@ -4641,6 +5289,12 @@
    "example_en": "A query like 'iPhone 2025-03' hits EXIF rows through the lookup arm.",
    "analogy_zh": "标签归标签，画面归画面",
    "analogy_en": "Tags are tags; pixels are pixels",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/exif.py",
@@ -4682,6 +5336,12 @@
    "example_en": "Ingest an all-silent WAV; the capability row explains why no audio vectors exist.",
    "analogy_zh": "切成有重叠的段，静音和炒冷饭都不要",
    "analogy_en": "Overlapping slices; silence and reruns need not apply",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/asr.py",
@@ -4733,6 +5393,12 @@
    "example_en": "Bengali/Arabic PDFs show the meaning-only vector flag in status routing info.",
    "analogy_zh": "字序坏了就只比大意",
    "analogy_en": "When order breaks, compare the gist",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/extraction.py",
@@ -4779,6 +5445,12 @@
    "example_en": "Ctrl-C a large media ingest: staging residue is cleaned by the next run — no orphans.",
    "analogy_zh": "备好的菜放操作台，不放抽屉",
    "analogy_en": "Prep on the counter, not in a drawer",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -4807,7 +5479,10 @@
    "layer": 3,
    "keystone": true,
    "parent": null,
-   "reveal": [],
+   "reveal": [
+    "read-snapshot",
+    "vector-cache"
+   ],
    "title_zh": "四层身份模型",
    "title_en": "The Four-Layer Identity Model",
    "one_zh": "指纹 / embed_id / 提取器注册表 / 评测基线身份——各管一件事",
@@ -4820,6 +5495,12 @@
    "example_en": "Changing MEDIA_PREPROCESSING (v4→v5): media installs re-embed (embed_id layer), text-only installs stay byte-identical (conditional extras), lexical search never notices. One change, three predictable reactions.",
    "analogy_zh": "四张卡管四扇门",
    "analogy_en": "Four cards, four doors",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/fingerprints.py",
@@ -4873,6 +5554,12 @@
    "example_en": "ANCHORS #1 status --json: embed_stale=0 means stored vectors match the live embed_id.",
    "analogy_zh": "改配方才回炉，改菜单不用",
    "analogy_en": "Recipes trigger recalls; menus don't",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/fingerprints.py:150",
@@ -4914,6 +5601,12 @@
    "example_en": "ANCHORS #1: extractor_stale=0 means no row holds an expired process stamp.",
    "analogy_zh": "工艺版本章 + 现行目录比对",
    "analogy_en": "Process stamps checked against the live catalog",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/fingerprints.py",
@@ -4955,6 +5648,12 @@
    "example_en": "An equality test pins the media version literal to the shared constant — drift turns red on contact.",
    "analogy_zh": "改工艺、换标签、上目录，一步不能少",
    "analogy_en": "Process, label, catalog — all three or none",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/extraction.py",
@@ -5001,6 +5700,12 @@
    "example_en": "ANCHORS #3: GOLDMINE_LIVE=1 pytest tests/test_reference_vectors.py tests/test_reference_media_vectors.py → 2 passed, 2 skipped (the skips are regeneration guards).",
    "analogy_zh": "升级前对暗号，对上才放行",
    "analogy_en": "Exchange passwords before upgrading",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "tests/test_reference_vectors.py",
@@ -5047,6 +5752,12 @@
    "example_en": "The ANCHORS #2 refusal — differs in: media — is these two families colliding, live.",
    "analogy_zh": "有厨房才印菜单上的那四行",
    "analogy_en": "The four lines print only if the kitchen exists",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -5088,6 +5799,12 @@
    "example_en": "Second half of ANCHORS #2: same query with --lexical → rc=0 with results.",
    "analogy_zh": "正门关了，明示侧门在哪",
    "analogy_en": "Front door locked — the side door is signposted",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/retrieval_lexical.py",
@@ -5134,6 +5851,12 @@
    "example_en": "The baseline READMEs under evals/ record freeze and audit state; HOLDOUT_AUDIT.md is the sealing charter.",
    "analogy_zh": "考卷换页成绩作废，逐题对账才能重考",
    "analogy_en": "New exam page, voided scores, reconciled line by line",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/quality.py",
@@ -5178,6 +5901,12 @@
    "example_en": "evals/product_v4_expansion/README.md is the freeze record; FEATURE_STATUS cites current005 gate-by-gate.",
    "analogy_zh": "固定考卷 + 封存的高考卷",
    "analogy_en": "A fixed exam with a sealed final",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "evals/product_v4_expansion/README.md",
@@ -5237,6 +5966,12 @@
    "example_en": "search.py's header comment keeps the full precedent chain — read it before the next tuning attempt.",
    "analogy_zh": "调药量靠对照试验，不靠感觉",
    "analogy_en": "Dosing by trial, not by feel",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/admission.py",
@@ -5288,6 +6023,12 @@
    "example_en": "search 'qzkjvbw983' — seeing 'nothing found' plus a next step is this capability working.",
    "analogy_zh": "敢交白卷是能力",
    "analogy_en": "A confident blank page",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/commands/search.py",
@@ -5337,6 +6078,12 @@
    "example_en": "FEATURE_STATUS 'Data and release gates' is the ledger; the homepage's 96/180 · 12-red card mirrors it.",
    "analogy_zh": "红灯亮着不摘，直到真修好",
    "analogy_en": "Red lights stay lit until truly fixed",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/FEATURE_STATUS.md",
@@ -5393,6 +6140,12 @@
    "example_en": "Every number in comparison-report-001/REPORT.md points at raw stdout that recomputes it offline.",
    "analogy_zh": "口说无凭，回执为证",
    "analogy_en": "Show the footage or it didn't happen",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/COMMIT_DIGESTS.md",
@@ -5439,6 +6192,12 @@
    "example_en": "FEATURE_STATUS quotes current005's paired-interval conclusions, metric by metric.",
    "analogy_zh": "区间含零，两边都不许说",
    "analogy_en": "Zero in the interval mutes both directions",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "scripts/eval_real.py",
@@ -5480,6 +6239,12 @@
    "example_en": "status --failures and capability rows show unsupported reasons ('license file', 'minified').",
    "analogy_zh": "进门看名单，拒之有理",
    "analogy_en": "A guest list with printed reasons",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py",
@@ -5526,6 +6291,12 @@
    "example_en": "A tree with an a→b→a cycle ingests and terminates; the cycle fixture is in the mechanism tests.",
    "analogy_zh": "逛店不逛路牌",
    "analogy_en": "Shops, not signs",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py",
@@ -5567,6 +6338,12 @@
    "example_en": "Ingest a nonexistent path: exit 5, the root's failure listed, no rows deleted.",
    "analogy_zh": "开工点名，缺席≠销户",
    "analogy_en": "Roll call: absent ≠ erased",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py:158-184",
@@ -5608,6 +6385,12 @@
    "example_en": "Mechanism tests rename a root mid-ingest to simulate ejection: rows survive, report shows kept; normal work resumes once restored.",
    "analogy_zh": "拉不开的抽屉不是空抽屉",
    "analogy_en": "A stuck drawer isn't empty",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py",
@@ -5659,6 +6442,12 @@
    "example_en": "Delete an indexed file and re-ingest: the report shows the prune; search before that shows the deleted_filtered counter catching it.",
    "analogy_zh": "销名之前先排除锁门和搬家",
    "analogy_en": "Rule out locked doors and moving vans first",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/walk.py:247-268",
@@ -5697,9 +6486,7 @@
    "layer": 3,
    "keystone": false,
    "parent": null,
-   "reveal": [
-    "race-condition"
-   ],
+   "reveal": [],
    "title_zh": "边车一行 JSON 协议",
    "title_en": "The Sidecar's One-JSON-Per-Line Protocol",
    "one_zh": "stdout 上每行一个 JSON：请求 path_b64/wav_b64，回 768 维向量——简单到不会错",
@@ -5712,6 +6499,12 @@
    "example_en": "The C file's header and protocol tests pin the format; a bad-line injection test proves rule 4.",
    "analogy_zh": "一行电报，四条保命规矩",
    "analogy_en": "Telegraph plus four survival rules",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "tools/embed/goldmine-embed.c",
@@ -5768,6 +6561,12 @@
    "example_en": "python3 -m goldmine repair --plan --db evals/eval.sqlite — a read-only checkup, sectioned by category.",
    "analogy_zh": "体检、补漏、返工，三张工单",
    "analogy_en": "Checkup, gap-fill, rework: three work orders",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/repair.py",
@@ -5814,6 +6613,12 @@
    "example_en": "goldmine backup --db OLD.sqlite --out pre-upgrade.sqlite — verified output; restore to a different path and inspect read-only with the old program.",
    "analogy_zh": "公证备份、只动软装、旧程序免进",
    "analogy_en": "Notarize, renovate softly, fence out old writers",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/commands/lifecycle.py",
@@ -5852,19 +6657,25 @@
    "title_en": "serve Heartbeat & Linger",
    "one_zh": "常驻后端 + 心跳 socket + linger 超时自动退——搜索从秒级到亚秒",
    "one_en": "Resident backend + heartbeat socket + linger timeout — search goes from seconds to sub-second",
-   "def_zh": "serve（opt-in 守护）把后端常驻：llama-server 与媒体边车一次加载反复使用，每次查询免掉模型冷启动，搜索从「每次起模型几秒」变亚秒。生命周期由心跳与 linger 超时管理：没人用就自动退出，不留僵尸后台。能力/指纹信息由静态探针合并——不起进程也能如实回答 visual_search 之类的能力问询（能力宣称先于服务、由探针派生）。",
-   "def_en": "serve (an opt-in daemon) keeps the backends resident: llama-server and the media sidecar load once and serve many, removing model cold-start from every query — seconds become sub-second. Lifecycle runs on heartbeat + linger timeout: unused, it exits itself, leaving no zombie background. Capability/fingerprint answers merge from static probes — even without the process running, questions like visual_search get truthful answers (claims derive from probes, and precede the service).",
+   "def_zh": "显式启动的 serve 能复用已加载的嵌入后端，减少模型冷启动；实际收益取决于索引、模型、机器与压力状态。它用心跳、所有权、压力保护与 linger 空闲退出控制驻留。reranker 的共享租约和 300 秒空闲回收独立管理，不等同于 serve 的 linger 设置。",
+   "def_en": "Explicit serve can reuse a loaded embedding backend and avoid model cold starts; measured benefit depends on index, model, machine and pressure state. Heartbeat, ownership, pressure guards and linger idle exit control residency. Shared reranker leases and their 300-second cleanup are managed separately from serve linger.",
    "plain_zh": "请一位翻译住家里（明确要求才请），没人说话他就自己收拾走人。还没请他时你也能问「在不在」——门口的探针替他诚实作答。",
    "plain_en": "A translator moves in only when you ask; when nobody talks to him he leaves by himself. And before he moves in, the door probe answers 'is he available?' truthfully on his behalf.",
    "example_zh": "goldmine serve --db lib.sqlite 后连续 search：第二次查询起可对比亚秒时延；空闲超时后进程自行消失。",
    "example_en": "goldmine serve --db lib.sqlite, then back-to-back searches: sub-second from the second query; idle past linger, the process is gone.",
    "analogy_zh": "住家翻译，闲了自走，行踪探针可查",
    "analogy_en": "A live-in translator who self-departs and is probe-reportable",
+   "why_zh": "冷启动少了，驻留内存也多了。复用是否划算，需要把等待时间、空闲回收和真实内存压力一起衡量。",
+   "why_en": "Avoiding cold starts also keeps memory resident. Judge reuse together with wait time, idle reclamation and actual memory pressure.",
+   "how_zh": "先显式启动服务；客户端校验发现信息与身份，调用后释放自己的连接。服务自己决定何时因压力或空闲退出。",
+   "how_en": "Start the service explicitly. Clients validate discovery and identity, then release their own connections. The service owns its pressure and idle-exit decisions.",
+   "try_zh": "实验台中的 300 秒是重排器登记的空闲值。为什么不能拿它替代 serve 所有场景的退出时长？",
+   "try_en": "The workbench’s 300 seconds is the registered reranker idle interval. Why must it not be presented as every serve lifetime?",
    "refs": [
     {
      "path": "goldmine/serve.py",
      "lines": "",
-     "note": "心跳、linger、静态探针合并"
+     "note": "ServeDaemon 的 linger 与 PressureGuard"
     }
    ],
    "deep": [
@@ -5901,6 +6712,12 @@
    "example_en": "Drop a file while watch runs → searchable within ≤90 s (the R9 live-measured bound).",
    "analogy_zh": "攒一窗一起送 + 定时全楼巡",
    "analogy_en": "Batch the window; sweep the floor regularly",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/watch.py",
@@ -5944,6 +6761,12 @@
    "example_en": "status --failures shows which files are listed and why they failed.",
    "analogy_zh": "挂起有台账，不是除名",
    "analogy_en": "Parked on the books, not expelled",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/watch.py:950-976",
@@ -5987,6 +6810,12 @@
    "example_en": "The heartbeat in doctor/status shows the power state and the gating decision it produced.",
    "analogy_zh": "看天吃饭，但主意的最终决定权在你",
    "analogy_en": "Read the weather; the user owns the call",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/watch.py:771-792",
@@ -6033,6 +6862,12 @@
    "example_en": "docs/MCP.md is the four-tool contract; SDK/stdio/queue/cancellation tests run in the optional-mcp profile.",
    "analogy_zh": "只读柜台，一号位一队列",
    "analogy_en": "A read-only counter with a one-deep queue",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/mcp_server.py",
@@ -6079,6 +6914,12 @@
    "example_en": "goldmine sources list shows roots and exclusions; forget PATH --dry-run previews without writing.",
    "analogy_zh": "只管名册内的房间",
    "analogy_en": "Govern only the rooms you walked",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -6125,6 +6966,12 @@
    "example_en": "docs/COMMIT_DIGESTS.md is the running digest stream; three reads in, you have the repo's risk instincts.",
    "analogy_zh": "一页纸汇报，不写小说",
    "analogy_en": "A one-pager, not a novella",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/COMMIT_DIGESTS.md",
@@ -6166,6 +7013,12 @@
    "example_en": "docs/WALKTHROUGH-*.md are the five lectures; many nodes in this very Learn map were mined from them.",
    "analogy_zh": "每周授课，复述过关",
    "analogy_en": "Weekly lectures, recite to pass",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "docs/WALKTHROUGH-search.md",
@@ -6207,6 +7060,12 @@
    "example_en": "comparison-report-001's repro instructions name the worktree path — measurement and reproduction follow the same rule.",
    "analogy_zh": "马拉松跑封闭赛道",
    "analogy_en": "Marathons need closed courses",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "AGENTS.md",
@@ -6253,6 +7112,12 @@
    "example_en": "heavy-evidence/ keeps per-line metrics and raw stdout — any new metric recomputes offline, no engine rerun needed.",
    "analogy_zh": "留发票，扔包装盒",
    "analogy_en": "Keep invoices, toss packaging",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "AGENTS.md",
@@ -6299,6 +7164,12 @@
    "example_en": "A standing audit: every card in the site's numbers section has a receipt in the repo; an unreceipted number is treated as an incident.",
    "analogy_zh": "广告词按合同标准写",
    "analogy_en": "Ad copy at contract standard",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "AGENTS.md",
@@ -6345,6 +7216,12 @@
    "example_en": "search '退款期限' --lexical shows the weak CJK lexical hits; hybrid --pack is unaffected.",
    "analogy_zh": "切词机不认中文，中文靠语义腿",
    "analogy_en": "No CJK splitting; semantics carries it",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/lexical_store.py",
@@ -6364,7 +7241,7 @@
      "rel_en": "Normalization before tokenization"
     }
    ],
-   "x": 260.0,
+   "x": 338.0,
    "y": 684.0
   },
   {
@@ -6372,7 +7249,7 @@
    "cluster": "search",
    "layer": 2,
    "keystone": false,
-   "parent": "admission-gate",
+   "parent": "exact-candidate-pruning",
    "reveal": [
     "z-score",
     "cosine",
@@ -6381,26 +7258,37 @@
    ],
    "title_zh": "全库向量矩阵",
    "title_en": "The Whole-Library Vector Matrix",
-   "one_zh": "查询向量 × 库矩阵 = 一排余弦；fp16 存储 7 万向量约 108MB，查询 +2ms",
-   "one_en": "Query vector × library matrix = a row of cosines; fp16 stores ~70k vectors in ~108MB, +2ms per query",
-   "def_zh": "语义臂的物理形态：全库向量存成矩阵（SQLite BLOB 内 fp16，与行同库防 desync），查询时与查询向量做一次批量余弦。fp16 存储是 DigUp 实测迁移（70k 向量 108MB、查询 +2ms，精度损失在余弦后不可见）。z 分数标准化直接在这个余弦行上算：分模态均值 + 全局 std。mmap 缓存是 DigUp 残余项（Python 侧 malloc 行为不同，10 万+向量级先测再定）。",
-   "def_en": "The semantic arm's physical form: the whole library's vectors live in one matrix (fp16 inside SQLite BLOBs, same database as the rows to prevent desync); each query is one batched cosine pass. fp16 is DigUp's measured migration (70k vectors ≈ 108MB, +2ms per query, precision loss invisible after cosine). z-score standardization runs directly on that cosine row: per-modality mean, global std. mmap caching remains a DigUp leftover (Python's malloc differs; test at 100k+ vectors first).",
+   "one_zh": "全库向量点积；可选派生 mmap 缓存",
+   "one_en": "Full-corpus dot products; optional derived mmap cache",
+   "def_zh": "SQLite 保存权威的 768 维 fp16 向量及其片段身份。查询把向量读成 fp32 矩阵，与查询向量做一次全库点积，再执行原有 z 标准化。可选 vector cache 已实现：显式构建、显式启用的不可变 fp32 mmap 代；它是派生副本，不取代 SQLite。",
+   "def_en": "SQLite holds authoritative 768-dimensional fp16 vectors and segment identities. Search reads an fp32 matrix, scores every row against the query, then performs the existing z normalization. The optional vector cache is implemented: explicitly built and enabled immutable fp32 mmap generations. It is derived data, not a replacement for SQLite.",
    "plain_zh": "全库的「意思坐标」排成一张大表，每次搜索就是拿你的问题坐标跟整张表比一遍距离——比完再标准化成可比的 z 分。",
    "plain_en": "The whole library's meaning-coordinates in one big table; each search compares your query's coordinates against all of them, then standardizes into comparable z-scores.",
    "example_zh": "tests 里钉着 z=5.0=√(n−1) 的手算矩阵夹具——26 行 1 真 25 填，一行鹤立鸡群 z=√25。",
    "example_en": "A test pins the hand-computed matrix: 26 rows, one true, z=5.0=√(n−1).",
    "analogy_zh": "全库坐标表 + 一遍批量比距",
    "analogy_en": "One coordinate table, one batched compare",
+   "why_zh": "矩阵批量计算避免逐行 Python 点积；派生缓存减少反复解码 SQLite BLOB 的工作。两者都必须保留向量、文件、模态身份的对齐。",
+   "why_en": "Batch matrix operations avoid a Python dot-product loop. A derived cache can reduce repeated BLOB decoding. Both must keep vectors aligned with segment, file and modality identities.",
+   "how_zh": "用 reindex vectors 明确构建/启用缓存。读取核对 index UUID、模型指纹、vector epoch、文件与数组身份；失配就回退 SQLite。当前优化仍对全库计算余弦和 z，只减少后续不必要的文件对象。",
+   "how_en": "Explicitly build/enable via reindex vectors. Reads validate index UUID, embedding fingerprint, vector epoch, file and array identity, falling back to SQLite on mismatch. The current optimization still computes all cosines and z values; it reduces later file-object work.",
+   "try_zh": "在精确筛选模式切换优化前后：向量行数为什么仍是 26，文件对象数却可以不同？",
+   "try_en": "Switch before/after in exact-pruning mode. Why do both score 26 vector rows while creating different numbers of file objects?",
    "refs": [
     {
-     "path": "goldmine/search.py:589",
+     "path": "goldmine/store.py",
      "lines": "",
-     "note": "zscores 与矩阵余弦"
+     "note": "Store.load_vectors()"
     },
     {
      "path": "goldmine/vector_cache.py",
      "lines": "",
-     "note": "可选缓存层"
+     "note": "build_vector_cache() 与 load_vector_cache()"
+    },
+    {
+     "path": "goldmine/search.py",
+     "lines": "",
+     "note": "Searcher._search()"
     }
    ],
    "deep": [
@@ -6428,10 +7316,15 @@
      "to": "hybrid-fusion",
      "rel_zh": "语义臂进入融合的形态",
      "rel_en": "The semantic arm's shape entering fusion"
+    },
+    {
+     "to": "exact-candidate-pruning",
+     "rel_zh": "全库算完后，怎样少建文件对象",
+     "rel_en": "Avoid file objects after full-corpus scoring"
     }
    ],
-   "x": 416.0,
-   "y": 684.0
+   "x": 436.0,
+   "y": 812.0
   },
   {
    "id": "llama-server-process",
@@ -6452,6 +7345,12 @@
    "example_en": "ps during a semantic search shows llama-server; it's gone when the command exits.",
    "analogy_zh": "招之即来挥之即去的短工",
    "analogy_en": "Hired help, summoned and dismissed",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/llama.py",
@@ -6493,6 +7392,12 @@
    "example_en": "build_native.py emits a hashed manifest; golden-table tests pin bit-identical resizing.",
    "analogy_zh": "不改装别人的服务器，自己焊死零件",
    "analogy_en": "Weld your own parts; don't fork theirs",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "tools/embed/goldmine-embed.c",
@@ -6541,6 +7446,12 @@
    "example_en": "pmset -g thermlog or the watch heartbeat shows the probed states.",
    "analogy_zh": "隔窗读仪表，读不了就记录",
    "analogy_en": "Read the gauge through the window; log it if you can't",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/watch.py:771-792",
@@ -6585,6 +7496,12 @@
    "example_en": "The trailing 'gate: green' from scripts/eval_real.py --suite legacy --gate is its verdict (ANCHORS #4).",
    "analogy_zh": "自动监考+对上张成绩单",
    "analogy_en": "Auto-proctor with last term's report card",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "scripts/eval_real.py",
@@ -6626,6 +7543,12 @@
    "example_en": "Each hit's location marker in render output is a chunk coordinate; --context 1 demonstrates adjacency directly.",
    "analogy_zh": "检索原子：约一段半一段",
    "analogy_en": "The atom: about 1.5 paragraphs",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/chunker.py",
@@ -6645,7 +7568,7 @@
      "rel_en": "Selecting segments within chunks"
     }
    ],
-   "x": 470.0,
+   "x": 446.0,
    "y": 1064.0
   },
   {
@@ -6667,6 +7590,12 @@
    "example_en": "QMD's 1/22 in COMPARISON.md is fixed-denominator accounting — failed requests never left n=22.",
    "analogy_zh": "缺考按零分",
    "analogy_en": "Absentees score zero",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "scripts/compare_search.py",
@@ -6700,14 +7629,20 @@
    "title_en": "Paired Bootstrap",
    "one_zh": "同一道题两版成绩差做重抽样——不显著就回滚",
    "one_en": "Resample per-question deltas between two versions — insignificant means rollback",
-   "def_zh": "与 McNemar 并用的显著性机器：对每道题的指标差值做 bootstrap 重抽样，得到差值置信区间。选成对设计是因为题目难度方差远大于改动效应——不配对的话信号全被「有的题本来就难」淹没。判定纪律：区间含零 = 不可采纳也不可宣称退化；这是回归门的两台裁判之一。",
-   "def_en": "The significance machinery alongside McNemar: bootstrap-resample the per-question metric deltas to get a confidence interval on the change. Paired by question because question-difficulty variance dwarfs change effects — unpaired, the signal drowns in 'some questions are just hard'. Verdict discipline: an interval spanning zero means neither adopt nor claim regression; it's one of the regression gate's two referees.",
-   "plain_zh": "同一批学生前后两次考试，只看每人涨了多少分，再随机重排无数次看「纯靠运气能不能涨这么多」。运气解释不了才许说有效。",
-   "plain_en": "Same students, two exams: look only at each person's delta, then reshuffle at random thousands of times. Only if luck can't explain the gain may you claim the change worked.",
-   "example_zh": "回归门的输出里每项指标带区间；「区间含零」在 FEATURE_STATUS 的 current005 对照里逐项可见。",
-   "example_en": "Every gate metric ships with an interval; FEATURE_STATUS's current005 comparison shows zero-spanning cases metric by metric.",
-   "analogy_zh": "重排无数次，运气解释不了才算数",
-   "analogy_en": "Reshuffle until luck is ruled out",
+   "def_zh": "成对 bootstrap 把同一输入下的原版 A 与候选 B 视为一条完整记录，有放回抽取同样数量的记录，重复计算预先登记的差值统计量，再取重抽样分布的分位数构造近似区间。本轮阶段性能的估计量是 median(t_B,i−t_A,i)；质量回归可能使用平均差，二者不能混用。它不是把次序打乱的置换检验，也不把「95% 区间」解释为本次真值有 95% 概率在里面。",
+   "def_en": "Paired bootstrap treats original A and candidate B on the same input as one complete record. Resample the same number of records with replacement, recompute the preregistered difference statistic, then use resampling quantiles for an approximate interval. This phase-performance study estimates median(t_B,i−t_A,i); a quality regression may use a mean difference, a different estimand. This is not a permutation test that shuffles order, nor does a 95% interval mean a 95% probability that this particular interval contains the truth.",
+   "plain_zh": "把每个学生两次考试的成绩装在同一个信封里。有放回地抽信封：某人可能抽到两次，也可能一次没抽到；但两次成绩始终成对。每次重算同一种前后差统计量，观察有限样本让估计摇摆多大。",
+   "plain_en": "Put each student’s two exam scores in one envelope. Draw envelopes with replacement: a student can appear twice or be omitted, but their two scores stay together. Recompute the same before/after statistic each time to see how finite sampling makes the estimate vary.",
+   "example_zh": "三对耗时差为 [−3,−1,2]ms，中位数差是 −1ms。一次有放回抽样若抽到第 [1,1,3] 对，得到 [−3,−3,2]，重算中位数为 −3ms。这只说明抽法；三对数据不能据此认证生产提速。",
+   "example_en": "Three paired time differences[−3,−1,2]ms have median−1ms. Resampling pair indices[1,1,3] gives[−3,−3,2], whose median is−3ms. This illustrates resampling, not a production speedup certified from three pairs.",
+   "analogy_zh": "成对信封有放回抽取，每轮重算同一个差值统计量",
+   "analogy_en": "Resample paired envelopes with replacement; recompute the same difference statistic",
+   "why_zh": "配对保留同一输入的对应关系，可减少输入难度等差异对比较的干扰；它不能自动消除时序漂移、样本相关或并发负载。",
+   "why_en": "Pairing preserves matched inputs and can reduce interference from input difficulty. It does not automatically remove time drift, dependent samples or concurrent load.",
+   "how_zh": "先登记统计量、样本数、重抽次数、随机种子与区间方法；用相同下标同时抽 A/B 两项，每轮重算成对差的中位数，最后读区间。区间含零表示这套样本与方法未清楚分出正负效应，不表示已证明零差异。收益门还可包含实际幅度与多重比较条件。",
+   "how_en": "Preregister the statistic, sample count, resample count, seed and interval method. Use shared indices to draw both A/B values, recomputing the median paired difference each round, then read the interval. A zero-spanning interval does not clearly separate effect direction under this sample and method; it does not prove zero effect. Benefit gates can also require a practical magnitude and multiple-comparison conditions.",
+   "try_zh": "用 [1,1,3] 重抽上面的三对，手算为什么会重复第 1 对、遗漏第 2 对。再解释为什么仅仅把三条记录排序打乱，无法产生这样的 bootstrap 样本。",
+   "try_en": "Resample the three example pairs at indices[1,1,3]. Explain why pair 1 repeats and pair 2 is absent. Why can simply shuffling the three records not produce this bootstrap sample?",
    "refs": [
     {
      "path": "scripts/eval_real.py",
@@ -6749,6 +7684,12 @@
    "example_en": "Ctrl-C a large ingest, rerun: the second log is mostly 'skipped'.",
    "analogy_zh": "做过的活有收条，收条在就跳过",
    "analogy_en": "Receipts mean done; done means skip",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/ingest/pipeline.py",
@@ -6795,6 +7736,12 @@
    "example_en": "goldmine search | head exits cleanly (no traceback) because writes to fd 1 are handled explicitly.",
    "analogy_zh": "取号牌：0 键盘 1 屏幕 2 报错",
    "analogy_en": "Tickets: 0 keyboard, 1 screen, 2 errors",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/embed_helper.py",
@@ -6836,6 +7783,12 @@
    "example_en": "Simplest live check: goldmine search <common> | head -1 → clean exit code, no traceback.",
    "analogy_zh": "挂断的电话不再喊",
    "analogy_en": "Don't shout into hung-up phones",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/cli.py",
@@ -6863,7 +7816,7 @@
    "cluster": "systems",
    "layer": 0,
    "keystone": false,
-   "parent": "sidecar-protocol",
+   "parent": "reranker-lease",
    "reveal": [],
    "title_zh": "竞态",
    "title_en": "Race Conditions",
@@ -6877,6 +7830,12 @@
    "example_en": "The sidecar protocol tests include a stderr-noise fixture — yesterday's landmine as a permanent exam question.",
    "analogy_zh": "一个信箱只许一个人管",
    "analogy_en": "One mailbox, one owner",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "goldmine/backends/embed_helper.py",
@@ -6896,8 +7855,8 @@
      "rel_en": "The other fight against hidden buffering"
     }
    ],
-   "x": 2024.0,
-   "y": 2536.0
+   "x": 1314.0,
+   "y": 1700.0
   },
   {
    "id": "percentile",
@@ -6918,6 +7877,12 @@
    "example_en": "The comparison speed table lists median and p95 side by side, recomputable from per-query receipts.",
    "analogy_zh": "95% 的人不碰头的门框",
    "analogy_en": "The door 95% clear",
+   "why_zh": "",
+   "why_en": "",
+   "how_zh": "",
+   "how_en": "",
+   "try_zh": "",
+   "try_en": "",
    "refs": [
     {
      "path": "scripts/compare_search.py",
@@ -6939,6 +7904,310 @@
    ],
    "x": 1447.0,
    "y": 2152.0
+  },
+  {
+   "id": "exact-candidate-pruning",
+   "cluster": "search",
+   "layer": 3,
+   "keystone": false,
+   "parent": null,
+   "reveal": [
+    "vector-matrix"
+   ],
+   "title_zh": "精确候选筛选",
+   "title_en": "Exact Candidate Pruning",
+   "one_zh": "全库照算，落选对象不必创建",
+   "one_en": "Score all rows; avoid impossible file objects",
+   "def_zh": "先按原有方法计算全部余弦、全库 z 与逐文件稳定最大值。只有随后创建 Python 文件对象时，才保留 max(z)≥门槛的向量文件，以及词法、覆盖、精确、名字路线涉及的文件。它是可能入选文件的保守上界；真正的准入与排序继续照旧。非有限 z/门槛，或 hybrid coverage_quorum=0 时回到完整原路径。",
+   "def_en": "Compute all cosines, full-corpus z values and stable per-file maxima first. Only when creating Python file objects, retain vector files at max(z)≥gate plus files touched by lexical, coverage, exact or name routes. This is a conservative possible-admission pool; original admission and ranking still follow. Nonfinite z/gate or hybrid coverage_quorum=0 falls back to the complete original path.",
+   "plain_zh": "像分拣台：所有样本先称重，只有可能过门的袋子才装入后续周转盒。省的是盒子，不是偷偷漏称样本。",
+   "plain_en": "A sorting bench weighs every sample, then boxes only bags that could qualify. It saves boxes without skipping the weighing.",
+   "example_zh": "演示有 26 个向量行、7 个文件；文件 1 语义突出，文件 3 有词法命中。两条路径的入选示例都是 {1,3}。",
+   "example_en": "The demo has 26 vector rows and seven files. File1 stands out semantically; file 3 has a lexical hit. Both example paths admit{1,3}.",
+   "analogy_zh": "",
+   "analogy_en": "",
+   "why_zh": "不可能入选的文件也建对象，会把批量数组计算的收益消耗在 Python 字典与循环上。",
+   "why_en": "Materializing files that cannot qualify spends array-computation savings on Python dictionaries and loops.",
+   "how_zh": "先用数组得到精确每文件最大值，构造语义阈值与其他证据路线的并集，再为这个并集创建原样的值。保持首个最大行、过滤器与 RRF 次序；不取全局片段 top-K 近似。",
+   "how_en": "Compute exact file maxima in arrays, union the semantic threshold with other evidence routes, then materialize unchanged record values. Preserve first-max ties, filters and RRF ordering; do not approximate with a global segment topK.",
+   "try_zh": "在实验台比较原/新路径：26 个向量行都算，7 个文件对象可减为 2 个；这是演示计数，不是生产提速倍率。关闭文件 3 的词法路线再比较。",
+   "try_en": "Compare the workbench paths: both score26 vector rows; seven file objects can become two. These are illustrative operation counts, not a production speedup factor. Remove file 3’s lexical route and compare again.",
+   "refs": [
+    {
+     "path": "goldmine/search.py",
+     "lines": "727",
+     "note": "_aggregate_by_file() · 精确每文件最大值与可选筛选"
+    },
+    {
+     "path": "goldmine/admission.py",
+     "lines": "64",
+     "note": "admit_files() · 原有准入"
+    }
+   ],
+   "deep": [
+    {
+     "to": "admission-gate",
+     "rel_zh": "什么才算有资格返回",
+     "rel_en": "What qualifies for a result"
+    },
+    {
+     "to": "z-score",
+     "rel_zh": "为什么必须先算全库分布",
+     "rel_en": "Why the whole distribution comes first"
+    },
+    {
+     "to": "vector-matrix",
+     "rel_zh": "向量原料与身份对齐",
+     "rel_en": "Vector data and aligned identities"
+    },
+    {
+     "to": "hybrid-fusion",
+     "rel_zh": "不能丢掉词法路线",
+     "rel_en": "Preserve the lexical route"
+    }
+   ],
+   "x": 436.0,
+   "y": 432.0
+  },
+  {
+   "id": "empty-posting-intersection",
+   "cluster": "search",
+   "layer": 3,
+   "keystone": false,
+   "parent": null,
+   "reveal": [],
+   "title_zh": "空候选与倒排交集",
+   "title_en": "Empty Candidates & Postings",
+   "one_zh": "P ∩ ∅ = ∅，已知结果就不重复查",
+   "one_en": "P ∩ ∅ = ∅: avoid work with a known result",
+   "def_zh": "正文见证把倒排命中集合 P 与候选片段集合 C 相交。C 为空时，结果严格等于空集合，无须执行 FTS posting 查询。入口仍先检查请求死线；候选非空时保留全部原有核验。它不放宽语法、权限、来源验证或现代索引损坏检测。",
+   "def_en": "Body verification intersects posting hits P with candidate segments C. When C is empty, the result is exactly empty and no FTS posting lookup is needed. The entry still checks the request deadline; nonempty candidates retain full verification. This does not relax syntax, scope, source verification or modern-index corruption detection.",
+   "plain_zh": "候选篮里没有东西时，拿整本索引逐页对照，也不可能找到篮子里的那一件。",
+   "plain_en": "If the candidate basket is empty, walking the whole index cannot find an item inside that basket.",
+   "example_zh": "P={2,4,7}，C={1,2,3,4}，交集={2,4}；C=∅ 时交集=∅，无需读取 P。",
+   "example_en": "P={2,4,7}, C={1,2,3,4}, so the intersection is{2,4}. With C=∅ the intersection is∅ without reading P.",
+   "analogy_zh": "",
+   "analogy_en": "",
+   "why_zh": "同一次普通关键词查询可能再次调用核验器，却没有新增片段；重复扫描倒排表不能带来任何新见证。",
+   "why_en": "A normal keyword request can invoke verification again with no additional segments. Another posting scan cannot produce a new witness.",
+   "how_zh": "先把候选行转成 segment→file 映射，空映射直接返回两个空结果；只把实际可验证行交给 posting 交集。",
+   "how_en": "Materialize the segment→file candidate mapping; if empty, return the two empty results. Only actual candidate rows require posting intersections.",
+   "try_zh": "把实验台候选数设为 0，再设为 4：何时可以省下一次查询，何时仍必须读取 P？",
+   "try_en": "Set the candidate count to0, then4. When may one lookup disappear, and when is reading P still necessary?",
+   "refs": [
+    {
+     "path": "goldmine/retrieval_evidence.py",
+     "lines": "99",
+     "note": "collect_body_units() · 先检查空候选"
+    },
+    {
+     "path": "goldmine/retrieval_lexical.py",
+     "lines": "102",
+     "note": "add_verified_witnesses() · 额外见证入口"
+    }
+   ],
+   "deep": [
+    {
+     "to": "inverted-index",
+     "rel_zh": "倒排表是什么",
+     "rel_en": "What a posting list is"
+    },
+    {
+     "to": "fts5-bm25",
+     "rel_zh": "真实词法入口",
+     "rel_en": "The actual lexical entry"
+    }
+   ],
+   "x": 788.0,
+   "y": 304.0
+  },
+  {
+   "id": "read-snapshot",
+   "cluster": "identity",
+   "layer": 2,
+   "keystone": false,
+   "parent": "four-layer-identity",
+   "reveal": [],
+   "title_zh": "一次请求一个读快照",
+   "title_en": "One Read Snapshot per Request",
+   "one_zh": "排名、原文、引用读同一版",
+   "one_en": "One version for rank, text and citations",
+   "def_zh": "读快照是一份事务级、固定的已提交数据库视图。Application 在同一只读 Store/事务中完成检索、取原文、邻块与 pack；写入方发布下一版时，当前请求不把其中某一步单独切过去。下一请求才能按它自己的读视图看到新提交。",
+   "def_en": "A read snapshot is a transaction-level fixed committed database view. Application performs retrieval, original-text reads, neighbors and packing in one read-only Store/transaction. A concurrent publication does not switch just one stage to the newer version. A later request obtains its own read view.",
+   "plain_zh": "像一次借阅时固定的版次：出版社印了新版，不会让你手里的前半本与后半本突然变成不同版。",
+   "plain_en": "Like a fixed edition for one reading: publishing a newer edition does not replace half the book already in your hands.",
+   "example_zh": "当前请求已加载 v1 mmap。发布 v2 并显式重建 v2 缓存后，这个请求仍用 v1 mmap，rank/text/citation 都为 v1；开始新请求才选择 v2。",
+   "example_en": "The current request has loaded mmap v1. Publishv2 and explicitly rebuild cache v2: this request still uses mmap v1 and rank/text/citationv1. The next request selectsv2.",
+   "analogy_zh": "",
+   "analogy_en": "",
+   "why_zh": "否则同一文件可能按旧文本排名，却给出新文本引用；每一步单独「最新」并不等于整次请求一致。",
+   "why_en": "Otherwise a file could rank by old text but cite newer text. Making each stage individually latest does not make the request consistent.",
+   "how_zh": "在同一快照内核对索引身份、排名和取证。向量首次加载时选定匹配的 mmap 或 SQLite 数据；已经持有的向量表可供该请求继续用。后来发布或重建缓存不替换它，下一请求才重新验证并选择路径。",
+   "how_en": "Validate identity, rank and read evidence in one snapshot. On first vector load select matching mmap or SQLite data; the request can retain that table. Later cache publication or rebuild does not replace it. The next request validates again and chooses its own path.",
+   "try_zh": "先发布 v2，再模拟显式重建，当前已加载 mmap 是否仍为 v1？接着开始新请求。再制造一次因缓存失配而回退 SQLite 的请求，观察维护缓存后它也不在中途换路径。",
+   "try_en": "Publishv2 and simulate an explicit rebuild. Does the loaded mmap remainv1? Then begin the next request. Also start a SQLite request with a stale cache; verify later maintenance does not switch its path mid-request.",
+   "refs": [
+    {
+     "path": "goldmine/application.py",
+     "lines": "44",
+     "note": "_snapshot() · 一次请求一个只读视图"
+    },
+    {
+     "path": "goldmine/storage_connections.py",
+     "lines": "231",
+     "note": "read_snapshot() · 读事务"
+    }
+   ],
+   "deep": [
+    {
+     "to": "sqlite-wal",
+     "rel_zh": "并发读视图怎样存在",
+     "rel_en": "How concurrent read views exist"
+    },
+    {
+     "to": "transaction",
+     "rel_zh": "快照所在的事务",
+     "rel_en": "The transaction holding the view"
+    },
+    {
+     "to": "one-transaction",
+     "rel_zh": "写方怎样原子发布",
+     "rel_en": "How writers publish atomically"
+    }
+   ],
+   "x": 1948.0,
+   "y": 812.0
+  },
+  {
+   "id": "vector-cache",
+   "cluster": "identity",
+   "layer": 2,
+   "keystone": false,
+   "parent": "four-layer-identity",
+   "reveal": [],
+   "title_zh": "可重建的向量缓存",
+   "title_en": "Rebuildable Vector Cache",
+   "one_zh": "SQLite 权威，mmap 只是派生代",
+   "one_en": "SQLite is truth; mmap is a derived generation",
+   "def_zh": "可选缓存把同一索引的 fp32 向量、segment IDs、file IDs、modalities 保存为对齐的不可变 numpy 文件。构建与启用都需要显式维护命令。读取检查身份、epoch、触发器、数组合同与文件完整性；不匹配时回退权威 SQLite，不在 search/MCP 中构建或写库。",
+   "def_en": "The optional cache stores aligned fp32 vectors, segment IDs, file IDs and modalities as immutable numpy files. Building and enabling require explicit maintenance. Reads validate identity, epoch, triggers, array contracts and file integrity; mismatch falls back to authoritative SQLite without building or writing during search/MCP.",
+   "plain_zh": "缓存像按版号整理的复印件。版号不对就读原件，不能因为复印件更顺手就把它当成权威。",
+   "plain_en": "A cache is an edition-labelled photocopy. If its edition does not match, read the original; convenience does not make a copy authoritative.",
+   "example_zh": "已加载 v1 mmap 的旧请求可以用完它。新请求 v2 若只有缓存 v1，就固定使用 SQLite；随后显式建出 v2 缓存，仍要等下一次开始请求才能选择该缓存。",
+   "example_en": "An old request can finish with loaded mmap v1. A new v2 request with only cache v1 selects SQLite. Explicitly building cache v2 later still requires the next request to select that cache.",
+   "analogy_zh": "",
+   "analogy_en": "",
+   "why_zh": "缓存应当让重复解码更少，而不是制造第二份真相。无法确认缓存仍对应当前读快照，就宁可使用 SQLite。",
+   "why_en": "A cache should avoid decoding work without creating a second truth. When it cannot be verified against the read snapshot, use SQLite.",
+   "how_zh": "用 reindex vectors 显式构建与启用。新向量事务推进 epoch，旧缓存不再供不匹配的新读视图使用；已经持有旧 mmap 的请求可以完成。缓存开关与维护影响后续请求的重新验证，不改变当前已加载表。此轮没有增加跨请求共享 SQLite 连接或全局 application 缓存。",
+   "how_en": "Build and enable explicitly with reindex vectors. A new vector transaction advances the epoch, preventing old caches from serving mismatched new views; a request already holding its older mmap can finish. Cache settings and maintenance affect later validation, not the table already loaded by a request. This iteration adds no cross-request shared SQLite connection or global application cache.",
+   "try_zh": "建立一个因旧缓存而回退 SQLite 的请求，再模拟维护。为什么当前路径不变，却能让下一次请求选择 mmap？",
+   "try_en": "Begin a request that falls back to SQLite because its cache is stale, then simulate maintenance. Why does its current path stay fixed while the next request can choose mmap?",
+   "refs": [
+    {
+     "path": "goldmine/vector_cache.py",
+     "lines": "113",
+     "note": "build_vector_cache() · 显式发布不可变代"
+    },
+    {
+     "path": "goldmine/vector_cache.py",
+     "lines": "136",
+     "note": "load_vector_cache() · 按快照验证"
+    }
+   ],
+   "deep": [
+    {
+     "to": "fp16-vector-store",
+     "rel_zh": "权威持久化格式",
+     "rel_en": "The authoritative persistence format"
+    },
+    {
+     "to": "read-snapshot",
+     "rel_zh": "缓存必须匹配谁",
+     "rel_en": "Which view the cache must match"
+    },
+    {
+     "to": "fingerprint-gate",
+     "rel_zh": "向量家族身份",
+     "rel_en": "Embedding-family identity"
+    },
+    {
+     "to": "vector-matrix",
+     "rel_zh": "实际矩阵计算",
+     "rel_en": "The actual matrix computation"
+    }
+   ],
+   "x": 2094.0,
+   "y": 812.0
+  },
+  {
+   "id": "reranker-lease",
+   "cluster": "models",
+   "layer": 3,
+   "keystone": false,
+   "parent": null,
+   "reveal": [
+    "race-condition"
+   ],
+   "title_zh": "重排模型借还",
+   "title_en": "Reranker Leases",
+   "one_zh": "借一次，finally 归还一次",
+   "one_en": "Acquire once; release once through finally",
+   "def_zh": "租约是一份请求对共享模型拥有者的使用权。取得租约只增加持有者；第一次真正 rank 才懒启动模型。每次成功取得都必须在最后一次自有使用后释放，包括异常、取消与超时。仍有持有者时不回收；最后归还后登记 300 秒空闲期，回调必须与它所属的代匹配。",
+   "def_en": "A lease is a request’s right to use a shared model owner. Acquisition only registers a holder; first actual rank starts lazily. Every acquisition must release after its last owned use, including errors, cancellation and timeout. Active holders block reclamation. The last release registers a 300-second idle period, and its callback must match that generation.",
+   "plain_zh": "像共用工具的借用牌：最后一张牌归还后，管理员才开始等空闲期限。旧一轮的催还提醒不能把新借出的工具收走。",
+   "plain_en": "Like tokens for a shared tool: idle waiting starts only after the last token returns. An old reminder cannot reclaim a newly borrowed tool.",
+   "example_zh": "借用 2 次、归还 1 次 → active=1，不回收。最后归还后等 300 秒；期间重新借用会使旧代回调失效。",
+   "example_en": "Acquire twice, release once: active1, no reclamation. After the final release wait300 seconds; reacquisition invalidates the earlier callback.",
+   "analogy_zh": "",
+   "analogy_en": "",
+   "why_zh": "漏归还会让模型看似一直在用；旧计时器误关又会中断刚开始的新请求。计数对称与回调身份同样重要。",
+   "why_en": "Missing releases can make a model appear permanently busy. A stale timer can instead interrupt a new request. Balanced counts and callback identity are both required.",
+   "how_zh": "请求用 finally 释放自己的租约；独立窗口仲裁和 quality 重排分别记账。重新借用取消旧空闲代；关闭只作用于精确拥有的本地子进程，不按名字杀进程。",
+   "how_en": "Release each request’s own lease through finally. Window arbitration and quality reranking keep separate balances. Reacquisition invalidates the old idle generation. Cleanup acts on exactly owned local child handles, never process names.",
+   "try_zh": "借用→调用→归还→时钟 +150s→重新借用→触发旧回调。持有数应为 1，模型仍亮；另一个失败的新请求只归还它自己新借的那一份。",
+   "try_en": "Acquire→Use→Release→Clock+150s→Acquire→Fire stale callback. One holder remains and the model stays lit. A separate failed new request returns only its own newly acquired lease.",
+   "refs": [
+    {
+     "path": "goldmine/application.py",
+     "lines": "148",
+     "note": "_retrieve() · 请求 finally 归还"
+    },
+    {
+     "path": "goldmine/rerank.py",
+     "lines": "210",
+     "note": "_SharedReranker() · 拥有者、代号与空闲回收"
+    },
+    {
+     "path": "goldmine/rerank.py",
+     "lines": "322",
+     "note": "shared_ranker() · 取得请求租约"
+    }
+   ],
+   "deep": [
+    {
+     "to": "backend-lifecycle",
+     "rel_zh": "拥有者与子进程边界",
+     "rel_en": "Owner and child-process boundaries"
+    },
+    {
+     "to": "local-rerank",
+     "rel_zh": "quality 重排的使用点",
+     "rel_en": "Quality-reranking use"
+    },
+    {
+     "to": "rank-window",
+     "rel_zh": "pack 窗口的独立使用点",
+     "rel_en": "Independent pack-window use"
+    },
+    {
+     "to": "race-condition",
+     "rel_zh": "旧回调为什么危险",
+     "rel_en": "Why stale callbacks are dangerous"
+    }
+   ],
+   "x": 1314.0,
+   "y": 560.0
   }
  ]
 }

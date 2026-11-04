@@ -380,6 +380,13 @@ class Searcher:
                                 for _, _, sid in proof)
             add_verified_witnesses(self.store, lexical, query, phrases, terms, sorted(witness_rows))
 
+        # Name eligibility is independent of vectors and may extend beyond
+        # bounded FTS recall. Keep its semantic records even below the z gate.
+        name_hits = self._name_concentrated(lexical, allowed) if scorer == "hybrid" else set()
+        retain_files = set(word_rank) | set(coverage) | name_hits
+        if lexical is not None:
+            retain_files.update(lexical.exact)
+
         # -- meaning ----------------------------------------------------------
         best: dict[int, tuple[float, float, int]] = {}  # file -> (z, cosine, seg_id)
         z_by_file: dict[int, float] = {}
@@ -397,15 +404,19 @@ class Searcher:
                 q = np.asarray(qvec[0], dtype=np.float32)
                 scores = table.matrix @ q
                 zvals = self.zscores(scores, np.asarray(table.modalities))
-                # vectorized per-file aggregation (04 §5 companion fix:
-                # ~106ms of Python @500k -> ~2ms numpy); semantics are pinned
-                # by test_vectorized_aggregation_matches_python_loop
+                # Exact stable per-file maxima precede the admission-superset
+                # mask. Every corpus row still participates in normalization.
                 fids_arr = np.asarray(table.file_ids, dtype=np.int64)
                 best, z_by_file = self._aggregate_by_file(
                     fids_arr,
                     zvals,
                     scores,
                     np.asarray(table.ids, dtype=np.int64),
+                    # With quorum zero, even implicit coverage=0 admits a
+                    # vector file. Otherwise omitted files have no entry route.
+                    minimum_z=(None if scorer == "hybrid" and
+                               self.admission_parameters.coverage_quorum == 0 else z_gate),
+                    retain_files=retain_files,
                 )
 
         # -- candidates + fusion ------------------------------------------------
@@ -419,9 +430,6 @@ class Searcher:
             if math.isfinite(z) and z >= z_gate and fid not in word_rank and coverage.get(fid, 0.0) <= 0.0
         }
         textless = unwitnessed - self._files_with_text(unwitnessed) if unwitnessed else set()
-        # search.v8 (name-concentration-001): files whose NAME surface carries
-        # >= NAME_UNIT_FLOOR distinct latin query units are called for by name.
-        name_hits = self._name_concentrated(lexical, allowed) if scorer == "hybrid" else set()
         reasons = admit_files(
             scorer=scorer, z_by_file=z_by_file, coverage=coverage, word_rank=word_rank,
             exact=lexical.exact if lexical is not None else {},
@@ -721,6 +729,9 @@ class Searcher:
         zvals: "np.ndarray",
         scores: "np.ndarray",
         seg_ids: "np.ndarray",
+        *,
+        minimum_z: float | None = None,
+        retain_files=(),
     ) -> "tuple[dict[int, tuple[float, float, int]], dict[int, float]]":
         """Vectorized replacement for the per-row Python fusion loop
         (search.py v1:155-160, 106ms @500k measured, 04 §3.1). Returns
@@ -733,8 +744,10 @@ class Searcher:
         No row is trimmed before aggregation on purpose: a per-file max can
         sit at ANY global z-rank (one file's lesser rows can monopolize the
         global top-K), so row-level argpartition pre-filtering is unsafe.
-        argpartition belongs AFTER exact aggregation, on the small per-file
-        max array (see the candidate/top-K step in search() and bench.py).
+        Optional map pruning happens AFTER these exact maxima: retain every
+        threshold-qualified file and every file with another admission route.
+        The default stays unpruned. Nonfinite input/gates use the original path,
+        including its legacy NaN behavior; this is not a numeric-policy change.
         """
         if file_ids.size == 0:
             return {}, {}
@@ -749,6 +762,15 @@ class Searcher:
         firsts = np.r_[True, fids[hit_rows][1:] != fids[hit_rows][:-1]]
         best_rows = order[hit_rows[firsts]]
         group_fids = fids[starts]
+        if (minimum_z is not None and math.isfinite(minimum_z)
+                and np.isfinite(z).all()):
+            keep = max_z >= minimum_z
+            if retain_files:
+                keep |= np.isin(group_fids, tuple(retain_files))
+            if not keep.all():
+                group_fids = group_fids[keep]
+                max_z = max_z[keep]
+                best_rows = best_rows[keep]
         best = {
             int(f): (float(mz), float(sc), int(si))
             for f, mz, sc, si in zip(

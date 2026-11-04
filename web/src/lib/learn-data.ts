@@ -29,6 +29,12 @@ export type Concept = {
   example_en: string;
   analogy_zh: string;
   analogy_en: string;
+  why_zh?: string;
+  why_en?: string;
+  how_zh?: string;
+  how_en?: string;
+  try_zh?: string;
+  try_en?: string;
   refs: Ref[];
   deep: DeepLink[];
 };
@@ -125,8 +131,8 @@ export function layerDepth(layer: number): number {
 
 /** Honest reading-time estimate from the concept's actual prose length. */
 export function readingMinutes(c: Concept, lang: "zh" | "en"): number {
-  const zhText = `${c.def_zh}${c.plain_zh}${c.example_zh}${c.analogy_zh}`;
-  const enText = `${c.def_en}${c.plain_en}${c.example_en}${c.analogy_en}`;
+  const zhText = `${c.def_zh}${c.plain_zh}${c.example_zh}${c.analogy_zh}${c.why_zh ?? ""}${c.how_zh ?? ""}${c.try_zh ?? ""}`;
+  const enText = `${c.def_en}${c.plain_en}${c.example_en}${c.analogy_en}${c.why_en ?? ""}${c.how_en ?? ""}${c.try_en ?? ""}`;
   const zhMin = zhText.length / 420;
   const enWords = enText.split(/\s+/).filter(Boolean).length / 210;
   const minutes = Math.max(zhMin, enWords);
@@ -213,6 +219,29 @@ export function stationMeta(id: StationId): StationMeta {
   const s = STATIONS.find((x) => x.id === id);
   if (!s) throw new Error(`learn-data: unknown station "${id}"`);
   return s;
+}
+
+export type LearnHashRoute =
+  | { kind: "concept"; id: string }
+  | { kind: "station"; id: StationId }
+  | { kind: "l0" }
+  | { kind: "search"; query: string }
+  | { kind: "stage" };
+
+/** One parser for cold links, same-document hash changes and history traversal. */
+export function parseLearnHash(hash: string, hasConcept: (id: string) => boolean): LearnHashRoute {
+  const parameter = hash.replace(/^#/, "").split("&", 1)[0];
+  if (parameter === "l0") return { kind: "l0" };
+  const equal = parameter.indexOf("=");
+  if (equal < 0) return { kind: "stage" };
+  const key = parameter.slice(0, equal);
+  let value: string;
+  try { value = decodeURIComponent(parameter.slice(equal + 1)); }
+  catch { return { kind: "stage" }; }
+  if (key === "c" && hasConcept(value)) return { kind: "concept", id: value };
+  if (key === "stage" && STATIONS.some((s) => s.id === value)) return { kind: "station", id: value as StationId };
+  if (key === "q" && value.trim()) return { kind: "search", query: value };
+  return { kind: "stage" };
 }
 
 

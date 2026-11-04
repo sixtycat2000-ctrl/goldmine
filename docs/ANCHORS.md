@@ -81,3 +81,32 @@ python3 scripts/acceptance.py run --profile optional-mcp --out reports/execution
 独立于会话的机器验证（补上后第 1/6 条可全自动）：
 hosted CI workflows 已写好、从未在远端跑通过——见 docs/CI.md 与
 FEATURE_STATUS 的 Hosted delivery 行（诚实标 MISSING）。
+
+## 7. 等价筛选与资源归还（约 7 秒，离线）
+
+在包含本次优化提交的工作树中运行：
+
+```sh
+python3 -m pytest -q tests/test_search_exact_optimization.py tests/test_body_units_equivalence.py tests/test_rerank_ownership.py
+```
+
+**怎么读**：应无失败和跳过。这里验证完整命中/证据/pack/引用对照、零 quorum
+回退、稳定首个最大值、取消/死线、旧 timer、正常退出与 fork 所有权；没有模型
+或质量题重跑。`_aggregate_by_file` 默认接口仍保留全量输出，显式候选筛选发生
+在全库标准化之后。它验证等价与生命周期，不代表整条 CLI 提速或召回率上升。
+
+## 8. 学习实验台与解释模型（约 5 秒＋浏览器）
+
+```sh
+node web/scripts/check-mechanisms.mjs
+npm --prefix web run build
+npm --prefix web run preview -- --port 4175
+```
+
+**怎么读**：检查器与构建退出码均为 0，打开预览的 `/learn`。在实验台保持目标
+夹角不变、切换语料分布，余弦不变而 z 可变；精确筛选保留低 z 的词法文件；
+候选为 0 时新路径 posting 查询为 0。快照模式先发布/重建，再开启新请求，
+已持有请求的版本和读取路径保持不变。借用后先“调用”再“归还”，虚拟 300 秒
+到期才显示已加载模型的回收。抽屉内按滑块方向键不应切走课程；暂停与 reduced
+motion 不应自行恢复动画。演示读数来自纯模型，页面不运行真实索引或推理模型。
+系统“减少动态效果”在页面打开后切换也应立即生效；关掉它不能覆盖用户刚才的手动暂停。

@@ -837,3 +837,37 @@ bake 产物，本轮随库 a84988d 遗留的 1 行 gm-graph 待烧行。
 说明段，右下返回按钮 ③ 质检线三磁贴注解原样 ④ 点任一卡：抽屉头部只剩
 簇 chip，目录无编号 ⑤ / 首页壳与 React Hero 文案一致（哈希搜/画面搜/
 MCP）。门禁：typecheck 0 错；G7 PASS；G1 PASS（145/145）。
+
+## 2026-11-05 · 等价检索优化、模型所有权与 Learn 实验台
+
+**关键行**：`goldmine/search.py:383,727` 在完整向量计算、原有 z 标准化和稳定逐文件
+最大值之后，只物化可能准入的文件；词法/覆盖/精确/名字路线取并集，quorum=0 和
+非有限输入走完整原路径。`retrieval_evidence.py:108` 在死线检查后对空候选跳过 posting
+SQL。`application.py:148` 的 pack-window 借用进入 finally；`rerank.py` 用操作锁、
+timer 代际与 PID 所有权约束启动/调用/关闭及正常退出回收。`MechanismLab`、
+`MechanismDrawing`、`mechanism-model` 增加五种同源读数/SVG 实验；保留原145概念并
+增至150，扩写中英文 why/how/try，修正旧数学、WAL、缓存和进程解释。抽屉修复原生
+按键/焦点、同文档深链接与安全 hash；`use-motion-preference.ts` 让系统减少动态效果
+即时生效，Stage 的循环与最终位移也同步停止。模板数字从图谱派生，生成物同步。
+
+**每行的风险**：筛选是保守候选上界，漏一条准入路线就会丢结果；独立 oracle 检查完整
+Hit/why/pack/引用、边界值和零 quorum，三种不安全 mutant 的真实 FAIL 留档。新锁必须
+遵守先操作锁后状态锁，回收只触及本进程拥有的子进程；SIGKILL 不在承诺内。教学数字
+是确定性演示，不是生产耗时或相关概率。页面无 JS 的目录与 React 共享生成内容；修改
+concepts 后必须同时 bake/build。系统偏好监听移除同一回调，不改写用户暂停选择。
+
+**我不确定的地方**：正式 offline/native/MCP 是3046/323/9项 PASS；单次冻结测量只覆盖
+合成 RRF 聚合物化＋准入，500k单段文件 p50 457.447→42.437ms，配对中位差95%区间
+[-416.301,-413.695]ms。全保留压力例 p50反而+0.424%；不能外推整条 CLI/MCP、RSS或
+产品召回改进，这些仍为 MISSING。既有质量红门保留。原生隐藏标签因 Ego 控制页持续
+报告 visible 而未验证，visibilitychange 监听另做合成验证。一次关闭后指针重开超时的
+原始 FAIL 保留；冻结前后探针均成功，根因归因仍 MISSING，preventScroll 只承诺恢复
+焦点时不滚动背景。证据链在 `reports/execution/high-confidence-optimizations-learn-20261104/`，
+含逐次 argv/退出码/输出 SHA/前后源码身份；基线、评测题、指纹与密封 holdout 未动。
+
+**用户90秒怎么验**：在本提交工作树运行 `python3 -m pytest -q
+tests/test_search_exact_optimization.py tests/test_body_units_equivalence.py
+tests/test_rerank_ownership.py`，再跑 `node web/scripts/check-mechanisms.mjs`；均应无失败。
+打开预览 `/learn`：保持夹角、切换语料看余弦不变而 z 变化；空候选少一次查询；发布/
+重建后旧请求路径不变，Begin 才切换；借用→调用→归还后推进300秒。连续步进跨过四阶段，
+在抽屉滑块按方向键不切课，切换系统减少动态效果应立即静止且仍可手动步进。

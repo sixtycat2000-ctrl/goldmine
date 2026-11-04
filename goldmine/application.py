@@ -153,13 +153,18 @@ class Application:
         ranker = None
         if request.pack and self.reranker_factory is not None:
             try:
-                # The factory product's lifetime is policy-managed by its
-                # provider (a shared lease reaps on idle; a raw LocalReranker
-                # is owned by the provider) — never closed here.
                 ranker = self.reranker_factory()
+            except RequestTimeout:
+                raise
             except Exception:
                 ranker = None
-        return self._retrieve_with_ranker(store, backend, request, scorer, ranker)
+        try:
+            return self._retrieve_with_ranker(store, backend, request, scorer, ranker)
+        finally:
+            # A factory product is held by this request. Shared products
+            # release a lease; their owner retains the registered idle policy.
+            if ranker is not None:
+                ranker.close()
 
     def _retrieve_with_ranker(self, store, backend, request, scorer, ranker):
         searcher = Searcher(store, None if request.lexical_only else backend,

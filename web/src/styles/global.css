@@ -430,5 +430,118 @@ body::after {
 .machine [data-station] { cursor: pointer; }
 .machine [data-station]:hover .machine-name tspan:first-of-type { fill: var(--color-gold); }
 
+/* A single retrieval workbench, shared by the overview and lesson drawers. */
+.mechanism-lab {
+  min-width: 0;
+  border: 1px solid var(--color-line-strong);
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 24% 16%, rgb(111 179 170 / 0.045), transparent 54%), var(--color-bg1);
+  overflow: hidden;
+  box-shadow: 0 20px 70px rgb(0 0 0 / 0.22);
+  --mi-top: #303641;
+  --mi-side-a: #171d26;
+  --mi-side-b: #222a36;
+}
+.mechanism-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: 28px 30px 24px; }
+.mechanism-heading h2 { font: 500 clamp(1.75rem, 3vw, 2.5rem)/1.12 var(--font-display); color: var(--color-ink); margin-top: 8px; }
+.mechanism-heading p { color: var(--color-ink2); font-size: 14px; max-width: 22em; }
+.mechanism-kicker { font: 12px var(--font-mono); color: var(--color-gold); letter-spacing: 0.14em; }
+.mechanism-tabs { display: flex; flex-wrap: wrap; gap: 0; padding: 0 18px; border-block: 1px solid var(--color-line); }
+.mechanism-lab button, .mechanism-lab select {
+  min-height: 44px; border: 1px solid var(--color-line-strong); border-radius: 9px;
+  padding: 8px 12px; color: var(--color-ink2); background: var(--color-bg2); font-size: 13px; line-height: 1.4;
+  transition: border-color 180ms, color 180ms, background 180ms;
+}
+.mechanism-lab button:not(:disabled):hover { border-color: rgb(245 176 65 / 0.5); color: var(--color-ink); }
+.mechanism-lab button:disabled { opacity: 0.4; cursor: default; }
+.mechanism-lab button:focus-visible, .mechanism-lab input:focus-visible, .mechanism-lab select:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 3px; }
+.mechanism-lab .mechanism-tabs button { display: flex; flex: 1 0 auto; align-items: center; justify-content: center; gap: 8px; min-height: 58px; padding-inline: 12px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; }
+.mechanism-lab .mechanism-tabs button[aria-selected="true"] { color: var(--color-gold); border-bottom-color: var(--color-gold); background: rgb(245 176 65 / 0.035); }
+.mechanism-tab-number { color: var(--color-sub); font: 10px var(--font-mono); }
+.mechanism-panel { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(250px, 0.8fr); }
+.mechanism-visual { min-width: 0; padding: 23px 24px 25px; }
+.mechanism-figure-caption { display: flex; justify-content: space-between; gap: 14px; font: 11px/1.6 var(--font-mono); color: var(--color-sub); }
+.mechanism-figure-caption > span:first-child { color: var(--color-ink2); }
+.mechanism-figure-caption > span:last-child { text-align: right; }
+.mechanism-instrument { width: 100%; height: auto; display: block; overflow: visible; margin: 8px 0 -10px; }
+.mechanism-lab .mi-top { fill: var(--mi-top); stroke: #5d6674; stroke-width: 0.6; }
+.mechanism-lab .mi-side-a { fill: var(--mi-side-a); stroke: #303846; stroke-width: 0.55; }
+.mechanism-lab .mi-side-b { fill: var(--mi-side-b); stroke: #47515e; stroke-width: 0.55; }
+.mechanism-lab .mi-bevel { fill: none; stroke: #a3aab4; stroke-width: 0.45; stroke-opacity: 0.44; }
+.mechanism-lab .mi-dark { --mi-top: #1d232c; --mi-side-a: #0a0e15; --mi-side-b: #111821; }
+.mechanism-lab .mi-keep { --mi-top: #dba94e; --mi-side-a: #59401b; --mi-side-b: #96702e; }
+.mechanism-lab .mi-lexical { --mi-top: #7eaaa5; --mi-side-a: #264844; --mi-side-b: #416e69; }
+.mechanism-lab .mi-matched { --mi-top: #515c6a; --mi-side-a: #252f3d; --mi-side-b: #364252; }
+.mechanism-lab .mi-stale { --mi-top: #aa6c58; --mi-side-a: #4b2c25; --mi-side-b: #74483b; }
+.mechanism-lab .mi-etch { stroke: #0c1118; stroke-opacity: 0.38; stroke-width: 0.7; }
+.mechanism-transport { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-block: 8px 17px; border-bottom: 1px solid var(--color-line); }
+.mechanism-transport > div { display: flex; gap: 5px; }
+.mechanism-lab .mechanism-transport button { padding-inline: 9px; min-height: 40px; background: transparent; border-color: transparent; font: 12px var(--font-mono); }
+.mechanism-transport > span { max-width: 18em; text-align: right; font: 10px/1.6 var(--font-mono); color: var(--color-sub); }
+.mechanism-controls { min-height: 121px; padding-top: 18px; }
+.mechanism-phase { display: flex; gap: 12px; align-items: center; min-height: 46px; padding: 10px 2px; border-bottom: 1px solid var(--color-line); }
+.mechanism-phase > span { font: 10px var(--font-mono); color: var(--color-gold); }
+.mechanism-phase > strong { font-size: 12px; font-weight: 400; color: var(--color-ink2); }
+.mechanism-range-label { display: flex; justify-content: space-between; gap: 15px; font-size: 13px; color: var(--color-ink2); }
+.mechanism-range-label output { font-family: var(--font-mono); color: var(--color-gold); }
+.mechanism-lab input[type="range"] { display: block; width: 100%; min-height: 38px; accent-color: var(--color-gold); cursor: ew-resize; }
+.mechanism-select-label { font-size: 12px; color: var(--color-sub); margin-right: 12px; }
+.mechanism-lab select { max-width: 100%; min-height: 38px; padding-block: 6px; }
+.mechanism-switch { display: inline-flex; gap: 3px; background: var(--color-bg0); padding: 3px; border-radius: 10px; margin-bottom: 12px; }
+.mechanism-lab .mechanism-switch button { border: 0; min-height: 38px; padding-inline: 20px; background: transparent; }
+.mechanism-lab .mechanism-switch button[aria-pressed="true"] { background: var(--color-bg3); color: var(--color-gold); }
+.mechanism-checkbox { display: flex; min-height: 42px; align-items: center; gap: 10px; color: var(--color-ink2); font-size: 13px; }
+.mechanism-checkbox input { width: 18px; height: 18px; accent-color: var(--color-gold); }
+.mechanism-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.mechanism-actions .mechanism-checkbox { flex-basis: 100%; }
+.mechanism-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; margin-top: 17px; }
+.mechanism-metrics > div { padding-top: 12px; min-width: 0; border-top: 1px solid var(--color-line-strong); }
+.mechanism-metrics dt { font-size: 10px; line-height: 1.6; color: var(--color-sub); }
+.mechanism-metrics dd { font: 500 18px/1.7 var(--font-mono); color: var(--color-ink); overflow-wrap: anywhere; }
+.mechanism-equation { margin-top: 18px; padding: 13px 15px; border-left: 2px solid var(--color-gold); background: rgb(245 176 65 / 0.035); font: 12px/1.85 var(--font-mono); color: var(--color-gold); overflow-wrap: anywhere; }
+.mechanism-outcome { font-size: 12px; line-height: 1.8; color: var(--color-ink2); margin-top: 10px; }
+.mechanism-story { border-left: 1px solid var(--color-line); padding: 26px 28px; background: rgb(0 0 0 / 0.14); }
+.mechanism-explanation + .mechanism-explanation { margin-top: 22px; }
+.mechanism-explanation > span { color: var(--color-sub); font: 9px var(--font-mono); letter-spacing: 0.1em; }
+.mechanism-explanation h3 { color: var(--color-ink); font-size: 15px; margin: 4px 0 6px; font-weight: 500; }
+.mechanism-explanation p { color: var(--color-ink2); font-size: 13px; line-height: 1.85; }
+.mechanism-predict { margin-top: 25px; padding-top: 19px; border-top: 1px solid var(--color-line-strong); }
+.mechanism-predict > span { color: var(--color-teal); font-size: 12px; }
+.mechanism-predict p { margin-top: 7px; color: var(--color-ink); font-size: 13px; line-height: 1.85; }
+.mechanism-lab .mechanism-lesson-link { margin-top: 20px; border-color: transparent; padding-left: 0; background: transparent; color: var(--color-gold); }
+.mechanism-lab-compact { margin-block: 6px; border-radius: 15px; box-shadow: none; }
+.mechanism-lab-compact .mechanism-panel { grid-template-columns: minmax(0, 1fr); }
+.mechanism-lab-compact .mechanism-tabs { padding-inline: 8px; }
+.mechanism-lab-compact .mechanism-tabs button { padding-inline: 8px; min-height: 48px; font-size: 12px; }
+.mechanism-lab-compact .mechanism-tab-number { display: none; }
+.mechanism-lab-compact .mechanism-story { border-left: 0; border-top: 1px solid var(--color-line); display: grid; gap: 18px; padding: 22px; }
+.mechanism-lab-compact .mechanism-explanation + .mechanism-explanation { margin-top: 0; }
+.mechanism-lab-compact .mechanism-predict { margin-top: 0; }
+@media (max-width: 850px) {
+  .mechanism-panel { grid-template-columns: minmax(0, 1fr); }
+  .mechanism-heading { align-items: start; flex-direction: column; gap: 12px; padding: 23px 22px; }
+  .mechanism-heading p { max-width: none; }
+  .mechanism-story { border-left: 0; border-top: 1px solid var(--color-line); padding: 24px; }
+}
+@media (max-width: 480px) {
+  .mechanism-lab { border-radius: 17px; }
+  .mechanism-visual { padding: 19px 16px; }
+  .mechanism-tabs { padding-inline: 8px; }
+  .mechanism-lab .mechanism-tabs button { flex-basis: 30%; min-height: 47px; padding-inline: 6px; font-size: 12px; }
+  .mechanism-tab-number { font-size: 9px; }
+  .mechanism-figure-caption { font-size: 9px; }
+  .mechanism-transport { align-items: start; }
+  .mechanism-transport > span { max-width: 10em; font-size: 9px; }
+  .mechanism-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 16px; }
+  .mechanism-metrics dd { font-size: 17px; }
+  .mechanism-controls { min-height: 110px; }
+  .mechanism-select-label { display: block; margin-bottom: 6px; }
+  .mechanism-lab select { width: 100%; }
+  .mechanism-story { padding: 22px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mechanism-lab *, .mechanism-lab *::before, .mechanism-lab *::after { animation: none !important; transition-duration: 0s !important; }
+}
+
 /* real-run strip (amendments-006 R1): verbatim program output as substance */
 .real-run { border: 1px solid var(--color-line); }

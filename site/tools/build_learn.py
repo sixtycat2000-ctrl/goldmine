@@ -36,15 +36,26 @@ for lay in sorted(layers_meta, reverse=True):
     cl = {"token": "L%d" % lay, "label_zh": lm["label_zh"], "label_en": lm["label_en"]}
     cards = []
     for n in members:
+        explanations = []
+        for section, zh_label, en_label in (("why", "为什么", "Why"),
+                                             ("how", "怎么做", "How"),
+                                             ("try", "动手验证", "Try it")):
+            if n.get(section + "_zh"):
+                explanations.append('<p><span class="lbl">%s</span> %s</p>' %
+                                    (zh_label, esc(n[section + "_zh"])))
+            if n.get(section + "_en"):
+                explanations.append('<p class="en"><span class="lbl">%s</span> %s</p>' %
+                                    (en_label, esc(n[section + "_en"])))
         cards.append(
             '<div class="fcard"><h4>{zh}</h4><p class="en">{en}</p>'
             '<p><span class="lbl">定义</span> {d}</p>'
             '<p><span class="lbl">大白话</span> {p}</p>'
             '<p><span class="lbl">实例</span> {e}</p>'
-            '{refs}</div>'.format(
+            '{explanations}{refs}</div>'.format(
                 zh=esc(n["title_zh"]), en=esc(n["title_en"]),
                 d=esc(n.get("def_zh") or "—"), p=esc(n.get("plain_zh") or "—"),
                 e=esc(n.get("example_zh") or "—"),
+                explanations="".join(explanations),
                 refs=("<ul class='refs'>" + "".join(
                     "<li><code>%s</code></li>" % esc(r["path"]) for r in n.get("refs", [])[:2]
                 ) + "</ul>") if n.get("refs") else "",
@@ -62,7 +73,17 @@ fallback = ('<div class="banner" hidden style="font:12px var(--mono);color:var(-
 graph_json = json.dumps(graph, ensure_ascii=False, separators=(",", ":"))
 # a literal "</" inside inline JSON would close the <script> element early
 graph_json = graph_json.replace("</", "<\\/")
-out = tpl.replace("{{GRAPH_JSON}}", graph_json)
+# Metadata and pre-paint counts come from the same graph as the live page.
+# Substitute the template first: a literal token in lesson text stays literal.
+station_by_cluster = {"systems": "WALK", "identity": "IDENTITY", "media": "UNDERSTAND",
+                      "models": "UNDERSTAND", "search": "SEARCH", "eval": "RAIL", "process": "RAIL"}
+station_counts = {station: 0 for station in station_by_cluster.values()}
+for node in graph["nodes"]:
+    station_counts[station_by_cluster[node["cluster"]]] += 1
+out = tpl.replace("{{CONCEPT_COUNT}}", str(len(graph["nodes"])))
+for station, count in station_counts.items():
+    out = out.replace("{{STATION_" + station + "_COUNT}}", str(count))
+out = out.replace("{{GRAPH_JSON}}", graph_json)
 out = out.replace('<div class="fallback" hidden></div>',
                   '<div class="fallback" data-fb>' + fallback + "</div>")
 args.out.parent.mkdir(parents=True, exist_ok=True)

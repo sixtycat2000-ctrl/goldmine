@@ -21,7 +21,8 @@
  * for screen readers.
  */
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useMotionPreference } from "../lib/use-motion-preference";
 import { pick, type Lang } from "../lib/lang";
 import { STATIONS, stationMeta, type StationId } from "../lib/learn-data";
 import { SUITE } from "../lib/metrics";
@@ -64,7 +65,7 @@ const TOUR_IDLE_RETURN = 25000;
 export function Stage(props: StageProps) {
   const { lang, counts, visitedCounts, l0Count, isolated, onOpen, onCloseIsolate, onOpenPart, tray } = props;
   const zh = lang === "zh";
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const hostRef = useRef<HTMLDivElement>(null);
   const machineRef = useRef<HTMLDivElement>(null);
   const [beat, setBeat] = useState(0);
@@ -73,9 +74,10 @@ export function Stage(props: StageProps) {
   const [tabVisible, setTabVisible] = useState(true);
   const [desktop, setDesktop] = useState(false);
   const [tourOn, setTourOn] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const [tourStep, setTourStep] = useState(0);
   const [cursor, setCursor] = useState<{ x: number; y: number } | null>(null);
-  const running = inView && tabVisible;
+  const running = inView && tabVisible && !userPaused && !reduced;
   /* signature move (amendments-006 R3): the chassis sits up as it enters the view */
   const tiltRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: tiltRef, offset: ["start end", "start 0.35"] });
@@ -121,7 +123,7 @@ export function Stage(props: StageProps) {
     mq.addEventListener("change", on);
     return () => mq.removeEventListener("change", on);
   }, []);
-  const tourEligible = !reduced && desktop && isolated === null;
+  const tourEligible = !reduced && desktop && isolated === null && !userPaused;
 
   /* any input takes over; quiet hands it back */
   useEffect(() => {
@@ -140,13 +142,14 @@ export function Stage(props: StageProps) {
     root?.addEventListener("pointerdown", take);
     root?.addEventListener("wheel", take, { passive: true });
     root?.addEventListener("touchstart", take, { passive: true });
-    window.addEventListener("keydown", (e) => { if (!e.metaKey && e.key !== "Escape") take(e); });
+    const onKey = (e: KeyboardEvent) => { if (!e.metaKey && e.key !== "Escape") take(e); };
+    window.addEventListener("keydown", onKey);
     return () => {
       window.clearTimeout(timer);
       root?.removeEventListener("pointerdown", take);
       root?.removeEventListener("wheel", take);
       root?.removeEventListener("touchstart", take);
-      window.removeEventListener("keydown", take);
+      window.removeEventListener("keydown", onKey);
     };
   }, [tourEligible]);
 
@@ -219,7 +222,18 @@ export function Stage(props: StageProps) {
             <button
               type="button"
               data-tour-btn
+              aria-pressed={userPaused}
+              disabled={!!reduced}
+              onClick={(e) => { e.stopPropagation(); setUserPaused((p) => !p); }}
+              className="rounded-full border border-line px-3 py-1 font-mono text-[13px] text-ink2 transition-colors hover:border-gold/60 hover:text-gold disabled:opacity-40"
+            >
+              {reduced ? (zh ? "静态模式" : "reduced motion") : userPaused ? (zh ? "▶ 播放" : "▶ play") : (zh ? "Ⅱ 暂停" : "Ⅱ pause")}
+            </button>
+            <button
+              type="button"
+              data-tour-btn
               onClick={() => {
+                setUserPaused(false);
                 setTourOn(true);
                 setTourStep(0);
               }}
@@ -238,7 +252,7 @@ export function Stage(props: StageProps) {
             <div className={`pointer-events-none absolute inset-0 transition-opacity duration-500 ${isolated ? "opacity-20" : "opacity-100"}`} aria-hidden="true">
               <motion.span
                 animate={{ left: BELT_LEFT[liveBeat >= 3 ? 3 : liveBeat] }}
-                transition={{ type: "spring", stiffness: 210, damping: 28 }}
+                transition={reduced ? { duration: 0 } : { type: "spring", stiffness: 210, damping: 28 }}
                 className="absolute z-10"
                 style={{ top: `${(BELT_MID / 470) * 100}%` }}
               >

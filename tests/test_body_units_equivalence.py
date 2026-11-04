@@ -7,10 +7,14 @@ semantics: the posting set of each unit's body pattern intersected with the
 recalled ids, for any batch partition.
 """
 
+import sqlite3
+
 import pytest
 
+from goldmine.deadline import RequestTimeout, request_cancellation, request_timeout
 from goldmine.lexical import query_units
 from goldmine.retrieval_evidence import collect_body_units
+from goldmine.search import Searcher
 from goldmine.store import FileRec, SegmentRec, Store
 
 
@@ -76,3 +80,60 @@ def test_cjk_units_still_verified_through_text_readback(store):
     first_row = min(matched) if matched else None
     assert set(matched) == {first_row}
     assert matched[first_row] == frozenset({cjk_unit})
+
+
+@pytest.mark.parametrize("query,terms,phrases", [
+    ("alpha", ["alpha"], []),
+    ("alpha beta", ["alpha", "beta"], []),
+    ("中文检索", [], []),
+    ("", [], ["exact phrase"]),
+    ("", [], ["中文短语"]),
+])
+def test_empty_candidates_do_no_sql_for_any_valid_unit(query, terms, phrases):
+    class NoDatabaseWork:
+        def execute(self, *args):
+            raise AssertionError("empty evidence candidates must not read postings or text")
+
+    consumed = []
+
+    def empty_rows():
+        consumed.append(True)
+        yield from ()
+
+    units = query_units(query, terms, phrases)
+    assert units
+    assert collect_body_units(NoDatabaseWork(), units, empty_rows()) == ({}, {})
+    assert consumed == [True]
+
+
+def test_empty_candidates_still_observe_cancellation():
+    class Cancelled(BaseException):
+        pass
+
+    cancelled = False
+
+    def check():
+        if cancelled:
+            raise Cancelled()
+
+    with request_cancellation(check):
+        cancelled = True
+        with pytest.raises(Cancelled):
+            collect_body_units(None, [], [])
+
+
+def test_empty_candidates_still_observe_expired_deadline(monkeypatch):
+    now = [0.0]
+    monkeypatch.setattr("goldmine.deadline.time.monotonic", lambda: now[0])
+    with request_timeout(1.0):
+        now[0] = 2.0
+        with pytest.raises(RequestTimeout):
+            collect_body_units(None, [], [])
+        now[0] = 0.0
+
+
+def test_real_search_still_rejects_missing_modern_fts(store):
+    add_chunks(store, "/docs/source.txt", ["alpha text"])
+    store.db.execute("DROP TABLE fts")
+    with pytest.raises(sqlite3.OperationalError, match="fts"):
+        Searcher(store, None).search("alpha", scorer="lexical")
