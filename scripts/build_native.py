@@ -15,6 +15,9 @@ from acceptance_lib.evidence import capture_command, read_command_run, sha256
 from native_build_lib.archive import open_native_archive, package_asset
 from native_build_lib.source import BuildError, TAG, git, system_dependencies, verify_source
 
+MINIMUM_MACOS = "14.0"
+TARGET = f"arm64-apple-macos{MINIMUM_MACOS}"
+
 
 def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: bool = False) -> Path:
     if platform.system() != "Darwin" or platform.machine() != "arm64":
@@ -38,6 +41,7 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
     logs = Path(tempfile.mkdtemp(prefix="native-commands-", dir=out))
     count = 0
     clean_env = {k: v for k, v in os.environ.items() if not k.startswith("DYLD_")}
+    clean_env["MACOSX_DEPLOYMENT_TARGET"] = MINIMUM_MACOS
 
     def command(argv: list[str], cwd: Path = root) -> str:
         nonlocal count
@@ -53,7 +57,8 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
     with tempfile.TemporaryDirectory(prefix=".native-work-", dir=out) as tmp:
         work = Path(tmp)
         build_dir = work / "build"
-        options = ["-DCMAKE_BUILD_TYPE=Release", "-DBUILD_SHARED_LIBS=OFF",
+        options = ["-DCMAKE_BUILD_TYPE=Release", f"-DCMAKE_OSX_DEPLOYMENT_TARGET={MINIMUM_MACOS}",
+            "-DBUILD_SHARED_LIBS=OFF",
             "-DGGML_BACKEND_DL=OFF", "-DGGML_METAL=ON", "-DGGML_METAL_EMBED_LIBRARY=ON",
             "-DGGML_BLAS=OFF",
             "-DLLAMA_OPENSSL=OFF", "-DLLAMA_BUILD_TESTS=OFF", "-DLLAMA_BUILD_EXAMPLES=OFF",
@@ -73,19 +78,19 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
         ocr = None
         if not dev_skip_ocr:
             ocr = work / "goldmine-ocr"
-            command(["swiftc", "-O", str(root / "tools/ocr/ocr_helper.swift"), "-o", str(ocr)])
+            command(["swiftc", "-target", TARGET, "-O", str(root / "tools/ocr/ocr_helper.swift"), "-o", str(ocr)])
         # the media helper: compile the single C file, link the 7 static
         # archives with clang++ (libc++ must ride along; Accelerate supplies
         # the vDSP symbols ggml-cpu unconditionally references on macOS —
         # both were measured on the vendored b11461, receipts digup-plan-002).
         embed = work / "goldmine-embed"
         embed_obj = work / "goldmine-embed.o"
-        command(["clang", "-O2", "-std=c11", "-c", str(root / "tools/embed/goldmine-embed.c"),
+        command(["clang", "-target", TARGET, "-O2", "-std=c11", "-c", str(root / "tools/embed/goldmine-embed.c"),
                  "-I", str(source / "tools/mtmd"),
                  "-I", str(source / "include"),
                  "-I", str(source / "ggml/include"),
                  "-o", str(embed_obj)])
-        command(["clang++", "-O2", str(embed_obj), "-o", str(embed),
+        command(["clang++", "-target", TARGET, "-O2", str(embed_obj), "-o", str(embed),
                  str(build_dir / "src/libllama.a"),
                  str(build_dir / "tools/mtmd/libmtmd.a"),
                  str(build_dir / "vendor/hash/libvendor-hash.a"),
@@ -111,7 +116,8 @@ def build(root: Path, source: Path, out: Path, *, jobs: int = 2, dev_skip_ocr: b
         if ocr is not None:
             if command([str(ocr), "--version"]).strip() != "goldmine-ocr 1":
                 raise BuildError("unexpected OCR handshake")
-        metadata.update({"tag": TAG, "architecture": "arm64", "platform": platform.platform(),
+        metadata.update({"tag": TAG, "architecture": "arm64", "minimum_macos": MINIMUM_MACOS,
+            "platform": platform.platform(),
             "cmake_options": options, "jobs": jobs, "dependencies": dependencies,
             "version": version.strip(), "ocr_source_sha256": sha256(root / "tools/ocr/ocr_helper.swift"),
             "embed_source_sha256": sha256(root / "tools/embed/goldmine-embed.c"),

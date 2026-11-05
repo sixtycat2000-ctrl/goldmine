@@ -1,5 +1,40 @@
 # Local distribution checks
 
+## Standalone application package
+
+End users install the [self-contained bundle](INSTALL.md). Build it from the
+current wheel, a complete relocatable CPython3.12 arm64 runtime (not a venv), a
+prepared wheelhouse and the current five-file native asset:
+Build the native component with `MACOSX_DEPLOYMENT_TARGET=14.0`; the standalone
+builder checks the actual Mach-O minimum OS and refuses newer-only binaries.
+
+```sh
+python3 scripts/build_standalone.py \
+  --runtime /absolute/path/to/standalone-python-root \
+  --wheel /absolute/path/to/goldmine-0.2.0-py3-none-any.whl \
+  --wheelhouse /absolute/path/to/wheelhouse \
+  --native-tar /absolute/path/to/llama-server-macos-arm64-b11461.tar.xz \
+  --out reports/execution/standalone-001
+```
+
+Prepare runtime wheels using `pip download --only-binary=:all: -r
+requirements/standalone.lock`. The builder performs installation with `--no-index`
+and the same constraints, checks native source lineage and helper hashes,
+executes the package after relocation, and emits `goldmine-macos-arm64.tar.gz`,
+`SHA256SUMS`, the complete payload/dependency inventory and raw command receipts.
+Python/NumPy/MCP/native license files stay with their packages; certifi provides
+the bundled HTTPS CA store. Weights are not redistributed in this archive.
+
+Install the actual archive outside the checkout using `install.sh`, with a fresh
+HOME/GOLDMINE_HOME/GOLDMINE_CONFIG, system-only PATH, `--no-path`, and an explicitly
+prepared `--model`. Run `goldmine init` against a chosen temporary folder, real
+keyword and semantic search, and the MCP stdio handshake. Reinstall, test refusal
+of a damaged checksum, then uninstall and verify retained data. The release
+workflow performs a clean installation and a real semantic ingest/search before
+attaching assets to a **draft** release; hosted execution remains separate evidence.
+
+## Wheel and native components
+
 The native asset recipe pins llama.cpp `b11461` to commit `4d756bc72bf00a4aacf410ae15a2d315f3db400d` and the exact repository patch. It refuses another revision, unknown patch state or unrelated source edits. It does not reset an existing checkout.
 
 ```sh

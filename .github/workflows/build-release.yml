@@ -1,48 +1,89 @@
-# Release-asset build (v2 item 4 / A10, 05 §4.7): on a v* tag push, build the
-# pinned llama.cpp (tag b11461 + the in-repo no-logits patch) on a macOS arm64
-# runner and attach the release tar to the GitHub release. The tar carries
-# llama-server AND goldmine-ocr (the prebuilt Vision OCR helper, v2 item B4 /
-# review F8 — a stock Mac without Command Line Tools has no other fix path).
-# The build steps live in scripts/build_llama_tar.sh so CI and local dev
-# share one recipe.
-#
-# NOTE: untested until pushed (no GHA runner available from this repo yet);
-# reviewed actionlint-style by eye — keep every step shellcheck-clean.
-
 name: build-release
-
 on:
   push:
-    tags:
-      - "v*"
-
+    tags: ["v*"]
 permissions:
-  contents: write # gh release create/upload on the tag
-
+  contents: write
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
 jobs:
-  llama-server:
-    name: llama-server (macOS arm64)
-    runs-on: macos-14 # arm64 runner
+  standalone:
+    name: standalone (macOS arm64)
+    runs-on: macos-15
     timeout-minutes: 45
     env:
-      LLAMA_TAG: b11461 # pinned lineage (05 §4.3) — keep in sync with llama.py
+      MACOSX_DEPLOYMENT_TARGET: '14.0'
     steps:
-      - name: Checkout (the patch must come from the repo, self-contained)
-        uses: actions/checkout@v4
-
-      - name: Build llama-server tar (pinned tag + no-logits patch)
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Check target and tag before building
         run: |
-          bash scripts/build_llama_tar.sh "$RUNNER_TEMP/llama.cpp"
-          ls -lh dist/
-
-      - name: Attach the tar to the release
+          test "$(uname -m)" = arm64
+          python -c 'import os,tomllib; p=tomllib.load(open("pyproject.toml","rb")); assert os.environ["GITHUB_REF_NAME"] == "v"+p["project"]["version"]'
+      - name: Prepare build inputs
+        run: |
+          brew install cmake xz uv
+          uv python install 3.12.12
+          python -m pip install -r requirements/build.lock
+          python -m pip download --only-binary=:all: -r requirements/standalone.lock -d "$RUNNER_TEMP/wheelhouse"
+      - name: Build Python and native assets
+        run: |
+          python scripts/build_python.py --out reports/release/python
+          python scripts/build_native.py "$RUNNER_TEMP/llama.cpp" --out reports/release/native --jobs 2
+      - name: Assemble standalone runtime
+        run: |
+          runtime_python=$(uv python find --managed-python 3.12.12)
+          python scripts/build_standalone.py \
+            --runtime "$(dirname "$(dirname "$runtime_python")")" \
+            --wheel "$PWD/reports/release/python/dist/goldmine-0.2.0-py3-none-any.whl" \
+            --wheelhouse "$RUNNER_TEMP/wheelhouse" \
+            --native-tar "$PWD/reports/release/native/llama-server-macos-arm64-b11461.tar.xz" \
+            --out reports/release/standalone
+      - name: Install and search with system PATH only
+        env:
+          GOLDMINE_HOME: ${{ runner.temp }}/goldmine-clean/data
+          GOLDMINE_CONFIG: ${{ runner.temp }}/goldmine-clean/config.toml
+          GOLDMINE_INSTALL_DIR: ${{ runner.temp }}/goldmine-clean/app
+          GOLDMINE_BIN_DIR: ${{ runner.temp }}/goldmine-clean/bin
+        run: |
+          export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+          export HOME="$RUNNER_TEMP/goldmine-clean/home"
+          mkdir -p "$HOME" "$RUNNER_TEMP/goldmine-clean/docs"
+          checksum=$(awk '$2 == "goldmine-macos-arm64.tar.gz" {print $1}' reports/release/standalone/SHA256SUMS)
+          sh install.sh --archive reports/release/standalone/goldmine-macos-arm64.tar.gz --sha256 "$checksum" --no-path
+          cli="$GOLDMINE_BIN_DIR/goldmine"
+          printf 'Goldmine installation proof: zircon lantern.\n' > "$RUNNER_TEMP/goldmine-clean/docs/note.md"
+          "$cli" ingest "$RUNNER_TEMP/goldmine-clean/docs"
+          "$cli" search 'zircon lantern' --json > reports/release/semantic.json
+          "$cli" search 'zircon lantern' --lexical --json > reports/release/search.json
+          "$GOLDMINE_INSTALL_DIR/current/python/bin/python3" -I -B -c 'import json,sys; a,b=(json.load(open(p)) for p in sys.argv[1:]); assert isinstance(a,list) and a and isinstance(b,list) and b' reports/release/search.json reports/release/semantic.json
+          sh install.sh --uninstall
+      - name: Prepare draft assets
+        run: |
+          mkdir -p dist
+          cp install.sh reports/release/standalone/goldmine-macos-arm64.tar.gz dist/
+          cp reports/release/python/dist/goldmine-0.2.0-py3-none-any.whl dist/
+          cp reports/release/python/dist/goldmine-0.2.0.tar.gz dist/
+          cp reports/release/native/llama-server-macos-arm64-b11461.tar.xz dist/
+          cd dist
+          shasum -a 256 install.sh goldmine-macos-arm64.tar.gz goldmine-0.2.0-py3-none-any.whl goldmine-0.2.0.tar.gz llama-server-macos-arm64-b11461.tar.xz > SHA256SUMS
+      - name: Attach assets to draft only
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          tag="${GITHUB_REF_NAME}"
-          echo "attaching dist/*.tar.xz to release ${tag} of ${GITHUB_REPOSITORY}"
-          # create the release when this is its first asset; otherwise upload
-          gh release create "$tag" --repo "$GITHUB_REPOSITORY" \
-            --title "$tag" --generate-notes || true
-          gh release upload "$tag" dist/*.tar.xz \
-            --repo "$GITHUB_REPOSITORY" --clobber
+          tag="$GITHUB_REF_NAME"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json isDraft > "$RUNNER_TEMP/release.json"; then
+            python -c 'import json,sys; assert json.load(open(sys.argv[1]))["isDraft"], "refusing to modify a published release"' "$RUNNER_TEMP/release.json"
+          else
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft --verify-tag --title "Goldmine $tag" --generate-notes
+          fi
+          gh release upload "$tag" dist/* --repo "$GITHUB_REPOSITORY" --clobber
+      - name: Retain raw build and install evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: standalone-release-evidence
+          path: reports/release

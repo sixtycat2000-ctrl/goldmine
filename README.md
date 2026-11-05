@@ -18,9 +18,23 @@ This branch implements the [P0–P2 execution plan](docs/execution-plan/README.m
 The package stays **0.2.0 development** until the required quality and release checks
 pass. Current capabilities and missing evidence are listed in
 [FEATURE_STATUS](docs/FEATURE_STATUS.md), with implementation evidence in
-[PROGRESS](docs/execution-plan/PROGRESS.md). No public release is configured.
+[PROGRESS](docs/execution-plan/PROGRESS.md). No public standalone release is published.
 
-## Start with local keyword search
+## Install
+
+The macOS 14+ Apple Silicon standalone package includes its own Python runtime,
+the pinned native engine, OCR and MCP. Installation prepares the default embedding
+model and verifies an actual embedding; no Python, Homebrew or compilation is
+needed on your Mac. Start guided folder selection with `goldmine init` afterward.
+
+The installer is currently a **local candidate**. Use the prepared archive and its
+checksum as described in [Install Goldmine](docs/INSTALL.md). The release workflow
+prepares a draft for owner review; public download URLs become usable after that
+draft is published. PDF/audio/video toolchains remain optional.
+
+## Development install
+
+### Start with local keyword search
 
 Python 3.12+; the base package depends only on numpy. From a checkout:
 

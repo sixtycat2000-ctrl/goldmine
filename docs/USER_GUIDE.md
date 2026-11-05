@@ -28,7 +28,15 @@ of `~/Documents`, `~/Downloads`, or `~/Desktop`. Setup asks you to pick folders 
 echoed before the first index run, recorded in config (`[init] roots`), and shown by
 `goldmine status` — so "what does it actually look at?" is always one command away.
 
-## Setup from a local checkout
+## Setup
+
+For macOS14+ on Apple Silicon, use the [standalone installer](INSTALL.md).
+It includes the Python runtime, pinned engine, OCR and MCP, and prepares the
+default model before activating the install. Then run `goldmine init` to choose
+folders. Public distribution is pending; the installation guide gives the exact
+local candidate commands, upgrade/uninstall behavior and optional media tools.
+
+### Setup from a local checkout (development)
 
 ```bash
 python3 -m venv .venv

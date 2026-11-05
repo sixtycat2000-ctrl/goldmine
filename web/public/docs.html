@@ -49,6 +49,12 @@
     <h1 data-zh="goldmine 文档" data-en="goldmine docs">goldmine 文档</h1>
     <p class="lede" data-zh="命令、架构与证据——一切可亲手验证。" data-en="Commands, architecture, evidence — all verifiable by hand.">命令、架构与证据——一切可亲手验证。</p>
     <h2 id="start" data-zh="快速开始" data-en="Quickstart">快速开始</h2>
+    <p data-zh="macOS 14+、Apple Silicon。独立包自带 Python、钉版搜索引擎、OCR 与 MCP；安装时校验并准备默认模型。" data-en="macOS 14+, Apple Silicon. The standalone package includes Python, the pinned engine, OCR and MCP, and prepares the verified default model.">macOS 14+、Apple Silicon。独立包自带 Python、钉版搜索引擎、OCR 与 MCP；安装时校验并准备默认模型。</p>
+    <p data-zh="独立包目前为本地候选版本，公开下载待发布。将安装脚本、包与校验文件放在同一目录后运行：" data-en="The standalone package is a local candidate; public downloads are pending. Put the installer, archive and checksum file together, then run:">独立包目前为本地候选版本，公开下载待发布。将安装脚本、包与校验文件放在同一目录后运行：</p>
+    <div class="term"><div class="term-hd"><span>install</span></div><pre><span class="cmd">sh install.sh</span>
+<span class="cmd">"$HOME/.local/bin/goldmine" init</span></pre></div>
+    <p><a href="https://github.com/sixtycat2000-ctrl/goldmine/blob/main/docs/INSTALL.md" data-zh="安装、升级、卸载与可选工具说明 →" data-en="Installation, upgrade, uninstall and optional tools →">安装、升级、卸载与可选工具说明 →</a></p>
+    <h3 data-zh="开发者源码试用" data-en="Developer source quickstart">开发者源码试用</h3>
     <p data-zh="Python 3.12+，基础包只依赖 numpy。零模型也能用——纯词法检索：" data-en="Python 3.12+; the base package depends only on numpy. Zero-model works too — pure lexical search:">Python 3.12+，基础包只依赖 numpy。零模型也能用——纯词法检索：</p>
     <div class="term"><div class="term-hd"><span>quickstart</span><button class="copy-btn" aria-label="copy"><svg width="14" height="14"><use href="#i-copy"/></svg><span data-zh="复制" data-en="copy">复制</span></button></div>
 <pre><span class="cmd">git clone https://github.com/sixtycat2000-ctrl/goldmine &amp;&amp; cd goldmine</span>
@@ -56,7 +62,7 @@
 <span class="cmd">mkdir -p sample &amp;&amp; printf '知识库：退款期限为四十五天。\n' &gt; sample/notes.md</span>
 <span class="cmd">.venv/bin/goldmine ingest sample --db s.sqlite --lexical-only</span>
 <span class="cmd">.venv/bin/goldmine search '退款期限' --db s.sqlite --lexical --pack</span></pre></div>
-    <p data-zh="启用语义检索：安装钉版模型后再摄取一次。" data-en="Enable semantic search: install the pinned model, then re-ingest.">启用语义检索：安装钉版模型后再摄取一次。</p>
+    <p data-zh="源码安装启用语义检索：还需准备兼容 llama-server，再安装钉版模型并重新摄取。" data-en="For source installs, prepare a compatible llama-server, install the pinned model, then re-ingest.">源码安装启用语义检索：还需准备兼容 llama-server，再安装钉版模型并重新摄取。</p>
     <div class="term"><div class="term-hd"><span>semantic</span><button class="copy-btn" aria-label="copy"><svg width="14" height="14"><use href="#i-copy"/></svg><span data-zh="复制" data-en="copy">复制</span></button></div>
 <pre><span class="cmd">.venv/bin/goldmine model install embeddinggemma-2-Q8_0</span>
 <span class="cmd">.venv/bin/goldmine ingest ~/notes --db lib.sqlite</span></pre></div>

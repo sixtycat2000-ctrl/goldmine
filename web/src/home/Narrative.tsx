@@ -75,8 +75,20 @@ function Quickstart() {
   return (
     <div className="mx-auto max-w-6xl px-5 pb-24 sm:pb-32">
       <div className="mx-auto max-w-3xl">
+        <h3 className="mb-3 text-xl text-ink2">{pick(lang, "安装 Goldmine", "Install Goldmine")}</h3>
+        <p className="mb-4 text-[14px] leading-relaxed text-sub">
+          {pick(lang,
+            "macOS 14+ · Apple Silicon。独立包自带 Python、搜索引擎、OCR 和 MCP，安装时校验并准备默认模型。拿到安装文件后，运行 sh install.sh，再用 goldmine init 选择文件夹。",
+            "macOS 14+ · Apple Silicon. The standalone package includes Python, the search engine, OCR and MCP, and prepares the verified default model. With the installation files, run sh install.sh, then goldmine init to choose folders.")}
+        </p>
+        <p className="mb-8 text-[13px] leading-relaxed text-sub">
+          {pick(lang, "独立包目前为本地候选版本，公开下载待发布。", "The standalone package is a local candidate; public downloads are pending.")}{" "}
+          <a className="text-gold underline underline-offset-4" href="https://github.com/sixtycat2000-ctrl/goldmine/blob/main/docs/INSTALL.md">
+            {pick(lang, "查看安装、升级与卸载说明", "Installation, upgrade and uninstall guide")}
+          </a>
+        </p>
         <p className="mb-4 text-[13px] leading-relaxed text-sub">
-          {pick(lang, "macOS · Python 3.12+。先用示例文件试词法检索，无需下载模型。", "macOS · Python 3.12+. Try lexical search on a sample file before downloading any models.")}
+          {pick(lang, "开发者源码安装：需 Python 3.12+。下面用示例文件试词法检索，无需下载模型。", "Developer source install: Python 3.12+ required. The sample below exercises lexical search without a model.")}
         </p>
         <div className="overflow-hidden rounded-2xl border border-line bg-bg1">
           <div className="hairline-b flex items-center justify-between px-4 py-2.5">

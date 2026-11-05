@@ -2,14 +2,8 @@
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
-# v2 item 4 (A10) — publish-ready metadata. NO publishing happens from the
-# repo/tooling here; the manual release command (run by a human at release
-# time, after the llama-server release asset is attached):
-#   python3 -m pip install --quiet build twine
-#   python3 -m build && python3 -m twine check dist/goldmine-0.2.0*
-#   python3 -m twine upload dist/goldmine-0.2.0*
-# (equivalent uv form: `uv build && uv publish`).
-# Canonical project URLs remain unset until an actual remote is configured.
+# The wheel remains available for developers. End-user delivery uses the
+# self-contained macOS bundle; release automation prepares drafts for review.
 
 [project]
 name = "goldmine"
@@ -31,6 +25,11 @@ classifiers = [
     "Topic :: Text Processing :: Indexing",
     "Topic :: Utilities",
 ]
+
+[project.urls]
+Homepage = "https://github.com/sixtycat2000-ctrl/goldmine"
+Documentation = "https://github.com/sixtycat2000-ctrl/goldmine/blob/main/docs/INSTALL.md"
+Issues = "https://github.com/sixtycat2000-ctrl/goldmine/issues"
 
 [project.optional-dependencies]
 mcp = ["mcp==2.0.0"]
