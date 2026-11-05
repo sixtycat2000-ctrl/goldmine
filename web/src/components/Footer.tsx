@@ -1,22 +1,19 @@
-import { T } from "../lib/lang";
+import { T, useLang } from "../lib/lang";
 import { REPO_URL } from "../lib/metrics";
 
 export function Footer() {
+  const zh = useLang() === "zh";
   return (
     <footer className="hairline-t">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-5 py-8 text-[13px] text-sub sm:flex-row">
-        <span>
-          goldmine · <T zh="本地优先语义搜索" en="local-first semantic search" /> · MIT
-        </span>
-        <span className="flex gap-5">
-          <a href="/" className="transition-colors hover:text-ink">index</a>
-          <a href="/docs" className="transition-colors hover:text-ink">docs</a>
-          <a href="/learn" className="transition-colors hover:text-ink">learn</a>
+        <span>goldmine · <T zh="本机文件检索" en="local file retrieval" /> · MIT</span>
+        <nav aria-label={zh ? "页尾导航" : "Footer navigation"} className="flex flex-wrap justify-center gap-5">
+          <a href="/" className="transition-colors hover:text-ink"><T zh="首页" en="Home" /></a>
+          <a href="/docs" className="transition-colors hover:text-ink"><T zh="文档" en="Docs" /></a>
+          <a href="/learn" className="transition-colors hover:text-ink"><T zh="学习" en="Learn" /></a>
           <a href={REPO_URL} className="transition-colors hover:text-ink">GitHub</a>
-        </span>
-        <span>
-          <span className="text-gold">0 bytes</span> <T zh="离开你的机器" en="leave your machine" />
-        </span>
+        </nav>
+        <span className="text-gold"><T zh="本机建库与检索" en="Local indexing and retrieval" /></span>
       </div>
     </footer>
   );

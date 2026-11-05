@@ -1,29 +1,23 @@
 import { Suspense, lazy, useEffect, useState } from "react";
-import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion";
-import { SplitTextReveal } from "../components/motion/SplitTextReveal";
-import { Reveal } from "../components/motion/Reveal";
 import { MagneticButton } from "../components/motion/MagneticButton";
-import { Counter } from "../components/motion/Counter";
-import { SceneTabs, type Scene } from "./SceneTabs";
 import { useLang } from "../lib/lang";
-import { SUITE, REPO_URL } from "../lib/metrics";
+import { useMotionPreference } from "../lib/use-motion-preference";
+import { HomeSearchDemo } from "./HomeSearchDemo";
+import { HOME_COPY, HOME_DEMO_SCENES, type Scene } from "./home-demo-data";
+import "./home-upgrade.css";
 
 const ParticleField = lazy(() => import("./ParticleField"));
 
 export function Hero() {
   const [scene, setScene] = useState<Scene>(0);
   const [ready, setReady] = useState(false);
+  const [paused, setPaused] = useState(false);
   const lang = useLang();
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
+  const copy = HOME_COPY[lang];
+  const zh = lang === "zh";
 
-  // exit choreography: content drifts up slowly, fades faster — depth without
-  // fighting the particle camera. Post-mount only, so the LCP is untouched.
-  const { scrollY } = useScroll();
-  const heroY = useTransform(scrollY, [0, 900], [0, -140], { clamp: true });
-  const heroFade = useTransform(scrollY, [0, 520], [1, 0], { clamp: true });
-
-  // Defer the WebGL chunk until after first paint + idle: LCP is text.
-  // (Safari < 17 has no requestIdleCallback — fall back to a timeout.)
+  // The heading, description and example are useful before WebGL is loaded.
   useEffect(() => {
     const w = window as Window & {
       requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
@@ -33,106 +27,38 @@ export function Hero() {
       const id = w.requestIdleCallback(() => setReady(true), { timeout: 2200 });
       return () => w.cancelIdleCallback?.(id);
     }
-    const t = window.setTimeout(() => setReady(true), 900);
-    return () => window.clearTimeout(t);
+    const timer = window.setTimeout(() => setReady(true), 900);
+    return () => window.clearTimeout(timer);
   }, []);
 
-  const zh = lang === "zh";
-
   return (
-    <header className="relative flex min-h-[100svh] flex-col overflow-hidden">
-      {ready && (
-        <Suspense fallback={null}>
-          <ParticleField scene={scene} />
-        </Suspense>
-      )}
-      {/* scrims: light left wash for the copy column (the field is re-graded
-          dim at the source), bottom melt into bg0 for the stats strip */}
-      <div
-        className="pointer-events-none absolute inset-0"
-        aria-hidden="true"
-        style={{
-          background:
-            "linear-gradient(90deg, rgba(8,8,10,0.62) 0%, rgba(8,8,10,0.30) 36%, rgba(8,8,10,0.08) 56%, rgba(8,8,10,0) 70%), linear-gradient(to bottom, rgba(8,8,10,0) 55%, rgba(8,8,10,0.4) 78%, #08080A 97%)",
-        }}
-      />
-
-      <motion.div
-        className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-5 pt-28 pb-16 will-change-transform"
-        style={reduced ? undefined : { y: heroY, opacity: heroFade }}
-      >
-        <h1 className="max-w-[13em] font-display text-hero leading-[1.04] text-ink">
-          <SplitTextReveal
-            text={zh ? "按意思搜索。" : "Search by meaning."}
-            delay={0.1}
-            stagger={0.016}
-          />
-        </h1>
-        {/* the dek renders statically (identical to the pre-mount shell): it is
-            the page's largest text node, and animating it would push the LCP
-            to animation end. The h1 keeps the spring choreography. */}
-        <p
-          className="mt-6 max-w-[34em] text-[15px] leading-relaxed text-ink2 sm:text-base"
-          style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}
-        >
-          {zh ? (
-            <>
-              <strong className="font-semibold text-ink">文件不出这台 Mac。</strong>
-              你记得说过什么，不记得存在哪份文件——一份没写「超时」两个字、却在讲超时的文档，一段两小时录音里的某句话，一张早找不到的报错截图。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按哈希搜、录音命中到秒、截图按画面搜，还能经 MCP 让 Claude 直接搜本机。上传？这条代码路径不存在。
-            </>
-          ) : (
-            <>
-              <strong className="font-semibold text-ink">Files never leave your Mac. </strong>
-              You remember what you said, not which file it lives in — a document that never says “timeout” but is all about timeouts, one sentence inside a two-hour recording, a screenshot of an error you can’t find again. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers by hash, audio to the second, screenshots by what’s in them — and through MCP, Claude can search your machine directly. Uploads? That code path does not exist.
-            </>
-          )}
-        </p>
-        <Reveal delay={0.45} className="mt-8">
-          <div className="flex flex-wrap items-center gap-2">
-            <MagneticButton variant="gold" href="/docs#start">
-              {zh ? "快速开始" : "Quickstart"} →
+    <header className="home-hero" data-home-hero="" data-home-motion={reduced ? "reduced" : paused ? "paused" : "playing"}>
+      <div className="home-hero-stars" aria-hidden="true">
+        {ready && <Suspense fallback={null}><ParticleField scene={scene} paused={paused} /></Suspense>}
+      </div>
+      <div className="home-hero-scrim" aria-hidden="true" />
+      <div className="home-hero-body">
+        <div className="home-hero-copy">
+          <h1 className="home-hero-title font-display" data-home-title="">{copy.title}</h1>
+          <p className="home-hero-description" data-home-description="">{copy.description}</p>
+          <div className="home-hero-actions">
+            <MagneticButton variant="gold" href="/docs#start" className="home-hero-start">
+              {zh ? "开始使用" : "Get started"} <span aria-hidden="true">→</span>
             </MagneticButton>
-            <MagneticButton variant="ghost" href={REPO_URL} external>
-              GitHub
+            <MagneticButton variant="ghost" href={`/learn#c=${HOME_DEMO_SCENES[scene].lessonId}`}>
+              {zh ? "看懂检索原理" : "How search works"} <span aria-hidden="true">↗</span>
             </MagneticButton>
           </div>
-        </Reveal>
-        <Reveal delay={0.55}>
-          <div style={{ textShadow: "0 1px 2px rgba(8,8,10,0.85), 0 0 24px rgba(8,8,10,0.6)" }}>
-            <SceneTabs scene={scene} onScene={setScene} />
-          </div>
-        </Reveal>
-      </motion.div>
-
-      <div className="relative z-10 hairline-t">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-y-6 px-5 py-6 md:grid-cols-4">
-          <div>
-            <div className="font-display text-3xl text-gold">
-              <Counter end={3200} delay={500} duration={1100} />+
-            </div>
-            <div className="mt-1 text-[13px] text-sub">
-              {zh ? "离线测试（全量 8 分钟）" : "Offline tests (8-min suite)"}
-            </div>
-          </div>
-          <div>
-            <div className="font-display text-3xl text-ink">
-              <Counter end={420} />
-            </div>
-            <div className="mt-1 text-[13px] text-sub">
-              {zh ? `冻结评测题 · ${SUITE.frozenSources} 来源` : `Frozen eval questions · ${SUITE.frozenSources} sources`}
-            </div>
-          </div>
-          <div>
-            <div className="font-display text-3xl text-ink">1</div>
-            <div className="mt-1 text-[13px] text-sub">
-              {zh ? "个 SQLite 文件 = 全部索引" : "SQLite file = the whole index"}
-            </div>
-          </div>
-          <div>
-            <div className="font-display text-3xl text-gold">0 B</div>
-            <div className="mt-1 text-[13px] text-sub">
-              {zh ? "上传（代码里没有这条路径）" : "Uploaded (no such code path)"}
-            </div>
+        </div>
+        <div className="home-hero-preview">
+          <HomeSearchDemo scene={scene} onScene={setScene} lang={lang} />
+          <div className="home-hero-motion-row">
+            <button className="home-hero-motion" type="button" data-home-pause="" aria-pressed={paused} disabled={reduced} onClick={() => setPaused((value) => !value)}>
+              <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
+                {reduced ? <path d="M3 8h10" /> : paused ? <path d="m5 3 7 5-7 5Z" /> : <path d="M5 3v10M11 3v10" />}
+              </svg>
+              {reduced ? (zh ? "减少动态效果已开启" : "Reduced motion is on") : paused ? (zh ? "播放背景动画" : "Play background") : (zh ? "暂停背景动画" : "Pause background")}
+            </button>
           </div>
         </div>
       </div>

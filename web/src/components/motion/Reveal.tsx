@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference } from "../../lib/use-motion-preference";
 
 type Props = {
   children: ReactNode;
@@ -21,7 +22,7 @@ export function Reveal({
   once = true,
   amount = 0.25,
 }: Props) {
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   if (reduced) return <div className={className}>{children}</div>;
   return (
     <motion.div

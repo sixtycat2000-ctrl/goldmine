@@ -1,6 +1,7 @@
-import { useEffect, useRef, type ReactNode } from "react";
-import { motion, useMotionValue, useSpring, useReducedMotion, type MotionValue } from "framer-motion";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { motion, useMotionValue, useSpring, type MotionValue } from "framer-motion";
 import { useFinePointer } from "../../lib/hooks";
+import { useMotionPreference } from "../../lib/use-motion-preference";
 
 const MAGNET_RADIUS = 40; // px of pull zone around the button (spec)
 
@@ -20,12 +21,13 @@ type Sub = {
 
 const subs = new Set<Sub>();
 let listening = false;
-let frame = 0;
+let frame: number | null = null;
+let generation = 0;
 let px = -1;
 let py = -1;
 
 function flush() {
-  frame = 0;
+  frame = null;
   if (!subs.size) return;
   const rects = new Map<Sub, DOMRect>();
   for (const s of subs) rects.set(s, s.el.getBoundingClientRect()); // reads first
@@ -48,27 +50,32 @@ function flush() {
   }
 }
 
+function onPointerMove(e: PointerEvent) {
+  px = e.clientX;
+  py = e.clientY;
+  if (frame !== null) return;
+  const token = generation;
+  frame = requestAnimationFrame(() => {
+    if (token === generation) flush();
+  });
+}
+
 function subscribe(s: Sub) {
   subs.add(s);
   if (!listening) {
     listening = true;
-    window.addEventListener(
-      "pointermove",
-      (e) => {
-        px = e.clientX;
-        py = e.clientY;
-        if (!frame) frame = requestAnimationFrame(flush);
-      },
-      { passive: true },
-    );
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
   }
 }
 
 function unsubscribe(s: Sub) {
   subs.delete(s);
-  if (!subs.size && frame) {
-    cancelAnimationFrame(frame);
-    frame = 0;
+  if (!subs.size) {
+    window.removeEventListener("pointermove", onPointerMove);
+    listening = false;
+    generation++;
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
   }
 }
 
@@ -93,7 +100,7 @@ export function MagneticButton({
 }: Props) {
   const shellRef = useRef<HTMLSpanElement>(null);
   const fine = useFinePointer();
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
   const x = useSpring(mx, { stiffness: 180, damping: 16, mass: 0.4 });
@@ -101,13 +108,26 @@ export function MagneticButton({
 
   const active = fine && !reduced;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = shellRef.current;
-    if (!active || !el) return;
+    const reset = () => {
+      mx.jump(0);
+      my.jump(0);
+      x.jump(0);
+      y.jump(0);
+      if (el) el.style.transform = "none";
+    };
+    if (!active || !el) {
+      reset();
+      return;
+    }
     const sub: Sub = { el, mx, my };
     subscribe(sub);
-    return () => unsubscribe(sub);
-  }, [active, mx, my]);
+    return () => {
+      unsubscribe(sub);
+      reset();
+    };
+  }, [active, mx, my, x, y]);
 
   const base =
     variant === "gold"

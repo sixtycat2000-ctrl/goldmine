@@ -2,43 +2,23 @@ import { Counter } from "../components/motion/Counter";
 import { Reveal } from "../components/motion/Reveal";
 import { SectionHead } from "../components/SectionHead";
 import { useLang, pick } from "../lib/lang";
-import { LEDGER, SUITE } from "../lib/metrics";
+import { FEATURE_STATUS_URL, LEDGER, SUITE } from "../lib/metrics";
 
-/**
- * The Performance & Architecture bar: counters animate in on intersection,
- * followed by the receipts ledger. Every figure is transcribed from the
- * verified v3 page; see lib/metrics.ts for the verify: anchors.
- */
 export function MetricsBar() {
   const lang = useLang();
   const zh = lang === "zh";
-
-  const tiles: { value: React.ReactNode; label: string; gold?: boolean }[] = [
+  const tiles = [
     {
-      value: <><Counter end={3200} />+</>,
-      label: zh ? "离线测试 · 全量 8 分钟" : "Offline tests · 8-min suite",
+      value: <Counter end={SUITE.testsCount} />,
+      label: pick(lang, SUITE.testsNote.zh, SUITE.testsNote.en),
     },
     {
-      value: <><Counter end={155} />/<Counter end={180} /></>,
-      label: zh ? "严格成功@5（官方跑）" : "Strict success@5 (official run)",
+      value: SUITE.strictSuccess,
+      label: zh ? "2026-10-26 · 开发集严格成功@5" : "2026-10-26 · development strict success@5",
     },
     {
-      value: <><Counter end={17} />/<Counter end={19} /></>,
-      label: zh ? "质量门通过 · 2 门写明原因" : "Quality gates passing · 2 reasoned",
-      gold: true,
-    },
-    {
-      value: <><Counter end={420} /> · {SUITE.frozenSources}</>,
-      label: zh ? "冻结评测题 · 来源文件" : "Frozen eval questions · source files",
-    },
-    {
-      value: <><Counter end={1.4} decimals={1} />s</>,
-      label: zh ? "每题中位耗时（QMD 21.8s）" : "Median per query (QMD 21.8s)",
-    },
-    {
-      value: <>0 <span className="text-base">B</span></>,
-      label: zh ? "上传 · 代码里没有这条路径" : "Uploaded · no such code path",
-      gold: true,
+      value: `${SUITE.gatesPassed} / ${SUITE.gatesTotal}`,
+      label: zh ? "同期质量门 · 2项未过" : "Quality gates in that run · 2 failed",
     },
   ];
 
@@ -46,61 +26,35 @@ export function MetricsBar() {
     <section id="numbers" className="hairline-t hairline-b bg-bg1/40">
       <div className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <SectionHead
-          title={{ zh: "数字与回执", en: "Numbers, with receipts" }}
+          title={{ zh: "这些数字测了什么", en: "What these numbers measure" }}
           lede={{
-            zh: "每一项都能在仓库文档与执行回执（docs/FEATURE_STATUS.md、docs/COMPARISON.md、reports/execution/）里对到原始出处。",
-            en: "Every figure traces to its raw source in the repo (docs/FEATURE_STATUS.md, docs/COMPARISON.md, reports/execution/).",
+            zh: "功能测试验证实现边界，检索评测检查固定问题上的命中情况。下面保留各自的日期与范围。",
+            en: "Functional tests check implementation boundaries; retrieval evaluations check a fixed set of questions. Each record keeps its own date and scope.",
           }}
         />
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
-          {tiles.map((t, i) => (
-            <Reveal key={t.label} delay={i * 0.05} y={14}>
-              <div className={`font-display text-3xl lg:text-[2rem] ${t.gold ? "text-gold" : "text-ink"}`}>{t.value}</div>
-              <div className="mt-2 text-[13px] leading-relaxed text-sub">
-                {t.label}
-              </div>
+        <div className="grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-3">
+          {tiles.map((tile, i) => (
+            <Reveal key={tile.label} delay={i * 0.05} y={14}>
+              <div className="font-display text-3xl text-gold lg:text-[2rem]">{tile.value}</div>
+              <div className="mt-2 text-[13px] leading-relaxed text-sub">{tile.label}</div>
             </Reveal>
           ))}
         </div>
-
-        <Reveal y={0} duration={0.5} className="mt-16 overflow-x-auto">
-          <div
-            className="no-scrollbar hscroll overflow-x-auto"
-            tabIndex={0}
-            role="region"
-            aria-label={zh ? "实测数字台账" : "measured-numbers ledger"}
-          >
-          <table className="w-full min-w-[46rem] border-collapse text-left">
-            <thead>
-              <tr className="hairline-b">
-                <th scope="col" className="py-3 pr-4 text-[12px] text-sub">
-                  {zh ? "编号" : "NO."}
-                </th>
-                <th scope="col" className="py-3 pr-4 text-right text-[12px] text-sub">
-                  {zh ? "实测" : "Measured"}
-                </th>
-                <th scope="col" className="py-3 text-[12px] text-sub">
-                  {zh ? "回执与说明" : "Receipt & note"}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {LEDGER.map((row) => (
-                <tr key={row.no} className="hairline-b align-top transition-colors hover:bg-bg2/60">
-                  <td className="py-4 pr-4 text-[12px] text-sub">{row.no}</td>
-                  <td className="py-4 pr-4 text-right text-[13px] whitespace-nowrap text-ink">
-                    {typeof row.value === "string" ? row.value : pick(lang, row.value.zh, row.value.en)}
-                  </td>
-                  <td className="py-4 text-[13px] leading-relaxed text-ink2">
-                    {/* the auto table layout ignores max-w on the cell itself; cap
-                        the prose inside so receipt notes stay at a readable measure */}
-                    <div className="max-w-[36em] leading-relaxed">{pick(lang, row.note.zh, row.note.en)}</div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          </div>
+        <Reveal y={0} duration={0.5} className="mt-12">
+          <ol className="divide-y divide-line">
+            {LEDGER.map((row) => (
+              <li key={row.no} className="grid gap-3 py-6 sm:grid-cols-[12rem_1fr] sm:gap-8">
+                <p className="font-display text-xl text-ink">{typeof row.value === "string" ? row.value : pick(lang, row.value.zh, row.value.en)}</p>
+                <p className="max-w-[48em] text-[13px] leading-relaxed text-ink2">{pick(lang, row.note.zh, row.note.en)}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-5 max-w-3xl text-[13px] leading-relaxed text-sub">
+            {pick(lang, "历史成绩不代表你的资料上的命中率；当前版本的完整CLI/MCP耗时与检索质量提升仍需单独测量。", "Historical results do not predict accuracy on your files. Current whole-command CLI/MCP latency and retrieval-quality gains still require separate measurement.")}{" "}
+            <a href={FEATURE_STATUS_URL} target="_blank" rel="noopener noreferrer" className="text-teal underline decoration-teal/40 underline-offset-4 hover:text-ink">
+              {pick(lang, "查看测试与评测范围", "Read the testing and evaluation scope")} ↗
+            </a>
+          </p>
         </Reveal>
       </div>
     </section>

@@ -1,84 +1,62 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
 import { useLang, pick } from "../lib/lang";
 import { SectionHead } from "../components/SectionHead";
 import { CopyButton } from "../components/CopyButton";
 import { Reveal } from "../components/motion/Reveal";
 
-/* Four steps in plain document flow. The old pinned 600svh GSAP scrub
-   corridor made the page fight the scroll wheel; steps read top to bottom
-   now, each revealed as it enters. */
-
 const STEPS = [
   {
-    tag: { zh: "划定范围", en: "SCOPE" },
-    title: { zh: "你指定文件夹，只索引这些", en: "You choose folders; only those are indexed" },
+    tag: { zh: "选择", en: "CHOOSE" },
+    title: { zh: "选好要查的文件夹", en: "Choose the folders to search" },
     body: {
-      zh: "没有全盘扫描。构建产物、密钥、iCloud 未下载占位一律跳过并留原因——索引永远不会触发一次 iCloud 下载。",
-      en: "No whole-disk scan. Build outputs, secrets and undownloaded iCloud placeholders are skipped with reasons. Indexing never triggers an iCloud download.",
+      zh: "从资料所在的目录开始建库，无需扫描整个磁盘。未下载的 iCloud 占位文件会跳过，并留下原因。",
+      en: "Build an index from your chosen folders, without scanning the whole disk. Undownloaded iCloud placeholders are skipped with a reason.",
     },
   },
   {
-    tag: { zh: "向量化", en: "EMBED" },
-    title: { zh: "内容变向量，每种媒体一条路", en: "Content becomes vectors; one path per modality" },
+    tag: { zh: "建库", en: "INDEX" },
+    title: { zh: "先试词法，再按需扩展", en: "Start with words; add capabilities as needed" },
     body: {
-      zh: "文本走钉版 embeddinggemma-2；装上可选边车后：图像/音频向量、视频约每 3 秒一帧（aHash 去重）、截图走 Vision OCR、录音走 whisper——命中直接跳到那一秒。",
-      en: "Text uses the pinned embeddinggemma-2. With the optional sidecar: image/audio vectors, a video frame every ~3 s (aHash dedup), Vision OCR for screenshots, whisper for recordings. Hits jump to the second.",
+      zh: "词法检索不需要模型。语义检索需配置文本嵌入模型；截图文字、录音转写与图像检索各需相应的本地工具或模型。",
+      en: "Lexical search needs no model. Semantic search requires a text embedding model; OCR, transcription and visual retrieval each need their corresponding local tools or models.",
     },
   },
   {
-    tag: { zh: "融合检索", en: "FUSE" },
-    title: { zh: "含义 + 精确词融合，算术可查", en: "Meaning + exact words fused, inspectably" },
+    tag: { zh: "核对", en: "CHECK" },
+    title: { zh: "从结果回到原文", en: "Follow the result back to its source" },
     body: {
-      zh: "score = 1.0·语义 z 分 + 2.0·词覆盖^1.5 + 类型加成；编号查询自动反转权重。--why 把每条命中的打分明细摆出来。",
-      en: "score = 1.0·semantic z + 2.0·coverage^1.5 + kind bonus; identifier queries auto-invert. --why prints the score breakdown for every hit.",
+      zh: "查看命中片段、来源文件，以及已有的页码或时间位置。需要解释排序时，加上 --why 查看打分与命中依据。",
+      en: "Inspect the excerpt, source file and available page or time location. Add --why when you want to examine scoring and evidence.",
     },
   },
-  {
-    tag: { zh: "落库", en: "COMMIT" },
-    title: { zh: "一文件一事务，一库一文件", en: "One transaction per file, one file per index" },
-    body: {
-      zh: "每个文件的写入是单个 SQLite 事务——中断最坏丢这一个文件的这一次。备份、搬家、删除，就是复制那一个文件。",
-      en: "Each file commits as one SQLite transaction: an interrupt loses at most that file's pass. Backup, moving, deletion: copy the one file.",
-    },
-  },
-];
+] as const;
 
 export function Narrative() {
   const lang = useLang();
   return (
     <section id="how" className="relative">
       <div className="mx-auto max-w-6xl px-5 pt-24 sm:pt-32">
-        <SectionHead
-          title={{ zh: "从磁盘到可搜，四步", en: "Disk to searchable, four steps" }}
-          lede={{
-            zh: "四步走完：每一步都是可查的真实机制。",
-            en: "Four steps, each one a checkable mechanism.",
-          }}
-        />
+        <SectionHead title={{ zh: "从一个文件夹开始", en: "Start with one folder" }} />
         <ol className="mt-4">
-          {STEPS.map((s) => (
-            <li key={s.tag.en}>
+          {STEPS.map((step) => (
+            <li key={step.tag.en}>
               <Reveal y={20}>
-                <div className="grid gap-2 py-8 sm:grid-cols-[11rem_1fr] sm:gap-10 sm:py-10">
-                  <div className="font-display text-2xl leading-none text-gold sm:text-3xl">
-                    {pick(lang, s.tag.zh, s.tag.en)}
-                  </div>
+                <div className="grid gap-2 py-7 sm:grid-cols-[9rem_1fr] sm:gap-10 sm:py-9">
+                  <div className="font-display text-2xl leading-none text-gold sm:text-3xl">{pick(lang, step.tag.zh, step.tag.en)}</div>
                   <div>
-                    <h3 className="font-display text-title leading-snug text-ink">
-                      {pick(lang, s.title.zh, s.title.en)}
-                    </h3>
-                    <p className="mt-3 max-w-[34em] text-[15px] leading-relaxed text-ink2">
-                      {pick(lang, s.body.zh, s.body.en)}
-                    </p>
+                    <h3 className="font-display text-title leading-snug text-ink">{pick(lang, step.title.zh, step.title.en)}</h3>
+                    <p className="mt-3 max-w-[36em] text-[15px] leading-relaxed text-ink2">{pick(lang, step.body.zh, step.body.en)}</p>
                   </div>
                 </div>
               </Reveal>
             </li>
           ))}
         </ol>
+        <p className="mt-4 mb-12 max-w-3xl rounded-xl border border-line bg-bg1 px-5 py-4 text-[13px] leading-relaxed text-sub">
+          {pick(lang, "备份或迁移时，用 ", "To back up or move an index, export a consistent snapshot with ")}
+          <code className="break-words text-ink2">goldmine backup --db s.sqlite --out s.backup.sqlite</code>
+          {pick(lang, " 导出一致快照，再复制。恢复前先停止使用该索引的服务。", ", then copy it. Stop services using the index before restoring.")}
+        </p>
       </div>
-
       <Quickstart />
     </section>
   );
@@ -94,36 +72,26 @@ const QUICKSTART = [
 
 function Quickstart() {
   const lang = useLang();
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
   return (
     <div className="mx-auto max-w-6xl px-5 pb-24 sm:pb-32">
-      <motion.div
-        ref={ref}
-        initial={false}
-        className="mx-auto max-w-3xl overflow-hidden rounded-2xl border border-line bg-bg1"
-      >
-        <div className="hairline-b flex items-center justify-between px-4 py-2.5">
-          <span className="font-mono text-[12px] text-sub">
-            {pick(lang, "quickstart · 零模型也能跑", "quickstart · runs with zero models")}
-          </span>
-          <CopyButton text={QUICKSTART.join("\n")} />
+      <div className="mx-auto max-w-3xl">
+        <p className="mb-4 text-[13px] leading-relaxed text-sub">
+          {pick(lang, "macOS · Python 3.12+。先用示例文件试词法检索，无需下载模型。", "macOS · Python 3.12+. Try lexical search on a sample file before downloading any models.")}
+        </p>
+        <div className="overflow-hidden rounded-2xl border border-line bg-bg1">
+          <div className="hairline-b flex items-center justify-between px-4 py-2.5">
+            <span className="text-[12px] text-sub">{pick(lang, "词法检索入门", "Lexical quickstart")}</span>
+            <CopyButton text={QUICKSTART.join("\n")} />
+          </div>
+          <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-7">
+            {QUICKSTART.map((line) => (
+              <code key={line} className="block text-ink2">
+                <span className="mr-3 text-gold/70 select-none">$</span>{line}
+              </code>
+            ))}
+          </pre>
         </div>
-        <pre className="overflow-x-auto p-4 font-mono text-[12px] leading-7">
-          {QUICKSTART.map((l, i) => (
-            <motion.code
-              key={l}
-              className="block text-ink2"
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : { opacity: 0 }}
-              transition={{ delay: i * 0.18, duration: 0.4 }}
-            >
-              <span className="mr-3 text-gold/70 select-none">$</span>
-              {l}
-            </motion.code>
-          ))}
-        </pre>
-      </motion.div>
+      </div>
     </div>
   );
 }

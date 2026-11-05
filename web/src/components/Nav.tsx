@@ -51,7 +51,7 @@ export function Nav({ page }: { page: Page }) {
               <T zh="文档" en="Docs" />
             </a>
             <a href="/learn" className={linkCls("learn")} aria-current={page === "learn" ? "page" : undefined}>
-              Learn
+              <T zh="学习" en="Learn" />
             </a>
             <a
               href={REPO_URL}

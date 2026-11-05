@@ -202,3 +202,40 @@ visibility remains **MISSING** in Ego, whose controlled target keeps reporting
 visible. The original intermittent pointer-reopen timeout remains recorded as
 **FAIL**; fixed before/after probes both pass, so its causal explanation is still
 **MISSING**. These limits are retained in the final browser report.
+
+<a id="historical-qmd-comparison-2026-10-25"></a>
+
+## Historical QMD comparison summary (2026-10-25)
+
+The website comparison refers to a recorded **210-query dev fold** (180 answerable
+and 30 noise queries) over **122 source files**, with QMD pinned to **2.8.3**.
+This is separate from the earlier 28-query lexical diagnostic in `COMPARISON.md`.
+On native source files, Goldmine fast Success@5 was **78.3%**, and QMD query
+**66.1%**; their native readers handled 122 and 60 sources respectively. On the
+same preconverted text, Success@5 was **91.7%** and **100%**. These are historical
+results, not claims about the latest Goldmine source or current QMD releases.
+
+Per-query wall-clock observations accompanying that quality run, including CLI
+model loading, rounded to p50 **1.4s / 21.8s** and p95 **1.7s / 36.5s**. The
+separate repeated performance/update experiment was not completed; these figures
+must not be presented as a fresh performance certification. The displayed
+**43–60%** noise abstention range spans Goldmine configurations (lexical control
+13/30, fast 18/30), rather than describing a single fast configuration; QMD's
+recorded value was 0/30.
+
+This public summary transcribes the existing local execution record
+`reports/execution/P2-08/comparison-report-001/` (`REPORT.md` and
+`comparison-matrix.json`, matrix SHA256
+`b648ae404d46fc475e1cf7cdd2fa4bfb7b1bbbb8f641c3ad3c932075d0b6496e`). Raw local
+execution receipts are not claimed to be tracked or publicly hosted on GitHub.
+No comparison, quality or holdout query was rerun for the homepage rewrite.
+
+## Hosted main CI follow-up (2026-11-05)
+
+The push run for `43b373a`, GitHub Actions **41876468326**, completed with
+**success**. The tier selector and Linux/Python3.12 guard passed; the four
+full-matrix jobs were intentionally skipped by the existing push policy. This
+is a successful main push gate, not certification of the full scheduled matrix.
+The homepage task adds an independent website workflow for locked installation,
+TypeScript/build, factual examples, lesson links and animation lifecycle checks;
+its actual result belongs to the new commit and must be read from its own run.

@@ -4,24 +4,24 @@ import { useLang, pick } from "../lib/lang";
 
 const ITEMS = [
   {
-    title: { zh: "上周说退款的会议录音", en: "The meeting recording that mentioned refunds" },
+    title: { zh: "录音里说过的那句话", en: "A sentence in a recording" },
     body: {
-      zh: "whisper 转成带时间戳的文本。搜「退款期限」，open 直接跳到那一秒。",
-      en: "whisper transcribes it with timestamps. Search 退款期限, open jumps to the second.",
+      zh: "配置本地转写工具后，按词句搜索带时间戳的转写，再核对对应录音片段。",
+      en: "With local transcription configured, search the timestamped transcript and check the corresponding part of the recording.",
     },
   },
   {
     title: { zh: "截图里的那段报错", en: "The error message in a screenshot" },
     body: {
-      zh: "Vision OCR 把像素读成可搜的原文；图像向量再兜一层「长得像」。",
-      en: "Vision OCR reads the pixels into searchable text; the image vector adds a looks-like layer.",
+      zh: "启用 Vision OCR 后，可搜索截图中提取的文字。图像内容检索另需配置媒体模型。",
+      en: "Enable Vision OCR to search extracted screenshot text. Visual retrieval requires the media model separately.",
     },
   },
   {
     title: { zh: "两百页 PDF 里的那个编号", en: "The identifier inside that 200-page PDF" },
     body: {
-      zh: "编号类查询自动反转权重，词法精确命中压过语义——数字不会被「意思相近」淹没。",
-      en: "Identifier-like queries invert the weights: exact lexical hits beat semantics, so numbers don't drown in vibes.",
+      zh: "用完整编号查询，核对命中的原文与页码。编号匹配会检查实际存储文本。",
+      en: "Search for the complete identifier and inspect its text and page. Identifier matching checks the actual stored text.",
     },
   },
 ];
@@ -31,7 +31,7 @@ export function Scenarios() {
   return (
     <section id="scenarios" className="mx-auto max-w-6xl px-5 py-24 sm:py-32">
       <SectionHead
-        title={{ zh: "三件每天都会发生的事", en: "Three things that happen every week" }}
+        title={{ zh: "从记得的一点线索开始", en: "Start with the clue you remember" }}
       />
       <ol className="grid gap-4 md:grid-cols-3">
         {ITEMS.map((it, i) => (

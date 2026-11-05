@@ -1,4 +1,6 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useLayoutEffect, useRef, type ReactNode } from "react";
+import { useFinePointer } from "../../lib/hooks";
+import { useMotionPreference } from "../../lib/use-motion-preference";
 
 type Props = {
   className?: string;
@@ -24,20 +26,43 @@ export function SpotlightCard({
   as = "div",
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const frame = useRef(0);
+  const frame = useRef<number | null>(null);
+  const generation = useRef(0);
   const pt = useRef({ x: 0, y: 0 });
+  const fine = useFinePointer();
+  const reduced = useMotionPreference();
+  const enabled = fine && !reduced;
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
 
-  useEffect(() => {
-    return () => cancelAnimationFrame(frame.current);
-  }, []);
+  const cancelPending = () => {
+    generation.current++;
+    if (frame.current !== null) cancelAnimationFrame(frame.current);
+    frame.current = null;
+  };
+
+  useLayoutEffect(() => {
+    enabledRef.current = enabled;
+    if (!enabled) {
+      ref.current?.style.removeProperty("--mx");
+      ref.current?.style.removeProperty("--my");
+    }
+    return () => {
+      enabledRef.current = false;
+      cancelPending();
+    };
+  }, [enabled]);
 
   const onMove = (e: React.PointerEvent) => {
-    if (!e.clientX && !e.clientY) return; // touch scroll artifacts
+    if (!enabledRef.current || (!e.clientX && !e.clientY)) return;
     const host = e.currentTarget as HTMLElement;
     const rect = host.getBoundingClientRect();
     pt.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-    cancelAnimationFrame(frame.current);
+    cancelPending();
+    const token = generation.current;
     frame.current = requestAnimationFrame(() => {
+      if (!enabledRef.current || token !== generation.current) return;
+      frame.current = null;
       host.style.setProperty("--mx", `${pt.current.x}px`);
       host.style.setProperty("--my", `${pt.current.y}px`);
     });
@@ -47,7 +72,7 @@ export function SpotlightCard({
   return (
     <Tag
       ref={ref as never}
-      onPointerMove={onMove}
+      onPointerMove={enabled ? onMove : undefined}
       onClick={onClick}
       aria-label={ariaLabel}
       className={`spot glow-border relative overflow-hidden rounded-2xl glass ${cursor === "pointer" ? "cursor-pointer" : ""} ${className}`}

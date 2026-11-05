@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
+import { useMotionPreference } from "../lib/use-motion-preference";
+import { createParticleLoop, type ParticleLoop } from "./particle-loop";
 
 /*
  * Hero WebGL centerpiece — "Semantic Constellation" (starfield re-grade).
@@ -183,22 +185,28 @@ void main() {
 }
 `;
 
-export function ParticleField({ scene }: { scene: HeroScene }) {
+export function ParticleField({ scene, paused = false }: { scene: HeroScene; paused?: boolean }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<HeroScene>(scene);
-  const redrawRef = useRef<(() => void) | null>(null);
+  const reduced = useMotionPreference();
+  const controlsRef = useRef({ paused, reduced });
+  const loopRef = useRef<ParticleLoop | null>(null);
   sceneRef.current = scene;
+  controlsRef.current = { paused, reduced };
 
-  // Reduced-motion path: a single composed frame per scene, no rAF loop.
   useEffect(() => {
-    redrawRef.current?.();
+    loopRef.current?.invalidate();
   }, [scene]);
+
+  useEffect(() => {
+    loopRef.current?.setConditions({ paused, reduced });
+  }, [paused, reduced]);
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-
-    const reducedMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let disposed = false;
+    let loop: ParticleLoop | null = null;
 
     const canvas = document.createElement("canvas");
     canvas.setAttribute("aria-hidden", "true");
@@ -209,7 +217,7 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     // configs) THREE would console.error before our catch runs
     let renderer: THREE.WebGLRenderer;
     try {
-      const probe = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+      const probe = canvas.getContext("webgl2"); // This Three version requires WebGL2.
       if (!probe) throw new Error("webgl unavailable");
       renderer = new THREE.WebGLRenderer({
         canvas,
@@ -257,6 +265,7 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     scene3.add(new THREE.Points(geo, mat));
 
     const resize = () => {
+      if (disposed) return;
       const w = host.clientWidth;
       const h = host.clientHeight;
       renderer.setSize(w, h, false);
@@ -264,6 +273,7 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
       camera.fov = w < 640 ? 60 : 50;
       camera.updateProjectionMatrix();
       uniforms.uPixelRatio.value = renderer.getPixelRatio();
+      loop?.invalidate(); // Resizing clears the canvas, including a paused frame.
     };
     resize();
     const ro = new ResizeObserver(resize);
@@ -276,11 +286,11 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     let lastT = 0;
     let vel = 0;
     let scroll01 = Math.min(1.2, Math.max(0, window.scrollY / Math.max(1, window.innerHeight)));
-    let inView = true;
+    let inView = false;
     let igniteT0 = -1;
-    let raf = 0;
 
     const onPointerMove = (e: PointerEvent) => {
+      if (disposed || !inView || document.hidden || controlsRef.current.paused || controlsRef.current.reduced) return;
       const now = performance.now();
       const dt = Math.max(8, now - lastT);
       const dx = e.clientX - lastX;
@@ -296,10 +306,6 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
     };
     window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
-    const io = new IntersectionObserver(([entry]) => {
-      inView = entry.isIntersecting;
-    });
-    io.observe(host);
 
     // project pointer onto the z=0 plane in world space
     const raycast = new THREE.Vector3();
@@ -335,10 +341,42 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
       renderer.render(scene3, camera);
     };
 
-    const dispose = () => {
-      cancelAnimationFrame(raf);
+    const drawStatic = (elapsed: number) => {
+      const reduced = controlsRef.current.reduced;
+      uniforms.uTime.value = reduced ? 4.2 : elapsed;
+      uniforms.uScene.value = sceneRef.current;
+      uniforms.uAlpha.value = SCENE_ALPHA[sceneRef.current];
+      uniforms.uIgnite.value = sceneRef.current === 0 ? (reduced ? 0.35 : uniforms.uIgnite.value) : 0;
+      uniforms.uMouseStrength.value = 0;
+      camera.position.z = 16 - scroll01 * 3;
+      camera.rotation.y = scroll01 * 0.12;
+      camera.rotation.x = scroll01 * 0.05;
+      renderer.render(scene3, camera);
+    };
+
+    loop = createParticleLoop({
+      initial: { inView, hidden: document.hidden, ...controlsRef.current },
+      requestFrame: (callback) => requestAnimationFrame(callback),
+      cancelFrame: (id) => cancelAnimationFrame(id),
+      drawFrame: renderFrame,
+      drawStatic,
+    });
+    loopRef.current = loop;
+    const io = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      loop?.setConditions({ inView });
+    });
+    io.observe(host);
+    const onVisibility = () => loop?.setConditions({ hidden: document.hidden });
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      disposed = true;
+      loop?.dispose();
+      loopRef.current = null;
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
       ro.disconnect();
       io.disconnect();
       geo.dispose();
@@ -347,36 +385,6 @@ export function ParticleField({ scene }: { scene: HeroScene }) {
       renderer.forceContextLoss(); // eager GPU reclaim
       canvas.remove();
     };
-
-    if (reducedMq.matches) {
-      const redraw = () => {
-        uniforms.uTime.value = 4.2;
-        uniforms.uScene.value = sceneRef.current;
-        uniforms.uAlpha.value = SCENE_ALPHA[sceneRef.current];
-        uniforms.uIgnite.value = sceneRef.current === 0 ? 0.35 : 0;
-        renderer.render(scene3, camera);
-      };
-      redrawRef.current = redraw;
-      redraw();
-      const onRmChange = () => window.location.reload(); // both directions: keep one code path
-      reducedMq.addEventListener("change", onRmChange);
-      return () => {
-        reducedMq.removeEventListener("change", onRmChange);
-        redrawRef.current = null;
-        dispose();
-      };
-    }
-
-    const clock = new THREE.Clock();
-    const tick = () => {
-      raf = requestAnimationFrame(tick);
-      if (!inView || document.hidden) return; // paused when offscreen / tab hidden
-      const dt = Math.min(clock.getDelta(), 0.05);
-      renderFrame(clock.elapsedTime, dt);
-    };
-    tick();
-
-    return dispose;
   }, []);
 
   return <div ref={hostRef} className="pointer-events-none absolute inset-0" aria-hidden="true" />;

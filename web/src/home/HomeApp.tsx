@@ -4,9 +4,10 @@ import { Hero } from "./Hero";
 import { Bento } from "./Bento";
 import { Narrative } from "./Narrative";
 import { MetricsBar } from "./MetricsBar";
-import { Scenarios } from "./Scenarios";
 import { HeadToHead } from "./Tables";
 import { Closing } from "./Closing";
+import { LearnBridge } from "./LearnBridge";
+import { T } from "../lib/lang";
 
 export function HomeApp() {
   return (
@@ -15,7 +16,7 @@ export function HomeApp() {
         href="#features"
         className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-bg3 focus:px-4 focus:py-2 focus:text-ink"
       >
-        Skip to content
+        <T zh="跳到正文" en="Skip to content" />
       </a>
       <Nav page="home" />
       <main>
@@ -23,7 +24,7 @@ export function HomeApp() {
         <Bento />
         <Narrative />
         <MetricsBar />
-        <Scenarios />
+        <LearnBridge />
         <HeadToHead />
         <Closing />
       </main>

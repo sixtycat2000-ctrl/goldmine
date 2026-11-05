@@ -1,0 +1,48 @@
+name: website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "site/content/**"
+      - "site/tools/**"
+      - ".github/workflows/website.yml"
+  pull_request:
+    paths:
+      - "web/**"
+      - "site/content/**"
+      - "site/tools/**"
+      - ".github/workflows/website.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  web-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install locked website dependencies
+        run: npm --prefix web ci --no-audit --no-fund
+      - name: Check homepage facts, examples and lesson links
+        run: node web/scripts/check-home.mjs
+      - name: Check animation scheduling and cleanup
+        run: node web/scripts/check-home-motion.mjs
+      - name: Check learning models and baked content
+        run: node web/scripts/check-mechanisms.mjs
+      - name: Typecheck and build all pages
+        run: npm --prefix web run build
+      - name: Verify generated content is current
+        run: git diff --exit-code -- web/learn.html site/learn.html site/content/graph.baked.json

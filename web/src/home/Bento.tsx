@@ -1,319 +1,84 @@
-import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useRef } from "react";
 import { useLang, pick } from "../lib/lang";
 import { SpotlightCard } from "../components/motion/SpotlightCard";
 import { TiltCard } from "../components/motion/TiltCard";
 import { Reveal } from "../components/motion/Reveal";
 import { SectionHead } from "../components/SectionHead";
-import { Counter } from "../components/motion/Counter";
-import { IconNo } from "../components/Icons";
+import { IconCopy, IconExt, IconLogo, IconSearch } from "../components/Icons";
 
-/* ------------------------------------------------------------------ */
-/* micro-demos — stylized mechanism illustrations. Values are either   */
-/* the published eval figures or clearly tagged 示意 (illustrative);    */
-/* official numbers live in MetricsBar with their receipts.            */
-/* ------------------------------------------------------------------ */
-
-function DemoTag() {
-  const lang = useLang();
-  return (
-    <span
-      className="absolute top-6 right-6 text-[12px] text-sub"
-      aria-hidden="true"
-    >
-      {pick(lang, "示意", "demo")}
-    </span>
-  );
-}
-
-function HybridDemo() {
-  const lang = useLang();
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  // internally consistent illustration of the real formula:
-  // 1.0·z + 2.0·cov^1.5 + kind = 0.83 + 1.71 + 0.10 = 2.64
-  // (cov = 0.90 → cov^1.5 = 0.854); bars are each term over its own max.
-  const rows = [
-    { w: "1.0 · z", frac: 0.83, c: "var(--color-gold)" },
-    { w: "2.0 · cov^1.5", frac: 0.854, c: "var(--color-goldbright)" },
-    { w: "+ kind", frac: 0.5, c: "var(--color-teal)" },
-  ];
-  return (
-    <div ref={ref} className="mt-5" aria-hidden="true">
-      <p className="font-mono text-[12px] text-sub">score = 1.0·z + 2.0·cov^1.5 + kind</p>
-      <div className="mt-3 space-y-2.5">
-        {rows.map((r, i) => (
-          <div key={r.w} className="flex items-center gap-3">
-            <span className="w-24 shrink-0 font-mono text-[12px] text-sub">{r.w}</span>
-            <div className="h-[6px] flex-1 overflow-hidden rounded-full bg-bg3">
-              <motion.div
-                className="h-full w-full origin-left rounded-full"
-                style={{ background: r.c, opacity: i === 1 ? 0.8 : 1 }}
-                initial={{ scaleX: 0 }}
-                animate={inView ? { scaleX: r.frac } : { scaleX: 0 }}
-                transition={{ duration: 0.9, delay: 0.15 + i * 0.18, ease: [0.16, 1, 0.3, 1] }}
-              />
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="mt-3 font-mono text-[12px] text-ink2">
-        → <Counter end={2.64} decimals={2} className="text-gold" />{" "}
-        <span className="text-sub">{pick(lang, "每条命中的打分明细", "the score breakdown for every hit")}</span>
-      </p>
-      <DemoTag />
-    </div>
-  );
-}
-
-function MultimodalDemo() {
-  const chips = [
-    { zh: "文本", en: "text" },
-    { zh: "截图", en: "OCR" },
-    { zh: "录音", en: "whisper" },
-    { zh: "视频", en: "frames" },
-  ];
-  const lang = useLang();
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.4 });
-  // compositor-only CSS loops, IO-gated via the .demo-live class — no JS
-  // animation drivers while the card is on screen
-  return (
-    <div ref={ref} className={`mt-5 ${inView ? "demo-live" : ""}`} data-demo aria-hidden="true">
-      <div className="flex flex-wrap gap-2">
-        {chips.map((c, i) => (
-          <span
-            key={c.en}
-            className="gm-anim rounded-full bg-bg2 px-3 py-1 text-[12px] text-ink2"
-            style={{
-              animation: `gm-chip-pulse 3.2s ease-in-out ${i * 0.8}s infinite`,
-              opacity: 0.6,
-            }}
-          >
-            {pick(lang, c.zh, c.en)}
-          </span>
-        ))}
-      </div>
-      <div className="mt-4 flex h-8 items-end gap-1" aria-hidden="true">
-        {[0.4, 0.9, 0.55, 1, 0.65, 0.85, 0.45, 0.75, 0.5, 0.95, 0.6, 0.8].map((h, i) => (
-          <span
-            key={i}
-            className="gm-anim w-1.5 flex-1 rounded-sm bg-teal/70"
-            style={{
-              height: `${h * 100}%`,
-              transformOrigin: "bottom",
-              animation: `gm-wave 1.6s ease-in-out ${i * 0.13}s infinite`,
-            }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function GatesDemo() {
-  // verify: 2026-10-26 official run product-current-017 — 17/19 gates; the two
-  // unresolved ones are named, not position-coded.
-  const lang = useLang();
-  return (
-    <div className="mt-5" aria-hidden="true">
-      <p className="font-mono text-[12px] text-ink2">
-        <Counter end={17} className="text-gold" />
-        <span className="text-sub"> / 19 </span>
-        <span className="text-fail">· 2</span>{" "}
-        <span className="text-sub">{pick(lang, "未过，原因在档", "unresolved, reasons on record")}</span>
-      </p>
-      <p className="mt-2.5 font-mono text-[12px] text-fail">
-        noise 20/30 · media-OCR 6/9
-        <span className="ml-2 text-sub">{pick(lang, "官方跑，原因在档", "official run, reasons on record")}</span>
-      </p>
-    </div>
-  );
-}
-
-function LocalDemo() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { amount: 0.5 });
-  const lang = useLang();
-  return (
-    <div ref={ref} className={`mt-5 ${inView ? "demo-live" : ""}`} data-demo aria-hidden="true">
-      <div className="relative h-16">
-        <div className="absolute top-1/2 left-0 h-px w-full bg-line" />
-        <div className="absolute top-1/2 left-0 h-9 w-16 -translate-y-1/2 rounded-md border border-line-strong bg-bg3" />
-        <div className="absolute top-1/2 right-0 h-9 w-16 -translate-y-1/2 rounded-full border border-dashed border-line" />
-        <span
-          className="gm-anim absolute top-1/2 left-16 h-2 w-2 rounded-full bg-gold"
-          style={{
-            marginTop: "-4px",
-            animation: "gm-dot-ping 2.8s ease-in-out infinite",
-          }}
-        />
-        <span className="absolute top-1/2 right-20 text-fail" aria-hidden="true">
-          <IconNo size={11} label="blocked" />
-        </span>
-      </div>
-      <p className="mt-2 text-[13px] text-sub">
-        {pick(lang, "0 字节离开你的机器", "0 bytes leave your machine")}
-      </p>
-    </div>
-  );
-}
-
-function ReceiptDemo() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  const lang = useLang();
-  // All claims here are real published figures or repo pointers — no invented receipts.
-  const lines = [
-    { t: "$ goldmine search '退款期限' --why", c: "text-ink2" },
-    { t: pick(lang, "exit 0 · 每题中位 1.4s（官方跑实测）", "exit 0 · 1.4s median (official run)"), c: "text-teal" },
-    { t: pick(lang, "回执在档：reports/execution/", "receipts archived: reports/execution/"), c: "text-gold" },
-  ];
-  return (
-    <div ref={ref} className="mt-5 space-y-1.5 font-mono text-[12px] leading-relaxed" aria-hidden="true">
-      {lines.map((l, i) => (
-        <motion.p
-          key={l.t}
-          className={l.c}
-          initial={{ opacity: 0, x: -8 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -8 }}
-          transition={{ delay: i * 0.5, duration: 0.4 }}
-        >
-          {l.t}
-        </motion.p>
-      ))}
-      <DemoTag />
-    </div>
-  );
-}
-
-function ServeDemo() {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.5 });
-  // real interface: goldmine/mcp_contracts.py — search / get / context / status
-  const tools = ["goldmine_search", "goldmine_get", "goldmine_context", "goldmine_status"];
-  return (
-    <div ref={ref} className="mt-5 font-mono text-[12px]" aria-hidden="true">
-      <p className="text-ink2">$ goldmine mcp --db library.sqlite</p>
-      <div className="mt-2 grid grid-cols-2 gap-1.5">
-        {tools.map((t, i) => (
-          <motion.span
-            key={t}
-            className="rounded border border-line px-2 py-1 text-ink2"
-            initial={{ opacity: 0, y: 6 }}
-            animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-            transition={{ delay: 0.6 + i * 0.22, duration: 0.35 }}
-          >
-            <span className="text-gold">mcp:</span> {t}
-          </motion.span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-
-function Card({
-  title,
-  sub,
-  children,
-}: {
-  title: { zh: string; en: string };
-  sub: { zh: string; en: string };
-  children: React.ReactNode;
-}) {
-  const lang = useLang();
-  return (
-    <TiltCard className="h-full">
-      <SpotlightCard className="flex h-full flex-col p-6">
-        <h3 className="font-display text-title leading-snug text-ink">{pick(lang, title.zh, title.en)}</h3>
-        <p className="mt-2 text-[13px] leading-relaxed text-ink2">{pick(lang, sub.zh, sub.en)}</p>
-        <div className="mt-auto">{children}</div>
-      </SpotlightCard>
-    </TiltCard>
-  );
-}
+const FEATURES = [
+  {
+    icon: IconSearch,
+    title: { zh: "不必记住文件名", en: "You needn't remember the filename" },
+    body: {
+      zh: "用词句或完整编号查找内容，查看命中片段与出处，以及附带的页码或时间位置。",
+      en: "Look up content with words or complete identifiers, then inspect the excerpt, source and available page or time location.",
+    },
+    tags: [{ zh: "词句", en: "Words" }, { zh: "完整编号", en: "Identifiers" }, { zh: "原文出处", en: "Sources" }],
+  },
+  {
+    icon: IconCopy,
+    title: { zh: "截图和录音也能查", en: "Search screenshots and recordings" },
+    body: {
+      zh: "启用所需本地工具后，可检索截图中的文字和录音转写。图像内容检索另需配置媒体模型。",
+      en: "With the required local tools, search screenshot text and recording transcripts. Visual retrieval also requires the media model.",
+    },
+    tags: [{ zh: "截图文字", en: "OCR text" }, { zh: "录音转写", en: "Transcripts" }, { zh: "可选媒体模型", en: "Optional media model" }],
+  },
+  {
+    icon: IconLogo,
+    title: { zh: "本机建库，本机检索", en: "Index and search on your Mac" },
+    body: {
+      zh: "只处理你选定的文件夹。未下载的 iCloud 文件会跳过；用 status 查看处理状态、缺少的能力与原因。",
+      en: "Process the folders you choose. Undownloaded iCloud files are skipped; status shows processing states, missing capabilities and reasons.",
+    },
+    tags: [{ zh: "选定范围", en: "Chosen folders" }, { zh: "本地索引", en: "Local index" }, { zh: "处理记录", en: "File status" }],
+  },
+  {
+    icon: IconExt,
+    title: { zh: "让助手查询选定索引", en: "Let your assistant query a chosen index" },
+    body: {
+      zh: "通过 MCP 返回原文与引用给调用方。证据交给助手后，是否继续发送到云端取决于客户端。",
+      en: "MCP returns source text and citations to its caller. Any onward transmission to a cloud service is controlled by that client.",
+    },
+    tags: [{ zh: "MCP 接入", en: "MCP access" }, { zh: "四个只读工具", en: "Four read-only tools" }, { zh: "可核对引用", en: "Verifiable citations" }],
+  },
+] as const;
 
 export function Bento() {
-  const reduced = useReducedMotion();
+  const lang = useLang();
   return (
     <section id="features" className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
       <SectionHead
-        title={{
-          zh: "一个索引，四种媒体，零字节的云",
-          en: "One index, four media, zero bytes of cloud",
-        }}
+        title={{ zh: "找到内容，也看得到出处", en: "Find the content. Inspect the source." }}
         lede={{
-          zh: "每张卡片里的演示都是真实机制的缩影：标注「示意」的数值经过简化；正式数字全部来自公开评测，见下方「数字与回执」。",
-          en: "Every demo is a scaled-down real mechanism: values tagged “demo” are simplified illustrations, while official figures all come from the published evals — see “Numbers, with receipts” below.",
+          zh: "文档、截图与录音放进同一索引，按需要启用相应能力。",
+          en: "Keep documents, screenshots and recordings in one index, enabling the capabilities you need.",
         }}
       />
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
-        {(
-          [
-            {
-              span: "lg:col-span-4",
-              title: { zh: "混合搜索，算术可查", en: "Hybrid search, inspectable arithmetic" },
-              sub: {
-                zh: "语义 z 分与词精确覆盖融合打分，编号查询自动反转权重。--why 把每条命中的算术一项项摆出来。",
-                en: "Semantic z-score fused with exact word coverage; identifier queries auto-invert. --why prints every hit's arithmetic, line by line.",
-              },
-              demo: <HybridDemo />,
-            },
-            {
-              span: "lg:col-span-2",
-              title: { zh: "全媒体，本地索引", en: "All media, indexed locally" },
-              sub: {
-                zh: "录音转写命中到秒，截图 OCR 按内容搜，视频按关键帧——模型都在你机器上跑。",
-                en: "Recordings hit to the second, screenshots searched by content, video by keyframes — models run on your machine.",
-              },
-              demo: !reduced ? <MultimodalDemo /> : null,
-            },
-            {
-              span: "lg:col-span-2",
-              title: { zh: "诚实契约", en: "The honesty contract" },
-              sub: {
-                zh: "没有静默降级：每个文件四种状态都带原因；两门未过的质量门写明为什么。",
-                en: "No silent degradations: every file carries its state and reason; the two unresolved gates are explained, not hidden.",
-              },
-              demo: <GatesDemo />,
-            },
-            {
-              span: "lg:col-span-2",
-              title: { zh: "零上传", en: "Zero upload" },
-              sub: {
-                zh: "索引是一个 SQLite 文件。备份、搬家、删除——复制那一个文件就好。",
-                en: "The index is one SQLite file. Backup, move, delete — copy the one file.",
-              },
-              demo: <LocalDemo />,
-            },
-            {
-              span: "lg:col-span-2",
-              title: { zh: "证据纪律", en: "Evidence discipline" },
-              sub: {
-                zh: "回执（argv/退出码/sha）、预注册冻结、对抗评审——独立审计 840 项重评分零错配。",
-                en: "Receipts (argv/exit/sha), frozen preregistrations, adversarial review — an independent audit re-scored 840 metrics, zero mismatches.",
-              },
-              demo: <ReceiptDemo />,
-            },
-            {
-              span: "lg:col-span-4",
-              title: { zh: "本地 MCP 服务", en: "Local MCP server" },
-              sub: {
-                zh: "goldmine mcp 把四个只读工具——search / get / context / status——直接挂进你的 Agent 工具箱。",
-                en: "goldmine mcp exposes four read-only tools — search / get / context / status — straight into your Agent's toolbox.",
-              },
-              demo: <ServeDemo />,
-            },
-          ] as const
-        ).map((card, i) => (
-          <Reveal key={card.title.en} y={18} delay={(i % 3) * 0.06} className={card.span}>
-            <Card title={card.title} sub={card.sub}>
-              {card.demo}
-            </Card>
-          </Reveal>
-        ))}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {FEATURES.map((feature, i) => {
+          const Icon = feature.icon;
+          return (
+            <Reveal key={feature.title.en} y={18} delay={(i % 2) * 0.06}>
+              <TiltCard className="h-full">
+                <SpotlightCard className="flex h-full flex-col p-6 sm:p-8">
+                  <span className="mb-6 flex h-11 w-11 items-center justify-center rounded-xl border border-gold/20 bg-gold/5 text-gold">
+                    <Icon size={23} />
+                  </span>
+                  <h3 className="font-display text-title leading-snug text-ink">{pick(lang, feature.title.zh, feature.title.en)}</h3>
+                  <p className="mt-3 max-w-[35em] text-[14px] leading-relaxed text-ink2">{pick(lang, feature.body.zh, feature.body.en)}</p>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-6">
+                    {feature.tags.map((tag) => (
+                      <span key={tag.en} className="rounded-full border border-line bg-bg2/60 px-3 py-1 text-[12px] text-sub">
+                        {pick(lang, tag.zh, tag.en)}
+                      </span>
+                    ))}
+                  </div>
+                </SpotlightCard>
+              </TiltCard>
+            </Reveal>
+          );
+        })}
       </div>
     </section>
   );

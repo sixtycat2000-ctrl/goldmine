@@ -1,5 +1,6 @@
 import { useMemo } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
+import { useMotionPreference } from "../../lib/use-motion-preference";
 
 type Word = { chars: string[] };
 
@@ -40,7 +41,7 @@ const STAGGER_CAP = 0.35;
  * prefers-reduced-motion: plain text, no animation.
  */
 export function SplitTextReveal({ text, className, delay = 0, stagger = 0.022 }: Props) {
-  const reduced = useReducedMotion();
+  const reduced = useMotionPreference();
   const words = useMemo(() => splitWords(text), [text]);
 
   if (reduced) {

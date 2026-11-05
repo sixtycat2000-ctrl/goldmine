@@ -387,15 +387,15 @@ function QARuler({ lang, onOpen }: { lang: Lang; onOpen: (id: StationId | "l0") 
       <div className="grid grid-cols-1 gap-px overflow-hidden px-4 pb-3 pt-2 sm:grid-cols-3">
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
           <span className="font-display text-xl text-ink">{SUITE.gatesPassed} / {SUITE.gatesTotal}</span>
-          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "质量门 · 两门已归档 → 首页" : "gates · fails archived → home"}</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "2026-10-26开发集 · 2项未过" : "2026-10-26 development · 2 failed"}</span>
         </p>
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
           <span className="font-display text-xl text-ink">{SUITE.tests}</span>
-          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "测试 · 全量 8 分钟" : "tests · 8-min suite"}</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{pick(lang, SUITE.testsNote.zh, SUITE.testsNote.en)}</span>
         </p>
         <p className="rounded bg-bg1/70 px-3 py-2 text-center">
           <span className="font-display text-xl text-ink">{SUITE.bytesUploaded} B</span>
-          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "上传 · 无此代码路径" : "uploaded · no such path"}</span>
+          <span className="mt-0.5 block font-mono text-[14px] leading-snug text-sub">{zh ? "本机建库与检索的文件上传；MCP另向调用方返回证据" : "Local indexing/search file uploads; MCP returns evidence to its caller"}</span>
         </p>
       </div>
     </div>

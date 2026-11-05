@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="referrer" content="no-referrer">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='5' y='5' width='14' height='14' rx='2' transform='rotate(45 12 12)' fill='none' stroke='%23F5B041' stroke-width='1.5'/%3E%3Ccircle cx='12' cy='9.5' r='1.8' fill='%23F5B041'/%3E%3C/svg%3E">
-<meta name="description" content="goldmine — 开源的 macOS 本地搜索引擎。按意思搜索文本、PDF、截图、录音、视频；比过 QMD，赢在覆盖与速度。零上传，索引是一个 SQLite 文件。">
+<meta name="description" content="goldmine — 在 Mac 本机按内容查文档、录音和截图。自己选择索引范围，查看命中的文件和片段；也可通过 MCP 向 AI 助手返回索引内证据。">
 <title>goldmine · 本地语义搜索</title>
 <link rel="canonical" href="https://goldmine-site.sixtycat2000.workers.dev/">
 <meta property="og:title" content="goldmine · 本地语义搜索">
-<meta property="og:description" content="开源、本地优先的 macOS 搜索引擎。按意思搜索文本、PDF、截图、录音、视频；零上传，索引是一个 SQLite 文件。">
+<meta property="og:description" content="goldmine — 在 Mac 本机按内容查文档、录音和截图。自己选择索引范围，查看命中的文件和片段；也可通过 MCP 向 AI 助手返回索引内证据。">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary">
 <meta name="theme-color" content="#08080A">
@@ -22,17 +22,31 @@
 </head>
 <body>
 <div id="root">
-  <!-- Pre-mount / no-JS content: a faithful subset of the React hero (SEO, LCP, no-JS).
-       Type metrics mirror the React hero so the early paint stays the LCP. -->
-  <main style="max-width:72rem;margin:0 auto;padding:9rem 1.25rem 4rem">
-    <h1 style="font:400 clamp(2.75rem,1.3rem + 6vw,6.25rem)/1.14 var(--font-display,'Instrument Serif','Noto Serif SC','Songti SC',serif);color:#F3F4F6;max-width:13em;margin:0"><span class="sh-zh">按意思搜索。</span><span class="sh-en">Search by meaning.</span></h1>
-    <p style="color:#A9AFB8;max-width:44em;font:16px/1.62 var(--font-sans,system-ui,'PingFang SC',sans-serif);margin-top:1.5rem"><span class="sh-zh">文件不出这台 Mac。你记得说过什么，不记得存在哪份文件——一份没写「超时」两个字、却在讲超时的文档，一段两小时录音里的某句话，一张早找不到的报错截图。goldmine 把你指定的文件夹索引成一个本地 SQLite 文件：文字按语义搜、编号按哈希搜、录音命中到秒、截图按画面搜，还能经 MCP 让 Claude 直接搜本机。上传？这条代码路径不存在。</span><span class="sh-en">Files never leave your Mac. You remember what you said, not which file it lives in — a document that never says “timeout” but is all about timeouts, one sentence inside a two-hour recording, a screenshot of an error you can’t find again. goldmine indexes the folders you choose into one local SQLite file: text by meaning, identifiers by hash, audio to the second, screenshots by what’s in them — and through MCP, Claude can search your machine directly. Uploads? That code path does not exist.</span></p>
-    <p style="margin-top:2rem;font:13px var(--font-mono,monospace)">
-      <a href="/" style="color:#F5B041">index</a> ·
-      <a href="/learn" style="color:#F5B041">learn</a> ·
-      <a href="/docs" style="color:#F5B041">docs</a> ·
-      <a href="https://github.com/sixtycat2000-ctrl/goldmine" style="color:#F5B041">GitHub</a>
-    </p>
+  <!-- A usable static subset of the same authored hero, before React or without JS. -->
+  <main>
+    <header class="home-hero">
+      <div class="home-hero-body">
+        <div class="home-hero-copy">
+          <h1 class="home-hero-title font-display"><span class="sh-zh">按内容找本机文件</span><span class="sh-en">Find local files by content.</span></h1>
+          <p class="home-hero-description"><span class="sh-zh">文档里的一段话、录音里的一句话、截图上的报错，都可以用来查找。自己选文件夹，在这台 Mac 上建索引；从结果查看命中的文件和片段。</span><span class="sh-en">Find a passage from a document, a sentence in a recording, or an error in a screenshot. Choose your folders, index them on this Mac, and see the matching files and excerpts.</span></p>
+          <div class="home-hero-actions">
+            <a href="/docs#start" class="inline-flex min-h-12 items-center rounded-full bg-gold px-6 text-bg0"><span class="sh-zh">开始使用</span><span class="sh-en">Get started</span> →</a>
+            <a href="/learn#c=z-score" class="inline-flex min-h-12 items-center rounded-full border border-line-strong px-6 text-gold"><span class="sh-zh">看懂检索原理</span><span class="sh-en">How search works</span> ↗</a>
+          </div>
+        </div>
+        <div class="home-hero-preview">
+          <div class="home-search-demo">
+            <div class="home-demo-topline"><span class="home-demo-caption">goldmine</span><span class="home-demo-example"><span class="sh-zh">示例</span><span class="sh-en">Example</span></span></div>
+            <div class="home-demo-query"><p><span class="sh-zh">退款最晚什么时候申请？</span><span class="sh-en">When is the refund deadline?</span></p></div>
+            <div class="home-demo-result">
+              <p class="home-demo-filename"><span class="sh-zh">资料/售后政策.md</span><span class="sh-en">Documents/Returns policy.md</span></p>
+              <p class="home-demo-excerpt"><span class="sh-zh">收到商品后四十五天内可申请退货。请保留订单号与付款凭证。</span><span class="sh-en">Returns can be requested within forty-five days of receiving the item. Keep the order number and proof of payment.</span></p>
+              <p class="home-demo-source"><span><span class="sh-zh">第 18–20 行</span><span class="sh-en">Lines 18–20</span></span><span><span class="sh-zh">内容匹配</span><span class="sh-en">Content match</span></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
   </main>
 </div>
 <script type="module" src="/src/main.tsx"></script>
