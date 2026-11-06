@@ -29,3 +29,6 @@ eval.sqlite*
 reports/execution/**
 .wrangler/
 .taste-skill/
+
+# ZCode session artifacts (build identity shows dirty when present)
+.zcode/

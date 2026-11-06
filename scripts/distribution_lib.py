@@ -52,9 +52,13 @@ def extract_native(path: Path, destination: Path) -> dict:
     destination.mkdir(parents=True, exist_ok=False)
     with open_native_archive(path) as archive:
         members = archive.getmembers()
-        allowed = {"llama-server", "goldmine-ocr", "LLAMA-LICENSE.txt", "native-manifest.json"}
+        # digup-plan-002 ships goldmine-embed beside the other two binaries, so a
+        # release tar carries exactly five declared files; capability-check-001
+        # found the old four-file check rejecting every current release tar.
+        allowed = {"llama-server", "goldmine-ocr", "goldmine-embed",
+                   "LLAMA-LICENSE.txt", "native-manifest.json"}
         if {m.name for m in members} != allowed or len(members) != len(allowed) or any(not m.isfile() for m in members):
-            raise BuildError("native release tar needs exactly the four regular declared files")
+            raise BuildError("native release tar needs exactly the five regular declared files")
         archive.extractall(destination, filter="data")
     metadata = read_json(destination / "native-manifest.json")
     if metadata.get("release_eligible") is not True or metadata.get("architecture") != "arm64":

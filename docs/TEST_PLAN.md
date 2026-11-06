@@ -168,6 +168,12 @@ raw-text vector, cosine < 0.999). Auto-skips if the binary/model are absent.
 - `test_live_tools.py`: real `pdftotext` on tiny.pdf (exact known sentence), real ffmpeg on
   sine.wav (1 window, ~30 s cap not hit), video frames on a 3 s generated color video
   (ffmpeg-generated fixture), each skipping with fix hints if tools absent.
+- Worktree caveat (capability-check-001): `vendor/` build outputs such as
+  `goldmine-embed` are untracked, so a plain `git worktree` used as the source root
+  cannot resolve the media helper — the live fingerprint then lacks the four media
+  keys and any existing media index refuses search (exit 3). Live measurements must
+  either run from a full checkout, symlink `models/`+helper assets into the worktree,
+  or accept `--lexical`.
 
 ## 7. Acceptance criteria (v1 exit checklist)
 

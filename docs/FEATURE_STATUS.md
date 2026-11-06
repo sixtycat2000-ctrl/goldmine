@@ -1,6 +1,6 @@
 # Current implementation status
 
-Updated 2026-10-25; package `0.2.0` development. This is the current capability
+Updated 2026-11-06; package `0.2.0` development. This is the current capability
 and quality record; README links here rather than maintaining separate progress claims.
 The authoritative task register is [tasks.json](execution-plan/tasks.json).
 `IMPLEMENTED` means code exists; `VERIFIED` requires the task's complete evidence.
@@ -53,8 +53,12 @@ certify the subsequently changed source. See the
 
 The [80-question answer inputs](../evals/answer_v3/README.md) and
 [120-document card inputs](../evals/distill_real/README.md) are frozen and audited.
-The 480 real answer jobs, 960 real grading jobs and actual card clustering run
-are still missing. The independent full-media suite has 136 queries
+The full three-arm v3 study has run once (2026-10-24, run-002: 480/480 answers,
+959/960 judges after one disclosed amendment) and a fresh single-arm
+candidate_PACK diagnostic ran 2026-11-06 (capability-check-001, see below);
+neither yields a certified comparison — each retains judge gaps that the
+frozen reader correctly holds at MISSING, so descriptive diagnostics only.
+The actual 120-document card clustering run is still missing. The independent full-media suite has 136 queries
 (78 real + 58 media, including 8 keyframe questions). Its historical provenance
 preflight and multimodal/video mechanics gates have recorded passes; the
 multimodal implementation has landed. Synthetic video captions and these small
@@ -229,6 +233,25 @@ This public summary transcribes the existing local execution record
 `b648ae404d46fc475e1cf7cdd2fa4bfb7b1bbbb8f641c3ad3c932075d0b6496e`). Raw local
 execution receipts are not claimed to be tracked or publicly hosted on GitHub.
 No comparison, quality or holdout query was rerun for the homepage rewrite.
+
+## Capability check campaign (2026-11-06)
+
+capability-check-001 (`reports/execution/capability-check-001/`, local evidence tree, not committed) exercised
+the current source (687edf2) across delivery, MCP, latency, watch/serve and
+distill, plus a fresh GLM-5.3-Flash single-arm answer run. Fresh installed-wheel
+MCP proof passed (42 SDK calls, refusal semantics, deadlines; CLI parity
+byte-identical), whole-command CLI/MCP latency now has a measured baseline
+(warm p50 149.8 ms / p95 203.4 ms; MCP overhead p50 1.33 ms; llama-server RSS
+489 MiB), and controlled watch/serve suites passed with zero success-skips.
+The answer diagnostic rebuilt the candidate index from this source (file-level
+parity with run-002's index) and executed 160/160 answers + 317/320 judges:
+descriptive mean 1.80 vs run-002's 1.6656 on the same frozen 80 questions,
+traps 20/20 refused, no fabricated facts; three judges produced fenced JSON and
+stay quarantined per the no-retry contract, so formal validation remains
+MISSING. Distill canary under the llama backend recovered 6/8 topics (the
+recorded 8/8 was mock-backend), failing the incremental gate's own
+eight-topic requirement. Fixes landed on this branch: five-file native release
+check, brew-note conditionality, process-group server kill, temp-copy cleanup.
 
 ## Hosted main CI follow-up (2026-11-05)
 

@@ -72,6 +72,19 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
 - **设计轮 R1 + noise**（`P0-05/evidence-admission-design-001/DESIGN.md` 专家设计 → `evidence-admission-review-001/REVIEW.md` 独立对抗评审 **ADOPT-WITH-CHANGES**，P2B **REJECT**，P3 **HOLD**）：新信号"窗口集中度"= 候选段存储文本里最密 200 字符窗口内的不同查询单元数；语义主指针仅当挑战段窗口 ≥ 其 +2 且 body units ≥ 其时让位（P1A，dev 模拟 +17/−0，W∈[100,250] 全程零损失，评审用精确 FTS oracle 验证 5 种匹配变体均 +17/−0）；noise 规则 d：hybrid 文件零覆盖且无 FTS 名次时不得仅凭 z 准入（13→10 泄漏、零可答损失）。评审否决 P2B（β=4/δ=0.25 可达 0.900 但 3 题损失、cjk@5/semantic@5/compound@5 三门下降）；(e) ambient 义务零收益去掉；评审自提 d+word_rank≤60（9 泄漏）为 dev 常数未采纳。预注册 `evidence-window-witness-001` 冻结后实现；测量前发现规则 d 会整体拒绝纯向量图片（无文本表面永不可见证），以**修正案**加入"无文本文件豁免"（dev 索引 0 个此类文件，期望值不变）。SEARCH_BEHAVIOR_VERSION → `search.v7-evidence-window-witness`（anchor 版本不变）；重写 5 个旧语义钉、新增 `tests/test_evidence_window_witness.py` 13 项；CI base PASS（worktree）。
 - product-current-011（worktree 候选；索引与 010 逐字节一致）：**与预注册翻转清单逐题一致**——@5 +10、@1 +7、0 输、noise 恰好修复 random_terms-003/011/013、0 回漏、pack 全事实 +5；**cjk@1 0.600→0.667、semantic@1 0.633→0.667 两门转绿，FAIL 门 10→8**；all@5 0.689→**0.744**、semantic@5 0.700→0.767、cjk@5 0.600→0.667、pdf@5/@1 0.467→0.567、media-text@5 0.600→0.633、media.ocr 0.444→0.556、noise 0.567→0.667，无门下降。配对 vs 010：success@1 +0.039 [0.012,0.072]、success@5 +0.056 [0.025,0.090]、MRR/nDCG/facts CI 均不含 0，noise +0.10 [0.00,0.20]。**本日累计（007→011）**：all@5 0.611→0.744（+24 题，0 题下降）、FAIL 门 11→8。剩余 8 门与后续项见 `product-failure-diagnosis-001/DIAGNOSIS.md §6`；noise 0.90 在冻结特征下需 owner 决定是否接受 3 题/3 门代价（P2B）或修改合同。
 
+## 2026-11-06：蒸馏 canary 后端口径澄清（capability-check-001）
+
+- 2026-10-25 段记录的 A2 canary "main/hard/shuffle 8/8" 是 **mock 后端**跑出的
+  （A2 命令未指定 `--backend`，默认 mock）。capability-check-001 用 llama 后端
+  （真实嵌入）复跑 canary：main purity 1.0 / ARI 0.840 / 保真 1.0，但主题找回
+  **6/8**（bonsai、mycology 两主题在全量与增量聚类中均未找回）；incremental
+  变体挂在自身预注册门"原 8 主题全部找回"上（其余三项：mode=incremental、
+  tau inherited、reclustered=0 均过）。回执：
+  `reports/execution/capability-check-001/w6-distill/`。真实 120 篇语料的
+  聚类质量 run 仍然 MISSING（strict 模式要求 source-bound preparation 回执，
+  与 evals/eval.sqlite 的组合不匹配；P2-04 real-current-003 有现成准备回执
+  可作后续路径）。
+
 ## 2026-10-25：蒸馏卡片聚类质量修复（ens-coassoc.v3）
 
 - 诊断（`P2-04/distill-purity-diagnosis-001/`，11 轮离线探测，冻结向量上基线逐位复现）：purity 0.191 的根因是四叠加——embedding hub（跨主题中位余弦 0.597、主题质心两两 0.79-0.95）、τ=P90 校准落在 within-topic 中位数（6.2% 跨主题对高于 τ，切割点图全连通）、leader first-wins 链式吸收（1026-chunk 巨卡含全部 110 文档）、D5 的 s̄ 触发器对 hub 失明（且实证 s̄ 与纯度错位，无标签分裂触发器不存在）。chunk 粒度与单一公共分量假说被排除；purity 天花板 0.8227（18 噪声+3 跨主题文档稀释）。

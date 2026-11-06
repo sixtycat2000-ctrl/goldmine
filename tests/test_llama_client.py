@@ -247,6 +247,28 @@ def test_close_kills_only_our_child(fake_cfg):
     assert child.poll() is not None  # SIGTERM reaped our child only
 
 
+def test_close_kills_wrapper_grandchildren_holding_pipes(fake_cfg, tmp_path):
+    """capability-check-001: a wrapper-script server runs the real server as a
+    grandchild; killing only the direct child left that grandchild alive holding
+    the pipes, delaying deadline replies. The group kill must reap it."""
+    import dataclasses
+    wrapper = tmp_path / "wrapped-server.sh"
+    wrapper.write_text(f'#!/bin/sh\n"{sys.executable}" "{FAKE_SERVER}" "$@" &\nwait\n')
+    wrapper.chmod(wrapper.stat().st_mode | stat.S_IXUSR)
+    cfg = dataclasses.replace(fake_cfg, server=wrapper)
+    backend = LlamaServerBackend(cfg)
+    backend.startup()
+    child = backend._proc
+    assert child is not None and child.poll() is None
+    grandchild = subprocess.run(["pgrep", "-P", str(child.pid)], capture_output=True, text=True).stdout.split()
+    assert grandchild, "wrapper must run the server as a grandchild"
+    backend.close()
+    assert child.poll() is not None
+    time.sleep(0.5)
+    alive = subprocess.run(["ps", "-p", grandchild[0], "-o", "pid="], capture_output=True, text=True).stdout.strip()
+    assert not alive, f"grandchild {grandchild[0]} survived close() and still holds the pipes"
+
+
 def test_fingerprint_fields_and_model_hash(fake_cfg, tmp_path):
     backend = LlamaServerBackend(fake_cfg)
     fields = backend.fingerprint_fields()
@@ -379,6 +401,8 @@ def test_describe_does_not_spawn_server(fake_cfg, monkeypatch):
     assert info["capability"] == {"text": True, "image": False, "audio": False}
     assert info["server_source"] == "env/config"  # explicit cfg.server honored
     assert info["build"]  # --version ran (a fast exiting subprocess, not a server)
-    assert "gemma-embedding2" in info["note"]  # brew-vs-vendor explanation
+    # the brew limitation note only appears for brew-resolved servers
+    # (capability-check-001: it previously printed for every server)
+    assert "note" not in info
     # only the --version probe ran; no long-lived server child
     assert all("--port" not in str(a) for a in spawned)

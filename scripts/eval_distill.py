@@ -43,6 +43,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import shutil
 import sqlite3
 import json
 import sys
@@ -784,10 +785,11 @@ def report_real(db_path: Path) -> tuple[dict, bool]:
     from goldmine import migrations as _migrations
 
     tmp = Path(tempfile.mkdtemp(prefix="gm-eval-real-"))
-    copy_path = tmp / Path(db_path).name
-    _migrations._vacuum_into(db_path, copy_path)
-    store = Store(copy_path)
+    store = None
     try:
+        copy_path = tmp / Path(db_path).name
+        _migrations._vacuum_into(db_path, copy_path)
+        store = Store(copy_path)
         result = distill.run_distill(
             store, scope=Scope(), threshold=None, min_members=3,
         )
@@ -825,7 +827,9 @@ def report_real(db_path: Path) -> tuple[dict, bool]:
         # report mode never fails a gate; the recorded numbers ARE the result
         return report, True
     finally:
-        store.close()
+        if store is not None:
+            store.close()
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def render_report(report: dict) -> str:

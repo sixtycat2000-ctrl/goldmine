@@ -31,6 +31,7 @@ import collections
 import json
 import logging
 import os
+import signal
 import socket
 import subprocess
 import threading
@@ -403,6 +404,10 @@ class LlamaServerBackend(EmbeddingBackend):
         proc = subprocess.Popen(
             argv, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             stdin=subprocess.DEVNULL,
+            # own session/process group so _kill can take down wrapper-script
+            # grandchildren that would otherwise keep holding the pipes
+            # (capability-check-001 MCP deadline fault injection)
+            start_new_session=os.name == "posix",
         )
         self.model_spawn_count += 1
         return proc
@@ -524,17 +529,43 @@ class LlamaServerBackend(EmbeddingBackend):
         )
 
     def _kill(self) -> None:
-        """SIGTERM -> 5 s -> SIGKILL. Only OUR Popen child, never pkill."""
+        """SIGTERM -> grace -> SIGKILL on the server's own process group.
+
+        The server is spawned with start_new_session, so the pgid equals the
+        child pid; wrapper-script servers (GOLDMINE_LLAMA_SERVER=*.sh) run the
+        real server as a grandchild, and signaling only the direct child left
+        that grandchild alive holding the stdout/stderr pipes, delaying
+        deadline replies until it exited on its own (capability-check-001).
+        Never pkills by name; the own-group guard makes group signaling
+        impossible to hit our own process group.
+        """
         proc, self._proc = self._proc, None
         if proc is None:
             return
+        group = None
+        if os.name == "posix":
+            try:
+                group = os.getpgid(proc.pid)
+            except OSError:
+                group = None
+        own_group = group is not None and group != os.getpgrp()
+
+        def _signal_group(sig: int) -> None:
+            if own_group:
+                try:
+                    os.killpg(group, sig)
+                except OSError:
+                    pass  # race: group already gone
+
         if proc.poll() is None:
+            _signal_group(signal.SIGTERM)
             proc.terminate()
             try:
                 deadline = current_deadline()
                 grace = 5.0 if deadline is None else max(0.0, min(0.25, deadline.expires_at - time.monotonic()))
                 proc.wait(timeout=grace)
             except subprocess.TimeoutExpired:
+                _signal_group(signal.SIGKILL)
                 proc.kill()
                 try:
                     proc.wait(timeout=5.0 if current_deadline() is None else 1.0)
@@ -781,8 +812,11 @@ class LlamaServerBackend(EmbeddingBackend):
             "server": str(server) if server else None,
             "server_source": source,
             "model": str(model),
-            "note": BREW_CANNOT_LOAD_NOTE,
         }
+        # the brew limitation only applies when the resolved server IS brew's
+        # (capability-check-001: the note previously printed for every server)
+        if source == "brew" or (source == "env/config" and _is_brew_path(server)):
+            info["note"] = BREW_CANNOT_LOAD_NOTE
         from .embed_helper import resolve_helper_path, resolve_mmproj_path
         helper, helper_source = resolve_helper_path(self.cfg)
         info["embed_helper"] = str(helper) if helper else None

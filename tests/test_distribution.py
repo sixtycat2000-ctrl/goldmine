@@ -96,6 +96,31 @@ def test_fresh_staging_cannot_leak_old_ocr_and_dev_tar_is_rejected(tmp_path):
         package_asset(source, None, out, "dev.tar.xz", {}, epoch=0, license_file=license_file)
 
 
+@pytest.mark.native
+def test_release_tar_with_embed_helper_passes_extract_and_old_four_file_tar_is_rejected(tmp_path):
+    source = tmp_path / "server"
+    source.write_bytes(b"new executable")
+    ocr = tmp_path / "goldmine-ocr"
+    ocr.write_bytes(b"fixture ocr helper")
+    embed = tmp_path / "goldmine-embed"
+    embed.write_bytes(b"fixture embed helper")
+    license_file = tmp_path / "LICENSE"
+    license_file.write_text("fixture license")
+    out = tmp_path / "dist-release"
+    asset = package_asset(source, ocr, out, "release.tar.xz", {"architecture": "arm64"},
+                          epoch=0, license_file=license_file, embed=embed)
+    assert read_json(out / "release.tar.xz.manifest.json")["release_eligible"] is True
+    metadata = extract_native(asset, tmp_path / "extract")
+    assert set(metadata["files"]) == {"llama-server", "goldmine-ocr", "goldmine-embed", "LLAMA-LICENSE.txt"}
+    # the pre-embed four-file shape (reports/execution archives, ocr without embed)
+    # must now fail the member check loudly
+    legacy_out = tmp_path / "dist-legacy"
+    legacy = package_asset(source, ocr, legacy_out, "legacy.tar.xz", {"architecture": "arm64"},
+                           epoch=0, license_file=license_file)
+    with pytest.raises(BuildError, match="five regular declared"):
+        extract_native(legacy, tmp_path / "extract-legacy")
+
+
 def _wheel(path, *, omit=(), requirements=("numpy>=1.26",)):
     metadata = "Metadata-Version: 2.4\nName: goldmine\nVersion: 0.2.0\n" + "".join(f"Requires-Dist: {r}\n" for r in requirements)
     with zipfile.ZipFile(path, "w") as archive:
