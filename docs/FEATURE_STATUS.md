@@ -248,7 +248,7 @@ parity with run-002's index) and executed 160/160 answers + 317/320 judges:
 descriptive mean 1.80 vs run-002's 1.6656 on the same frozen 80 questions,
 traps 20/20 refused, no fabricated facts; three judges produced fenced JSON and
 stay quarantined per the no-retry contract, so formal validation remains
-MISSING. The strict real 120-document distill run on this source (text-only, real-current-005) fails topic recovery 5/8 (python-environments lost; purity 0.711, max share 0.092, other 12 gates pass); with the media helper installed the frozen preparation refuses the index (real-current-004). Distill canary under the llama backend recovered 6/8 topics (the
+MISSING. The strict real 120-document distill run on this source (text-only, real-current-005) fails topic recovery 5/8 (python-environments lost; purity 0.711, max share 0.092, other 12 gates pass); with the media helper installed the frozen preparation refuses the index (real-current-004). A single-file ablation exonerated goldmine/distill.py (bit-identical metrics) and the chunker is not isolatable by file revert; the 5/8 regression stays unlocalized (distill-ablation-001). Distill canary under the llama backend recovered 6/8 topics (the
 recorded 8/8 was mock-backend), failing the incremental gate's own
 eight-topic requirement. Fixes landed on this branch: five-file native release
 check, brew-note conditionality, process-group server kill, temp-copy cleanup.

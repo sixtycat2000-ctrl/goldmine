@@ -912,3 +912,13 @@ tests/test_rerank_ownership.py`，再跑 `node web/scripts/check-mechanisms.mjs`
 **我不确定的地方**：5/8 和 6/8 只差一个主题（python-environments），一次运行不能区分是代码演进造成的稳定回退，还是边界附近的波动；run-003 到 005 有 158 个文件不同（含 chunker.py、distill.py、ingest），没有做消融，不归因。多模态默认和冻结截图规则的冲突，走审计门修订（B）还是接受 MISSING（C），由所有者决定，本提交不预设。
 
 **用户90秒怎么验**：打开 `reports/execution/P2-04/real-current-005/independent-readback.json`，看 `status: FAIL`、`gates.topic_recovery: false`、`metrics.topics_recovered: 5`；对照 `real-current-003/independent-readback.json` 的 6 和 PASS。看 `real-current-004/DIAGNOSIS.md` 了解多模态冲突（含验证器行号）。FEATURE_STATUS 搜 "real-current-005"，应出现三处。门槛原文在 `evals/acceptance_targets.json` 的 `distill.topics_recovered = 6`。
+
+## 2026-11-07 · 蒸馏 5/8 回归消融与多模态冲突的只读结论
+
+**关键行**：只改文档。`docs/execution-plan/PROGRESS.md` 11-06 段补三点：多模态下截图以空文本 image 段进入蒸馏（OCR 文本被 `s.vec IS NOT NULL` 排除，20/20 张）；回退 goldmine/distill.py 后指标与 run-005 逐位一致（该文件洗清）；回退 chunker.py 结构性不可行（`Chunk.original` 被现行 ingest 消费），回归未定位。`docs/FEATURE_STATUS.md` 战役段补一句同样的消融结论。本地留档（不入库）：`reports/execution/P2-04/distill-ablation-001/`（两臂完整回执 + 两次驱动路径错误尝试）、real-current-004 DIAGNOSIS.md 的只读补充。
+
+**每行的风险**："未定位"是诚实的边界：证据只排除了 distill.py 一个文件，chunker 嫌疑仍在但无法单文件验证；读者不应把"ingest 侧"当成结论，它只是剩余嫌疑面。空文本 image 段的发现意味着修订验证器之前必须先做产品语义决定，这句写进了 PROGRESS，防止后续会话直接改验证器。
+
+**我不确定的地方**：python-environments 在两代索引中段数相同（91=91）、v7 文本仅多 1,043 字符，"阈值边界翻转"假说与此一致但没有证明；没有跑第三次运行来区分波动与稳定回退（每次 5 分钟，但那是加臂，需另行批准）。image 段与文本段是否同一嵌入空间可比（mmproj 共空间假设）只看了加载行为，没做数值验证。
+
+**用户90秒怎么验**：`diff <(jq -S .metrics reports/execution/P2-04/distill-ablation-001/distill/independent-readback.json) <(jq -S .metrics reports/execution/P2-04/real-current-005/independent-readback.json)` 应无差异；`cat reports/execution/P2-04/distill-ablation-001/chunker/preparation/commands/base/stderr.log | grep original` 看到 AttributeError；PROGRESS 搜 "distill-ablation-001"。

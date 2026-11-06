@@ -88,7 +88,12 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
   python-environments），purity 0.711、max_share 0.092，其余 12 门过
   （`P2-04/real-current-005/`）。10-24 源码的 PASS 13/13 只属于其当时身份；
   run-003→005 有 158 个源码文件不同（含 chunker.py、distill.py 与 ingest），
-  未做消融，不归因。多模态与冻结协议的冲突待所有者裁决。
+  未做消融，不归因。多模态与冻结协议的冲突待所有者裁决（只读补充：多模态下截图以空文本
+  image 段进入蒸馏、OCR 文本被 `s.vec IS NOT NULL` 排除，见 real-current-004/
+  DIAGNOSIS.md）。单变量消融（`P2-04/distill-ablation-001/`）：回退
+  goldmine/distill.py 到 run-003 字节后指标与 run-005 逐位一致（洗清）；
+  回退 chunker.py 结构性不可行（Chunk.original 被现行 ingest 消费）——
+  5/8 回归未定位，嫌疑面在 ingest/抽取侧 156 文件。
 
 ## 2026-10-25：蒸馏卡片聚类质量修复（ens-coassoc.v3）
 
