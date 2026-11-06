@@ -20,7 +20,7 @@ No final quality milestone, release candidate, hosted CI success or publication 
 | Local reranker | `--mode quality --rerank local`, off by default | Explicit pinned 639MB model, top twenty admitted segments, 384 tokens each | Six real endpoint probes and real bounded-input/cleanup test pass; dev A/B/resource gates missing |
 | Vector cache | Explicit `reindex vectors`; separate opt-in | Immutable fp32 numpy generations; SQLite truth and epoch validation | Crash/corruption/invalidation tests pass; measured performance experiment recorded separately |
 | Watch / serve | Explicit commands; no automatic installation | Existing power/thermal/memory holds retained | Historical paired 30-sample latency measured; latest source and full ten-minute controlled/real watch evidence pending |
-| Excerpt cards | `distill` | Verbatim original text; v3 co-association ensemble, fixed default tau 0.45, manual override or inherited incremental tau | Real 120-document/eight-topic inputs frozen and independently audited; actual native clustering/incremental quality run pending |
+| Excerpt cards | `distill` | Verbatim original text; v3 co-association ensemble, fixed default tau 0.45, manual override or inherited incremental tau | Real 120-document/eight-topic inputs frozen and independently audited. Strict real run: 2026-10-24 source PASS 13/13 (real-current-003); current source FAIL 12/13 — topic recovery 5/8 below the 6 target (real-current-005, text-only install). The frozen preparation rejects the multimodal default (screenshot OCR carries no text vector; real-current-004 MISSING); protocol decision pending |
 | Local delivery | Wheel/sdist and static native tar | Actually exercised on macOS arm64/Python 3.12 | Historical snapshot-006 isolated OCR/embedding/SDK/upgrade smoke pass; latest source needs a fresh build and installed smoke |
 | Hosted delivery | Workflows written, configured remote, manual live entry | Lifecycle changes need their own hosted proof | Historical/local CI evidence does not certify these lifecycle changes |
 | QMD / Recoll comparison | Isolated local installations and common-text diagnostic | QMD 2.8.3; Recoll 1.44.2; no user config writes | [Comparison](COMPARISON.md); incomplete seed cannot establish a market quality ranking |
@@ -58,7 +58,7 @@ The full three-arm v3 study has run once (2026-10-24, run-002: 480/480 answers,
 candidate_PACK diagnostic ran 2026-11-06 (capability-check-001, see below);
 neither yields a certified comparison — each retains judge gaps that the
 frozen reader correctly holds at MISSING, so descriptive diagnostics only.
-The actual 120-document card clustering run is still missing. The independent full-media suite has 136 queries
+The actual 120-document card clustering run on the current source fails one gate (topic recovery 5/8 vs target 6; real-current-005), while the 2026-10-24 source passed all 13 (real-current-003). The independent full-media suite has 136 queries
 (78 real + 58 media, including 8 keyframe questions). Its historical provenance
 preflight and multimodal/video mechanics gates have recorded passes; the
 multimodal implementation has landed. Synthetic video captions and these small
@@ -248,7 +248,7 @@ parity with run-002's index) and executed 160/160 answers + 317/320 judges:
 descriptive mean 1.80 vs run-002's 1.6656 on the same frozen 80 questions,
 traps 20/20 refused, no fabricated facts; three judges produced fenced JSON and
 stay quarantined per the no-retry contract, so formal validation remains
-MISSING. Distill canary under the llama backend recovered 6/8 topics (the
+MISSING. The strict real 120-document distill run on this source (text-only, real-current-005) fails topic recovery 5/8 (python-environments lost; purity 0.711, max share 0.092, other 12 gates pass); with the media helper installed the frozen preparation refuses the index (real-current-004). Distill canary under the llama backend recovered 6/8 topics (the
 recorded 8/8 was mock-backend), failing the incremental gate's own
 eight-topic requirement. Fixes landed on this branch: five-file native release
 check, brew-note conditionality, process-group server kill, temp-copy cleanup.

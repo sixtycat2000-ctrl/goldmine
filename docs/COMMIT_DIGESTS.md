@@ -902,3 +902,13 @@ tests/test_rerank_ownership.py`，再跑 `node web/scripts/check-mechanisms.mjs`
 **我不确定的地方**：孙进程延迟（6.03s vs 5.01s）的完整因果链只做到"组信号可回收孙进程"这一层，回归测试证明孙进程随 close() 消失；MCP deadline 回复延迟本身没有在修复后重新做端到端故障注入复测，记为 MISSING。z_gate 小库边界只做了文档化，没有改准入行为（任何放开都属于需 A/B 的再校准）。`test_comparison_native_resolvers` 一项在干净 HEAD 与本分支上以同一断言（exit_code 1）失败，属存量失败，未处理。
 
 **用户90秒怎么验**：`python3 -m pytest -q tests/test_distribution.py tests/test_llama_client.py`（应 11+18 过，含新增五文件与孙进程两项）；`grep -n 'five regular' scripts/distribution_lib.py`；`pip wheel --no-deps --no-build-isolation -w /tmp/w .` 应无 license 弃用告警；打开 FEATURE_STATUS 搜 "Capability check campaign" 与 "run-002"。战役原始回执在本机 `reports/execution/capability-check-001/`（SUMMARY.md 为入口）。
+
+## 2026-11-06 · 真实 120 篇蒸馏评测在当前源码上的结果入档
+
+**关键行**：只改文档，不动代码。`docs/FEATURE_STATUS.md` 三处：能力表 Excerpt cards 行由"run pending"改为"10-24 源码 PASS 13/13（real-current-003）；当前源码 FAIL 12/13，主题找回 5/8 低于目标 6（real-current-005，纯文本安装）；多模态默认下冻结准备拒绝建库（real-current-004 MISSING），协议待决"；"120 篇聚类 run 仍缺失"一句改为实际结果；2026-11-06 战役段补一句真实 run 结果。`docs/execution-plan/PROGRESS.md` 11-06 段把"仍 MISSING、可走 real-current-003"改为 004/005 的实际结论与 158 个源码文件差异（未归因）。
+
+**每行的风险**：FAIL 是一次执行的真实结果（零质量重试、零 holdout），把能力表从"待跑"改成了"失败"，读者会看到蒸馏质量门是红的——这是有意的如实记录。real-current-005 用的是纯文本安装形态（worktree 里 helper/mmproj 解析不到），它不代表装了 media helper 的默认配置；默认配置下评测协议本身跑不起来，文档里两件事分开写。
+
+**我不确定的地方**：5/8 和 6/8 只差一个主题（python-environments），一次运行不能区分是代码演进造成的稳定回退，还是边界附近的波动；run-003 到 005 有 158 个文件不同（含 chunker.py、distill.py、ingest），没有做消融，不归因。多模态默认和冻结截图规则的冲突，走审计门修订（B）还是接受 MISSING（C），由所有者决定，本提交不预设。
+
+**用户90秒怎么验**：打开 `reports/execution/P2-04/real-current-005/independent-readback.json`，看 `status: FAIL`、`gates.topic_recovery: false`、`metrics.topics_recovered: 5`；对照 `real-current-003/independent-readback.json` 的 6 和 PASS。看 `real-current-004/DIAGNOSIS.md` 了解多模态冲突（含验证器行号）。FEATURE_STATUS 搜 "real-current-005"，应出现三处。门槛原文在 `evals/acceptance_targets.json` 的 `distill.topics_recovered = 6`。

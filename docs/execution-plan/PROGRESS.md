@@ -80,10 +80,15 @@ CI 或机械检查失败时保留原目录，先做具体修复并重新冻结�
   **6/8**（bonsai、mycology 两主题在全量与增量聚类中均未找回）；incremental
   变体挂在自身预注册门"原 8 主题全部找回"上（其余三项：mode=incremental、
   tau inherited、reclustered=0 均过）。回执：
-  `reports/execution/capability-check-001/w6-distill/`。真实 120 篇语料的
-  聚类质量 run 仍然 MISSING（strict 模式要求 source-bound preparation 回执，
-  与 evals/eval.sqlite 的组合不匹配；P2-04 real-current-003 有现成准备回执
-  可作后续路径）。
+  `reports/execution/capability-check-001/w6-distill/`。真实 120 篇语料按
+  real-current-003 的原驱动在当前源码上重跑：多模态默认下（goldmine-embed +
+  mmproj 可解析）准备阶段被冻结验证器拒绝——20/20 截图的 OCR 段无文本向量
+  （`P2-04/real-current-004/`，MISSING，根因见其 DIAGNOSIS.md）；干净 worktree
+  纯文本安装形态下完整跑通，**FAIL 12/13**：主题找回 5/8 低于目标 6（丢
+  python-environments），purity 0.711、max_share 0.092，其余 12 门过
+  （`P2-04/real-current-005/`）。10-24 源码的 PASS 13/13 只属于其当时身份；
+  run-003→005 有 158 个源码文件不同（含 chunker.py、distill.py 与 ingest），
+  未做消融，不归因。多模态与冻结协议的冲突待所有者裁决。
 
 ## 2026-10-25：蒸馏卡片聚类质量修复（ens-coassoc.v3）
 
