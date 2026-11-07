@@ -85,6 +85,67 @@ def test_corpus_uses_verbatim_original_after_lexical_normalization(tmp_path):
         store.close()
 
 
+def test_image_item_gets_file_ocr_text_when_its_own_text_is_empty(tmp_path):
+    """P2 (real-current-004 finding): a multimodal screenshot enters the corpus
+    as its image segment (vector, empty fts text); its OCR text lives in
+    vector-less ocr segments. The item's display text must come from the file's
+    ocr text, deterministically ordered by segment id, and nothing else may
+    change (item count, vectors, other kinds)."""
+    from goldmine.store import FileRec, SegmentRec
+
+    store = Store(tmp_path / "ocr-fallback.sqlite")
+    try:
+        fid = store.upsert_file(FileRec(path="/explicit/shot.png", kind="image", state="done", capability="content_indexed"))
+        segs = [
+            SegmentRec(kind="name", modality="text", loc=None, loc_end=None,
+                       text_for_fts="shot.png", vec=None),
+            SegmentRec(kind="image", modality="image", loc=0, loc_end=None,
+                       text_for_fts=None, vec=_vec(3)),
+            SegmentRec(kind="ocr", modality="text", loc=0, loc_end=40,
+                       text_for_fts="Second OCR block.", vec=None),
+            SegmentRec(kind="ocr", modality="text", loc=40, loc_end=90,
+                       text_for_fts="   ", vec=None),
+            SegmentRec(kind="ocr", modality="text", loc=90, loc_end=140,
+                       text_for_fts="First OCR block.", vec=None),
+        ]
+        # ocr segments carry no vectors, so only the image item enters the corpus;
+        # give the second ocr block whitespace-only text to prove it is skipped
+        store.replace_segments(fid, segs)
+        sids = [row[0] for row in store.db.execute(
+            "SELECT id FROM segments WHERE kind='ocr' ORDER BY id")]
+        first, blank, second = sids[0], sids[1], sids[2]
+        # the join must follow segment id order: lowest id first regardless of text
+        store.db.execute("UPDATE fts SET original='B. second words.' WHERE rowid=?", (first,))
+        store.db.execute("UPDATE fts SET original='A. first words.' WHERE rowid=?", (second,))
+        items = distill._corpus(store, Scope())
+        assert len(items) == 1
+        item = items[0]
+        assert item.kind == "image"  # CItem.kind is the FILE kind
+        assert item.text == "B. second words. A. first words."  # id order, not text order
+        assert (item.loc, item.loc_end) == (0, None)
+    finally:
+        store.close()
+
+
+def test_non_image_empty_text_items_are_not_ocr_backfilled(tmp_path):
+    from goldmine.store import FileRec, SegmentRec
+
+    store = Store(tmp_path / "no-fallback.sqlite")
+    try:
+        fid = store.upsert_file(FileRec(path="/explicit/note.txt", state="done", capability="content_indexed"))
+        store.replace_segments(fid, [
+            SegmentRec(kind="chunk", modality="text", loc=1, loc_end=2,
+                       text_for_fts=None, vec=_vec(5)),
+            SegmentRec(kind="ocr", modality="text", loc=0, loc_end=10,
+                       text_for_fts="stray ocr text", vec=None),
+        ])
+        items = distill._corpus(store, Scope())
+        assert len(items) == 1 and items[0].kind == "doc"
+        assert items[0].text == ""  # only image-kind files take the ocr fallback
+    finally:
+        store.close()
+
+
 # ------------------------------------------------------------- measure_tau
 
 

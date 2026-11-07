@@ -38,6 +38,29 @@ def scoped_files(store, scope):
     ).fetchall()
 
 
+def _ocr_text_fallbacks(db, fids):
+    """Deterministic per-file OCR text for empty-text image items (P2,
+    real-current-004 finding): under a multimodal install a screenshot enters
+    the corpus as its image segment (vector, no fts text) while its OCR text
+    sits in vector-less ocr segments. Backfill the item's display text with
+    the file's ocr text, ordered by segment id and joined with single spaces.
+
+    Clustering IS affected, honestly: per-item vectors are untouched, but the
+    exact-text dedupe tier no longer collapses empty-text image items — on the
+    real-current-004 index, dedupe removals drop 30->10 and after_dedupe rises
+    1038->1058, i.e. all 20 screenshot items now survive into clustering
+    (adversarial-review-001 F3 measured)."""
+    fallback = {}
+    for fid in fids:
+        pieces = [row[0] for row in db.execute(
+            "SELECT coalesce(t.original,t.body,'') FROM segments s "
+            "LEFT JOIN fts t ON t.rowid=s.id WHERE s.file=? AND s.kind='ocr' "
+            "ORDER BY s.id", (fid,)) if (row[0] or "").strip()]
+        if pieces:
+            fallback[fid] = " ".join(pieces)
+    return fallback
+
+
 def load_corpus(store, scope, *, max_chunks=None):
     from .distill import CItem, DistillRefused
 
@@ -65,4 +88,9 @@ def load_corpus(store, scope, *, max_chunks=None):
                 sid, fid, path, kind, loc, loc_end, text, _ = row
                 items.append(CItem(sid=sid, fid=fid, vec=vector, text=text, path=path,
                                    kind=kind, loc=loc, loc_end=loc_end))
+        fallback = _ocr_text_fallbacks(
+            store.db, {i.fid for i in items if i.kind == "image" and not i.text.strip()})
+        for item in items:
+            if item.kind == "image" and not item.text.strip() and item.fid in fallback:
+                item.text = fallback[item.fid]
         return items

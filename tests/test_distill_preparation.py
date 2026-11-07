@@ -180,6 +180,82 @@ def test_recognized_screenshot_requires_ocr_not_filename_evidence(tmp_path):
         prep.validate_index(identity, sources, Path("/fixture"), "model")
 
 
+def test_screenshot_multimodal_shape_accepted_same_file(tmp_path):
+    """distill-protocol-amendment-001: OCR text (no vector) + image segment
+    (vector, no fts row) on the same file is real evidence."""
+    path = tmp_path / "mm.sqlite"
+    db = sql_fixture(path, count=1)
+    db.execute("DELETE FROM fts WHERE rowid=10")
+    db.execute("UPDATE segments SET kind='image', modality='image' WHERE id=10")
+    db.commit(); db.close()
+    identity = index_identity(path)
+    sources = {"1.txt": {"kind": "screenshot", "asset": {"sha256": "sha"}}}
+    prep.validate_index(identity, sources, Path("/fixture"), "model")  # shape (b) accepted
+    # shape (a) alone (vectorized ocr) still accepted — the text-only install
+    identity["segments"]["10"]["kind"] = "ocr"
+    identity["fts"]["10"] = ["name", "source", "Original source"]
+    prep.validate_index(identity, sources, Path("/fixture"), "model")
+
+
+def test_screenshot_cannot_assemble_evidence_across_files(tmp_path):
+    """Same-fid is structural: a screenshot file whose own ocr segments carry
+    no text must fail even when another file has plenty."""
+    path = tmp_path / "cross.sqlite"
+    db = sql_fixture(path, count=2)
+    db.execute("DELETE FROM fts WHERE rowid=11")  # file 1's ocr text gone
+    db.execute("UPDATE segments SET kind='image', modality='image' WHERE id=10")
+    db.execute("UPDATE files SET kind='image' WHERE id=1")
+    db.commit(); db.close()
+    identity = index_identity(path)
+    # file 2 is a DOC source that passes the generic rule on its own; only the
+    # screenshot file is under test, so a cross-file-assembly bug would make
+    # this validation succeed and the test fail
+    sources = {"1.txt": {"kind": "screenshot", "asset": {"sha256": "sha"}},
+               "2.txt": {"kind": "doc", "asset": {"sha256": "sha"}}}
+    with pytest.raises(InvalidEvidence, match="screenshot OCR"):
+        prep.validate_index(identity, sources, Path("/fixture"), "model")
+
+
+def test_excerpt_audit_image_member_uses_deterministic_ocr_fallback(tmp_path, monkeypatch):
+    """distill-protocol-amendment-001: an image member with no stored text is
+    audited against the file's ocr text — byte-strict, id-ordered."""
+    from goldmine import citations
+    db = sqlite3.connect(":memory:")
+    db.executescript("""CREATE TABLE segments(id INTEGER PRIMARY KEY,file INTEGER,kind TEXT,
+        modality TEXT,loc REAL,loc_end REAL,excerpt TEXT,vec BLOB);
+        CREATE TABLE fts(name TEXT,body TEXT,original TEXT);""")
+    db.execute("INSERT INTO segments VALUES(1,7,'image','image',0,NULL,NULL,X'00' * 1536)")
+    db.execute("INSERT INTO segments VALUES(2,7,'ocr','text',0,10,'o',NULL)")
+    db.execute("INSERT INTO fts(rowid,original,body) VALUES(2,'First block.','first block.')")
+    db.execute("INSERT INTO segments VALUES(3,7,'ocr','text',10,20,'o',NULL)")
+    db.execute("INSERT INTO fts(rowid,original,body) VALUES(3,'Second block.','second block.')")
+    db.commit()
+    stored_text = None  # read_evidence().text for the image segment: no fts row
+    citation = SimpleNamespace(citation_id="cid-img", segment_id=1, file_id=7,
+                               path="shot.png", kind="image", loc=0, loc_end=None)
+    monkeypatch.setattr(citations, "read_evidence", lambda store, sid: SimpleNamespace(citation=citation, text=stored_text))
+    monkeypatch.setattr(citations, "resolve_citation", lambda store, cid: SimpleNamespace(text=stored_text, citation=citation))
+    store = SimpleNamespace(db=db, segment_text=lambda sid: stored_text if sid == 1 else None)
+    member = SimpleNamespace(sid=1, fid=7, text="First block. Second block.",
+                             path="shot.png", kind="image", loc=0, loc_end=None)
+    excerpt = {"path": "shot.png", "kind": "image", "loc": 0, "loc_end": None, "text": "First block."}
+    card = SimpleNamespace(status="active", members=[member], excerpts=[excerpt],
+                           title_kind="terms", terms=["block"], title="block", topic_id=1)
+    report = excerpt_audit(store, [card])
+    assert report["members_passed"] == report["members_checked"] == 1
+    assert report["passed"] == report["checked"] == 1
+    assert report["fixed_card_review"][0]["title_supported"] is True
+    # byte-strict: a one-character fabrication in member.text must fail
+    member.text = "First block. Second block!"
+    report = excerpt_audit(store, [card])
+    assert report["members_passed"] == 0
+    # a non-image member with empty stored text must NOT take the fallback
+    member.text = ""
+    member.kind = "doc"
+    report = excerpt_audit(store, [card])
+    assert report["members_passed"] == 0
+
+
 def test_emitted_header_excerpts_are_audited(tmp_path, monkeypatch):
     from goldmine import citations
     db = sqlite3.connect(":memory:")

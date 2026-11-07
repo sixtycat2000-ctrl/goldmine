@@ -37,11 +37,26 @@ def validate_index(identity, sources, corpus, model_sha):
         candidates = [(sid, segment) for sid, segment in identity["segments"].items()
                       if segment["file"] == int(fid) and segment["kind"] != "name"]
         if source["kind"] == "screenshot":
-            candidates = [(sid, segment) for sid, segment in candidates if segment["kind"] == "ocr"]
-        if not any(segment["vec"] is not None and sid in identity["fts"] and
-                   (identity["fts"][sid][2] or identity["fts"][sid][1] or "").strip()
-                   for sid, segment in candidates):
-            raise InvalidEvidence("recognized document lacks real stored text/vector evidence (including screenshot OCR)")
+            # distill-protocol-amendment-001: a multimodal install keeps the
+            # screenshot's OCR text in vector-less ocr segments while the image
+            # segment carries the vector. Accept both real-evidence shapes on
+            # the SAME file: (a) text-only — an ocr segment with a vector and
+            # nonempty stored text; (b) multimodal — nonempty ocr text (no
+            # vector) plus an image segment with a vector. candidates is
+            # already fid-scoped, so no cross-file assembly is possible.
+            ocr_candidates = [(sid, segment) for sid, segment in candidates if segment["kind"] == "ocr"]
+            text_only = any(segment["vec"] is not None and sid in identity["fts"] and
+                            (identity["fts"][sid][2] or identity["fts"][sid][1] or "").strip()
+                            for sid, segment in ocr_candidates)
+            multimodal = (any(sid in identity["fts"] and
+                              (identity["fts"][sid][2] or identity["fts"][sid][1] or "").strip()
+                              for sid, segment in ocr_candidates) and
+                          any(segment["vec"] is not None and segment["kind"] == "image"
+                              for _, segment in candidates))
+            if not (text_only or multimodal):
+                raise InvalidEvidence("recognized document lacks real stored text/vector evidence "
+                                      "(screenshot OCR needs a vector, or OCR text plus a vectorized "
+                                      "image segment, on the same file)")
 
 
 def _phase(root, out, prep, phase, count, unchanged, snapshot):

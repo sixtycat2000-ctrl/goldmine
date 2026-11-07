@@ -922,3 +922,13 @@ tests/test_rerank_ownership.py`，再跑 `node web/scripts/check-mechanisms.mjs`
 **我不确定的地方**：python-environments 在两代索引中段数相同（91=91）、v7 文本仅多 1,043 字符，"阈值边界翻转"假说与此一致但没有证明；没有跑第三次运行来区分波动与稳定回退（每次 5 分钟，但那是加臂，需另行批准）。image 段与文本段是否同一嵌入空间可比（mmproj 共空间假设）只看了加载行为，没做数值验证。
 
 **用户90秒怎么验**：`diff <(jq -S .metrics reports/execution/P2-04/distill-ablation-001/distill/independent-readback.json) <(jq -S .metrics reports/execution/P2-04/real-current-005/independent-readback.json)` 应无差异；`cat reports/execution/P2-04/distill-ablation-001/chunker/preparation/commands/base/stderr.log | grep original` 看到 AttributeError；PROGRESS 搜 "distill-ablation-001"。
+
+## 2026-11-07 · P2 落地：蒸馏 image 条目携带 OCR 文本 + 冻结验证器按修订案放行多模态形态
+
+**关键行**：`goldmine/distill_corpus.py`：load_corpus 对文件 kind 为 image 且自身 fts 文本为空的条目，回填该文件全部 ocr 段文本（按段 id 排序、单空格连接、跳过纯空白段）；docstring 如实写明聚类受影响（去重档 30→10、after_dedupe 1038→1058、截图条目存活 0→20，评审实测）。`scripts/distill_eval/preparation.py`：截图证据规则新增同文件"OCR 文本（无向量）+ image 段（有向量）"接受形态；候选集本就按 fid 过滤，跨文件拼装在结构上不可能，并有专门测试钉住。`scripts/distill_eval/scoring.py`：excerpt_audit 对 image 文件且存储侧文本为空（None 含内）的成员，以同一确定性回填函数逐字节比对 member.text；摘录 span 与标题支持度同源；stored_sha256 对回填成员哈希的是逐文件拼接串（含合成空格）。测试：tests/test_distill.py +2（回填确定序、非 image 不回填），tests/test_distill_preparation.py +4（多模态受纳、文本形态不回归、跨文件拒绝、审计 byte-strict 含 None 形态）。
+
+**每行的风险**：聚类行为确实变了（不再是"只改卡文本"）：截图条目从被去重吞掉变成全部存活参与共聚类——这是 P2 的意图，但任何对旧卡快照的逐位复现预期就此作废；real-current-003/005 的历史回执不受影响（各自绑定当时源码身份）。评测器两处修订只增不减：纯文本形态在 005 快照上零触发（评审核实），但修订后的评测器与 10-24 预注册原文已非逐字节同一文件——历史复跑需引用本修订案的预注册。回填按文件 kind=image 限定：扫描 PDF 的页图段（kind=pdf）不在范围内，real-current-006 如预披露挂在该残余上（US174465 空摘录，三次审计逐字命中评审模拟）。
+
+**我不确定的地方**：多模态默认下 purity 0.631、主题找回 4/8，低于纯文本 0.711/5——首个实测、无既往对照，一次运行分不清"图像向量与文本向量共聚类天然稀释纯度"还是"校准/τ 需按多模态重调"；未做消融（如仅剔除 image 条目重跑）。id 序=阅读序是回填的隐含假设（004 实测一致）。评审的 SHOULD 项（005 快照上修订前后评测器逐位对比测试、>240 字符截断 span 测试）未实现，评审已核现有 normalized_span 契约成立。
+
+**用户90秒怎么验**：`PYTHONPATH=scripts python3 -m pytest -q tests/test_distill_preparation.py tests/test_distill.py`（应 72+51 过）。打开 `reports/execution/P2-04/real-current-006/quality/execution/stdout.log`：gates 里 real_purity/topic_recovery/三条 excerpt 门为 false，metrics.purity 0.6308、topics_recovered 4；excerpt_audit 三个审计的 members 全过、各恰一条 US174465 失败。预注册与对抗评审在 `reports/execution/P2-04/distill-protocol-amendment-001/`。

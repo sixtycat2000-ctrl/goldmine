@@ -31,6 +31,29 @@ def normalized_span(text, excerpt):
 def excerpt_audit(store, cards):
     from goldmine.citations import read_evidence, resolve_citation
     from goldmine.contracts import ApplicationError
+    from goldmine.distill_corpus import _ocr_text_fallbacks
+
+    # distill-protocol-amendment-001: under a multimodal install a screenshot's
+    # corpus item is its image segment (vector, no stored text; often no fts
+    # row at all, so read_evidence().text is None) while the OCR text sits in
+    # vector-less ocr segments. distill backfills the member's display text
+    # from exactly those ocr segments; the audit recomputes the SAME
+    # deterministic fallback and keeps byte-strict equality. Eligibility is
+    # decided on the STORED side (file kind image AND stored text empty).
+    def _ocr_fallbacks(fids):
+        try:
+            return _ocr_text_fallbacks(store.db, fids)
+        except Exception:
+            return {}
+
+    ocr_cache = {}
+
+    def _expected_text(member, stored_text):
+        if member.kind == "image" and not (stored_text or "").strip():
+            if member.fid not in ocr_cache:
+                ocr_cache.update(_ocr_fallbacks([member.fid]))
+            return ocr_cache.get(member.fid, "")
+        return stored_text or ""
 
     rows, review, member_rows = [], [], []
     for card in cards:
@@ -47,7 +70,8 @@ def excerpt_audit(store, cards):
                 declared = (member.sid, member.fid, member.path, member.kind, member.loc, member.loc_end)
                 recovered = resolve_citation(store, citation.citation_id)
                 passed = (actual == declared and recovered.citation == citation and
-                          recovered.text == evidence.text and (evidence.text or "") == member.text)
+                          recovered.text == evidence.text and
+                          _expected_text(member, evidence.text) == member.text)
                 if passed:
                     verified[id(member)] = evidence
             except ApplicationError:
@@ -66,7 +90,7 @@ def excerpt_audit(store, cards):
                 evidence = verified.get(id(member))
                 if evidence is None:
                     continue
-                original = evidence.text
+                original = _expected_text(member, evidence.text)
                 span = normalized_span(original, excerpt["text"]) if original else None
                 if span is None:
                     continue
@@ -78,7 +102,7 @@ def excerpt_audit(store, cards):
                        "evidence": found}
             rows.append(verdict)
             verdicts.append(verdict["passed"])
-        original_text = "\n".join(store.segment_text(m.sid) or "" for m in card.members)
+        original_text = "\n".join(_expected_text(m, store.segment_text(m.sid)) for m in card.members)
         if card.title_kind == "sentence":
             supported = normalized_span(original_text, card.title) is not None
         else:
