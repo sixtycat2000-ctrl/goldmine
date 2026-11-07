@@ -1,13 +1,28 @@
 # Python
 __pycache__/
 *.pyc
+*.pyo
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
 .coverage
+.coverage.*
+/htmlcov/
+/coverage.xml
 build/
 *.egg-info/
 
 # node (web/ Vite app)
 node_modules/
+.vite/
+*.tsbuildinfo
+playwright-report/
+test-results/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
 # downloaded assets — see `goldmine model install`
 models/
@@ -25,10 +40,25 @@ dist/
 .evalhome/
 eval.sqlite*
 
-# Rebuildable execution evidence (commit compact summaries, not raw private inputs)
+# Local execution evidence and archives (commit compact summaries)
 reports/execution/**
 .wrangler/
 .taste-skill/
 
 # ZCode session artifacts (build identity shows dirty when present)
 .zcode/
+
+# Machine-local environment settings (shared examples remain trackable)
+/.env
+/.env.local
+/.env.*.local
+/web/.env
+/web/.env.local
+/web/.env.*.local
+/.dev.vars
+/.dev.vars.*
+!/.dev.vars.example
+
+# macOS metadata
+.DS_Store
+._*

@@ -932,3 +932,13 @@ tests/test_rerank_ownership.py`，再跑 `node web/scripts/check-mechanisms.mjs`
 **我不确定的地方**：多模态默认下 purity 0.631、主题找回 4/8，低于纯文本 0.711/5——首个实测、无既往对照，一次运行分不清"图像向量与文本向量共聚类天然稀释纯度"还是"校准/τ 需按多模态重调"；未做消融（如仅剔除 image 条目重跑）。id 序=阅读序是回填的隐含假设（004 实测一致）。评审的 SHOULD 项（005 快照上修订前后评测器逐位对比测试、>240 字符截断 span 测试）未实现，评审已核现有 normalized_span 契约成立。
 
 **用户90秒怎么验**：`PYTHONPATH=scripts python3 -m pytest -q tests/test_distill_preparation.py tests/test_distill.py`（应 72+51 过）。打开 `reports/execution/P2-04/real-current-006/quality/execution/stdout.log`：gates 里 real_purity/topic_recovery/三条 excerpt 门为 false，metrics.purity 0.6308、topics_recovered 4；excerpt_audit 三个审计的 members 全过、各恰一条 US174465 失败。预注册与对抗评审在 `reports/execution/P2-04/distill-protocol-amendment-001/`。
+
+## 2026-11-08 · 十个任务 worktree 收尾、证据归档与本地文件忽略规则
+
+**关键行**：本节记录用户授权的本地清理：架构/优化四个、首页四个、网站发布和独立安装各一个，共十个旧 worktree 已移除；清理前的十六个分支引用和主目录源码身份 `8cbbc5a` 保持原样。六个脏目录的全部四十六个文件、暂存/未暂存补丁与状态保存到 `reports/execution/cleanup/goldmine-worktrees-20261107-001/snapshots/`，压缩包逐成员读回核对 SHA256。安装目录被 Git 忽略的整个 `reports/execution/standalone-install-20261106/` 迁至主目录同名路径，4,793 个文件及目录/链接记录前后一致。冻结清单、保全评审、十一条迁移/移除命令的 argv、退出码、原始输出 SHA 和前后源码身份均在清理归档中。`.gitignore` 补 Python 环境/检查缓存、覆盖率输出、Vite/TypeScript 缓存、浏览器验收产物、包管理器调试日志、本机环境配置和 macOS 元数据；既有模型、依赖、构建产物及 `reports/execution/**` 忽略规则保留。已被 `.zcode/` 规则忽略却仍跟踪的 107 个本地技能文件，通过 `git rm --cached` 取消跟踪，本机字节和权限不变。按用户后续指令，收尾提交直接落现有 `main`，白名单仅 `.gitignore`、本节和这 107 个索引移除；原始证据和安装包继续本地留档。
+
+**每行的风险**：Git 分支能恢复已提交源码，四十六个未提交文件还需从对应 `dirty-files.tar.gz` 覆盖恢复；仅重新检出分支不会恢复它们。归档和安装包不在 Git 中，新克隆不能代替这份本地备份。安装原始回执保留旧绝对路径，清理归档的 `README.md` 写明迁移前后前缀映射；回执字节未改写。环境配置规则限定仓库根和 `web/` 的本机文件名，`.env.example` 与 `.dev.vars.example` 仍可提交；依赖锁文件和正式评测输入保持可跟踪。本地技能仅用于历史人工视觉评审，新克隆需另行安装才可复用那些工具；生产代码、构建和 CI 未引用它们。取消跟踪不重写历史，旧提交仍含技能文件；`tests/fixtures_data/vendor/lib.js` 是有意跟踪的测试夹具，保留在索引中。
+
+**我不确定的地方**：扣除保留归档后，`du` 记录的目录占用净减约 4.23 GiB，统计排除了 holdout 路径；APFS 快照、共享块和并发写入会影响实际可用空间，不能把它当成 `df` 的精确增量。文件哈希和归档成员读回已核对；重新创建旧 worktree 并解包的完整恢复演练仍为 MISSING。
+
+**用户90秒怎么验**：`git worktree list` 应只列主目录；查看清理归档的 `SUMMARY.json`，确认移除 10、保留原分支 16、改动文件 46、安装文件 4793。进入归档目录执行 `shasum -a 256 -c pre-cleanup.sha256`，核对冻结清单；`commands/*/receipt.json` 的十一条退出码应均为 0。安装候选包在主目录 `reports/execution/standalone-install-20261106/standalone-005/`，可用其 `SHA256SUMS` 校验，恢复步骤见清理归档 `README.md`。`git check-ignore -v .venv/pyvenv.cfg web/test-results/run.json .DS_Store` 应命中新增规则；`git ls-files .zcode` 应为空，本机 `.zcode/skills/` 仍在。`git diff HEAD^ HEAD --name-only` 应只列 `.gitignore`、本摘要和这 107 个本地技能文件。
