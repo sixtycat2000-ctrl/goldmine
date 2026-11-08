@@ -228,9 +228,11 @@ pass had skipped (preregistration revisions 15–16).
   advantage (mixed small deltas both directions; the first pass's large
   candidate-faster deltas were a candidate-only vector cache). **The scale
   suite itself is FAIL: 254 of 4,320 formal samples failed with the product's
-  own 'request deadline exceeded' (500k-1/10/100 = 21/135/98, arm-symmetric;
-  worst cells ~40%), quantiles use successful samples only with failure counts
-  attached, and the high-failure 500k-10/100 cells are marked not comparable.
+  own 'request deadline exceeded' — all in the 500k units (21/135/98 of their
+  1,080 formal samples, i.e. 23.5%, arm-symmetric; worst cells ~40%). Primary
+  statistics cover ALL formal samples (including deadline-truncated failed
+  walls) with failure counts attached; success-only quantiles and the
+  >10%-failure flag are post-hoc exploratory, not a frozen comparability rule.
 - **Memory/lifecycle**: cold-CLI same-instant task peak ≈1.83 GiB; reranker peak
   1,258 MiB ≤ 1.5 GiB gate. The candidate releases its reranker at t≈302 s
   (controlled and real) and re-borrows cleanly; the control never releases and
@@ -261,8 +263,8 @@ superseded attempt preserved. Driver provenance is recorded honestly in
 `registration/driver-sha256-history.json` (the revision_15 claimed refreeze was
 never written to disk — launch-time driver state for the reruns is MISSING).
 Evidence: `reports/execution/e2e-evidence-20261108-005211/`
-(RESULT.md v4, REPRODUCE.md, results.json, q1-equivalence.json,
-preregistration + revisions 1–18, review/, replay/).
+(RESULT.md v5, REPRODUCE.md, results.json, q1-equivalence.json,
+preregistration + revisions 1–20, review/, replay/).
 
 Receipts, source hashes, mathematical reviews, registration revisions and replay
 are under `reports/execution/high-confidence-optimizations-learn-20261104/`.

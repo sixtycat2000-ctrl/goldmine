@@ -8,6 +8,39 @@
 
 ---
 
+## (本提交·a30c96f) — b703905 的四段摘要补录（内容同上，无代码变更）
+
+**关键行**：仅补录 b703905 的四段摘要；无代码或文档内容变更。
+
+**每行的风险**：无（纯摘要补录）。
+
+**我不确定的地方**：无。
+
+**你 90 秒怎么验**：`git show a30c96f --stat` 应只显示 docs/COMMIT_DIGESTS.md。
+
+## (本提交·本轮修复提交) — 第五轮评审修复：B 侧发布值校验、缺失证据即链断、自测负例、文档同步
+
+**关键行**：对应任务侧修复（本地不入库）：(1) replay 的 `published:*` 检查组扩到
+**双臂全字段**——Q1 汇总 A/B、门失败集 A/B、collection/gate 状态（gate_status 由原始
+gate 对象独立推导，不再循环引用发布值）、Q2 A/B 全指标、Q3 网格 A/B、内存 census 三项
+峰值 + RSS 门 + 生命周期五字段（含 request_errors，watch_span 按 0.1s 舍入口径）、
+quality-warm 门布尔值、W3 冻结门布尔值与 verdict 字符串；缺字段按失败处理。(2) 规模
+哈希链：必需 stdout/stderr 缺失或无 SHA 记为链断（证据 MISSING），不再静默跳过。
+(3) 自测修正：检查名过滤改为 `full-hash-chain`、新增 F3 负例（不更新引用 SHA 的真实
+链损坏必须被检出并拒绝宣称全绿）、F3 样本选在 F1 变异范围之外。owner 反例：B 侧
+Q1/Q2/Q3 分数、内存峰值、quality-warm 门布尔、W3 verdict 的七个篡改**全部命中**；
+链断裂负例被检出。
+
+**每行的风险**：published 检查的浮点为精确相等（同算法同序）；生命周期 watch_span
+按 0.1s 舍入比较——口径漂移会如实失败。Q3 flags 检查只验证网格内部一致性，网格对
+原始 stdout 的校验由 Q3 网格检查承担（两者互补，已分别断言）。
+
+**我不确定的地方**：共享辅助函数层的独立第二实现仍为 MISSING。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（全绿含 f3）；
+`./venv/bin/python driver/replay.py`（0 失败）；任务侧 revision_20。
+
 ## (本提交·b703905) — 第四轮评审修复：发布值全模块一致性、三跳哈希链、自测假阳性、SHA 指针
 
 **关键行**：FEATURE_STATUS 比值同步（0.999574/0.999792）。任务侧 replay/compile 配套修复
