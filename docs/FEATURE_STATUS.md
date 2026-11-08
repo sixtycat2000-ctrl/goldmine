@@ -252,16 +252,17 @@ deadline-vs-rundown split of the 24 pack diffs, the W3 overhead mechanism, and
 the observer's kernel-peak guarantee — all recorded as MISSING. The suite's
 built-in audits pin their reference to the historical original and reject the
 constructed control by design; verdicts come from the task's frozen replayer
-(157/157 checks incl. per-receipt exit codes, quality-metric and
-pack-equivalence recomputation, gate evaluation, scale recomputation and
-compile↔replay consistency; a fault-injection selftest proves both review
-counterexamples are now caught). Holdout exposure 0; no quality retries; every
+(290+ checks incl. per-receipt exit codes, quality-metric and
+pack-equivalence recomputation, gate evaluation, per-cell scale recomputation
+vs published values, suite-status consistency, and compile↔replay
+consistency; a rewritten fault-injection selftest runs a no-fault baseline
+first and asserts the expected failing check for each injected fault). Holdout exposure 0; no quality retries; every
 superseded attempt preserved. Driver provenance is recorded honestly in
 `registration/driver-sha256-history.json` (the revision_15 claimed refreeze was
 never written to disk — launch-time driver state for the reruns is MISSING).
 Evidence: `reports/execution/e2e-evidence-20261108-005211/`
-(RESULT.md v3, REPRODUCE.md, results.json, q1-equivalence.json,
-preregistration + revisions 1–17, review/, replay/).
+(RESULT.md v4, REPRODUCE.md, results.json, q1-equivalence.json,
+preregistration + revisions 1–18, review/, replay/).
 
 Receipts, source hashes, mathematical reviews, registration revisions and replay
 are under `reports/execution/high-confidence-optimizations-learn-20261104/`.
