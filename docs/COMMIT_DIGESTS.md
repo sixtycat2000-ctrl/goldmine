@@ -8,6 +8,29 @@
 
 ---
 
+## (本提交·b703905) — 第四轮评审修复：发布值全模块一致性、三跳哈希链、自测假阳性、SHA 指针
+
+**关键行**：FEATURE_STATUS 比值同步（0.999574/0.999792）。任务侧 replay/compile 配套修复
+（本地不入库）：(1) 回放新增 `published:*` 检查组——results.json 的每个延迟单元分位数、
+配对 bootstrap、内存 census 峰值、生命周期释放时刻、Q1 汇总/等价类/门失败集、Q2 汇总、
+Q3 网格、quality-warm p95、W3 冻结门——全部与独立重算逐值比对（owner 第四轮反例的四个
+篡改各自命中）；(2) 规模哈希链补齐 case→audit 与 receipt→stdout/stderr 两跳；(3) 自测
+重写：无故障基线先行、F1 逐层更新引用 SHA 并断言预期检查名、F2 用真实 helper、键名
+分离（修复 f2 "caught" 覆盖 f1 假值的假阳性）；(4) 驱动身份对表进回放
+（driver:*:current-sha），顶层指针与最新代同步。
+
+**每行的风险**：published 一致性要求浮点精确相等（同算法同序，当前稳定）；compile 与
+replay 的统计口径今后必须同步改动，否则回放如实失败——这是有意设计。哈希链全绿 + 语义
+检查失败的自测组合，证明链修复没有吞掉语义检测。
+
+**我不确定的地方**：published 检查覆盖 results.json 的全部已发布数值，但 compile 与
+replay 共享部分辅助函数（quantiles/nearest_rank/bootstrap）——若该共享层本身有错，两者
+会一致地错；独立于辅助函数的第二实现未做（MISSING）。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（全绿）；
+`./venv/bin/python driver/replay.py`（0 失败）；`grep -c "published:" replay/replay-report.json`。
+
 ## (本提交·d8b0aed) — 第三轮评审更正：规模逐格校验、采集/判定分离、自测假阳性修复
 
 **关键行**：本提交只改 FEATURE_STATUS 的证据段与新增本摘要（数据本体在本地任务目录，
