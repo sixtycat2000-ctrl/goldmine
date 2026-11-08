@@ -189,7 +189,7 @@ and product-quality improvement remain **MISSING** for this candidate. Existing
 quality failures are not converted into passes. No baseline, evaluation question,
 fingerprint or sealed holdout was changed.
 
-### End-to-end A/B evidence (2026-11-08, source range 756098e vs 8b75498)
+### End-to-end A/B evidence (2026-11-08, corrected v2; source range 756098e vs 8b75498)
 
 The 2026-11-08 task `e2e-evidence-20261108-005211` measured the candidate against
 a counterfactual control built from the same HEAD with only these four files
@@ -198,20 +198,33 @@ restored to `43b373a^` (per-file SHA proof; the four files are unchanged between
 unit-pairs × 42 samples, instrumented memory units M1–M5 with a real ≥358s idle
 watch, full 210-query dev fold per arm, legacy/full-media regression gates, all
 three public sets × four scorers, and the 12-cell synthetic capacity matrix.
+An owner review retracted the first report's equivalence and cross-check claims;
+the corrected verdicts below come from per-arm citation resolution, balanced-
+order repeats, a symmetric-cache scale rerun, and gate evaluation that the first
+pass had skipped (preregistration revisions 15–16).
 
-- **Equivalence (strongest result)**: zero per-query differences across the 210
-  dev rows (metrics, hit ranking, pack SHA), 109 legacy + 136 full-media rows,
-  and all 12 public-set cells incl. per-query ranked docids. No quality
-  improvement; equivalence/no-regression is verified. Existing red gates
-  (`noise_correct_empty 0.667 < 0.90`, `media.ocr 0.667 < 0.70`) remain FAIL.
-- **Latency**: with the strongest pairing (per-request alternation in one MCP
-  session; per-query interleaved cold CLI) the candidate and control are equal
-  within confidence intervals (medians −1.5…+7.7 ms). Episode-isolated warm CLI
-  units show a preregistered order confound (the second-measured arm is faster
-  in 6/6 units); the W1 warm B/A p50 ratio 1.23 therefore cannot be attributed
-  to the code (direction contradicts the diff; MCP cross-check shows B slightly
-  faster). Synthetic capacity (mock vectors): candidate faster at 10k–250k;
-  500k mixed.
+- **Quality**: per-query metrics and hit rankings are identical across arms
+  (210 dev rows, 109 legacy + 136 full-media rows, all 12 public-set cells incl.
+  per-query ranked docids). At PACK granularity the result is **NOT equivalent**:
+  after the preregistered per-arm citation/segment resolution, 24/210 dev
+  queries differ in resolved record content (window splits / record counts) —
+  recorded as a strict pack-level FAIL; leading hypothesis is the
+  deadline-sensitive rank-pool selection, with the within-arm run-to-run share
+  unseparable (MISSING). Existing red gates (`noise_correct_empty 0.667 < 0.90`,
+  `media.ocr 0.667 < 0.70`) remain FAIL.
+- **Quality-warm performance gate FAIL (both arms)**: W3 MCP warm (controlled,
+  all models resident) p95 A=7583 ms / B=7564 ms vs the frozen 2500 ms gate;
+  degraded 0%. The tail is real local ranking cost, not degradation and not an
+  arm difference — but the gate is FAIL and is reported as such.
+- **Latency**: a balanced-order repeat (both episode orders, controlled and
+  real) shows W1 fast-list warm B−A ≈ 0 ms in both orders — no regression vs
+  the control; the first pass's W1 warm B/A p50 ratio 1.23 was episode-session
+  state, not code. For rank-participating warm workloads (W2) episode-level
+  variance dominates (same-arm p50 drifted 2.1 s → 3.7 s across episodes), so
+  A/B attribution there is MISSING while the absolute per-arm data stands.
+  Synthetic capacity (mock vectors) with a symmetric no-cache rerun shows no
+  consistent arm advantage (mixed small deltas both directions; the first
+  pass's large candidate-faster deltas were a candidate-only vector cache).
 - **Memory/lifecycle**: cold-CLI same-instant task peak ≈1.83 GiB; reranker peak
   1,258 MiB ≤ 1.5 GiB gate. The candidate releases its reranker at t≈302 s
   (controlled and real) and re-borrows cleanly; the control never releases and
@@ -220,19 +233,23 @@ three public sets × four scorers, and the 12-cell synthetic capacity matrix.
 - **MCP overhead (paired p95 ≤100 ms gate, fast path)**: A 7.2 / B 5.6 ms
   (W1), A 13.0 / B 9.4 ms (W2) — PASS. W3 pairs are dominated by reranker
   lifecycle spawns and are reported descriptively, not against that gate.
+  Real-profile MCP warm units carry 34/42 memory-pressure fallbacks per arm
+  (recomputed from raw payloads; controlled units 0).
 
 Scope: small real library (evals/eval.sqlite snapshot) for latency; frozen
 product_v4_expansion/build-c, frozen BEIR cache and frozen legacy/media
 baselines for quality; synthetic fp16 fixtures per the frozen rules for scale
-(mock vectors — capacity cost only, never a real-model claim). An episode-order
-attribution gap, the 500k warm/pack cells, the W3 overhead mechanism, and the
-observer's kernel-peak guarantee are recorded as MISSING. The suite's built-in
-audits pin their reference to the historical original and reject the
+(mock vectors — capacity cost only, never a real-model claim; two-arm symmetric
+cache-off). Open gaps: W2/W3 warm A/B attribution under episode variance, the
+deadline-vs-rundown split of the 24 pack diffs, the W3 overhead mechanism, and
+the observer's kernel-peak guarantee — all recorded as MISSING. The suite's
+built-in audits pin their reference to the historical original and reject the
 constructed control by design; verdicts come from the task's frozen replayer
-(73/73 checks). Holdout exposure 0; no quality retries; every superseded
+(126/126 checks incl. quality-metric recomputation, gate evaluation and scale
+recomputation). Holdout exposure 0; no quality retries; every superseded
 attempt preserved. Evidence: `reports/execution/e2e-evidence-20261108-005211/`
-(RESULT.md, REPRODUCE.md, results.json, preregistration + revisions 1–13,
-review/, replay/).
+(RESULT.md v2, REPRODUCE.md, results.json, q1-equivalence.json,
+preregistration + revisions 1–16, review/, replay/).
 
 Receipts, source hashes, mathematical reviews, registration revisions and replay
 are under `reports/execution/high-confidence-optimizations-learn-20261104/`.

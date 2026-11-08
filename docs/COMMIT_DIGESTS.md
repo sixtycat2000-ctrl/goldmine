@@ -8,6 +8,39 @@
 
 ---
 
+## (本提交·e2e-evidence-20261108-corrections) — 更正 2026-11-08 证据段：pack 非等价、quality-warm 门 FAIL、平衡顺序与对称缓存重测
+
+**关键行**：本提交更正前一提交写入 FEATURE_STATUS 的三处错误结论，全部源于
+所有者对原始数据的只读评审。(1) 质量段改为：指标与命中排名等价，但按预注册的
+跨臂 citation 解析后 **210 题 dev 中 24 题（11%）的 pack 解析内容真实不同**
+（记录数/窗口切分），严格 pack 级等价 FAIL——v1 的"pack SHA 零差异"是把内嵌
+index UUID 的 raw SHA 拿来直接比，方法错误。(2) 新增 **quality-warm 门 FAIL**：
+W3 MCP warm 受控 p95 A=7583ms / B=7564ms > 冻结门 2500ms（降级 0%，慢尾为真实
+重排成本，双臂相同）。(3) 延迟段改为：**平衡顺序实验**（两种 episode 顺序 ×
+受控/真实）显示 W1 warm B−A≈0（CI 跨零）——v1 的 1.23 比值是会话假象，v1 引用的
+"MCP 无混杂交叉验证"不存在（mcp-warm 单元同样是 episode 串行），已撤回。新增：
+W2 warm 的 episode 方差支配（同臂 p50 2.1s→3.7s），A/B 归因 MISSING；容量矩阵
+用**双臂对称无缓存**重跑后无一一致臂优势（v1 的 B 大幅更快是 --cache-experiment
+只建 candidate 侧缓存的假象）；真实档 MCP warm 每臂 34/42 请求带内存压力
+fallback（从原始载荷重算）。
+
+**每行的风险**：24/210 的 pack 差异按冻结判据记 FAIL——它可能只是死线敏感的
+窗口选择（`_rank_pool_cap`）加上 run-to-run 方差，但同臂重复未做，两者占比分不开，
+不能写成"等价"。quality-warm FAIL 是双臂共同的性能事实，不构成对优化的指控，
+也不能被"两臂相同"洗成通过。W2 的"归因 MISSING"不是数据缺失——数据完整，
+是 episode 方差超出该设计的分辨能力。所有被更正的 attempt 原样留档
+（`raw/*-attempt*`），重测走 revision_15/16 的新 attempt，未覆盖任何旧回执。
+
+**我不确定的地方**：pack 差异的成因分解（死线敏感性 vs 同臂方差）；W3 overhead
+B 侧 403ms 的机制；500k 容量格的波动；观察器内核峰值保证——均列 MISSING。
+回放扩展到 126 项（含质量汇总重算、门槛评估、规模重算）后 0 失败。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/replay.py`（应 126/126）；
+`./venv/bin/python driver/q1_equivalence.py`（应输出
+identical 20 / provenance_only 166 / real_diff 24）；对比
+`git diff ed7db2f HEAD -- docs/FEATURE_STATUS.md` 看更正范围。
+
 ## (本提交·e2e-evidence-20261108) — 高信心优化的端到端 A/B 证据补齐（文档：FEATURE_STATUS 增 2026-11-08 证据段）
 
 **关键行**：本提交只改 `docs/FEATURE_STATUS.md`——在 2026-11-05 候选小节下追加
