@@ -38,6 +38,24 @@ selftest（基线先行+预期检查名断言+F3 链断裂负例）一起构成�
 **你 90 秒怎么验**：`cat replay/counterexample-sweep.json` 看 all_caught=true；
 `./venv/bin/python driver/selftest_faults.py`（全绿含 f3）；`df -h` 确认磁盘已恢复。
 
+## (本提交·a30c96f/aa6fe6d 之后·比较方向修复) — 第六轮评审 P1：发布值置空/置 null 不再使失败消失
+
+**关键行**：`_expect` 的比较方向反转修复——重算对象现在是权威字段源，发布对象必须
+携带每个重算键（缺键、null-于非空重算、类型不符、值不等都是独立失败类型）；Q1 汇总/
+门失败集/等价类、Q2、内存 census、quality-warm 布尔、W3 各格布尔全部改为从冻结原始
+数据重算驱动；W3 verdict 从**冻结四格矩阵**（与发布内容无关）推导，且每个冻结格必须
+在发布对象中存在且非 null。自测新增 F4（清空必需字段 + null 失败臂 + verdict PASS
+必须失败，8 个预期检查全部命中）并改为自清理沙盒（修一起 ~133GB 的 $TMPD 残留事件）。
+
+**每行的风险**：字段清单由重算决定意味着 compile 新增发布字段而 replay 未同步时会
+如实缺检查——需同步更新；gate failed 列表按集合语义两侧排序后比较（顺序非语义）。
+
+**我不确定的地方**：共享辅助函数层无独立第二实现（此前已标 MISSING）。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（verdict=fault-sensitive，f4_caught=true）；
+`./venv/bin/python driver/replay.py`（0 失败）；看 revision_21。
+
 ## (本提交·本轮修复提交) — 第五轮评审修复：B 侧发布值校验、缺失证据即链断、自测负例、文档同步
 
 **关键行**：对应任务侧修复（本地不入库）：(1) replay 的 `published:*` 检查组扩到
