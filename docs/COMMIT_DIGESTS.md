@@ -18,6 +18,26 @@
 
 **你 90 秒怎么验**：`git show a30c96f --stat` 应只显示 docs/COMMIT_DIGESTS.md。
 
+## (本提交·f54c3d6 之后·e2e-evidence 清点与文档同步) — 五轮反例清点存档、自测补 F3 负例、修订计数同步
+
+**关键行**：任务侧新增 `replay/counterexample-sweep.json`——五轮评审的全部 11 类发布值
+篡改（规模 ×100+PASS、延迟 p50、内存两峰值、Q1 汇总 A/B、Q1 门清空+状态 PASS、Q2 B、
+Q3 B、quality-warm 布尔、W3 门布尔+verdict）各自被独立的 published:*/scale 一致性检查
+命中（变异下 158 项检查失败）；清点改用最小沙盒（只拷被读文件），并记录一起 ENOSPC
+事件：首轮清点整目录拷贝被中断后残留 16 份沙盒（~133GB）在 $TMPD，经 `task/results.json
++ scale/suite` 标识核验后删除。FEATURE_STATUS 的规模措辞、RESULT.md 标题（v5）与
+修订计数（1–20）同步。
+
+**每行的风险**：清点是"检查存在且命中"的证据，不是回放无误的证明——但它与
+selftest（基线先行+预期检查名断言+F3 链断裂负例）一起构成双向验证。沙盒最小化后
+不再有 ENOSPC 风险。
+
+**我不确定的地方**：published 一致性与 compile 共享辅助函数层（无独立第二实现）；
+生命周期 PID 归属无出生身份。两者此前已标 MISSING。
+
+**你 90 秒怎么验**：`cat replay/counterexample-sweep.json` 看 all_caught=true；
+`./venv/bin/python driver/selftest_faults.py`（全绿含 f3）；`df -h` 确认磁盘已恢复。
+
 ## (本提交·本轮修复提交) — 第五轮评审修复：B 侧发布值校验、缺失证据即链断、自测负例、文档同步
 
 **关键行**：对应任务侧修复（本地不入库）：(1) replay 的 `published:*` 检查组扩到
