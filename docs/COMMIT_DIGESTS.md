@@ -8,6 +8,38 @@
 
 ---
 
+## (本提交·e2e-evidence-20261108-corrections-v3) — 第二轮评审更正：规模 254 次超时补报、W3 冻结门恢复 FAIL、W1 判据改回冻结比值、回放抗注入
+
+**关键行**：本提交按第二轮只读评审更正三处遗留问题。(1) 规模套件 evidence_status
+改 **FAIL**：4,320 个正式样本中 **254 个以产品侧 `request deadline exceeded` 失败**
+（500k-1/10/100 = 21/135/98，双臂对称；500k-10 最差格 ~40%），分位数只按成功样本
+计算并附失败计数，高失败格标 A/B 不可比。(2) **W3 的冻结 overhead 门（p95≤100ms）
+恢复为无豁免**：受控 B 403.6ms / 真实 B 237.4ms → **FAIL**（v2 曾以"门仅适用 fast"
+豁免——事后收窄冻结判据，已撤回；生命周期解释降级为未验证假设 MISSING）。
+(3) W1 回归判定改回**冻结比值判据**（平衡顺序逐对比值 0.998/1.002 → 按判据无退步；
+CI 仅描述性；原 1.23 与代码无关的归因保持 MISSING）。另：L11-real 披露为 MISSING
+（两臂 worker 请求超时退出，A 36 组配对、B 0）；受控 W2 overhead 更新为实测
+74.55/15.42ms；回放扩到 **157 项**（逐回执退出码、audit→receipt SHA 链、pack 等价
+分类独立重算、Q2 双臂、生命周期 PID 归因、compile↔replay 一致性），并用
+`selftest_faults.py` 证明评审的两类内存反例现在都会被捕获；驱动身份在
+`driver-sha256-history.json` 如实建档——revision_15 声称的重冻结未写盘，重测发射态
+**无密码学证明（MISSING）**。
+
+**每行的风险**：254 次超时是产品真实行为（大库 + fast 死线 5s），不是测量故障——
+把它从"套件历史绑定问题"里分出来单列，避免再次用旧验收器问题掩盖产品问题。
+500k-10/100 高失败格的 A/B 不可比标记意味着规模结论对 500k 部分不完整——这是
+完整数据下的真实结果，不是 MISSING 运行。W3 门 FAIL 归因（重排生命周期）仍未经
+隔离实验证明。驱动发射态无哈希证明是本任务的诚实代价，标记为 MISSING 而非补造。
+
+**我不确定的地方**：同上列各 MISSING 项；规模 500k 格在失败率 40% 下"成功样本
+分位数"的代表性也存疑（已附计数，读者可自行判断）。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（应两个 true）；
+`./venv/bin/python driver/replay.py`（应 157/157）；
+`grep -c "deadline exceeded" $(find scale/suite -path "*500000-10*" -name "stderr.log") 2>/dev/null | head`
+看失败分布；`git diff 1bbf4ce HEAD -- docs/` 看更正范围。
+
 ## (本提交·e2e-evidence-20261108-corrections) — 更正 2026-11-08 证据段：pack 非等价、quality-warm 门 FAIL、平衡顺序与对称缓存重测
 
 **关键行**：本提交更正前一提交写入 FEATURE_STATUS 的三处错误结论，全部源于

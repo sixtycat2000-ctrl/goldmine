@@ -195,7 +195,7 @@ The 2026-11-08 task `e2e-evidence-20261108-005211` measured the candidate agains
 a counterfactual control built from the same HEAD with only these four files
 restored to `43b373a^` (per-file SHA proof; the four files are unchanged between
 `43b373a` and `756098e`). Real models, real MCP SDK (mcp==2.0.0), 24 latency
-unit-pairs × 42 samples, instrumented memory units M1–M5 with a real ≥358s idle
+unit-pairs (23 complete; L11-real disclosed MISSING after both workers hit request timeouts) × 42 samples, instrumented memory units M1–M5 with a real ≥358s idle
 watch, full 210-query dev fold per arm, legacy/full-media regression gates, all
 three public sets × four scorers, and the 12-cell synthetic capacity matrix.
 An owner review retracted the first report's equivalence and cross-check claims;
@@ -217,24 +217,31 @@ pass had skipped (preregistration revisions 15–16).
   degraded 0%. The tail is real local ranking cost, not degradation and not an
   arm difference — but the gate is FAIL and is reported as such.
 - **Latency**: a balanced-order repeat (both episode orders, controlled and
-  real) shows W1 fast-list warm B−A ≈ 0 ms in both orders — no regression vs
-  the control; the first pass's W1 warm B/A p50 ratio 1.23 was episode-session
-  state, not code. For rank-participating warm workloads (W2) episode-level
-  variance dominates (same-arm p50 drifted 2.1 s → 3.7 s across episodes), so
-  A/B attribution there is MISSING while the absolute per-arm data stands.
-  Synthetic capacity (mock vectors) with a symmetric no-cache rerun shows no
-  consistent arm advantage (mixed small deltas both directions; the first
-  pass's large candidate-faster deltas were a candidate-only vector cache).
+  real) evaluates the frozen regression criterion (p50 ratio ≤ 1.2) per pair at
+  **0.998 / 1.002 — no regression** (the bootstrap CI is descriptive); the
+  first pass's W1 warm B/A p50 ratio 1.23 was episode-session state, though
+  code-independence of that ratio cannot be proven (MISSING). For
+  rank-participating warm workloads (W2) episode-level variance dominates
+  (same-arm p50 drifted 2.1 s → 3.7 s across episodes), so A/B attribution
+  there is MISSING while the absolute per-arm data stands. Synthetic capacity
+  (mock vectors) with a symmetric no-cache rerun shows no consistent arm
+  advantage (mixed small deltas both directions; the first pass's large
+  candidate-faster deltas were a candidate-only vector cache). **The scale
+  suite itself is FAIL: 254 of 4,320 formal samples failed with the product's
+  own 'request deadline exceeded' (500k-1/10/100 = 21/135/98, arm-symmetric;
+  worst cells ~40%), quantiles use successful samples only with failure counts
+  attached, and the high-failure 500k-10/100 cells are marked not comparable.
 - **Memory/lifecycle**: cold-CLI same-instant task peak ≈1.83 GiB; reranker peak
   1,258 MiB ≤ 1.5 GiB gate. The candidate releases its reranker at t≈302 s
   (controlled and real) and re-borrows cleanly; the control never releases and
   leaked a ~612 MiB child in 30/42 W3 cold samples (lifecycle FAIL recorded).
   M5: zero residual task model processes.
-- **MCP overhead (paired p95 ≤100 ms gate, fast path)**: A 7.2 / B 5.6 ms
-  (W1), A 13.0 / B 9.4 ms (W2) — PASS. W3 pairs are dominated by reranker
-  lifecycle spawns and are reported descriptively, not against that gate.
-  Real-profile MCP warm units carry 34/42 memory-pressure fallbacks per arm
-  (recomputed from raw payloads; controlled units 0).
+- **MCP overhead (frozen paired p95 ≤100 ms gate, NO workload exemption)**:
+  W1 controlled A 7.2 / B 5.6 ms and W2 controlled A 74.55 / B 15.42 ms — PASS;
+  **W3 FAIL**: controlled A 57.4 / B 403.6 ms, real A 28.4 / B 237.4 ms. The
+  reranker-lifecycle explanation is an unverified hypothesis (MISSING), not a
+  gate narrowing. Real-profile MCP warm units carry 34/42 memory-pressure
+  fallbacks per arm (recomputed from raw payloads; controlled units 0).
 
 Scope: small real library (evals/eval.sqlite snapshot) for latency; frozen
 product_v4_expansion/build-c, frozen BEIR cache and frozen legacy/media
@@ -245,11 +252,16 @@ deadline-vs-rundown split of the 24 pack diffs, the W3 overhead mechanism, and
 the observer's kernel-peak guarantee — all recorded as MISSING. The suite's
 built-in audits pin their reference to the historical original and reject the
 constructed control by design; verdicts come from the task's frozen replayer
-(126/126 checks incl. quality-metric recomputation, gate evaluation and scale
-recomputation). Holdout exposure 0; no quality retries; every superseded
-attempt preserved. Evidence: `reports/execution/e2e-evidence-20261108-005211/`
-(RESULT.md v2, REPRODUCE.md, results.json, q1-equivalence.json,
-preregistration + revisions 1–16, review/, replay/).
+(157/157 checks incl. per-receipt exit codes, quality-metric and
+pack-equivalence recomputation, gate evaluation, scale recomputation and
+compile↔replay consistency; a fault-injection selftest proves both review
+counterexamples are now caught). Holdout exposure 0; no quality retries; every
+superseded attempt preserved. Driver provenance is recorded honestly in
+`registration/driver-sha256-history.json` (the revision_15 claimed refreeze was
+never written to disk — launch-time driver state for the reruns is MISSING).
+Evidence: `reports/execution/e2e-evidence-20261108-005211/`
+(RESULT.md v3, REPRODUCE.md, results.json, q1-equivalence.json,
+preregistration + revisions 1–17, review/, replay/).
 
 Receipts, source hashes, mathematical reviews, registration revisions and replay
 are under `reports/execution/high-confidence-optimizations-learn-20261104/`.
