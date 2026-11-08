@@ -218,7 +218,7 @@ pass had skipped (preregistration revisions 15–16).
   arm difference — but the gate is FAIL and is reported as such.
 - **Latency**: a balanced-order repeat (both episode orders, controlled and
   real) evaluates the frozen regression criterion (p50 ratio ≤ 1.2) per pair at
-  **0.998 / 1.002 — no regression** (the bootstrap CI is descriptive); the
+  **0.999574 / 0.999792 — no regression** (nearest-rank p50; the bootstrap CI is descriptive); the
   first pass's W1 warm B/A p50 ratio 1.23 was episode-session state, though
   code-independence of that ratio cannot be proven (MISSING). For
   rank-participating warm workloads (W2) episode-level variance dominates

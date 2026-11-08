@@ -8,6 +8,31 @@
 
 ---
 
+## (本提交·d8b0aed) — 第三轮评审更正：规模逐格校验、采集/判定分离、自测假阳性修复
+
+**关键行**：本提交只改 FEATURE_STATUS 的证据段与新增本摘要（数据本体在本地任务目录，
+不入库）。对应任务侧三个修复：(1) replay_scale **逐格重算**并与 results.json 比对
+n_formal/n_failures/quantiles_all_samples，外加套件状态一致性——owner 的"发布值 ×100
++ 状态改 PASS"反例现在失败 145 项检查；(2) 延迟/内存/质量的发布值一致性检查扩展到全部
+模块（owner 第四轮的四个篡改——发布延迟×100、重排内存改写、Q1 s@5 改写、Q1 门改
+PASS——各自被独立的 published:* 检查命中）；(3) 单元状态拆成 collection_status（23 个
+延迟单元完整 2×42 样本、L11-real MISSING 带配对计数）与 gate_status（Q1：采集完整且
+门 FAIL 同真），mcp-overhead 单元不再被通用 wall_ms 测试误判为 MISSING。
+
+**每行的风险**：逐格一致性使回放对 results.json 的任何手工修饰敏感——这也意味着
+compile 的统计口径改动必须与 replay 同步（本轮就修了三处口径漂移：all-sample 分位
+含失败样本、nearest-rank p50、生命周期 formal_requests）。自测的 F1 现在逐层更新
+引用 SHA（receipt→audit→case→manifest）以隔离语义故障；链检查与语义检查分离断言。
+
+**我不确定的地方**：published 一致性检查对浮点要求精确相等（同一算法同序，稳定）；
+若未来 compile 改变实现，检查会如实失败——这是设计意图。生命周期 PID 归属的残留
+限制（无出生身份）已在 replay 输出中标注。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（应全绿）；
+`./venv/bin/python driver/replay.py`（应 0 失败）；对比
+`git diff c813aaf d8b0aed -- docs/FEATURE_STATUS.md`。
+
 ## (本提交·e2e-evidence-20261108-corrections-v3) — 第二轮评审更正：规模 254 次超时补报、W3 冻结门恢复 FAIL、W1 判据改回冻结比值、回放抗注入
 
 **关键行**：本提交按第二轮只读评审更正三处遗留问题。(1) 规模套件 evidence_status
