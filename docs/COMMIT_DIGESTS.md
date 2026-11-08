@@ -38,6 +38,26 @@ selftest（基线先行+预期检查名断言+F3 链断裂负例）一起构成�
 **你 90 秒怎么验**：`cat replay/counterexample-sweep.json` 看 all_caught=true；
 `./venv/bin/python driver/selftest_faults.py`（全绿含 f3）；`df -h` 确认磁盘已恢复。
 
+## (本提交·AGENTS-md-review-lessons) — AGENTS.md 新增"测量/验收回放的评审规约"一节
+
+**关键行**：AGENTS.md 在铁律之后新增一节 12 条规约，把 e2e-evidence-20261108
+五轮 owner review 的失败模式固化为会话规约：重算字段源权威（防清空发布对象）、
+verdict 不从幸存记录推导、回放自证抓故障（基线先行+预期检查名）、完整哈希链
+缺证据即 MISSING、冻结门不事后豁免/测后口径标注、修环境后重审旧数据、A/B 对称
++平衡顺序、采集与判定分离、进程按出生身份归属、驱动冻结真写盘、沙盒自清理、
+响应评审的固定动作（先核实→隔离→新 attempt→记 revision→文档同步）。
+
+**每行的风险**：规约条目压缩后可能丢上下文——每条都注明了实证出处（任务目录
+revision 1–21），不确定时回原始评审记录而不是凭条目字面执行。条目是经验性工程
+规约，不是合同条文；与 CONTRACTS.md 冲突时以后者为准。
+
+**我不确定的地方**：12 条的颗粒度是否合适（可能该合并或拆分）；后续评审可能
+再追加条目，注意保持节长度可控。
+
+**你 90 秒怎么验**：`git diff HEAD~1 -- AGENTS.md` 看新增节；
+对照 reports/execution/e2e-evidence-20261108-005211/registration/preregistration.json
+的 revision_15–21 确认每条都有对应实证。
+
 ## (本提交·a30c96f/aa6fe6d 之后·比较方向修复) — 第六轮评审 P1：发布值置空/置 null 不再使失败消失
 
 **关键行**：`_expect` 的比较方向反转修复——重算对象现在是权威字段源，发布对象必须
