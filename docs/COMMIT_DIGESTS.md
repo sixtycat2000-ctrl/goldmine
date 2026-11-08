@@ -58,6 +58,34 @@ revision 1–21），不确定时回原始评审记录而不是凭条目字面�
 对照 reports/execution/e2e-evidence-20261108-005211/registration/preregistration.json
 的 revision_15–21 确认每条都有对应实证。
 
+## (本提交·98697c8/aa6fe6d 之后·冻结矩阵遍历修复) — 第七轮评审 P1/P2：清空的发布单元不再漏检，F4 沙盒最小化
+
+**关键行**：上一轮修了比较方向，但延迟/内存两个入口仍在**发布键**上遍历并在空对象上
+跳过——owner 复现：清空 L01/B 与配对统计、清空 M1/B census 与 RSS 门、删受控 B 生命周期
+记录、把真实 MISSING 的 L11-real 伪写成 PASS 42/42，回放 409/409。修复：两个入口改为
+**冻结矩阵遍历**（24 个延迟键来自原始单元文档，12 个内存键来自冻结清单），发布单元
+缺失/清空即失败；逐臂采集数与状态按类型从原始证据重算并比对；配对统计在原始数据
+支持而发布缺失时失败；L11-real 伪写被采集状态比对命中（重算 A=36/B=0 → MISSING）。
+修复后 owner 反例六项变异全部命中（26 项检查失败）。F4 沙盒改为**只拷被读文件**
+（~52MiB：单元文档、L09 resp/L12 pair JSON、memory 采样与文档、质量 run.json/stdout、
+results.json），不再解引用模型符号链接、不再拖入未读 SQLite；TemporaryDirectory 覆盖
+创建/复制/验证全程。
+
+**每行的风险**：冻结键清单硬编码在 replay 中——若未来新增测量单元而清单未更新，
+新单元会缺发布一致性检查（清单与 compile 的单元矩阵需同步维护，已在 revision_22
+记录）。本轮另发生：A/B worktree、任务 venv 与 docs worktree 先后从磁盘消失（原因
+未明，非本会话清理——本会话的删除均有标识核验）；分支完好，全部重挂/重建（A 臂
+四文件对 43b373a^ 逐字节复核、venv 按 mcp.lock 重建），记入 revision_22 基础设施
+说明。
+
+**我不确定的地方**：目录消失的原因无法归因；共享辅助函数层无独立第二实现
+（既有 MISSING）。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/replay.py`（0 失败）；
+`./venv/bin/python driver/selftest_faults.py`（fault-sensitive）；
+revision_22 记录了 owner 反例的逐项命中与基础设施事件。
+
 ## (本提交·a30c96f/aa6fe6d 之后·比较方向修复) — 第六轮评审 P1：发布值置空/置 null 不再使失败消失
 
 **关键行**：`_expect` 的比较方向反转修复——重算对象现在是权威字段源，发布对象必须
