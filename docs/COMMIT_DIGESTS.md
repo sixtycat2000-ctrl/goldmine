@@ -8,6 +8,39 @@
 
 ---
 
+## (本提交·e2e-evidence-20261108) — 高信心优化的端到端 A/B 证据补齐（文档：FEATURE_STATUS 增 2026-11-08 证据段）
+
+**关键行**：本提交只改 `docs/FEATURE_STATUS.md`——在 2026-11-05 候选小节下追加
+"End-to-end A/B evidence (2026-11-08, source range 756098e vs 8b75498)" 一段，把
+原先标 MISSING 的整条 CLI/MCP 延迟、进程内存、模型生命周期与检索质量四类证据
+补上结论与范围。测量本体在本地 `reports/execution/e2e-evidence-20261108-005211/`
+（按惯例不入库）：A/B 两臂逐文件 SHA 证明只有四个优化文件不同；24 个延迟单元对
+（每臂 42 正式样本）、M1–M5 内存/生命周期（含真实 ≥358s 闲时观察）、210 题 dev
+双臂、legacy/full-media 回归门、三公开集×四 scorer、12 容量单元。
+
+**每行的风险**：结论写的是"等价"不是"提升"——210 行 dev、245 行回归门、12 个
+公开集格点（含逐查询排名 docid）全部零差异，两条质量红门（noise 0.667<0.90、
+ocr 0.667<0.70）原样保留 FAIL。延迟最强配对下 B≈A；episode 隔离单元存在
+6/6 跟随测量顺序的混杂，W1 warm B/A 比 1.23 触及退步门但方向与 diff 预期相反、
+且被无混杂的 MCP 交叉验证反驳——文档按"照报原始比值 + 归因 MISSING"呈现，
+不把它洗成通过或失败。生命周期是本轮唯一"A FAIL / B PASS"的实质差异
+（B 在 ~302s 释放重排模型并干净重借用；A 从不释放且 30/42 样本泄漏 ~612MiB 子进程）。
+容量矩阵是 mock 向量的容量成本，不是真实模型速度。
+
+**我不确定的地方**：L02 的 +45ms 无法在设计内与代码效应分离（顺序混杂归因
+MISSING）；500k 热 search/pack 个别格 B 变慢 12–16%（合成、固定查询、30 样本，
+不外推）；W3 MCP-overhead B 侧 403ms 的机制解释（两侧独立 reranker 注册表）
+未做隔离实验；acceptance 观察器看不到 start_new_session 的模型子进程，"连续
+内核级峰值"保证仍 MISSING。13 次 revision 全部留档（含 22 个孤儿进程事故与
+并发违章，均按 PID 清理）；holdout 曝光 0；质量重试 0；独立回放 73/73。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/replay.py`——应退出 0（73/73 检查）。再
+`sed -n '/End-to-end A\/B evidence/,/^Receipts/p' docs/FEATURE_STATUS.md`
+读新增段。想要人话版结论读该目录的 `RESULT.md`（七问七答）；想亲手复现读
+`REPRODUCE.md`（只读回放不启动模型）。核对 A 臂构造：
+`git diff 756098e 8b75498 --stat` 应只有四个 goldmine 文件。
+
 ## (本提交·site-001) — 官网 v1（含用户新反馈重构）：专业首页 + 分层 Learn 地图 + Cloudflare 上线
 
 ### 关键行

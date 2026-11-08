@@ -189,6 +189,51 @@ and product-quality improvement remain **MISSING** for this candidate. Existing
 quality failures are not converted into passes. No baseline, evaluation question,
 fingerprint or sealed holdout was changed.
 
+### End-to-end A/B evidence (2026-11-08, source range 756098e vs 8b75498)
+
+The 2026-11-08 task `e2e-evidence-20261108-005211` measured the candidate against
+a counterfactual control built from the same HEAD with only these four files
+restored to `43b373a^` (per-file SHA proof; the four files are unchanged between
+`43b373a` and `756098e`). Real models, real MCP SDK (mcp==2.0.0), 24 latency
+unit-pairs × 42 samples, instrumented memory units M1–M5 with a real ≥358s idle
+watch, full 210-query dev fold per arm, legacy/full-media regression gates, all
+three public sets × four scorers, and the 12-cell synthetic capacity matrix.
+
+- **Equivalence (strongest result)**: zero per-query differences across the 210
+  dev rows (metrics, hit ranking, pack SHA), 109 legacy + 136 full-media rows,
+  and all 12 public-set cells incl. per-query ranked docids. No quality
+  improvement; equivalence/no-regression is verified. Existing red gates
+  (`noise_correct_empty 0.667 < 0.90`, `media.ocr 0.667 < 0.70`) remain FAIL.
+- **Latency**: with the strongest pairing (per-request alternation in one MCP
+  session; per-query interleaved cold CLI) the candidate and control are equal
+  within confidence intervals (medians −1.5…+7.7 ms). Episode-isolated warm CLI
+  units show a preregistered order confound (the second-measured arm is faster
+  in 6/6 units); the W1 warm B/A p50 ratio 1.23 therefore cannot be attributed
+  to the code (direction contradicts the diff; MCP cross-check shows B slightly
+  faster). Synthetic capacity (mock vectors): candidate faster at 10k–250k;
+  500k mixed.
+- **Memory/lifecycle**: cold-CLI same-instant task peak ≈1.83 GiB; reranker peak
+  1,258 MiB ≤ 1.5 GiB gate. The candidate releases its reranker at t≈302 s
+  (controlled and real) and re-borrows cleanly; the control never releases and
+  leaked a ~612 MiB child in 30/42 W3 cold samples (lifecycle FAIL recorded).
+  M5: zero residual task model processes.
+- **MCP overhead (paired p95 ≤100 ms gate, fast path)**: A 7.2 / B 5.6 ms
+  (W1), A 13.0 / B 9.4 ms (W2) — PASS. W3 pairs are dominated by reranker
+  lifecycle spawns and are reported descriptively, not against that gate.
+
+Scope: small real library (evals/eval.sqlite snapshot) for latency; frozen
+product_v4_expansion/build-c, frozen BEIR cache and frozen legacy/media
+baselines for quality; synthetic fp16 fixtures per the frozen rules for scale
+(mock vectors — capacity cost only, never a real-model claim). An episode-order
+attribution gap, the 500k warm/pack cells, the W3 overhead mechanism, and the
+observer's kernel-peak guarantee are recorded as MISSING. The suite's built-in
+audits pin their reference to the historical original and reject the
+constructed control by design; verdicts come from the task's frozen replayer
+(73/73 checks). Holdout exposure 0; no quality retries; every superseded
+attempt preserved. Evidence: `reports/execution/e2e-evidence-20261108-005211/`
+(RESULT.md, REPRODUCE.md, results.json, preregistration + revisions 1–13,
+review/, replay/).
+
 Receipts, source hashes, mathematical reviews, registration revisions and replay
 are under `reports/execution/high-confidence-optimizations-learn-20261104/`.
 The learn-page candidate retains all 145 original concepts and adds five with
