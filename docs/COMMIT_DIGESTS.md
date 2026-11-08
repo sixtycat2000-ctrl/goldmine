@@ -58,6 +58,25 @@ revision 1–21），不确定时回原始评审记录而不是凭条目字面�
 对照 reports/execution/e2e-evidence-20261108-005211/registration/preregistration.json
 的 revision_15–21 确认每条都有对应实证。
 
+## (本提交·b5fd816 之后·自测基线修复) — 第九轮评审 P2：F4/F5 基线七项预存失败清零
+
+**关键行**：最小沙盒此前漏拷 L10/L11 的 overhead 配对文件，发布一致性检查的采集数
+比对在未注入基线上就有 7 项失败——F5 报告的"10 项失败"实为 7 项基线 + 3 项注入。
+修复：_build_minimal_sandbox 补齐全部 overhead 单元的配对文件（L09/L10/L11/L12 ×
+controlled/real × A/B）；F4 重构为两相（pristine 基线必须全绿 → doctored 发布对象
+必须命中 8 个预期检查）；F5 注入前先跑基线并要求全绿；自测 verdict 同时要求双基线。
+顺带清除 _f4_run 尾部的残留 baseline_failed 引用。
+
+**每行的风险**：沙盒文件清单与检查的读取面需保持同步——新增检查读取新文件时若
+沙盒未跟上，会以基线失败的形式暴露（这正是基线断言的设计意图）。
+
+**我不确定的地方**：共享辅助函数层无独立第二实现（既有 MISSING）。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+./venv/bin/python driver/selftest_faults.py`（verdict=fault-sensitive，
+f4.baseline_all_pass=true，f5.baseline_failed_checks=[]）；
+`./venv/bin/python driver/replay.py`（0 失败）。
+
 ## (本提交·6e7bb40 之后·必需输入清单) — 第八轮评审 P1：原始输入缺失不再让回放缩表成功
 
 **关键行**：上一轮的"冻结矩阵"仍从 glob 推导、M1 采样器缺失被静默跳过——owner 复现：
