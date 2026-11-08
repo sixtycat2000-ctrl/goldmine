@@ -58,6 +58,29 @@ revision 1–21），不确定时回原始评审记录而不是凭条目字面�
 对照 reports/execution/e2e-evidence-20261108-005211/registration/preregistration.json
 的 revision_15–21 确认每条都有对应实证。
 
+## (本提交·6e7bb40 之后·必需输入清单) — 第八轮评审 P1：原始输入缺失不再让回放缩表成功
+
+**关键行**：上一轮的"冻结矩阵"仍从 glob 推导、M1 采样器缺失被静默跳过——owner 复现：
+删除 latency/L03-real.json 或清空 M1-controlled-B 采样器，回放缩到 459/464 项仍 0 失败。
+修复：replay 顶层新增 FROZEN_LATENCY_KEYS（24 键）/ FROZEN_M1/M2/M3M4_KEYS（来自预注册
+的 driver UNITS，不从 glob 推导）；每个键必须有原始单元文档（存在且结构有效）与 census
+采样器（存在且非空），缺失/为空触发专用完整性检查（published:*:raw-doc-present /
+published:memory:*:sampler-present，evidence_status=MISSING），不再缩小比较面。自测新增
+F5 负例：删文档 + 清空采样器必须命中两个完整性检查（10 项失败）；最小沙盒构建器抽为
+_build_minimal_sandbox 供 F4/F5 共用。
+
+**每行的风险**：冻结键清单与 driver UNITS 需同步维护（新增单元不改清单会漏检——
+与上一轮相同类风险，已在两处注释中互相指向）；"存在但格式坏"与"缺失"分列为两个
+检查名，便于归因。
+
+**我不确定的地方**：无新增；既有 MISSING（共享辅助函数层、PID 出生身份等）不变。
+
+**你 90 秒怎么验**：`cd reports/execution/e2e-evidence-20261108-005211 &&
+cp latency/L03-real.json /tmp/ && rm latency/L03-real.json &&
+./venv/bin/python driver/replay.py`（应见
+published:latency:L03-real:raw-doc-present 失败，退出码 1）；恢复文件后重跑应 0 失败。
+或直接 `./venv/bin/python driver/selftest_faults.py` 看 f5_caught=true。
+
 ## (本提交·98697c8/aa6fe6d 之后·冻结矩阵遍历修复) — 第七轮评审 P1/P2：清空的发布单元不再漏检，F4 沙盒最小化
 
 **关键行**：上一轮修了比较方向，但延迟/内存两个入口仍在**发布键**上遍历并在空对象上
