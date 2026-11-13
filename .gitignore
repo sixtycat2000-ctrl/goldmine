@@ -41,6 +41,9 @@ dist/
 eval.sqlite*
 
 # Local execution evidence and archives (commit compact summaries)
+# reports/execution itself is a symlink to /Volumes/SSD/goldmine-evidence;
+# the bare rule covers the link, the ** rule covers a real directory if it returns.
+reports/execution
 reports/execution/**
 .wrangler/
 .taste-skill/
